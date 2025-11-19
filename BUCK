@@ -34,6 +34,20 @@ alias(
     visibility = ["PUBLIC"],
 )
 
+# Default shell
+alias(
+    name = "shell",
+    actual = "//packages/shells:bash",
+    visibility = ["PUBLIC"],
+)
+
+# Default terminal
+alias(
+    name = "terminal",
+    actual = "//packages/terminals:st",
+    visibility = ["PUBLIC"],
+)
+
 # =============================================================================
 # Package groups for convenience
 # =============================================================================
@@ -70,11 +84,32 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
-# Shell and terminal packages
+# Shell packages
 filegroup(
     name = "shell-packages",
     srcs = [
-        "//packages/core:bash",
+        "//packages/shells:bash",
+        "//packages/shells:zsh",
+        "//packages/shells:dash",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Terminal packages
+filegroup(
+    name = "terminal-packages",
+    srcs = [
+        "//packages/terminals:st",
+        "//packages/terminals:alacritty",
+        "//packages/terminals:foot",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Terminal/shell libraries
+filegroup(
+    name = "shell-libs",
+    srcs = [
         "//packages/core:readline",
         "//packages/core:ncurses",
         "//packages/core:less",

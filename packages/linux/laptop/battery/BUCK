@@ -1,0 +1,54 @@
+# Battery management packages for laptops
+
+filegroup(
+    name = "power-abstraction",
+    srcs = [
+        "//packages/linux/laptop/battery/upower:upower",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "kernel-modules",
+    srcs = [
+        "//packages/linux/laptop/battery/acpi_call:acpi_call",
+        "//packages/linux/laptop/battery/tp_smapi:tp_smapi",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "power-saving",
+    srcs = [
+        "//packages/linux/laptop/battery/laptop-mode-tools:laptop-mode-tools",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "essential",
+    srcs = [
+        "//packages/linux/laptop/battery/upower:upower",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "thinkpad",
+    srcs = [
+        "//packages/linux/laptop/battery/tp_smapi:tp_smapi",
+        "//packages/linux/laptop/battery/acpi_call:acpi_call",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-battery",
+    srcs = [
+        "//packages/linux/laptop/battery/upower:upower",
+        "//packages/linux/laptop/battery/acpi_call:acpi_call",
+        "//packages/linux/laptop/battery/tp_smapi:tp_smapi",
+        "//packages/linux/laptop/battery/laptop-mode-tools:laptop-mode-tools",
+    ],
+    visibility = ["PUBLIC"],
+)

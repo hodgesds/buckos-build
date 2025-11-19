@@ -1,0 +1,522 @@
+# Security packages for Linux systems
+# This directory contains various security-related programs and utilities
+
+# Auditing and monitoring tools
+filegroup(
+    name = "audit-packages",
+    srcs = [
+        "//packages/linux/system/security/audit:audit",
+        "//packages/linux/system/security/aide:aide",
+        "//packages/linux/system/security/lynis:lynis",
+        "//packages/linux/system/security/rkhunter:rkhunter",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Authentication and authorization
+filegroup(
+    name = "auth-packages",
+    srcs = [
+        "//packages/linux/system/security/auth:all-auth",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Core authentication
+filegroup(
+    name = "auth-core",
+    srcs = [
+        "//packages/linux/system/security/auth:core-auth",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Directory services (LDAP, Kerberos, SSSD)
+filegroup(
+    name = "directory-services",
+    srcs = [
+        "//packages/linux/system/security/auth:directory-services",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Two-factor authentication
+filegroup(
+    name = "two-factor-auth",
+    srcs = [
+        "//packages/linux/system/security/auth:two-factor-auth",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# PAM modules
+filegroup(
+    name = "pam-modules",
+    srcs = [
+        "//packages/linux/system/security/auth:pam-modules",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# YubiKey support
+filegroup(
+    name = "yubikey-packages",
+    srcs = [
+        "//packages/linux/system/security/auth:yubikey",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Firewall and network security
+filegroup(
+    name = "firewall-packages",
+    srcs = [
+        "//packages/linux/network/firewall/nftables:nftables",
+        "//packages/linux/network/firewall/nftables:libnftnl",
+        "//packages/linux/network/firewall/nftables:libmnl",
+        "//packages/linux/system/security/fail2ban:fail2ban",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Encryption and cryptography
+filegroup(
+    name = "crypto-packages",
+    srcs = [
+        "//packages/linux/system/security/gnupg:gnupg",
+        "//packages/linux/system/security/gnupg:libgpg-error",
+        "//packages/linux/system/security/gnupg:libgcrypt",
+        "//packages/linux/system/security/gnupg:libksba",
+        "//packages/linux/system/security/gnupg:libassuan",
+        "//packages/linux/system/security/gnupg:npth",
+        "//packages/linux/system/security/cryptsetup:cryptsetup",
+        "//packages/linux/system/security/cryptsetup:popt",
+        "//packages/linux/system/security/cryptsetup:lvm2",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Encryption tools and utilities
+filegroup(
+    name = "encryption-tools",
+    srcs = [
+        "//packages/linux/system/security/encryption:age",
+        "//packages/linux/system/security/encryption:rage",
+        "//packages/linux/system/security/encryption:minisign",
+        "//packages/linux/system/security/encryption:signify",
+        "//packages/linux/system/security/encryption:ccrypt",
+        "//packages/linux/system/security/encryption:pass",
+        "//packages/linux/system/security/encryption:tomb",
+        "//packages/linux/system/security/encryption:gocryptfs",
+        "//packages/linux/system/security/encryption:fscrypt",
+        "//packages/linux/system/security/encryption:ecryptfs-utils",
+        "//packages/linux/system/security/encryption:sops",
+        "//packages/linux/system/security/encryption:veracrypt",
+        "//packages/linux/system/security/encryption:sequoia-sq",
+        "//packages/linux/system/security/encryption:opensc",
+        "//packages/linux/system/security/encryption:hashcat",
+        "//packages/linux/system/security/encryption:john",
+        "//packages/linux/system/security/encryption:bcrypt",
+        "//packages/linux/system/security/encryption:clevis",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Encryption libraries
+filegroup(
+    name = "encryption-libs",
+    srcs = [
+        "//packages/linux/system/security/encryption:libsodium",
+        "//packages/linux/system/security/encryption:libbsd",
+        "//packages/linux/system/security/encryption:libmd",
+        "//packages/linux/system/security/encryption:linux-pam",
+        "//packages/linux/system/security/encryption:keyutils",
+        "//packages/linux/system/security/encryption:fuse3",
+        "//packages/linux/system/security/encryption:pcsc-lite",
+        "//packages/linux/system/security/encryption:libusb",
+        "//packages/linux/system/security/encryption:nettle",
+        "//packages/linux/system/security/encryption:argon2",
+        "//packages/linux/system/security/encryption:libressl",
+        "//packages/linux/system/security/encryption:botan",
+        "//packages/linux/system/security/encryption:libp11",
+        "//packages/linux/system/security/encryption:jose",
+        "//packages/linux/system/security/encryption:jansson",
+        "//packages/linux/system/security/encryption:age-plugin-yubikey",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Sandboxing and isolation
+filegroup(
+    name = "sandbox-packages",
+    srcs = [
+        "//packages/linux/system/security/firejail:firejail",
+        "//packages/linux/system/security/bubblewrap:bubblewrap",
+        "//packages/linux/system/security/apparmor:apparmor",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Antivirus and malware detection
+filegroup(
+    name = "antivirus-packages",
+    srcs = [
+        "//packages/linux/system/security/clamav:clamav",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All security packages
+filegroup(
+    name = "all-security",
+    srcs = [
+        ":audit-packages",
+        ":auth-packages",
+        ":firewall-packages",
+        ":crypto-packages",
+        ":encryption-tools",
+        ":encryption-libs",
+        ":sandbox-packages",
+        ":antivirus-packages",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Convenience aliases for commonly used packages
+alias(
+    name = "gnupg",
+    actual = "//packages/linux/system/security/gnupg:gnupg",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "nftables",
+    actual = "//packages/linux/network/firewall/nftables:nftables",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "cryptsetup",
+    actual = "//packages/linux/system/security/cryptsetup:cryptsetup",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "firejail",
+    actual = "//packages/linux/system/security/firejail:firejail",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "clamav",
+    actual = "//packages/linux/system/security/clamav:clamav",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "apparmor",
+    actual = "//packages/linux/system/security/apparmor:apparmor",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "audit",
+    actual = "//packages/linux/system/security/audit:audit",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "fail2ban",
+    actual = "//packages/linux/system/security/fail2ban:fail2ban",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "lynis",
+    actual = "//packages/linux/system/security/lynis:lynis",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "bubblewrap",
+    actual = "//packages/linux/system/security/bubblewrap:bubblewrap",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "rkhunter",
+    actual = "//packages/linux/system/security/rkhunter:rkhunter",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "aide",
+    actual = "//packages/linux/system/security/aide:aide",
+    visibility = ["PUBLIC"],
+)
+
+# Encryption tools aliases
+alias(
+    name = "age",
+    actual = "//packages/linux/system/security/encryption:age",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "rage",
+    actual = "//packages/linux/system/security/encryption:rage",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "minisign",
+    actual = "//packages/linux/system/security/encryption:minisign",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "signify",
+    actual = "//packages/linux/system/security/encryption:signify",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "pass",
+    actual = "//packages/linux/system/security/encryption:pass",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "tomb",
+    actual = "//packages/linux/system/security/encryption:tomb",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "gocryptfs",
+    actual = "//packages/linux/system/security/encryption:gocryptfs",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "fscrypt",
+    actual = "//packages/linux/system/security/encryption:fscrypt",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "sops",
+    actual = "//packages/linux/system/security/encryption:sops",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "veracrypt",
+    actual = "//packages/linux/system/security/encryption:veracrypt",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "ccrypt",
+    actual = "//packages/linux/system/security/encryption:ccrypt",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "hashcat",
+    actual = "//packages/linux/system/security/encryption:hashcat",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "john",
+    actual = "//packages/linux/system/security/encryption:john",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "sequoia-sq",
+    actual = "//packages/linux/system/security/encryption:sequoia-sq",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "opensc",
+    actual = "//packages/linux/system/security/encryption:opensc",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "clevis",
+    actual = "//packages/linux/system/security/encryption:clevis",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "libsodium",
+    actual = "//packages/linux/system/security/encryption:libsodium",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "argon2",
+    actual = "//packages/linux/system/security/encryption:argon2",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "libressl",
+    actual = "//packages/linux/system/security/encryption:libressl",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "botan",
+    actual = "//packages/linux/system/security/encryption:botan",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "nettle",
+    actual = "//packages/linux/system/security/encryption:nettle",
+    visibility = ["PUBLIC"],
+)
+
+# Authentication package aliases
+alias(
+    name = "linux-pam",
+    actual = "//packages/linux/system/security/encryption:linux-pam",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "shadow",
+    actual = "//packages/linux/system/security/auth:shadow",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "sudo",
+    actual = "//packages/linux/system/apps/sudo:sudo",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "doas",
+    actual = "//packages/linux/system/apps/doas:doas",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "polkit",
+    actual = "//packages/linux/system/security/auth:polkit",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "krb5",
+    actual = "//packages/linux/system/security/auth:krb5",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "kerberos",
+    actual = "//packages/linux/system/security/auth:krb5",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "openldap",
+    actual = "//packages/linux/system/security/auth:openldap",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "sssd",
+    actual = "//packages/linux/system/security/auth:sssd",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "cyrus-sasl",
+    actual = "//packages/linux/system/security/auth:cyrus-sasl",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "oath-toolkit",
+    actual = "//packages/linux/system/security/auth:oath-toolkit",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "google-authenticator",
+    actual = "//packages/linux/system/security/auth:google-authenticator",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "libfido2",
+    actual = "//packages/linux/system/security/auth:libfido2",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "pam-u2f",
+    actual = "//packages/linux/system/security/auth:pam-u2f",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "yubico-pam",
+    actual = "//packages/linux/system/security/auth:yubico-pam",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "yubikey-manager",
+    actual = "//packages/linux/system/security/auth:yubikey-manager",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "libpwquality",
+    actual = "//packages/linux/system/security/auth:libpwquality",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "cracklib",
+    actual = "//packages/linux/system/security/auth:cracklib",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "fprintd",
+    actual = "//packages/linux/system/security/auth:fprintd",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "libfprint",
+    actual = "//packages/linux/system/security/auth:libfprint",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "pam-radius",
+    actual = "//packages/linux/system/security/auth:pam-radius",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "pam-tacplus",
+    actual = "//packages/linux/system/security/auth:pam-tacplus",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "nss-pam-ldapd",
+    actual = "//packages/linux/system/security/auth:nss-pam-ldapd",
+    visibility = ["PUBLIC"],
+)

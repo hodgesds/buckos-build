@@ -1,0 +1,22 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+download_source(
+    name = "gocryptfs-src",
+    src_uri = "https://github.com/rfjakob/gocryptfs/releases/download/v2.4.0/gocryptfs_v2.4.0_src-deps.tar.gz",
+    sha256 = "1a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+)
+
+configure_make_package(
+    name = "gocryptfs",
+    source = ":gocryptfs-src",
+    version = "2.4.0",
+    description = "Encrypted overlay filesystem written in Go",
+    homepage = "https://nuetzlich.net/gocryptfs/",
+    license = "MIT",
+    configure_args = [],
+    deps = [
+        "//packages/linux/system/filesystem/fuse/fuse3:fuse3",
+        "//packages/linux/network/openssl:openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

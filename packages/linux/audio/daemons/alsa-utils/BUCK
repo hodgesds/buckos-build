@@ -1,0 +1,30 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "alsa-utils-src",
+    src_uri = "https://www.alsa-project.org/files/pub/utils/alsa-utils-1.2.11.tar.bz2",
+    sha256 = "9e70386e9e04c19e3e4f2f6c7b8c4fe0b0d55b1e3d3f3a3a8c8e8a5c5e5f5e5a",
+)
+
+configure_make_package(
+    name = "alsa-utils",
+    source = ":alsa-utils-src",
+    version = "1.2.11",
+    description = "ALSA utilities including alsamixer, amixer, aplay, arecord",
+    homepage = "https://www.alsa-project.org/",
+    license = "GPL-2",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--disable-alsaconf",
+        "--disable-bat",
+        "--disable-xmlto",
+        "--with-curses=ncurses",
+    ],
+    deps = [
+        "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
+        "//packages/linux/core:ncurses",
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

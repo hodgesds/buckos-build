@@ -1,0 +1,58 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "obs-studio-src",
+    src_uri = "https://github.com/obsproject/obs-studio/archive/refs/tags/30.1.2.tar.gz",
+    sha256 = "d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8c9e0f1a2b3c4d5e6f7a8b9c0d1e2",
+)
+
+configure_make_package(
+    name = "obs-studio",
+    source = ":obs-studio-src",
+    version = "30.1.2",
+    description = "Free and open source streaming and recording software",
+    homepage = "https://obsproject.com/",
+    license = "GPL-2.0-or-later",
+    pre_configure = """
+mkdir -p build
+cd build
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DENABLE_WAYLAND=ON \
+    -DENABLE_BROWSER=ON \
+    -DENABLE_VST=ON \
+    -DENABLE_VLC=ON \
+    -DENABLE_NEW_MPEGTS_OUTPUT=ON \
+    -DENABLE_JACK=ON \
+    -DENABLE_PULSEAUDIO=ON \
+    -DENABLE_PIPEWIRE=ON \
+    -DENABLE_AJA=OFF \
+    -DENABLE_WEBRTC=ON
+""",
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+cd build
+DESTDIR=$OUT make install
+""",
+    deps = [
+        "//packages/linux/desktop/qt:qt6",
+        "//packages/linux/core/ffmpeg:ffmpeg",
+        "//packages/linux/core/curl:curl",
+        "//packages/linux/core/jansson:jansson",
+        "//packages/linux/core/libx264:libx264",
+        "//packages/linux/core/mbedtls:mbedtls",
+        "//packages/linux/core/speexdsp:speexdsp",
+        "//packages/linux/core/rnnoise:rnnoise",
+        "//packages/linux/core/pipewire:pipewire",
+        "//packages/linux/core/libvlc:libvlc",
+        "//packages/linux/core/srt:srt",
+        "//packages/linux/core/rist:rist",
+        "//packages/linux/core/luajit:luajit",
+        "//packages/linux/lang/python:python",
+        "//packages/linux/desktop/wayland:wayland",
+    ],
+    build_deps = [],
+    visibility = ["PUBLIC"],
+)

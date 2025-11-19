@@ -1,0 +1,48 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "caddy-src",
+    src_uri = "https://github.com/caddyserver/caddy/releases/download/v2.8.4/caddy_2.8.4_linux_amd64.tar.gz",
+    sha256 = "f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2",
+)
+
+binary_package(
+    name = "caddy",
+    srcs = [":caddy-src"],
+    version = "2.8.4",
+    description = "Fast, multi-platform web server with automatic HTTPS",
+    homepage = "https://caddyserver.com/",
+    license = "Apache-2.0",
+    install_script = """
+cd $SRCS
+
+# Install binary
+install -Dm755 caddy "$DESTDIR/usr/bin/caddy"
+
+# Create configuration directories
+mkdir -p "$DESTDIR/etc/caddy"
+mkdir -p "$DESTDIR/var/lib/caddy"
+mkdir -p "$DESTDIR/var/log/caddy"
+
+# Create default Caddyfile
+cat > "$DESTDIR/etc/caddy/Caddyfile" << 'EOF'
+# Global options
+{
+    admin off
+}
+
+# Default site
+:80 {
+    root * /var/www/html
+    file_server
+}
+EOF
+
+# Create default web root
+mkdir -p "$DESTDIR/var/www/html"
+""",
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libtool-src",
+    src_uri = "https://ftp.gnu.org/gnu/libtool/libtool-2.4.7.tar.xz",
+    sha256 = "4f7f217f057f1f2d48988ffa15bfa3d2a32c87f3b0a3e7b1d0d9d0b3e4c3a7b8",
+)
+
+configure_make_package(
+    name = "libtool",
+    source = ":libtool-src",
+    version = "2.4.7",
+    description = "Generic library support script",
+    homepage = "https://www.gnu.org/software/libtool/",
+    license = "GPL-2+",
+    deps = [
+        "//packages/linux/dev-tools/build-systems/autoconf:autoconf",
+        "//packages/linux/dev-tools/build-systems/automake:automake",
+    ],
+    visibility = ["PUBLIC"],
+)

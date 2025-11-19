@@ -1,0 +1,39 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "gpick-src",
+    src_uri = "https://github.com/thezbyg/gpick/archive/refs/tags/gpick-0.3.tar.gz",
+    sha256 = "c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2",
+)
+
+configure_make_package(
+    name = "gpick",
+    source = ":gpick-src",
+    version = "0.3",
+    description = "Advanced color picker and palette editing tool",
+    homepage = "https://www.gpick.org/",
+    license = "BSD-3-Clause",
+    pre_configure = """
+mkdir -p build
+cd build
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release
+""",
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+cd build
+DESTDIR=$OUT make install
+""",
+    deps = [
+        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/core/lua:lua",
+        "//packages/linux/core/expat:expat",
+        "//packages/linux/core/boost:boost",
+    ],
+    build_deps = [
+        "//packages/linux/core/ragel:ragel",
+    ],
+    visibility = ["PUBLIC"],
+)

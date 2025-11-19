@@ -1,0 +1,43 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "rawtherapee-src",
+    src_uri = "https://github.com/Beep6581/RawTherapee/releases/download/5.10/rawtherapee-5.10.tar.xz",
+    sha256 = "c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2",
+)
+
+configure_make_package(
+    name = "rawtherapee",
+    source = ":rawtherapee-src",
+    version = "5.10",
+    description = "Cross-platform raw image processing program",
+    homepage = "https://rawtherapee.com/",
+    license = "GPL-3.0-or-later",
+    pre_configure = """
+mkdir -p build
+cd build
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCACHE_NAME_SUFFIX="" \
+    -DWITH_LTO=ON \
+    -DWITH_PROF=OFF \
+    -DWITH_BENCHMARK=OFF \
+    -DOPTION_OMP=ON
+""",
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+cd build
+DESTDIR=$OUT make install
+""",
+    deps = [
+        "//packages/linux/desktop/gtk:gtkmm",
+        "//packages/linux/core/lcms2:lcms2",
+        "//packages/linux/core/fftw:fftw",
+        "//packages/linux/core/libiptcdata:libiptcdata",
+        "//packages/linux/core/lensfun:lensfun",
+    ],
+    build_deps = [],
+    visibility = ["PUBLIC"],
+)

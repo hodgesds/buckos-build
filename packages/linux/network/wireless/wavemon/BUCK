@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "wavemon-src",
+    src_uri = "https://github.com/uoaerg/wavemon/releases/download/v0.9.5/wavemon-0.9.5.tar.gz",
+    sha256 = "6ea791a885f1d5fb5b5bfb2e2ec6f8ff27ba1df9c5c9f8c00c0c20fca8f9a49e",
+)
+
+configure_make_package(
+    name = "wavemon",
+    source = ":wavemon-src",
+    version = "0.9.5",
+    description = "ncurses-based wireless network monitoring application",
+    homepage = "https://github.com/uoaerg/wavemon",
+    license = "GPL-3.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:ncurses",
+    ],
+    visibility = ["PUBLIC"],
+)

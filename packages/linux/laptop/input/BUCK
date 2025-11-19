@@ -1,0 +1,51 @@
+# Input device packages for laptops (touchpad, stylus, etc.)
+
+filegroup(
+    name = "core-libs",
+    srcs = [
+        "//packages/linux/laptop/input/libevdev:libevdev",
+        "//packages/linux/laptop/input/mtdev:mtdev",
+        "//packages/linux/laptop/input/libinput:libinput",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "xorg-drivers",
+    srcs = [
+        "//packages/linux/laptop/input/xf86-input-libinput:xf86-input-libinput",
+        "//packages/linux/laptop/input/xf86-input-synaptics:xf86-input-synaptics",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "tablet-support",
+    srcs = [
+        "//packages/linux/laptop/input/libwacom:libwacom",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "essential",
+    srcs = [
+        "//packages/linux/laptop/input/libevdev:libevdev",
+        "//packages/linux/laptop/input/mtdev:mtdev",
+        "//packages/linux/laptop/input/libinput:libinput",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-input",
+    srcs = [
+        "//packages/linux/laptop/input/libevdev:libevdev",
+        "//packages/linux/laptop/input/mtdev:mtdev",
+        "//packages/linux/laptop/input/libinput:libinput",
+        "//packages/linux/laptop/input/xf86-input-libinput:xf86-input-libinput",
+        "//packages/linux/laptop/input/xf86-input-synaptics:xf86-input-synaptics",
+        "//packages/linux/laptop/input/libwacom:libwacom",
+    ],
+    visibility = ["PUBLIC"],
+)

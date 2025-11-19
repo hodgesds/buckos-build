@@ -1,0 +1,43 @@
+# CLI Email Clients
+# Terminal-based email clients for command-line workflows
+
+filegroup(
+    name = "cli-email-clients",
+    srcs = [
+        "//packages/linux/communication/email-clients/cli/aerc:aerc",
+        "//packages/linux/communication/email-clients/cli/alpine:alpine",
+        "//packages/linux/communication/email-clients/cli/himalaya:himalaya",
+        "//packages/linux/communication/email-clients/cli/mutt:mutt",
+        "//packages/linux/communication/email-clients/cli/neomutt:neomutt",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Mutt-based clients (mutt and its modern fork neomutt)
+filegroup(
+    name = "mutt-family",
+    srcs = [
+        "//packages/linux/communication/email-clients/cli/mutt:mutt",
+        "//packages/linux/communication/email-clients/cli/neomutt:neomutt",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Modern Rust/Go based CLI email clients
+filegroup(
+    name = "modern-cli-clients",
+    srcs = [
+        "//packages/linux/communication/email-clients/cli/aerc:aerc",
+        "//packages/linux/communication/email-clients/cli/himalaya:himalaya",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Lightweight/beginner-friendly CLI clients
+filegroup(
+    name = "lightweight-cli",
+    srcs = [
+        "//packages/linux/communication/email-clients/cli/alpine:alpine",
+    ],
+    visibility = ["PUBLIC"],
+)

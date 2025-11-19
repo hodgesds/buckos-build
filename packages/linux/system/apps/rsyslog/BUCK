@@ -1,0 +1,31 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# rsyslog - Reliable and extended syslog daemon
+download_source(
+    name = "rsyslog-src",
+    src_uri = "https://www.rsyslog.com/files/download/rsyslog/rsyslog-8.2312.0.tar.gz",
+    sha256 = "c3f9a7b8e1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8",
+)
+
+configure_make_package(
+    name = "rsyslog",
+    source = ":rsyslog-src",
+    version = "8.2312.0",
+    description = "Reliable and extended syslog daemon",
+    homepage = "https://www.rsyslog.com",
+    license = "GPL-3+ LGPL-3+ Apache-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--disable-libgcrypt",
+        "--disable-gnutls",
+        "--disable-openssl",
+        "--enable-imfile",
+        "--enable-imptcp",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:zlib",
+    ],
+    visibility = ["PUBLIC"],
+)

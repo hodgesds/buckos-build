@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "xlsclients-src",
+    src_uri = "https://xorg.freedesktop.org/releases/individual/app/xlsclients-1.1.5.tar.xz",
+    sha256 = "ca2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a82",
+)
+
+configure_make_package(
+    name = "xlsclients",
+    source = ":xlsclients-src",
+    version = "1.1.5",
+    description = "List client applications running on a display",
+    homepage = "https://xorg.freedesktop.org/",
+    license = "MIT",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/linux/desktop/xorg-server:libx11",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,108 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# libvirt - Virtualization API
+download_source(
+    name = "libvirt-src",
+    src_uri = "https://libvirt.org/sources/libvirt-10.7.0.tar.xz",
+    sha256 = "e6b5c8e4f8b3e2d3c4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7",
+)
+
+configure_make_package(
+    name = "libvirt",
+    source = ":libvirt-src",
+    version = "10.7.0",
+    description = "Library and daemon providing a stable API for managing virtualization",
+    homepage = "https://libvirt.org/",
+    license = "LGPL-2.1",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--libexecdir=/usr/lib/libvirt",
+        "--with-runstatedir=/run",
+        "--with-qemu",
+        "--with-qemu-user=qemu",
+        "--with-qemu-group=qemu",
+        "--with-lxc",
+        "--with-libxl",
+        "--with-vbox",
+        "--with-libssh2",
+        "--with-sasl",
+        "--with-polkit",
+        "--with-udev",
+        "--with-storage-fs",
+        "--with-storage-lvm",
+        "--with-storage-iscsi",
+        "--with-storage-disk",
+        "--with-storage-rbd",
+        "--with-storage-zfs",
+        "--with-numactl",
+        "--with-numad",
+        "--with-firewalld",
+        "--with-network",
+        "--with-nwfilter",
+        "--with-interface",
+        "--with-macvtap",
+        "--with-virtualport",
+        "--with-secdriver-apparmor=no",
+        "--with-secdriver-selinux=no",
+        "--with-audit",
+        "--with-dtrace",
+        "--with-systemd-daemon",
+        "--with-init-script=systemd",
+    ],
+    deps = [
+        "//packages/linux/core:glib",
+        "//packages/linux/core:libxml2",
+        "//packages/linux/core:libnl",
+        "//packages/linux/core:yajl",
+        "//packages/linux/core:libtirpc",
+        "//packages/linux/network/gnutls:gnutls",
+        "//packages/linux/network/curl:curl",
+        "//packages/linux/system/libs/libudev:libudev",
+        "//packages/linux/system/libs/polkit:polkit",
+        "//packages/linux/system/libs/audit:audit",
+        "//packages/linux/emulation/hypervisors/qemu:qemu",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# libvirt client libraries only
+configure_make_package(
+    name = "libvirt-client",
+    source = ":libvirt-src",
+    version = "10.7.0",
+    description = "libvirt client libraries and virsh command-line tool",
+    homepage = "https://libvirt.org/",
+    license = "LGPL-2.1",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--without-libvirtd",
+        "--with-driver-modules=no",
+    ],
+    deps = [
+        "//packages/linux/core:glib",
+        "//packages/linux/core:libxml2",
+        "//packages/linux/network/gnutls:gnutls",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# libvirt Python bindings
+configure_make_package(
+    name = "libvirt-python",
+    source = ":libvirt-src",
+    version = "10.7.0",
+    description = "Python bindings for libvirt",
+    homepage = "https://libvirt.org/",
+    license = "LGPL-2.1",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        ":libvirt",
+        "//packages/linux/lang/python:python",
+    ],
+    visibility = ["PUBLIC"],
+)

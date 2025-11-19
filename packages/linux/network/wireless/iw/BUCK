@@ -1,0 +1,27 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "iw-src",
+    src_uri = "https://www.kernel.org/pub/software/network/iw/iw-6.7.tar.xz",
+    sha256 = "d4c51cdbee498c0d2534e1a3f6b7d5954bfc92daeff27c227de0c8e741e35b63",
+)
+
+configure_make_package(
+    name = "iw",
+    source = ":iw-src",
+    version = "6.7",
+    description = "nl80211 based CLI configuration utility for wireless devices",
+    homepage = "https://wireless.wiki.kernel.org/en/users/documentation/iw",
+    license = "ISC",
+    configure_args = [],
+    make_args = [
+        "PREFIX=/usr",
+    ],
+    post_install = """
+make install PREFIX=/usr DESTDIR="$DESTDIR"
+""",
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

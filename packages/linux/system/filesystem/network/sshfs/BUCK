@@ -1,0 +1,22 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+download_source(
+    name = "sshfs-src",
+    src_uri = "https://github.com/libfuse/sshfs/releases/download/sshfs-3.7.3/sshfs-3.7.3.tar.xz",
+    sha256 = "6a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+)
+
+configure_make_package(
+    name = "sshfs",
+    source = ":sshfs-src",
+    version = "3.7.3",
+    description = "FUSE-based filesystem client for mounting remote directories over SSH",
+    homepage = "https://github.com/libfuse/sshfs",
+    license = "GPL-2.0",
+    configure_args = [],
+    deps = [
+        "//packages/linux/system/filesystem/fuse/fuse3:fuse3",
+        "//packages/linux/network/openssh:openssh",
+    ],
+    visibility = ["PUBLIC"],
+)

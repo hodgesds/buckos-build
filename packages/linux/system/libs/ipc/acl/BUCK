@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "acl-src",
+    src_uri = "https://download.savannah.gnu.org/releases/acl/acl-2.3.2.tar.xz",
+    sha256 = "5f2bdbad629707aa7d85c623f994aa8a1d2dec55a73de5205bac0bf6058a2f7c",
+)
+
+configure_make_package(
+    name = "acl",
+    source = ":acl-src",
+    version = "2.3.2",
+    description = "Access Control List library",
+    homepage = "https://savannah.nongnu.org/projects/acl",
+    license = "LGPL-2.1",
+    configure_args = [
+        "--disable-static",
+    ],
+    deps = [
+        "//packages/linux/system/libs/ipc/attr",
+    ],
+    visibility = ["PUBLIC"],
+)

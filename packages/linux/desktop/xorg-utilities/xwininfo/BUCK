@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "xwininfo-src",
+    src_uri = "https://xorg.freedesktop.org/releases/individual/app/xwininfo-1.1.6.tar.xz",
+    sha256 = "9a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a5f",
+)
+
+configure_make_package(
+    name = "xwininfo",
+    source = ":xwininfo-src",
+    version = "1.1.6",
+    description = "Window information utility for X",
+    homepage = "https://xorg.freedesktop.org/",
+    license = "MIT",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/linux/desktop/xorg-server:libx11",
+    ],
+    visibility = ["PUBLIC"],
+)

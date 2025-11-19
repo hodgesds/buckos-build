@@ -1,0 +1,154 @@
+# Emulation and Virtualization packages
+#
+# This category contains software for:
+# - System emulation (QEMU, Xen)
+# - Desktop virtualization (VirtualBox, libvirt, virt-manager)
+# - Container runtimes (Docker, Podman, containerd)
+# - Lightweight virtualization (Firecracker, Cloud Hypervisor, crosvm)
+# - Kernel development tools (virtme-ng, kvmtool)
+# - VM utilities (SPICE, virtiofsd)
+
+# Hypervisors
+filegroup(
+    name = "hypervisors",
+    srcs = [
+        "//packages/linux/emulation/hypervisors:all-hypervisors",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Virtualization management tools
+filegroup(
+    name = "virtualization",
+    srcs = [
+        "//packages/linux/emulation/virtualization:all-virtualization",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Container runtimes
+filegroup(
+    name = "containers",
+    srcs = [
+        "//packages/linux/emulation/containers:all-containers",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Kernel virtualization tools
+filegroup(
+    name = "kernel-tools",
+    srcs = [
+        "//packages/linux/emulation/kernel:all-kernel-tools",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Utilities
+filegroup(
+    name = "utilities",
+    srcs = [
+        "//packages/linux/emulation/utilities:all-utilities",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Essential emulation packages (QEMU + libvirt)
+filegroup(
+    name = "essential",
+    srcs = [
+        "//packages/linux/emulation/hypervisors/qemu:qemu",
+        "//packages/linux/emulation/virtualization/libvirt:libvirt",
+        "//packages/linux/emulation/virtualization/virt-manager:virt-manager",
+        "//packages/linux/emulation/utilities/spice:spice-server",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Server virtualization (headless)
+filegroup(
+    name = "server",
+    srcs = [
+        "//packages/linux/emulation/hypervisors/qemu:qemu",
+        "//packages/linux/emulation/virtualization/libvirt:libvirt",
+        "//packages/linux/emulation/containers:docker-full",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Desktop virtualization (with GUI)
+filegroup(
+    name = "desktop",
+    srcs = [
+        "//packages/linux/emulation/hypervisors/qemu:qemu",
+        "//packages/linux/emulation/virtualization/libvirt:libvirt",
+        "//packages/linux/emulation/virtualization/virt-manager:virt-manager-full",
+        "//packages/linux/emulation/virtualization/virtualbox:virtualbox-full",
+        "//packages/linux/emulation/utilities/spice:spice-full",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Cloud/microVM hypervisors
+filegroup(
+    name = "cloud",
+    srcs = [
+        "//packages/linux/emulation/utilities/firecracker:firecracker",
+        "//packages/linux/emulation/utilities/cloud-hypervisor:cloud-hypervisor",
+        "//packages/linux/emulation/utilities/crosvm:crosvm",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Development tools for kernel testing
+filegroup(
+    name = "development",
+    srcs = [
+        "//packages/linux/emulation/hypervisors/qemu:qemu",
+        "//packages/linux/emulation/kernel:all-kernel-tools",
+        "//packages/linux/emulation/utilities/virtiofsd:virtiofsd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Guest additions and agents (for VMs)
+filegroup(
+    name = "guest-tools",
+    srcs = [
+        "//packages/linux/emulation/hypervisors/qemu:qemu-guest-agent",
+        "//packages/linux/emulation/virtualization/virtualbox:virtualbox-guest-additions",
+        "//packages/linux/emulation/utilities/spice:spice-vdagent",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Docker ecosystem
+filegroup(
+    name = "docker",
+    srcs = [
+        "//packages/linux/emulation/containers:docker-full",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Podman ecosystem
+filegroup(
+    name = "podman",
+    srcs = [
+        "//packages/linux/emulation/containers:podman-full",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All emulation packages
+filegroup(
+    name = "all",
+    srcs = [
+        ":hypervisors",
+        ":virtualization",
+        ":containers",
+        ":kernel-tools",
+        ":utilities",
+    ],
+    visibility = ["PUBLIC"],
+)

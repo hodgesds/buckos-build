@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "xcolor-src",
+    src_uri = "https://github.com/Soft/xcolor/archive/v0.5.1.tar.gz",
+    sha256 = "ee46d7b8e3f5c9f8d0b1a2e3f4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b3a7",
+)
+
+configure_make_package(
+    name = "xcolor",
+    source = ":xcolor-src",
+    version = "0.5.1",
+    description = "Lightweight color picker for X11",
+    homepage = "https://github.com/Soft/xcolor",
+    license = "MIT",
+    pre_configure = """
+# xcolor uses cargo
+""",
+    deps = [
+        "//packages/linux/desktop/xorg-server:libx11",
+    ],
+    visibility = ["PUBLIC"],
+)

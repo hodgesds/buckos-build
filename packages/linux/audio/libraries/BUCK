@@ -1,0 +1,32 @@
+# Audio libraries and codecs
+
+filegroup(
+    name = "codec-libraries",
+    srcs = [
+        "//packages/linux/audio/libraries/libogg:libogg",
+        "//packages/linux/audio/libraries/libvorbis:libvorbis",
+        "//packages/linux/audio/libraries/flac:flac",
+        "//packages/linux/audio/libraries/opus:opus",
+        "//packages/linux/audio/libraries/lame:lame",
+        "//packages/linux/audio/libraries/libmad:libmad",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "audio-io-libraries",
+    srcs = [
+        "//packages/linux/audio/libraries/libsndfile:libsndfile",
+        "//packages/linux/audio/libraries/libao:libao",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-libraries",
+    srcs = [
+        ":codec-libraries",
+        ":audio-io-libraries",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,38 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# LiVES - Video editing system and VJ tool
+
+download_source(
+    name = "lives-src",
+    src_uri = "http://lives-video.com/releases/LiVES-3.2.0.tar.bz2",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+configure_make_package(
+    name = "lives",
+    source = ":lives-src",
+    version = "3.2.0",
+    description = "Video editing system and VJ tool",
+    homepage = "http://lives-video.com/",
+    license = "GPL-3.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-shared",
+        "--disable-static",
+    ],
+    make_args = [],
+    post_install = """
+DESTDIR=$OUT make install
+""",
+    deps = [
+        "//packages/linux/graphics/video/ffmpeg:ffmpeg",
+        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/core/frei0r:frei0r",
+        "//packages/linux/audio/daemons/pulseaudio:pulseaudio",
+        "//packages/linux/audio/libraries/libsndfile:libsndfile",
+    ],
+    build_deps = [
+        "//packages/linux/core/pkg-config:pkg-config",
+    ],
+    visibility = ["PUBLIC"],
+)

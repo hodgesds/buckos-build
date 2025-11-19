@@ -1,0 +1,54 @@
+# Video Libraries aggregator
+
+filegroup(
+    name = "codecs",
+    srcs = [
+        "//packages/linux/system/libs/video/theora:theora",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "subtitles",
+    srcs = [
+        "//packages/linux/system/libs/video/libass:libass",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "dvd-support",
+    srcs = [
+        "//packages/linux/system/libs/video/libdvdcss:libdvdcss",
+        "//packages/linux/system/libs/video/libdvdread:libdvdread",
+        "//packages/linux/system/libs/video/libdvdnav:libdvdnav",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "bluray-support",
+    srcs = [
+        "//packages/linux/system/libs/video/libbluray:libbluray",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "disc-support",
+    srcs = [
+        ":dvd-support",
+        ":bluray-support",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all",
+    srcs = [
+        ":codecs",
+        ":subtitles",
+        ":disc-support",
+    ],
+    visibility = ["PUBLIC"],
+)

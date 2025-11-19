@@ -1,0 +1,39 @@
+load("//defs:package_defs.bzl", "download_source", "meson_package")
+
+# v4l-utils - Video4Linux utilities
+
+download_source(
+    name = "v4l-utils-src",
+    src_uri = "https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.26.1.tar.xz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+meson_package(
+    name = "v4l-utils",
+    source = ":v4l-utils-src",
+    version = "1.26.1",
+    description = "Video4Linux userspace tools and libraries",
+    homepage = "https://linuxtv.org/wiki/index.php/V4l-utils",
+    license = "GPL-2.0-or-later LGPL-2.1-or-later",
+    meson_args = [
+        "-Dgconv=disabled",
+        "-Ddoxygen-doc=disabled",
+        "-Ddoxygen-html=false",
+        "-Ddoxygen-man=false",
+        "-Djpeg=enabled",
+        "-Dlibdvbv5=enabled",
+        "-Dqv4l2=enabled",
+        "-Dqvidcap=enabled",
+        "-Dudevdir=/usr/lib/udev",
+        "-Dv4l-utils=true",
+    ],
+    deps = [
+        "//packages/linux/desktop/qt:qt6",
+        "//packages/linux/core/libjpeg-turbo:libjpeg-turbo",
+        "//packages/linux/core/eudev:eudev",
+    ],
+    build_deps = [
+        "//packages/linux/core/pkg-config:pkg-config",
+    ],
+    visibility = ["PUBLIC"],
+)

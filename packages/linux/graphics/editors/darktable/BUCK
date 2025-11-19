@@ -1,0 +1,47 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "darktable-src",
+    src_uri = "https://github.com/darktable-org/darktable/releases/download/release-4.6.1/darktable-4.6.1.tar.xz",
+    sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+)
+
+configure_make_package(
+    name = "darktable",
+    source = ":darktable-src",
+    version = "4.6.1",
+    description = "Photography workflow application and raw developer",
+    homepage = "https://www.darktable.org/",
+    license = "GPL-3.0-or-later",
+    pre_configure = """
+mkdir -p build
+cd build
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBINARY_PACKAGE_BUILD=ON \
+    -DBUILD_USERMANUAL=OFF \
+    -DUSE_LIBSECRET=ON \
+    -DUSE_LUA=OFF \
+    -DUSE_OPENCL=ON \
+    -DRAWSPEED_ENABLE_LTO=ON
+""",
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+cd build
+DESTDIR=$OUT make install
+""",
+    deps = [
+        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/core/sqlite:sqlite",
+        "//packages/linux/core/curl:curl",
+        "//packages/linux/core/exiv2:exiv2",
+        "//packages/linux/core/lcms2:lcms2",
+        "//packages/linux/core/pugixml:pugixml",
+    ],
+    build_deps = [
+        "//packages/linux/core/intltool:intltool",
+    ],
+    visibility = ["PUBLIC"],
+)

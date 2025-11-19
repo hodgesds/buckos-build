@@ -1,0 +1,35 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "curl-src",
+    src_uri = "https://curl.se/download/curl-8.10.1.tar.xz",
+    sha256 = "73a4b0e99596a09fa5924a4fb7e4b995a85fda0d18a2c02ab9cf134e5b3b3dd4",
+)
+
+configure_make_package(
+    name = "curl",
+    source = ":curl-src",
+    version = "8.10.1",
+    description = "Command line tool and library for transferring data with URLs",
+    homepage = "https://curl.se/",
+    license = "curl",
+    configure_args = [
+        "--disable-static",
+        "--enable-threaded-resolver",
+        "--with-openssl",
+        "--with-ca-bundle=/etc/ssl/certs/ca-certificates.crt",
+        "--with-zstd",
+        "--with-nghttp2",
+        "--with-libssh2",
+        "--enable-ipv6",
+    ],
+    deps = [
+        "//packages/linux/system/libs/crypto/openssl",
+        "//packages/linux/core/zlib",
+        "//packages/linux/system/libs/compression/zstd",
+        "//packages/linux/system/libs/network/nghttp2",
+        "//packages/linux/system/libs/network/libssh2",
+        "//packages/linux/system/libs/network/c-ares",
+    ],
+    visibility = ["PUBLIC"],
+)

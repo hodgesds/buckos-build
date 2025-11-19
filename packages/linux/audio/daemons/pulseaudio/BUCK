@@ -1,0 +1,53 @@
+load("//defs:package_defs.bzl", "download_source", "meson_package")
+
+download_source(
+    name = "pulseaudio-src",
+    src_uri = "https://freedesktop.org/software/pulseaudio/releases/pulseaudio-17.0.tar.xz",
+    sha256 = "053794d6671a3e397d849e478a80b82a63cb9d8ca296bd35b73317bb5ceb87b5",
+)
+
+meson_package(
+    name = "pulseaudio",
+    source = ":pulseaudio-src",
+    version = "17.0",
+    description = "A sound server for POSIX and Win32 systems",
+    homepage = "https://www.freedesktop.org/wiki/Software/PulseAudio/",
+    license = "LGPL-2.1",
+    meson_args = [
+        "-Ddaemon=true",
+        "-Dclient=true",
+        "-Ddoxygen=false",
+        "-Dgcov=false",
+        "-Dman=false",
+        "-Dtests=false",
+        "-Ddatabase=simple",
+        "-Dbluez5=false",
+        "-Dfftw=disabled",
+        "-Djack=disabled",
+        "-Dlirc=disabled",
+        "-Dopenssl=disabled",
+        "-Dorc=disabled",
+        "-Dsoxr=disabled",
+        "-Dspeex=disabled",
+        "-Dsystemd=disabled",
+        "-Dudev=enabled",
+        "-Dx11=disabled",
+        "-Dgsettings=disabled",
+        "-Dgstreamer=disabled",
+        "-Dgtk=disabled",
+        "-Dhal-compat=false",
+        "-Dasyncns=disabled",
+        "-Davahi=disabled",
+        "-Dbluez5-gstreamer=disabled",
+        "-Dbluez5-native-headset=false",
+        "-Dbluez5-ofono-headset=false",
+        "-Dwebrtc-aec=disabled",
+    ],
+    deps = [
+        "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
+        "//packages/linux/audio/libraries/libsndfile:libsndfile",
+        "//packages/linux/core:musl",
+        "//packages/linux/core:dbus",
+    ],
+    visibility = ["PUBLIC"],
+)

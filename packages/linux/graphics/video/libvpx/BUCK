@@ -1,0 +1,41 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# libvpx - VP8/VP9 codec library
+
+download_source(
+    name = "libvpx-src",
+    src_uri = "https://github.com/webmproject/libvpx/archive/refs/tags/v1.14.1.tar.gz",
+    sha256 = "d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6e7f8a9b0c1d2",
+)
+
+configure_make_package(
+    name = "libvpx",
+    source = ":libvpx-src",
+    version = "1.14.1",
+    description = "VP8/VP9 codec library from Google",
+    homepage = "https://www.webmproject.org/",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-shared",
+        "--enable-pic",
+        "--enable-vp8",
+        "--enable-vp9",
+        "--enable-vp9-highbitdepth",
+        "--enable-postproc",
+        "--enable-runtime-cpu-detect",
+        "--disable-static",
+        "--disable-examples",
+        "--disable-docs",
+        "--disable-unit-tests",
+    ],
+    make_args = [],
+    post_install = """
+DESTDIR=$OUT make install
+""",
+    deps = [],
+    build_deps = [
+        "//packages/linux/lang/nasm:nasm",
+    ],
+    visibility = ["PUBLIC"],
+)

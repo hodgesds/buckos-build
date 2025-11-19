@@ -1,0 +1,40 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "babl-src",
+    src_uri = "https://download.gimp.org/babl/0.1/babl-0.1.108.tar.xz",
+    sha256 = "e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+)
+
+configure_make_package(
+    name = "babl",
+    source = ":babl-src",
+    version = "0.1.108",
+    description = "Dynamic pixel format translation library",
+    homepage = "https://gegl.org/babl/",
+    license = "LGPL-3.0-or-later",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. \
+    --prefix=/usr \
+    -Dbuildtype=release \
+    -Dwith-docs=false \
+    -Denable-gir=true
+""",
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+cd build
+DESTDIR=$OUT meson install
+""",
+    deps = [
+        "//packages/linux/core/glib:glib",
+        "//packages/linux/core/lcms2:lcms2",
+    ],
+    build_deps = [
+        "//packages/linux/core/gobject-introspection:gobject-introspection",
+        "//packages/linux/core/vala:vala",
+    ],
+    visibility = ["PUBLIC"],
+)

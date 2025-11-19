@@ -1,0 +1,109 @@
+# Audio packages - sound servers, players, production tools, libraries, and utilities
+
+# Audio daemons and sound servers
+filegroup(
+    name = "daemons",
+    srcs = [
+        "//packages/linux/audio/daemons:all-daemons",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Audio players
+filegroup(
+    name = "players",
+    srcs = [
+        "//packages/linux/audio/players:all-players",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Music production and DAWs
+filegroup(
+    name = "production",
+    srcs = [
+        "//packages/linux/audio/production:all-production",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Audio libraries and codecs
+filegroup(
+    name = "libraries",
+    srcs = [
+        "//packages/linux/audio/libraries:all-libraries",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Audio utilities
+filegroup(
+    name = "utilities",
+    srcs = [
+        "//packages/linux/audio/utilities:all-utilities",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Essential audio packages (ALSA + PulseAudio/PipeWire)
+filegroup(
+    name = "essential",
+    srcs = [
+        "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
+        "//packages/linux/audio/daemons/alsa-utils:alsa-utils",
+        "//packages/linux/audio/daemons/pipewire:pipewire",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Console audio setup (minimal TUI/CLI audio)
+filegroup(
+    name = "console",
+    srcs = [
+        "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
+        "//packages/linux/audio/daemons/alsa-utils:alsa-utils",
+        "//packages/linux/audio/players/cmus:cmus",
+        "//packages/linux/audio/players/moc:moc",
+        "//packages/linux/audio/players/mpd:mpd",
+        "//packages/linux/audio/players/ncmpcpp:ncmpcpp",
+        "//packages/linux/audio/utilities/sox:sox",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Desktop audio setup (full GUI audio)
+filegroup(
+    name = "desktop",
+    srcs = [
+        ":essential",
+        "//packages/linux/audio/players/audacious:audacious",
+        "//packages/linux/audio/utilities/pavucontrol:pavucontrol",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Music production setup
+filegroup(
+    name = "studio",
+    srcs = [
+        ":essential",
+        "//packages/linux/audio/daemons/jack2:jack2",
+        "//packages/linux/audio/production:all-production",
+        "//packages/linux/audio/libraries:all-libraries",
+        "//packages/linux/audio/utilities/sox:sox",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All audio packages
+filegroup(
+    name = "all",
+    srcs = [
+        ":daemons",
+        ":players",
+        ":production",
+        ":libraries",
+        ":utilities",
+    ],
+    visibility = ["PUBLIC"],
+)

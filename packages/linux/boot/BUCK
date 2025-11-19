@@ -1,0 +1,29 @@
+# Boot loader packages
+filegroup(
+    name = "all-bootloaders",
+    srcs = [
+        "//packages/linux/boot/grub",
+        "//packages/linux/boot/grub:grub-bios",
+        "//packages/linux/boot/syslinux",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# EFI bootloaders
+filegroup(
+    name = "efi-bootloaders",
+    srcs = [
+        "//packages/linux/boot/grub",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# BIOS bootloaders
+filegroup(
+    name = "bios-bootloaders",
+    srcs = [
+        "//packages/linux/boot/grub:grub-bios",
+        "//packages/linux/boot/syslinux",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libxslt-src",
+    src_uri = "https://download.gnome.org/sources/libxslt/1.1/libxslt-1.1.42.tar.xz",
+    sha256 = "85ca62cac0d41fc77d3f6033da9b6d21f6a8ea51b271b48996d6d6450d2ab760",
+)
+
+configure_make_package(
+    name = "libxslt",
+    source = ":libxslt-src",
+    version = "1.1.42",
+    description = "XSLT C library",
+    homepage = "https://gitlab.gnome.org/GNOME/libxslt",
+    license = "MIT",
+    configure_args = [
+        "--disable-static",
+        "--without-python",
+    ],
+    deps = [
+        "//packages/linux/system/libs/data/libxml2",
+    ],
+    visibility = ["PUBLIC"],
+)

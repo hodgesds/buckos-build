@@ -1,0 +1,45 @@
+# Web servers, application servers, and reverse proxies
+
+filegroup(
+    name = "http-servers",
+    srcs = [
+        "//packages/linux/www/servers/nginx:nginx",
+        "//packages/linux/www/servers/apache:apache",
+        "//packages/linux/www/servers/caddy:caddy",
+        "//packages/linux/www/servers/lighttpd:lighttpd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "reverse-proxies",
+    srcs = [
+        "//packages/linux/www/servers/nginx:nginx",
+        "//packages/linux/www/servers/haproxy:haproxy",
+        "//packages/linux/www/servers/traefik:traefik",
+        "//packages/linux/www/servers/caddy:caddy",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "lightweight",
+    srcs = [
+        "//packages/linux/www/servers/caddy:caddy",
+        "//packages/linux/www/servers/lighttpd:lighttpd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-web-servers",
+    srcs = [
+        "//packages/linux/www/servers/nginx:nginx",
+        "//packages/linux/www/servers/apache:apache",
+        "//packages/linux/www/servers/caddy:caddy",
+        "//packages/linux/www/servers/lighttpd:lighttpd",
+        "//packages/linux/www/servers/haproxy:haproxy",
+        "//packages/linux/www/servers/traefik:traefik",
+    ],
+    visibility = ["PUBLIC"],
+)

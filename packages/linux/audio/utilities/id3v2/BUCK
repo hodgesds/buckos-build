@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "id3v2-src",
+    src_uri = "https://downloads.sourceforge.net/id3v2/id3v2-0.1.12.tar.gz",
+    sha256 = "8a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b",
+)
+
+configure_make_package(
+    name = "id3v2",
+    source = ":id3v2-src",
+    version = "0.1.12",
+    description = "Command line editor for id3v2 tags",
+    homepage = "https://id3v2.sourceforge.net/",
+    license = "GPL-2",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "xset-src",
+    src_uri = "https://xorg.freedesktop.org/releases/individual/app/xset-1.2.5.tar.xz",
+    sha256 = "9f3f4fd9221e8284e4e12e2a0fb3cb40a8664c67e7a6f25d9a0e8e75d3a8e6ed",
+)
+
+configure_make_package(
+    name = "xset",
+    source = ":xset-src",
+    version = "1.2.5",
+    description = "User preference utility for X",
+    homepage = "https://xorg.freedesktop.org/",
+    license = "MIT",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/linux/desktop/xorg-server:libx11",
+    ],
+    visibility = ["PUBLIC"],
+)

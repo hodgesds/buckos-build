@@ -1,0 +1,30 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "dbus-src",
+    src_uri = "https://dbus.freedesktop.org/releases/dbus/dbus-1.14.10.tar.xz",
+    sha256 = "ba1f21d2bd9d339da2d4aa8780c09df32fea87571c9d1bd5d9e2f8a8bdde2a3e",
+)
+
+configure_make_package(
+    name = "dbus",
+    source = ":dbus-src",
+    version = "1.14.10",
+    description = "Message bus system",
+    homepage = "https://www.freedesktop.org/wiki/Software/dbus/",
+    license = "AFL-2.1",
+    configure_args = [
+        "--disable-static",
+        "--disable-doxygen-docs",
+        "--disable-xml-docs",
+        "--disable-systemd",
+        "--with-system-socket=/run/dbus/system_bus_socket",
+        "--with-console-auth-dir=/run/console",
+        "--localstatedir=/var",
+        "--runstatedir=/run",
+    ],
+    deps = [
+        "//packages/linux/system/libs/data/expat",
+    ],
+    visibility = ["PUBLIC"],
+)

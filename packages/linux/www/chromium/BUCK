@@ -1,0 +1,74 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "chromium-src",
+    src_uri = "https://commondatastorage.googleapis.com/chromium-browser-official/chromium-126.0.6478.126.tar.xz",
+    sha256 = "2b7c8f4a3e8d2f1a6b9c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+)
+
+binary_package(
+    name = "chromium",
+    srcs = [":chromium-src"],
+    version = "126.0.6478.126",
+    description = "Open-source web browser from Google - fast, secure, and customizable",
+    homepage = "https://www.chromium.org/",
+    license = "BSD-3-Clause",
+    install_script = """
+        cd $SRCS/chromium-126.0.6478.126
+
+        # Configure GN build
+        mkdir -p out/Release
+        cat > out/Release/args.gn << 'GNARGS'
+is_official_build=true
+is_debug=false
+symbol_level=0
+enable_nacl=false
+blink_symbol_level=0
+v8_symbol_level=0
+treat_warnings_as_errors=false
+use_custom_libcxx=true
+use_sysroot=false
+use_gnome_keyring=false
+use_pulseaudio=true
+use_cups=true
+use_kerberos=false
+use_vaapi=true
+proprietary_codecs=true
+ffmpeg_branding="Chrome"
+GNARGS
+
+        # Generate build files
+        gn gen out/Release
+
+        # Build chromium
+        ninja -C out/Release chrome chrome_sandbox chromedriver
+
+        # Install
+        mkdir -p "$OUT/usr/lib/chromium"
+        mkdir -p "$OUT/usr/bin"
+
+        cp out/Release/chrome "$OUT/usr/lib/chromium/"
+        cp out/Release/chrome_sandbox "$OUT/usr/lib/chromium/"
+        cp out/Release/chromedriver "$OUT/usr/lib/chromium/"
+        cp out/Release/*.pak "$OUT/usr/lib/chromium/"
+        cp out/Release/*.bin "$OUT/usr/lib/chromium/" 2>/dev/null || true
+        cp -r out/Release/locales "$OUT/usr/lib/chromium/"
+        cp -r out/Release/resources "$OUT/usr/lib/chromium/" 2>/dev/null || true
+
+        # Create wrapper script
+        cat > "$OUT/usr/bin/chromium" << 'WRAPPER'
+#!/bin/sh
+exec /usr/lib/chromium/chrome "$@"
+WRAPPER
+        chmod +x "$OUT/usr/bin/chromium"
+    """,
+    deps = [
+        "//packages/linux/core/glib",
+        "//packages/linux/desktop/gtk",
+        "//packages/linux/network/nss",
+        "//packages/linux/network/nspr",
+        "//packages/linux/lang/python:python",
+        "//packages/linux/lang/nodejs:nodejs",
+    ],
+    visibility = ["PUBLIC"],
+)

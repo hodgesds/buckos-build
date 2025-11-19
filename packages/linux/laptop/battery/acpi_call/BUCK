@@ -1,0 +1,27 @@
+# acpi_call - Kernel module for calling ACPI methods
+# A kernel module to call ACPI methods from userspace
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "acpi_call-src",
+    src_uri = "https://github.com/nix-community/acpi_call/archive/refs/tags/v1.2.2.tar.gz",
+    sha256 = "f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2",
+)
+
+configure_make_package(
+    name = "acpi_call",
+    source = ":acpi_call-src",
+    version = "1.2.2",
+    description = "Kernel module to call ACPI methods from userspace",
+    homepage = "https://github.com/nix-community/acpi_call",
+    license = "GPL-3.0",
+    configure_args = [],
+    make_args = [
+        "KERNELDIR=/lib/modules/$(uname -r)/build",
+    ],
+    deps = [
+        "//packages/linux/kernel:kernel",
+    ],
+    visibility = ["PUBLIC"],
+)

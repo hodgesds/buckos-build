@@ -1,0 +1,28 @@
+# ACPID - ACPI Event Daemon
+# Responds to ACPI events like lid close, power button press
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "acpid-src",
+    src_uri = "https://downloads.sourceforge.net/acpid2/acpid-2.0.34.tar.xz",
+    sha256 = "2d095c8cfcbc847caec746d62cdc8d0bff1ec1bc72ef7c674c721e04da6ab333",
+)
+
+configure_make_package(
+    name = "acpid",
+    source = ":acpid-src",
+    version = "2.0.34",
+    description = "ACPI event daemon for handling laptop power events",
+    homepage = "https://sourceforge.net/projects/acpid2/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

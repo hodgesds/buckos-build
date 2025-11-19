@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "gdb-src",
+    src_uri = "https://ftp.gnu.org/gnu/gdb/gdb-14.1.tar.xz",
+    sha256 = "d66df51276143c3a7f0367a9d64fdf4f9f0eb94f5c0a2dc8d31c4e24c076a1af",
+)
+
+configure_make_package(
+    name = "gdb",
+    source = ":gdb-src",
+    version = "14.1",
+    description = "GNU Debugger",
+    homepage = "https://www.gnu.org/software/gdb/",
+    license = "GPL-3+",
+    configure_args = [
+        "--with-system-readline",
+        "--with-python=/usr/bin/python3",
+        "--with-system-zlib",
+        "--enable-tui",
+        "--with-curses",
+        "--disable-werror",
+    ],
+    deps = [
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/core/ncurses:ncurses",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,32 @@
+load("//defs:package_defs.bzl", "download_source", "cmake_package")
+
+# Shotcut - Free, open source, cross-platform video editor
+
+download_source(
+    name = "shotcut-src",
+    src_uri = "https://github.com/mltframework/shotcut/archive/refs/tags/v24.06.26.tar.gz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+cmake_package(
+    name = "shotcut",
+    source = ":shotcut-src",
+    version = "24.06.26",
+    description = "Free, open source, cross-platform video editor",
+    homepage = "https://www.shotcut.org/",
+    license = "GPL-3.0-or-later",
+    cmake_args = [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_INSTALL_PREFIX=/usr",
+        "-DSHOTCUT_VERSION=24.06.26",
+    ],
+    deps = [
+        "//packages/linux/graphics/video/ffmpeg:ffmpeg",
+        "//packages/linux/desktop/qt:qt6",
+        "//packages/linux/core/frei0r:frei0r",
+    ],
+    build_deps = [
+        "//packages/linux/core/pkg-config:pkg-config",
+    ],
+    visibility = ["PUBLIC"],
+)

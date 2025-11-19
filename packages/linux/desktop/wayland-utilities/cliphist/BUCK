@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "cliphist-src",
+    src_uri = "https://github.com/sentriz/cliphist/archive/v0.5.0.tar.gz",
+    sha256 = "8eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6c0",
+)
+
+configure_make_package(
+    name = "cliphist",
+    source = ":cliphist-src",
+    version = "0.5.0",
+    description = "Wayland clipboard manager with history",
+    homepage = "https://github.com/sentriz/cliphist",
+    license = "GPL-3.0",
+    pre_configure = """
+# Uses go
+""",
+    deps = [
+        "//packages/linux/desktop/wayland-utilities/wl-clipboard:wl-clipboard",
+    ],
+    visibility = ["PUBLIC"],
+)

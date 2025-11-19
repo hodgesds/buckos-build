@@ -1,0 +1,27 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# tree - List directory contents in tree format
+download_source(
+    name = "tree-src",
+    src_uri = "https://gitlab.com/OldManProgrammer/unix-tree/-/archive/2.1.1/unix-tree-2.1.1.tar.gz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+configure_make_package(
+    name = "tree",
+    source = ":tree-src",
+    version = "2.1.1",
+    description = "List directory contents in tree format",
+    homepage = "https://gitlab.com/OldManProgrammer/unix-tree",
+    license = "GPL-2+",
+    pre_configure = "true",
+    make_args = [
+        "PREFIX=/usr",
+    ],
+    install_args = [
+        "PREFIX=/usr",
+        "DESTDIR=$DESTDIR",
+    ],
+    deps = ["//packages/linux/core:musl"],
+    visibility = ["PUBLIC"],
+)

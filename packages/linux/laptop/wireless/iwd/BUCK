@@ -1,0 +1,34 @@
+# iwd - iNet Wireless Daemon
+# Wireless daemon for Linux optimized for minimal resources
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "iwd-src",
+    src_uri = "https://kernel.org/pub/linux/network/wireless/iwd-2.13.tar.xz",
+    sha256 = "b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8",
+)
+
+configure_make_package(
+    name = "iwd",
+    source = ":iwd-src",
+    version = "2.13",
+    description = "iNet Wireless Daemon for Linux",
+    homepage = "https://iwd.wiki.kernel.org/",
+    license = "LGPL-2.1",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--libexecdir=/usr/lib/iwd",
+        "--disable-systemd-service",
+        "--enable-wired",
+        "--enable-ofono",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/system/libs/dbus:dbus",
+        "//packages/linux/system/libs/readline:readline",
+    ],
+    visibility = ["PUBLIC"],
+)

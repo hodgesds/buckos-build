@@ -1,0 +1,57 @@
+# Virtualization tools aggregator
+
+filegroup(
+    name = "libvirt-full",
+    srcs = [
+        "//packages/linux/emulation/virtualization/libvirt:libvirt",
+        "//packages/linux/emulation/virtualization/libvirt:libvirt-client",
+        "//packages/linux/emulation/virtualization/libvirt:libvirt-python",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "virtualbox-full",
+    srcs = [
+        "//packages/linux/emulation/virtualization/virtualbox:virtualbox",
+        "//packages/linux/emulation/virtualization/virtualbox:virtualbox-modules",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "virtualbox-guest",
+    srcs = [
+        "//packages/linux/emulation/virtualization/virtualbox:virtualbox-guest-additions",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "virt-manager-full",
+    srcs = [
+        "//packages/linux/emulation/virtualization/virt-manager:virt-manager",
+        "//packages/linux/emulation/virtualization/virt-manager:virt-install",
+        "//packages/linux/emulation/virtualization/virt-manager:virt-viewer",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "management-tools",
+    srcs = [
+        ":libvirt-full",
+        ":virt-manager-full",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-virtualization",
+    srcs = [
+        ":libvirt-full",
+        ":virtualbox-full",
+        ":virt-manager-full",
+    ],
+    visibility = ["PUBLIC"],
+)

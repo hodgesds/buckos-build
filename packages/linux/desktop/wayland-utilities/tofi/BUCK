@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "tofi-src",
+    src_uri = "https://github.com/philj56/tofi/archive/v0.9.1.tar.gz",
+    sha256 = "beb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6d3",
+)
+
+configure_make_package(
+    name = "tofi",
+    source = ":tofi-src",
+    version = "0.9.1",
+    description = "Tiny dynamic menu for Wayland",
+    homepage = "https://github.com/philj56/tofi",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr
+""",
+    deps = [
+        "//packages/linux/desktop/wayland:wayland",
+        "//packages/linux/desktop/wayland:wayland-protocols",
+    ],
+    visibility = ["PUBLIC"],
+)

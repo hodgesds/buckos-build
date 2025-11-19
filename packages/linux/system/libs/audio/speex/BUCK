@@ -1,0 +1,49 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# Speex audio codec
+download_source(
+    name = "speex-src",
+    src_uri = "https://downloads.xiph.org/releases/speex/speex-1.2.1.tar.gz",
+    sha256 = "4b44d4f2b38a370a2d98a78329fefc56a0cf93d1c1be70029217baae6628feea",
+)
+
+configure_make_package(
+    name = "speex",
+    source = ":speex-src",
+    version = "1.2.1",
+    description = "Open source speech codec",
+    homepage = "https://www.speex.org/",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-static",
+        "--enable-shared",
+    ],
+    deps = [
+        "//packages/linux/system/libs/audio/libogg:libogg",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# SpeexDSP - signal processing library
+download_source(
+    name = "speexdsp-src",
+    src_uri = "https://downloads.xiph.org/releases/speex/speexdsp-1.2.1.tar.gz",
+    sha256 = "8c777f2c6196a55e2f89cdf167e8b2c3f0f6b6be00b7daaa96e8a5be5acaa0e5",
+)
+
+configure_make_package(
+    name = "speexdsp",
+    source = ":speexdsp-src",
+    version = "1.2.1",
+    description = "Speex audio processing library (resampler, echo cancellation, etc.)",
+    homepage = "https://www.speex.org/",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-static",
+        "--enable-shared",
+    ],
+    deps = [],
+    visibility = ["PUBLIC"],
+)

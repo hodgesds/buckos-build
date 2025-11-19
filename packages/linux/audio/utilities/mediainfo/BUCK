@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "mediainfo-src",
+    src_uri = "https://mediaarea.net/download/binary/mediainfo/24.06/MediaInfo_CLI_24.06_GNU_FromSource.tar.xz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+configure_make_package(
+    name = "mediainfo",
+    source = ":mediainfo-src",
+    version = "24.06",
+    description = "Display technical and tag data for video and audio files",
+    homepage = "https://mediaarea.net/en/MediaInfo",
+    license = "BSD-2-Clause",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-static",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core/zlib",
+    ],
+    visibility = ["PUBLIC"],
+)

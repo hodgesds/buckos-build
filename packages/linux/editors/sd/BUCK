@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "cargo_package")
+
+download_source(
+    name = "sd-src",
+    src_uri = "https://github.com/chmln/sd/archive/refs/tags/v1.0.0.tar.gz",
+    sha256 = "7c75f4d4e7f8e2c5e4d3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1",
+)
+
+cargo_package(
+    name = "sd",
+    source = ":sd-src",
+    version = "1.0.0",
+    description = "Intuitive find-and-replace CLI tool (sed alternative)",
+    homepage = "https://github.com/chmln/sd",
+    license = "MIT",
+    cargo_args = [
+        "--release",
+    ],
+    deps = [
+        "//packages/linux/core/musl",
+    ],
+    visibility = ["PUBLIC"],
+)

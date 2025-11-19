@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+download_source(
+    name = "nfs-utils-src",
+    src_uri = "https://mirrors.edge.kernel.org/pub/linux/utils/nfs-utils/2.6.4/nfs-utils-2.6.4.tar.xz",
+    sha256 = "4a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+)
+
+configure_make_package(
+    name = "nfs-utils",
+    source = ":nfs-utils-src",
+    version = "2.6.4",
+    description = "NFS client and server utilities (mount.nfs, nfsd, exportfs, etc.)",
+    homepage = "http://nfs.sourceforge.net/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--disable-nfsv4",
+        "--disable-gss",
+        "--without-tcp-wrappers",
+    ],
+    deps = [
+        "//packages/linux/core:util-linux",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "emacs-nox-src",
+    src_uri = "https://ftp.gnu.org/gnu/emacs/emacs-29.4.tar.gz",
+    sha256 = "cc11d415d9326ccc4e749aed6d2d8f12a28e53d001938f6b4cf2c47a2422dad0",
+)
+
+configure_make_package(
+    name = "emacs-nox",
+    source = ":emacs-nox-src",
+    version = "29.4",
+    description = "Minimal Emacs without X support",
+    homepage = "https://www.gnu.org/software/emacs/",
+    license = "GPL-3.0",
+    configure_args = [
+        "--without-all",
+        "--without-x",
+        "--with-xml2=no",
+        "--with-gnutls=no",
+    ],
+    deps = [
+        "//packages/linux/core/musl",
+    ],
+    visibility = ["PUBLIC"],
+)

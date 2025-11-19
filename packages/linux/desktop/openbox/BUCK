@@ -1,0 +1,40 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# =============================================================================
+# Openbox - Lightweight, configurable window manager
+# =============================================================================
+
+download_source(
+    name = "openbox-src",
+    src_uri = "http://openbox.org/dist/openbox/openbox-3.6.1.tar.xz",
+    sha256 = "5a4b3c2d1e0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1e0d9c8b7a6f5e4d3",
+)
+
+configure_make_package(
+    name = "openbox",
+    source = ":openbox-src",
+    version = "3.6.1",
+    description = "Openbox - Highly configurable window manager",
+    homepage = "http://openbox.org/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--disable-nls",
+    ],
+    deps = [
+        "//packages/linux/desktop/xorg-server:xorg-server",
+        "//packages/linux/desktop/xorg-server:libx11",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Openbox meta-package
+filegroup(
+    name = "openbox-desktop",
+    srcs = [
+        ":openbox",
+        "//packages/linux/desktop/lightdm:lightdm",
+        "//packages/linux/desktop/xorg-server:xorg-server",
+        "//packages/linux/desktop/mesa:mesa",
+    ],
+    visibility = ["PUBLIC"],
+)

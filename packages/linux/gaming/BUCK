@@ -1,0 +1,107 @@
+# Gaming packages for Linux
+# Includes game launchers, utilities, compatibility layers, emulators, and libraries
+
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+# =============================================================================
+# Game Launchers
+# =============================================================================
+# Digital distribution platforms and game library managers
+
+filegroup(
+    name = "launchers",
+    srcs = [
+        "//packages/linux/gaming/launchers/steam:steam",
+        "//packages/linux/gaming/launchers/lutris:lutris",
+        "//packages/linux/gaming/launchers/heroic:heroic",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Gaming Utilities
+# =============================================================================
+# Performance monitoring, optimization, and display tools
+
+filegroup(
+    name = "utilities",
+    srcs = [
+        "//packages/linux/gaming/utilities/mangohud:mangohud",
+        "//packages/linux/gaming/utilities/gamemode:gamemode",
+        "//packages/linux/gaming/utilities/gamescope:gamescope",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Compatibility Layers
+# =============================================================================
+# Wine, DirectX translation, and Windows compatibility
+
+filegroup(
+    name = "compatibility",
+    srcs = [
+        "//packages/linux/gaming/compatibility/wine:wine",
+        "//packages/linux/gaming/compatibility/dxvk:dxvk",
+        "//packages/linux/gaming/compatibility/vkd3d-proton:vkd3d-proton",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Emulators
+# =============================================================================
+# Console and retro gaming emulators
+
+filegroup(
+    name = "emulators",
+    srcs = [
+        "//packages/linux/gaming/emulators/retroarch:retroarch",
+        "//packages/linux/gaming/emulators/dolphin:dolphin",
+        "//packages/linux/gaming/emulators/pcsx2:pcsx2",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Gaming Libraries
+# =============================================================================
+# Core libraries and tools for game development and runtime
+
+filegroup(
+    name = "libraries",
+    srcs = [
+        "//packages/linux/gaming/libraries/sdl2:sdl2",
+        "//packages/linux/gaming/libraries/vulkan-tools:vulkan-tools",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Complete Gaming Stack
+# =============================================================================
+
+filegroup(
+    name = "gaming",
+    srcs = [
+        ":launchers",
+        ":utilities",
+        ":compatibility",
+        ":emulators",
+        ":libraries",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Minimal gaming setup (Steam + essential utilities)
+filegroup(
+    name = "gaming-minimal",
+    srcs = [
+        "//packages/linux/gaming/launchers/steam:steam",
+        "//packages/linux/gaming/utilities/mangohud:mangohud",
+        "//packages/linux/gaming/utilities/gamemode:gamemode",
+        "//packages/linux/gaming/compatibility/wine:wine",
+        "//packages/linux/gaming/compatibility/dxvk:dxvk",
+    ],
+    visibility = ["PUBLIC"],
+)

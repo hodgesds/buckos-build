@@ -1,0 +1,49 @@
+# Wireless management packages for laptops (WiFi, Bluetooth)
+
+filegroup(
+    name = "wifi",
+    srcs = [
+        "//packages/linux/laptop/wireless/iwd:iwd",
+        "//packages/linux/laptop/wireless/wpa_supplicant:wpa_supplicant",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "bluetooth",
+    srcs = [
+        "//packages/linux/laptop/wireless/bluez:bluez",
+        "//packages/linux/laptop/wireless/blueman:blueman",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "rf-control",
+    srcs = [
+        "//packages/linux/laptop/wireless/rfkill:rfkill",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "essential",
+    srcs = [
+        "//packages/linux/laptop/wireless/iwd:iwd",
+        "//packages/linux/laptop/wireless/bluez:bluez",
+        "//packages/linux/laptop/wireless/rfkill:rfkill",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-wireless",
+    srcs = [
+        "//packages/linux/laptop/wireless/iwd:iwd",
+        "//packages/linux/laptop/wireless/wpa_supplicant:wpa_supplicant",
+        "//packages/linux/laptop/wireless/bluez:bluez",
+        "//packages/linux/laptop/wireless/blueman:blueman",
+        "//packages/linux/laptop/wireless/rfkill:rfkill",
+    ],
+    visibility = ["PUBLIC"],
+)

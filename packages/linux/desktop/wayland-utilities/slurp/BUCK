@@ -1,0 +1,27 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "slurp-src",
+    src_uri = "https://github.com/emersion/slurp/archive/v1.5.0.tar.gz",
+    sha256 = "2eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6ca",
+)
+
+configure_make_package(
+    name = "slurp",
+    source = ":slurp-src",
+    version = "1.5.0",
+    description = "Select a region in a Wayland compositor",
+    homepage = "https://github.com/emersion/slurp",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr \\
+    -Dman-pages=disabled
+""",
+    deps = [
+        "//packages/linux/desktop/wayland:wayland",
+        "//packages/linux/desktop/wayland:wayland-protocols",
+    ],
+    visibility = ["PUBLIC"],
+)

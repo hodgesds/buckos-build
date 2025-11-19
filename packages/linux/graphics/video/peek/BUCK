@@ -1,0 +1,32 @@
+load("//defs:package_defs.bzl", "download_source", "meson_package")
+
+# Peek - Simple animated GIF screen recorder
+
+download_source(
+    name = "peek-src",
+    src_uri = "https://github.com/phw/peek/archive/refs/tags/1.5.1.tar.gz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+meson_package(
+    name = "peek",
+    source = ":peek-src",
+    version = "1.5.1",
+    description = "Simple animated GIF screen recorder with an easy to use interface",
+    homepage = "https://github.com/phw/peek",
+    license = "GPL-3.0-or-later",
+    meson_args = [
+        "-Denable-filechoosernative=true",
+        "-Dwith-gettext=true",
+    ],
+    deps = [
+        "//packages/linux/graphics/video/ffmpeg:ffmpeg",
+        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/core/glib:glib",
+    ],
+    build_deps = [
+        "//packages/linux/core/pkg-config:pkg-config",
+        "//packages/linux/core/vala:vala",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,28 @@
+# Font editing and manipulation tools
+
+filegroup(
+    name = "font-editors",
+    srcs = [
+        "//packages/linux/fonts/tools/fontforge:fontforge",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "font-utilities",
+    srcs = [
+        "//packages/linux/fonts/tools/fonttools:fonttools",
+        "//packages/linux/fonts/tools/woff2:woff2",
+        "//packages/linux/fonts/tools/ttfautohint:ttfautohint",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-tools",
+    srcs = [
+        ":font-editors",
+        ":font-utilities",
+    ],
+    visibility = ["PUBLIC"],
+)

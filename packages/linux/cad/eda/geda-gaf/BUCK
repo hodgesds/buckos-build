@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "geda-gaf-src",
+    src_uri = "http://ftp.geda-project.org/geda-gaf/stable/v1.10/1.10.2/geda-gaf-1.10.2.tar.gz",
+    sha256 = "22ca0bba0d3a5b5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b",
+)
+
+configure_make_package(
+    name = "geda-gaf",
+    source = ":geda-gaf-src",
+    version = "1.10.2",
+    description = "GPL Electronic Design Automation tools for schematic capture, netlisting, and PCB layout",
+    homepage = "http://www.geda-project.org/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--disable-update-xdg-database",
+    ],
+    deps = [
+        "//packages/linux/core/glib:glib",
+    ],
+    visibility = ["PUBLIC"],
+)

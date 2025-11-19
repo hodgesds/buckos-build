@@ -1,0 +1,155 @@
+# System Power Management Packages
+# Comprehensive tools for CPU/GPU power control, monitoring, and optimization
+
+# Intel x86 Power Tools (from kernel tree)
+filegroup(
+    name = "intel-x86-tools",
+    srcs = [
+        "//packages/linux/system/power/turbostat:turbostat",
+        "//packages/linux/system/power/x86_energy_perf_policy:x86_energy_perf_policy",
+        "//packages/linux/system/power/intel-speed-select:intel-speed-select",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# AMD Power Tools
+filegroup(
+    name = "amd-tools",
+    srcs = [
+        "//packages/linux/system/power/rapl-read-ryzen:rapl-read-ryzen",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# CPU Frequency and Scaling
+filegroup(
+    name = "cpu-frequency",
+    srcs = [
+        "//packages/linux/system/power/cpufrequtils:cpufrequtils",
+        "//packages/linux/laptop/power/cpupower:cpupower",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# System Tuning and Optimization
+filegroup(
+    name = "tuning",
+    srcs = [
+        "//packages/linux/system/power/tuned:tuned",
+        "//packages/linux/system/power/irqbalance:irqbalance",
+        "//packages/linux/system/power/power-profiles-daemon:power-profiles-daemon",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Storage Power Management
+filegroup(
+    name = "storage-power",
+    srcs = [
+        "//packages/linux/system/power/hdparm:hdparm",
+        "//packages/linux/system/power/sdparm:sdparm",
+        "//packages/linux/system/power/nvme-cli:nvme-cli",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Power Capping and Limits
+filegroup(
+    name = "power-limits",
+    srcs = [
+        "//packages/linux/system/power/powercap:powercap",
+        "//packages/linux/system/power/intel-undervolt:intel-undervolt",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# ACPI Tools
+filegroup(
+    name = "acpi-tools",
+    srcs = [
+        "//packages/linux/system/power/acpica-tools:acpica-tools",
+        "//packages/linux/laptop/power/acpid:acpid",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Essential Power Management Tools
+filegroup(
+    name = "essential",
+    srcs = [
+        "//packages/linux/system/power/turbostat:turbostat",
+        "//packages/linux/system/power/cpufrequtils:cpufrequtils",
+        "//packages/linux/system/power/hdparm:hdparm",
+        "//packages/linux/system/power/irqbalance:irqbalance",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Desktop/Server Power Management
+filegroup(
+    name = "desktop",
+    srcs = [
+        ":essential",
+        ":tuning",
+        ":storage-power",
+        "//packages/linux/laptop/monitoring/powertop:powertop",
+        "//packages/linux/laptop/monitoring/lm-sensors:lm-sensors",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Intel Platform Complete
+filegroup(
+    name = "intel-complete",
+    srcs = [
+        ":intel-x86-tools",
+        ":cpu-frequency",
+        ":power-limits",
+        ":storage-power",
+        ":tuning",
+        "//packages/linux/system/power/intel-undervolt:intel-undervolt",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# AMD Platform Complete
+filegroup(
+    name = "amd-complete",
+    srcs = [
+        ":amd-tools",
+        ":cpu-frequency",
+        ":power-limits",
+        ":storage-power",
+        ":tuning",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Server Power Management
+filegroup(
+    name = "server",
+    srcs = [
+        ":cpu-frequency",
+        ":tuning",
+        ":storage-power",
+        "//packages/linux/system/power/irqbalance:irqbalance",
+        "//packages/linux/system/power/powercap:powercap",
+        "//packages/linux/laptop/monitoring/lm-sensors:lm-sensors",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All Power Management Packages
+filegroup(
+    name = "all",
+    srcs = [
+        ":intel-x86-tools",
+        ":amd-tools",
+        ":cpu-frequency",
+        ":tuning",
+        ":storage-power",
+        ":power-limits",
+        ":acpi-tools",
+    ],
+    visibility = ["PUBLIC"],
+)

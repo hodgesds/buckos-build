@@ -1,0 +1,31 @@
+# rfkill - Tool to enable and disable wireless devices
+# Controls the state of RF kill switches
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "rfkill-src",
+    src_uri = "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.6.8.tar.xz",
+    sha256 = "ebf70a917934b66a9f1f4a0df7e0c7ac0c6a15f17a0e4e3e5f8ce3f8a1b2c3d4",
+)
+
+configure_make_package(
+    name = "rfkill",
+    source = ":rfkill-src",
+    version = "6.6.8",
+    description = "Tool to enable and disable wireless devices",
+    homepage = "https://kernel.org/",
+    license = "GPL-2.0",
+    pre_configure = """
+        cd tools/rfkill
+    """,
+    configure_args = [],
+    make_args = [
+        "-C", "tools/rfkill",
+        "prefix=/usr",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

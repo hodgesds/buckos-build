@@ -1,0 +1,52 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libcdio-src",
+    src_uri = "https://ftp.gnu.org/gnu/libcdio/libcdio-2.1.0.tar.bz2",
+    sha256 = "8550e9589dbd594bfac93b81ecf129b1dc9d0d51e90f9696f1b2f9b2af32712b",
+)
+
+configure_make_package(
+    name = "libcdio",
+    source = ":libcdio-src",
+    version = "2.1.0",
+    description = "GNU CD input and control library",
+    homepage = "https://www.gnu.org/software/libcdio/",
+    license = "GPL-3.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-static",
+        "--enable-shared",
+        "--disable-vcd-info",
+        "--enable-cddb",
+    ],
+    deps = [
+        "//packages/linux/core/ncurses",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# libcdio-paranoia - CD audio extraction with error correction
+download_source(
+    name = "libcdio-paranoia-src",
+    src_uri = "https://ftp.gnu.org/gnu/libcdio/libcdio-paranoia-10.2+2.0.2.tar.bz2",
+    sha256 = "1bdd76cd6a4fe0a4a733f68cd9735c45db27f0e26d8e0fe7f37e6d3db7b1a1eb",
+)
+
+configure_make_package(
+    name = "libcdio-paranoia",
+    source = ":libcdio-paranoia-src",
+    version = "10.2+2.0.2",
+    description = "CD paranoia library for jitter-free audio extraction",
+    homepage = "https://www.gnu.org/software/libcdio/",
+    license = "GPL-3.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-static",
+        "--enable-shared",
+    ],
+    deps = [
+        "//packages/linux/system/libs/audio/libcdio:libcdio",
+    ],
+    visibility = ["PUBLIC"],
+)

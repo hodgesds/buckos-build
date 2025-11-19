@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# gettext - GNU internationalization utilities
+download_source(
+    name = "gettext-src",
+    src_uri = "https://ftp.gnu.org/gnu/gettext/gettext-0.26.tar.xz",
+    sha256 = "c5d80c8f0d7426e2e9b5e5c7a66e5a5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2",
+)
+
+configure_make_package(
+    name = "gettext",
+    source = ":gettext-src",
+    version = "0.26",
+    description = "GNU internationalization and localization utilities",
+    homepage = "https://www.gnu.org/software/gettext",
+    license = "GPL-3+",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-java",
+        "--disable-csharp",
+        "--disable-openmp",
+        "--without-emacs",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:ncurses",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -66,6 +66,15 @@ filegroup(
         "//packages/linux/core/less:less",
         "//packages/linux/system/apps/findutils:findutils",
         "//packages/linux/system/apps/coreutils:coreutils",
+        "//packages/linux/system/apps/tar:tar",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "user-management-packages",
+    srcs = [
+        "//packages/linux/system/apps/shadow:shadow",
     ],
     visibility = ["PUBLIC"],
 )
@@ -79,6 +88,7 @@ filegroup(
         ":multiplexer-packages",
         ":logging-packages",
         ":utility-packages",
+        ":user-management-packages",
         "//packages/linux/system/apps/rsync:rsync",
         "//packages/linux/system/apps/acpid:acpid",
         "//packages/linux/system/apps/at:at",

@@ -55,6 +55,43 @@ alias(
     visibility = ["PUBLIC"],
 )
 
+# Essential utilities from sys-apps
+alias(
+    name = "tar",
+    actual = "//packages/linux/system/apps/tar:tar",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "gzip",
+    actual = "//packages/linux/system/libs/compression/gzip:gzip",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "shadow",
+    actual = "//packages/linux/system/apps/shadow:shadow",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "man-db",
+    actual = "//packages/linux/system/docs:man-db",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "texinfo",
+    actual = "//packages/linux/system/docs:texinfo",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "gettext",
+    actual = "//packages/linux/dev-libs/misc/gettext:gettext",
+    visibility = ["PUBLIC"],
+)
+
 # Default privilege escalation
 alias(
     name = "sudo",
@@ -237,12 +274,21 @@ filegroup(
 filegroup(
     name = "sys-apps-packages",
     srcs = [
+        "//packages/linux/system/apps:coreutils",
+        "//packages/linux/system/apps:findutils",
         "//packages/linux/system/apps:cronie",
         "//packages/linux/system/apps:sudo",
         "//packages/linux/system/apps:tmux",
         "//packages/linux/system/apps:htop",
         "//packages/linux/system/apps:rsync",
         "//packages/linux/system/apps:logrotate",
+        "//packages/linux/system/apps/tar:tar",
+        "//packages/linux/system/apps/shadow:shadow",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
     name = "benchmark-packages",
     srcs = [
         "//packages/linux/benchmarks:stress-ng",
@@ -273,6 +319,29 @@ filegroup(
         "//packages/linux/core:zlib",
         "//packages/linux/core:bzip2",
         "//packages/linux/core:xz",
+        "//packages/linux/system/libs/compression/gzip:gzip",
+        "//packages/linux/system/apps/tar:tar",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Documentation packages
+filegroup(
+    name = "docs-packages",
+    srcs = [
+        "//packages/linux/system/docs:man-db",
+        "//packages/linux/system/docs:texinfo",
+        "//packages/linux/system/docs:man-pages",
+        "//packages/linux/system/docs:groff",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Internationalization packages
+filegroup(
+    name = "i18n-packages",
+    srcs = [
+        "//packages/linux/dev-libs/misc/gettext:gettext",
     ],
     visibility = ["PUBLIC"],
 )

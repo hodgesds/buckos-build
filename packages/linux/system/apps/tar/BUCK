@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# tar - GNU tape archiver
+download_source(
+    name = "tar-src",
+    src_uri = "https://ftp.gnu.org/gnu/tar/tar-1.35.tar.xz",
+    sha256 = "4d62ff37342ec7aed748535323930c7cf94acf71c3591882b26a7ea50f3edc16",
+)
+
+configure_make_package(
+    name = "tar",
+    source = ":tar-src",
+    version = "1.35",
+    description = "GNU tape archiver for creating and extracting archives",
+    homepage = "https://www.gnu.org/software/tar",
+    license = "GPL-3+",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-nls",
+    ],
+    deps = ["//packages/linux/core:musl"],
+    visibility = ["PUBLIC"],
+)

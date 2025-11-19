@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "valgrind-src",
+    src_uri = "https://sourceware.org/pub/valgrind/valgrind-3.22.0.tar.bz2",
+    sha256 = "c811db5add2c5f729944caf47c4e7a65dcaabb9461e472b578765dd7bf6d2d4c",
+)
+
+configure_make_package(
+    name = "valgrind",
+    source = ":valgrind-src",
+    version = "3.22.0",
+    description = "Instrumentation framework for building dynamic analysis tools",
+    homepage = "https://valgrind.org/",
+    license = "GPL-2+",
+    configure_args = [
+        "--enable-lto",
+    ],
+    visibility = ["PUBLIC"],
+)

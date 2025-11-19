@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "ctags-src",
+    src_uri = "https://github.com/universal-ctags/ctags/releases/download/v6.1.0/universal-ctags-6.1.0.tar.gz",
+    sha256 = "8f0c8ccb9e6a8ebaa18f7d9c8b6bff5f5e7e0e3b4d5c6f7a8b9c0d1e2f3a4b5c",
+)
+
+configure_make_package(
+    name = "ctags",
+    source = ":ctags-src",
+    version = "6.1.0",
+    description = "Universal Ctags - generates tag files for source code",
+    homepage = "https://ctags.io/",
+    license = "GPL-2+",
+    configure_args = [
+        "--enable-json",
+        "--enable-yaml",
+    ],
+    visibility = ["PUBLIC"],
+)

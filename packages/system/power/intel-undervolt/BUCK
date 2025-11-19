@@ -1,0 +1,28 @@
+# intel-undervolt - Intel CPU Undervolting Tool
+# Undervolt and set power limits on Intel CPUs
+
+load("//defs:package_defs.bzl", "download_source", "cmake_package")
+
+download_source(
+    name = "intel-undervolt-src",
+    src_uri = "https://github.com/kitsunyan/intel-undervolt/archive/refs/tags/1.7.tar.gz",
+    sha256 = "f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6",
+)
+
+cmake_package(
+    name = "intel-undervolt",
+    source = ":intel-undervolt-src",
+    version = "1.7",
+    description = "Intel CPU undervolting and power limit tool",
+    homepage = "https://github.com/kitsunyan/intel-undervolt",
+    license = "GPL-3.0",
+    cmake_args = [
+        "-DCMAKE_INSTALL_PREFIX=/usr",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DENABLE_SYSTEMD=ON",
+    ],
+    deps = [
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,32 @@
+# power-profiles-daemon - D-Bus Power Profile Service
+# Makes power profiles handling available over D-Bus
+
+load("//defs:package_defs.bzl", "download_source", "meson_package")
+
+download_source(
+    name = "power-profiles-daemon-src",
+    src_uri = "https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/archive/0.21/power-profiles-daemon-0.21.tar.gz",
+    sha256 = "e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5",
+)
+
+meson_package(
+    name = "power-profiles-daemon",
+    source = ":power-profiles-daemon-src",
+    version = "0.21",
+    description = "D-Bus daemon for power profile handling",
+    homepage = "https://gitlab.freedesktop.org/upower/power-profiles-daemon",
+    license = "GPL-3.0",
+    meson_args = [
+        "-Dgtk_doc=false",
+        "-Dtests=false",
+        "-Dsystemdsystemunitdir=/usr/lib/systemd/system",
+    ],
+    deps = [
+        "//packages/core:musl",
+        "//packages/core:glib",
+        "//packages/core:dbus",
+        "//packages/core/polkit:polkit",
+        "//packages/laptop/battery/upower:upower",
+    ],
+    visibility = ["PUBLIC"],
+)

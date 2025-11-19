@@ -1,5 +1,7 @@
 # Power management packages for laptops
+# Includes laptop-specific tools and references to system-wide power tools
 
+# Laptop-specific power profile managers
 filegroup(
     name = "power-profiles",
     srcs = [
@@ -9,6 +11,7 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
+# ACPI tools for laptops
 filegroup(
     name = "acpi-tools",
     srcs = [
@@ -17,6 +20,7 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
+# Thermal management
 filegroup(
     name = "thermal-management",
     srcs = [
@@ -25,6 +29,7 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
+# CPU frequency scaling
 filegroup(
     name = "cpu-scaling",
     srcs = [
@@ -34,6 +39,49 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
+# Intel laptop tools (includes undervolting, speed select)
+filegroup(
+    name = "intel-laptop",
+    srcs = [
+        "//packages/system/power/turbostat:turbostat",
+        "//packages/system/power/x86_energy_perf_policy:x86_energy_perf_policy",
+        "//packages/system/power/intel-undervolt:intel-undervolt",
+        "//packages/system/power/intel-speed-select:intel-speed-select",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# AMD laptop tools
+filegroup(
+    name = "amd-laptop",
+    srcs = [
+        "//packages/system/power/rapl-read-ryzen:rapl-read-ryzen",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Storage power management for laptops
+filegroup(
+    name = "storage-power",
+    srcs = [
+        "//packages/system/power/hdparm:hdparm",
+        "//packages/system/power/nvme-cli:nvme-cli",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# System tuning daemons
+filegroup(
+    name = "tuning-daemons",
+    srcs = [
+        "//packages/system/power/tuned:tuned",
+        "//packages/system/power/power-profiles-daemon:power-profiles-daemon",
+        "//packages/system/power/irqbalance:irqbalance",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Essential laptop power tools
 filegroup(
     name = "essential",
     srcs = [
@@ -44,6 +92,58 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
+# Console-only laptop power tools (no GUI dependencies)
+filegroup(
+    name = "console",
+    srcs = [
+        ":essential",
+        "//packages/system/power/turbostat:turbostat",
+        "//packages/system/power/hdparm:hdparm",
+        "//packages/laptop/monitoring/powertop:powertop",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Maximum battery life configuration
+filegroup(
+    name = "max-battery",
+    srcs = [
+        "//packages/laptop/power/tlp:tlp",
+        "//packages/laptop/power/auto-cpufreq:auto-cpufreq",
+        "//packages/laptop/power/thermald:thermald",
+        "//packages/system/power/power-profiles-daemon:power-profiles-daemon",
+        "//packages/laptop/monitoring/powertop:powertop",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Intel laptop complete setup
+filegroup(
+    name = "intel-complete",
+    srcs = [
+        ":essential",
+        ":intel-laptop",
+        ":thermal-management",
+        ":storage-power",
+        ":tuning-daemons",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# AMD laptop complete setup
+filegroup(
+    name = "amd-complete",
+    srcs = [
+        ":essential",
+        ":amd-laptop",
+        ":thermal-management",
+        ":storage-power",
+        ":tuning-daemons",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All laptop power management packages
 filegroup(
     name = "all-power",
     srcs = [
@@ -52,6 +152,10 @@ filegroup(
         "//packages/laptop/power/thermald:thermald",
         "//packages/laptop/power/cpupower:cpupower",
         "//packages/laptop/power/auto-cpufreq:auto-cpufreq",
+        ":intel-laptop",
+        ":amd-laptop",
+        ":storage-power",
+        ":tuning-daemons",
     ],
     visibility = ["PUBLIC"],
 )

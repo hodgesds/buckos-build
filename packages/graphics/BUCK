@@ -53,9 +53,61 @@ filegroup(
 filegroup(
     name = "video",
     srcs = [
-        "//packages/graphics/video/kdenlive",
-        "//packages/graphics/video/openshot",
-        "//packages/graphics/video/obs-studio",
+        "//packages/graphics/video:all",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Video Libraries - Core video encoding/decoding libraries
+filegroup(
+    name = "video-libraries",
+    srcs = [
+        "//packages/graphics/video:libraries",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Video Players - Media playback applications
+filegroup(
+    name = "video-players",
+    srcs = [
+        "//packages/graphics/video:players",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Video Editors - Video editing applications
+filegroup(
+    name = "video-editors",
+    srcs = [
+        "//packages/graphics/video:editors",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Video Utilities - Video conversion and analysis tools
+filegroup(
+    name = "video-utilities",
+    srcs = [
+        "//packages/graphics/video:utilities",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Screen Recording - Screen capture tools
+filegroup(
+    name = "video-recording",
+    srcs = [
+        "//packages/graphics/video:recording",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Video Streaming - Live streaming tools
+filegroup(
+    name = "video-streaming",
+    srcs = [
+        "//packages/graphics/video:streaming",
     ],
     visibility = ["PUBLIC"],
 )

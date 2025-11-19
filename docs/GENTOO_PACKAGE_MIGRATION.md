@@ -89,9 +89,8 @@ Agents should:
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
 | `slang` | sys-libs | system/libs/slang | Already added |
-| `tdb` | sys-libs | system/libs/tdb | Already added |
 | `talloc` | sys-libs | system/libs/talloc | Already added |
-| `tdb` | sys-libs | system/libs/tdb | Trivial database |
+| `tdb` | sys-libs | system/libs/tdb | Already added |
 | `tevent` | sys-libs | system/libs/tevent | Event system |
 | `ldb` | sys-libs | system/libs/ldb | LDAP-like database |
 | `efivar` | sys-libs | system/libs/efivar | Already added |
@@ -131,7 +130,7 @@ Agents should:
 | `unrar` | app-arch | system/libs/compression/unrar | RAR extractor |
 | `cabextract` | app-arch | system/libs/compression/cabextract | CAB extractor |
 | `arj` | app-arch | system/libs/compression/arj | ARJ archiver |
-| `pbzip2` | app-arch | system/libs/compression/pbzip2 | Parallel bzip2 |
+| `pbzip2` | app-arch | system/libs/compression/pbzip2 | Already added |
 | `pixz` | app-arch | system/libs/compression/pixz | Parallel xz |
 
 ---
@@ -247,7 +246,7 @@ Agents should:
 | `vault` | app-admin | system/admin/vault | Secrets management |
 | `keepassxc` | app-admin | system/security/keepassxc | Password manager |
 | `pass` | app-admin | system/security/pass | Password store |
-| `metalog` | app-admin | system/apps/metalog | Modern logger |
+| `metalog` | app-admin | system/apps/metalog | Already added |
 | `monit` | app-admin | system/apps/monit | Already added |
 | `supervisor` | app-admin | system/apps/supervisor | Process control |
 | `lnav` | app-admin | system/apps/lnav | Already added |

@@ -4,3 +4,13 @@ export_file(
     name = "package_defs.bzl",
     visibility = ["PUBLIC"],
 )
+
+export_file(
+    name = "versions.bzl",
+    visibility = ["PUBLIC"],
+)
+
+export_file(
+    name = "registry.bzl",
+    visibility = ["PUBLIC"],
+)

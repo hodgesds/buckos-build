@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "doxygen-src",
+    src_uri = "https://doxygen.nl/files/doxygen-1.10.0.src.tar.gz",
+    sha256 = "dd7c556b4d96ca5e682534c18847b1a1c1c3e4d8b3e5c6f7a8d9e0a1b2c3d4e5",
+)
+
+configure_make_package(
+    name = "doxygen",
+    source = ":doxygen-src",
+    version = "1.10.0",
+    description = "Documentation system for C++, C, Java, and other languages",
+    homepage = "https://www.doxygen.nl/",
+    license = "GPL-2",
+    pre_configure = """
+        mkdir -p build
+        cd build
+        cmake -G "Unix Makefiles" \
+            -DCMAKE_INSTALL_PREFIX=/usr \
+            -DCMAKE_BUILD_TYPE=Release \
+            ..
+    """,
+    visibility = ["PUBLIC"],
+)

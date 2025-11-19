@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "ninja-src",
+    src_uri = "https://github.com/ninja-build/ninja/archive/refs/tags/v1.11.1.tar.gz",
+    sha256 = "31747ae633213f1eda3842686f83c2aa1412e0f5691d1c14dbbcc67fe7400cea",
+)
+
+binary_package(
+    name = "ninja",
+    srcs = [":ninja-src"],
+    version = "1.11.1",
+    description = "Small build system with a focus on speed",
+    homepage = "https://ninja-build.org/",
+    license = "Apache-2.0",
+    install_script = """
+        cd "$WORK_DIR/ninja-1.11.1"
+        python3 configure.py --bootstrap
+        mkdir -p "$DESTDIR/usr/bin"
+        cp ninja "$DESTDIR/usr/bin/"
+    """,
+    visibility = ["PUBLIC"],
+)

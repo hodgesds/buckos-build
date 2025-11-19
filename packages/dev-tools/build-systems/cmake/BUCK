@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "cmake-src",
+    src_uri = "https://github.com/Kitware/CMake/releases/download/v3.28.1/cmake-3.28.1.tar.gz",
+    sha256 = "15e94f83e647f7d620a140a7a5da76349fc47a1bfed66d0f5cdee8e7a3e6f52f",
+)
+
+configure_make_package(
+    name = "cmake",
+    source = ":cmake-src",
+    version = "3.28.1",
+    description = "Cross-platform, open-source build system",
+    homepage = "https://cmake.org/",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--prefix=/usr",
+        "--system-curl",
+        "--system-expat",
+        "--system-zlib",
+        "--parallel=$(nproc)",
+    ],
+    deps = [
+        "//packages/core/zlib:zlib",
+        "//packages/network/curl:curl",
+        "//packages/network/openssl:openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

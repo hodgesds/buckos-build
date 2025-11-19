@@ -1,0 +1,180 @@
+# Development Tools
+# Comprehensive collection of tools for software development
+
+# Version Control Systems
+filegroup(
+    name = "vcs",
+    srcs = [
+        "//packages/dev-tools/vcs/git:git",
+        "//packages/dev-tools/vcs/subversion:subversion",
+        "//packages/dev-tools/vcs/mercurial:mercurial",
+        "//packages/dev-tools/vcs/cvs:cvs",
+        "//packages/dev-tools/vcs/fossil:fossil",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Essential VCS (most commonly used)
+filegroup(
+    name = "vcs-essential",
+    srcs = [
+        "//packages/dev-tools/vcs/git:git",
+        "//packages/dev-tools/vcs/subversion:subversion",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Build Systems
+filegroup(
+    name = "build-systems",
+    srcs = [
+        "//packages/dev-tools/build-systems/cmake:cmake",
+        "//packages/dev-tools/build-systems/make:make",
+        "//packages/dev-tools/build-systems/ninja:ninja",
+        "//packages/dev-tools/build-systems/meson:meson",
+        "//packages/dev-tools/build-systems/autoconf:autoconf",
+        "//packages/dev-tools/build-systems/automake:automake",
+        "//packages/dev-tools/build-systems/libtool:libtool",
+        "//packages/dev-tools/build-systems/pkg-config:pkg-config",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Essential build tools
+filegroup(
+    name = "build-essential",
+    srcs = [
+        "//packages/dev-tools/build-systems/cmake:cmake",
+        "//packages/dev-tools/build-systems/make:make",
+        "//packages/dev-tools/build-systems/pkg-config:pkg-config",
+        "//packages/dev-tools/build-systems/autoconf:autoconf",
+        "//packages/dev-tools/build-systems/automake:automake",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Modern build systems
+filegroup(
+    name = "build-modern",
+    srcs = [
+        "//packages/dev-tools/build-systems/cmake:cmake",
+        "//packages/dev-tools/build-systems/ninja:ninja",
+        "//packages/dev-tools/build-systems/meson:meson",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Autotools suite
+filegroup(
+    name = "autotools",
+    srcs = [
+        "//packages/dev-tools/build-systems/autoconf:autoconf",
+        "//packages/dev-tools/build-systems/automake:automake",
+        "//packages/dev-tools/build-systems/libtool:libtool",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Debugging Tools
+filegroup(
+    name = "debuggers",
+    srcs = [
+        "//packages/dev-tools/debuggers/gdb:gdb",
+        "//packages/dev-tools/debuggers/strace:strace",
+        "//packages/dev-tools/debuggers/ltrace:ltrace",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# System call tracers
+filegroup(
+    name = "tracers",
+    srcs = [
+        "//packages/dev-tools/debuggers/strace:strace",
+        "//packages/dev-tools/debuggers/ltrace:ltrace",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Profiling and Analysis Tools
+filegroup(
+    name = "profilers",
+    srcs = [
+        "//packages/dev-tools/profilers/valgrind:valgrind",
+        "//packages/dev-tools/profilers/binutils:binutils",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Developer Utilities
+filegroup(
+    name = "dev-utils",
+    srcs = [
+        "//packages/dev-tools/dev-utils/patch:patch",
+        "//packages/dev-tools/dev-utils/ctags:ctags",
+        "//packages/dev-tools/dev-utils/cscope:cscope",
+        "//packages/dev-tools/dev-utils/doxygen:doxygen",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Code navigation tools
+filegroup(
+    name = "code-navigation",
+    srcs = [
+        "//packages/dev-tools/dev-utils/ctags:ctags",
+        "//packages/dev-tools/dev-utils/cscope:cscope",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Complete development environment
+filegroup(
+    name = "all",
+    srcs = [
+        ":vcs",
+        ":build-systems",
+        ":debuggers",
+        ":profilers",
+        ":dev-utils",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Essential development tools (minimal but functional)
+filegroup(
+    name = "essential",
+    srcs = [
+        "//packages/dev-tools/vcs/git:git",
+        "//packages/dev-tools/build-systems/make:make",
+        "//packages/dev-tools/build-systems/cmake:cmake",
+        "//packages/dev-tools/build-systems/pkg-config:pkg-config",
+        "//packages/dev-tools/debuggers/gdb:gdb",
+        "//packages/dev-tools/profilers/binutils:binutils",
+        "//packages/dev-tools/dev-utils/patch:patch",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# C/C++ development focused
+filegroup(
+    name = "c-cpp-dev",
+    srcs = [
+        "//packages/dev-tools/vcs/git:git",
+        "//packages/dev-tools/build-systems/cmake:cmake",
+        "//packages/dev-tools/build-systems/make:make",
+        "//packages/dev-tools/build-systems/ninja:ninja",
+        "//packages/dev-tools/build-systems/autoconf:autoconf",
+        "//packages/dev-tools/build-systems/automake:automake",
+        "//packages/dev-tools/build-systems/libtool:libtool",
+        "//packages/dev-tools/build-systems/pkg-config:pkg-config",
+        "//packages/dev-tools/debuggers/gdb:gdb",
+        "//packages/dev-tools/debuggers/strace:strace",
+        "//packages/dev-tools/profilers/valgrind:valgrind",
+        "//packages/dev-tools/profilers/binutils:binutils",
+        "//packages/dev-tools/dev-utils/ctags:ctags",
+        "//packages/dev-tools/dev-utils/cscope:cscope",
+        "//packages/dev-tools/dev-utils/doxygen:doxygen",
+    ],
+    visibility = ["PUBLIC"],
+)

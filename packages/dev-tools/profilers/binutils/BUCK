@@ -1,0 +1,28 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "binutils-src",
+    src_uri = "https://ftp.gnu.org/gnu/binutils/binutils-2.41.tar.xz",
+    sha256 = "ae9a5789e23459e59606e6714723f2d3ffc31c03174191ef0d015bdf06007450",
+)
+
+configure_make_package(
+    name = "binutils",
+    source = ":binutils-src",
+    version = "2.41",
+    description = "GNU Binary Utilities (objdump, nm, readelf, strings, etc.)",
+    homepage = "https://www.gnu.org/software/binutils/",
+    license = "GPL-3+",
+    configure_args = [
+        "--enable-gold",
+        "--enable-ld=default",
+        "--enable-plugins",
+        "--enable-shared",
+        "--disable-werror",
+        "--with-system-zlib",
+    ],
+    deps = [
+        "//packages/core/zlib:zlib",
+    ],
+    visibility = ["PUBLIC"],
+)

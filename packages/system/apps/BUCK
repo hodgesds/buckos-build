@@ -1,7 +1,7 @@
 # =============================================================================
 # System Applications - Package Groups
 # =============================================================================
-# This file contains convenience groups that aggregate individual sys-apps packages.
+# This file contains convenience groups that aggregate individual system/apps packages.
 # Individual packages are located in their own subdirectories.
 
 # =============================================================================
@@ -11,8 +11,8 @@
 filegroup(
     name = "cron-packages",
     srcs = [
-        "//packages/sys-apps/cronie:cronie",
-        "//packages/sys-apps/dcron:dcron",
+        "//packages/system/apps/cronie:cronie",
+        "//packages/system/apps/dcron:dcron",
     ],
     visibility = ["PUBLIC"],
 )
@@ -20,11 +20,11 @@ filegroup(
 filegroup(
     name = "monitoring-packages",
     srcs = [
-        "//packages/sys-apps/htop:htop",
-        "//packages/sys-apps/lsof:lsof",
-        "//packages/sys-apps/strace:strace",
-        "//packages/sys-apps/psmisc:psmisc",
-        "//packages/sys-apps/procps-ng:procps-ng",
+        "//packages/system/apps/htop:htop",
+        "//packages/system/apps/lsof:lsof",
+        "//packages/system/apps/strace:strace",
+        "//packages/system/apps/psmisc:psmisc",
+        "//packages/system/apps/procps-ng:procps-ng",
     ],
     visibility = ["PUBLIC"],
 )
@@ -32,8 +32,8 @@ filegroup(
 filegroup(
     name = "privilege-packages",
     srcs = [
-        "//packages/sys-apps/sudo:sudo",
-        "//packages/sys-apps/doas:doas",
+        "//packages/system/apps/sudo:sudo",
+        "//packages/system/apps/doas:doas",
     ],
     visibility = ["PUBLIC"],
 )
@@ -41,8 +41,8 @@ filegroup(
 filegroup(
     name = "multiplexer-packages",
     srcs = [
-        "//packages/sys-apps/tmux:tmux",
-        "//packages/sys-apps/screen:screen",
+        "//packages/system/apps/tmux:tmux",
+        "//packages/system/apps/screen:screen",
     ],
     visibility = ["PUBLIC"],
 )
@@ -50,8 +50,8 @@ filegroup(
 filegroup(
     name = "logging-packages",
     srcs = [
-        "//packages/sys-apps/rsyslog:rsyslog",
-        "//packages/sys-apps/logrotate:logrotate",
+        "//packages/system/apps/rsyslog:rsyslog",
+        "//packages/system/apps/logrotate:logrotate",
     ],
     visibility = ["PUBLIC"],
 )
@@ -59,12 +59,12 @@ filegroup(
 filegroup(
     name = "utility-packages",
     srcs = [
-        "//packages/sys-apps/file:file",
-        "//packages/sys-apps/which:which",
-        "//packages/sys-apps/tree:tree",
-        "//packages/sys-apps/less:less",
-        "//packages/sys-apps/findutils:findutils",
-        "//packages/sys-apps/coreutils:coreutils",
+        "//packages/system/apps/file:file",
+        "//packages/system/apps/which:which",
+        "//packages/system/apps/tree:tree",
+        "//packages/system/apps/less:less",
+        "//packages/system/apps/findutils:findutils",
+        "//packages/system/apps/coreutils:coreutils",
     ],
     visibility = ["PUBLIC"],
 )
@@ -78,9 +78,9 @@ filegroup(
         ":multiplexer-packages",
         ":logging-packages",
         ":utility-packages",
-        "//packages/sys-apps/rsync:rsync",
-        "//packages/sys-apps/acpid:acpid",
-        "//packages/sys-apps/at:at",
+        "//packages/system/apps/rsync:rsync",
+        "//packages/system/apps/acpid:acpid",
+        "//packages/system/apps/at:at",
     ],
     visibility = ["PUBLIC"],
 )

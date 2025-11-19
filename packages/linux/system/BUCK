@@ -36,7 +36,7 @@ cat > $OUT/etc/init.d/rcS << 'RCS'
 #!/bin/sh
 # System initialization script
 
-echo "Sideros Linux - Booting..."
+echo "BuckOs Linux - Booting..."
 
 # Mount essential filesystems
 mount -t proc proc /proc
@@ -62,7 +62,7 @@ mount -t devpts devpts /dev/pts
 mount -t tmpfs tmpfs /run
 
 # Set hostname
-hostname sideros
+hostname buckos
 
 # Configure loopback
 ip link set lo up
@@ -113,12 +113,12 @@ cat > $OUT/etc/shells << 'SHELLS'
 SHELLS
 
 # Create hostname
-echo "sideros" > $OUT/etc/hostname
+echo "buckos" > $OUT/etc/hostname
 
 # Create hosts
 cat > $OUT/etc/hosts << 'HOSTS'
 127.0.0.1   localhost
-127.0.1.1   sideros
+127.0.1.1   buckos
 ::1         localhost ip6-localhost ip6-loopback
 HOSTS
 
@@ -131,12 +131,12 @@ RESOLV
 
 # Create os-release
 cat > $OUT/etc/os-release << 'OSRELEASE'
-NAME="Sideros Linux"
+NAME="BuckOs Linux"
 VERSION="0.1"
-ID=sideros
+ID=buckos
 ID_LIKE=gentoo
-PRETTY_NAME="Sideros Linux 0.1"
-HOME_URL="https://github.com/hodgesds/sideros-build"
+PRETTY_NAME="BuckOs Linux 0.1"
+HOME_URL="https://github.com/hodgesds/buckos-build"
 OSRELEASE
 
 # Create profile
@@ -153,7 +153,7 @@ PROFILE
 
 # Create issue (login banner)
 cat > $OUT/etc/issue << 'ISSUE'
-Sideros Linux 0.1
+BuckOs Linux 0.1
 Kernel \\r on \\m
 
 ISSUE
@@ -227,7 +227,7 @@ filegroup(
 # =============================================================================
 
 rootfs(
-    name = "sideros-rootfs",
+    name = "buckos-rootfs",
     packages = [
         ":init-scripts-gen",
         ":baselayout-gen",
@@ -259,9 +259,9 @@ rootfs(
 
 # Complete system with kernel
 filegroup(
-    name = "sideros-complete",
+    name = "buckos-complete",
     srcs = [
-        ":sideros-rootfs",
+        ":buckos-rootfs",
         "//packages/linux/kernel/linux",
         "//packages/linux/boot/grub",
     ],
@@ -273,7 +273,7 @@ filegroup(
 # =============================================================================
 
 rootfs(
-    name = "sideros-with-editors",
+    name = "buckos-with-editors",
     packages = [
         ":init-scripts-gen",
         ":baselayout-gen",
@@ -289,9 +289,9 @@ rootfs(
 
 # Complete system with editors and kernel
 filegroup(
-    name = "sideros-complete-with-editors",
+    name = "buckos-complete-with-editors",
     srcs = [
-        ":sideros-with-editors",
+        ":buckos-with-editors",
         "//packages/linux/kernel/linux",
         "//packages/linux/boot/grub",
     ],
@@ -304,7 +304,7 @@ filegroup(
 
 # Full bootable system with initramfs generation capability
 rootfs(
-    name = "sideros-bootable",
+    name = "buckos-bootable",
     packages = [
         ":init-scripts-gen",
         ":baselayout-gen",
@@ -340,9 +340,9 @@ rootfs(
 
 # Complete bootable system
 filegroup(
-    name = "sideros-bootable-complete",
+    name = "buckos-bootable-complete",
     srcs = [
-        ":sideros-bootable",
+        ":buckos-bootable",
         "//packages/linux/kernel/linux",
         "//packages/linux/boot/grub",
     ],
@@ -351,7 +351,7 @@ filegroup(
 
 # System with full storage support (LVM, RAID, encryption)
 rootfs(
-    name = "sideros-storage",
+    name = "buckos-storage",
     packages = [
         ":init-scripts-gen",
         ":baselayout-gen",

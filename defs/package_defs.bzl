@@ -1,5 +1,5 @@
 """
-Package build rules for Sideros Linux Distribution.
+Package build rules for BuckOs Linux Distribution.
 Similar to Gentoo's ebuild system but using Buck2.
 """
 

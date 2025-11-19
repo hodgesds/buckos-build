@@ -1,5 +1,5 @@
 """
-Central version registry for all Sideros packages.
+Central version registry for all BuckOs packages.
 
 This file serves as the authoritative source for:
 - All available package versions

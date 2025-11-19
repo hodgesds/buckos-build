@@ -1,4 +1,4 @@
-# Sideros Linux Distribution - Root Build File
+# BuckOs Linux Distribution - Root Build File
 # A Buck2-based Linux distribution similar to Gentoo's ebuild system
 
 load("//defs:package_defs.bzl", "rootfs")
@@ -10,14 +10,14 @@ load("//defs:package_defs.bzl", "rootfs")
 # Minimal bootable system
 alias(
     name = "minimal",
-    actual = "//packages/linux/system:sideros-rootfs",
+    actual = "//packages/linux/system:buckos-rootfs",
     visibility = ["PUBLIC"],
 )
 
 # Complete system with kernel
 alias(
     name = "complete",
-    actual = "//packages/linux/system:sideros-complete",
+    actual = "//packages/linux/system:buckos-complete",
     visibility = ["PUBLIC"],
 )
 

@@ -4,12 +4,12 @@ A Buck2-based Linux distribution build system, inspired by Gentoo's ebuild syste
 
 ## Overview
 
-Sideros uses Buck2 to define and build Linux packages as reproducible build targets. Each package is defined similarly to a Gentoo ebuild, with source downloads, build configuration, and dependencies clearly specified.
+BuckOs uses Buck2 to define and build Linux packages as reproducible build targets. Each package is defined similarly to a Gentoo ebuild, with source downloads, build configuration, and dependencies clearly specified.
 
 ## Project Structure
 
 ```
-sideros-build/
+buckos-build/
 ├── .buckconfig          # Buck2 configuration
 ├── BUCK                  # Root build targets
 ├── defs/
@@ -58,7 +58,7 @@ buck2 build //packages/core:busybox
 buck2 build //packages/kernel:linux
 
 # Build complete rootfs
-buck2 build //packages/system:sideros-rootfs
+buck2 build //packages/system:buckos-rootfs
 
 # Build everything
 buck2 build //:complete
@@ -74,7 +74,7 @@ buck2 targets //...
 
 ### Package Types
 
-Sideros provides several package build rules similar to Gentoo's eclasses:
+BuckOs provides several package build rules similar to Gentoo's eclasses:
 
 #### `download_source`
 Downloads and extracts source tarballs:
@@ -114,7 +114,7 @@ kernel_build(
 Assembles packages into a root filesystem:
 ```python
 rootfs(
-    name = "sideros-rootfs",
+    name = "buckos-rootfs",
     packages = [
         "//packages/linux/core:busybox",
         "//packages/linux/core:musl",
@@ -151,7 +151,7 @@ configure_make_package(
 
 ## Platform Targeting
 
-Sideros supports tagging packages by their target platform, enabling future support for BSD, macOS, and Windows alongside Linux.
+BuckOs supports tagging packages by their target platform, enabling future support for BSD, macOS, and Windows alongside Linux.
 
 ### Supported Platforms
 
@@ -268,7 +268,7 @@ The kernel config includes support for:
 
 ```bash
 # Build the system
-buck2 build //packages/system:sideros-rootfs
+buck2 build //packages/system:buckos-rootfs
 buck2 build //packages/kernel:linux-defconfig
 
 # Create a disk image (manual step)
@@ -282,7 +282,7 @@ qemu-system-x86_64 \
 
 ## Comparison to Gentoo
 
-| Gentoo | Sideros |
+| Gentoo | BuckOs |
 |--------|---------|
 | ebuild | BUCK file |
 | eclass | package_defs.bzl |

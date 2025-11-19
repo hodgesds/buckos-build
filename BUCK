@@ -91,7 +91,7 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
-# Shell packages
+# Editor packages
 filegroup(
     name = "editor-packages",
     srcs = [
@@ -171,6 +171,141 @@ filegroup(
         "//packages/core:libffi",
         "//packages/core:expat",
         "//packages/core:libnl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Desktop environment aliases
+# =============================================================================
+
+# Full desktop environments
+alias(
+    name = "gnome",
+    actual = "//packages/desktop:gnome",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "kde-plasma",
+    actual = "//packages/desktop:kde-plasma",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "xfce",
+    actual = "//packages/desktop:xfce",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "lxqt",
+    actual = "//packages/desktop:lxqt",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "cinnamon",
+    actual = "//packages/desktop:cinnamon-desktop",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "mate",
+    actual = "//packages/desktop:mate",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "budgie",
+    actual = "//packages/desktop:budgie",
+    visibility = ["PUBLIC"],
+)
+
+# Wayland compositors
+alias(
+    name = "sway",
+    actual = "//packages/desktop:sway-desktop",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "hyprland",
+    actual = "//packages/desktop:hyprland-desktop",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "wayfire",
+    actual = "//packages/desktop:wayfire-desktop",
+    visibility = ["PUBLIC"],
+)
+
+# X11 window managers
+alias(
+    name = "i3",
+    actual = "//packages/desktop:i3-desktop",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "bspwm",
+    actual = "//packages/desktop:bspwm-desktop",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "openbox",
+    actual = "//packages/desktop:openbox-desktop",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "awesome",
+    actual = "//packages/desktop:awesome-desktop",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Desktop package groups
+# =============================================================================
+
+filegroup(
+    name = "desktop-foundation",
+    srcs = [
+        "//packages/desktop:desktop-foundation",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-desktops",
+    srcs = [
+        "//packages/desktop:all-desktops",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "wayland-compositors",
+    srcs = [
+        "//packages/desktop:wayland-compositors",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "tiling-desktops",
+    srcs = [
+        "//packages/desktop:tiling-desktops",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "lightweight-desktops",
+    srcs = [
+        "//packages/desktop:lightweight-desktops",
     ],
     visibility = ["PUBLIC"],
 )

@@ -1,0 +1,17 @@
+load("//defs:package_defs.bzl", "download_source", "python_package")
+
+download_source(
+    name = "flawfinder-src",
+    src_uri = "https://github.com/david-a-wheeler/flawfinder/archive/refs/tags/2.0.19.tar.gz",
+    sha256 = "fe550981d370abfa0a29671346cc0b038229a9bd90b239eab0f01f12212df618",
+)
+
+python_package(
+    name = "flawfinder",
+    source = ":flawfinder-src",
+    version = "2.0.19",
+    description = "Examines C/C++ source code for security flaws",
+    homepage = "https://dwheeler.com/flawfinder/",
+    license = "GPL-2+",
+    visibility = ["PUBLIC"],
+)

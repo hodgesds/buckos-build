@@ -1,0 +1,17 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "splint-src",
+    src_uri = "https://github.com/splintchecker/splint/releases/download/splint-3.1.2/splint-3.1.2.src.tgz",
+    sha256 = "c78db643df663313e3fa9d565118391825dd62ce6e0efe0f5d7c4e9c138c3c11",
+)
+
+configure_make_package(
+    name = "splint",
+    source = ":splint-src",
+    version = "3.1.2",
+    description = "A tool for statically checking C programs for security vulnerabilities",
+    homepage = "https://splint.org/",
+    license = "GPL-2+",
+    visibility = ["PUBLIC"],
+)

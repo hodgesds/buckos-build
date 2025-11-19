@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "download_source", "cmake_package")
+
+download_source(
+    name = "uncrustify-src",
+    src_uri = "https://github.com/uncrustify/uncrustify/archive/refs/tags/uncrustify-0.78.1.tar.gz",
+    sha256 = "ecb4b4f3d5876c4fdeeb tried5e0d2e5c6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+)
+
+cmake_package(
+    name = "uncrustify",
+    source = ":uncrustify-src",
+    version = "0.78.1",
+    description = "Source code beautifier for C, C++, C#, ObjectiveC, D, Java, Pawn and VALA",
+    homepage = "https://uncrustify.sourceforge.net/",
+    license = "GPL-2+",
+    cmake_args = [
+        "-DCMAKE_BUILD_TYPE=Release",
+    ],
+    visibility = ["PUBLIC"],
+)

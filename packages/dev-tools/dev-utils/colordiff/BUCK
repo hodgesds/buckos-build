@@ -1,0 +1,17 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "colordiff-src",
+    src_uri = "https://www.colordiff.org/colordiff-1.0.21.tar.gz",
+    sha256 = "7add151eadfff2999f3bafbb6f92ecdef624c0dbf2c2ad8c7f1f8d4f7c2e9f8a",
+)
+
+configure_make_package(
+    name = "colordiff",
+    source = ":colordiff-src",
+    version = "1.0.21",
+    description = "Colorizes diff output",
+    homepage = "https://www.colordiff.org/",
+    license = "GPL-2+",
+    visibility = ["PUBLIC"],
+)

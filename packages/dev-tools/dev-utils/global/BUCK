@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "global-src",
+    src_uri = "https://ftp.gnu.org/gnu/global/global-6.6.12.tar.gz",
+    sha256 = "dc0cfed82d1b06a5e5a2ab50cc5f9c27b5c6f7d8e9f0a1b2c3d4e5f6a7b8c9d0e",
+)
+
+configure_make_package(
+    name = "global",
+    source = ":global-src",
+    version = "6.6.12",
+    description = "GNU GLOBAL source code tagging system",
+    homepage = "https://www.gnu.org/software/global/",
+    license = "GPL-3+",
+    configure_args = [
+        "--with-exuberant-ctags=/usr/bin/ctags",
+    ],
+    visibility = ["PUBLIC"],
+)

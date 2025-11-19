@@ -1,0 +1,18 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "astyle-src",
+    src_uri = "https://sourceforge.net/projects/astyle/files/astyle/astyle%203.4/astyle-3.4.13.tar.bz2",
+    sha256 = "c4f5c2e7b0a5e3d8f9c6b7a8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8",
+)
+
+configure_make_package(
+    name = "astyle",
+    source = ":astyle-src",
+    version = "3.4.13",
+    description = "Artistic Style - source code indenter, formatter, and beautifier",
+    homepage = "https://astyle.sourceforge.net/",
+    license = "MIT",
+    configure_args = [],
+    visibility = ["PUBLIC"],
+)

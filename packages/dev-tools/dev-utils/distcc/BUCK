@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "distcc-src",
+    src_uri = "https://github.com/distcc/distcc/releases/download/v3.4/distcc-3.4.tar.gz",
+    sha256 = "2b3205c1c4e03b0e0a4f2e4c5d6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b",
+)
+
+configure_make_package(
+    name = "distcc",
+    source = ":distcc-src",
+    version = "3.4",
+    description = "Distributed C/C++/ObjC compiler with distcc-pump extensions",
+    homepage = "https://github.com/distcc/distcc",
+    license = "GPL-2+",
+    configure_args = [
+        "--without-gtk",
+        "--without-gnome",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "download_source", "precompiled_package")
+
+download_source(
+    name = "ripgrep-src",
+    src_uri = "https://github.com/BurntSushi/ripgrep/releases/download/14.1.0/ripgrep-14.1.0-x86_64-unknown-linux-musl.tar.gz",
+    sha256 = "5c111a25a3b7f4a56b2e3f1f8be4fdde9e4e8cbf5e6b7a8c9d0e1f2a3b4c5d6e",
+)
+
+precompiled_package(
+    name = "ripgrep",
+    source = ":ripgrep-src",
+    version = "14.1.0",
+    description = "Recursively searches directories for a regex pattern",
+    homepage = "https://github.com/BurntSushi/ripgrep",
+    license = "MIT",
+    install_script = """
+        mkdir -p "$PREFIX/bin" "$PREFIX/share/man/man1" "$PREFIX/share/bash-completion/completions"
+        cp ripgrep-14.1.0-x86_64-unknown-linux-musl/rg "$PREFIX/bin/"
+        cp ripgrep-14.1.0-x86_64-unknown-linux-musl/doc/rg.1 "$PREFIX/share/man/man1/" || true
+        cp ripgrep-14.1.0-x86_64-unknown-linux-musl/complete/rg.bash "$PREFIX/share/bash-completion/completions/rg" || true
+        chmod +x "$PREFIX/bin/rg"
+    """,
+    visibility = ["PUBLIC"],
+)

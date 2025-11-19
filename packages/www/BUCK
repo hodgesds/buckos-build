@@ -1,0 +1,30 @@
+# Web browsers package group
+
+filegroup(
+    name = "gui-browsers",
+    srcs = [
+        "//packages/www/firefox:firefox",
+        "//packages/www/chromium:chromium",
+        "//packages/www/ladybird:ladybird",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "text-browsers",
+    srcs = [
+        "//packages/www/lynx:lynx",
+        "//packages/www/w3m:w3m",
+        "//packages/www/links:links",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-browsers",
+    srcs = [
+        ":gui-browsers",
+        ":text-browsers",
+    ],
+    visibility = ["PUBLIC"],
+)

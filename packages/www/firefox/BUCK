@@ -1,0 +1,56 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "firefox-src",
+    src_uri = "https://archive.mozilla.org/pub/firefox/releases/128.0/source/firefox-128.0.source.tar.xz",
+    sha256 = "1d0c0ff2c0d3bb9d1da4f4f67e8b8c23c91cfd8a5eb29a7d2c9d41ebf0a4f3e4",
+)
+
+binary_package(
+    name = "firefox",
+    srcs = [":firefox-src"],
+    version = "128.0",
+    description = "Mozilla Firefox web browser - fast, private, and secure",
+    homepage = "https://www.mozilla.org/firefox/",
+    license = "MPL-2.0",
+    install_script = """
+        cd $SRCS/firefox-128.0
+
+        # Create mozconfig
+        cat > mozconfig << 'MOZCONFIG'
+ac_add_options --enable-application=browser
+ac_add_options --enable-official-branding
+ac_add_options --enable-optimize
+ac_add_options --disable-debug
+ac_add_options --prefix=/usr
+ac_add_options --libdir=/usr/lib
+ac_add_options --enable-alsa
+ac_add_options --enable-pulseaudio
+ac_add_options --with-system-zlib
+ac_add_options --with-system-png
+ac_add_options --with-system-jpeg
+ac_add_options --with-system-webp
+ac_add_options --with-system-icu
+ac_add_options --with-system-libvpx
+ac_add_options --enable-system-ffi
+ac_add_options --enable-system-pixman
+MOZCONFIG
+
+        export MOZCONFIG="$PWD/mozconfig"
+        export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=pip
+
+        ./mach build
+        DESTDIR="$OUT" ./mach install
+    """,
+    deps = [
+        "//packages/core/zlib",
+        "//packages/desktop/gtk",
+        "//packages/network/nss",
+        "//packages/network/nspr",
+        "//packages/lang/python:python",
+        "//packages/lang/rust:rust",
+        "//packages/lang/cbindgen:cbindgen",
+        "//packages/lang/nodejs:nodejs",
+    ],
+    visibility = ["PUBLIC"],
+)

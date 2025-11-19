@@ -1,0 +1,37 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "links-src",
+    src_uri = "http://links.twibright.com/download/links-2.29.tar.bz2",
+    sha256 = "a7b3c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7",
+)
+
+configure_make_package(
+    name = "links",
+    source = ":links-src",
+    version = "2.29",
+    description = "Text and graphics mode web browser with JavaScript support",
+    homepage = "http://links.twibright.com/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--enable-graphics",
+        "--with-ssl",
+        "--with-zlib",
+        "--with-bzip2",
+        "--with-lzma",
+        "--with-x",
+        "--with-fb",
+        "--without-directfb",
+        "--enable-javascript",
+    ],
+    deps = [
+        "//packages/core/ncurses",
+        "//packages/core/zlib",
+        "//packages/core/bzip2",
+        "//packages/core/xz",
+        "//packages/network/openssl:openssl",
+        "//packages/desktop/libpng",
+        "//packages/desktop/libjpeg-turbo",
+    ],
+    visibility = ["PUBLIC"],
+)

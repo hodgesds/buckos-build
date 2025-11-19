@@ -1,0 +1,39 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "ladybird-src",
+    src_uri = "https://github.com/LadybirdWebBrowser/ladybird/archive/refs/heads/master.tar.gz",
+    sha256 = "0000000000000000000000000000000000000000000000000000000000000000",
+)
+
+binary_package(
+    name = "ladybird",
+    srcs = [":ladybird-src"],
+    version = "0.1.0",
+    description = "Ladybird - an independent web browser built from scratch",
+    homepage = "https://ladybird.dev/",
+    license = "BSD-2-Clause",
+    install_script = """
+        cd $SRCS/ladybird-*
+
+        # Build with CMake
+        cmake -S Meta/Lagom -B Build/lagom \\
+            -GNinja \\
+            -DCMAKE_BUILD_TYPE=Release \\
+            -DCMAKE_INSTALL_PREFIX=/usr \\
+            -DENABLE_QT=ON \\
+            -DENABLE_LAGOM_LADYBIRD=ON
+
+        ninja -C Build/lagom
+
+        # Install
+        DESTDIR="$OUT" ninja -C Build/lagom install
+    """,
+    deps = [
+        "//packages/core/zlib",
+        "//packages/desktop/qt6-base",
+        "//packages/lang/clang:clang",
+        "//packages/network/curl",
+    ],
+    visibility = ["PUBLIC"],
+)

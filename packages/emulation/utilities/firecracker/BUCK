@@ -1,0 +1,56 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# Firecracker - Secure and fast microVMs
+download_source(
+    name = "firecracker-src",
+    src_uri = "https://github.com/firecracker-microvm/firecracker/archive/refs/tags/v1.9.1.tar.gz",
+    sha256 = "f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
+)
+
+configure_make_package(
+    name = "firecracker",
+    source = ":firecracker-src",
+    version = "1.9.1",
+    description = "Secure and fast microVMs for serverless computing",
+    homepage = "https://firecracker-microvm.github.io/",
+    license = "Apache-2.0",
+    env = {
+        "CARGO_HOME": "/tmp/cargo",
+    },
+    pre_configure = """
+# Build firecracker and jailer
+cargo build --release --target x86_64-unknown-linux-musl \
+    -p firecracker -p jailer
+    """,
+    post_install = """
+#!/bin/bash
+set -e
+
+mkdir -p "$DESTDIR/usr/bin"
+install -m 0755 build/cargo_target/x86_64-unknown-linux-musl/release/firecracker "$DESTDIR/usr/bin/"
+install -m 0755 build/cargo_target/x86_64-unknown-linux-musl/release/jailer "$DESTDIR/usr/bin/"
+
+# Install default configuration
+mkdir -p "$DESTDIR/etc/firecracker"
+cat > "$DESTDIR/etc/firecracker/config.json" << 'EOF'
+{
+  "boot-source": {
+    "kernel_image_path": "/var/lib/firecracker/kernel/vmlinux",
+    "boot_args": "console=ttyS0 reboot=k panic=1 pci=off"
+  },
+  "machine-config": {
+    "vcpu_count": 2,
+    "mem_size_mib": 1024
+  }
+}
+EOF
+
+# Create directories
+mkdir -p "$DESTDIR/var/lib/firecracker/kernel"
+mkdir -p "$DESTDIR/var/lib/firecracker/rootfs"
+    """,
+    deps = [
+        "//packages/lang/rust:rust",
+    ],
+    visibility = ["PUBLIC"],
+)

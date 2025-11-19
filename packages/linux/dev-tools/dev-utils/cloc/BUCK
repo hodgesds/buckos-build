@@ -3,23 +3,27 @@ load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 # cloc - Count lines of code
 download_source(
     name = "cloc-src",
-    src_uri = "https://github.com/AlDanial/cloc/releases/download/v2.00/cloc-2.00.tar.gz",
-    sha256 = "688b9ed8f8e8f2d9e7e5f5c7f8a0b1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7c3",
+    src_uri = "https://github.com/AlDanial/cloc/releases/download/v2.06/cloc-2.06.tar.gz",
+    sha256 = "PLACEHOLDER_HASH",
 )
 
 configure_make_package(
     name = "cloc",
     source = ":cloc-src",
-    version = "2.00",
-    description = "Count lines of code",
+    version = "2.06",
+    description = "Count blank lines, comment lines, and physical lines of source code",
     homepage = "https://github.com/AlDanial/cloc",
-    license = "GPL-2",
+    license = "GPL-2.0",
+    build_in_source = True,
     configure_args = [],
+    make_args = [
+        "prefix=/usr",
+    ],
     install_args = [
         "prefix=/usr",
     ],
     deps = [
-        "//packages/linux/lang/perl",
+        "//packages/linux/languages/perl",
     ],
     visibility = ["PUBLIC"],
 )

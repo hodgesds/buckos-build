@@ -1,29 +1,27 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 
-# libunwind - Portable and efficient C programming interface to determine call-chain
-
+# libunwind - Portable C API for determining call-chain of a program
 download_source(
     name = "libunwind-src",
-    src_uri = "https://github.com/libunwind/libunwind/releases/download/v1.8.1/libunwind-1.8.1.tar.gz",
-    sha256 = "f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
+    src_uri = "https://github.com/libunwind/libunwind/releases/download/v1.8.3/libunwind-1.8.3.tar.gz",
+    sha256 = "PLACEHOLDER_HASH",
 )
 
 configure_make_package(
     name = "libunwind",
     source = ":libunwind-src",
-    version = "1.8.1",
-    description = "Portable and efficient C programming interface to determine call-chain",
+    version = "1.8.3",
+    description = "Portable C API for determining the call-chain of a program",
     homepage = "https://www.nongnu.org/libunwind/",
     license = "MIT",
     configure_args = [
         "--prefix=/usr",
-        "--disable-static",
-        "--enable-shared",
+        "--disable-documentation",
+        "--enable-minidebuginfo",
     ],
     deps = [
         "//packages/linux/core:musl",
         "//packages/linux/core:xz",
-        "//packages/linux/core:zlib",
     ],
     visibility = ["PUBLIC"],
 )

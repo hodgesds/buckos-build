@@ -1,17 +1,17 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 
-# pbzip2 - Parallel implementation of bzip2
+# pbzip2 - Parallel bzip2 compression
 download_source(
     name = "pbzip2-src",
     src_uri = "https://launchpad.net/pbzip2/1.1/1.1.13/+download/pbzip2-1.1.13.tar.gz",
-    sha256 = "PLACEHOLDER_HASH",
+    sha256 = "8fd13eaaa266f7ee91f85c1ea97c86d9c9cc985969db9059cdebcb1e1b7bdbe6",
 )
 
 configure_make_package(
     name = "pbzip2",
     source = ":pbzip2-src",
     version = "1.1.13",
-    description = "Parallel implementation of the bzip2 block-sorting file compressor",
+    description = "Parallel implementation of bzip2 for multi-processor systems",
     homepage = "http://compression.ca/pbzip2/",
     license = "BSD",
     build_in_source = True,

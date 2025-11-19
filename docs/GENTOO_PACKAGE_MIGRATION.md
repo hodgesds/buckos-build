@@ -271,7 +271,7 @@ Agents should:
 | `pwsh` | app-shells | shells/pwsh | LOW |
 | `rc` | app-shells | shells/rc | LOW |
 | `yash` | app-shells | shells/yash | LOW |
-| `bash-completion` | app-shells | shells/bash-completion | HIGH |
+| `bash-completion` | app-shells | shells/bash-completion | Already added |
 | `zsh-completions` | app-shells | shells/zsh-completions | HIGH |
 | `gentoo-zsh-completions` | app-shells | shells/gentoo-zsh-completions | LOW |
 | `starship` | app-shells | shells/starship | MEDIUM |

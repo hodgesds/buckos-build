@@ -2,7 +2,7 @@
 filegroup(
     name = "all-shells",
     srcs = [
-        "//packages/shells/bash",
+        "//packages/core/bash",
         "//packages/shells/zsh",
         "//packages/shells/dash",
         "//packages/shells/fish",
@@ -15,7 +15,7 @@ filegroup(
 filegroup(
     name = "posix-shells",
     srcs = [
-        "//packages/shells/bash",
+        "//packages/core/bash",
         "//packages/shells/dash",
     ],
     visibility = ["PUBLIC"],

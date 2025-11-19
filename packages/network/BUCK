@@ -29,7 +29,7 @@ filegroup(
         "//packages/network/wget:wget",
         "//packages/network/lftp:lftp",
         "//packages/network/aria2:aria2",
-        "//packages/network/rsync:rsync",
+        "//packages/system/apps/rsync:rsync",
     ],
     visibility = ["PUBLIC"],
 )
@@ -41,9 +41,9 @@ filegroup(
 filegroup(
     name = "browsers",
     srcs = [
-        "//packages/network/lynx:lynx",
-        "//packages/network/links:links",
-        "//packages/network/w3m:w3m",
+        "//packages/www/lynx:lynx",
+        "//packages/www/links:links",
+        "//packages/www/w3m:w3m",
     ],
     visibility = ["PUBLIC"],
 )

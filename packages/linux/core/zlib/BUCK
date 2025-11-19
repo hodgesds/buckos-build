@@ -13,5 +13,6 @@ configure_make_package(
     description = "A massively spiffy yet delicately unobtrusive compression library",
     homepage = "https://zlib.net/",
     license = "zlib",
+    maintainers = ["core-team"],
     visibility = ["PUBLIC"],
 )

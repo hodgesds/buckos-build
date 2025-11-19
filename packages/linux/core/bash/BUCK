@@ -22,5 +22,6 @@ configure_make_package(
 ln -sf bash "$DESTDIR/usr/bin/sh"
 """,
     deps = ["//packages/linux/core/readline", "//packages/linux/core/ncurses"],
+    maintainers = ["core-team"],
     visibility = ["PUBLIC"],
 )

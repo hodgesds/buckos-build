@@ -1,0 +1,36 @@
+# Brightness control packages for laptops
+
+filegroup(
+    name = "backlight",
+    srcs = [
+        "//packages/laptop/brightness/brightnessctl:brightnessctl",
+        "//packages/laptop/brightness/light:light",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "external-monitors",
+    srcs = [
+        "//packages/laptop/brightness/ddcutil:ddcutil",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "essential",
+    srcs = [
+        "//packages/laptop/brightness/brightnessctl:brightnessctl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-brightness",
+    srcs = [
+        "//packages/laptop/brightness/brightnessctl:brightnessctl",
+        "//packages/laptop/brightness/light:light",
+        "//packages/laptop/brightness/ddcutil:ddcutil",
+    ],
+    visibility = ["PUBLIC"],
+)

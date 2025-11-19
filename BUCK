@@ -48,6 +48,27 @@ alias(
     visibility = ["PUBLIC"],
 )
 
+# Default cron
+alias(
+    name = "cron",
+    actual = "//packages/sys-apps:cronie",
+    visibility = ["PUBLIC"],
+)
+
+# Default privilege escalation
+alias(
+    name = "sudo",
+    actual = "//packages/sys-apps:sudo",
+    visibility = ["PUBLIC"],
+)
+
+# Default terminal multiplexer
+alias(
+    name = "multiplexer",
+    actual = "//packages/sys-apps:tmux",
+    visibility = ["PUBLIC"],
+)
+
 # =============================================================================
 # Package groups for convenience
 # =============================================================================
@@ -87,6 +108,30 @@ filegroup(
         "//packages/terminals:st",
         "//packages/terminals:alacritty",
         "//packages/terminals:foot",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "sys-apps-packages",
+    srcs = [
+        "//packages/sys-apps:cronie",
+        "//packages/sys-apps:sudo",
+        "//packages/sys-apps:tmux",
+        "//packages/sys-apps:htop",
+        "//packages/sys-apps:rsync",
+        "//packages/sys-apps:logrotate",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "monitoring-packages",
+    srcs = [
+        "//packages/sys-apps:htop",
+        "//packages/sys-apps:lsof",
+        "//packages/sys-apps:strace",
+        "//packages/sys-apps:procps-ng",
     ],
     visibility = ["PUBLIC"],
 )

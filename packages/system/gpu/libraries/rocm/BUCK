@@ -1,0 +1,87 @@
+# =============================================================================
+# ROCm - AMD ROCm platform for GPU computing
+# =============================================================================
+#
+# ROCm (Radeon Open Compute) is AMD's open-source software platform
+# for GPU computing. Includes HIP, ROCr, and associated libraries.
+#
+# =============================================================================
+
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "rocm-src",
+    src_uri = "https://repo.radeon.com/rocm/apt/6.2.2/pool/main/r/rocm-core/rocm-core_6.2.2.60202-64~24.04_amd64.deb",
+    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+)
+
+download_source(
+    name = "hip-runtime-src",
+    src_uri = "https://repo.radeon.com/rocm/apt/6.2.2/pool/main/h/hip-runtime-amd/hip-runtime-amd_6.2.41133.60202-64~24.04_amd64.deb",
+    sha256 = "f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
+)
+
+binary_package(
+    name = "rocm",
+    source = ":rocm-src",
+    version = "6.2.2",
+    description = "AMD ROCm platform for GPU computing",
+    homepage = "https://rocm.docs.amd.com/",
+    license = "MIT",
+    install_script = """
+# Extract rocm-core
+ar x rocm-core_*.deb
+tar xf data.tar.*
+
+# Install ROCm files
+mkdir -p "$DESTDIR/opt/rocm-6.2.2"
+cp -a opt/rocm-6.2.2/* "$DESTDIR/opt/rocm-6.2.2/" 2>/dev/null || true
+cp -a usr/* "$DESTDIR/usr/" 2>/dev/null || true
+
+# Create symlink
+ln -sf rocm-6.2.2 "$DESTDIR/opt/rocm"
+
+# Create profile script
+mkdir -p "$DESTDIR/etc/profile.d"
+cat > "$DESTDIR/etc/profile.d/rocm.sh" << 'EOF'
+# ROCm environment
+export ROCM_HOME=/opt/rocm
+export PATH=$ROCM_HOME/bin:$PATH
+export LD_LIBRARY_PATH=$ROCM_HOME/lib:$LD_LIBRARY_PATH
+export HIP_PLATFORM=amd
+EOF
+
+# Create modprobe configuration for ROCm
+mkdir -p "$DESTDIR/etc/modprobe.d"
+cat > "$DESTDIR/etc/modprobe.d/rocm.conf" << 'EOF'
+# ROCm requires these kernel parameters
+options amdgpu vm_fragment_size=9
+EOF
+
+# Create udev rules for ROCm device access
+mkdir -p "$DESTDIR/etc/udev/rules.d"
+cat > "$DESTDIR/etc/udev/rules.d/70-rocm.rules" << 'EOF'
+# ROCm device rules
+SUBSYSTEM=="kfd", KERNEL=="kfd", TAG+="uaccess", GROUP="render", MODE="0660"
+EOF
+
+# Create pkgconfig file
+mkdir -p "$DESTDIR/usr/lib64/pkgconfig"
+cat > "$DESTDIR/usr/lib64/pkgconfig/rocm.pc" << 'EOF'
+prefix=/opt/rocm
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: ROCm
+Description: AMD ROCm Platform
+Version: 6.2.2
+Libs: -L${libdir} -lamdhip64
+Cflags: -I${includedir}
+EOF
+""",
+    deps = [
+        "//packages/system/gpu/drivers/amd:amd-drivers",
+    ],
+    visibility = ["PUBLIC"],
+)

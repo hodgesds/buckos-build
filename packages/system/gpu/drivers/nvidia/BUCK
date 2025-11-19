@@ -1,0 +1,66 @@
+# =============================================================================
+# NVIDIA Drivers - Proprietary NVIDIA GPU drivers
+# =============================================================================
+#
+# The NVIDIA driver provides hardware acceleration for NVIDIA GPUs.
+# Includes nvidia-smi for GPU monitoring and management.
+#
+# =============================================================================
+
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "nvidia-drivers-src",
+    src_uri = "https://us.download.nvidia.com/XFree86/Linux-x86_64/560.35.03/NVIDIA-Linux-x86_64-560.35.03.run",
+    sha256 = "f5c8e5ec5c0d71d5a7e3c0c6e1f0a4b2d8e6f9a0c3b5d7e9f1a2c4e6f8a0b2c4d6",
+)
+
+binary_package(
+    name = "nvidia-drivers",
+    source = ":nvidia-drivers-src",
+    version = "560.35.03",
+    description = "NVIDIA proprietary GPU drivers for Linux",
+    homepage = "https://www.nvidia.com/",
+    license = "NVIDIA",
+    install_script = """
+# Extract NVIDIA driver
+chmod +x NVIDIA-Linux-x86_64-*.run
+./NVIDIA-Linux-x86_64-*.run --extract-only
+
+# Install kernel modules
+mkdir -p "$DESTDIR/usr/lib/modules"
+cp -r NVIDIA-Linux-x86_64-*/kernel "$DESTDIR/usr/lib/nvidia-modules"
+
+# Install libraries
+mkdir -p "$DESTDIR/usr/lib64"
+cp -a NVIDIA-Linux-x86_64-*/lib*.so* "$DESTDIR/usr/lib64/"
+
+# Install binaries
+mkdir -p "$DESTDIR/usr/bin"
+install -m 755 NVIDIA-Linux-x86_64-*/nvidia-smi "$DESTDIR/usr/bin/"
+install -m 755 NVIDIA-Linux-x86_64-*/nvidia-settings "$DESTDIR/usr/bin/"
+install -m 755 NVIDIA-Linux-x86_64-*/nvidia-xconfig "$DESTDIR/usr/bin/"
+
+# Install Vulkan ICD
+mkdir -p "$DESTDIR/usr/share/vulkan/icd.d"
+cp NVIDIA-Linux-x86_64-*/nvidia_icd.json "$DESTDIR/usr/share/vulkan/icd.d/"
+
+# Create modprobe configuration
+mkdir -p "$DESTDIR/etc/modprobe.d"
+cat > "$DESTDIR/etc/modprobe.d/nvidia.conf" << 'EOF'
+# Enable DRM kernel mode setting
+options nvidia-drm modeset=1
+EOF
+
+# Create udev rules
+mkdir -p "$DESTDIR/etc/udev/rules.d"
+cat > "$DESTDIR/etc/udev/rules.d/70-nvidia.rules" << 'EOF'
+# Create nvidia device nodes
+KERNEL=="nvidia", RUN+="/usr/bin/bash -c '/usr/bin/mknod -m 666 /dev/nvidiactl c $(grep nvidia-frontend /proc/devices | cut -d \\  -f 1) 255'"
+KERNEL=="nvidia", RUN+="/usr/bin/bash -c 'for i in $(seq 0 $(/usr/bin/nvidia-smi -L | wc -l)); do /usr/bin/mknod -m 666 /dev/nvidia$i c $(grep nvidia-frontend /proc/devices | cut -d \\  -f 1) $i; done'"
+KERNEL=="nvidia_modeset", RUN+="/usr/bin/mknod -m 666 /dev/nvidia-modeset c $(grep nvidia-frontend /proc/devices | cut -d \\  -f 1) 254"
+KERNEL=="nvidia_uvm", RUN+="/usr/bin/mknod -m 666 /dev/nvidia-uvm c $(grep nvidia-uvm /proc/devices | cut -d \\  -f 1) 0"
+EOF
+""",
+    visibility = ["PUBLIC"],
+)

@@ -1,4 +1,4 @@
-# Sideros Linux
+# BuckOs Linux
 
 A Buck2-based Linux distribution build system, inspired by Gentoo's ebuild system.
 

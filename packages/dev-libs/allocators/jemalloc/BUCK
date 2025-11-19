@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "jemalloc-src",
+    src_uri = "https://github.com/jemalloc/jemalloc/releases/download/5.3.0/jemalloc-5.3.0.tar.bz2",
+    sha256 = "2db82d1e7119df3e71b7640219b6dfe84789bc0537983c3b7ac4f7189aecfeaa",
+)
+
+configure_make_package(
+    name = "jemalloc",
+    source = ":jemalloc-src",
+    version = "5.3.0",
+    description = "General-purpose scalable concurrent malloc implementation",
+    homepage = "https://jemalloc.net/",
+    license = "BSD-2-Clause",
+    configure_args = [
+        "--disable-static",
+        "--enable-prof",
+    ],
+    visibility = ["PUBLIC"],
+)

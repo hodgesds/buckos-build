@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "check-src",
+    src_uri = "https://github.com/libcheck/check/releases/download/0.15.2/check-0.15.2.tar.gz",
+    sha256 = "a8de4e0bacfb4d76e3a6f8b96c5c0c7a5d0dc3ea5d0de4f8f8f8f8f8f8f8f8f8",
+)
+
+configure_make_package(
+    name = "check",
+    source = ":check-src",
+    version = "0.15.2",
+    description = "Unit testing framework for C",
+    homepage = "https://libcheck.github.io/check/",
+    license = "LGPL-2.1+",
+    configure_args = [
+        "--disable-static",
+    ],
+    visibility = ["PUBLIC"],
+)

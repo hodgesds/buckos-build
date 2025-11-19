@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libev-src",
+    src_uri = "http://dist.schmorp.de/libev/libev-4.33.tar.gz",
+    sha256 = "507eb7b8d1015fbec5b935f34ebed15bf346bed04a11ab82b8eee848c4205aea",
+)
+
+configure_make_package(
+    name = "libev",
+    source = ":libev-src",
+    version = "4.33",
+    description = "High-performance event loop library",
+    homepage = "http://software.schmorp.de/pkg/libev.html",
+    license = "BSD-2-Clause",
+    configure_args = [
+        "--disable-static",
+    ],
+    visibility = ["PUBLIC"],
+)

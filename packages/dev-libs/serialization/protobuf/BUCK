@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "cmake_package")
+
+download_source(
+    name = "protobuf-src",
+    src_uri = "https://github.com/protocolbuffers/protobuf/releases/download/v26.1/protobuf-26.1.tar.gz",
+    sha256 = "4fc5ff1b2c339fb86cd3a25f0b5311a1c8e5e2a195c0a25e96cbeabe8968fa1e",
+)
+
+cmake_package(
+    name = "protobuf",
+    source = ":protobuf-src",
+    version = "26.1",
+    description = "Google's language-neutral, platform-neutral protocol buffers",
+    homepage = "https://protobuf.dev/",
+    license = "BSD-3-Clause",
+    cmake_args = [
+        "-Dprotobuf_BUILD_TESTS=OFF",
+        "-Dprotobuf_BUILD_SHARED_LIBS=ON",
+        "-Dprotobuf_ABSL_PROVIDER=package",
+    ],
+    deps = [
+        "//packages/dev-libs/google/abseil-cpp",
+        "//packages/core/zlib",
+    ],
+    visibility = ["PUBLIC"],
+)

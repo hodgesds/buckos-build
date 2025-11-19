@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libunistring-src",
+    src_uri = "https://ftp.gnu.org/gnu/libunistring/libunistring-1.2.tar.xz",
+    sha256 = "632bd65ed74a881ca8a0309a1001c428bd1cbd5cd7ddbf8cedcd2e65f4dcdc44",
+)
+
+configure_make_package(
+    name = "libunistring",
+    source = ":libunistring-src",
+    version = "1.2",
+    description = "Library for manipulating Unicode strings",
+    homepage = "https://www.gnu.org/software/libunistring/",
+    license = "LGPL-3.0+",
+    configure_args = [
+        "--disable-static",
+    ],
+    visibility = ["PUBLIC"],
+)

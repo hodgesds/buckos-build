@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "oniguruma-src",
+    src_uri = "https://github.com/kkos/oniguruma/releases/download/v6.9.9/onig-6.9.9.tar.gz",
+    sha256 = "60162bd3b9fc6f4886d4c7a07925ffd374167732f55dce8c491bfd9cd818a6cf",
+)
+
+configure_make_package(
+    name = "oniguruma",
+    source = ":oniguruma-src",
+    version = "6.9.9",
+    description = "Regular expressions library with a variety of character encodings",
+    homepage = "https://github.com/kkos/oniguruma",
+    license = "BSD-2-Clause",
+    configure_args = [
+        "--disable-static",
+    ],
+    visibility = ["PUBLIC"],
+)

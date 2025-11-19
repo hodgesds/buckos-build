@@ -86,6 +86,16 @@ filegroup(
 
 # Shell packages
 filegroup(
+    name = "editor-packages",
+    srcs = [
+        "//packages/editors:vim",
+        "//packages/editors:neovim",
+        "//packages/editors:emacs",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
     name = "shell-packages",
     srcs = [
         "//packages/shells:bash",

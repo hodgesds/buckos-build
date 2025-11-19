@@ -1,0 +1,31 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "busybox-src",
+    src_uri = "https://busybox.net/downloads/busybox-1.36.1.tar.bz2",
+    sha256 = "b8cc24c9574d809e7279c3be349795c5d5ceb6fdf19ca709f80cde50e47de314",
+)
+
+configure_make_package(
+    name = "busybox",
+    source = ":busybox-src",
+    version = "1.36.1",
+    description = "BusyBox combines tiny versions of many common UNIX utilities into a single small executable",
+    homepage = "https://busybox.net/",
+    license = "GPL-2.0",
+    pre_configure = """
+# Use default config and enable static linking for init
+make defconfig
+sed -i 's/# CONFIG_STATIC is not set/CONFIG_STATIC=y/' .config
+""",
+    make_args = [
+        "CONFIG_PREFIX=$DESTDIR",
+    ],
+    post_install = """
+# Create symlinks in standard locations
+mkdir -p "$DESTDIR/bin" "$DESTDIR/sbin"
+cd "$DESTDIR"
+# busybox installs with CONFIG_PREFIX, symlinks are auto-created
+""",
+    visibility = ["PUBLIC"],
+)

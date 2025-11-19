@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "xz-src",
+    src_uri = "https://github.com/tukaani-project/xz/releases/download/v5.4.5/xz-5.4.5.tar.xz",
+    sha256 = "8ccf5fff868c006f29522e386fb4c6a1b66463fbca65a4cfc3c4bd596e895e79",
+)
+
+configure_make_package(
+    name = "xz",
+    source = ":xz-src",
+    version = "5.4.5",
+    description = "XZ Utils - Lossless data compression",
+    homepage = "https://tukaani.org/xz/",
+    license = "public-domain",
+    configure_args = [
+        "--disable-doc",
+        "--disable-nls",
+    ],
+    visibility = ["PUBLIC"],
+)

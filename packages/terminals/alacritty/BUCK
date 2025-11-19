@@ -1,0 +1,28 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "alacritty-src",
+    src_uri = "https://github.com/alacritty/alacritty/archive/refs/tags/v0.13.1.tar.gz",
+    sha256 = "38a42e23e1e6faaa9e300347df3f7b58c99e34f1c5a40b588826bce5d6735a93",
+)
+
+configure_make_package(
+    name = "alacritty",
+    source = ":alacritty-src",
+    version = "0.13.1",
+    description = "A cross-platform, GPU-accelerated terminal emulator",
+    homepage = "https://alacritty.org/",
+    license = "Apache-2.0",
+    pre_configure = """
+# Alacritty uses Cargo/Rust
+if command -v cargo >/dev/null 2>&1; then
+    cargo build --release
+fi
+""",
+    configure_args = [],
+    post_install = """
+mkdir -p "$DESTDIR/usr/bin"
+cp target/release/alacritty "$DESTDIR/usr/bin/" 2>/dev/null || true
+""",
+    visibility = ["PUBLIC"],
+)

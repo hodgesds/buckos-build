@@ -1,0 +1,18 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "less-src",
+    src_uri = "https://www.greenwoodsoftware.com/less/less-643.tar.gz",
+    sha256 = "2911b5432c836fa084c8a2e68f0d81b3ce40b17aa8d0e3e07aca473a9a9c53e8",
+)
+
+configure_make_package(
+    name = "less",
+    source = ":less-src",
+    version = "643",
+    description = "Less is a free, open-source file pager",
+    homepage = "https://www.greenwoodsoftware.com/less/",
+    license = "GPL-3.0",
+    deps = ["//packages/core/ncurses"],
+    visibility = ["PUBLIC"],
+)

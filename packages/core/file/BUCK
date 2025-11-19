@@ -1,0 +1,17 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "file-src",
+    src_uri = "https://astron.com/pub/file/file-5.45.tar.gz",
+    sha256 = "fc97f51029bb0e2c9f4e3bfbd5f4c8f3e2b9e08047e5b70d4e4e4e8d4c5be8c0",
+)
+
+configure_make_package(
+    name = "file",
+    source = ":file-src",
+    version = "5.45",
+    description = "File type identification utility",
+    homepage = "https://www.darwinsys.com/file/",
+    license = "BSD-2-Clause",
+    visibility = ["PUBLIC"],
+)

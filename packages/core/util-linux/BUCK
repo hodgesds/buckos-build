@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "util-linux-src",
+    src_uri = "https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.39/util-linux-2.39.tar.xz",
+    sha256 = "32b744f9c8e97d3b4d2a3a8d4ec5e652cfb51ed4fb8c1f0c55dc9e3c1f9bddd4",
+)
+
+configure_make_package(
+    name = "util-linux",
+    source = ":util-linux-src",
+    version = "2.39",
+    description = "Miscellaneous system utilities for Linux",
+    homepage = "https://github.com/util-linux/util-linux",
+    license = "GPL-2.0",
+    configure_args = [
+        "--disable-all-programs",
+        "--enable-mount",
+        "--enable-losetup",
+        "--enable-fsck",
+        "--enable-blkid",
+        "--enable-libblkid",
+        "--enable-libuuid",
+        "--without-systemd",
+        "--without-udev",
+    ],
+    deps = ["//packages/core/musl"],
+    visibility = ["PUBLIC"],
+)

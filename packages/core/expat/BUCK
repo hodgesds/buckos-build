@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "expat-src",
+    src_uri = "https://github.com/libexpat/libexpat/releases/download/R_2_6_0/expat-2.6.0.tar.xz",
+    sha256 = "cb5f5a4dfe68e9cc63ccf8a92a7385f985b6ed8149e0c9a0cf68aa0f3a6a59fb",
+)
+
+configure_make_package(
+    name = "expat",
+    source = ":expat-src",
+    version = "2.6.0",
+    description = "Stream-oriented XML parser library",
+    homepage = "https://libexpat.github.io/",
+    license = "MIT",
+    configure_args = [
+        "--without-docbook",
+    ],
+    visibility = ["PUBLIC"],
+)

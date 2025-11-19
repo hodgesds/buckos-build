@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "readline-src",
+    src_uri = "https://ftp.gnu.org/gnu/readline/readline-8.2.tar.gz",
+    sha256 = "3feb7171f16a84ee82ca18a36d7b9be109a52c04f492a053331571d0f8e7a2d7",
+)
+
+configure_make_package(
+    name = "readline",
+    source = ":readline-src",
+    version = "8.2",
+    description = "Library for editing typed command lines",
+    homepage = "https://tiswww.case.edu/php/chet/readline/rltop.html",
+    license = "GPL-3.0",
+    configure_args = [
+        "--with-curses",
+    ],
+    deps = ["//packages/core/ncurses"],
+    visibility = ["PUBLIC"],
+)

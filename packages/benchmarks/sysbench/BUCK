@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "sysbench-src",
+    src_uri = "https://github.com/akopytov/sysbench/archive/refs/tags/1.0.20.tar.gz",
+    sha256 = "e8ee79b1f399b2d167e6a90b1e7a5f0fe47958e0d30ff7777e4fe2e20aeea21c",
+)
+
+configure_make_package(
+    name = "sysbench",
+    source = ":sysbench-src",
+    version = "1.0.20",
+    description = "Multi-threaded benchmark tool for CPU, memory, threads, mutex, and database",
+    homepage = "https://github.com/akopytov/sysbench",
+    license = "GPL-2.0",
+    pre_configure = """
+./autogen.sh
+""",
+    configure_args = [
+        "--without-mysql",
+        "--without-pgsql",
+    ],
+    visibility = ["PUBLIC"],
+)

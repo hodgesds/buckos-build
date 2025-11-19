@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "fish-src",
+    src_uri = "https://github.com/fish-shell/fish-shell/releases/download/3.7.0/fish-3.7.0.tar.xz",
+    sha256 = "df1b7378b714f0690b285ed9e4e58afe270ac98dbc9ca5839589e34d199014d0",
+)
+
+configure_make_package(
+    name = "fish",
+    source = ":fish-src",
+    version = "3.7.0",
+    description = "Smart and user-friendly command line shell",
+    homepage = "https://fishshell.com/",
+    license = "GPL-2.0",
+    pre_configure = """
+# Fish uses CMake, need to handle differently
+if command -v cmake >/dev/null 2>&1; then
+    mkdir -p build
+    cd build
+    cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+fi
+""",
+    configure_args = [],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "foot-src",
+    src_uri = "https://codeberg.org/dnkl/foot/archive/1.16.2.tar.gz",
+    sha256 = "b0be7f4daa4d59e89c4ccd2b0b7d9cd8b64a0c5b1d5f9ed3aacc6e0f5d23a9d2",
+)
+
+configure_make_package(
+    name = "foot",
+    source = ":foot-src",
+    version = "1.16.2",
+    description = "Fast, lightweight and minimalistic Wayland terminal emulator",
+    homepage = "https://codeberg.org/dnkl/foot",
+    license = "MIT",
+    pre_configure = """
+# Foot uses meson
+if command -v meson >/dev/null 2>&1; then
+    meson setup build --prefix=/usr
+fi
+""",
+    configure_args = [],
+    visibility = ["PUBLIC"],
+)

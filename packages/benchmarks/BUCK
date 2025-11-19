@@ -1,389 +1,21 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
-
-# =============================================================================
-# stress-ng - Stress test tool for Linux systems
-# =============================================================================
-
-download_source(
-    name = "stress-ng-src",
-    src_uri = "https://github.com/ColinIanKing/stress-ng/archive/refs/tags/V0.17.08.tar.gz",
-    sha256 = "a8ce0fba9625b0f1d4e32be6bc65ee3f6b2aedf6aa9156df9b8eb31e3e4f4af8",
-)
-
-configure_make_package(
-    name = "stress-ng",
-    source = ":stress-ng-src",
-    version = "0.17.08",
-    description = "Stress test tool for Linux systems - CPU, memory, I/O, and more",
-    homepage = "https://github.com/ColinIanKing/stress-ng",
-    license = "GPL-2.0",
-    pre_configure = """
-# stress-ng uses make directly without configure
-true
-""",
-    configure_args = [],
-    make_args = ["STATIC=1"],
-    post_install = """
-mkdir -p "$DESTDIR/usr/bin"
-cp stress-ng "$DESTDIR/usr/bin/" 2>/dev/null || true
-""",
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# fio - Flexible I/O Tester
-# =============================================================================
-
-download_source(
-    name = "fio-src",
-    src_uri = "https://github.com/axboe/fio/archive/refs/tags/fio-3.36.tar.gz",
-    sha256 = "b34b8f3c5ed7ceb5bbaac91c1035e1c5f95c9250a43c0a024bbfc3ca6c7a4f41",
-)
-
-configure_make_package(
-    name = "fio",
-    source = ":fio-src",
-    version = "3.36",
-    description = "Flexible I/O tester - benchmark and stress test tool for storage",
-    homepage = "https://github.com/axboe/fio",
-    license = "GPL-2.0",
-    configure_args = [
-        "--disable-native",
-    ],
-    deps = [
-        "//packages/core:zlib",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# sysbench - Multi-threaded benchmark tool
-# =============================================================================
-
-download_source(
-    name = "sysbench-src",
-    src_uri = "https://github.com/akopytov/sysbench/archive/refs/tags/1.0.20.tar.gz",
-    sha256 = "e8ee79b1f399b2d167e6a90b1e7a5f0fe47958e0d30ff7777e4fe2e20aeea21c",
-)
-
-configure_make_package(
-    name = "sysbench",
-    source = ":sysbench-src",
-    version = "1.0.20",
-    description = "Multi-threaded benchmark tool for CPU, memory, threads, mutex, and database",
-    homepage = "https://github.com/akopytov/sysbench",
-    license = "GPL-2.0",
-    pre_configure = """
-./autogen.sh
-""",
-    configure_args = [
-        "--without-mysql",
-        "--without-pgsql",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# iperf3 - Network bandwidth measurement tool
-# =============================================================================
-
-download_source(
-    name = "iperf3-src",
-    src_uri = "https://github.com/esnet/iperf/releases/download/3.16/iperf-3.16.tar.gz",
-    sha256 = "cc740c6bbea104f62d4b7c05a8227f56d81dc48e94bcb6297636e844b72cb016",
-)
-
-configure_make_package(
-    name = "iperf3",
-    source = ":iperf3-src",
-    version = "3.16",
-    description = "Network bandwidth measurement tool - TCP, UDP, and SCTP",
-    homepage = "https://software.es.net/iperf/",
-    license = "BSD-3-Clause",
-    configure_args = [
-        "--disable-static",
-    ],
-    deps = [
-        "//packages/network:openssl",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# hackbench - Scheduler benchmark and stress test
-# =============================================================================
-
-download_source(
-    name = "rt-tests-src",
-    src_uri = "https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git/snapshot/rt-tests-2.6.tar.gz",
-    sha256 = "b19e2d1e9fdf11d27a1aadf5d3e3a2e3e5a9b9f9c6be1aa0c1eb8ab8b8e5b7e1",
-)
-
-configure_make_package(
-    name = "hackbench",
-    source = ":rt-tests-src",
-    version = "2.6",
-    description = "Scheduler benchmark and stress test - measures process scheduling",
-    homepage = "https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git",
-    license = "GPL-2.0",
-    pre_configure = """
-# rt-tests uses make directly
-true
-""",
-    configure_args = [],
-    post_install = """
-mkdir -p "$DESTDIR/usr/bin"
-cp hackbench "$DESTDIR/usr/bin/" 2>/dev/null || true
-""",
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# cyclictest - Real-time latency benchmark
-# =============================================================================
-
-configure_make_package(
-    name = "cyclictest",
-    source = ":rt-tests-src",
-    version = "2.6",
-    description = "Real-time latency benchmark - measures system latency",
-    homepage = "https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git",
-    license = "GPL-2.0",
-    pre_configure = """
-# rt-tests uses make directly
-true
-""",
-    configure_args = [],
-    post_install = """
-mkdir -p "$DESTDIR/usr/bin"
-cp cyclictest "$DESTDIR/usr/bin/" 2>/dev/null || true
-""",
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# memtester - Memory subsystem testing tool
-# =============================================================================
-
-download_source(
-    name = "memtester-src",
-    src_uri = "https://pyropus.ca/software/memtester/old-versions/memtester-4.6.0.tar.gz",
-    sha256 = "c9fe4eb7e80c8cef5202f9065c4c0682f5616647c0455e916a5700f98e3dbb2e",
-)
-
-configure_make_package(
-    name = "memtester",
-    source = ":memtester-src",
-    version = "4.6.0",
-    description = "Userspace utility for testing memory subsystem for faults",
-    homepage = "https://pyropus.ca/software/memtester/",
-    license = "GPL-2.0",
-    pre_configure = """
-# memtester uses make directly without configure
-true
-""",
-    configure_args = [],
-    post_install = """
-mkdir -p "$DESTDIR/usr/bin"
-cp memtester "$DESTDIR/usr/bin/" 2>/dev/null || true
-""",
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# lmbench - Suite of portable micro-benchmarks
-# =============================================================================
-
-download_source(
-    name = "lmbench-src",
-    src_uri = "https://github.com/intel/lmbench/archive/refs/tags/v3.0-a9.tar.gz",
-    sha256 = "cb0e47c1f80f6cdcaa9eac5ff364c1dc37ee95fe22823d8b0c4a16a526e6eca8",
-)
-
-binary_package(
-    name = "lmbench",
-    srcs = [":lmbench-src"],
-    version = "3.0-a9",
-    description = "Suite of portable micro-benchmarks for UNIX/POSIX systems",
-    homepage = "http://lmbench.sourceforge.net/",
-    license = "GPL-2.0",
-    install_script = """
-        cd $SRCS/lmbench-*
-        make build
-        mkdir -p $OUT/usr/bin
-        cp bin/*/lmbench $OUT/usr/bin/ 2>/dev/null || true
-        cp bin/*/lat_* $OUT/usr/bin/ 2>/dev/null || true
-        cp bin/*/bw_* $OUT/usr/bin/ 2>/dev/null || true
-    """,
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# bonnie++ - Filesystem and disk I/O benchmark
-# =============================================================================
-
-download_source(
-    name = "bonnie-src",
-    src_uri = "https://www.coker.com.au/bonnie++/bonnie++-2.00a.tgz",
-    sha256 = "3c6fa6f8b5c5a8cdc7a8b6f1e8b9db6b8a9f8c6d5e4f3a2b1c0d9e8f7a6b5c4d",
-)
-
-configure_make_package(
-    name = "bonnie",
-    source = ":bonnie-src",
-    version = "2.00a",
-    description = "Filesystem and disk I/O benchmark suite",
-    homepage = "https://www.coker.com.au/bonnie++/",
-    license = "GPL-2.0",
-    configure_args = [],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# IOzone - Filesystem benchmark tool
-# =============================================================================
-
-download_source(
-    name = "iozone-src",
-    src_uri = "https://www.iozone.org/src/current/iozone3_506.tar",
-    sha256 = "6f55e9f01c2e5c39e8d3d9e8f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0",
-)
-
-binary_package(
-    name = "iozone",
-    srcs = [":iozone-src"],
-    version = "3.506",
-    description = "Filesystem benchmark tool - tests I/O performance",
-    homepage = "https://www.iozone.org/",
-    license = "Freeware",
-    install_script = """
-        cd $SRCS/iozone*/src/current
-        make linux
-        mkdir -p $OUT/usr/bin
-        cp iozone $OUT/usr/bin/
-    """,
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# stream - Sustainable memory bandwidth benchmark
-# =============================================================================
-
-download_source(
-    name = "stream-src",
-    src_uri = "https://www.cs.virginia.edu/stream/FTP/Code/stream.c",
-    sha256 = "d8b7c4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
-)
-
-binary_package(
-    name = "stream",
-    srcs = [":stream-src"],
-    version = "5.10",
-    description = "Sustainable memory bandwidth benchmark - STREAM benchmark",
-    homepage = "https://www.cs.virginia.edu/stream/",
-    license = "BSD-3-Clause",
-    install_script = """
-        mkdir -p $OUT/usr/bin
-        cc -O3 -fopenmp -DSTREAM_ARRAY_SIZE=10000000 -DNTIMES=20 $SRCS/stream.c -o $OUT/usr/bin/stream
-    """,
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# netperf - Network performance benchmark
-# =============================================================================
-
-download_source(
-    name = "netperf-src",
-    src_uri = "https://github.com/HewlettPackard/netperf/archive/refs/tags/netperf-2.7.0.tar.gz",
-    sha256 = "4569bafa4cca3d548eb96a486b2c5b1cc0136b6e4e8f5d5f8a9a9a9b9c9d9e9f",
-)
-
-configure_make_package(
-    name = "netperf",
-    source = ":netperf-src",
-    version = "2.7.0",
-    description = "Network performance benchmark - measures various network metrics",
-    homepage = "https://github.com/HewlettPackard/netperf",
-    license = "HP",
-    configure_args = [
-        "--enable-histogram",
-        "--enable-demo",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# dbench - Database-style benchmark for filesystems
-# =============================================================================
-
-download_source(
-    name = "dbench-src",
-    src_uri = "https://samba.org/ftp/tridge/dbench/dbench-4.0.tar.gz",
-    sha256 = "6a0c3f2e5c4d3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a",
-)
-
-configure_make_package(
-    name = "dbench",
-    source = ":dbench-src",
-    version = "4.0",
-    description = "Database-style benchmark for filesystems",
-    homepage = "https://samba.org/ftp/tridge/dbench/",
-    license = "GPL-3.0",
-    configure_args = [],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# perf-bench - Kernel perf benchmark suite (standalone)
-# =============================================================================
-
-download_source(
-    name = "perf-src",
-    src_uri = "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.6.10.tar.xz",
-    sha256 = "8feb1ff67ed44c1c3e9f9d4b4f60b7f5c5e5d5c5b5a5f4e3d2c1b0a9f8e7d6c5",
-)
-
-binary_package(
-    name = "perf",
-    srcs = [":perf-src"],
-    version = "6.6.10",
-    description = "Linux perf tool - performance analysis and benchmarking",
-    homepage = "https://perf.wiki.kernel.org/",
-    license = "GPL-2.0",
-    install_script = """
-        cd $SRCS/linux-*/tools/perf
-        make LDFLAGS=-static NO_LIBPYTHON=1 NO_LIBBPF=1 NO_LIBCAP=1
-        mkdir -p $OUT/usr/bin
-        cp perf $OUT/usr/bin/
-    """,
-    deps = [
-        "//packages/core:zlib",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
 # Package group for all benchmarks
-# =============================================================================
-
 filegroup(
     name = "all-benchmarks",
     srcs = [
-        ":stress-ng",
-        ":fio",
-        ":sysbench",
-        ":iperf3",
-        ":hackbench",
-        ":cyclictest",
-        ":memtester",
-        ":lmbench",
-        ":bonnie",
-        ":iozone",
-        ":stream",
-        ":netperf",
-        ":dbench",
-        ":perf",
+        "//packages/benchmarks/stress-ng",
+        "//packages/benchmarks/fio",
+        "//packages/benchmarks/sysbench",
+        "//packages/benchmarks/iperf3",
+        "//packages/benchmarks/hackbench",
+        "//packages/benchmarks/cyclictest",
+        "//packages/benchmarks/memtester",
+        "//packages/benchmarks/lmbench",
+        "//packages/benchmarks/bonnie",
+        "//packages/benchmarks/iozone",
+        "//packages/benchmarks/stream",
+        "//packages/benchmarks/netperf",
+        "//packages/benchmarks/dbench",
+        "//packages/benchmarks/perf",
     ],
     visibility = ["PUBLIC"],
 )
@@ -392,11 +24,11 @@ filegroup(
 filegroup(
     name = "cpu-memory-benchmarks",
     srcs = [
-        ":stress-ng",
-        ":sysbench",
-        ":memtester",
-        ":stream",
-        ":lmbench",
+        "//packages/benchmarks/stress-ng",
+        "//packages/benchmarks/sysbench",
+        "//packages/benchmarks/memtester",
+        "//packages/benchmarks/stream",
+        "//packages/benchmarks/lmbench",
     ],
     visibility = ["PUBLIC"],
 )
@@ -405,10 +37,10 @@ filegroup(
 filegroup(
     name = "storage-benchmarks",
     srcs = [
-        ":fio",
-        ":bonnie",
-        ":iozone",
-        ":dbench",
+        "//packages/benchmarks/fio",
+        "//packages/benchmarks/bonnie",
+        "//packages/benchmarks/iozone",
+        "//packages/benchmarks/dbench",
     ],
     visibility = ["PUBLIC"],
 )
@@ -417,8 +49,8 @@ filegroup(
 filegroup(
     name = "network-benchmarks",
     srcs = [
-        ":iperf3",
-        ":netperf",
+        "//packages/benchmarks/iperf3",
+        "//packages/benchmarks/netperf",
     ],
     visibility = ["PUBLIC"],
 )
@@ -427,9 +59,9 @@ filegroup(
 filegroup(
     name = "latency-benchmarks",
     srcs = [
-        ":hackbench",
-        ":cyclictest",
-        ":perf",
+        "//packages/benchmarks/hackbench",
+        "//packages/benchmarks/cyclictest",
+        "//packages/benchmarks/perf",
     ],
     visibility = ["PUBLIC"],
 )

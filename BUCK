@@ -78,6 +78,30 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
+# Networking packages
+filegroup(
+    name = "net-packages",
+    srcs = [
+        "//packages/net:openssl",
+        "//packages/net:curl",
+        "//packages/net:openssh",
+        "//packages/net:iproute2",
+        "//packages/net:dhcpcd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Shell packages
+filegroup(
+    name = "editor-packages",
+    srcs = [
+        "//packages/editors:vim",
+        "//packages/editors:neovim",
+        "//packages/editors:emacs",
+    ],
+    visibility = ["PUBLIC"],
+)
+
 filegroup(
     name = "shell-packages",
     srcs = [
@@ -88,6 +112,7 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
+# Terminal packages
 filegroup(
     name = "terminal-packages",
     srcs = [
@@ -107,6 +132,45 @@ filegroup(
         "//packages/benchmarks:iperf3",
         "//packages/benchmarks:hackbench",
         "//packages/benchmarks:memtester",
+# Terminal/shell libraries
+filegroup(
+    name = "shell-libs",
+    srcs = [
+        "//packages/core:readline",
+        "//packages/core:ncurses",
+        "//packages/core:less",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Compression utilities
+filegroup(
+    name = "compression-packages",
+    srcs = [
+        "//packages/core:zlib",
+        "//packages/core:bzip2",
+        "//packages/core:xz",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# System monitoring utilities
+filegroup(
+    name = "system-packages",
+    srcs = [
+        "//packages/core:procps-ng",
+        "//packages/core:file",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Development libraries
+filegroup(
+    name = "dev-libraries",
+    srcs = [
+        "//packages/core:libffi",
+        "//packages/core:expat",
+        "//packages/core:libnl",
     ],
     visibility = ["PUBLIC"],
 )

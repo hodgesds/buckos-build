@@ -1,0 +1,157 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# =============================================================================
+# OpenSSL - Cryptography and SSL/TLS toolkit
+# =============================================================================
+
+download_source(
+    name = "openssl-src",
+    src_uri = "https://www.openssl.org/source/openssl-3.2.0.tar.gz",
+    sha256 = "14c826f07c7e433706fb5c69fa9e25dab95684844b4c962a2cf1bf183eb4690e",
+)
+
+configure_make_package(
+    name = "openssl",
+    source = ":openssl-src",
+    version = "3.2.0",
+    description = "TLS/SSL and crypto library",
+    homepage = "https://www.openssl.org/",
+    license = "Apache-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--openssldir=/etc/ssl",
+        "shared",
+        "zlib",
+        "no-tests",
+        "linux-x86_64",
+    ],
+    env = {
+        "CFLAGS": "-O2",
+    },
+    deps = ["//packages/core:zlib"],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# curl - Command line tool for transferring data with URLs
+# =============================================================================
+
+download_source(
+    name = "curl-src",
+    src_uri = "https://curl.se/download/curl-8.5.0.tar.xz",
+    sha256 = "42ab8db9e20d8290a3b633e7fbb3cec15db34df65fd1015ef8ac1e4723750eeb",
+)
+
+configure_make_package(
+    name = "curl",
+    source = ":curl-src",
+    version = "8.5.0",
+    description = "Command line tool and library for transferring data with URLs",
+    homepage = "https://curl.se/",
+    license = "MIT",
+    configure_args = [
+        "--with-openssl",
+        "--with-zlib",
+        "--enable-ipv6",
+        "--disable-ldap",
+        "--disable-ldaps",
+        "--without-libpsl",
+        "--without-libssh2",
+    ],
+    deps = [":openssl", "//packages/core:zlib"],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# OpenSSH - SSH connectivity tools
+# =============================================================================
+
+download_source(
+    name = "openssh-src",
+    src_uri = "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.6p1.tar.gz",
+    sha256 = "910211c07255a8c5ad654391f0c9c50e9871a0d2cb67c1e4c032acf18dc4144f",
+)
+
+configure_make_package(
+    name = "openssh",
+    source = ":openssh-src",
+    version = "9.6p1",
+    description = "OpenSSH SSH connectivity tools",
+    homepage = "https://www.openssh.com/",
+    license = "BSD",
+    configure_args = [
+        "--sysconfdir=/etc/ssh",
+        "--with-ssl-dir=/usr",
+        "--with-zlib=/usr",
+        "--disable-strip",
+        "--with-privsep-user=nobody",
+        "--with-privsep-path=/var/empty",
+    ],
+    post_install = """
+# Create privilege separation directory
+mkdir -p "$DESTDIR/var/empty"
+chmod 755 "$DESTDIR/var/empty"
+# Create ssh config directory
+mkdir -p "$DESTDIR/etc/ssh"
+""",
+    deps = [":openssl", "//packages/core:zlib"],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# iproute2 - Network configuration tools
+# =============================================================================
+
+download_source(
+    name = "iproute2-src",
+    src_uri = "https://mirrors.edge.kernel.org/pub/linux/utils/net/iproute2/iproute2-6.7.0.tar.xz",
+    sha256 = "ff942dd9828d7d1f867f61fe73d63d1e9391a0b587393bce494063c26d746156",
+)
+
+configure_make_package(
+    name = "iproute2",
+    source = ":iproute2-src",
+    version = "6.7.0",
+    description = "IP routing utilities",
+    homepage = "https://wiki.linuxfoundation.org/networking/iproute2",
+    license = "GPL-2.0",
+    pre_configure = """
+# iproute2 uses a simple configure script
+./configure
+""",
+    make_args = [
+        "PREFIX=/usr",
+        "SBINDIR=/sbin",
+    ],
+    env = {
+        "DESTDIR": "$DESTDIR",
+    },
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# dhcpcd - DHCP client daemon
+# =============================================================================
+
+download_source(
+    name = "dhcpcd-src",
+    src_uri = "https://github.com/NetworkConfiguration/dhcpcd/releases/download/v10.0.6/dhcpcd-10.0.6.tar.xz",
+    sha256 = "779a99d85b66e5e39cd0e8d5b03b4096d89ae87c01aedf16d3f7b4e790163b87",
+)
+
+configure_make_package(
+    name = "dhcpcd",
+    source = ":dhcpcd-src",
+    version = "10.0.6",
+    description = "DHCP/IPv4LL/IPv6RS/DHCPv6 client",
+    homepage = "https://roy.marples.name/projects/dhcpcd",
+    license = "BSD-2-Clause",
+    configure_args = [
+        "--prefix=/usr",
+        "--sbindir=/sbin",
+        "--sysconfdir=/etc",
+        "--rundir=/run",
+        "--without-udev",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,70 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "blender-src",
+    src_uri = "https://download.blender.org/source/blender-4.0.2.tar.xz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+configure_make_package(
+    name = "blender",
+    source = ":blender-src",
+    version = "4.0.2",
+    description = "3D creation suite for modeling, animation, rendering and more",
+    homepage = "https://www.blender.org/",
+    license = "GPL-3.0-or-later",
+    pre_configure = """
+mkdir -p build
+cd build
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DWITH_INSTALL_PORTABLE=OFF \
+    -DWITH_PYTHON_INSTALL=OFF \
+    -DWITH_CYCLES=ON \
+    -DWITH_CYCLES_CUDA_BINARIES=OFF \
+    -DWITH_CYCLES_HIP_BINARIES=OFF \
+    -DWITH_CYCLES_ONEAPI_BINARIES=OFF \
+    -DWITH_OPENCOLORIO=ON \
+    -DWITH_OPENIMAGEIO=ON \
+    -DWITH_OPENSUBDIV=ON \
+    -DWITH_OPENVDB=ON \
+    -DWITH_ALEMBIC=ON \
+    -DWITH_CODEC_FFMPEG=ON \
+    -DWITH_CODEC_SNDFILE=ON \
+    -DWITH_FFTW3=ON \
+    -DWITH_SDL=ON \
+    -DWITH_JACK=ON \
+    -DWITH_PULSEAUDIO=ON \
+    -DWITH_MOD_OCEANSIM=ON \
+    -DWITH_LLVM=ON
+""",
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+cd build
+DESTDIR=$OUT make install
+
+# Install desktop file and icons
+mkdir -p $OUT/usr/share/applications
+mkdir -p $OUT/usr/share/icons/hicolor/scalable/apps
+""",
+    deps = [
+        "//packages/lang/python:python",
+        "//packages/core/boost:boost",
+        "//packages/desktop/mesa:mesa",
+        "//packages/core/openexr:openexr",
+        "//packages/core/openjpeg:openjpeg",
+        "//packages/core/ffmpeg:ffmpeg",
+        "//packages/core/fftw:fftw",
+        "//packages/core/opencolorio:opencolorio",
+        "//packages/core/openimageio:openimageio",
+        "//packages/core/openvdb:openvdb",
+        "//packages/core/alembic:alembic",
+        "//packages/core/sdl2:sdl2",
+    ],
+    build_deps = [
+        "//packages/core/llvm:llvm",
+    ],
+    visibility = ["PUBLIC"],
+)

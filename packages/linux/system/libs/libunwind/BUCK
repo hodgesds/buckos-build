@@ -1,0 +1,28 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# libunwind - Portable stack unwinding library
+download_source(
+    name = "libunwind-src",
+    src_uri = "https://github.com/libunwind/libunwind/releases/download/v1.8.1/libunwind-1.8.1.tar.gz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "libunwind",
+    source = ":libunwind-src",
+    version = "1.8.1",
+    description = "Portable and efficient C API to determine the call-chain of a program",
+    homepage = "https://www.nongnu.org/libunwind/",
+    license = "MIT",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--enable-shared",
+        "--disable-static",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:xz",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,31 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# wireshark - Network protocol analyzer
+download_source(
+    name = "wireshark-src",
+    src_uri = "https://www.wireshark.org/download/src/all-versions/wireshark-4.2.5.tar.xz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "wireshark",
+    source = ":wireshark-src",
+    version = "4.2.5",
+    description = "Network protocol analyzer for Unix and Windows",
+    homepage = "https://www.wireshark.org/",
+    license = "GPL-2+",
+    configure_args = [
+        "-DCMAKE_INSTALL_PREFIX=/usr",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DENABLE_LUA=OFF",
+        "-DBUILD_wireshark=OFF",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:glib",
+        "//packages/linux/network/libpcap",
+        "//packages/linux/core:zlib",
+        "//packages/linux/network/openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

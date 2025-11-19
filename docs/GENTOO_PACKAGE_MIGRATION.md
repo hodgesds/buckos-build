@@ -32,14 +32,14 @@ Agents should:
 | `kbd` | sys-apps | system/apps/kbd | Already added |
 | `kmod` | sys-apps | system/libs/kmod | Already exists - verify |
 | `dbus` | sys-apps | system/libs/ipc/dbus | Already exists - verify |
-| `haveged` | sys-apps | system/apps/haveged | Entropy daemon |
+| `haveged` | sys-apps | system/apps/haveged | Already added |
 | `pciutils` | sys-apps | system/hardware/pciutils | Already exists - verify |
 | `usbutils` | sys-apps | system/hardware/usbutils | Already exists - verify |
 | `systemd-utils` | sys-apps | system/apps/systemd-utils | Standalone systemd tools |
 | `iproute2` | sys-apps | network/iproute2 | Already exists - verify |
 | `openrc` | sys-apps | system/init/openrc | Already exists - verify |
 | `file` | sys-apps | core/file | Already exists - verify |
-| `ed` | sys-apps | editors/ed | Line editor |
+| `ed` | sys-apps | editors/ed | Already added |
 | `gawk` | sys-apps | editors/gawk | Already exists - verify |
 | `grep` | sys-apps | editors/grep | Already exists - verify |
 | `sed` | sys-apps | editors/sed | Already exists - verify |
@@ -51,7 +51,7 @@ Agents should:
 | `lsb-release` | sys-apps | system/apps/lsb-release | LSB info |
 | `hwdata` | sys-apps | system/hardware/hwdata | Hardware IDs database |
 | `hwloc` | sys-apps | system/hardware/hwloc | Already added |
-| `ethtool` | sys-apps | network/ethtool | Ethernet config |
+| `ethtool` | sys-apps | network/ethtool | Already added |
 | `eza` | sys-apps | system/apps/eza | Modern ls replacement |
 | `fd` | sys-apps | system/apps/fd | Modern find replacement |
 | `bat` | sys-apps | editors/bat | Already exists - verify |
@@ -78,11 +78,11 @@ Agents should:
 | `pam` | sys-libs | system/security/auth/pam | Auth modules |
 | `libcap` | sys-libs | system/libs/ipc/libcap | Already exists |
 | `libseccomp` | sys-libs | system/libs/ipc/libseccomp | Already exists |
-| `libunwind` | sys-libs | system/libs/libunwind | Stack unwinding |
+| `libunwind` | sys-libs | system/libs/libunwind | Already added |
 | `liburing` | sys-libs | system/libs/liburing | Already added |
 | `cracklib` | sys-libs | system/security/cracklib | Password checker |
 | `gdbm` | sys-libs | system/docs/gdbm | Already exists in docs |
-| `timezone-data` | sys-libs | system/libs/timezone-data | Timezone info |
+| `timezone-data` | sys-libs | system/libs/timezone-data | Already added |
 
 ### MEDIUM Priority
 
@@ -90,10 +90,10 @@ Agents should:
 |---------|----------------|-------------|-------|
 | `slang` | sys-libs | system/libs/slang | Already added |
 | `talloc` | sys-libs | system/libs/talloc | Memory allocator |
-| `tdb` | sys-libs | system/libs/tdb | Trivial database |
+| `tdb` | sys-libs | system/libs/tdb | Already added |
 | `tevent` | sys-libs | system/libs/tevent | Event system |
 | `ldb` | sys-libs | system/libs/ldb | LDAP-like database |
-| `efivar` | sys-libs | system/libs/efivar | EFI variables |
+| `efivar` | sys-libs | system/libs/efivar | Already added |
 | `mtdev` | sys-libs | system/libs/input/mtdev | Already exists |
 
 ---
@@ -125,7 +125,7 @@ Agents should:
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
 | `lzip` | app-arch | system/libs/compression/lzip | LZMA compressor |
-| `lzop` | app-arch | system/libs/compression/lzop | LZO compressor |
+| `lzop` | app-arch | system/libs/compression/lzop | Already added |
 | `rar` | app-arch | system/libs/compression/rar | RAR archiver |
 | `unrar` | app-arch | system/libs/compression/unrar | RAR extractor |
 | `cabextract` | app-arch | system/libs/compression/cabextract | CAB extractor |
@@ -146,7 +146,7 @@ Agents should:
 |---------|----------------|-------------|-------|
 | `nmap` | net-analyzer | network/nmap | Already exists |
 | `tcpdump` | net-analyzer | network/tcpdump | Already exists |
-| `wireshark` | net-analyzer | network/wireshark | Packet analyzer |
+| `wireshark` | net-analyzer | network/wireshark | Already added |
 | `iftop` | net-analyzer | network/iftop | Already exists |
 | `nethogs` | net-analyzer | network/nethogs | Already added |
 | `iperf` | net-analyzer | network/iperf | Already added |
@@ -210,7 +210,7 @@ Agents should:
 | `geany` | dev-util | dev-tools/ide/geany | Lightweight IDE |
 | `kcov` | dev-util | dev-tools/dev-utils/kcov | Code coverage |
 | `coccinelle` | dev-util | dev-tools/dev-utils/coccinelle | Semantic patching |
-| `cloc` | dev-util | dev-tools/dev-utils/cloc | Count lines of code |
+| `cloc` | dev-util | dev-tools/dev-utils/cloc | Already added |
 | `github-cli` | dev-util | dev-tools/vcs/github-cli | GitHub CLI |
 | `heaptrack` | dev-util | dev-tools/profilers/heaptrack | Heap profiler |
 
@@ -247,9 +247,9 @@ Agents should:
 | `keepassxc` | app-admin | system/security/keepassxc | Password manager |
 | `pass` | app-admin | system/security/pass | Password store |
 | `metalog` | app-admin | system/apps/metalog | Modern logger |
-| `monit` | app-admin | system/apps/monit | Process supervisor |
+| `monit` | app-admin | system/apps/monit | Already added |
 | `supervisor` | app-admin | system/apps/supervisor | Process control |
-| `lnav` | app-admin | system/apps/lnav | Log navigator |
+| `lnav` | app-admin | system/apps/lnav | Already added |
 
 ---
 
@@ -277,7 +277,7 @@ Agents should:
 | `starship` | app-shells | shells/starship | MEDIUM |
 | `tmux-bash-completion` | app-shells | shells/tmux-bash-completion | LOW |
 | `fzf` | app-shells | editors/fzf | Already exists |
-| `atuin` | app-shells | shells/atuin | Shell history |
+| `atuin` | app-shells | shells/atuin | Already added |
 | `zoxide` | app-shells | shells/zoxide | Smarter cd |
 | `mcfly` | app-shells | shells/mcfly | History search |
 | `thefuck` | app-shells | shells/thefuck | Command fixer |
@@ -302,7 +302,7 @@ Agents should:
 | `okular` | app-text | editors/okular | KDE doc viewer |
 | `aspell` | app-text | editors/aspell | Already added |
 | `hunspell` | app-text | editors/hunspell | Already added |
-| `enchant` | app-text | editors/enchant | Spell check wrapper |
+| `enchant` | app-text | editors/enchant | Already added |
 
 ### MEDIUM Priority
 
@@ -332,7 +332,7 @@ Agents should:
 | `sqlite` | dev-db | system/libs/database/sqlite | Already exists |
 | `postgresql` | dev-db | databases/postgresql | Already added |
 | `mariadb` | dev-db | databases/mariadb | MySQL fork |
-| `redis` | dev-db | databases/redis | Key-value store |
+| `redis` | dev-db | databases/redis | Already added |
 | `mongodb` | dev-db | databases/mongodb | Document store |
 | `memcached` | dev-db | databases/memcached | Already added |
 | `lmdb` | dev-db | system/libs/database/lmdb | Already exists |
@@ -363,7 +363,7 @@ Agents should:
 | `tomcat` | www-servers | www/servers/tomcat | MEDIUM |
 | `jetty` | www-servers | www/servers/jetty | MEDIUM |
 | `varnish` | www-servers | www/servers/varnish | Already added |
-| `squid` | www-servers | www/servers/squid | HIGH |
+| `squid` | www-servers | www/servers/squid | Already added |
 | `pound` | www-servers | www/servers/pound | MEDIUM |
 
 ---

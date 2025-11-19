@@ -1,0 +1,27 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# tdb - Trivial Database
+download_source(
+    name = "tdb-src",
+    src_uri = "https://www.samba.org/ftp/tdb/tdb-1.4.10.tar.gz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "tdb",
+    source = ":tdb-src",
+    version = "1.4.10",
+    description = "A trivial database library similar to GDBM but with support for concurrent writers",
+    homepage = "https://tdb.samba.org/",
+    license = "LGPL-3+",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--disable-python",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

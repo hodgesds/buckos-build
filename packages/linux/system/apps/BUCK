@@ -53,6 +53,23 @@ filegroup(
     srcs = [
         "//packages/linux/system/apps/rsyslog:rsyslog",
         "//packages/linux/system/apps/logrotate:logrotate",
+        "//packages/linux/system/apps/lnav:lnav",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "entropy-packages",
+    srcs = [
+        "//packages/linux/system/apps/haveged:haveged",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "process-monitoring-packages",
+    srcs = [
+        "//packages/linux/system/apps/monit:monit",
     ],
     visibility = ["PUBLIC"],
 )
@@ -89,6 +106,8 @@ filegroup(
         ":logging-packages",
         ":utility-packages",
         ":user-management-packages",
+        ":entropy-packages",
+        ":process-monitoring-packages",
         "//packages/linux/system/apps/rsync:rsync",
         "//packages/linux/system/apps/acpid:acpid",
         "//packages/linux/system/apps/at:at",

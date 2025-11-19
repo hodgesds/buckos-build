@@ -1,0 +1,31 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# squid - HTTP caching proxy
+download_source(
+    name = "squid-src",
+    src_uri = "http://www.squid-cache.org/Versions/v6/squid-6.9.tar.xz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "squid",
+    source = ":squid-src",
+    version = "6.9",
+    description = "Full-featured HTTP proxy and web cache daemon",
+    homepage = "http://www.squid-cache.org/",
+    license = "GPL-2+",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc/squid",
+        "--localstatedir=/var",
+        "--with-openssl",
+        "--enable-linux-netfilter",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/network/openssl",
+        "//packages/linux/core:zlib",
+        "//packages/linux/system/libs/libxml2",
+    ],
+    visibility = ["PUBLIC"],
+)

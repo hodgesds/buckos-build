@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# haveged - HAVEGE entropy daemon
+download_source(
+    name = "haveged-src",
+    src_uri = "https://github.com/jirber/haveged/archive/v1.9.18/haveged-1.9.18.tar.gz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "haveged",
+    source = ":haveged-src",
+    version = "1.9.18",
+    description = "HAVEGE entropy daemon for generating random numbers",
+    homepage = "https://github.com/jirber/haveged",
+    license = "GPL-3+",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

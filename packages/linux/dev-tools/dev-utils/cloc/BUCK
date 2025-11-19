@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "download_source", "perl_package")
+
+# cloc - Count Lines of Code
+download_source(
+    name = "cloc-src",
+    src_uri = "https://github.com/AlDanial/cloc/releases/download/v2.00/cloc-2.00.tar.gz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+perl_package(
+    name = "cloc",
+    source = ":cloc-src",
+    version = "2.00",
+    description = "Count blank lines, comment lines, and physical lines of source code",
+    homepage = "https://github.com/AlDanial/cloc",
+    license = "GPL-2+",
+    deps = [
+        "//packages/linux/languages/perl",
+    ],
+    visibility = ["PUBLIC"],
+)

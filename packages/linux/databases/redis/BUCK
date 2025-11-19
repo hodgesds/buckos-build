@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# redis - In-memory data structure store
+download_source(
+    name = "redis-src",
+    src_uri = "https://download.redis.io/releases/redis-7.2.4.tar.gz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "redis",
+    source = ":redis-src",
+    version = "7.2.4",
+    description = "In-memory data structure store, used as a database, cache, and message broker",
+    homepage = "https://redis.io/",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "PREFIX=/usr",
+        "USE_SYSTEMD=no",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

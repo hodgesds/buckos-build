@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# enchant - Generic spell checking library
+download_source(
+    name = "enchant-src",
+    src_uri = "https://github.com/AbiWord/enchant/releases/download/v2.7.3/enchant-2.7.3.tar.gz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "enchant",
+    source = ":enchant-src",
+    version = "2.7.3",
+    description = "Generic spell checking library wrapper",
+    homepage = "https://abiword.github.io/enchant/",
+    license = "LGPL-2.1+",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--with-hunspell",
+        "--without-aspell",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:glib",
+        "//packages/linux/editors/hunspell",
+    ],
+    visibility = ["PUBLIC"],
+)

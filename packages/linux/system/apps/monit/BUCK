@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# monit - Process supervision and monitoring
+download_source(
+    name = "monit-src",
+    src_uri = "https://mmonit.com/monit/dist/monit-5.33.0.tar.gz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "monit",
+    source = ":monit-src",
+    version = "5.33.0",
+    description = "Utility for monitoring services on a Unix system",
+    homepage = "https://mmonit.com/monit/",
+    license = "AGPL-3+",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--with-ssl-dir=/usr",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/network/openssl",
+        "//packages/linux/core:zlib",
+    ],
+    visibility = ["PUBLIC"],
+)

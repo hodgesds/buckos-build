@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# efivar - Tools and libraries for managing EFI variables
+download_source(
+    name = "efivar-src",
+    src_uri = "https://github.com/rhboot/efivar/releases/download/39/efivar-39.tar.bz2",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "efivar",
+    source = ":efivar-src",
+    version = "39",
+    description = "Tools and libraries for manipulating EFI variables",
+    homepage = "https://github.com/rhboot/efivar",
+    license = "LGPL-2.1+",
+    configure_args = [
+        "PREFIX=/usr",
+        "LIBDIR=/usr/lib",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/system/libs/popt",
+    ],
+    visibility = ["PUBLIC"],
+)

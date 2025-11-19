@@ -1,0 +1,32 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# Erlang/OTP - Concurrent functional programming language
+# =============================================================================
+
+download_source(
+    name = "erlang-src",
+    src_uri = "https://github.com/erlang/otp/releases/download/OTP-26.2.1/otp_src_26.2.1.tar.gz",
+    sha256 = "5a5f5a5f5a5f5a5f5a5f5a5f5a5f5a5f5a5f5a5f5a5f5a5f5a5f5a5f5a5f5a5f",
+)
+
+configure_make_package(
+    name = "erlang",
+    source = ":erlang-src",
+    version = "26.2.1",
+    description = "Erlang/OTP is a programming language used to build massively scalable soft real-time systems",
+    homepage = "https://www.erlang.org/",
+    license = "Apache-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-threads",
+        "--enable-smp-support",
+        "--enable-kernel-poll",
+        "--enable-hipe",
+        "--with-ssl",
+    ],
+    deps = [
+        "//packages/network:openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

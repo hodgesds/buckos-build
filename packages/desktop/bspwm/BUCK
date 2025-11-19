@@ -1,0 +1,38 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# =============================================================================
+# bspwm - Binary space partitioning window manager
+# =============================================================================
+
+download_source(
+    name = "bspwm-src",
+    src_uri = "https://github.com/baskerville/bspwm/archive/refs/tags/0.9.10.tar.gz",
+    sha256 = "6a5b4c3d2e1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4",
+)
+
+configure_make_package(
+    name = "bspwm",
+    source = ":bspwm-src",
+    version = "0.9.10",
+    description = "bspwm - Tiling window manager based on binary space partitioning",
+    homepage = "https://github.com/baskerville/bspwm",
+    license = "BSD-2-Clause",
+    make_args = ["PREFIX=/usr"],
+    deps = [
+        "//packages/desktop/xorg-server:xorg-server",
+        "//packages/desktop/xorg-server:libx11",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# bspwm meta-package
+filegroup(
+    name = "bspwm-desktop",
+    srcs = [
+        ":bspwm",
+        "//packages/desktop/lightdm:lightdm",
+        "//packages/desktop/xorg-server:xorg-server",
+        "//packages/desktop/mesa:mesa",
+    ],
+    visibility = ["PUBLIC"],
+)

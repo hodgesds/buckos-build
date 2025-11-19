@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# =============================================================================
+# libinput - Input device handling
+# =============================================================================
+
+download_source(
+    name = "libinput-src",
+    src_uri = "https://gitlab.freedesktop.org/libinput/libinput/-/archive/1.25.0/libinput-1.25.0.tar.gz",
+    sha256 = "8e7a7c2a2ee5e0f3f3f4e3e2e1e0d9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f3e2d1",
+)
+
+configure_make_package(
+    name = "libinput",
+    source = ":libinput-src",
+    version = "1.25.0",
+    description = "Input device management and event handling library",
+    homepage = "https://gitlab.freedesktop.org/libinput/libinput",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr -Ddocumentation=false -Dtests=false -Ddebug-gui=false
+""",
+    visibility = ["PUBLIC"],
+)

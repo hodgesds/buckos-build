@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# Tcl - Tool Command Language
+# =============================================================================
+
+download_source(
+    name = "tcl-src",
+    src_uri = "https://prdownloads.sourceforge.net/tcl/tcl8.6.13-src.tar.gz",
+    sha256 = "43a1fae7412f61ff11de2cfd05d28cfc3a73762f354a417c62370a54e5e5c8a1",
+)
+
+configure_make_package(
+    name = "tcl",
+    source = ":tcl-src",
+    version = "8.6.13",
+    description = "Tcl is a very powerful but easy to learn dynamic programming language",
+    homepage = "https://www.tcl.tk/",
+    license = "TCL",
+    pre_configure = """
+        cd unix
+    """,
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-threads",
+        "--enable-64bit",
+    ],
+    visibility = ["PUBLIC"],
+)

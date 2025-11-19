@@ -1,0 +1,55 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "strongswan-src",
+    src_uri = "https://download.strongswan.org/strongswan-5.9.13.tar.bz2",
+    sha256 = "4709c20a39f5c0c2e9c324b85b4a2d01b93dd78a502d5b5c5f3a75ca022f58e6",
+)
+
+configure_make_package(
+    name = "strongswan",
+    source = ":strongswan-src",
+    version = "5.9.13",
+    description = "strongSwan IPsec VPN solution supporting IKEv1/IKEv2",
+    homepage = "https://www.strongswan.org/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--libexecdir=/usr/lib",
+        "--enable-openssl",
+        "--enable-curl",
+        "--enable-eap-identity",
+        "--enable-eap-md5",
+        "--enable-eap-mschapv2",
+        "--enable-eap-tls",
+        "--enable-eap-ttls",
+        "--enable-eap-peap",
+        "--enable-eap-radius",
+        "--enable-xauth-eap",
+        "--enable-xauth-noauth",
+        "--enable-dhcp",
+        "--enable-farp",
+        "--enable-attr",
+        "--enable-resolve",
+        "--enable-connmark",
+        "--enable-vici",
+        "--enable-swanctl",
+        "--enable-systemd",
+        "--enable-cmd",
+        "--disable-aesni",
+        "--disable-gmp",
+    ],
+    post_install = """
+# Create strongSwan directories
+mkdir -p "$DESTDIR/etc/strongswan.d"
+mkdir -p "$DESTDIR/etc/swanctl/conf.d"
+mkdir -p "$DESTDIR/var/lib/strongswan"
+""",
+    deps = [
+        "//packages/net:openssl",
+        "//packages/net:curl",
+    ],
+    visibility = ["PUBLIC"],
+)

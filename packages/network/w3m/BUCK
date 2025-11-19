@@ -1,0 +1,32 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# w3m - Text-based web browser with inline image support
+# =============================================================================
+
+download_source(
+    name = "w3m-src",
+    src_uri = "https://github.com/tats/w3m/releases/download/v0.5.3+git20230129/w3m-0.5.3+git20230129.tar.gz",
+    sha256 = "8b47dbaf839fae27eefafef5095dc5a2a0ed5f4c8d1c4b7e6c0e7e9f5d4c3b2a",
+)
+
+configure_make_package(
+    name = "w3m",
+    source = ":w3m-src",
+    version = "0.5.3",
+    description = "Text-based web browser with inline image support",
+    homepage = "https://github.com/tats/w3m",
+    license = "MIT",
+    configure_args = [
+        "--with-ssl",
+        "--disable-image",
+        "--disable-mouse",
+    ],
+    deps = [
+        "//packages/network/openssl:openssl",
+        "//packages/network/ca-certificates:ca-certificates",
+        "//packages/core:zlib",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

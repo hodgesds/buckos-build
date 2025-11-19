@@ -1,0 +1,42 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# Haskell (GHC) - Functional programming language
+# =============================================================================
+
+download_source(
+    name = "ghc-src",
+    src_uri = "https://downloads.haskell.org/~ghc/9.4.8/ghc-9.4.8-src.tar.xz",
+    sha256 = "0bf407eb67a3a0013f5c0d5a59e0679f6a6ac3e5f9c5c5b5f9a5b5b5b5b5b5b5",
+)
+
+download_source(
+    name = "ghc-bootstrap-src",
+    src_uri = "https://downloads.haskell.org/~ghc/9.4.8/ghc-9.4.8-x86_64-alpine3_12-linux.tar.xz",
+    sha256 = "1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a",
+)
+
+binary_package(
+    name = "ghc",
+    srcs = [":ghc-src", ":ghc-bootstrap-src"],
+    version = "9.4.8",
+    description = "The Glasgow Haskell Compiler",
+    homepage = "https://www.haskell.org/ghc/",
+    license = "BSD-3-Clause",
+    install_script = """
+        # Setup bootstrap GHC
+        mkdir -p $WORK/bootstrap
+        tar -xJf $SRCS/ghc-*-x86_64-alpine3_12-linux.tar.xz -C $WORK/bootstrap --strip-components=1
+        cd $WORK/bootstrap
+        ./configure --prefix=$WORK/ghc-boot
+        make install
+        export PATH=$WORK/ghc-boot/bin:$PATH
+
+        # Build GHC from source
+        cd $SRCS/ghc-9.4.8
+        ./configure --prefix=/usr
+        make
+        make install DESTDIR=$OUT
+    """,
+    visibility = ["PUBLIC"],
+)

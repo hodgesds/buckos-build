@@ -1,0 +1,44 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# =============================================================================
+# i3 - Tiling window manager
+# =============================================================================
+
+download_source(
+    name = "i3-src",
+    src_uri = "https://i3wm.org/downloads/i3-4.23.tar.xz",
+    sha256 = "7a6b5c4d3e2f1e0d9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5",
+)
+
+configure_make_package(
+    name = "i3",
+    source = ":i3-src",
+    version = "4.23",
+    description = "i3 - Improved tiling window manager",
+    homepage = "https://i3wm.org/",
+    license = "BSD-3-Clause",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr \\
+    -Ddocs=false \\
+    -Dmans=false
+""",
+    deps = [
+        "//packages/desktop/xorg-server:xorg-server",
+        "//packages/desktop/xorg-server:libx11",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# i3 meta-package
+filegroup(
+    name = "i3-desktop",
+    srcs = [
+        ":i3",
+        "//packages/desktop/lightdm:lightdm",
+        "//packages/desktop/xorg-server:xorg-server",
+        "//packages/desktop/mesa:mesa",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# Racket - General-purpose programming language
+# =============================================================================
+
+download_source(
+    name = "racket-src",
+    src_uri = "https://download.racket-lang.org/installers/8.11.1/racket-8.11.1-src.tgz",
+    sha256 = "bfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbf",
+)
+
+configure_make_package(
+    name = "racket",
+    source = ":racket-src",
+    version = "8.11.1",
+    description = "Racket is a general-purpose, multi-paradigm programming language",
+    homepage = "https://racket-lang.org/",
+    license = "Apache-2.0 OR MIT",
+    pre_configure = """
+        cd src
+    """,
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-shared",
+        "--enable-lt=/usr/bin/libtool",
+    ],
+    visibility = ["PUBLIC"],
+)

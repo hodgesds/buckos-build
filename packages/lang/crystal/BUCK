@@ -1,0 +1,30 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# Crystal - Ruby-like compiled language
+# =============================================================================
+
+download_source(
+    name = "crystal-src",
+    src_uri = "https://github.com/crystal-lang/crystal/archive/refs/tags/1.11.2.tar.gz",
+    sha256 = "aeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeae",
+)
+
+binary_package(
+    name = "crystal",
+    srcs = [":crystal-src"],
+    version = "1.11.2",
+    description = "Crystal is a programming language with Ruby-like syntax and static type-checking",
+    homepage = "https://crystal-lang.org/",
+    license = "Apache-2.0",
+    install_script = """
+        cd $SRCS/crystal-1.11.2
+
+        # Build Crystal (requires bootstrap compiler)
+        make crystal release=1
+
+        # Install
+        make install PREFIX=/usr DESTDIR=$OUT
+    """,
+    visibility = ["PUBLIC"],
+)

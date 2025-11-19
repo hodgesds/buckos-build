@@ -1,0 +1,33 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# aria2 - Lightweight multi-protocol download utility
+# =============================================================================
+
+download_source(
+    name = "aria2-src",
+    src_uri = "https://github.com/aria2/aria2/releases/download/release-1.37.0/aria2-1.37.0.tar.xz",
+    sha256 = "60a420ad7085eb616cb6e2bdf0a7206d68ff3514063e2b97a6be2b2f0c5b2c7e",
+)
+
+configure_make_package(
+    name = "aria2",
+    source = ":aria2-src",
+    version = "1.37.0",
+    description = "Lightweight multi-protocol multi-source download utility",
+    homepage = "https://aria2.github.io/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--with-openssl",
+        "--without-gnutls",
+        "--disable-nls",
+        "--with-ca-bundle=/etc/ssl/certs/ca-certificates.crt",
+    ],
+    deps = [
+        "//packages/network/openssl:openssl",
+        "//packages/network/ca-certificates:ca-certificates",
+        "//packages/core:zlib",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

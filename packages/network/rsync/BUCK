@@ -1,0 +1,32 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# rsync - Fast incremental file transfer
+# =============================================================================
+
+download_source(
+    name = "rsync-src",
+    src_uri = "https://download.samba.org/pub/rsync/src/rsync-3.2.7.tar.gz",
+    sha256 = "4e7d9d3f6ed10878c58c5fb724a67dacf4b6aac7340b13e488fb2dc41346f2bb",
+)
+
+configure_make_package(
+    name = "rsync",
+    source = ":rsync-src",
+    version = "3.2.7",
+    description = "Fast incremental file transfer",
+    homepage = "https://rsync.samba.org/",
+    license = "GPL-3.0",
+    configure_args = [
+        "--with-included-popt",
+        "--with-included-zlib",
+        "--disable-xxhash",
+        "--disable-zstd",
+        "--disable-lz4",
+        "--disable-openssl",
+    ],
+    deps = [
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

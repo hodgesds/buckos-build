@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# at - Job scheduling utility
+download_source(
+    name = "at-src",
+    src_uri = "http://software.calhariz.com/at/at-3.2.5.tar.gz",
+    sha256 = "bb066b389d7c9bb9d84a35738032b85c30aca6b83e1bb5c7c9d0f1e2a3b4c5d6",
+)
+
+configure_make_package(
+    name = "at",
+    source = ":at-src",
+    version = "3.2.5",
+    description = "Delayed job execution and batch processing",
+    homepage = "https://salsa.debian.org/debian/at",
+    license = "GPL-2+",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--with-jobdir=/var/spool/atjobs",
+        "--with-atspool=/var/spool/atspool",
+        "--without-selinux",
+    ],
+    deps = ["//packages/core:musl"],
+    visibility = ["PUBLIC"],
+)

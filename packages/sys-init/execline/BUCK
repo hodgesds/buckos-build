@@ -1,0 +1,35 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+# -----------------------------------------------------------------------------
+# execline - Non-interactive scripting language
+# -----------------------------------------------------------------------------
+
+download_source(
+    name = "execline-src",
+    src_uri = "https://skarnet.org/software/execline/execline-2.9.4.0.tar.gz",
+    sha256 = "573eb76d8e3c32915b23d49bde63c25e8f3c01ff6b4ad1a6fd456b1ea11a2195",
+)
+
+configure_make_package(
+    name = "execline",
+    source = ":execline-src",
+    version = "2.9.4.0",
+    description = "Non-interactive scripting language",
+    homepage = "https://skarnet.org/software/execline/",
+    license = "ISC",
+    configure_args = [
+        "--prefix=/usr",
+        "--libdir=/usr/lib",
+        "--enable-shared",
+        "--disable-static",
+        "--with-sysdeps=/usr/lib/skalibs/sysdeps",
+        "--with-include=/usr/include",
+        "--with-lib=/usr/lib",
+    ],
+    deps = [
+        "//packages/sys-init/skalibs:skalibs",
+        "//packages/core:musl",
+    ],
+    build_deps = [],
+    visibility = ["PUBLIC"],
+)

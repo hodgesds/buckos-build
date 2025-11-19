@@ -1,596 +1,8 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-
 # =============================================================================
-# CRON SCHEDULERS
+# System Applications - Package Groups
 # =============================================================================
-
-# cronie - Modern cron daemon with PAM support
-download_source(
-    name = "cronie-src",
-    src_uri = "https://github.com/cronie-crond/cronie/releases/download/cronie-1.7.2/cronie-1.7.2.tar.gz",
-    sha256 = "78411a83cd3ea0a5e7e34ad41c859c5098c9fcec17f6faed4c1e9e0eb06b4b7c",
-)
-
-configure_make_package(
-    name = "cronie",
-    source = ":cronie-src",
-    version = "1.7.2",
-    description = "Modern cron daemon with inotify and PAM support",
-    homepage = "https://github.com/cronie-crond/cronie",
-    license = "ISC",
-    configure_args = [
-        "--prefix=/usr",
-        "--sysconfdir=/etc",
-        "--localstatedir=/var",
-        "--disable-pam",
-        "--without-selinux",
-        "--with-inotify",
-    ],
-    deps = ["//packages/core:musl"],
-    visibility = ["PUBLIC"],
-)
-
-# dcron - Dillon's lightweight cron daemon
-download_source(
-    name = "dcron-src",
-    src_uri = "http://www.jimpryor.net/linux/releases/dcron-4.5.tar.gz",
-    sha256 = "9e50eadb38fb7d904bfb4e1c7c91bf9e152cf9b2ecf5c5f4b7c8c1f1d8f8e9a0",
-)
-
-configure_make_package(
-    name = "dcron",
-    source = ":dcron-src",
-    version = "4.5",
-    description = "Dillon's lightweight cron daemon",
-    homepage = "http://www.jimpryor.net/linux/dcron.html",
-    license = "GPL-2",
-    pre_configure = "true",  # No configure script
-    make_args = [
-        "PREFIX=/usr",
-        "CRONTAB_GROUP=root",
-    ],
-    install_args = [
-        "PREFIX=/usr",
-        "DESTDIR=$DESTDIR",
-    ],
-    deps = ["//packages/core:musl"],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# SYSTEM MONITORING TOOLS
-# =============================================================================
-
-# htop - Interactive process viewer
-download_source(
-    name = "htop-src",
-    src_uri = "https://github.com/htop-dev/htop/releases/download/3.3.0/htop-3.3.0.tar.xz",
-    sha256 = "a69acf9b42ff592c4861010fce7d8006805f0d6ef0e8ee647a6ee6e59b743d5c",
-)
-
-configure_make_package(
-    name = "htop",
-    source = ":htop-src",
-    version = "3.3.0",
-    description = "Interactive process viewer for Unix systems",
-    homepage = "https://htop.dev",
-    license = "GPL-2",
-    configure_args = [
-        "--prefix=/usr",
-        "--sysconfdir=/etc",
-        "--disable-unicode",
-        "--disable-hwloc",
-        "--disable-sensors",
-    ],
-    deps = [
-        "//packages/core:musl",
-        "//packages/core:ncurses",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# lsof - List open files
-download_source(
-    name = "lsof-src",
-    src_uri = "https://github.com/lsof-org/lsof/releases/download/4.99.3/lsof-4.99.3.tar.gz",
-    sha256 = "b9c56468b927e6e0e1c5e9db0c4e7be97a9c65b1f2c8e7b0c5a8c1f2e3d4a5b6",
-)
-
-configure_make_package(
-    name = "lsof",
-    source = ":lsof-src",
-    version = "4.99.3",
-    description = "List open files utility",
-    homepage = "https://github.com/lsof-org/lsof",
-    license = "lsof",
-    configure_args = [
-        "--prefix=/usr",
-    ],
-    deps = ["//packages/core:musl"],
-    visibility = ["PUBLIC"],
-)
-
-# strace - System call tracer
-download_source(
-    name = "strace-src",
-    src_uri = "https://github.com/strace/strace/releases/download/v6.7/strace-6.7.tar.xz",
-    sha256 = "e0c0a2d9c8e3a8e1f2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5",
-)
-
-configure_make_package(
-    name = "strace",
-    source = ":strace-src",
-    version = "6.7",
-    description = "System call tracer for Linux",
-    homepage = "https://strace.io",
-    license = "LGPL-2.1+",
-    configure_args = [
-        "--prefix=/usr",
-        "--disable-mpers",
-    ],
-    deps = ["//packages/core:musl"],
-    visibility = ["PUBLIC"],
-)
-
-# psmisc - Utilities using /proc filesystem (fuser, killall, pstree)
-download_source(
-    name = "psmisc-src",
-    src_uri = "https://gitlab.com/psmisc/psmisc/-/archive/v23.7/psmisc-v23.7.tar.gz",
-    sha256 = "a0d7e3fce0e8a7b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5",
-)
-
-configure_make_package(
-    name = "psmisc",
-    source = ":psmisc-src",
-    version = "23.7",
-    description = "Miscellaneous utilities using /proc (fuser, killall, pstree)",
-    homepage = "https://gitlab.com/psmisc/psmisc",
-    license = "GPL-2",
-    configure_args = [
-        "--prefix=/usr",
-        "--disable-selinux",
-    ],
-    deps = [
-        "//packages/core:musl",
-        "//packages/core:ncurses",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# procps-ng - System and process monitoring utilities
-download_source(
-    name = "procps-ng-src",
-    src_uri = "https://gitlab.com/procps-ng/procps/-/archive/v4.0.4/procps-v4.0.4.tar.gz",
-    sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
-)
-
-configure_make_package(
-    name = "procps-ng",
-    source = ":procps-ng-src",
-    version = "4.0.4",
-    description = "Utilities for monitoring system processes (ps, top, vmstat, free)",
-    homepage = "https://gitlab.com/procps-ng/procps",
-    license = "GPL-2+",
-    configure_args = [
-        "--prefix=/usr",
-        "--disable-modern-top",
-        "--disable-nls",
-        "--without-systemd",
-    ],
-    deps = [
-        "//packages/core:musl",
-        "//packages/core:ncurses",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# PRIVILEGE MANAGEMENT
-# =============================================================================
-
-# sudo - Execute commands as another user
-download_source(
-    name = "sudo-src",
-    src_uri = "https://www.sudo.ws/dist/sudo-1.9.15p5.tar.gz",
-    sha256 = "558d10b9a1991fb3b9fa7fa7b07ec4405b7aefb5b3cb0b0871dbc81e3c88f1e5",
-)
-
-configure_make_package(
-    name = "sudo",
-    source = ":sudo-src",
-    version = "1.9.15p5",
-    description = "Execute commands as another user with security policy",
-    homepage = "https://www.sudo.ws",
-    license = "ISC",
-    configure_args = [
-        "--prefix=/usr",
-        "--sysconfdir=/etc",
-        "--libexecdir=/usr/lib",
-        "--with-rundir=/run/sudo",
-        "--with-vardir=/var/db/sudo",
-        "--disable-pam",
-        "--disable-nls",
-        "--without-selinux",
-        "--without-sssd",
-    ],
-    deps = ["//packages/core:musl"],
-    visibility = ["PUBLIC"],
-)
-
-# doas - Simple sudo alternative from OpenBSD
-download_source(
-    name = "doas-src",
-    src_uri = "https://github.com/Duncaen/OpenDoas/releases/download/v6.8.2/opendoas-6.8.2.tar.xz",
-    sha256 = "6d6a5a6f0c6e7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3",
-)
-
-configure_make_package(
-    name = "doas",
-    source = ":doas-src",
-    version = "6.8.2",
-    description = "Simple sudo alternative from OpenBSD",
-    homepage = "https://github.com/Duncaen/OpenDoas",
-    license = "ISC",
-    configure_args = [
-        "--prefix=/usr",
-        "--without-pam",
-    ],
-    deps = ["//packages/core:musl"],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# TERMINAL MULTIPLEXERS
-# =============================================================================
-
-# tmux - Terminal multiplexer
-download_source(
-    name = "tmux-src",
-    src_uri = "https://github.com/tmux/tmux/releases/download/3.4/tmux-3.4.tar.gz",
-    sha256 = "551553a4f82beaa8dadc9256800bcc284d7c000081e47aa6ecbb6ff36eacd05f",
-)
-
-configure_make_package(
-    name = "tmux",
-    source = ":tmux-src",
-    version = "3.4",
-    description = "Terminal multiplexer with client-server model",
-    homepage = "https://tmux.github.io",
-    license = "ISC",
-    configure_args = [
-        "--prefix=/usr",
-        "--sysconfdir=/etc",
-    ],
-    deps = [
-        "//packages/core:musl",
-        "//packages/core:ncurses",
-        "//packages/core:libevent",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# screen - Terminal multiplexer with detach capability
-download_source(
-    name = "screen-src",
-    src_uri = "https://ftp.gnu.org/gnu/screen/screen-4.9.1.tar.gz",
-    sha256 = "26cef3e3c42571c0d484ad6faf110c5c15091fbf872b06fa7aa4766c7405ac69",
-)
-
-configure_make_package(
-    name = "screen",
-    source = ":screen-src",
-    version = "4.9.1",
-    description = "GNU screen terminal multiplexer",
-    homepage = "https://www.gnu.org/software/screen",
-    license = "GPL-3+",
-    configure_args = [
-        "--prefix=/usr",
-        "--sysconfdir=/etc",
-        "--disable-pam",
-        "--disable-socket-dir",
-    ],
-    deps = [
-        "//packages/core:musl",
-        "//packages/core:ncurses",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# LOGGING TOOLS
-# =============================================================================
-
-# rsyslog - Reliable and extended syslog daemon
-download_source(
-    name = "rsyslog-src",
-    src_uri = "https://www.rsyslog.com/files/download/rsyslog/rsyslog-8.2312.0.tar.gz",
-    sha256 = "c3f9a7b8e1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8",
-)
-
-configure_make_package(
-    name = "rsyslog",
-    source = ":rsyslog-src",
-    version = "8.2312.0",
-    description = "Reliable and extended syslog daemon",
-    homepage = "https://www.rsyslog.com",
-    license = "GPL-3+ LGPL-3+ Apache-2.0",
-    configure_args = [
-        "--prefix=/usr",
-        "--sysconfdir=/etc",
-        "--disable-libgcrypt",
-        "--disable-gnutls",
-        "--disable-openssl",
-        "--enable-imfile",
-        "--enable-imptcp",
-    ],
-    deps = [
-        "//packages/core:musl",
-        "//packages/core:zlib",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# logrotate - Log file rotation utility
-download_source(
-    name = "logrotate-src",
-    src_uri = "https://github.com/logrotate/logrotate/releases/download/3.21.0/logrotate-3.21.0.tar.xz",
-    sha256 = "8fa12015e3b8415c121fc9c0ca53aa872f7b0702f543afda7e32b6c54727def2",
-)
-
-configure_make_package(
-    name = "logrotate",
-    source = ":logrotate-src",
-    version = "3.21.0",
-    description = "Rotates, compresses, and mails system logs",
-    homepage = "https://github.com/logrotate/logrotate",
-    license = "GPL-2+",
-    configure_args = [
-        "--prefix=/usr",
-        "--with-state-file-path=/var/lib/logrotate/status",
-        "--without-selinux",
-        "--without-acl",
-    ],
-    deps = ["//packages/core:musl"],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# FILE SYNCHRONIZATION & MANAGEMENT
-# =============================================================================
-
-# rsync - Fast incremental file transfer
-download_source(
-    name = "rsync-src",
-    src_uri = "https://download.samba.org/pub/rsync/src/rsync-3.3.0.tar.gz",
-    sha256 = "7399e9a6708c32571aef0b5f2d06c4e1e4a3b3f8e7a8b9c0d1e2f3a4b5c6d7e8",
-)
-
-configure_make_package(
-    name = "rsync",
-    source = ":rsync-src",
-    version = "3.3.0",
-    description = "Fast incremental file transfer utility",
-    homepage = "https://rsync.samba.org",
-    license = "GPL-3+",
-    configure_args = [
-        "--prefix=/usr",
-        "--sysconfdir=/etc",
-        "--disable-lz4",
-        "--disable-xxhash",
-        "--disable-zstd",
-        "--disable-openssl",
-    ],
-    deps = [
-        "//packages/core:musl",
-        "//packages/core:zlib",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# ACPI & POWER MANAGEMENT
-# =============================================================================
-
-# acpid - ACPI event daemon
-download_source(
-    name = "acpid-src",
-    src_uri = "https://sourceforge.net/projects/acpid2/files/acpid-2.0.34.tar.xz",
-    sha256 = "2d095c8cfcbc847caec746d62cdc8d0bff1ec1bc72ef7c674c721e04da2ab241",
-)
-
-configure_make_package(
-    name = "acpid",
-    source = ":acpid-src",
-    version = "2.0.34",
-    description = "ACPI event daemon for handling power management events",
-    homepage = "https://sourceforge.net/projects/acpid2",
-    license = "GPL-2+",
-    configure_args = [
-        "--prefix=/usr",
-        "--sysconfdir=/etc",
-    ],
-    deps = ["//packages/core:musl"],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# JOB SCHEDULING
-# =============================================================================
-
-# at - Job scheduling utility
-download_source(
-    name = "at-src",
-    src_uri = "http://software.calhariz.com/at/at-3.2.5.tar.gz",
-    sha256 = "bb066b389d7c9bb9d84a35738032b85c30aca6b83e1bb5c7c9d0f1e2a3b4c5d6",
-)
-
-configure_make_package(
-    name = "at",
-    source = ":at-src",
-    version = "3.2.5",
-    description = "Delayed job execution and batch processing",
-    homepage = "https://salsa.debian.org/debian/at",
-    license = "GPL-2+",
-    configure_args = [
-        "--prefix=/usr",
-        "--sysconfdir=/etc",
-        "--with-jobdir=/var/spool/atjobs",
-        "--with-atspool=/var/spool/atspool",
-        "--without-selinux",
-    ],
-    deps = ["//packages/core:musl"],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# SYSTEM UTILITIES
-# =============================================================================
-
-# file - File type identification utility
-download_source(
-    name = "file-src",
-    src_uri = "https://astron.com/pub/file/file-5.45.tar.gz",
-    sha256 = "fc97f51029bb0e2c9f4e3bffefdaf678f0e039ee872b9de5c002a6d09c784d82",
-)
-
-configure_make_package(
-    name = "file",
-    source = ":file-src",
-    version = "5.45",
-    description = "File type identification utility",
-    homepage = "https://www.darwinsys.com/file",
-    license = "BSD-2-Clause",
-    configure_args = [
-        "--prefix=/usr",
-        "--datadir=/usr/share",
-        "--disable-bzlib",
-        "--disable-xzlib",
-        "--disable-zstdlib",
-    ],
-    deps = [
-        "//packages/core:musl",
-        "//packages/core:zlib",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# which - Shows full path of commands
-download_source(
-    name = "which-src",
-    src_uri = "https://ftp.gnu.org/gnu/which/which-2.21.tar.gz",
-    sha256 = "f4a245b94124b377d8b49646bf421f9155d36aa7614b6ebf83705d3ffc76eaad",
-)
-
-configure_make_package(
-    name = "which",
-    source = ":which-src",
-    version = "2.21",
-    description = "Shows full path of shell commands",
-    homepage = "https://www.gnu.org/software/which",
-    license = "GPL-3+",
-    configure_args = [
-        "--prefix=/usr",
-    ],
-    deps = ["//packages/core:musl"],
-    visibility = ["PUBLIC"],
-)
-
-# tree - List directory contents in tree format
-download_source(
-    name = "tree-src",
-    src_uri = "https://gitlab.com/OldManProgrammer/unix-tree/-/archive/2.1.1/unix-tree-2.1.1.tar.gz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
-)
-
-configure_make_package(
-    name = "tree",
-    source = ":tree-src",
-    version = "2.1.1",
-    description = "List directory contents in tree format",
-    homepage = "https://gitlab.com/OldManProgrammer/unix-tree",
-    license = "GPL-2+",
-    pre_configure = "true",  # No configure script
-    make_args = [
-        "PREFIX=/usr",
-    ],
-    install_args = [
-        "PREFIX=/usr",
-        "DESTDIR=$DESTDIR",
-    ],
-    deps = ["//packages/core:musl"],
-    visibility = ["PUBLIC"],
-)
-
-# less - Pager program
-download_source(
-    name = "less-src",
-    src_uri = "https://www.greenwoodsoftware.com/less/less-643.tar.gz",
-    sha256 = "2911b5432c836fa084c8a2e68f6cd6312372c026a58faaa98862731c8b6052e8",
-)
-
-configure_make_package(
-    name = "less",
-    source = ":less-src",
-    version = "643",
-    description = "Pager program similar to more",
-    homepage = "https://www.greenwoodsoftware.com/less",
-    license = "GPL-3+ BSD-2-Clause",
-    configure_args = [
-        "--prefix=/usr",
-        "--sysconfdir=/etc",
-    ],
-    deps = [
-        "//packages/core:musl",
-        "//packages/core:ncurses",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# findutils - GNU find utilities
-download_source(
-    name = "findutils-src",
-    src_uri = "https://ftp.gnu.org/gnu/findutils/findutils-4.9.0.tar.xz",
-    sha256 = "a2bfb8c09d436770edc59f50fa483e785b161a3b7b9d547573cb08065fd462fe",
-)
-
-configure_make_package(
-    name = "findutils",
-    source = ":findutils-src",
-    version = "4.9.0",
-    description = "GNU find, xargs, and locate utilities",
-    homepage = "https://www.gnu.org/software/findutils",
-    license = "GPL-3+",
-    configure_args = [
-        "--prefix=/usr",
-        "--localstatedir=/var/lib/locate",
-        "--disable-nls",
-    ],
-    deps = ["//packages/core:musl"],
-    visibility = ["PUBLIC"],
-)
-
-# coreutils - GNU core utilities
-download_source(
-    name = "coreutils-src",
-    src_uri = "https://ftp.gnu.org/gnu/coreutils/coreutils-9.5.tar.xz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
-)
-
-configure_make_package(
-    name = "coreutils",
-    source = ":coreutils-src",
-    version = "9.5",
-    description = "GNU core utilities (ls, cp, mv, rm, etc.)",
-    homepage = "https://www.gnu.org/software/coreutils",
-    license = "GPL-3+",
-    configure_args = [
-        "--prefix=/usr",
-        "--disable-nls",
-        "--enable-no-install-program=kill,uptime",
-    ],
-    deps = ["//packages/core:musl"],
-    visibility = ["PUBLIC"],
-)
+# This file contains convenience groups that aggregate individual sys-apps packages.
+# Individual packages are located in their own subdirectories.
 
 # =============================================================================
 # PACKAGE GROUPS
@@ -599,8 +11,8 @@ configure_make_package(
 filegroup(
     name = "cron-packages",
     srcs = [
-        ":cronie",
-        ":dcron",
+        "//packages/sys-apps/cronie:cronie",
+        "//packages/sys-apps/dcron:dcron",
     ],
     visibility = ["PUBLIC"],
 )
@@ -608,11 +20,11 @@ filegroup(
 filegroup(
     name = "monitoring-packages",
     srcs = [
-        ":htop",
-        ":lsof",
-        ":strace",
-        ":psmisc",
-        ":procps-ng",
+        "//packages/sys-apps/htop:htop",
+        "//packages/sys-apps/lsof:lsof",
+        "//packages/sys-apps/strace:strace",
+        "//packages/sys-apps/psmisc:psmisc",
+        "//packages/sys-apps/procps-ng:procps-ng",
     ],
     visibility = ["PUBLIC"],
 )
@@ -620,8 +32,8 @@ filegroup(
 filegroup(
     name = "privilege-packages",
     srcs = [
-        ":sudo",
-        ":doas",
+        "//packages/sys-apps/sudo:sudo",
+        "//packages/sys-apps/doas:doas",
     ],
     visibility = ["PUBLIC"],
 )
@@ -629,8 +41,8 @@ filegroup(
 filegroup(
     name = "multiplexer-packages",
     srcs = [
-        ":tmux",
-        ":screen",
+        "//packages/sys-apps/tmux:tmux",
+        "//packages/sys-apps/screen:screen",
     ],
     visibility = ["PUBLIC"],
 )
@@ -638,8 +50,8 @@ filegroup(
 filegroup(
     name = "logging-packages",
     srcs = [
-        ":rsyslog",
-        ":logrotate",
+        "//packages/sys-apps/rsyslog:rsyslog",
+        "//packages/sys-apps/logrotate:logrotate",
     ],
     visibility = ["PUBLIC"],
 )
@@ -647,12 +59,12 @@ filegroup(
 filegroup(
     name = "utility-packages",
     srcs = [
-        ":file",
-        ":which",
-        ":tree",
-        ":less",
-        ":findutils",
-        ":coreutils",
+        "//packages/sys-apps/file:file",
+        "//packages/sys-apps/which:which",
+        "//packages/sys-apps/tree:tree",
+        "//packages/sys-apps/less:less",
+        "//packages/sys-apps/findutils:findutils",
+        "//packages/sys-apps/coreutils:coreutils",
     ],
     visibility = ["PUBLIC"],
 )
@@ -666,9 +78,9 @@ filegroup(
         ":multiplexer-packages",
         ":logging-packages",
         ":utility-packages",
-        ":rsync",
-        ":acpid",
-        ":at",
+        "//packages/sys-apps/rsync:rsync",
+        "//packages/sys-apps/acpid:acpid",
+        "//packages/sys-apps/at:at",
     ],
     visibility = ["PUBLIC"],
 )

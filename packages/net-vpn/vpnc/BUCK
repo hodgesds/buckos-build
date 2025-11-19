@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "vpnc-src",
+    src_uri = "https://github.com/streambinder/vpnc/archive/refs/tags/0.5.3r550-2.tar.gz",
+    sha256 = "d1ac0e70a6cc60a5a4f7d5d5c5c8c21c6f4c5c7e3c4d5e6f7a8b9c0d1e2f3a4b",
+)
+
+configure_make_package(
+    name = "vpnc",
+    source = ":vpnc-src",
+    version = "0.5.3r550-2",
+    description = "Cisco VPN client compatible with vpnc",
+    homepage = "https://github.com/streambinder/vpnc",
+    license = "GPL-2.0",
+    pre_configure = "true",
+    make_args = [
+        "PREFIX=/usr",
+        "ETCDIR=/etc/vpnc",
+    ],
+    post_install = """
+make DESTDIR=$DESTDIR PREFIX=/usr ETCDIR=/etc/vpnc install
+mkdir -p "$DESTDIR/etc/vpnc"
+""",
+    deps = [
+        "//packages/core:libgcrypt",
+    ],
+    visibility = ["PUBLIC"],
+)

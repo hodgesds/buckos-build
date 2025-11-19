@@ -1,0 +1,31 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# lftp - Sophisticated file transfer program
+# =============================================================================
+
+download_source(
+    name = "lftp-src",
+    src_uri = "https://lftp.yar.ru/ftp/lftp-4.9.2.tar.xz",
+    sha256 = "c517c4f4f9c39bd415d7313088a2b1e313b2d386867fe40b8d22ae50a3a4e5e2",
+)
+
+configure_make_package(
+    name = "lftp",
+    source = ":lftp-src",
+    version = "4.9.2",
+    description = "Sophisticated file transfer program with HTTP, FTP, and more",
+    homepage = "https://lftp.yar.ru/",
+    license = "GPL-3.0",
+    configure_args = [
+        "--with-openssl",
+        "--disable-nls",
+        "--without-gnutls",
+    ],
+    deps = [
+        "//packages/network/openssl:openssl",
+        "//packages/core:zlib",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

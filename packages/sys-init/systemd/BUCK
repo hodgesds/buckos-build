@@ -1,0 +1,74 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+# -----------------------------------------------------------------------------
+# systemd - System and Service Manager
+# -----------------------------------------------------------------------------
+
+download_source(
+    name = "systemd-src",
+    src_uri = "https://github.com/systemd/systemd/archive/refs/tags/v255.tar.gz",
+    sha256 = "28854ffb2cb5f9e07fcbdbf1e16e1e4a73cfbe7449dae12392a5477c5b89bc5c",
+)
+
+configure_make_package(
+    name = "systemd",
+    source = ":systemd-src",
+    version = "255",
+    description = "System and Service Manager",
+    homepage = "https://systemd.io/",
+    license = "LGPL-2.1-or-later",
+    pre_configure = """
+# systemd uses meson build system
+mkdir -p build
+cd build
+meson setup .. \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    -Dmode=release \
+    -Dsplit-bin=true \
+    -Dsplit-usr=false \
+    -Drootprefix=/usr \
+    -Dsysvinit-path=/etc/init.d \
+    -Ddefault-hierarchy=unified \
+    -Dpam=false \
+    -Dselinux=false \
+    -Dapparmor=false \
+    -Daudit=false \
+    -Dpolkit=false \
+    -Dacl=false \
+    -Dsmack=false \
+    -Dgcrypt=false \
+    -Dgnutls=false \
+    -Dopenssl=false \
+    -Dp11kit=false \
+    -Dlibfido2=false \
+    -Dtpm2=false \
+    -Dcurl=false \
+    -Didn=false \
+    -Dlibidn2=false \
+    -Dlibiptc=false \
+    -Dqrencode=false \
+    -Dmicrohttpd=false \
+    -Dglib=false \
+    -Ddbus=false \
+    -Dman=false \
+    -Dhtml=false \
+    -Dtests=false
+""",
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+cd build
+DESTDIR=$OUT meson install
+# Create essential symlinks
+mkdir -p $OUT/sbin
+ln -sf ../usr/lib/systemd/systemd $OUT/sbin/init
+""",
+    deps = [
+        "//packages/core:util-linux",
+        "//packages/core:musl",
+    ],
+    build_deps = [],
+    visibility = ["PUBLIC"],
+)

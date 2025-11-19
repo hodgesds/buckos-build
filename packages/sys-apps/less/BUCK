@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# less - Pager program
+download_source(
+    name = "less-src",
+    src_uri = "https://www.greenwoodsoftware.com/less/less-643.tar.gz",
+    sha256 = "2911b5432c836fa084c8a2e68f6cd6312372c026a58faaa98862731c8b6052e8",
+)
+
+configure_make_package(
+    name = "less",
+    source = ":less-src",
+    version = "643",
+    description = "Pager program similar to more",
+    homepage = "https://www.greenwoodsoftware.com/less",
+    license = "GPL-3+ BSD-2-Clause",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+    ],
+    deps = [
+        "//packages/core:musl",
+        "//packages/core:ncurses",
+    ],
+    visibility = ["PUBLIC"],
+)

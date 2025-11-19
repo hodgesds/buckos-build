@@ -1,0 +1,31 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# Zig - Systems programming language
+# =============================================================================
+
+download_source(
+    name = "zig-src",
+    src_uri = "https://ziglang.org/download/0.11.0/zig-0.11.0.tar.xz",
+    sha256 = "9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d",
+)
+
+binary_package(
+    name = "zig",
+    srcs = [":zig-src"],
+    version = "0.11.0",
+    description = "Zig is a general-purpose programming language and build system",
+    homepage = "https://ziglang.org/",
+    license = "MIT",
+    install_script = """
+        cd $SRCS/zig-0.11.0
+
+        # Build Zig using cmake
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
+        make
+        make install DESTDIR=$OUT
+    """,
+    visibility = ["PUBLIC"],
+)

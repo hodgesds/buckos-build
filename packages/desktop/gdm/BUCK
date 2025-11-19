@@ -1,0 +1,34 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# =============================================================================
+# GDM - GNOME Display Manager
+# =============================================================================
+
+download_source(
+    name = "gdm-src",
+    src_uri = "https://download.gnome.org/sources/gdm/45/gdm-45.0.1.tar.xz",
+    sha256 = "8a9b8c7d6e5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8",
+)
+
+configure_make_package(
+    name = "gdm",
+    source = ":gdm-src",
+    version = "45.0.1",
+    description = "GNOME Display Manager",
+    homepage = "https://wiki.gnome.org/Projects/GDM",
+    license = "GPL-2.0",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr \\
+    -Dgdm-xsession=true \\
+    -Drun-dir=/run/gdm \\
+    -Dsystemd-journal=false \\
+    -Dplymouth=disabled
+""",
+    deps = [
+        "//packages/desktop/wayland:wayland",
+        "//packages/desktop/xorg-server:xorg-server",
+    ],
+    visibility = ["PUBLIC"],
+)

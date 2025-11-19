@@ -1,0 +1,44 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# Go - Open source programming language
+# =============================================================================
+
+download_source(
+    name = "go-bootstrap-src",
+    src_uri = "https://go.dev/dl/go1.21.6.linux-amd64.tar.gz",
+    sha256 = "3f934f40ac360b9c01f616a9aa1796d227d8b0328bf64cb045c7b8c4ee9caea4",
+)
+
+download_source(
+    name = "go-src",
+    src_uri = "https://go.dev/dl/go1.22.0.src.tar.gz",
+    sha256 = "4d196c3d41a0d6c1dfc64d04e3cc1f608b0c436bd87b7060ce3e23234e1f4d5c",
+)
+
+binary_package(
+    name = "go",
+    srcs = [":go-src", ":go-bootstrap-src"],
+    version = "1.22.0",
+    description = "Go is an open source programming language that makes it easy to build simple, reliable, and efficient software",
+    homepage = "https://go.dev/",
+    license = "BSD-3-Clause",
+    install_script = """
+        # Setup bootstrap Go
+        mkdir -p $WORK/bootstrap
+        tar -xzf $SRCS/go1.21.6.linux-amd64.tar.gz -C $WORK/bootstrap --strip-components=1
+        export GOROOT_BOOTSTRAP=$WORK/bootstrap
+
+        # Build Go from source
+        cd $SRCS/go/src
+        ./make.bash
+
+        # Install
+        mkdir -p $OUT/usr/local/go
+        cp -r $SRCS/go/* $OUT/usr/local/go/
+        mkdir -p $OUT/usr/bin
+        ln -s /usr/local/go/bin/go $OUT/usr/bin/go
+        ln -s /usr/local/go/bin/gofmt $OUT/usr/bin/gofmt
+    """,
+    visibility = ["PUBLIC"],
+)

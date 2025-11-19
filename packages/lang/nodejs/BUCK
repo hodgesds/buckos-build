@@ -1,0 +1,35 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# Node.js - JavaScript runtime
+# =============================================================================
+
+download_source(
+    name = "nodejs-src",
+    src_uri = "https://nodejs.org/dist/v20.11.0/node-v20.11.0.tar.xz",
+    sha256 = "2deb7103477a58e66f4d20c8a1de42b76a07dfe5e548e31f0c86f5cec2fe8595",
+)
+
+configure_make_package(
+    name = "nodejs",
+    source = ":nodejs-src",
+    version = "20.11.0",
+    description = "Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine",
+    homepage = "https://nodejs.org/",
+    license = "MIT",
+    pre_configure = """
+        # Node.js uses a Python configure script
+        chmod +x configure
+    """,
+    configure_args = [
+        "--prefix=/usr",
+        "--shared-zlib",
+        "--shared-openssl",
+        "--with-intl=system-icu",
+    ],
+    deps = [
+        "//packages/core:zlib",
+        "//packages/network:openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

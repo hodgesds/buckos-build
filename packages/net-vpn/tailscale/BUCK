@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "tailscale-src",
+    src_uri = "https://pkgs.tailscale.com/stable/tailscale_1.56.1_amd64.tgz",
+    sha256 = "e5f6789012345678901234567890abcdef1234567890abcdef1234567890abcd",
+)
+
+configure_make_package(
+    name = "tailscale",
+    source = ":tailscale-src",
+    version = "1.56.1",
+    description = "Tailscale mesh VPN based on WireGuard",
+    homepage = "https://tailscale.com/",
+    license = "BSD-3-Clause",
+    pre_configure = "true",
+    make_args = [],
+    post_install = """
+mkdir -p "$DESTDIR/usr/bin"
+mkdir -p "$DESTDIR/usr/sbin"
+mkdir -p "$DESTDIR/var/lib/tailscale"
+mkdir -p "$DESTDIR/var/run/tailscale"
+cp tailscale "$DESTDIR/usr/bin/"
+cp tailscaled "$DESTDIR/usr/sbin/"
+chmod 755 "$DESTDIR/usr/bin/tailscale"
+chmod 755 "$DESTDIR/usr/sbin/tailscaled"
+""",
+    visibility = ["PUBLIC"],
+)

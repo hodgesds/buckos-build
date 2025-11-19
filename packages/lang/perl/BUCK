@@ -1,0 +1,43 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# Perl - Practical Extraction and Report Language
+# =============================================================================
+
+download_source(
+    name = "perl-src",
+    src_uri = "https://www.cpan.org/src/5.0/perl-5.38.2.tar.xz",
+    sha256 = "a0a31534451eb7b83c7d6594a497543a54d488bc90ca00f5e34762577f40571d",
+)
+
+configure_make_package(
+    name = "perl",
+    source = ":perl-src",
+    version = "5.38.2",
+    description = "Perl is a highly capable, feature-rich programming language",
+    homepage = "https://www.perl.org/",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        # Perl uses its own Configure script (capital C)
+        chmod +x Configure
+    """,
+    configure_args = [
+        "-des",
+        "-Dprefix=/usr",
+        "-Dvendorprefix=/usr",
+        "-Dprivlib=/usr/lib/perl5/5.38/core_perl",
+        "-Darchlib=/usr/lib/perl5/5.38/core_perl",
+        "-Dsitelib=/usr/lib/perl5/5.38/site_perl",
+        "-Dsitearch=/usr/lib/perl5/5.38/site_perl",
+        "-Dvendorlib=/usr/lib/perl5/5.38/vendor_perl",
+        "-Dvendorarch=/usr/lib/perl5/5.38/vendor_perl",
+        "-Dman1dir=/usr/share/man/man1",
+        "-Dman3dir=/usr/share/man/man3",
+        "-Duseshrplib",
+        "-Dusethreads",
+    ],
+    deps = [
+        "//packages/core:zlib",
+    ],
+    visibility = ["PUBLIC"],
+)

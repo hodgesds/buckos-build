@@ -1,0 +1,38 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+# -----------------------------------------------------------------------------
+# sysvinit - Classic System V init
+# -----------------------------------------------------------------------------
+
+download_source(
+    name = "sysvinit-src",
+    src_uri = "https://github.com/slicer69/sysvinit/releases/download/3.08/sysvinit-3.08.tar.xz",
+    sha256 = "1b47c3f8e70f4a9a3a3b2e7a889ad3b8c29a9fdbe82b7ac7b2e5ed0ff6c1f6c9",
+)
+
+configure_make_package(
+    name = "sysvinit",
+    source = ":sysvinit-src",
+    version = "3.08",
+    description = "Classic System V style init programs",
+    homepage = "https://github.com/slicer69/sysvinit",
+    license = "GPL-2.0-or-later",
+    pre_configure = """
+# sysvinit uses plain Makefile
+true
+""",
+    configure_args = [],
+    make_args = [
+        "CFLAGS=-O2",
+        "ROOT=$OUT",
+        "INSTALL=install",
+    ],
+    post_install = """
+make ROOT=$OUT install
+""",
+    deps = [
+        "//packages/core:musl",
+    ],
+    build_deps = [],
+    visibility = ["PUBLIC"],
+)

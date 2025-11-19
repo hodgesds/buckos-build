@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "wireguard-tools-src",
+    src_uri = "https://git.zx2c4.com/wireguard-tools/snapshot/wireguard-tools-1.0.20210914.tar.xz",
+    sha256 = "97ff31489217bb265b7ae850d3d0f335ab07d2652ba1feec88b734bc96bd05ac",
+)
+
+configure_make_package(
+    name = "wireguard-tools",
+    source = ":wireguard-tools-src",
+    version = "1.0.20210914",
+    description = "WireGuard userspace tools (wg, wg-quick)",
+    homepage = "https://www.wireguard.com/",
+    license = "GPL-2.0",
+    pre_configure = "true",
+    make_args = [
+        "-C", "src",
+        "WITH_BASHCOMPLETION=yes",
+        "WITH_WGQUICK=yes",
+        "WITH_SYSTEMDUNITS=yes",
+        "PREFIX=/usr",
+    ],
+    post_install = """
+cd src
+make DESTDIR=$DESTDIR PREFIX=/usr WITH_BASHCOMPLETION=yes WITH_WGQUICK=yes WITH_SYSTEMDUNITS=yes install
+""",
+    visibility = ["PUBLIC"],
+)

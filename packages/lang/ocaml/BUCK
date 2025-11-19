@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# OCaml - Functional programming language
+# =============================================================================
+
+download_source(
+    name = "ocaml-src",
+    src_uri = "https://github.com/ocaml/ocaml/archive/refs/tags/5.1.1.tar.gz",
+    sha256 = "57920d5c8d5b39d7c89b1f3c1d7b3e5a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b",
+)
+
+configure_make_package(
+    name = "ocaml",
+    source = ":ocaml-src",
+    version = "5.1.1",
+    description = "OCaml is an industrial-strength functional programming language",
+    homepage = "https://ocaml.org/",
+    license = "LGPL-2.1-or-later WITH OCaml-LGPL-linking-exception",
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-ocamltest",
+        "--enable-native-compiler",
+    ],
+    visibility = ["PUBLIC"],
+)

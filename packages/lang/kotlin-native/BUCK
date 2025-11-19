@@ -1,0 +1,27 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# Kotlin Native - Kotlin compiler for native platforms
+# =============================================================================
+
+download_source(
+    name = "kotlin-native-src",
+    src_uri = "https://github.com/JetBrains/kotlin/releases/download/v1.9.22/kotlin-native-linux-x86_64-1.9.22.tar.gz",
+    sha256 = "cfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcf",
+)
+
+binary_package(
+    name = "kotlin-native",
+    srcs = [":kotlin-native-src"],
+    version = "1.9.22",
+    description = "Kotlin/Native is a technology for compiling Kotlin code to native binaries",
+    homepage = "https://kotlinlang.org/",
+    license = "Apache-2.0",
+    install_script = """
+        mkdir -p $OUT/usr/local/kotlin-native
+        cp -r $SRCS/kotlin-native-linux-x86_64-1.9.22/* $OUT/usr/local/kotlin-native/
+        mkdir -p $OUT/usr/bin
+        ln -s /usr/local/kotlin-native/bin/kotlinc-native $OUT/usr/bin/kotlinc-native
+    """,
+    visibility = ["PUBLIC"],
+)

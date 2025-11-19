@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# logrotate - Log file rotation utility
+download_source(
+    name = "logrotate-src",
+    src_uri = "https://github.com/logrotate/logrotate/releases/download/3.21.0/logrotate-3.21.0.tar.xz",
+    sha256 = "8fa12015e3b8415c121fc9c0ca53aa872f7b0702f543afda7e32b6c54727def2",
+)
+
+configure_make_package(
+    name = "logrotate",
+    source = ":logrotate-src",
+    version = "3.21.0",
+    description = "Rotates, compresses, and mails system logs",
+    homepage = "https://github.com/logrotate/logrotate",
+    license = "GPL-2+",
+    configure_args = [
+        "--prefix=/usr",
+        "--with-state-file-path=/var/lib/logrotate/status",
+        "--without-selinux",
+        "--without-acl",
+    ],
+    deps = ["//packages/core:musl"],
+    visibility = ["PUBLIC"],
+)

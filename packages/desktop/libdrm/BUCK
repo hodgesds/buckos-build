@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# =============================================================================
+# libdrm - Direct Rendering Manager library
+# =============================================================================
+
+download_source(
+    name = "libdrm-src",
+    src_uri = "https://dri.freedesktop.org/libdrm/libdrm-2.4.120.tar.xz",
+    sha256 = "5b5e5f5e4e3e2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6",
+)
+
+configure_make_package(
+    name = "libdrm",
+    source = ":libdrm-src",
+    version = "2.4.120",
+    description = "Direct Rendering Manager library",
+    homepage = "https://dri.freedesktop.org/",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr -Dudev=true -Dvalgrind=disabled
+""",
+    visibility = ["PUBLIC"],
+)

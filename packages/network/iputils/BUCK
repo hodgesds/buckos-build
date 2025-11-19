@@ -1,0 +1,44 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# iputils - Network monitoring tools (ping, tracepath, etc.)
+# =============================================================================
+
+download_source(
+    name = "iputils-src",
+    src_uri = "https://github.com/iputils/iputils/archive/refs/tags/20231222.tar.gz",
+    sha256 = "216c9e2f7f8f9c1e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e",
+)
+
+configure_make_package(
+    name = "iputils",
+    source = ":iputils-src",
+    version = "20231222",
+    description = "Network monitoring tools including ping",
+    homepage = "https://github.com/iputils/iputils",
+    license = "GPL-2.0",
+    pre_configure = """
+# iputils uses meson, we'll use a simplified make approach
+cat > Makefile << 'MAKEFILE'
+CC ?= gcc
+CFLAGS ?= -O2 -Wall
+PREFIX ?= /usr
+
+all: ping tracepath
+
+ping: ping/ping.c ping/ping_common.c ping/ping6_common.c
+	$(CC) $(CFLAGS) -o ping ping/ping.c ping/ping_common.c -lm -lcap
+
+tracepath: tracepath.c
+	$(CC) $(CFLAGS) -o tracepath tracepath.c
+
+install: all
+	install -d $(DESTDIR)$(PREFIX)/bin
+	install -m 4755 ping $(DESTDIR)$(PREFIX)/bin/
+	install -m 755 tracepath $(DESTDIR)$(PREFIX)/bin/
+MAKEFILE
+""",
+    configure_args = [],
+    deps = ["//packages/core:musl"],
+    visibility = ["PUBLIC"],
+)

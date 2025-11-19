@@ -1,0 +1,38 @@
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
+
+download_source(
+    name = "kicad-src",
+    src_uri = "https://gitlab.com/kicad/code/kicad/-/archive/8.0.5/kicad-8.0.5.tar.gz",
+    sha256 = "e0e7e5a5d5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5",
+)
+
+ebuild_package(
+    name = "kicad",
+    source = ":kicad-src",
+    version = "8.0.5",
+    description = "Electronic Design Automation suite for schematic capture, PCB layout, and manufacturing",
+    homepage = "https://www.kicad.org/",
+    license = "GPL-3.0",
+    src_configure = """
+cmake_src_configure \\
+    -DKICAD_SCRIPTING_WXPYTHON=ON \\
+    -DKICAD_USE_OCC=ON \\
+    -DKICAD_SPICE=ON \\
+    -DKICAD_BUILD_I18N=ON \\
+    -DKICAD_BUILD_QA_TESTS=OFF \\
+    -DCMAKE_BUILD_TYPE=Release
+""",
+    src_compile = """
+cmake_src_compile
+""",
+    src_install = """
+cmake_src_install
+""",
+    deps = [
+        "//packages/core/boost:boost",
+        "//packages/core/zlib:zlib",
+        "//packages/network/openssl:openssl",
+        "//packages/network/curl:curl",
+    ],
+    visibility = ["PUBLIC"],
+)

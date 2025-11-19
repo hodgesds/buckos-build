@@ -1,0 +1,31 @@
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
+
+download_source(
+    name = "qcad-src",
+    src_uri = "https://github.com/qcad/qcad/archive/refs/tags/v3.29.6.0.tar.gz",
+    sha256 = "55ba0bba0d3a5b5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b",
+)
+
+ebuild_package(
+    name = "qcad",
+    source = ":qcad-src",
+    version = "3.29.6.0",
+    description = "Professional CAD system for 2D drafting and design with DXF/DWG support",
+    homepage = "https://qcad.org/",
+    license = "GPL-3.0",
+    src_configure = """
+qmake qcad.pro \\
+    PREFIX=/usr \\
+    CONFIG+=release
+""",
+    src_compile = """
+emake
+""",
+    src_install = """
+emake INSTALL_ROOT="${DESTDIR}" install
+""",
+    deps = [
+        "//packages/core/boost:boost",
+    ],
+    visibility = ["PUBLIC"],
+)

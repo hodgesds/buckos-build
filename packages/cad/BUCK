@@ -1,0 +1,78 @@
+# CAD (Computer-Aided Design) packages
+# Comprehensive collection of open-source CAD tools for electronics, 2D drafting, and 3D modeling
+
+# Electronic Design Automation (EDA) packages
+filegroup(
+    name = "eda-packages",
+    srcs = [
+        "//packages/cad/eda/kicad:kicad",
+        "//packages/cad/eda/ngspice:ngspice",
+        "//packages/cad/eda/geda-gaf:geda-gaf",
+        "//packages/cad/eda/pcb-rnd:pcb-rnd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# 2D CAD packages
+filegroup(
+    name = "2d-cad-packages",
+    srcs = [
+        "//packages/cad/2d/librecad:librecad",
+        "//packages/cad/2d/qcad:qcad",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# 3D CAD packages
+filegroup(
+    name = "3d-cad-packages",
+    srcs = [
+        "//packages/cad/3d/freecad:freecad",
+        "//packages/cad/3d/openscad:openscad",
+        "//packages/cad/3d/brlcad:brlcad",
+        "//packages/cad/3d/solvespace:solvespace",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Circuit simulation packages
+filegroup(
+    name = "simulation-packages",
+    srcs = [
+        "//packages/cad/eda/ngspice:ngspice",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# PCB design packages
+filegroup(
+    name = "pcb-packages",
+    srcs = [
+        "//packages/cad/eda/kicad:kicad",
+        "//packages/cad/eda/geda-gaf:geda-gaf",
+        "//packages/cad/eda/pcb-rnd:pcb-rnd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Parametric modeling packages
+filegroup(
+    name = "parametric-packages",
+    srcs = [
+        "//packages/cad/3d/freecad:freecad",
+        "//packages/cad/3d/openscad:openscad",
+        "//packages/cad/3d/solvespace:solvespace",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All CAD packages
+filegroup(
+    name = "all",
+    srcs = [
+        ":eda-packages",
+        ":2d-cad-packages",
+        ":3d-cad-packages",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,50 @@
+load("//defs:package_defs.bzl", "download_source", "cmake_package")
+
+download_source(
+    name = "fontforge-src",
+    src_uri = "https://github.com/fontforge/fontforge/releases/download/20230101/fontforge-20230101.tar.xz",
+    sha256 = "ca82ec4c060c4dda70ace5478a41b5e7b95eb035fe1c4cf85c48f996d35c60f8",
+)
+
+cmake_package(
+    name = "fontforge",
+    source = ":fontforge-src",
+    version = "20230101",
+    description = "Free and open-source font editor",
+    homepage = "https://fontforge.org/",
+    license = "GPL-3.0-or-later",
+    cmake_args = [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DENABLE_GUI=ON",
+        "-DENABLE_NATIVE_SCRIPTING=ON",
+        "-DENABLE_PYTHON_SCRIPTING=ON",
+        "-DENABLE_PYTHON_EXTENSION=ON",
+        "-DENABLE_LIBSPIRO=ON",
+        "-DENABLE_LIBUNINAMESLIST=ON",
+        "-DENABLE_LIBGIF=ON",
+        "-DENABLE_LIBJPEG=ON",
+        "-DENABLE_LIBPNG=ON",
+        "-DENABLE_LIBREADLINE=ON",
+        "-DENABLE_LIBTIFF=ON",
+        "-DENABLE_WOFF2=ON",
+        "-DENABLE_DOCS=OFF",
+    ],
+    deps = [
+        "//packages/core:musl",
+        "//packages/core:glib",
+        "//packages/core:libxml2",
+        "//packages/core:zlib",
+        "//packages/core:libpng",
+        "//packages/core:libjpeg-turbo",
+        "//packages/core:libtiff",
+        "//packages/core:giflib",
+        "//packages/core:readline",
+        "//packages/core:python",
+        "//packages/fonts/libraries/freetype:freetype",
+        "//packages/fonts/libraries/fontconfig:fontconfig",
+        "//packages/fonts/libraries/pango:pango",
+        "//packages/fonts/tools/woff2:woff2",
+        "//packages/desktop/gtk:gtk3",
+    ],
+    visibility = ["PUBLIC"],
+)

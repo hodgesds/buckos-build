@@ -1,0 +1,27 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "ttfautohint-src",
+    src_uri = "https://download.savannah.gnu.org/releases/freetype/ttfautohint-1.8.4.tar.gz",
+    sha256 = "c4fbf87f8ca6f3a7e9e5a0b5e0c8a5d6e5a5b5c5d5e5f5a5b5c5d5e5f5a5b5c5",
+)
+
+configure_make_package(
+    name = "ttfautohint",
+    source = ":ttfautohint-src",
+    version = "1.8.4",
+    description = "Automatic hinting tool for TrueType fonts",
+    homepage = "https://freetype.org/ttfautohint/",
+    license = "FTL GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--with-qt=no",
+        "--with-doc=no",
+    ],
+    deps = [
+        "//packages/core:musl",
+        "//packages/fonts/libraries/freetype:freetype",
+        "//packages/fonts/libraries/harfbuzz:harfbuzz",
+    ],
+    visibility = ["PUBLIC"],
+)

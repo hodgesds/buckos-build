@@ -211,6 +211,18 @@ filegroup(
 )
 
 # =============================================================================
+# Messaging - Instant messaging and communication
+# =============================================================================
+
+filegroup(
+    name = "messaging",
+    srcs = [
+        "//packages/network/signal-desktop:signal-desktop",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
 # All Network Packages
 # =============================================================================
 
@@ -226,6 +238,7 @@ filegroup(
         ":firewall",
         ":wireless",
         ":dns",
+        ":messaging",
     ],
     visibility = ["PUBLIC"],
 )

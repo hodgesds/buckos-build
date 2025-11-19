@@ -1,5 +1,5 @@
 """
-Maintainer registry and helper functions for Sideros Linux packages.
+Maintainer registry and helper functions for BuckOs Linux packages.
 
 This module provides:
 - A registry of maintainers with contact information
@@ -16,15 +16,15 @@ This module provides:
 # Format: "username" -> {"name": "Full Name", "email": "email@example.com", "github": "github_username"}
 MAINTAINERS = {
     "core-team": {
-        "name": "Sideros Core Team",
-        "email": "core@sideros.dev",
-        "github": "sideros",
+        "name": "BuckOs Core Team",
+        "email": "core@buckos.dev",
+        "github": "buckos",
         "description": "Core system packages and infrastructure",
     },
     "security-team": {
-        "name": "Sideros Security Team",
-        "email": "security@sideros.dev",
-        "github": "sideros-security",
+        "name": "BuckOs Security Team",
+        "email": "security@buckos.dev",
+        "github": "buckos-security",
         "description": "Security-related packages and updates",
     },
     # Add more maintainers as needed
@@ -62,7 +62,7 @@ def get_maintainer_info(maintainer_id: str) -> dict:
 
     Example:
         info = get_maintainer_info("core-team")
-        # Returns: {"name": "Sideros Core Team", "email": "core@sideros.dev", ...}
+        # Returns: {"name": "BuckOs Core Team", "email": "core@buckos.dev", ...}
     """
     return MAINTAINERS.get(maintainer_id, {})
 
@@ -78,7 +78,7 @@ def get_maintainer_email(maintainer_id: str) -> str:
 
     Example:
         email = get_maintainer_email("core-team")
-        # Returns: "core@sideros.dev"
+        # Returns: "core@buckos.dev"
     """
     info = MAINTAINERS.get(maintainer_id, {})
     return info.get("email", "")
@@ -95,7 +95,7 @@ def get_maintainer_name(maintainer_id: str) -> str:
 
     Example:
         name = get_maintainer_name("core-team")
-        # Returns: "Sideros Core Team"
+        # Returns: "BuckOs Core Team"
     """
     info = MAINTAINERS.get(maintainer_id, {})
     return info.get("name", maintainer_id)
@@ -148,7 +148,7 @@ def get_maintainer_contact_string(maintainer_id: str) -> str:
 
     Example:
         contact = get_maintainer_contact_string("core-team")
-        # Returns: "Sideros Core Team <core@sideros.dev>"
+        # Returns: "BuckOs Core Team <core@buckos.dev>"
     """
     info = MAINTAINERS.get(maintainer_id, {})
     name = info.get("name", maintainer_id)
@@ -169,7 +169,7 @@ def format_maintainers_list(maintainer_ids: list[str]) -> str:
 
     Example:
         formatted = format_maintainers_list(["core-team", "security-team"])
-        # Returns: "Sideros Core Team <core@sideros.dev>, Sideros Security Team <security@sideros.dev>"
+        # Returns: "BuckOs Core Team <core@buckos.dev>, BuckOs Security Team <security@buckos.dev>"
     """
     contacts = [get_maintainer_contact_string(m) for m in maintainer_ids]
     return ", ".join(contacts)
@@ -317,8 +317,8 @@ def register_maintainer(
         register_maintainer(
             maintainer_id = "network-team",
             name = "Network Team",
-            email = "network@sideros.dev",
-            github = "sideros-network",
+            email = "network@buckos.dev",
+            github = "buckos-network",
             description = "Network stack and related packages",
         )
     """
@@ -389,7 +389,7 @@ def generate_package_maintainer_matrix() -> dict[str, list[str]]:
 
     Example:
         matrix = generate_package_maintainer_matrix()
-        # Returns: {"bash": ["Sideros Core Team <core@sideros.dev>"], ...}
+        # Returns: {"bash": ["BuckOs Core Team <core@buckos.dev>"], ...}
     """
     matrix = {}
     for pkg_name, maintainer_ids in PACKAGE_MAINTAINERS.items():

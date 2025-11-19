@@ -17,7 +17,7 @@ configure_make_package(
         "--prefix=/usr",
         "--sysconfdir=/etc",
         "--disable-static",
-        "--with-distro=sideros",
+        "--with-distro=buckos",
         "--without-ao",
         "--without-amrnb",
         "--without-amrwb",

@@ -1,5 +1,5 @@
 """
-Multi-version package management system for Sideros Linux.
+Multi-version package management system for BuckOs Linux.
 
 Inspired by Gentoo's slot system, this provides:
 - Multiple concurrent versions of packages

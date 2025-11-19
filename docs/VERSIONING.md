@@ -1,6 +1,6 @@
 # Multi-Version Package Management System
 
-This document describes Sideros Linux's multi-version package management system, inspired by Gentoo's ebuild slot system but implemented using Buck2.
+This document describes BuckOs Linux's multi-version package management system, inspired by Gentoo's ebuild slot system but implemented using Buck2.
 
 ## Overview
 

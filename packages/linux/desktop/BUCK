@@ -1,5 +1,5 @@
 # =============================================================================
-# Desktop Environment Build Targets for Sideros Linux
+# Desktop Environment Build Targets for BuckOs Linux
 # Similar to CachyOS desktop options
 # =============================================================================
 # This file contains convenience groups that aggregate individual desktop packages.

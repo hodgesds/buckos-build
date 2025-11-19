@@ -25,7 +25,7 @@ meson setup .. \
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    -Dbranding="Sideros Linux" \
+    -Dbranding="BuckOs Linux" \
     -Dnewnet=false \
     -Daudit=disabled \
     -Dselinux=disabled \

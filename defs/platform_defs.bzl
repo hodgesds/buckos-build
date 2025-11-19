@@ -1,4 +1,4 @@
-# Platform targeting helpers for Sideros build system
+# Platform targeting helpers for BuckOs build system
 #
 # This module provides utilities for tagging targets by platform and
 # querying targets for specific platforms.

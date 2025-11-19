@@ -1,0 +1,332 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# Mojolicious - Real-time web framework
+download_source(
+    name = "mojolicious-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/S/SR/SRI/Mojolicious-9.37.tar.gz",
+    sha256 = "e6c8e7fb5e0e2c5e8a5f8d6b3c9a7f4e1d2b3a6c8d9e5f6a7b8c9d0e1f2a3b4",
+)
+
+configure_make_package(
+    name = "mojolicious",
+    source = ":mojolicious-src",
+    version = "9.37",
+    description = "Real-time web framework",
+    homepage = "https://mojolicious.org/",
+    license = "Artistic-2.0",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Dancer2 - Lightweight web application framework
+download_source(
+    name = "dancer2-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/C/CR/CROMEDOME/Dancer2-1.1.0.tar.gz",
+    sha256 = "c8f7a5b6d9e3f2a1b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
+)
+
+configure_make_package(
+    name = "dancer2",
+    source = ":dancer2-src",
+    version = "1.1.0",
+    description = "Lightweight web application framework",
+    homepage = "https://perldancer.org/",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+        "//packages/lang/perl/oop:moo",
+        ":plack",
+        "//packages/lang/perl/data:yaml",
+        "//packages/lang/perl/data:json-maybexs",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Catalyst::Runtime - The Elegant MVC Web Application Framework
+download_source(
+    name = "catalyst-runtime-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/J/JJ/JJNAPIORK/Catalyst-Runtime-5.90131.tar.gz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+configure_make_package(
+    name = "catalyst-runtime",
+    source = ":catalyst-runtime-src",
+    version = "5.90131",
+    description = "The Elegant MVC Web Application Framework",
+    homepage = "http://www.catalystframework.org/",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+        "//packages/lang/perl/oop:moose",
+        ":plack",
+        "//packages/lang/perl/network:lwp",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Plack - Perl Superglue for Web frameworks and Web Servers (PSGI toolkit)
+download_source(
+    name = "plack-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/M/MI/MIYAGAWA/Plack-1.0051.tar.gz",
+    sha256 = "b5f6d7e8c9a3f4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9",
+)
+
+configure_make_package(
+    name = "plack",
+    source = ":plack-src",
+    version = "1.0051",
+    description = "Perl Superglue for Web frameworks and Web Servers",
+    homepage = "https://plackperl.org/",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+        "//packages/lang/perl/core:try-tiny",
+        "//packages/lang/perl/network:http-message",
+        ":uri",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# CGI - Handle Common Gateway Interface requests and responses
+download_source(
+    name = "cgi-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/L/LE/LEEJO/CGI-4.64.tar.gz",
+    sha256 = "5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+)
+
+configure_make_package(
+    name = "cgi",
+    source = ":cgi-src",
+    version = "4.64",
+    description = "Handle Common Gateway Interface requests and responses",
+    homepage = "https://metacpan.org/pod/CGI",
+    license = "Artistic-2.0",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# URI - Uniform Resource Identifiers
+download_source(
+    name = "uri-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/URI-5.21.tar.gz",
+    sha256 = "d1b2c3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+)
+
+configure_make_package(
+    name = "uri",
+    source = ":uri-src",
+    version = "5.21",
+    description = "Uniform Resource Identifiers (absolute and relative)",
+    homepage = "https://metacpan.org/pod/URI",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# HTML::Parser - HTML parser class
+download_source(
+    name = "html-parser-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTML-Parser-3.82.tar.gz",
+    sha256 = "e2f3c4d5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3",
+)
+
+configure_make_package(
+    name = "html-parser",
+    source = ":html-parser-src",
+    version = "3.82",
+    description = "HTML parser class",
+    homepage = "https://metacpan.org/pod/HTML::Parser",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+        ":uri",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# HTML::Tree - Build and search HTML trees
+download_source(
+    name = "html-tree-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/K/KE/KENTNL/HTML-Tree-5.07.tar.gz",
+    sha256 = "f3e4d5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4",
+)
+
+configure_make_package(
+    name = "html-tree",
+    source = ":html-tree-src",
+    version = "5.07",
+    description = "Build and search HTML trees",
+    homepage = "https://metacpan.org/pod/HTML::Tree",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+        ":html-parser",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Template - Template Toolkit - Perl template processing system
+download_source(
+    name = "template-toolkit-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/A/AT/ATOOMIC/Template-Toolkit-3.101.tar.gz",
+    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+)
+
+configure_make_package(
+    name = "template-toolkit",
+    source = ":template-toolkit-src",
+    version = "3.101",
+    description = "Template Toolkit - Perl template processing system",
+    homepage = "http://www.template-toolkit.org/",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor TT_ACCEPT=y
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Web::Scraper - Web Scraping Toolkit using HTML and CSS Selectors
+download_source(
+    name = "web-scraper-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/M/MI/MIYAGAWA/Web-Scraper-0.38.tar.gz",
+    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+)
+
+configure_make_package(
+    name = "web-scraper",
+    source = ":web-scraper-src",
+    version = "0.38",
+    description = "Web Scraping Toolkit using HTML and CSS Selectors",
+    homepage = "https://metacpan.org/pod/Web::Scraper",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+        ":html-tree",
+        ":uri",
+        "//packages/lang/perl/network:lwp",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Starman - High-performance preforking PSGI/Plack web server
+download_source(
+    name = "starman-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/M/MI/MIYAGAWA/Starman-0.4017.tar.gz",
+    sha256 = "f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
+)
+
+configure_make_package(
+    name = "starman",
+    source = ":starman-src",
+    version = "0.4017",
+    description = "High-performance preforking PSGI/Plack web server",
+    homepage = "https://metacpan.org/pod/Starman",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+        ":plack",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Twiggy - AnyEvent HTTP server for PSGI
+download_source(
+    name = "twiggy-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/M/MI/MIYAGAWA/Twiggy-0.1026.tar.gz",
+    sha256 = "a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8",
+)
+
+configure_make_package(
+    name = "twiggy",
+    source = ":twiggy-src",
+    version = "0.1026",
+    description = "AnyEvent HTTP server for PSGI",
+    homepage = "https://metacpan.org/pod/Twiggy",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+        ":plack",
+        "//packages/lang/perl/async:anyevent",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Cookie::Baker - Cookie string generator / parser
+download_source(
+    name = "cookie-baker-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/K/KA/KAZEBURO/Cookie-Baker-0.11.tar.gz",
+    sha256 = "b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9",
+)
+
+configure_make_package(
+    name = "cookie-baker",
+    source = ":cookie-baker-src",
+    version = "0.11",
+    description = "Cookie string generator / parser",
+    homepage = "https://metacpan.org/pod/Cookie::Baker",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+        ":uri",
+    ],
+    visibility = ["PUBLIC"],
+)

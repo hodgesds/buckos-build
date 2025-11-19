@@ -3,6 +3,24 @@ load("//defs:package_defs.bzl", "download_source", "configure_make_package", "bi
 # =============================================================================
 # Perl - Practical Extraction and Report Language
 # =============================================================================
+#
+# This directory contains the Perl interpreter and a comprehensive collection
+# of CPAN modules organized into the following categories:
+#
+# - core/       : Core build utilities (ExtUtils::MakeMaker, Module::Build, etc.)
+# - testing/    : Testing frameworks (Test::Simple, Test::Deep, Test::Most, etc.)
+# - oop/        : Object systems (Moose, Moo, Mouse, Type::Tiny, etc.)
+# - web/        : Web frameworks (Mojolicious, Dancer2, Catalyst, Plack, etc.)
+# - database/   : Database interfaces (DBI, DBD::*, DBIx::Class, etc.)
+# - text/       : Text processing (Text::CSV, Text::Diff, Regexp::Common, etc.)
+# - data/       : Data formats (JSON, YAML, XML::LibXML, Sereal, etc.)
+# - network/    : Networking (LWP, HTTP::Tiny, Net::DNS, Email::*, etc.)
+# - async/      : Async/event loops (AnyEvent, IO::Async, POE, Future, etc.)
+# - cli/        : CLI tools (Getopt::Long::Descriptive, Log::Log4perl, etc.)
+# - datetime/   : Date/time handling (DateTime, Time::Moment, Date::Calc, etc.)
+# - file/       : File operations (Path::Tiny, File::Slurp, Archive::*, etc.)
+#
+# =============================================================================
 
 download_source(
     name = "perl-src",

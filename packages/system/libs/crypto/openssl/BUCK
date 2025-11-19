@@ -1,0 +1,28 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "openssl-src",
+    src_uri = "https://www.openssl.org/source/openssl-3.3.2.tar.gz",
+    sha256 = "2e8a40b01979571a0124e00a257335fdee3bb7f570c70e4e4fab27e6efa9e6e5",
+)
+
+configure_make_package(
+    name = "openssl",
+    source = ":openssl-src",
+    version = "3.3.2",
+    description = "TLS/SSL and crypto library",
+    homepage = "https://www.openssl.org/",
+    license = "Apache-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--openssldir=/etc/ssl",
+        "--libdir=lib",
+        "shared",
+        "zlib-dynamic",
+    ],
+    configure_command = "./config",
+    deps = [
+        "//packages/core/zlib",
+    ],
+    visibility = ["PUBLIC"],
+)

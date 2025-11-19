@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "attr-src",
+    src_uri = "https://download.savannah.gnu.org/releases/attr/attr-2.5.2.tar.gz",
+    sha256 = "39bf67452fa41d0948c2197601053f4f3c5018a8b4b1129a8d4d480a81a3187b",
+)
+
+configure_make_package(
+    name = "attr",
+    source = ":attr-src",
+    version = "2.5.2",
+    description = "Extended attribute support library",
+    homepage = "https://savannah.nongnu.org/projects/attr",
+    license = "LGPL-2.1",
+    configure_args = [
+        "--disable-static",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libsamplerate-src",
+    src_uri = "https://github.com/libsndfile/libsamplerate/releases/download/0.2.2/libsamplerate-0.2.2.tar.xz",
+    sha256 = "3258da280511d24b49d6b08615bbe824d0cacc9842b0e4caf11c52cf2b043893",
+)
+
+configure_make_package(
+    name = "libsamplerate",
+    source = ":libsamplerate-src",
+    version = "0.2.2",
+    description = "Sample rate conversion library",
+    homepage = "https://libsndfile.github.io/libsamplerate/",
+    license = "BSD-2-Clause",
+    configure_args = [
+        "--disable-static",
+    ],
+    visibility = ["PUBLIC"],
+)

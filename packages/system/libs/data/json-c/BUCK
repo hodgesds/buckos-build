@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "download_source", "cmake_package")
+
+download_source(
+    name = "json-c-src",
+    src_uri = "https://s3.amazonaws.com/json-c_releases/releases/json-c-0.17.tar.gz",
+    sha256 = "7550914d58fb63b2c3546f3ccfbe11f1c094147bd31a69dcd23714794651d890",
+)
+
+cmake_package(
+    name = "json-c",
+    source = ":json-c-src",
+    version = "0.17",
+    description = "JSON implementation in C",
+    homepage = "https://github.com/json-c/json-c",
+    license = "MIT",
+    cmake_args = [
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DBUILD_STATIC_LIBS=OFF",
+    ],
+    visibility = ["PUBLIC"],
+)

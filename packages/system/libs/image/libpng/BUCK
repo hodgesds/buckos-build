@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libpng-src",
+    src_uri = "https://download.sourceforge.net/libpng/libpng-1.6.44.tar.xz",
+    sha256 = "60c4da1d5b7f0aa8d158da48e8f8afa9773c1c8baa5d21974df61f1886b8ce8e",
+)
+
+configure_make_package(
+    name = "libpng",
+    source = ":libpng-src",
+    version = "1.6.44",
+    description = "Library for manipulating PNG images",
+    homepage = "http://www.libpng.org/pub/png/libpng.html",
+    license = "libpng-2.0",
+    configure_args = [
+        "--disable-static",
+    ],
+    deps = [
+        "//packages/core/zlib",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libssh2-src",
+    src_uri = "https://www.libssh2.org/download/libssh2-1.11.1.tar.xz",
+    sha256 = "d9ec76cbe34db98eec0801f38fb7efb9e3b10bcd7a5100a4a127c0b33c42df2d",
+)
+
+configure_make_package(
+    name = "libssh2",
+    source = ":libssh2-src",
+    version = "1.11.1",
+    description = "Client-side library implementing the SSH2 protocol",
+    homepage = "https://www.libssh2.org/",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--disable-static",
+        "--with-crypto=openssl",
+    ],
+    deps = [
+        "//packages/system/libs/crypto/openssl",
+        "//packages/core/zlib",
+    ],
+    visibility = ["PUBLIC"],
+)

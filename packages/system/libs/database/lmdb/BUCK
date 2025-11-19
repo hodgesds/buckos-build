@@ -1,0 +1,30 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "lmdb-src",
+    src_uri = "https://github.com/LMDB/lmdb/archive/refs/tags/LMDB_0.9.33.tar.gz",
+    sha256 = "d0bdbc8f7e9c644278f8e05a03c0e1e83f09c1e7de04ee2bf7e9f21eb7c5a9b5",
+)
+
+configure_make_package(
+    name = "lmdb",
+    source = ":lmdb-src",
+    version = "0.9.33",
+    description = "Lightning Memory-Mapped Database",
+    homepage = "https://symas.com/lmdb/",
+    license = "OLDAP-2.8",
+    build_in_source = True,
+    source_dir = "libraries/liblmdb",
+    configure_args = [],
+    make_args = [
+        "prefix=/usr",
+    ],
+    install_args = [
+        "prefix=/usr",
+    ],
+    post_install = """
+# Install shared library
+install -Dm755 liblmdb.so "$DESTDIR/usr/lib/liblmdb.so"
+""",
+    visibility = ["PUBLIC"],
+)

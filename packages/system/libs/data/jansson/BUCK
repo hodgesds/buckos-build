@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "jansson-src",
+    src_uri = "https://github.com/akheron/jansson/releases/download/v2.14/jansson-2.14.tar.bz2",
+    sha256 = "c739578bf85b9f35cd5c9325f5d3f1d9c2f1e779dfaa490c7edc57f09b4eb549",
+)
+
+configure_make_package(
+    name = "jansson",
+    source = ":jansson-src",
+    version = "2.14",
+    description = "C library for encoding, decoding and manipulating JSON data",
+    homepage = "https://github.com/akheron/jansson",
+    license = "MIT",
+    configure_args = [
+        "--disable-static",
+    ],
+    visibility = ["PUBLIC"],
+)

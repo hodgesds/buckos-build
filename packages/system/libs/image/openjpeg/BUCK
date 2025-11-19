@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "cmake_package")
+
+download_source(
+    name = "openjpeg-src",
+    src_uri = "https://github.com/uclouvain/openjpeg/archive/refs/tags/v2.5.2.tar.gz",
+    sha256 = "90e3896fed910c376a9f1c87f6f58b7f2c4e4e4e95e0e6ecc7d5a4d35e80a9e1",
+)
+
+cmake_package(
+    name = "openjpeg",
+    source = ":openjpeg-src",
+    version = "2.5.2",
+    description = "JPEG 2000 codec library",
+    homepage = "https://www.openjpeg.org/",
+    license = "BSD-2-Clause",
+    cmake_args = [
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DBUILD_STATIC_LIBS=OFF",
+    ],
+    deps = [
+        "//packages/system/libs/image/libpng",
+        "//packages/system/libs/image/libtiff",
+    ],
+    visibility = ["PUBLIC"],
+)

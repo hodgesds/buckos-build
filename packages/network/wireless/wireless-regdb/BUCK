@@ -1,0 +1,27 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "wireless-regdb-src",
+    src_uri = "https://www.kernel.org/pub/software/network/wireless-regdb/wireless-regdb-2024.01.23.tar.xz",
+    sha256 = "c64a2c369d6c60c0e2a4cebf1e85b0b59c1da1e8a56eb6c1cf9a9c1fc4be1c2a",
+)
+
+configure_make_package(
+    name = "wireless-regdb",
+    source = ":wireless-regdb-src",
+    version = "2024.01.23",
+    description = "Wireless regulatory database for Linux",
+    homepage = "https://wireless.wiki.kernel.org/en/developers/regulatory/wireless-regdb",
+    license = "ISC",
+    configure_args = [],
+    make_args = [],
+    post_install = """
+install -d "$DESTDIR/usr/lib/crda"
+install -d "$DESTDIR/lib/firmware"
+install -m 644 regulatory.bin "$DESTDIR/lib/firmware/"
+install -m 644 regulatory.db "$DESTDIR/lib/firmware/" 2>/dev/null || true
+install -m 644 regulatory.db.p7s "$DESTDIR/lib/firmware/" 2>/dev/null || true
+""",
+    deps = [],
+    visibility = ["PUBLIC"],
+)

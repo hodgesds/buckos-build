@@ -12,10 +12,11 @@ Sideros uses Buck2 to define and build Linux packages as reproducible build targ
 sideros-build/
 ├── .buckconfig          # Buck2 configuration
 ├── BUCK                  # Root build targets
-├── prelude/
-│   └── package_defs.bzl  # Package build rules (like eclass)
+├── defs/
+│   ├── package_defs.bzl  # Package build rules (like eclass)
+│   └── platform_defs.bzl # Platform targeting helpers
 ├── platforms/
-│   └── BUCK              # Platform definitions
+│   └── BUCK              # Platform definitions and constraints
 ├── toolchains/
 │   └── BUCK              # Toolchain configurations
 └── packages/
@@ -131,7 +132,7 @@ rootfs(
 
 Example new package:
 ```python
-load("//prelude:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 
 download_source(
     name = "newpkg-src",
@@ -147,6 +148,93 @@ configure_make_package(
     deps = ["//packages/core:musl"],
 )
 ```
+
+## Platform Targeting
+
+Sideros supports tagging packages by their target platform, enabling future support for BSD, macOS, and Windows alongside Linux.
+
+### Supported Platforms
+
+- `linux` - Linux distributions
+- `bsd` - BSD variants (FreeBSD, OpenBSD, NetBSD)
+- `macos` - macOS / Darwin
+- `windows` - Windows
+
+### Using Platform Helpers
+
+Import the platform helpers:
+```python
+load("//defs:platform_defs.bzl",
+    "PLATFORM_LINUX",
+    "PLATFORM_BSD",
+    "platform_filegroup",
+    "platform_select",
+)
+```
+
+### Tagging Packages by Platform
+
+Use `platform_filegroup` to tag targets with their supported platforms:
+```python
+platform_filegroup(
+    name = "my-linux-package",
+    srcs = [":my-package-build"],
+    platforms = [PLATFORM_LINUX],
+    visibility = ["PUBLIC"],
+)
+
+# Package supporting multiple platforms
+platform_filegroup(
+    name = "my-portable-package",
+    srcs = [":portable-build"],
+    platforms = [PLATFORM_LINUX, PLATFORM_BSD, PLATFORM_MACOS],
+    visibility = ["PUBLIC"],
+)
+```
+
+### Platform-Specific Configuration
+
+Use `platform_select` for platform-specific build options:
+```python
+configure_make_package(
+    name = "mypackage",
+    configure_args = select(platform_select({
+        PLATFORM_LINUX: ["--enable-linux-specific"],
+        PLATFORM_BSD: ["--enable-bsd-specific"],
+    }, default = [])),
+)
+```
+
+### Querying Targets by Platform
+
+Find all targets for a specific platform using Buck2 query:
+```bash
+# Find all Linux targets
+buck2 query 'attrfilter(labels, "platform:linux", //...)'
+
+# Find all BSD targets
+buck2 query 'attrfilter(labels, "platform:bsd", //...)'
+
+# Find all macOS targets
+buck2 query 'attrfilter(labels, "platform:macos", //...)'
+
+# Find all Windows targets
+buck2 query 'attrfilter(labels, "platform:windows", //...)'
+```
+
+### Platform Constants
+
+The following constants are available in `platform_defs.bzl`:
+
+| Constant | Value | Description |
+|----------|-------|-------------|
+| `PLATFORM_LINUX` | `"linux"` | Linux platform |
+| `PLATFORM_BSD` | `"bsd"` | BSD platform |
+| `PLATFORM_MACOS` | `"macos"` | macOS platform |
+| `PLATFORM_WINDOWS` | `"windows"` | Windows platform |
+| `ALL_PLATFORMS` | List | All supported platforms |
+| `UNIX_PLATFORMS` | List | Linux, BSD, macOS |
+| `POSIX_PLATFORMS` | List | Linux, BSD, macOS |
 
 ## Core Packages
 
@@ -217,9 +305,11 @@ MIT License - See individual packages for their respective licenses.
 
 ## Roadmap
 
+- [x] Platform targeting support (Linux, BSD, macOS, Windows)
 - [ ] Add more packages (openssl, openssh, networking tools)
 - [ ] Create initramfs generation target
 - [ ] Add ISO image generation
 - [ ] Implement USE flag-like configuration
 - [ ] Add package versioning and slots
 - [ ] Create package manager for installed systems
+- [ ] Add packages for BSD, macOS, and Windows platforms

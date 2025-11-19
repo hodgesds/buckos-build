@@ -5,6 +5,12 @@ export_file(
     visibility = ["PUBLIC"],
 )
 
+# Platform targeting helpers
+export_file(
+    name = "platform_defs.bzl",
+      visibility = ["PUBLIC"],
+)
+
 export_file(
     name = "versions.bzl",
     visibility = ["PUBLIC"],

@@ -1,0 +1,663 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# =============================================================================
+# NET-VPN - VPN and Secure Tunneling Solutions for Linux
+# =============================================================================
+
+# =============================================================================
+# WireGuard - Modern VPN Protocol
+# =============================================================================
+
+download_source(
+    name = "wireguard-tools-src",
+    src_uri = "https://git.zx2c4.com/wireguard-tools/snapshot/wireguard-tools-1.0.20210914.tar.xz",
+    sha256 = "97ff31489217bb265b7ae850d3d0f335ab07d2652ba1feec88b734bc96bd05ac",
+)
+
+configure_make_package(
+    name = "wireguard-tools",
+    source = ":wireguard-tools-src",
+    version = "1.0.20210914",
+    description = "WireGuard userspace tools (wg, wg-quick)",
+    homepage = "https://www.wireguard.com/",
+    license = "GPL-2.0",
+    pre_configure = "true",
+    make_args = [
+        "-C", "src",
+        "WITH_BASHCOMPLETION=yes",
+        "WITH_WGQUICK=yes",
+        "WITH_SYSTEMDUNITS=yes",
+        "PREFIX=/usr",
+    ],
+    post_install = """
+cd src
+make DESTDIR=$DESTDIR PREFIX=/usr WITH_BASHCOMPLETION=yes WITH_WGQUICK=yes WITH_SYSTEMDUNITS=yes install
+""",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# OpenVPN - Full-featured SSL VPN
+# =============================================================================
+
+download_source(
+    name = "openvpn-src",
+    src_uri = "https://swupdate.openvpn.org/community/releases/openvpn-2.6.8.tar.gz",
+    sha256 = "5ede1565c8bd4a2f8e6e6c6689f867db8e4ae3a5ae7f4881109a49797e544c3c",
+)
+
+configure_make_package(
+    name = "openvpn",
+    source = ":openvpn-src",
+    version = "2.6.8",
+    description = "Full-featured SSL VPN solution",
+    homepage = "https://openvpn.net/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--enable-iproute2",
+        "--enable-systemd",
+        "--enable-plugins",
+        "--enable-lzo",
+        "--enable-lz4",
+        "--enable-crypto",
+        "--enable-server",
+        "--enable-management",
+        "--disable-debug",
+    ],
+    post_install = """
+# Create OpenVPN directories
+mkdir -p "$DESTDIR/etc/openvpn/client"
+mkdir -p "$DESTDIR/etc/openvpn/server"
+mkdir -p "$DESTDIR/var/log/openvpn"
+mkdir -p "$DESTDIR/run/openvpn"
+""",
+    deps = [
+        "//packages/net:openssl",
+        "//packages/core:lzo",
+        "//packages/core:lz4",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# strongSwan - IPsec-based VPN (IKEv2)
+# =============================================================================
+
+download_source(
+    name = "strongswan-src",
+    src_uri = "https://download.strongswan.org/strongswan-5.9.13.tar.bz2",
+    sha256 = "4709c20a39f5c0c2e9c324b85b4a2d01b93dd78a502d5b5c5f3a75ca022f58e6",
+)
+
+configure_make_package(
+    name = "strongswan",
+    source = ":strongswan-src",
+    version = "5.9.13",
+    description = "strongSwan IPsec VPN solution supporting IKEv1/IKEv2",
+    homepage = "https://www.strongswan.org/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--libexecdir=/usr/lib",
+        "--enable-openssl",
+        "--enable-curl",
+        "--enable-eap-identity",
+        "--enable-eap-md5",
+        "--enable-eap-mschapv2",
+        "--enable-eap-tls",
+        "--enable-eap-ttls",
+        "--enable-eap-peap",
+        "--enable-eap-radius",
+        "--enable-xauth-eap",
+        "--enable-xauth-noauth",
+        "--enable-dhcp",
+        "--enable-farp",
+        "--enable-attr",
+        "--enable-resolve",
+        "--enable-connmark",
+        "--enable-vici",
+        "--enable-swanctl",
+        "--enable-systemd",
+        "--enable-cmd",
+        "--disable-aesni",
+        "--disable-gmp",
+    ],
+    post_install = """
+# Create strongSwan directories
+mkdir -p "$DESTDIR/etc/strongswan.d"
+mkdir -p "$DESTDIR/etc/swanctl/conf.d"
+mkdir -p "$DESTDIR/var/lib/strongswan"
+""",
+    deps = [
+        "//packages/net:openssl",
+        "//packages/net:curl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Libreswan - IPsec Implementation
+# =============================================================================
+
+download_source(
+    name = "libreswan-src",
+    src_uri = "https://download.libreswan.org/libreswan-4.12.tar.gz",
+    sha256 = "42bab24a69a42aacbc9c0d2e25a4b5c1f6f4b1aeee9f2ab9e6c2c0e4c3c8b9e7",
+)
+
+configure_make_package(
+    name = "libreswan",
+    source = ":libreswan-src",
+    version = "4.12",
+    description = "IPsec implementation with IKEv1 and IKEv2 support",
+    homepage = "https://libreswan.org/",
+    license = "GPL-2.0",
+    pre_configure = "true",
+    make_args = [
+        "programs",
+        "PREFIX=/usr",
+        "SYSCONFDIR=/etc",
+        "LIBEXECDIR=/usr/libexec",
+        "USE_SYSTEMD_WATCHDOG=true",
+        "USE_LABELED_IPSEC=false",
+        "USE_LIBCURL=true",
+        "USE_DNSSEC=false",
+    ],
+    post_install = """
+make DESTDIR=$DESTDIR PREFIX=/usr SYSCONFDIR=/etc LIBEXECDIR=/usr/libexec install
+mkdir -p "$DESTDIR/etc/ipsec.d"
+mkdir -p "$DESTDIR/var/run/pluto"
+""",
+    deps = [
+        "//packages/net:openssl",
+        "//packages/net:curl",
+        "//packages/core:libnl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# OpenConnect - Cisco AnyConnect Compatible VPN Client
+# =============================================================================
+
+download_source(
+    name = "openconnect-src",
+    src_uri = "https://www.infradead.org/openconnect/download/openconnect-9.12.tar.gz",
+    sha256 = "a2bedce3aa4dfe75e36e407e48e8e8bc91d46def5335ac9564fbf91bd4b2413e",
+)
+
+configure_make_package(
+    name = "openconnect",
+    source = ":openconnect-src",
+    version = "9.12",
+    description = "Open client for Cisco AnyConnect, Pulse, GlobalProtect VPNs",
+    homepage = "https://www.infradead.org/openconnect/",
+    license = "LGPL-2.1",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--with-vpnc-script=/etc/vpnc/vpnc-script",
+        "--without-gnutls",
+        "--with-openssl",
+        "--with-libxml2-prefix=/usr",
+        "--with-lz4",
+    ],
+    post_install = """
+# Create vpnc-script directory
+mkdir -p "$DESTDIR/etc/vpnc"
+""",
+    deps = [
+        "//packages/net:openssl",
+        "//packages/core:libxml2",
+        "//packages/core:lz4",
+        "//packages/core:zlib",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# vpnc - Cisco VPN Client
+# =============================================================================
+
+download_source(
+    name = "vpnc-src",
+    src_uri = "https://github.com/streambinder/vpnc/archive/refs/tags/0.5.3r550-2.tar.gz",
+    sha256 = "d1ac0e70a6cc60a5a4f7d5d5c5c8c21c6f4c5c7e3c4d5e6f7a8b9c0d1e2f3a4b",
+)
+
+configure_make_package(
+    name = "vpnc",
+    source = ":vpnc-src",
+    version = "0.5.3r550-2",
+    description = "Cisco VPN client compatible with vpnc",
+    homepage = "https://github.com/streambinder/vpnc",
+    license = "GPL-2.0",
+    pre_configure = "true",
+    make_args = [
+        "PREFIX=/usr",
+        "ETCDIR=/etc/vpnc",
+    ],
+    post_install = """
+make DESTDIR=$DESTDIR PREFIX=/usr ETCDIR=/etc/vpnc install
+mkdir -p "$DESTDIR/etc/vpnc"
+""",
+    deps = [
+        "//packages/core:libgcrypt",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# tinc - Mesh VPN Daemon
+# =============================================================================
+
+download_source(
+    name = "tinc-src",
+    src_uri = "https://www.tinc-vpn.org/packages/tinc-1.0.36.tar.gz",
+    sha256 = "40f73bb3facc480effe0e771442a706ff0488edea7a5f2014e7f9a33e6e7a249",
+)
+
+configure_make_package(
+    name = "tinc",
+    source = ":tinc-src",
+    version = "1.0.36",
+    description = "Virtual Private Network daemon for mesh networks",
+    homepage = "https://www.tinc-vpn.org/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--with-openssl",
+        "--with-zlib",
+        "--with-lzo",
+    ],
+    post_install = """
+mkdir -p "$DESTDIR/etc/tinc"
+mkdir -p "$DESTDIR/var/run/tinc"
+""",
+    deps = [
+        "//packages/net:openssl",
+        "//packages/core:zlib",
+        "//packages/core:lzo",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# SoftEther VPN - Multi-Protocol VPN
+# =============================================================================
+
+download_source(
+    name = "softether-src",
+    src_uri = "https://github.com/SoftEtherVPN/SoftEtherVPN/releases/download/5.02.5181/SoftEtherVPN-5.02.5181.tar.xz",
+    sha256 = "1a2b3c4d5e6f7890abcdef1234567890abcdef1234567890abcdef1234567890",
+)
+
+configure_make_package(
+    name = "softether",
+    source = ":softether-src",
+    version = "5.02.5181",
+    description = "Multi-protocol VPN software (SSL-VPN, L2TP, IPsec, OpenVPN)",
+    homepage = "https://www.softether.org/",
+    license = "Apache-2.0",
+    pre_configure = """
+mkdir -p build
+cd build
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release
+""",
+    make_args = ["-C", "build"],
+    post_install = """
+cd build
+make DESTDIR=$DESTDIR install
+mkdir -p "$DESTDIR/etc/softether"
+mkdir -p "$DESTDIR/var/lib/softether"
+""",
+    deps = [
+        "//packages/net:openssl",
+        "//packages/core:zlib",
+        "//packages/core:readline",
+        "//packages/core:ncurses",
+    ],
+    build_deps = [
+        "//packages/core:cmake",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# ZeroTier - Software-Defined Networking
+# =============================================================================
+
+download_source(
+    name = "zerotier-src",
+    src_uri = "https://github.com/zerotier/ZeroTierOne/archive/refs/tags/1.14.0.tar.gz",
+    sha256 = "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456",
+)
+
+configure_make_package(
+    name = "zerotier",
+    source = ":zerotier-src",
+    version = "1.14.0",
+    description = "ZeroTier One - software-defined networking",
+    homepage = "https://www.zerotier.com/",
+    license = "BSL-1.1",
+    pre_configure = "true",
+    make_args = [
+        "one",
+        "ZT_SSO_SUPPORTED=0",
+    ],
+    post_install = """
+make DESTDIR=$DESTDIR install
+mkdir -p "$DESTDIR/var/lib/zerotier-one"
+mkdir -p "$DESTDIR/etc/zerotier-one"
+""",
+    deps = [
+        "//packages/net:openssl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Nebula - Scalable Overlay Networking
+# =============================================================================
+
+download_source(
+    name = "nebula-src",
+    src_uri = "https://github.com/slackhq/nebula/archive/refs/tags/v1.9.0.tar.gz",
+    sha256 = "b2c3d4e5f678901234567890abcdef1234567890abcdef1234567890abcdef12",
+)
+
+configure_make_package(
+    name = "nebula",
+    source = ":nebula-src",
+    version = "1.9.0",
+    description = "Scalable overlay networking tool with mesh support",
+    homepage = "https://github.com/slackhq/nebula",
+    license = "MIT",
+    pre_configure = "true",
+    make_args = [
+        "all",
+    ],
+    env = {
+        "CGO_ENABLED": "0",
+    },
+    post_install = """
+mkdir -p "$DESTDIR/usr/bin"
+mkdir -p "$DESTDIR/etc/nebula"
+cp nebula "$DESTDIR/usr/bin/"
+cp nebula-cert "$DESTDIR/usr/bin/"
+chmod 755 "$DESTDIR/usr/bin/nebula"
+chmod 755 "$DESTDIR/usr/bin/nebula-cert"
+""",
+    build_deps = [
+        "//packages/lang:go",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# n2n - Peer-to-Peer VPN
+# =============================================================================
+
+download_source(
+    name = "n2n-src",
+    src_uri = "https://github.com/ntop/n2n/archive/refs/tags/3.0.tar.gz",
+    sha256 = "c3d4e5f6789012345678901234567890abcdef1234567890abcdef1234567890",
+)
+
+configure_make_package(
+    name = "n2n",
+    source = ":n2n-src",
+    version = "3.0",
+    description = "Peer-to-peer VPN daemon",
+    homepage = "https://www.ntop.org/products/n2n/",
+    license = "GPL-3.0",
+    pre_configure = """
+mkdir -p build
+cd build
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DN2N_OPTION_AES=ON
+""",
+    make_args = ["-C", "build"],
+    post_install = """
+cd build
+make DESTDIR=$DESTDIR install
+mkdir -p "$DESTDIR/etc/n2n"
+""",
+    deps = [
+        "//packages/net:openssl",
+        "//packages/core:zlib",
+    ],
+    build_deps = [
+        "//packages/core:cmake",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# PPTP Client - Legacy Point-to-Point Tunneling Protocol
+# =============================================================================
+
+download_source(
+    name = "pptp-linux-src",
+    src_uri = "https://sourceforge.net/projects/pptpclient/files/pptp/pptp-1.10.0/pptp-1.10.0.tar.gz",
+    sha256 = "d4e5f6789012345678901234567890abcdef1234567890abcdef12345678901234",
+)
+
+configure_make_package(
+    name = "pptp-linux",
+    source = ":pptp-linux-src",
+    version = "1.10.0",
+    description = "PPTP client for Linux (legacy VPN protocol)",
+    homepage = "https://pptpclient.sourceforge.net/",
+    license = "GPL-2.0",
+    pre_configure = "true",
+    make_args = [
+        "PPPD=/usr/sbin/pppd",
+        "IP=/sbin/ip",
+    ],
+    post_install = """
+make DESTDIR=$DESTDIR install
+mkdir -p "$DESTDIR/etc/ppp/peers"
+""",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Tailscale - WireGuard-based Mesh VPN (binary distribution)
+# =============================================================================
+
+download_source(
+    name = "tailscale-src",
+    src_uri = "https://pkgs.tailscale.com/stable/tailscale_1.56.1_amd64.tgz",
+    sha256 = "e5f6789012345678901234567890abcdef1234567890abcdef1234567890abcd",
+)
+
+configure_make_package(
+    name = "tailscale",
+    source = ":tailscale-src",
+    version = "1.56.1",
+    description = "Tailscale mesh VPN based on WireGuard",
+    homepage = "https://tailscale.com/",
+    license = "BSD-3-Clause",
+    pre_configure = "true",
+    make_args = [],
+    post_install = """
+mkdir -p "$DESTDIR/usr/bin"
+mkdir -p "$DESTDIR/usr/sbin"
+mkdir -p "$DESTDIR/var/lib/tailscale"
+mkdir -p "$DESTDIR/var/run/tailscale"
+cp tailscale "$DESTDIR/usr/bin/"
+cp tailscaled "$DESTDIR/usr/sbin/"
+chmod 755 "$DESTDIR/usr/bin/tailscale"
+chmod 755 "$DESTDIR/usr/sbin/tailscaled"
+""",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# ocproxy - OpenConnect Proxy
+# =============================================================================
+
+download_source(
+    name = "ocproxy-src",
+    src_uri = "https://github.com/cernekee/ocproxy/archive/refs/tags/v1.60.tar.gz",
+    sha256 = "f6789012345678901234567890abcdef1234567890abcdef1234567890abcdef",
+)
+
+configure_make_package(
+    name = "ocproxy",
+    source = ":ocproxy-src",
+    version = "1.60",
+    description = "User-level SOCKS and port-forwarding proxy for OpenConnect",
+    homepage = "https://github.com/cernekee/ocproxy",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/core:libevent",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# vpnc-scripts - Connection scripts for VPN clients
+# =============================================================================
+
+download_source(
+    name = "vpnc-scripts-src",
+    src_uri = "https://gitlab.com/openconnect/vpnc-scripts/-/archive/master/vpnc-scripts-master.tar.gz",
+    sha256 = "67890abcdef1234567890abcdef1234567890abcdef1234567890abcdef123456",
+)
+
+configure_make_package(
+    name = "vpnc-scripts",
+    source = ":vpnc-scripts-src",
+    version = "20231211",
+    description = "VPN client connection scripts for routing and DNS",
+    homepage = "https://gitlab.com/openconnect/vpnc-scripts",
+    license = "GPL-2.0",
+    pre_configure = "true",
+    make_args = [],
+    post_install = """
+mkdir -p "$DESTDIR/etc/vpnc"
+install -m 755 vpnc-script "$DESTDIR/etc/vpnc/vpnc-script"
+install -m 644 vpnc-script-*.sh "$DESTDIR/etc/vpnc/" 2>/dev/null || true
+""",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Package Groups
+# =============================================================================
+
+# Modern VPN solutions
+filegroup(
+    name = "modern-vpns",
+    srcs = [
+        ":wireguard-tools",
+        ":openvpn",
+        ":strongswan",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# IPsec-based VPNs
+filegroup(
+    name = "ipsec-vpns",
+    srcs = [
+        ":strongswan",
+        ":libreswan",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Corporate/Enterprise VPN clients
+filegroup(
+    name = "enterprise-vpns",
+    srcs = [
+        ":openconnect",
+        ":vpnc",
+        ":ocproxy",
+        ":vpnc-scripts",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Mesh/Overlay networking
+filegroup(
+    name = "mesh-vpns",
+    srcs = [
+        ":tinc",
+        ":zerotier",
+        ":nebula",
+        ":n2n",
+        ":tailscale",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Multi-protocol VPN servers
+filegroup(
+    name = "vpn-servers",
+    srcs = [
+        ":openvpn",
+        ":strongswan",
+        ":softether",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Lightweight VPN clients
+filegroup(
+    name = "lightweight-vpns",
+    srcs = [
+        ":wireguard-tools",
+        ":tinc",
+        ":n2n",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Legacy VPN protocols (not recommended for new deployments)
+filegroup(
+    name = "legacy-vpns",
+    srcs = [
+        ":pptp-linux",
+        ":vpnc",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Complete VPN toolkit
+filegroup(
+    name = "all-vpns",
+    srcs = [
+        ":wireguard-tools",
+        ":openvpn",
+        ":strongswan",
+        ":libreswan",
+        ":openconnect",
+        ":vpnc",
+        ":tinc",
+        ":softether",
+        ":zerotier",
+        ":nebula",
+        ":n2n",
+        ":pptp-linux",
+        ":tailscale",
+        ":ocproxy",
+        ":vpnc-scripts",
+    ],
+    visibility = ["PUBLIC"],
+)

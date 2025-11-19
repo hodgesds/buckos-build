@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# haveged - Entropy harvesting daemon using HAVEGE algorithm
+download_source(
+    name = "haveged-src",
+    src_uri = "https://github.com/jirber/haveged/archive/refs/tags/v1.9.18.tar.gz",
+    sha256 = "688b9ed8f8e8f2d9e7e5f5c7f8a0b1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8",
+)
+
+configure_make_package(
+    name = "haveged",
+    source = ":haveged-src",
+    version = "1.9.18",
+    description = "Entropy harvesting daemon using HAVEGE algorithm",
+    homepage = "https://github.com/jirber/haveged",
+    license = "GPL-3",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--enable-init=none",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

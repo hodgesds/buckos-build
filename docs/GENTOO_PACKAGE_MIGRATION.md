@@ -32,7 +32,7 @@ Agents should:
 | `kbd` | sys-apps | system/apps/kbd | Already added |
 | `kmod` | sys-apps | system/libs/kmod | Already exists - verify |
 | `dbus` | sys-apps | system/libs/ipc/dbus | Already exists - verify |
-| `haveged` | sys-apps | system/apps/haveged | Entropy daemon |
+| `haveged` | sys-apps | system/apps/haveged | Already added |
 | `pciutils` | sys-apps | system/hardware/pciutils | Already exists - verify |
 | `usbutils` | sys-apps | system/hardware/usbutils | Already exists - verify |
 | `systemd-utils` | sys-apps | system/apps/systemd-utils | Standalone systemd tools |
@@ -75,14 +75,14 @@ Agents should:
 | `zlib` | sys-libs | core/zlib | Already exists |
 | `ncurses` | sys-libs | core/ncurses | Already exists |
 | `readline` | sys-libs | core/readline | Already exists |
-| `pam` | sys-libs | system/security/auth/pam | Auth modules |
+| `pam` | sys-libs | system/security/auth/pam | Already added |
 | `libcap` | sys-libs | system/libs/ipc/libcap | Already exists |
 | `libseccomp` | sys-libs | system/libs/ipc/libseccomp | Already exists |
 | `libunwind` | sys-libs | system/libs/libunwind | Stack unwinding |
 | `liburing` | sys-libs | system/libs/liburing | Already added |
 | `cracklib` | sys-libs | system/security/cracklib | Password checker |
 | `gdbm` | sys-libs | system/docs/gdbm | Already exists in docs |
-| `timezone-data` | sys-libs | system/libs/timezone-data | Timezone info |
+| `timezone-data` | sys-libs | system/libs/timezone-data | Already added |
 
 ### MEDIUM Priority
 
@@ -93,7 +93,7 @@ Agents should:
 | `tdb` | sys-libs | system/libs/tdb | Trivial database |
 | `tevent` | sys-libs | system/libs/tevent | Event system |
 | `ldb` | sys-libs | system/libs/ldb | LDAP-like database |
-| `efivar` | sys-libs | system/libs/efivar | EFI variables |
+| `efivar` | sys-libs | system/libs/efivar | Already added |
 | `mtdev` | sys-libs | system/libs/input/mtdev | Already exists |
 
 ---
@@ -114,11 +114,11 @@ Agents should:
 | `zstd` | app-arch | system/libs/compression/zstd | Already exists |
 | `lz4` | app-arch | system/libs/compression/lz4 | Already exists |
 | `p7zip` | app-arch | system/libs/compression/p7zip | Already added |
-| `unzip` | app-arch | system/libs/compression/unzip | Info-ZIP unzip |
+| `unzip` | app-arch | system/libs/compression/unzip | Already added |
 | `zip` | app-arch | system/libs/compression/zip | Already added |
 | `cpio` | app-arch | system/libs/cpio | Already exists |
 | `libarchive` | app-arch | system/libs/utility/libarchive | Already exists |
-| `pigz` | app-arch | system/libs/compression/pigz | Parallel gzip |
+| `pigz` | app-arch | system/libs/compression/pigz | Already added |
 
 ### MEDIUM Priority
 
@@ -167,9 +167,9 @@ Agents should:
 | `suricata` | net-analyzer | network/security/suricata | IDS/IPS |
 | `hydra` | net-analyzer | network/security/hydra | Login cracker |
 | `nikto` | net-analyzer | network/security/nikto | Web scanner |
-| `speedtest-cli` | net-analyzer | network/speedtest-cli | Speed test |
+| `speedtest-cli` | net-analyzer | network/speedtest-cli | Already added |
 | `ntopng` | net-analyzer | network/monitoring/ntopng | Traffic analysis |
-| `arpwatch` | net-analyzer | network/arpwatch | ARP monitor |
+| `arpwatch` | net-analyzer | network/arpwatch | Already added |
 
 ---
 
@@ -200,7 +200,7 @@ Agents should:
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
 | `gperf` | dev-util | dev-tools/dev-utils/gperf | Already added |
-| `gengetopt` | dev-util | dev-tools/dev-utils/gengetopt | Cmdline parser generator |
+| `gengetopt` | dev-util | dev-tools/dev-utils/gengetopt | Already added |
 | `intltool` | dev-util | dev-tools/dev-utils/intltool | i18n tools |
 | `itstool` | dev-util | dev-tools/dev-utils/itstool | XML translation |
 | `gtk-doc` | dev-util | dev-tools/dev-utils/gtk-doc | GTK documentation |
@@ -210,7 +210,7 @@ Agents should:
 | `geany` | dev-util | dev-tools/ide/geany | Lightweight IDE |
 | `kcov` | dev-util | dev-tools/dev-utils/kcov | Code coverage |
 | `coccinelle` | dev-util | dev-tools/dev-utils/coccinelle | Semantic patching |
-| `cloc` | dev-util | dev-tools/dev-utils/cloc | Count lines of code |
+| `cloc` | dev-util | dev-tools/dev-utils/cloc | Already added |
 | `github-cli` | dev-util | dev-tools/vcs/github-cli | GitHub CLI |
 | `heaptrack` | dev-util | dev-tools/profilers/heaptrack | Heap profiler |
 
@@ -247,7 +247,7 @@ Agents should:
 | `keepassxc` | app-admin | system/security/keepassxc | Password manager |
 | `pass` | app-admin | system/security/pass | Password store |
 | `metalog` | app-admin | system/apps/metalog | Modern logger |
-| `monit` | app-admin | system/apps/monit | Process supervisor |
+| `monit` | app-admin | system/apps/monit | Already added |
 | `supervisor` | app-admin | system/apps/supervisor | Process control |
 | `lnav` | app-admin | system/apps/lnav | Log navigator |
 
@@ -277,10 +277,10 @@ Agents should:
 | `starship` | app-shells | shells/starship | MEDIUM |
 | `tmux-bash-completion` | app-shells | shells/tmux-bash-completion | LOW |
 | `fzf` | app-shells | editors/fzf | Already exists |
-| `atuin` | app-shells | shells/atuin | Shell history |
+| `atuin` | app-shells | shells/atuin | Already added |
 | `zoxide` | app-shells | shells/zoxide | Smarter cd |
-| `mcfly` | app-shells | shells/mcfly | History search |
-| `thefuck` | app-shells | shells/thefuck | Command fixer |
+| `mcfly` | app-shells | shells/mcfly | Already added |
+| `thefuck` | app-shells | shells/thefuck | Already added |
 
 ---
 
@@ -302,7 +302,7 @@ Agents should:
 | `okular` | app-text | editors/okular | KDE doc viewer |
 | `aspell` | app-text | editors/aspell | Already added |
 | `hunspell` | app-text | editors/hunspell | Already added |
-| `enchant` | app-text | editors/enchant | Spell check wrapper |
+| `enchant` | app-text | editors/enchant | Already added |
 
 ### MEDIUM Priority
 
@@ -312,7 +312,7 @@ Agents should:
 | `asciidoctor` | app-text | dev-tools/dev-utils/asciidoctor | Already exists |
 | `dos2unix` | app-text | editors/dos2unix | Line ending converter |
 | `tree` | app-text | system/apps/tree | Already exists |
-| `wdiff` | app-text | editors/wdiff | Word diff |
+| `wdiff` | app-text | editors/wdiff | Already added |
 | `colordiff` | app-text | dev-tools/dev-utils/colordiff | Already exists |
 | `csvtool` | app-text | editors/csvtool | CSV processor |
 | `discount` | app-text | editors/discount | Markdown |
@@ -332,7 +332,7 @@ Agents should:
 | `sqlite` | dev-db | system/libs/database/sqlite | Already exists |
 | `postgresql` | dev-db | databases/postgresql | Already added |
 | `mariadb` | dev-db | databases/mariadb | MySQL fork |
-| `redis` | dev-db | databases/redis | Key-value store |
+| `redis` | dev-db | databases/redis | Already added |
 | `mongodb` | dev-db | databases/mongodb | Document store |
 | `memcached` | dev-db | databases/memcached | Already added |
 | `lmdb` | dev-db | system/libs/database/lmdb | Already exists |
@@ -363,7 +363,7 @@ Agents should:
 | `tomcat` | www-servers | www/servers/tomcat | MEDIUM |
 | `jetty` | www-servers | www/servers/jetty | MEDIUM |
 | `varnish` | www-servers | www/servers/varnish | Already added |
-| `squid` | www-servers | www/servers/squid | HIGH |
+| `squid` | www-servers | www/servers/squid | Already added |
 | `pound` | www-servers | www/servers/pound | MEDIUM |
 
 ---

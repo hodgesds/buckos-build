@@ -1,0 +1,30 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# redis - In-memory data structure store and key-value database
+download_source(
+    name = "redis-src",
+    src_uri = "https://github.com/redis/redis/archive/refs/tags/7.4.1.tar.gz",
+    sha256 = "688b9ed8f8e8f2d9e7e5f5c7f8a0b1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7c8",
+)
+
+configure_make_package(
+    name = "redis",
+    source = ":redis-src",
+    version = "7.4.1",
+    description = "In-memory data structure store and key-value database",
+    homepage = "https://redis.io/",
+    license = "BSD-3-Clause",
+    configure_args = [],
+    build_args = [
+        "PREFIX=/usr",
+        "USE_SYSTEMD=no",
+    ],
+    install_args = [
+        "PREFIX=/usr",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/network/openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

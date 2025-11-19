@@ -1,0 +1,40 @@
+# wpa_supplicant - WPA/WPA2/IEEE 802.1X Supplicant
+# Wi-Fi Protected Access client and IEEE 802.1X supplicant
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "wpa_supplicant-src",
+    src_uri = "https://w1.fi/releases/wpa_supplicant-2.10.tar.gz",
+    sha256 = "20df7ae5154b3830355f8ab4269123a87affdea59fe74fe9292a91d0d7e17b2f",
+)
+
+configure_make_package(
+    name = "wpa_supplicant",
+    source = ":wpa_supplicant-src",
+    version = "2.10",
+    description = "WPA/WPA2/IEEE 802.1X Supplicant",
+    homepage = "https://w1.fi/wpa_supplicant/",
+    license = "BSD-3-Clause",
+    pre_configure = """
+        cd wpa_supplicant
+        cp defconfig .config
+        echo "CONFIG_BACKEND=file" >> .config
+        echo "CONFIG_CTRL_IFACE_DBUS_NEW=y" >> .config
+        echo "CONFIG_READLINE=y" >> .config
+    """,
+    configure_args = [],
+    make_args = [
+        "-C", "wpa_supplicant",
+        "BINDIR=/usr/bin",
+        "LIBDIR=/usr/lib",
+    ],
+    deps = [
+        "//packages/core:musl",
+        "//packages/system/libs/openssl:openssl",
+        "//packages/system/libs/dbus:dbus",
+        "//packages/system/libs/readline:readline",
+        "//packages/system/libs/libnl:libnl",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,30 @@
+# lm-sensors - Linux hardware monitoring
+# Provides tools and drivers for hardware monitoring
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "lm-sensors-src",
+    src_uri = "https://github.com/lm-sensors/lm-sensors/archive/refs/tags/V3-6-0.tar.gz",
+    sha256 = "0591f9fa0339f0d15e75326d0365871c2d4e2ed8aa1ff759b3a55d3b6d7e3e5a",
+)
+
+configure_make_package(
+    name = "lm-sensors",
+    source = ":lm-sensors-src",
+    version = "3.6.0",
+    description = "Hardware monitoring tools for Linux",
+    homepage = "https://hwmon.wiki.kernel.org/lm_sensors",
+    license = "LGPL-2.1",
+    configure_args = [],
+    make_args = [
+        "PREFIX=/usr",
+        "SBINDIR=/usr/sbin",
+        "MANDIR=/usr/share/man",
+        "ETCDIR=/etc",
+    ],
+    deps = [
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

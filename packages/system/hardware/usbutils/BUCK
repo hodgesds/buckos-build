@@ -1,0 +1,30 @@
+# usbutils - USB Utilities
+# Provides lsusb and other USB device inspection tools
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "usbutils-src",
+    src_uri = "https://www.kernel.org/pub/linux/utils/usb/usbutils/usbutils-017.tar.xz",
+    sha256 = "a6a25ffdcf9103e38d2b878a5c1e8b1e5e4d94ae9e6f5238e6a15dc8e22d7971",
+)
+
+configure_make_package(
+    name = "usbutils",
+    source = ":usbutils-src",
+    version = "017",
+    description = "USB device utilities including lsusb",
+    homepage = "https://github.com/gregkh/usbutils",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--datadir=/usr/share/hwdata",
+    ],
+    make_args = [],
+    deps = [
+        "//packages/core:musl",
+        "//packages/system/libs/libusb:libusb",
+        "//packages/system/libs/systemd:systemd",
+    ],
+    visibility = ["PUBLIC"],
+)

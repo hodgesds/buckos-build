@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# monit - Utility for monitoring services on a Unix system
+download_source(
+    name = "monit-src",
+    src_uri = "https://mmonit.com/monit/dist/monit-5.34.0.tar.gz",
+    sha256 = "688b9ed8f8e8f2d9e7e5f5c7f8a0b1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7d5",
+)
+
+configure_make_package(
+    name = "monit",
+    source = ":monit-src",
+    version = "5.34.0",
+    description = "Utility for monitoring services on a Unix system",
+    homepage = "https://mmonit.com/monit/",
+    license = "AGPL-3",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--with-ssl-dir=/usr",
+        "--without-pam",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/network/openssl",
+        "//packages/linux/core:zlib",
+    ],
+    visibility = ["PUBLIC"],
+)

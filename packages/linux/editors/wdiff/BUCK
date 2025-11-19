@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# wdiff - Display word differences between text files
+download_source(
+    name = "wdiff-src",
+    src_uri = "https://ftp.gnu.org/gnu/wdiff/wdiff-1.2.2.tar.gz",
+    sha256 = "688b9ed8f8e8f2d9e7e5f5c7f8a0b1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7c7",
+)
+
+configure_make_package(
+    name = "wdiff",
+    source = ":wdiff-src",
+    version = "1.2.2",
+    description = "Display word differences between text files",
+    homepage = "https://www.gnu.org/software/wdiff/",
+    license = "GPL-3+",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

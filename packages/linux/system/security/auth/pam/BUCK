@@ -1,0 +1,30 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# pam - Pluggable Authentication Modules
+download_source(
+    name = "pam-src",
+    src_uri = "https://github.com/linux-pam/linux-pam/releases/download/v1.6.1/Linux-PAM-1.6.1.tar.xz",
+    sha256 = "688b9ed8f8e8f2d9e7e5f5c7f8a0b1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7d0",
+)
+
+configure_make_package(
+    name = "pam",
+    source = ":pam-src",
+    version = "1.6.1",
+    description = "Pluggable Authentication Modules",
+    homepage = "https://github.com/linux-pam/linux-pam",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--libdir=/usr/lib",
+        "--sbindir=/usr/sbin",
+        "--enable-securedir=/usr/lib/security",
+        "--disable-nls",
+        "--disable-db",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

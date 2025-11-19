@@ -48,7 +48,7 @@ Agents should:
 
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
-| `lsb-release` | sys-apps | system/apps/lsb-release | LSB info |
+| `lsb-release` | sys-apps | system/apps/lsb-release | Already added |
 | `hwdata` | sys-apps | system/hardware/hwdata | Hardware IDs database |
 | `hwloc` | sys-apps | system/hardware/hwloc | Already added |
 | `ethtool` | sys-apps | network/ethtool | Already added |
@@ -56,9 +56,9 @@ Agents should:
 | `fd` | sys-apps | system/apps/fd | Modern find replacement |
 | `bat` | sys-apps | editors/bat | Already exists - verify |
 | `ripgrep` | sys-apps | editors/ripgrep | Already exists - verify |
-| `keyutils` | sys-apps | system/security/keyutils | Kernel key management |
+| `keyutils` | sys-apps | system/security/keyutils | Already added |
 | `kexec-tools` | sys-apps | system/apps/kexec-tools | Fast reboot |
-| `inxi` | sys-apps | system/apps/inxi | System info script |
+| `inxi` | sys-apps | system/apps/inxi | Already added |
 
 ---
 
@@ -75,12 +75,12 @@ Agents should:
 | `zlib` | sys-libs | core/zlib | Already exists |
 | `ncurses` | sys-libs | core/ncurses | Already exists |
 | `readline` | sys-libs | core/readline | Already exists |
-| `pam` | sys-libs | system/security/auth/pam | Auth modules |
+| `pam` | sys-libs | system/security/auth/pam | Already added |
 | `libcap` | sys-libs | system/libs/ipc/libcap | Already exists |
 | `libseccomp` | sys-libs | system/libs/ipc/libseccomp | Already exists |
 | `libunwind` | sys-libs | system/libs/libunwind | Already added |
 | `liburing` | sys-libs | system/libs/liburing | Already added |
-| `cracklib` | sys-libs | system/security/cracklib | Password checker |
+| `cracklib` | sys-libs | system/security/cracklib | Already added |
 | `gdbm` | sys-libs | system/docs/gdbm | Already exists in docs |
 | `timezone-data` | sys-libs | system/libs/timezone-data | Already added |
 
@@ -89,8 +89,9 @@ Agents should:
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
 | `slang` | sys-libs | system/libs/slang | Already added |
-| `talloc` | sys-libs | system/libs/talloc | Memory allocator |
 | `tdb` | sys-libs | system/libs/tdb | Already added |
+| `talloc` | sys-libs | system/libs/talloc | Already added |
+| `tdb` | sys-libs | system/libs/tdb | Trivial database |
 | `tevent` | sys-libs | system/libs/tevent | Event system |
 | `ldb` | sys-libs | system/libs/ldb | LDAP-like database |
 | `efivar` | sys-libs | system/libs/efivar | Already added |
@@ -114,17 +115,17 @@ Agents should:
 | `zstd` | app-arch | system/libs/compression/zstd | Already exists |
 | `lz4` | app-arch | system/libs/compression/lz4 | Already exists |
 | `p7zip` | app-arch | system/libs/compression/p7zip | Already added |
-| `unzip` | app-arch | system/libs/compression/unzip | Info-ZIP unzip |
+| `unzip` | app-arch | system/libs/compression/unzip | Already added |
 | `zip` | app-arch | system/libs/compression/zip | Already added |
 | `cpio` | app-arch | system/libs/cpio | Already exists |
 | `libarchive` | app-arch | system/libs/utility/libarchive | Already exists |
-| `pigz` | app-arch | system/libs/compression/pigz | Parallel gzip |
+| `pigz` | app-arch | system/libs/compression/pigz | Already added |
 
 ### MEDIUM Priority
 
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
-| `lzip` | app-arch | system/libs/compression/lzip | LZMA compressor |
+| `lzip` | app-arch | system/libs/compression/lzip | Already added |
 | `lzop` | app-arch | system/libs/compression/lzop | Already added |
 | `rar` | app-arch | system/libs/compression/rar | RAR archiver |
 | `unrar` | app-arch | system/libs/compression/unrar | RAR extractor |
@@ -167,9 +168,9 @@ Agents should:
 | `suricata` | net-analyzer | network/security/suricata | IDS/IPS |
 | `hydra` | net-analyzer | network/security/hydra | Login cracker |
 | `nikto` | net-analyzer | network/security/nikto | Web scanner |
-| `speedtest-cli` | net-analyzer | network/speedtest-cli | Speed test |
+| `speedtest-cli` | net-analyzer | network/speedtest-cli | Already added |
 | `ntopng` | net-analyzer | network/monitoring/ntopng | Traffic analysis |
-| `arpwatch` | net-analyzer | network/arpwatch | ARP monitor |
+| `arpwatch` | net-analyzer | network/arpwatch | Already added |
 
 ---
 
@@ -200,7 +201,7 @@ Agents should:
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
 | `gperf` | dev-util | dev-tools/dev-utils/gperf | Already added |
-| `gengetopt` | dev-util | dev-tools/dev-utils/gengetopt | Cmdline parser generator |
+| `gengetopt` | dev-util | dev-tools/dev-utils/gengetopt | Already added |
 | `intltool` | dev-util | dev-tools/dev-utils/intltool | i18n tools |
 | `itstool` | dev-util | dev-tools/dev-utils/itstool | XML translation |
 | `gtk-doc` | dev-util | dev-tools/dev-utils/gtk-doc | GTK documentation |
@@ -229,7 +230,7 @@ Agents should:
 | `doas` | app-admin | system/apps/doas | Already exists |
 | `logrotate` | app-admin | system/apps/logrotate | Already exists |
 | `sysstat` | app-admin | system/apps/sysstat | Already added |
-| `sysklogd` | app-admin | system/apps/sysklogd | System logger |
+| `sysklogd` | app-admin | system/apps/sysklogd | Already added |
 | `rsyslog` | app-admin | system/apps/rsyslog | Already exists |
 | `conky` | app-admin | desktop/conky | System monitor widget |
 | `htop` | app-admin | system/apps/htop | Already exists |
@@ -279,8 +280,8 @@ Agents should:
 | `fzf` | app-shells | editors/fzf | Already exists |
 | `atuin` | app-shells | shells/atuin | Already added |
 | `zoxide` | app-shells | shells/zoxide | Smarter cd |
-| `mcfly` | app-shells | shells/mcfly | History search |
-| `thefuck` | app-shells | shells/thefuck | Command fixer |
+| `mcfly` | app-shells | shells/mcfly | Already added |
+| `thefuck` | app-shells | shells/thefuck | Already added |
 
 ---
 
@@ -312,7 +313,7 @@ Agents should:
 | `asciidoctor` | app-text | dev-tools/dev-utils/asciidoctor | Already exists |
 | `dos2unix` | app-text | editors/dos2unix | Line ending converter |
 | `tree` | app-text | system/apps/tree | Already exists |
-| `wdiff` | app-text | editors/wdiff | Word diff |
+| `wdiff` | app-text | editors/wdiff | Already added |
 | `colordiff` | app-text | dev-tools/dev-utils/colordiff | Already exists |
 | `csvtool` | app-text | editors/csvtool | CSV processor |
 | `discount` | app-text | editors/discount | Markdown |

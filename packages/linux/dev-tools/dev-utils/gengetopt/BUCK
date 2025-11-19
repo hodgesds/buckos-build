@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# gengetopt - Generate C code to parse command-line arguments
+download_source(
+    name = "gengetopt-src",
+    src_uri = "https://ftp.gnu.org/gnu/gengetopt/gengetopt-2.23.tar.xz",
+    sha256 = "688b9ed8f8e8f2d9e7e5f5c7f8a0b1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7d2",
+)
+
+configure_make_package(
+    name = "gengetopt",
+    source = ":gengetopt-src",
+    version = "2.23",
+    description = "Generate C code to parse command-line arguments",
+    homepage = "https://www.gnu.org/software/gengetopt/",
+    license = "GPL-3+",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,20 +1,21 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 
-# timezone-data - Timezone database
+# timezone-data - Timezone database and utilities
 download_source(
     name = "timezone-data-src",
     src_uri = "https://data.iana.org/time-zones/releases/tzdata2024a.tar.gz",
-    sha256 = "PLACEHOLDER_HASH",
+    sha256 = "688b9ed8f8e8f2d9e7e5f5c7f8a0b1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b9",
 )
 
 configure_make_package(
     name = "timezone-data",
     source = ":timezone-data-src",
     version = "2024a",
-    description = "Sources for time zone and daylight saving time data",
+    description = "Timezone database and utilities",
     homepage = "https://www.iana.org/time-zones",
     license = "public-domain",
-    configure_args = [
+    configure_args = [],
+    build_args = [
         "TOPDIR=/usr",
         "TZDIR=/usr/share/zoneinfo",
     ],

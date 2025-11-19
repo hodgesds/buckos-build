@@ -1,0 +1,38 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# zip - Info-ZIP compression utility
+
+download_source(
+    name = "zip-src",
+    src_uri = "https://downloads.sourceforge.net/infozip/zip30.tar.gz",
+    sha256 = "f0e8bb1f9b7eb0b01285495a2699df3a4b766784c1765a8f1aeedf63c0806369",
+)
+
+configure_make_package(
+    name = "zip",
+    source = ":zip-src",
+    version = "3.0",
+    description = "Info-ZIP compression utility",
+    homepage = "https://infozip.sourceforge.net/Zip.html",
+    license = "Info-ZIP",
+    build_in_source = True,
+    configure_args = [],
+    make_args = [
+        "-f", "unix/Makefile",
+        "generic",
+        "CC=${CC}",
+        "CPP=${CC} -E",
+        "LOCAL_ZIP=-DLARGE_FILE_SUPPORT",
+    ],
+    install_args = [
+        "-f", "unix/Makefile",
+        "prefix=${DESTDIR}/usr",
+        "MANDIR=${DESTDIR}/usr/share/man/man1",
+        "install",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core/bzip2",
+    ],
+    visibility = ["PUBLIC"],
+)

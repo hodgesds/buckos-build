@@ -1,0 +1,28 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# kbd - Keyboard and console utilities
+
+download_source(
+    name = "kbd-src",
+    src_uri = "https://www.kernel.org/pub/linux/utils/kbd/kbd-2.6.4.tar.xz",
+    sha256 = "e7e755e79c8b8a0d824caca7f0c4c9f3e4a3a6e3a5b8c7d9e0f1a2b3c4d5e6f7",
+)
+
+configure_make_package(
+    name = "kbd",
+    source = ":kbd-src",
+    version = "2.6.4",
+    description = "Keyboard and console utilities",
+    homepage = "https://kbd-project.org/",
+    license = "GPL-2.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--datadir=/usr/share/kbd",
+        "--disable-vlock",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/system/libs/linux-pam",
+    ],
+    visibility = ["PUBLIC"],
+)

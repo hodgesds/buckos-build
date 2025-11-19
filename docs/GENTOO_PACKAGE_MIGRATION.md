@@ -29,7 +29,7 @@ Agents should:
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
 | `baselayout` | sys-apps | system/apps/baselayout | Filesystem layout |
-| `kbd` | sys-apps | system/apps/kbd | Keyboard tools |
+| `kbd` | sys-apps | system/apps/kbd | Already added |
 | `kmod` | sys-apps | system/libs/kmod | Already exists - verify |
 | `dbus` | sys-apps | system/libs/ipc/dbus | Already exists - verify |
 | `haveged` | sys-apps | system/apps/haveged | Entropy daemon |
@@ -50,7 +50,7 @@ Agents should:
 |---------|----------------|-------------|-------|
 | `lsb-release` | sys-apps | system/apps/lsb-release | LSB info |
 | `hwdata` | sys-apps | system/hardware/hwdata | Hardware IDs database |
-| `hwloc` | sys-apps | system/hardware/hwloc | Hardware locality |
+| `hwloc` | sys-apps | system/hardware/hwloc | Already added |
 | `ethtool` | sys-apps | network/ethtool | Ethernet config |
 | `eza` | sys-apps | system/apps/eza | Modern ls replacement |
 | `fd` | sys-apps | system/apps/fd | Modern find replacement |
@@ -79,7 +79,7 @@ Agents should:
 | `libcap` | sys-libs | system/libs/ipc/libcap | Already exists |
 | `libseccomp` | sys-libs | system/libs/ipc/libseccomp | Already exists |
 | `libunwind` | sys-libs | system/libs/libunwind | Stack unwinding |
-| `liburing` | sys-libs | system/libs/liburing | io_uring interface |
+| `liburing` | sys-libs | system/libs/liburing | Already added |
 | `cracklib` | sys-libs | system/security/cracklib | Password checker |
 | `gdbm` | sys-libs | system/docs/gdbm | Already exists in docs |
 | `timezone-data` | sys-libs | system/libs/timezone-data | Timezone info |
@@ -115,7 +115,7 @@ Agents should:
 | `lz4` | app-arch | system/libs/compression/lz4 | Already exists |
 | `p7zip` | app-arch | system/libs/compression/p7zip | 7-Zip port |
 | `unzip` | app-arch | system/libs/compression/unzip | Info-ZIP unzip |
-| `zip` | app-arch | system/libs/compression/zip | Info-ZIP zip |
+| `zip` | app-arch | system/libs/compression/zip | Already added |
 | `cpio` | app-arch | system/libs/cpio | Already exists |
 | `libarchive` | app-arch | system/libs/utility/libarchive | Already exists |
 | `pigz` | app-arch | system/libs/compression/pigz | Parallel gzip |
@@ -149,7 +149,7 @@ Agents should:
 | `wireshark` | net-analyzer | network/wireshark | Packet analyzer |
 | `iftop` | net-analyzer | network/iftop | Already exists |
 | `nethogs` | net-analyzer | network/nethogs | Per-process bandwidth |
-| `iperf` | net-analyzer | network/iperf | Bandwidth testing |
+| `iperf` | net-analyzer | network/iperf | Already added |
 | `netcat` | net-analyzer | network/netcat | Already exists |
 | `traceroute` | net-analyzer | network/traceroute | Path tracing |
 | `mtr` | net-analyzer | network/mtr | Already exists |
@@ -204,7 +204,7 @@ Agents should:
 | `intltool` | dev-util | dev-tools/dev-utils/intltool | i18n tools |
 | `itstool` | dev-util | dev-tools/dev-utils/itstool | XML translation |
 | `gtk-doc` | dev-util | dev-tools/dev-utils/gtk-doc | GTK documentation |
-| `pkgconf` | dev-util | dev-tools/build-systems/pkgconf | pkg-config replacement |
+| `pkgconf` | dev-util | dev-tools/build-systems/pkgconf | Already added |
 | `meld` | dev-util | dev-tools/dev-utils/meld | Already exists |
 | `kdevelop` | dev-util | dev-tools/ide/kdevelop | KDE IDE |
 | `geany` | dev-util | dev-tools/ide/geany | Lightweight IDE |
@@ -228,7 +228,7 @@ Agents should:
 | `sudo` | app-admin | system/apps/sudo | Already exists |
 | `doas` | app-admin | system/apps/doas | Already exists |
 | `logrotate` | app-admin | system/apps/logrotate | Already exists |
-| `sysstat` | app-admin | system/apps/sysstat | System stats |
+| `sysstat` | app-admin | system/apps/sysstat | Already added |
 | `sysklogd` | app-admin | system/apps/sysklogd | System logger |
 | `rsyslog` | app-admin | system/apps/rsyslog | Already exists |
 | `conky` | app-admin | desktop/conky | System monitor widget |
@@ -265,7 +265,7 @@ Agents should:
 
 | Package | Gentoo Category | BuckOs Path | Priority |
 |---------|----------------|-------------|----------|
-| `tcsh` | app-shells | shells/tcsh | MEDIUM |
+| `tcsh` | app-shells | shells/tcsh | Already added |
 | `ksh` | app-shells | shells/ksh | MEDIUM |
 | `nushell` | app-shells | shells/nushell | LOW |
 | `pwsh` | app-shells | shells/pwsh | LOW |
@@ -300,7 +300,7 @@ Agents should:
 | `zathura` | app-text | editors/zathura | Document viewer |
 | `evince` | app-text | editors/evince | GNOME doc viewer |
 | `okular` | app-text | editors/okular | KDE doc viewer |
-| `aspell` | app-text | editors/aspell | Spell checker |
+| `aspell` | app-text | editors/aspell | Already added |
 | `hunspell` | app-text | editors/hunspell | Spell checker |
 | `enchant` | app-text | editors/enchant | Spell check wrapper |
 
@@ -334,7 +334,7 @@ Agents should:
 | `mariadb` | dev-db | databases/mariadb | MySQL fork |
 | `redis` | dev-db | databases/redis | Key-value store |
 | `mongodb` | dev-db | databases/mongodb | Document store |
-| `memcached` | dev-db | databases/memcached | Memory cache |
+| `memcached` | dev-db | databases/memcached | Already added |
 | `lmdb` | dev-db | system/libs/database/lmdb | Already exists |
 
 ### MEDIUM Priority

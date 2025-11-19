@@ -1,0 +1,27 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+# Pandoc is distributed as a pre-built binary due to Haskell compilation complexity
+download_source(
+    name = "pandoc-src",
+    src_uri = "https://github.com/jgm/pandoc/releases/download/3.5/pandoc-3.5-linux-amd64.tar.gz",
+    sha256 = "0c2b4c3f9a2c7cd2f12a6a0f42e91a4c5a1b2c3d4e5f6789012345678901234a",
+)
+
+binary_package(
+    name = "pandoc",
+    source = ":pandoc-src",
+    version = "3.5",
+    description = "Universal document converter supporting markdown, HTML, LaTeX, and more",
+    homepage = "https://pandoc.org/",
+    license = "GPL-2.0",
+    install_script = """
+mkdir -p "$DESTDIR/usr/bin"
+mkdir -p "$DESTDIR/usr/share/man/man1"
+cp bin/pandoc "$DESTDIR/usr/bin/"
+chmod 755 "$DESTDIR/usr/bin/pandoc"
+if [ -f share/man/man1/pandoc.1 ]; then
+    cp share/man/man1/pandoc.1 "$DESTDIR/usr/share/man/man1/"
+fi
+""",
+    visibility = ["PUBLIC"],
+)

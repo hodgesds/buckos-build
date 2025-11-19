@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "sed-src",
+    src_uri = "https://ftp.gnu.org/gnu/sed/sed-4.9.tar.xz",
+    sha256 = "6e226b732e1cd739464ad6862bd1a1aba42d7982922da7a53519631d24975181",
+)
+
+configure_make_package(
+    name = "sed",
+    source = ":sed-src",
+    version = "4.9",
+    description = "GNU stream editor for filtering and transforming text",
+    homepage = "https://www.gnu.org/software/sed/",
+    license = "GPL-3.0",
+    configure_args = [
+        "--without-selinux",
+    ],
+    deps = [
+        "//packages/core/musl",
+    ],
+    visibility = ["PUBLIC"],
+)

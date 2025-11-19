@@ -297,3 +297,78 @@ filegroup(
     ],
     visibility = ["PUBLIC"],
 )
+
+# =============================================================================
+# Bootable system with initramfs support
+# =============================================================================
+
+# Full bootable system with initramfs generation capability
+rootfs(
+    name = "sideros-bootable",
+    packages = [
+        ":init-scripts-gen",
+        ":baselayout-gen",
+        # Core system
+        "//packages/linux/core/musl",
+        "//packages/linux/core/busybox",
+        "//packages/linux/core/util-linux",
+        "//packages/linux/core/zlib",
+        # Shell and terminal
+        "//packages/linux/core/ncurses",
+        "//packages/linux/core/readline",
+        "//packages/linux/core/bash",
+        "//packages/linux/core/less",
+        # Compression
+        "//packages/linux/core/bzip2",
+        "//packages/linux/core/xz",
+        # System utilities
+        "//packages/linux/core/procps-ng",
+        "//packages/linux/core/file",
+        # Networking
+        "//packages/linux/network/openssl",
+        "//packages/linux/network/curl",
+        "//packages/linux/network/openssh",
+        "//packages/linux/network/iproute2",
+        "//packages/linux/network/dhcpcd",
+        # Boot and initramfs essentials
+        "//packages/linux/system/libs/kmod",
+        "//packages/linux/system/init/eudev",
+        "//packages/linux/system/initramfs/dracut",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Complete bootable system
+filegroup(
+    name = "sideros-bootable-complete",
+    srcs = [
+        ":sideros-bootable",
+        "//packages/linux/kernel/linux",
+        "//packages/linux/boot/grub",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# System with full storage support (LVM, RAID, encryption)
+rootfs(
+    name = "sideros-storage",
+    packages = [
+        ":init-scripts-gen",
+        ":baselayout-gen",
+        # Core system
+        "//packages/linux/core/musl",
+        "//packages/linux/core/busybox",
+        "//packages/linux/core/util-linux",
+        "//packages/linux/core/zlib",
+        "//packages/linux/core/bash",
+        # Boot and initramfs
+        "//packages/linux/system/libs/kmod",
+        "//packages/linux/system/init/eudev",
+        "//packages/linux/system/initramfs/dracut",
+        # Storage management
+        "//packages/linux/system/filesystem/management/lvm2",
+        "//packages/linux/system/filesystem/management/mdadm",
+        "//packages/linux/system/filesystem/management/cryptsetup",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -22,7 +22,7 @@ configure_make_package(
     ],
     configure_command = "./config",
     deps = [
-        "//packages/linux/core/zlib",
+        "//packages/linux/linux/core/zlib",
     ],
     visibility = ["PUBLIC"],
 )

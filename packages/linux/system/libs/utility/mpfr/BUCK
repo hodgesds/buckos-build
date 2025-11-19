@@ -18,7 +18,7 @@ configure_make_package(
         "--enable-thread-safe",
     ],
     deps = [
-        "//packages/linux/system/libs/utility/gmp:gmp",
+        "//packages/linux/linux/system/libs/utility/gmp:gmp",
     ],
     visibility = ["PUBLIC"],
 )

@@ -17,7 +17,7 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/system/libs/audio/libogg",
+        "//packages/linux/linux/system/libs/audio/libogg",
     ],
     visibility = ["PUBLIC"],
 )

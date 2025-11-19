@@ -26,11 +26,11 @@ cmake .. -DCMAKE_INSTALL_PREFIX=/usr \
     -DSDL2MIXER_WAVPACK=ON
 """,
     deps = [
-        "//packages/linux/system/libs/multimedia/sdl2:sdl2",
-        "//packages/linux/system/libs/audio/flac:flac",
-        "//packages/linux/system/libs/audio/libogg:libogg",
-        "//packages/linux/system/libs/audio/libvorbis:libvorbis",
-        "//packages/linux/system/libs/audio/opus:opus",
+        "//packages/linux/linux/system/libs/multimedia/sdl2:sdl2",
+        "//packages/linux/linux/system/libs/audio/flac:flac",
+        "//packages/linux/linux/system/libs/audio/libogg:libogg",
+        "//packages/linux/linux/system/libs/audio/libvorbis:libvorbis",
+        "//packages/linux/linux/system/libs/audio/opus:opus",
     ],
     visibility = ["PUBLIC"],
 )

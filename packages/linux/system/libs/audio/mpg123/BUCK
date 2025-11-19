@@ -21,7 +21,7 @@ configure_make_package(
         "--with-default-audio=pulse",
     ],
     deps = [
-        "//packages/linux/system/libs/audio/alsa-lib:alsa-lib",
+        "//packages/linux/linux/system/libs/audio/alsa-lib:alsa-lib",
     ],
     visibility = ["PUBLIC"],
 )

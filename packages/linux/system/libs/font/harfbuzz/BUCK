@@ -24,8 +24,8 @@ meson_package(
         "-Ddocs=disabled",
     ],
     deps = [
-        "//packages/linux/system/libs/font/freetype",
-        "//packages/linux/system/libs/font/graphite2",
+        "//packages/linux/linux/system/libs/font/freetype",
+        "//packages/linux/linux/system/libs/font/graphite2",
     ],
     visibility = ["PUBLIC"],
 )

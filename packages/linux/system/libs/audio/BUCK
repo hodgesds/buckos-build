@@ -3,10 +3,10 @@
 filegroup(
     name = "core-codecs",
     srcs = [
-        "//packages/linux/system/libs/audio/libogg:libogg",
-        "//packages/linux/system/libs/audio/libvorbis:libvorbis",
-        "//packages/linux/system/libs/audio/flac:flac",
-        "//packages/linux/system/libs/audio/opus:opus",
+        "//packages/linux/linux/system/libs/audio/libogg:libogg",
+        "//packages/linux/linux/system/libs/audio/libvorbis:libvorbis",
+        "//packages/linux/linux/system/libs/audio/flac:flac",
+        "//packages/linux/linux/system/libs/audio/opus:opus",
     ],
     visibility = ["PUBLIC"],
 )
@@ -14,10 +14,10 @@ filegroup(
 filegroup(
     name = "mp3-support",
     srcs = [
-        "//packages/linux/system/libs/audio/lame:lame",
-        "//packages/linux/system/libs/audio/libmad:libmad",
-        "//packages/linux/system/libs/audio/mpg123:mpg123",
-        "//packages/linux/system/libs/audio/mpg123:libmpg123",
+        "//packages/linux/linux/system/libs/audio/lame:lame",
+        "//packages/linux/linux/system/libs/audio/libmad:libmad",
+        "//packages/linux/linux/system/libs/audio/mpg123:mpg123",
+        "//packages/linux/linux/system/libs/audio/mpg123:libmpg123",
     ],
     visibility = ["PUBLIC"],
 )
@@ -25,8 +25,8 @@ filegroup(
 filegroup(
     name = "speech-codecs",
     srcs = [
-        "//packages/linux/system/libs/audio/speex:speex",
-        "//packages/linux/system/libs/audio/speex:speexdsp",
+        "//packages/linux/linux/system/libs/audio/speex:speex",
+        "//packages/linux/linux/system/libs/audio/speex:speexdsp",
     ],
     visibility = ["PUBLIC"],
 )
@@ -34,8 +34,8 @@ filegroup(
 filegroup(
     name = "lossless-codecs",
     srcs = [
-        "//packages/linux/system/libs/audio/flac:flac",
-        "//packages/linux/system/libs/audio/wavpack:wavpack",
+        "//packages/linux/linux/system/libs/audio/flac:flac",
+        "//packages/linux/linux/system/libs/audio/wavpack:wavpack",
     ],
     visibility = ["PUBLIC"],
 )
@@ -43,8 +43,8 @@ filegroup(
 filegroup(
     name = "cd-support",
     srcs = [
-        "//packages/linux/system/libs/audio/libcdio:libcdio",
-        "//packages/linux/system/libs/audio/libcdio:libcdio-paranoia",
+        "//packages/linux/linux/system/libs/audio/libcdio:libcdio",
+        "//packages/linux/linux/system/libs/audio/libcdio:libcdio-paranoia",
     ],
     visibility = ["PUBLIC"],
 )
@@ -52,9 +52,9 @@ filegroup(
 filegroup(
     name = "audio-io",
     srcs = [
-        "//packages/linux/system/libs/audio/alsa-lib:alsa-lib",
-        "//packages/linux/system/libs/audio/libsndfile:libsndfile",
-        "//packages/linux/system/libs/audio/libsamplerate:libsamplerate",
+        "//packages/linux/linux/system/libs/audio/alsa-lib:alsa-lib",
+        "//packages/linux/linux/system/libs/audio/libsndfile:libsndfile",
+        "//packages/linux/linux/system/libs/audio/libsamplerate:libsamplerate",
     ],
     visibility = ["PUBLIC"],
 )

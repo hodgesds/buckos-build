@@ -20,10 +20,10 @@ configure_make_package(
         "--with-python=no",
     ],
     deps = [
-        "//packages/linux/core/zlib",
-        "//packages/linux/system/libs/compression/xz",
-        "//packages/linux/core/readline",
-        "//packages/linux/core/ncurses",
+        "//packages/linux/linux/core/zlib",
+        "//packages/linux/linux/system/libs/compression/xz",
+        "//packages/linux/linux/core/readline",
+        "//packages/linux/linux/core/ncurses",
     ],
     visibility = ["PUBLIC"],
 )

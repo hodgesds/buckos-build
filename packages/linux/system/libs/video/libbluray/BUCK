@@ -20,9 +20,9 @@ configure_make_package(
         "--disable-bdjava-jar",
     ],
     deps = [
-        "//packages/linux/system/libs/data/libxml2:libxml2",
-        "//packages/linux/system/libs/font/freetype:freetype",
-        "//packages/linux/system/libs/font/fontconfig:fontconfig",
+        "//packages/linux/linux/system/libs/data/libxml2:libxml2",
+        "//packages/linux/linux/system/libs/font/freetype:freetype",
+        "//packages/linux/linux/system/libs/font/fontconfig:fontconfig",
     ],
     visibility = ["PUBLIC"],
 )

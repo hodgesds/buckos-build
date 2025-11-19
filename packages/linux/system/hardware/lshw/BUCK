@@ -1,0 +1,34 @@
+# lshw - Hardware Lister
+# Provides detailed information about the hardware configuration
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "lshw-src",
+    src_uri = "https://www.ezix.org/software/files/lshw-B.02.20.tar.gz",
+    sha256 = "060254ae75a93cfe40c2b843c7ccf7e8a88d71d329e8adb51fb5620e8f3a8b69",
+)
+
+configure_make_package(
+    name = "lshw",
+    source = ":lshw-src",
+    version = "B.02.20",
+    description = "Hardware lister - provides detailed hardware information",
+    homepage = "https://www.ezix.org/project/wiki/HardwareLiSter",
+    license = "GPL-2.0",
+    configure_args = [],
+    make_args = [
+        "PREFIX=/usr",
+        "SBINDIR=/usr/sbin",
+        "MANDIR=/usr/share/man",
+        "DATADIR=/usr/share",
+        "RPM_OPT_FLAGS=",
+    ],
+    post_install = """
+        make DESTDIR=$OUT PREFIX=/usr SBINDIR=/usr/sbin install
+    """,
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -21,8 +21,8 @@ configure_make_package(
         "CPPFLAGS": "-DSQLITE_ENABLE_COLUMN_METADATA=1 -DSQLITE_ENABLE_FTS3=1 -DSQLITE_ENABLE_FTS4=1 -DSQLITE_ENABLE_FTS5=1 -DSQLITE_ENABLE_RTREE=1 -DSQLITE_ENABLE_UNLOCK_NOTIFY=1 -DSQLITE_SECURE_DELETE=1",
     },
     deps = [
-        "//packages/linux/core/zlib",
-        "//packages/linux/core/readline",
+        "//packages/linux/linux/core/zlib",
+        "//packages/linux/linux/core/readline",
     ],
     visibility = ["PUBLIC"],
 )

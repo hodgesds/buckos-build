@@ -43,6 +43,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/apps/tmux:tmux",
         "//packages/linux/system/apps/screen:screen",
+        "//packages/linux/system/apps/mosh:mosh",
     ],
     visibility = ["PUBLIC"],
 )

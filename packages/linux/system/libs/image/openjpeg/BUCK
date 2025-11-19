@@ -18,8 +18,8 @@ cmake_package(
         "-DBUILD_STATIC_LIBS=OFF",
     ],
     deps = [
-        "//packages/linux/system/libs/image/libpng",
-        "//packages/linux/system/libs/image/libtiff",
+        "//packages/linux/linux/system/libs/image/libpng",
+        "//packages/linux/linux/system/libs/image/libtiff",
     ],
     visibility = ["PUBLIC"],
 )

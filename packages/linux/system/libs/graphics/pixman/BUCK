@@ -19,7 +19,7 @@ configure_make_package(
         "--enable-shared",
     ],
     deps = [
-        "//packages/linux/core/musl",
+        "//packages/linux/linux/core/musl",
     ],
     visibility = ["PUBLIC"],
 )

@@ -9,12 +9,12 @@
 filegroup(
     name = "image-libs",
     srcs = [
-        "//packages/linux/system/libs/image/libpng:libpng",
-        "//packages/linux/system/libs/image/libjpeg-turbo:libjpeg-turbo",
-        "//packages/linux/system/libs/image/libwebp:libwebp",
-        "//packages/linux/system/libs/image/libtiff:libtiff",
-        "//packages/linux/system/libs/image/giflib:giflib",
-        "//packages/linux/system/libs/image/openjpeg:openjpeg",
+        "//packages/linux/linux/system/libs/image/libpng:libpng",
+        "//packages/linux/linux/system/libs/image/libjpeg-turbo:libjpeg-turbo",
+        "//packages/linux/linux/system/libs/image/libwebp:libwebp",
+        "//packages/linux/linux/system/libs/image/libtiff:libtiff",
+        "//packages/linux/linux/system/libs/image/giflib:giflib",
+        "//packages/linux/linux/system/libs/image/openjpeg:openjpeg",
     ],
     visibility = ["PUBLIC"],
 )
@@ -23,11 +23,11 @@ filegroup(
 filegroup(
     name = "font-libs",
     srcs = [
-        "//packages/linux/system/libs/font/freetype:freetype",
-        "//packages/linux/system/libs/font/fontconfig:fontconfig",
-        "//packages/linux/system/libs/font/harfbuzz:harfbuzz",
-        "//packages/linux/system/libs/font/fribidi:fribidi",
-        "//packages/linux/system/libs/font/graphite2:graphite2",
+        "//packages/linux/linux/system/libs/font/freetype:freetype",
+        "//packages/linux/linux/system/libs/font/fontconfig:fontconfig",
+        "//packages/linux/linux/system/libs/font/harfbuzz:harfbuzz",
+        "//packages/linux/linux/system/libs/font/fribidi:fribidi",
+        "//packages/linux/linux/system/libs/font/graphite2:graphite2",
     ],
     visibility = ["PUBLIC"],
 )
@@ -36,8 +36,8 @@ filegroup(
 filegroup(
     name = "graphics-libs",
     srcs = [
-        "//packages/linux/system/libs/graphics/pixman:pixman",
-        "//packages/linux/system/libs/graphics/cairo:cairo",
+        "//packages/linux/linux/system/libs/graphics/pixman:pixman",
+        "//packages/linux/linux/system/libs/graphics/cairo:cairo",
     ],
     visibility = ["PUBLIC"],
 )
@@ -46,16 +46,16 @@ filegroup(
 filegroup(
     name = "audio-codec-libs",
     srcs = [
-        "//packages/linux/system/libs/audio/libogg:libogg",
-        "//packages/linux/system/libs/audio/libvorbis:libvorbis",
-        "//packages/linux/system/libs/audio/flac:flac",
-        "//packages/linux/system/libs/audio/opus:opus",
-        "//packages/linux/system/libs/audio/lame:lame",
-        "//packages/linux/system/libs/audio/libmad:libmad",
-        "//packages/linux/system/libs/audio/mpg123:libmpg123",
-        "//packages/linux/system/libs/audio/speex:speex",
-        "//packages/linux/system/libs/audio/speex:speexdsp",
-        "//packages/linux/system/libs/audio/wavpack:wavpack",
+        "//packages/linux/linux/system/libs/audio/libogg:libogg",
+        "//packages/linux/linux/system/libs/audio/libvorbis:libvorbis",
+        "//packages/linux/linux/system/libs/audio/flac:flac",
+        "//packages/linux/linux/system/libs/audio/opus:opus",
+        "//packages/linux/linux/system/libs/audio/lame:lame",
+        "//packages/linux/linux/system/libs/audio/libmad:libmad",
+        "//packages/linux/linux/system/libs/audio/mpg123:libmpg123",
+        "//packages/linux/linux/system/libs/audio/speex:speex",
+        "//packages/linux/linux/system/libs/audio/speex:speexdsp",
+        "//packages/linux/linux/system/libs/audio/wavpack:wavpack",
     ],
     visibility = ["PUBLIC"],
 )
@@ -64,9 +64,9 @@ filegroup(
 filegroup(
     name = "audio-io-libs",
     srcs = [
-        "//packages/linux/system/libs/audio/alsa-lib:alsa-lib",
-        "//packages/linux/system/libs/audio/libsndfile:libsndfile",
-        "//packages/linux/system/libs/audio/libsamplerate:libsamplerate",
+        "//packages/linux/linux/system/libs/audio/alsa-lib:alsa-lib",
+        "//packages/linux/linux/system/libs/audio/libsndfile:libsndfile",
+        "//packages/linux/linux/system/libs/audio/libsamplerate:libsamplerate",
     ],
     visibility = ["PUBLIC"],
 )
@@ -75,12 +75,12 @@ filegroup(
 filegroup(
     name = "video-libs",
     srcs = [
-        "//packages/linux/system/libs/video/theora:theora",
-        "//packages/linux/system/libs/video/libass:libass",
-        "//packages/linux/system/libs/video/libdvdcss:libdvdcss",
-        "//packages/linux/system/libs/video/libdvdread:libdvdread",
-        "//packages/linux/system/libs/video/libdvdnav:libdvdnav",
-        "//packages/linux/system/libs/video/libbluray:libbluray",
+        "//packages/linux/linux/system/libs/video/theora:theora",
+        "//packages/linux/linux/system/libs/video/libass:libass",
+        "//packages/linux/linux/system/libs/video/libdvdcss:libdvdcss",
+        "//packages/linux/linux/system/libs/video/libdvdread:libdvdread",
+        "//packages/linux/linux/system/libs/video/libdvdnav:libdvdnav",
+        "//packages/linux/linux/system/libs/video/libbluray:libbluray",
     ],
     visibility = ["PUBLIC"],
 )
@@ -89,12 +89,12 @@ filegroup(
 filegroup(
     name = "multimedia-libs",
     srcs = [
-        "//packages/linux/system/libs/multimedia/sdl2:sdl2",
-        "//packages/linux/system/libs/multimedia/sdl2-image:sdl2-image",
-        "//packages/linux/system/libs/multimedia/sdl2-mixer:sdl2-mixer",
-        "//packages/linux/system/libs/multimedia/sdl2-ttf:sdl2-ttf",
-        "//packages/linux/system/libs/multimedia/openal-soft:openal-soft",
-        "//packages/linux/system/libs/multimedia/portaudio:portaudio",
+        "//packages/linux/linux/system/libs/multimedia/sdl2:sdl2",
+        "//packages/linux/linux/system/libs/multimedia/sdl2-image:sdl2-image",
+        "//packages/linux/linux/system/libs/multimedia/sdl2-mixer:sdl2-mixer",
+        "//packages/linux/linux/system/libs/multimedia/sdl2-ttf:sdl2-ttf",
+        "//packages/linux/linux/system/libs/multimedia/openal-soft:openal-soft",
+        "//packages/linux/linux/system/libs/multimedia/portaudio:portaudio",
     ],
     visibility = ["PUBLIC"],
 )
@@ -103,10 +103,10 @@ filegroup(
 filegroup(
     name = "input-libs",
     srcs = [
-        "//packages/linux/system/libs/input/libevdev:libevdev",
-        "//packages/linux/system/libs/input/mtdev:mtdev",
-        "//packages/linux/system/libs/input/libinput:libinput",
-        "//packages/linux/system/libs/input/libxkbcommon:libxkbcommon",
+        "//packages/linux/linux/system/libs/input/libevdev:libevdev",
+        "//packages/linux/linux/system/libs/input/mtdev:mtdev",
+        "//packages/linux/linux/system/libs/input/libinput:libinput",
+        "//packages/linux/linux/system/libs/input/libxkbcommon:libxkbcommon",
     ],
     visibility = ["PUBLIC"],
 )
@@ -115,12 +115,12 @@ filegroup(
 filegroup(
     name = "disc-libs",
     srcs = [
-        "//packages/linux/system/libs/audio/libcdio:libcdio",
-        "//packages/linux/system/libs/audio/libcdio:libcdio-paranoia",
-        "//packages/linux/system/libs/video/libdvdcss:libdvdcss",
-        "//packages/linux/system/libs/video/libdvdread:libdvdread",
-        "//packages/linux/system/libs/video/libdvdnav:libdvdnav",
-        "//packages/linux/system/libs/video/libbluray:libbluray",
+        "//packages/linux/linux/system/libs/audio/libcdio:libcdio",
+        "//packages/linux/linux/system/libs/audio/libcdio:libcdio-paranoia",
+        "//packages/linux/linux/system/libs/video/libdvdcss:libdvdcss",
+        "//packages/linux/linux/system/libs/video/libdvdread:libdvdread",
+        "//packages/linux/linux/system/libs/video/libdvdnav:libdvdnav",
+        "//packages/linux/linux/system/libs/video/libbluray:libbluray",
     ],
     visibility = ["PUBLIC"],
 )
@@ -136,10 +136,10 @@ filegroup(
         ":image-libs",
         ":font-libs",
         ":graphics-libs",
-        "//packages/linux/system/libs/audio/alsa-lib:alsa-lib",
-        "//packages/linux/system/libs/audio/libogg:libogg",
-        "//packages/linux/system/libs/audio/libvorbis:libvorbis",
-        "//packages/linux/system/libs/audio/opus:opus",
+        "//packages/linux/linux/system/libs/audio/alsa-lib:alsa-lib",
+        "//packages/linux/linux/system/libs/audio/libogg:libogg",
+        "//packages/linux/linux/system/libs/audio/libvorbis:libvorbis",
+        "//packages/linux/linux/system/libs/audio/opus:opus",
     ],
     visibility = ["PUBLIC"],
 )
@@ -174,10 +174,10 @@ filegroup(
 filegroup(
     name = "sdl2-dev",
     srcs = [
-        "//packages/linux/system/libs/multimedia/sdl2:sdl2",
-        "//packages/linux/system/libs/multimedia/sdl2-image:sdl2-image",
-        "//packages/linux/system/libs/multimedia/sdl2-mixer:sdl2-mixer",
-        "//packages/linux/system/libs/multimedia/sdl2-ttf:sdl2-ttf",
+        "//packages/linux/linux/system/libs/multimedia/sdl2:sdl2",
+        "//packages/linux/linux/system/libs/multimedia/sdl2-image:sdl2-image",
+        "//packages/linux/linux/system/libs/multimedia/sdl2-mixer:sdl2-mixer",
+        "//packages/linux/linux/system/libs/multimedia/sdl2-ttf:sdl2-ttf",
     ],
     visibility = ["PUBLIC"],
 )
@@ -188,8 +188,8 @@ filegroup(
     srcs = [
         ":audio-codec-libs",
         ":audio-io-libs",
-        "//packages/linux/system/libs/multimedia/openal-soft:openal-soft",
-        "//packages/linux/system/libs/multimedia/portaudio:portaudio",
+        "//packages/linux/linux/system/libs/multimedia/openal-soft:openal-soft",
+        "//packages/linux/linux/system/libs/multimedia/portaudio:portaudio",
     ],
     visibility = ["PUBLIC"],
 )
@@ -202,11 +202,11 @@ filegroup(
 filegroup(
     name = "compression-libs",
     srcs = [
-        "//packages/linux/system/libs/compression/zstd:zstd",
-        "//packages/linux/system/libs/compression/lz4:lz4",
-        "//packages/linux/system/libs/compression/snappy:snappy",
-        "//packages/linux/system/libs/compression/bzip2:bzip2",
-        "//packages/linux/system/libs/compression/xz:xz",
+        "//packages/linux/linux/system/libs/compression/zstd:zstd",
+        "//packages/linux/linux/system/libs/compression/lz4:lz4",
+        "//packages/linux/linux/system/libs/compression/snappy:snappy",
+        "//packages/linux/linux/system/libs/compression/bzip2:bzip2",
+        "//packages/linux/linux/system/libs/compression/xz:xz",
     ],
     visibility = ["PUBLIC"],
 )
@@ -215,11 +215,11 @@ filegroup(
 filegroup(
     name = "crypto-libs",
     srcs = [
-        "//packages/linux/system/libs/crypto/openssl:openssl",
-        "//packages/linux/system/libs/crypto/libgcrypt:libgcrypt",
-        "//packages/linux/system/libs/crypto/libsodium:libsodium",
-        "//packages/linux/system/libs/crypto/gnutls:gnutls",
-        "//packages/linux/system/libs/crypto/nettle:nettle",
+        "//packages/linux/linux/system/libs/crypto/openssl:openssl",
+        "//packages/linux/linux/system/libs/crypto/libgcrypt:libgcrypt",
+        "//packages/linux/linux/system/libs/crypto/libsodium:libsodium",
+        "//packages/linux/linux/system/libs/crypto/gnutls:gnutls",
+        "//packages/linux/linux/system/libs/crypto/nettle:nettle",
     ],
     visibility = ["PUBLIC"],
 )
@@ -228,12 +228,12 @@ filegroup(
 filegroup(
     name = "data-libs",
     srcs = [
-        "//packages/linux/system/libs/data/libxml2:libxml2",
-        "//packages/linux/system/libs/data/libxslt:libxslt",
-        "//packages/linux/system/libs/data/json-c:json-c",
-        "//packages/linux/system/libs/data/jansson:jansson",
-        "//packages/linux/system/libs/data/expat:expat",
-        "//packages/linux/system/libs/data/yaml:yaml",
+        "//packages/linux/linux/system/libs/data/libxml2:libxml2",
+        "//packages/linux/linux/system/libs/data/libxslt:libxslt",
+        "//packages/linux/linux/system/libs/data/json-c:json-c",
+        "//packages/linux/linux/system/libs/data/jansson:jansson",
+        "//packages/linux/linux/system/libs/data/expat:expat",
+        "//packages/linux/linux/system/libs/data/yaml:yaml",
     ],
     visibility = ["PUBLIC"],
 )
@@ -242,8 +242,8 @@ filegroup(
 filegroup(
     name = "database-libs",
     srcs = [
-        "//packages/linux/system/libs/database/sqlite:sqlite",
-        "//packages/linux/system/libs/database/lmdb:lmdb",
+        "//packages/linux/linux/system/libs/database/sqlite:sqlite",
+        "//packages/linux/linux/system/libs/database/lmdb:lmdb",
     ],
     visibility = ["PUBLIC"],
 )
@@ -252,10 +252,10 @@ filegroup(
 filegroup(
     name = "network-libs",
     srcs = [
-        "//packages/linux/system/libs/network/curl:curl",
-        "//packages/linux/system/libs/network/libssh2:libssh2",
-        "//packages/linux/system/libs/network/nghttp2:nghttp2",
-        "//packages/linux/system/libs/network/c-ares:c-ares",
+        "//packages/linux/linux/system/libs/network/curl:curl",
+        "//packages/linux/linux/system/libs/network/libssh2:libssh2",
+        "//packages/linux/linux/system/libs/network/nghttp2:nghttp2",
+        "//packages/linux/linux/system/libs/network/c-ares:c-ares",
     ],
     visibility = ["PUBLIC"],
 )
@@ -264,9 +264,9 @@ filegroup(
 filegroup(
     name = "ipc-libs",
     srcs = [
-        "//packages/linux/system/libs/ipc/dbus:dbus",
-        "//packages/linux/system/libs/ipc/libcap:libcap",
-        "//packages/linux/system/libs/ipc/libseccomp:libseccomp",
+        "//packages/linux/linux/system/libs/ipc/dbus:dbus",
+        "//packages/linux/linux/system/libs/ipc/libcap:libcap",
+        "//packages/linux/linux/system/libs/ipc/libseccomp:libseccomp",
     ],
     visibility = ["PUBLIC"],
 )
@@ -275,13 +275,13 @@ filegroup(
 filegroup(
     name = "utility-libs",
     srcs = [
-        "//packages/linux/system/libs/utility/pcre2:pcre2",
-        "//packages/linux/system/libs/utility/icu:icu",
-        "//packages/linux/system/libs/utility/gmp:gmp",
-        "//packages/linux/system/libs/utility/libffi:libffi",
-        "//packages/linux/system/libs/utility/libevent:libevent",
-        "//packages/linux/system/libs/utility/libuv:libuv",
-        "//packages/linux/system/libs/utility/libarchive:libarchive",
+        "//packages/linux/linux/system/libs/utility/pcre2:pcre2",
+        "//packages/linux/linux/system/libs/utility/icu:icu",
+        "//packages/linux/linux/system/libs/utility/gmp:gmp",
+        "//packages/linux/linux/system/libs/utility/libffi:libffi",
+        "//packages/linux/linux/system/libs/utility/libevent:libevent",
+        "//packages/linux/linux/system/libs/utility/libuv:libuv",
+        "//packages/linux/linux/system/libs/utility/libarchive:libarchive",
     ],
     visibility = ["PUBLIC"],
 )

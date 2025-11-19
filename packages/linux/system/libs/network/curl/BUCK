@@ -24,12 +24,12 @@ configure_make_package(
         "--enable-ipv6",
     ],
     deps = [
-        "//packages/linux/system/libs/crypto/openssl",
-        "//packages/linux/core/zlib",
-        "//packages/linux/system/libs/compression/zstd",
-        "//packages/linux/system/libs/network/nghttp2",
-        "//packages/linux/system/libs/network/libssh2",
-        "//packages/linux/system/libs/network/c-ares",
+        "//packages/linux/linux/system/libs/crypto/openssl",
+        "//packages/linux/linux/core/zlib",
+        "//packages/linux/linux/system/libs/compression/zstd",
+        "//packages/linux/linux/system/libs/network/nghttp2",
+        "//packages/linux/linux/system/libs/network/libssh2",
+        "//packages/linux/linux/system/libs/network/c-ares",
     ],
     visibility = ["PUBLIC"],
 )

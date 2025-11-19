@@ -17,10 +17,10 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/system/libs/audio/flac",
-        "//packages/linux/system/libs/audio/libogg",
-        "//packages/linux/system/libs/audio/libvorbis",
-        "//packages/linux/system/libs/audio/opus",
+        "//packages/linux/linux/system/libs/audio/flac",
+        "//packages/linux/linux/system/libs/audio/libogg",
+        "//packages/linux/linux/system/libs/audio/libvorbis",
+        "//packages/linux/linux/system/libs/audio/opus",
     ],
     visibility = ["PUBLIC"],
 )

@@ -8,5 +8,15 @@ export_file(
 # Platform targeting helpers
 export_file(
     name = "platform_defs.bzl",
+      visibility = ["PUBLIC"],
+)
+
+export_file(
+    name = "versions.bzl",
+    visibility = ["PUBLIC"],
+)
+
+export_file(
+    name = "registry.bzl",
     visibility = ["PUBLIC"],
 )

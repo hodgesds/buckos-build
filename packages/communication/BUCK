@@ -1,11 +1,12 @@
 # Communication Packages
-# Email clients, messaging, and communication tools
+# Email clients, email servers, messaging, and communication tools
 
 # All communication packages
 filegroup(
     name = "communication-packages",
     srcs = [
         "//packages/communication/email-clients:all-email-clients",
+        "//packages/communication/email-servers:all-email-servers",
     ],
     visibility = ["PUBLIC"],
 )
@@ -37,11 +38,57 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
+# Email servers - all
+filegroup(
+    name = "email-servers",
+    srcs = [
+        "//packages/communication/email-servers:all-email-servers",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All-in-one mail servers
+filegroup(
+    name = "all-in-one-servers",
+    srcs = [
+        "//packages/communication/email-servers:all-in-one",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Mail Transfer Agents
+filegroup(
+    name = "mta",
+    srcs = [
+        "//packages/communication/email-servers:mta",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# IMAP/POP3 servers
+filegroup(
+    name = "imap-servers",
+    srcs = [
+        "//packages/communication/email-servers:imap-servers",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Traditional mail server stack
+filegroup(
+    name = "traditional-mail-stack",
+    srcs = [
+        "//packages/communication/email-servers:traditional-stack",
+    ],
+    visibility = ["PUBLIC"],
+)
+
 # Recommended communication tools
 filegroup(
     name = "recommended",
     srcs = [
         "//packages/communication/email-clients:recommended",
+        "//packages/communication/email-servers:recommended",
     ],
     visibility = ["PUBLIC"],
 )
@@ -51,6 +98,17 @@ filegroup(
     name = "lightweight",
     srcs = [
         "//packages/communication/email-clients:lightweight",
+        "//packages/communication/email-servers:lightweight",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Complete email infrastructure (clients + servers)
+filegroup(
+    name = "complete-email",
+    srcs = [
+        "//packages/communication/email-clients:all-email-clients",
+        "//packages/communication/email-servers:all-email-servers",
     ],
     visibility = ["PUBLIC"],
 )

@@ -1,0 +1,135 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# Bash - GNU Bourne-Again SHell
+download_source(
+    name = "bash-src",
+    src_uri = "https://ftp.gnu.org/gnu/bash/bash-5.2.21.tar.gz",
+    sha256 = "c8e31bdc59b69aaffc5b36509905ba3e5cbb12747091d27b4b977f078560d5b8",
+)
+
+configure_make_package(
+    name = "bash",
+    source = ":bash-src",
+    version = "5.2.21",
+    description = "The GNU Bourne Again shell",
+    homepage = "https://www.gnu.org/software/bash/",
+    license = "GPL-3.0",
+    configure_args = [
+        "--without-bash-malloc",
+        "--disable-nls",
+    ],
+    post_install = """
+mkdir -p "$DESTDIR/bin"
+ln -sf bash "$DESTDIR/bin/sh" 2>/dev/null || true
+""",
+    visibility = ["PUBLIC"],
+)
+
+# Zsh - Z Shell
+download_source(
+    name = "zsh-src",
+    src_uri = "https://sourceforge.net/projects/zsh/files/zsh/5.9/zsh-5.9.tar.xz",
+    sha256 = "9b8d1ecedd5b5e81fbf1918e876752a7dd948e05c1a0dba10ab863842d45acd5",
+)
+
+configure_make_package(
+    name = "zsh",
+    source = ":zsh-src",
+    version = "5.9",
+    description = "A very advanced and programmable command interpreter (shell)",
+    homepage = "https://www.zsh.org/",
+    license = "MIT",
+    configure_args = [
+        "--enable-etcdir=/etc/zsh",
+        "--enable-zshenv=/etc/zsh/zshenv",
+        "--enable-zlogin=/etc/zsh/zlogin",
+        "--enable-zlogout=/etc/zsh/zlogout",
+        "--enable-zprofile=/etc/zsh/zprofile",
+        "--enable-zshrc=/etc/zsh/zshrc",
+        "--disable-gdbm",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Fish - Friendly Interactive SHell
+download_source(
+    name = "fish-src",
+    src_uri = "https://github.com/fish-shell/fish-shell/releases/download/3.7.0/fish-3.7.0.tar.xz",
+    sha256 = "df1b7378b714f0690b285ed9e4e58afe270ac98dbc9ca5839589e34d199014d0",
+)
+
+configure_make_package(
+    name = "fish",
+    source = ":fish-src",
+    version = "3.7.0",
+    description = "Smart and user-friendly command line shell",
+    homepage = "https://fishshell.com/",
+    license = "GPL-2.0",
+    pre_configure = """
+# Fish uses CMake, need to handle differently
+if command -v cmake >/dev/null 2>&1; then
+    mkdir -p build
+    cd build
+    cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+fi
+""",
+    configure_args = [],
+    visibility = ["PUBLIC"],
+)
+
+# Dash - Debian Almquist Shell (lightweight POSIX shell)
+download_source(
+    name = "dash-src",
+    src_uri = "http://gondor.apana.org.au/~herbert/dash/files/dash-0.5.12.tar.gz",
+    sha256 = "6a474ac46e8b0b32916c4c60df694c82058d3297d8b385b74508030ca4a8f28a",
+)
+
+configure_make_package(
+    name = "dash",
+    source = ":dash-src",
+    version = "0.5.12",
+    description = "POSIX-compliant implementation of /bin/sh that aims to be as small as possible",
+    homepage = "http://gondor.apana.org.au/~herbert/dash/",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--enable-static",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Mksh - MirBSD Korn Shell
+download_source(
+    name = "mksh-src",
+    src_uri = "http://www.mirbsd.org/MirOS/dist/mir/mksh/mksh-R59c.tgz",
+    sha256 = "77ae1665a337f1c48c61d6b961db3e282b331c562c8b2aacd2f8b6e9665c4c3c",
+)
+
+configure_make_package(
+    name = "mksh",
+    source = ":mksh-src",
+    version = "R59c",
+    description = "MirBSD Korn Shell - an enhanced version of the public domain ksh",
+    homepage = "http://www.mirbsd.org/mksh.htm",
+    license = "MirOS",
+    pre_configure = """
+# mksh uses its own build script
+sh Build.sh -r
+""",
+    configure_args = [],
+    post_install = """
+mkdir -p "$DESTDIR/bin"
+cp mksh "$DESTDIR/bin/"
+""",
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for all shells
+filegroup(
+    name = "all-shells",
+    srcs = [
+        ":bash",
+        ":zsh",
+        ":dash",
+    ],
+    visibility = ["PUBLIC"],
+)

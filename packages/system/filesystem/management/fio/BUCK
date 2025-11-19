@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+download_source(
+    name = "fio-src",
+    src_uri = "https://github.com/axboe/fio/archive/refs/tags/fio-3.36.tar.gz",
+    sha256 = "6a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+)
+
+configure_make_package(
+    name = "fio",
+    source = ":fio-src",
+    version = "3.36",
+    description = "Flexible I/O tester for benchmarking and stress testing",
+    homepage = "https://github.com/axboe/fio",
+    license = "GPL-2.0",
+    configure_args = [],
+    deps = [
+        "//packages/core:zlib",
+    ],
+    visibility = ["PUBLIC"],
+)

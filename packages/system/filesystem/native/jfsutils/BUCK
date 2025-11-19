@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+download_source(
+    name = "jfsutils-src",
+    src_uri = "https://jfs.sourceforge.net/project/pub/jfsutils-1.1.15.tar.gz",
+    sha256 = "8a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+)
+
+configure_make_package(
+    name = "jfsutils",
+    source = ":jfsutils-src",
+    version = "1.1.15",
+    description = "JFS filesystem utilities (mkfs.jfs, fsck.jfs, etc.)",
+    homepage = "http://jfs.sourceforge.net/",
+    license = "GPL-2.0",
+    configure_args = [],
+    deps = [
+        "//packages/core:util-linux",
+    ],
+    visibility = ["PUBLIC"],
+)

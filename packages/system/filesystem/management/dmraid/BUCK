@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+download_source(
+    name = "dmraid-src",
+    src_uri = "https://people.redhat.com/~heinzm/sw/dmraid/src/dmraid-1.0.0.rc16-3.tar.bz2",
+    sha256 = "9a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+)
+
+configure_make_package(
+    name = "dmraid",
+    source = ":dmraid-src",
+    version = "1.0.0.rc16",
+    description = "Device-mapper RAID activation tool for BIOS RAID sets",
+    homepage = "https://people.redhat.com/~heinzm/sw/dmraid/",
+    license = "GPL-2.0",
+    configure_args = [],
+    deps = [
+        "//packages/system/filesystem/management/lvm2:lvm2",
+    ],
+    visibility = ["PUBLIC"],
+)

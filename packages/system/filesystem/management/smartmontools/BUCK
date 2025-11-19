@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+download_source(
+    name = "smartmontools-src",
+    src_uri = "https://sourceforge.net/projects/smartmontools/files/smartmontools/7.4/smartmontools-7.4.tar.gz",
+    sha256 = "3a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+)
+
+configure_make_package(
+    name = "smartmontools",
+    source = ":smartmontools-src",
+    version = "7.4",
+    description = "Tools for monitoring SMART capable hard disks",
+    homepage = "https://www.smartmontools.org/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--with-nvme-devicescan",
+    ],
+    deps = [],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,41 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "clamav-src",
+    src_uri = "https://www.clamav.net/downloads/production/clamav-1.2.1.tar.gz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+)
+
+configure_make_package(
+    name = "clamav",
+    source = ":clamav-src",
+    version = "1.2.1",
+    description = "Clam AntiVirus - open source antivirus engine",
+    homepage = "https://www.clamav.net/",
+    license = "GPL-2.0",
+    pre_configure = """
+        mkdir -p build
+        cd build
+        cmake .. \
+            -DCMAKE_INSTALL_PREFIX=/usr \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DENABLE_CLAMONACC=ON \
+            -DENABLE_MILTER=OFF \
+            -DENABLE_EXAMPLES=OFF \
+            -DENABLE_STATIC_LIB=OFF \
+            -DENABLE_SYSTEMD=ON
+    """,
+    make_args = ["-C", "build"],
+    post_install = """
+        cd build
+        DESTDIR=$OUT make install
+        mkdir -p $OUT/etc/clamav
+        mkdir -p $OUT/var/lib/clamav
+        mkdir -p $OUT/var/log/clamav
+    """,
+    deps = [
+        "//packages/core:zlib",
+        "//packages/net/openssl:openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

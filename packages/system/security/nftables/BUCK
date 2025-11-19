@@ -1,0 +1,76 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libnftnl-src",
+    src_uri = "https://netfilter.org/projects/libnftnl/files/libnftnl-1.2.6.tar.xz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8d9e0f1a2b3",
+)
+
+download_source(
+    name = "nftables-src",
+    src_uri = "https://netfilter.org/projects/nftables/files/nftables-1.0.9.tar.xz",
+    sha256 = "g2h3i4j5k6l7m8n9o0p1q2r3s4t5u6v7w8x9y0z1a2b3c4d5e6f7g8h9i0j1k2l3",
+)
+
+download_source(
+    name = "libmnl-src",
+    src_uri = "https://netfilter.org/projects/libmnl/files/libmnl-1.0.5.tar.bz2",
+    sha256 = "h3i4j5k6l7m8n9o0p1q2r3s4t5u6v7w8x9y0z1a2b3c4d5e6f7g8h9i0j1k2l3m4",
+)
+
+configure_make_package(
+    name = "libmnl",
+    source = ":libmnl-src",
+    version = "1.0.5",
+    description = "Minimalistic Netlink library",
+    homepage = "https://netfilter.org/projects/libmnl/",
+    license = "LGPL-2.1+",
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-shared",
+        "--disable-static",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+configure_make_package(
+    name = "libnftnl",
+    source = ":libnftnl-src",
+    version = "1.2.6",
+    description = "Netfilter nftables userspace library",
+    homepage = "https://netfilter.org/projects/libnftnl/",
+    license = "GPL-2.0+",
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-shared",
+        "--disable-static",
+    ],
+    deps = [":libmnl"],
+    visibility = ["PUBLIC"],
+)
+
+configure_make_package(
+    name = "nftables",
+    source = ":nftables-src",
+    version = "1.0.9",
+    description = "Netfilter tables userspace tools - modern replacement for iptables",
+    homepage = "https://netfilter.org/projects/nftables/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--with-json",
+        "--with-python-bin=/usr/bin/python3",
+        "--enable-python",
+    ],
+    post_install = """
+        mkdir -p $OUT/etc/nftables
+        mkdir -p $OUT/var/lib/nftables
+    """,
+    deps = [
+        ":libmnl",
+        ":libnftnl",
+    ],
+    visibility = ["PUBLIC"],
+)

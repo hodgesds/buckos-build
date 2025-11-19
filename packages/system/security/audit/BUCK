@@ -1,0 +1,30 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "audit-src",
+    src_uri = "https://github.com/linux-audit/audit-userspace/archive/refs/tags/v3.1.2.tar.gz",
+    sha256 = "8d1e2b0d4f9e5c4a3b5c4a6d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2",
+)
+
+configure_make_package(
+    name = "audit",
+    source = ":audit-src",
+    version = "3.1.2",
+    description = "Linux Audit Framework userspace utilities",
+    homepage = "https://github.com/linux-audit/audit-userspace",
+    license = "LGPL-2.1+",
+    pre_configure = """
+        autoreconf -fiv
+    """,
+    configure_args = [
+        "--prefix=/usr",
+        "--sbindir=/sbin",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--without-python",
+        "--without-python3",
+        "--enable-shared",
+        "--disable-static",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,52 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "gegl-src",
+    src_uri = "https://download.gimp.org/gegl/0.4/gegl-0.4.48.tar.xz",
+    sha256 = "f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2",
+)
+
+configure_make_package(
+    name = "gegl",
+    source = ":gegl-src",
+    version = "0.4.48",
+    description = "Graph based image processing framework",
+    homepage = "https://gegl.org/",
+    license = "LGPL-3.0-or-later",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. \
+    --prefix=/usr \
+    -Dbuildtype=release \
+    -Ddocs=false \
+    -Dintrospection=true \
+    -Dworkshop=true
+""",
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+cd build
+DESTDIR=$OUT meson install
+""",
+    deps = [
+        "//packages/graphics/utilities/babl:babl",
+        "//packages/core/glib:glib",
+        "//packages/core/json-glib:json-glib",
+        "//packages/core/libpng:libpng",
+        "//packages/core/libjpeg-turbo:libjpeg-turbo",
+        "//packages/core/cairo:cairo",
+        "//packages/core/pango:pango",
+        "//packages/core/openexr:openexr",
+        "//packages/core/libraw:libraw",
+        "//packages/core/librsvg:librsvg",
+        "//packages/core/libwebp:libwebp",
+        "//packages/core/poppler:poppler",
+        "//packages/core/ffmpeg:ffmpeg",
+    ],
+    build_deps = [
+        "//packages/core/gobject-introspection:gobject-introspection",
+        "//packages/core/vala:vala",
+    ],
+    visibility = ["PUBLIC"],
+)

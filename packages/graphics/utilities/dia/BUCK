@@ -1,0 +1,39 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "dia-src",
+    src_uri = "https://gitlab.gnome.org/GNOME/dia/-/archive/0.97.3/dia-0.97.3.tar.gz",
+    sha256 = "d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
+)
+
+configure_make_package(
+    name = "dia",
+    source = ":dia-src",
+    version = "0.97.3",
+    description = "Diagram creation program for GNOME",
+    homepage = "https://wiki.gnome.org/Apps/Dia",
+    license = "GPL-2.0-or-later",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. \
+    --prefix=/usr \
+    -Dbuildtype=release \
+    -Ddoc=false
+""",
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+cd build
+DESTDIR=$OUT meson install
+""",
+    deps = [
+        "//packages/desktop/gtk:gtk3",
+        "//packages/core/libxml2:libxml2",
+        "//packages/core/cairo:cairo",
+        "//packages/core/pango:pango",
+        "//packages/core/graphene:graphene",
+    ],
+    build_deps = [],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,34 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libmypaint-src",
+    src_uri = "https://github.com/mypaint/libmypaint/releases/download/v1.6.1/libmypaint-1.6.1.tar.xz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+configure_make_package(
+    name = "libmypaint",
+    source = ":libmypaint-src",
+    version = "1.6.1",
+    description = "Library for making brushstrokes for MyPaint",
+    homepage = "https://github.com/mypaint/libmypaint",
+    license = "ISC",
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-gegl",
+        "--enable-introspection",
+    ],
+    make_args = [],
+    post_install = """
+make DESTDIR=$OUT install
+""",
+    deps = [
+        "//packages/core/glib:glib",
+        "//packages/core/json-c:json-c",
+        "//packages/graphics/utilities/gegl:gegl",
+    ],
+    build_deps = [
+        "//packages/core/gobject-introspection:gobject-introspection",
+    ],
+    visibility = ["PUBLIC"],
+)

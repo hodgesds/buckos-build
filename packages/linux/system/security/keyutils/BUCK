@@ -1,0 +1,35 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# keyutils - Linux key management utilities
+
+download_source(
+    name = "keyutils-src",
+    src_uri = "https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git/snapshot/keyutils-1.6.3.tar.gz",
+    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+)
+
+configure_make_package(
+    name = "keyutils",
+    source = ":keyutils-src",
+    version = "1.6.3",
+    description = "Linux key management utilities",
+    homepage = "https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git",
+    license = "GPL-2.0-or-later AND LGPL-2.1-or-later",
+    build_in_source = True,
+    configure_args = [],
+    make_args = [
+        "NO_ARLIB=1",
+        "LIBDIR=/usr/lib",
+        "USRLIBDIR=/usr/lib",
+    ],
+    install_args = [
+        "NO_ARLIB=1",
+        "LIBDIR=/usr/lib",
+        "USRLIBDIR=/usr/lib",
+        "DESTDIR=$(location)",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

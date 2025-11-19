@@ -1,0 +1,7 @@
+http_archive(
+ name="clang-src",
+ out="src",
+ urls=[
+   "https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.0/clang-16.0.0.src.tar.xz"
+ ]
+)

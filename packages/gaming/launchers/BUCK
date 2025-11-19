@@ -1,0 +1,13 @@
+# Game launchers and distribution platforms
+
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+filegroup(
+    name = "launchers",
+    srcs = [
+        "//packages/gaming/launchers/steam:steam",
+        "//packages/gaming/launchers/lutris:lutris",
+        "//packages/gaming/launchers/heroic:heroic",
+    ],
+    visibility = ["PUBLIC"],
+)

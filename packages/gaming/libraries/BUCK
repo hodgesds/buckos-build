@@ -1,0 +1,12 @@
+# Gaming libraries - Core libraries for game development and runtime
+
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+filegroup(
+    name = "libraries",
+    srcs = [
+        "//packages/gaming/libraries/sdl2:sdl2",
+        "//packages/gaming/libraries/vulkan-tools:vulkan-tools",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -246,3 +246,33 @@ filegroup(
     ],
     visibility = ["PUBLIC"],
 )
+
+# =============================================================================
+# Root filesystem with text editors
+# =============================================================================
+
+rootfs(
+    name = "sideros-with-editors",
+    packages = [
+        ":init-scripts-gen",
+        ":baselayout-gen",
+        "//packages/core:musl",
+        "//packages/core:busybox",
+        "//packages/core:util-linux",
+        "//packages/editors:vim",
+        "//packages/editors:neovim",
+        "//packages/editors:emacs",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Complete system with editors and kernel
+filegroup(
+    name = "sideros-complete-with-editors",
+    srcs = [
+        ":sideros-with-editors",
+        "//packages/kernel:linux",
+        "//packages/boot:grub",
+    ],
+    visibility = ["PUBLIC"],
+)

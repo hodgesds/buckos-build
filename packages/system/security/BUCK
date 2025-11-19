@@ -13,6 +13,60 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
+# Authentication and authorization
+filegroup(
+    name = "auth-packages",
+    srcs = [
+        "//packages/system/security/auth:all-auth",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Core authentication
+filegroup(
+    name = "auth-core",
+    srcs = [
+        "//packages/system/security/auth:core-auth",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Directory services (LDAP, Kerberos, SSSD)
+filegroup(
+    name = "directory-services",
+    srcs = [
+        "//packages/system/security/auth:directory-services",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Two-factor authentication
+filegroup(
+    name = "two-factor-auth",
+    srcs = [
+        "//packages/system/security/auth:two-factor-auth",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# PAM modules
+filegroup(
+    name = "pam-modules",
+    srcs = [
+        "//packages/system/security/auth:pam-modules",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# YubiKey support
+filegroup(
+    name = "yubikey-packages",
+    srcs = [
+        "//packages/system/security/auth:yubikey",
+    ],
+    visibility = ["PUBLIC"],
+)
+
 # Firewall and network security
 filegroup(
     name = "firewall-packages",
@@ -117,6 +171,7 @@ filegroup(
     name = "all-security",
     srcs = [
         ":audit-packages",
+        ":auth-packages",
         ":firewall-packages",
         ":crypto-packages",
         ":encryption-tools",
@@ -324,5 +379,144 @@ alias(
 alias(
     name = "nettle",
     actual = "//packages/system/security/encryption:nettle",
+    visibility = ["PUBLIC"],
+)
+
+# Authentication package aliases
+alias(
+    name = "linux-pam",
+    actual = "//packages/system/security/encryption:linux-pam",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "shadow",
+    actual = "//packages/system/security/auth:shadow",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "sudo",
+    actual = "//packages/system/apps/sudo:sudo",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "doas",
+    actual = "//packages/system/apps/doas:doas",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "polkit",
+    actual = "//packages/system/security/auth:polkit",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "krb5",
+    actual = "//packages/system/security/auth:krb5",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "kerberos",
+    actual = "//packages/system/security/auth:krb5",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "openldap",
+    actual = "//packages/system/security/auth:openldap",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "sssd",
+    actual = "//packages/system/security/auth:sssd",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "cyrus-sasl",
+    actual = "//packages/system/security/auth:cyrus-sasl",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "oath-toolkit",
+    actual = "//packages/system/security/auth:oath-toolkit",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "google-authenticator",
+    actual = "//packages/system/security/auth:google-authenticator",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "libfido2",
+    actual = "//packages/system/security/auth:libfido2",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "pam-u2f",
+    actual = "//packages/system/security/auth:pam-u2f",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "yubico-pam",
+    actual = "//packages/system/security/auth:yubico-pam",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "yubikey-manager",
+    actual = "//packages/system/security/auth:yubikey-manager",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "libpwquality",
+    actual = "//packages/system/security/auth:libpwquality",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "cracklib",
+    actual = "//packages/system/security/auth:cracklib",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "fprintd",
+    actual = "//packages/system/security/auth:fprintd",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "libfprint",
+    actual = "//packages/system/security/auth:libfprint",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "pam-radius",
+    actual = "//packages/system/security/auth:pam-radius",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "pam-tacplus",
+    actual = "//packages/system/security/auth:pam-tacplus",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "nss-pam-ldapd",
+    actual = "//packages/system/security/auth:nss-pam-ldapd",
     visibility = ["PUBLIC"],
 )

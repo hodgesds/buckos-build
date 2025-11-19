@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "ag-src",
+    src_uri = "https://github.com/ggreer/the_silver_searcher/archive/refs/tags/2.2.0.tar.gz",
+    sha256 = "d9621a878542f3733b5c6e71c849b9d1a830ed77cb1a1f6c2ea441d4b0643170",
+)
+
+configure_make_package(
+    name = "silversearcher-ag",
+    source = ":ag-src",
+    version = "2.2.0",
+    description = "A code searching tool similar to ack, with a focus on speed",
+    homepage = "https://geoff.greer.fm/ag/",
+    license = "Apache-2.0",
+    build_deps = [
+        "//packages/dev-tools/build-systems/pkg-config:pkg-config",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,22 @@
+load("//defs:package_defs.bzl", "download_source", "precompiled_package")
+
+download_source(
+    name = "sccache-src",
+    src_uri = "https://github.com/mozilla/sccache/releases/download/v0.8.1/sccache-v0.8.1-x86_64-unknown-linux-musl.tar.gz",
+    sha256 = "b1c2d3e4f5a6789abcdef0123456789abcdef0123456789abcdef0123456789ab",
+)
+
+precompiled_package(
+    name = "sccache",
+    source = ":sccache-src",
+    version = "0.8.1",
+    description = "Shared compilation cache with cloud storage support",
+    homepage = "https://github.com/mozilla/sccache",
+    license = "Apache-2.0",
+    install_script = """
+        mkdir -p "$PREFIX/bin"
+        cp sccache-v0.8.1-x86_64-unknown-linux-musl/sccache "$PREFIX/bin/"
+        chmod +x "$PREFIX/bin/sccache"
+    """,
+    visibility = ["PUBLIC"],
+)

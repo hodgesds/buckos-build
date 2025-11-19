@@ -1,0 +1,17 @@
+load("//defs:package_defs.bzl", "download_source", "python_package")
+
+download_source(
+    name = "asciidoc-src",
+    src_uri = "https://github.com/asciidoc-py/asciidoc-py/releases/download/10.2.0/asciidoc-10.2.0.tar.gz",
+    sha256 = "684ea54f9536912b389cb6b9e67c8a2e9f8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d",
+)
+
+python_package(
+    name = "asciidoc",
+    source = ":asciidoc-src",
+    version = "10.2.0",
+    description = "Text based document generation",
+    homepage = "https://asciidoc.org/",
+    license = "GPL-2+",
+    visibility = ["PUBLIC"],
+)

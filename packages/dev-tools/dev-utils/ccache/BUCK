@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "download_source", "cmake_package")
+
+download_source(
+    name = "ccache-src",
+    src_uri = "https://github.com/ccache/ccache/releases/download/v4.9.1/ccache-4.9.1.tar.xz",
+    sha256 = "4c03bc840699127d16c3f0e6112e3f40ce6a230d5873daa78c60a59c7ef59d25",
+)
+
+cmake_package(
+    name = "ccache",
+    source = ":ccache-src",
+    version = "4.9.1",
+    description = "Fast C/C++ compiler cache",
+    homepage = "https://ccache.dev/",
+    license = "GPL-3+",
+    cmake_args = [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DENABLE_TESTING=OFF",
+    ],
+    visibility = ["PUBLIC"],
+)

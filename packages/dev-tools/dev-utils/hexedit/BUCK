@@ -1,0 +1,17 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "hexedit-src",
+    src_uri = "https://github.com/pixel/hexedit/archive/refs/tags/1.6.tar.gz",
+    sha256 = "e5b4f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+)
+
+configure_make_package(
+    name = "hexedit",
+    source = ":hexedit-src",
+    version = "1.6",
+    description = "View and edit files in hexadecimal or ASCII",
+    homepage = "https://github.com/pixel/hexedit",
+    license = "GPL-2+",
+    visibility = ["PUBLIC"],
+)

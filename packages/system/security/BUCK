@@ -42,6 +42,56 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
+# Encryption tools and utilities
+filegroup(
+    name = "encryption-tools",
+    srcs = [
+        "//packages/system/security/encryption:age",
+        "//packages/system/security/encryption:rage",
+        "//packages/system/security/encryption:minisign",
+        "//packages/system/security/encryption:signify",
+        "//packages/system/security/encryption:ccrypt",
+        "//packages/system/security/encryption:pass",
+        "//packages/system/security/encryption:tomb",
+        "//packages/system/security/encryption:gocryptfs",
+        "//packages/system/security/encryption:fscrypt",
+        "//packages/system/security/encryption:ecryptfs-utils",
+        "//packages/system/security/encryption:sops",
+        "//packages/system/security/encryption:veracrypt",
+        "//packages/system/security/encryption:sequoia-sq",
+        "//packages/system/security/encryption:opensc",
+        "//packages/system/security/encryption:hashcat",
+        "//packages/system/security/encryption:john",
+        "//packages/system/security/encryption:bcrypt",
+        "//packages/system/security/encryption:clevis",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Encryption libraries
+filegroup(
+    name = "encryption-libs",
+    srcs = [
+        "//packages/system/security/encryption:libsodium",
+        "//packages/system/security/encryption:libbsd",
+        "//packages/system/security/encryption:libmd",
+        "//packages/system/security/encryption:linux-pam",
+        "//packages/system/security/encryption:keyutils",
+        "//packages/system/security/encryption:fuse3",
+        "//packages/system/security/encryption:pcsc-lite",
+        "//packages/system/security/encryption:libusb",
+        "//packages/system/security/encryption:nettle",
+        "//packages/system/security/encryption:argon2",
+        "//packages/system/security/encryption:libressl",
+        "//packages/system/security/encryption:botan",
+        "//packages/system/security/encryption:libp11",
+        "//packages/system/security/encryption:jose",
+        "//packages/system/security/encryption:jansson",
+        "//packages/system/security/encryption:age-plugin-yubikey",
+    ],
+    visibility = ["PUBLIC"],
+)
+
 # Sandboxing and isolation
 filegroup(
     name = "sandbox-packages",
@@ -69,6 +119,8 @@ filegroup(
         ":audit-packages",
         ":firewall-packages",
         ":crypto-packages",
+        ":encryption-tools",
+        ":encryption-libs",
         ":sandbox-packages",
         ":antivirus-packages",
     ],
@@ -145,5 +197,132 @@ alias(
 alias(
     name = "aide",
     actual = "//packages/system/security/aide:aide",
+    visibility = ["PUBLIC"],
+)
+
+# Encryption tools aliases
+alias(
+    name = "age",
+    actual = "//packages/system/security/encryption:age",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "rage",
+    actual = "//packages/system/security/encryption:rage",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "minisign",
+    actual = "//packages/system/security/encryption:minisign",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "signify",
+    actual = "//packages/system/security/encryption:signify",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "pass",
+    actual = "//packages/system/security/encryption:pass",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "tomb",
+    actual = "//packages/system/security/encryption:tomb",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "gocryptfs",
+    actual = "//packages/system/security/encryption:gocryptfs",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "fscrypt",
+    actual = "//packages/system/security/encryption:fscrypt",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "sops",
+    actual = "//packages/system/security/encryption:sops",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "veracrypt",
+    actual = "//packages/system/security/encryption:veracrypt",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "ccrypt",
+    actual = "//packages/system/security/encryption:ccrypt",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "hashcat",
+    actual = "//packages/system/security/encryption:hashcat",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "john",
+    actual = "//packages/system/security/encryption:john",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "sequoia-sq",
+    actual = "//packages/system/security/encryption:sequoia-sq",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "opensc",
+    actual = "//packages/system/security/encryption:opensc",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "clevis",
+    actual = "//packages/system/security/encryption:clevis",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "libsodium",
+    actual = "//packages/system/security/encryption:libsodium",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "argon2",
+    actual = "//packages/system/security/encryption:argon2",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "libressl",
+    actual = "//packages/system/security/encryption:libressl",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "botan",
+    actual = "//packages/system/security/encryption:botan",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "nettle",
+    actual = "//packages/system/security/encryption:nettle",
     visibility = ["PUBLIC"],
 )

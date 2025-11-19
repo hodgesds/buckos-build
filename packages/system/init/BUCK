@@ -1,0 +1,66 @@
+# =============================================================================
+# System Initialization Packages
+# =============================================================================
+# This file contains filegroups for system initialization (init) systems.
+# Individual package definitions are in their respective subdirectories.
+
+# =============================================================================
+# Package Groups
+# =============================================================================
+
+filegroup(
+    name = "systemd-stack",
+    srcs = [
+        "//packages/system/init/systemd:systemd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "openrc-stack",
+    srcs = [
+        "//packages/system/init/openrc:openrc",
+        "//packages/system/init/elogind:elogind",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "s6-stack",
+    srcs = [
+        "//packages/system/init/skalibs:skalibs",
+        "//packages/system/init/execline:execline",
+        "//packages/system/init/s6:s6",
+        "//packages/system/init/s6-linux-init:s6-linux-init",
+        "//packages/system/init/s6-rc:s6-rc",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "lightweight-inits",
+    srcs = [
+        "//packages/system/init/openrc:openrc",
+        "//packages/system/init/runit:runit",
+        "//packages/system/init/dinit:dinit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-inits",
+    srcs = [
+        "//packages/system/init/systemd:systemd",
+        "//packages/system/init/openrc:openrc",
+        "//packages/system/init/elogind:elogind",
+        "//packages/system/init/skalibs:skalibs",
+        "//packages/system/init/execline:execline",
+        "//packages/system/init/s6:s6",
+        "//packages/system/init/s6-linux-init:s6-linux-init",
+        "//packages/system/init/s6-rc:s6-rc",
+        "//packages/system/init/runit:runit",
+        "//packages/system/init/dinit:dinit",
+        "//packages/system/init/sysvinit:sysvinit",
+    ],
+    visibility = ["PUBLIC"],
+)

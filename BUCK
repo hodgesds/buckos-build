@@ -98,32 +98,32 @@ alias(
 # Default init system
 alias(
     name = "init",
-    actual = "//packages/sys-init:systemd",
+    actual = "//packages/system/init:systemd",
     visibility = ["PUBLIC"],
 )
 
 # Alternative init systems
 alias(
     name = "init-openrc",
-    actual = "//packages/sys-init:openrc",
+    actual = "//packages/system/init:openrc",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "init-s6",
-    actual = "//packages/sys-init:s6",
+    actual = "//packages/system/init:s6",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "init-runit",
-    actual = "//packages/sys-init:runit",
+    actual = "//packages/system/init:runit",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "init-dinit",
-    actual = "//packages/sys-init:dinit",
+    actual = "//packages/system/init:dinit",
     visibility = ["PUBLIC"],
 )
 
@@ -302,10 +302,10 @@ filegroup(
 filegroup(
     name = "init-packages",
     srcs = [
-        "//packages/sys-init:systemd",
-        "//packages/sys-init:openrc",
-        "//packages/sys-init:runit",
-        "//packages/sys-init:dinit",
+        "//packages/system/init:systemd",
+        "//packages/system/init:openrc",
+        "//packages/system/init:runit",
+        "//packages/system/init:dinit",
     ],
     visibility = ["PUBLIC"],
 )
@@ -313,9 +313,9 @@ filegroup(
 filegroup(
     name = "init-lightweight",
     srcs = [
-        "//packages/sys-init:openrc",
-        "//packages/sys-init:runit",
-        "//packages/sys-init:dinit",
+        "//packages/system/init:openrc",
+        "//packages/system/init:runit",
+        "//packages/system/init:dinit",
     ],
     visibility = ["PUBLIC"],
 )

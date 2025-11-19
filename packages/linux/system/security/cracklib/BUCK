@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# cracklib - Password checking library
+
+download_source(
+    name = "cracklib-src",
+    src_uri = "https://github.com/cracklib/cracklib/releases/download/v2.9.11/cracklib-2.9.11.tar.xz",
+    sha256 = "a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8",
+)
+
+configure_make_package(
+    name = "cracklib",
+    source = ":cracklib-src",
+    version = "2.9.11",
+    description = "Password checking library",
+    homepage = "https://github.com/cracklib/cracklib",
+    license = "LGPL-2.1-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--disable-static",
+        "--with-default-dict=/usr/share/cracklib/pw_dict",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:zlib",
+    ],
+    visibility = ["PUBLIC"],
+)

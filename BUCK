@@ -56,3 +56,60 @@ filegroup(
     ],
     visibility = ["PUBLIC"],
 )
+
+# Networking packages
+filegroup(
+    name = "net-packages",
+    srcs = [
+        "//packages/net:openssl",
+        "//packages/net:curl",
+        "//packages/net:openssh",
+        "//packages/net:iproute2",
+        "//packages/net:dhcpcd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Shell and terminal packages
+filegroup(
+    name = "shell-packages",
+    srcs = [
+        "//packages/core:bash",
+        "//packages/core:readline",
+        "//packages/core:ncurses",
+        "//packages/core:less",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Compression utilities
+filegroup(
+    name = "compression-packages",
+    srcs = [
+        "//packages/core:zlib",
+        "//packages/core:bzip2",
+        "//packages/core:xz",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# System monitoring utilities
+filegroup(
+    name = "system-packages",
+    srcs = [
+        "//packages/core:procps-ng",
+        "//packages/core:file",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Development libraries
+filegroup(
+    name = "dev-libraries",
+    srcs = [
+        "//packages/core:libffi",
+        "//packages/core:expat",
+        "//packages/core:libnl",
+    ],
+    visibility = ["PUBLIC"],
+)

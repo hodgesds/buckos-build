@@ -108,6 +108,8 @@ chmod 640 $OUT/etc/shadow
 cat > $OUT/etc/shells << 'SHELLS'
 /bin/sh
 /bin/ash
+/bin/bash
+/usr/bin/bash
 SHELLS
 
 # Create hostname
@@ -229,9 +231,28 @@ rootfs(
     packages = [
         ":init-scripts-gen",
         ":baselayout-gen",
+        # Core system
         "//packages/core:musl",
         "//packages/core:busybox",
         "//packages/core:util-linux",
+        "//packages/core:zlib",
+        # Shell and terminal
+        "//packages/core:ncurses",
+        "//packages/core:readline",
+        "//packages/core:bash",
+        "//packages/core:less",
+        # Compression
+        "//packages/core:bzip2",
+        "//packages/core:xz",
+        # System utilities
+        "//packages/core:procps-ng",
+        "//packages/core:file",
+        # Networking
+        "//packages/net:openssl",
+        "//packages/net:curl",
+        "//packages/net:openssh",
+        "//packages/net:iproute2",
+        "//packages/net:dhcpcd",
     ],
     visibility = ["PUBLIC"],
 )

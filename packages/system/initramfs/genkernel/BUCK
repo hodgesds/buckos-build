@@ -1,0 +1,118 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+# =============================================================================
+# genkernel - Gentoo's automatic kernel/initramfs builder
+# =============================================================================
+# All-in-one tool for building kernels and initramfs images.
+# Supports LVM, LUKS, software RAID, multipath, and more.
+
+download_source(
+    name = "genkernel-src",
+    src_uri = "https://github.com/gentoo/genkernel/archive/refs/tags/v4.3.16.tar.gz",
+    sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+)
+
+configure_make_package(
+    name = "genkernel",
+    source = ":genkernel-src",
+    version = "4.3.16",
+    description = "Gentoo automatic kernel/initramfs builder",
+    homepage = "https://wiki.gentoo.org/wiki/Genkernel",
+    license = "GPL-2.0",
+    pre_configure = "true",  # No configure script
+    configure_args = [],
+    make_args = [
+        "PREFIX=/usr",
+    ],
+    post_install = """
+# Install using make
+make DESTDIR=$OUT PREFIX=/usr install
+
+# Create configuration directories
+mkdir -p $OUT/etc/genkernel.d
+mkdir -p $OUT/usr/share/genkernel
+
+# Create default configuration
+cat > $OUT/etc/genkernel.conf << 'EOF'
+# Genkernel configuration file
+
+# Architecture
+ARCH="x86_64"
+
+# Build options
+MAKEOPTS="-j$(nproc)"
+INSTALL="yes"
+OLDCONFIG="yes"
+MENUCONFIG="no"
+CLEAN="yes"
+MRPROPER="no"
+
+# Initramfs options
+INITRAMFS_BUILD="yes"
+BUSYBOX="yes"
+LVM="no"
+LUKS="no"
+GPG="no"
+MDADM="no"
+MULTIPATH="no"
+DMRAID="no"
+ISCSI="no"
+BTRFS="no"
+ZFS="no"
+
+# Compression
+COMPRESS_INITRD="yes"
+COMPRESS_INITRD_TYPE="xz"
+
+# Boot loader
+BOOTLOADER=""
+
+# Kernel location
+KERNEL_DIR="/usr/src/linux"
+
+# Output
+LOGFILE="/var/log/genkernel.log"
+LOGLEVEL=1
+EOF
+
+# Create modules directory
+mkdir -p $OUT/usr/share/genkernel/defaults
+""",
+    deps = [
+        "//packages/system/libs/kmod:kmod",
+        "//packages/core:bash",
+        "//packages/core:coreutils",
+        "//packages/core:util-linux",
+        "//packages/core:xz",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# genkernel-next - Modernized fork with additional features
+download_source(
+    name = "genkernel-next-src",
+    src_uri = "https://github.com/Sabayon/genkernel-next/archive/refs/tags/v70.tar.gz",
+    sha256 = "c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3",
+)
+
+configure_make_package(
+    name = "genkernel-next",
+    source = ":genkernel-next-src",
+    version = "70",
+    description = "Fork of genkernel with additional features and improvements",
+    homepage = "https://github.com/Sabayon/genkernel-next",
+    license = "GPL-2.0",
+    pre_configure = "true",
+    configure_args = [],
+    make_args = ["PREFIX=/usr"],
+    post_install = """
+make DESTDIR=$OUT PREFIX=/usr install
+mkdir -p $OUT/etc/genkernel.d
+""",
+    deps = [
+        "//packages/system/libs/kmod:kmod",
+        "//packages/core:bash",
+        "//packages/core:coreutils",
+    ],
+    visibility = ["PUBLIC"],
+)

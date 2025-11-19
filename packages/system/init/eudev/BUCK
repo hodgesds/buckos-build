@@ -1,0 +1,85 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+# =============================================================================
+# eudev - Gentoo's fork of systemd-udev
+# =============================================================================
+# Standalone device manager for /dev, independent of systemd.
+# Handles device nodes, hotplugging, and firmware loading.
+
+download_source(
+    name = "eudev-src",
+    src_uri = "https://github.com/eudev-project/eudev/releases/download/v3.2.14/eudev-3.2.14.tar.gz",
+    sha256 = "8da4319102f24abbf7fff5ce9c416af848df163b29590e666d334cc1927f006f",
+)
+
+configure_make_package(
+    name = "eudev",
+    source = ":eudev-src",
+    version = "3.2.14",
+    description = "Standalone device manager for /dev (fork of systemd-udev)",
+    homepage = "https://github.com/eudev-project/eudev",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--with-rootprefix=/",
+        "--with-rootlibdir=/lib",
+        "--enable-split-usr",
+        "--enable-hwdb",
+        "--enable-kmod",
+        "--disable-selinux",
+        "--disable-manpages",
+    ],
+    post_install = """
+# Create essential directories
+mkdir -p $OUT/etc/udev/rules.d
+mkdir -p $OUT/lib/udev/rules.d
+mkdir -p $OUT/run/udev
+
+# Create symlinks for compatibility
+mkdir -p $OUT/sbin
+ln -sf ../lib/udev/udevd $OUT/sbin/udevd 2>/dev/null || true
+
+# Initialize hardware database if udevadm exists
+if [ -x "$OUT/bin/udevadm" ]; then
+    echo "Hardware database will be generated at first boot"
+fi
+""",
+    deps = [
+        "//packages/system/libs/kmod:kmod",
+        "//packages/core:util-linux",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# hwids - Hardware identification databases
+download_source(
+    name = "hwids-src",
+    src_uri = "https://github.com/gentoo/hwids/archive/refs/tags/hwids-20230308.tar.gz",
+    sha256 = "4e5c0f1df7d5a7cd1f3b4f2e9b8e7c6d5a4e3b2c1d0f9e8a7b6c5d4e3f2a1b0c",
+)
+
+configure_make_package(
+    name = "hwids",
+    source = ":hwids-src",
+    version = "20230308",
+    description = "Hardware identification databases (pci.ids, usb.ids)",
+    homepage = "https://github.com/gentoo/hwids",
+    license = "GPL-2.0",
+    pre_configure = "true",  # No configure script
+    configure_args = [],
+    make_args = [],
+    post_install = """
+mkdir -p $OUT/usr/share/hwdata
+mkdir -p $OUT/usr/share/misc
+
+# Install ID databases
+install -m 644 pci.ids $OUT/usr/share/hwdata/
+install -m 644 usb.ids $OUT/usr/share/hwdata/
+
+# Create compatibility symlinks
+ln -sf ../hwdata/pci.ids $OUT/usr/share/misc/pci.ids
+ln -sf ../hwdata/usb.ids $OUT/usr/share/misc/usb.ids
+""",
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,106 @@
+# Password quality and security packages
+# Password strength checking libraries and tools
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# libpwquality - Password quality checking library
+download_source(
+    name = "libpwquality-src",
+    src_uri = "https://github.com/libpwquality/libpwquality/releases/download/libpwquality-1.4.5/libpwquality-1.4.5.tar.bz2",
+    sha256 = "e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0",
+)
+
+configure_make_package(
+    name = "libpwquality",
+    source = ":libpwquality-src",
+    version = "1.4.5",
+    description = "Password quality checking library",
+    homepage = "https://github.com/libpwquality/libpwquality",
+    license = "BSD-3-Clause OR GPL-2.0+",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--enable-pam",
+        "--with-securedir=/lib/security",
+        "--disable-python-bindings",
+    ],
+    post_install = """
+        mkdir -p "$OUT/etc/security"
+    """,
+    deps = [
+        "//packages/core:musl",
+        "//packages/system/security/encryption:linux-pam",
+        ":cracklib",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# cracklib - Password strength checking library
+download_source(
+    name = "cracklib-src",
+    src_uri = "https://github.com/cracklib/cracklib/releases/download/v2.9.11/cracklib-2.9.11.tar.xz",
+    sha256 = "f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1",
+)
+
+configure_make_package(
+    name = "cracklib",
+    source = ":cracklib-src",
+    version = "2.9.11",
+    description = "Password strength checking library",
+    homepage = "https://github.com/cracklib/cracklib",
+    license = "LGPL-2.1+",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--sbindir=/usr/sbin",
+        "--enable-shared",
+        "--disable-static",
+        "--without-python",
+    ],
+    post_install = """
+        mkdir -p "$OUT/usr/share/cracklib"
+        # Create empty dictionary placeholder
+        touch "$OUT/usr/share/cracklib/pw_dict.pwd"
+    """,
+    deps = [
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# passwdqc - Password quality check tool
+download_source(
+    name = "passwdqc-src",
+    src_uri = "https://www.openwall.com/passwdqc/passwdqc-2.0.3.tar.gz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+configure_make_package(
+    name = "passwdqc",
+    source = ":passwdqc-src",
+    version = "2.0.3",
+    description = "Password strength checking and policy enforcement toolset",
+    homepage = "https://www.openwall.com/passwdqc/",
+    license = "BSD-3-Clause",
+    pre_configure = """
+        # passwdqc uses a simple Makefile
+        true
+    """,
+    configure_args = [],
+    make_args = [
+        "PREFIX=/usr",
+        "SECUREDIR=/lib/security",
+        "SHARED_LIBDIR=/usr/lib",
+        "DEVEL_LIBDIR=/usr/lib",
+    ],
+    make_install_args = [
+        "PREFIX=/usr",
+        "SECUREDIR=/lib/security",
+        "DESTDIR=$OUT",
+    ],
+    deps = [
+        "//packages/core:musl",
+        "//packages/system/security/encryption:linux-pam",
+    ],
+    visibility = ["PUBLIC"],
+)

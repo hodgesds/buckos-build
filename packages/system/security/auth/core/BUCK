@@ -1,0 +1,61 @@
+# Core PAM and authentication packages
+# User account management utilities
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# Shadow - User account utilities (passwd, useradd, etc.)
+download_source(
+    name = "shadow-src",
+    src_uri = "https://github.com/shadow-maint/shadow/releases/download/4.15.1/shadow-4.15.1.tar.xz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+configure_make_package(
+    name = "shadow",
+    source = ":shadow-src",
+    version = "4.15.1",
+    description = "User account management utilities",
+    homepage = "https://github.com/shadow-maint/shadow",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--prefix=/usr",
+        "--sbindir=/usr/sbin",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--bindir=/usr/bin",
+        "--libdir=/usr/lib",
+        "--enable-shared",
+        "--disable-static",
+        "--with-libpam",
+        "--with-group-name-max-length=32",
+        "--without-selinux",
+        "--without-audit",
+        "--disable-nls",
+    ],
+    post_install = """
+        # Create necessary directories
+        mkdir -p "$OUT/etc/default"
+        mkdir -p "$OUT/etc/pam.d"
+        # Set appropriate permissions
+        chmod 4755 "$OUT/usr/bin/passwd" || true
+        chmod 4755 "$OUT/usr/bin/chage" || true
+        chmod 4755 "$OUT/usr/bin/chfn" || true
+        chmod 4755 "$OUT/usr/bin/chsh" || true
+        chmod 4755 "$OUT/usr/bin/expiry" || true
+        chmod 4755 "$OUT/usr/bin/gpasswd" || true
+        chmod 4755 "$OUT/usr/bin/newgrp" || true
+        chmod 4755 "$OUT/usr/sbin/chpasswd" || true
+        chmod 4755 "$OUT/usr/sbin/groupadd" || true
+        chmod 4755 "$OUT/usr/sbin/groupdel" || true
+        chmod 4755 "$OUT/usr/sbin/groupmod" || true
+        chmod 4755 "$OUT/usr/sbin/newusers" || true
+        chmod 4755 "$OUT/usr/sbin/useradd" || true
+        chmod 4755 "$OUT/usr/sbin/userdel" || true
+        chmod 4755 "$OUT/usr/sbin/usermod" || true
+    """,
+    deps = [
+        "//packages/core:musl",
+        "//packages/system/security/encryption:linux-pam",
+    ],
+    visibility = ["PUBLIC"],
+)

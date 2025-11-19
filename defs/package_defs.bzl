@@ -223,31 +223,245 @@ kernel_build = rule(
 )
 
 def _binary_package_impl(ctx: AnalysisContext) -> list[Provider]:
-    """Create a package from pre-built binaries or simple scripts."""
+    """
+    Create a package from pre-built binaries with custom installation script.
+
+    This rule is designed for packages that:
+    - Download precompiled binaries
+    - Require bootstrap compilation (like Go, GHC, Rust)
+    - Need custom installation logic
+
+    Environment variables available in install_script:
+    - $SRCS: Directory containing extracted source files from all srcs dependencies
+    - $OUT: Output/installation directory (like $DESTDIR)
+    - $WORK: Working directory for temporary files
+    - $BUILD_DIR: Build subdirectory
+    - $PN: Package name
+    - $PV: Package version
+    """
     install_dir = ctx.actions.declare_output(ctx.attrs.name, dir = True)
 
-    # Copy files to install directory
-    script_content = "#!/bin/bash\nset -e\nmkdir -p \"$1\"\n"
+    # Collect source directories from dependencies
+    src_dirs = []
+    for src in ctx.attrs.srcs:
+        src_dirs.append(src[DefaultInfo].default_outputs[0])
 
-    for dest, src in ctx.attrs.files.items():
-        script_content += 'mkdir -p "$(dirname "$1/{}")"\n'.format(dest)
-        script_content += 'cp -r "{}" "$1/{}"\n'.format(src, dest)
+    # Build the installation script
+    install_script = ctx.attrs.install_script if ctx.attrs.install_script else """
+        # Default: copy all source contents to output
+        cp -r $SRCS/* $OUT/ 2>/dev/null || true
+    """
 
-    script = ctx.actions.write("install.sh", script_content)
+    # Pre-install commands
+    pre_install = ctx.attrs.pre_install if ctx.attrs.pre_install else ""
+
+    # Post-install commands
+    post_install = ctx.attrs.post_install if ctx.attrs.post_install else ""
+
+    script = ctx.actions.write(
+        "install_binary.sh",
+        """#!/bin/bash
+set -e
+
+# Package variables
+export PN="{name}"
+export PV="{version}"
+export PACKAGE_NAME="{name}"
+
+# Directory setup
+export OUT="$1"
+export WORK="$2"
+export SRCS="$3"
+export BUILD_DIR="$WORK/build"
+
+mkdir -p "$OUT"
+mkdir -p "$WORK"
+mkdir -p "$BUILD_DIR"
+
+# Change to working directory
+cd "$WORK"
+
+# Pre-install hook
+{pre_install}
+
+# Main installation script
+{install_script}
+
+# Post-install hook
+{post_install}
+""".format(
+            name = ctx.attrs.name,
+            version = ctx.attrs.version,
+            pre_install = pre_install,
+            install_script = install_script,
+            post_install = post_install,
+        ),
+    )
+
+    # Build command with all source directories
+    # We create a combined source directory
+    combine_script = ctx.actions.write(
+        "combine_sources.sh",
+        """#!/bin/bash
+set -e
+COMBINED_DIR="$1"
+shift
+mkdir -p "$COMBINED_DIR"
+for src_dir in "$@"; do
+    if [ -d "$src_dir" ]; then
+        cp -r "$src_dir"/* "$COMBINED_DIR/" 2>/dev/null || true
+    fi
+done
+""",
+    )
+
+    # Create intermediate combined sources directory
+    combined_srcs = ctx.actions.declare_output(ctx.attrs.name + "-combined-srcs", dir = True)
+    work_dir = ctx.actions.declare_output(ctx.attrs.name + "-work", dir = True)
+
+    # First combine the sources
+    combine_cmd = cmd_args(["bash", combine_script, combined_srcs.as_output()])
+    for src_dir in src_dirs:
+        combine_cmd.add(src_dir)
 
     ctx.actions.run(
-        cmd_args(["bash", script, install_dir.as_output()]),
-        category = "install",
+        combine_cmd,
+        category = "combine",
+        identifier = ctx.attrs.name + "-combine",
+    )
+
+    # Then run the installation
+    ctx.actions.run(
+        cmd_args([
+            "bash",
+            script,
+            install_dir.as_output(),
+            work_dir.as_output(),
+            combined_srcs,
+        ]),
+        category = "binary_install",
         identifier = ctx.attrs.name,
     )
 
-    return [DefaultInfo(default_output = install_dir)]
+    return [
+        DefaultInfo(default_output = install_dir),
+        PackageInfo(
+            name = ctx.attrs.name,
+            version = ctx.attrs.version,
+            description = ctx.attrs.description,
+            homepage = ctx.attrs.homepage,
+            license = ctx.attrs.license,
+            src_uri = "",
+            checksum = "",
+            dependencies = ctx.attrs.deps,
+            build_dependencies = ctx.attrs.build_deps,
+        ),
+    ]
 
 binary_package = rule(
     impl = _binary_package_impl,
     attrs = {
-        "files": attrs.dict(attrs.string(), attrs.string(), default = {}),
+        "srcs": attrs.list(attrs.dep(), default = []),
+        "install_script": attrs.string(default = ""),
+        "pre_install": attrs.string(default = ""),
+        "post_install": attrs.string(default = ""),
         "version": attrs.string(default = "1.0"),
+        "description": attrs.string(default = ""),
+        "homepage": attrs.string(default = ""),
+        "license": attrs.string(default = ""),
+        "deps": attrs.list(attrs.dep(), default = []),
+        "build_deps": attrs.list(attrs.dep(), default = []),
+    },
+)
+
+# -----------------------------------------------------------------------------
+# Precompiled Binary Package Rule
+# -----------------------------------------------------------------------------
+
+def _precompiled_package_impl(ctx: AnalysisContext) -> list[Provider]:
+    """
+    Simple rule for packages that are downloaded as precompiled binaries
+    and just need to be extracted to the right location.
+
+    This is simpler than binary_package when you just need to:
+    - Download a binary tarball
+    - Extract it to a specific location
+    - Optionally create symlinks
+    """
+    install_dir = ctx.actions.declare_output(ctx.attrs.name, dir = True)
+
+    # Get source directory from dependency
+    src_dir = ctx.attrs.source[DefaultInfo].default_outputs[0]
+
+    # Build the installation script
+    extract_to = ctx.attrs.extract_to if ctx.attrs.extract_to else "/usr"
+
+    # Generate symlink commands
+    symlink_cmds = []
+    for link, target in ctx.attrs.symlinks.items():
+        symlink_cmds.append('mkdir -p "$OUT/$(dirname "{}")"'.format(link))
+        symlink_cmds.append('ln -sf "{}" "$OUT/{}"'.format(target, link))
+    symlinks_script = "\n".join(symlink_cmds)
+
+    script = ctx.actions.write(
+        "install_precompiled.sh",
+        """#!/bin/bash
+set -e
+
+export OUT="$1"
+export SRC="$2"
+
+# Create target directory
+mkdir -p "$OUT{extract_to}"
+
+# Copy precompiled files
+cp -r "$SRC"/* "$OUT{extract_to}/" 2>/dev/null || true
+
+# Create symlinks
+{symlinks}
+""".format(
+            extract_to = extract_to,
+            symlinks = symlinks_script,
+        ),
+    )
+
+    ctx.actions.run(
+        cmd_args([
+            "bash",
+            script,
+            install_dir.as_output(),
+            src_dir,
+        ]),
+        category = "precompiled",
+        identifier = ctx.attrs.name,
+    )
+
+    return [
+        DefaultInfo(default_output = install_dir),
+        PackageInfo(
+            name = ctx.attrs.name,
+            version = ctx.attrs.version,
+            description = ctx.attrs.description,
+            homepage = ctx.attrs.homepage,
+            license = ctx.attrs.license,
+            src_uri = "",
+            checksum = "",
+            dependencies = ctx.attrs.deps,
+            build_dependencies = [],
+        ),
+    ]
+
+precompiled_package = rule(
+    impl = _precompiled_package_impl,
+    attrs = {
+        "source": attrs.dep(),
+        "version": attrs.string(),
+        "extract_to": attrs.string(default = "/usr"),
+        "symlinks": attrs.dict(attrs.string(), attrs.string(), default = {}),
+        "description": attrs.string(default = ""),
+        "homepage": attrs.string(default = ""),
+        "license": attrs.string(default = ""),
+        "deps": attrs.list(attrs.dep(), default = []),
     },
 )
 
@@ -1429,5 +1643,275 @@ def python_package(
         src_compile = "",  # Python packages often don't need compilation
         src_install = python_src_install(python),
         rdepend = deps,
+        **kwargs
+    )
+
+# -----------------------------------------------------------------------------
+# Binary Package Helper Functions
+# -----------------------------------------------------------------------------
+
+def binary_install_bins(bins: list[str], src_dir: str = "$SRCS") -> str:
+    """
+    Helper to install binary executables from source directory to /usr/bin.
+
+    Usage in install_script:
+        install_script = binary_install_bins(["myapp", "mytool"])
+    """
+    cmds = ['mkdir -p "$OUT/usr/bin"']
+    for b in bins:
+        cmds.append('install -m 0755 "{}/{}" "$OUT/usr/bin/"'.format(src_dir, b))
+    return "\n".join(cmds)
+
+def binary_install_libs(libs: list[str], src_dir: str = "$SRCS") -> str:
+    """
+    Helper to install shared libraries from source directory to /usr/lib64.
+
+    Usage in install_script:
+        install_script = binary_install_libs(["libfoo.so", "libbar.so.1"])
+    """
+    cmds = ['mkdir -p "$OUT/usr/lib64"']
+    for lib in libs:
+        cmds.append('install -m 0755 "{}/{}" "$OUT/usr/lib64/"'.format(src_dir, lib))
+    return "\n".join(cmds)
+
+def binary_extract_tarball(tarball: str, dest: str = "/usr", strip: int = 1) -> str:
+    """
+    Helper to extract a tarball to a destination directory.
+
+    Usage in install_script:
+        install_script = binary_extract_tarball("app-1.0.tar.gz", "/opt/app", strip=1)
+    """
+    return '''
+mkdir -p "$OUT{dest}"
+tar -xf "$SRCS/{tarball}" -C "$OUT{dest}" --strip-components={strip}
+'''.format(tarball = tarball, dest = dest, strip = strip)
+
+def binary_copy_tree(src_subdir: str = "", dest: str = "/usr") -> str:
+    """
+    Helper to copy a directory tree from source to destination.
+
+    Usage in install_script:
+        install_script = binary_copy_tree("bin", "/usr/bin")
+    """
+    src = "$SRCS" if not src_subdir else "$SRCS/{}".format(src_subdir)
+    return '''
+mkdir -p "$OUT{dest}"
+cp -r {src}/* "$OUT{dest}/" 2>/dev/null || true
+'''.format(src = src, dest = dest)
+
+def binary_create_wrapper(name: str, target: str, env_vars: dict[str, str] = {}) -> str:
+    """
+    Helper to create a wrapper script for a binary with environment setup.
+
+    Usage in install_script:
+        install_script = binary_create_wrapper("java", "/usr/lib/jvm/bin/java", {"JAVA_HOME": "/usr/lib/jvm"})
+    """
+    env_exports = "\n".join(['export {}="{}"'.format(k, v) for k, v in env_vars.items()])
+    return '''
+mkdir -p "$OUT/usr/bin"
+cat > "$OUT/usr/bin/{name}" << 'WRAPPER_EOF'
+#!/bin/bash
+{env}
+exec "{target}" "$@"
+WRAPPER_EOF
+chmod 0755 "$OUT/usr/bin/{name}"
+'''.format(name = name, target = target, env = env_exports)
+
+def binary_install_manpages(manpages: list[str], src_dir: str = "$SRCS") -> str:
+    """
+    Helper to install man pages from a binary package.
+
+    Usage in install_script:
+        install_script = binary_install_manpages(["app.1", "app.conf.5"])
+    """
+    cmds = []
+    for man in manpages:
+        # Extract section from filename (e.g., "app.1" -> section 1)
+        cmds.append('''
+_manfile="{src_dir}/{man}"
+_section="${{_manfile##*.}}"
+mkdir -p "$OUT/usr/share/man/man$_section"
+install -m 0644 "$_manfile" "$OUT/usr/share/man/man$_section/"
+'''.format(src_dir = src_dir, man = man))
+    return "\n".join(cmds)
+
+def binary_make_symlinks(symlinks: dict[str, str]) -> str:
+    """
+    Helper to create symbolic links.
+
+    Usage in install_script:
+        install_script = binary_make_symlinks({"/usr/bin/vi": "/usr/bin/vim"})
+    """
+    cmds = []
+    for link, target in symlinks.items():
+        cmds.append('mkdir -p "$OUT/$(dirname "{}")"'.format(link))
+        cmds.append('ln -sf "{}" "$OUT/{}"'.format(target, link))
+    return "\n".join(cmds)
+
+def bootstrap_compiler_install(
+        bootstrap_tarball: str,
+        source_dir: str,
+        build_cmd: str,
+        install_prefix: str = "/usr",
+        bins: list[str] = []) -> str:
+    """
+    Helper for bootstrap-style compiler installations (Go, GHC, Rust, etc.).
+
+    Usage in install_script:
+        install_script = bootstrap_compiler_install(
+            bootstrap_tarball = "go1.21.6.linux-amd64.tar.gz",
+            source_dir = "go",
+            build_cmd = "cd src && ./make.bash",
+            install_prefix = "/usr/local/go",
+            bins = ["go", "gofmt"]
+        )
+    """
+    bin_symlinks = "\n".join([
+        'ln -sf "{}/bin/{}" "$OUT/usr/bin/{}"'.format(install_prefix, b, b)
+        for b in bins
+    ]) if bins else ""
+
+    return '''
+# Setup bootstrap
+mkdir -p $WORK/bootstrap
+tar -xf "$SRCS/{bootstrap_tarball}" -C $WORK/bootstrap --strip-components=1
+export PATH="$WORK/bootstrap/bin:$PATH"
+
+# Build from source
+cd "$SRCS/{source_dir}"
+{build_cmd}
+
+# Install
+mkdir -p "$OUT{install_prefix}"
+cp -r "$SRCS/{source_dir}"/* "$OUT{install_prefix}/"
+
+# Create bin symlinks
+mkdir -p "$OUT/usr/bin"
+{bin_symlinks}
+'''.format(
+        bootstrap_tarball = bootstrap_tarball,
+        source_dir = source_dir,
+        build_cmd = build_cmd,
+        install_prefix = install_prefix,
+        bin_symlinks = bin_symlinks,
+    )
+
+# -----------------------------------------------------------------------------
+# Binary Package Convenience Macros
+# -----------------------------------------------------------------------------
+
+def simple_binary_package(
+        name: str,
+        version: str,
+        src_uri: str,
+        sha256: str,
+        bins: list[str] = [],
+        libs: list[str] = [],
+        extract_to: str = "/usr",
+        symlinks: dict[str, str] = {},
+        deps: list[str] = [],
+        **kwargs):
+    """
+    Convenience macro for simple precompiled binary packages.
+
+    This is the easiest way to package a precompiled binary - just specify
+    the binaries and libraries to install.
+
+    Example:
+        simple_binary_package(
+            name = "ripgrep",
+            version = "14.1.0",
+            src_uri = "https://github.com/BurntSushi/ripgrep/releases/download/14.1.0/ripgrep-14.1.0-x86_64-unknown-linux-musl.tar.gz",
+            sha256 = "...",
+            bins = ["rg"],
+        )
+    """
+    src_name = name + "-src"
+
+    download_source(
+        name = src_name,
+        src_uri = src_uri,
+        sha256 = sha256,
+    )
+
+    # Build install script
+    install_cmds = []
+    if bins:
+        install_cmds.append(binary_install_bins(bins))
+    if libs:
+        install_cmds.append(binary_install_libs(libs))
+    if symlinks:
+        install_cmds.append(binary_make_symlinks(symlinks))
+    if not bins and not libs:
+        install_cmds.append(binary_copy_tree("", extract_to))
+
+    binary_package(
+        name = name,
+        srcs = [":" + src_name],
+        version = version,
+        install_script = "\n".join(install_cmds),
+        deps = deps,
+        **kwargs
+    )
+
+def bootstrap_package(
+        name: str,
+        version: str,
+        src_uri: str,
+        sha256: str,
+        bootstrap_uri: str,
+        bootstrap_sha256: str,
+        build_cmd: str,
+        install_prefix: str = "/usr",
+        bins: list[str] = [],
+        deps: list[str] = [],
+        **kwargs):
+    """
+    Convenience macro for bootstrap-compiled packages (compilers that need
+    a previous version to build).
+
+    Example:
+        bootstrap_package(
+            name = "go",
+            version = "1.22.0",
+            src_uri = "https://go.dev/dl/go1.22.0.src.tar.gz",
+            sha256 = "...",
+            bootstrap_uri = "https://go.dev/dl/go1.21.6.linux-amd64.tar.gz",
+            bootstrap_sha256 = "...",
+            build_cmd = "cd src && ./make.bash",
+            install_prefix = "/usr/local/go",
+            bins = ["go", "gofmt"],
+        )
+    """
+    src_name = name + "-src"
+    bootstrap_name = name + "-bootstrap-src"
+
+    download_source(
+        name = src_name,
+        src_uri = src_uri,
+        sha256 = sha256,
+    )
+
+    download_source(
+        name = bootstrap_name,
+        src_uri = bootstrap_uri,
+        sha256 = bootstrap_sha256,
+    )
+
+    # Derive bootstrap tarball name from URI
+    bootstrap_tarball = bootstrap_uri.split("/")[-1]
+
+    binary_package(
+        name = name,
+        srcs = [":" + src_name, ":" + bootstrap_name],
+        version = version,
+        install_script = bootstrap_compiler_install(
+            bootstrap_tarball = bootstrap_tarball,
+            source_dir = name,
+            build_cmd = build_cmd,
+            install_prefix = install_prefix,
+            bins = bins,
+        ),
+        deps = deps,
         **kwargs
     )

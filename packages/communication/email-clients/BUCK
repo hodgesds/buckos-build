@@ -1,0 +1,66 @@
+# Email Clients
+# Comprehensive collection of email clients for all use cases
+
+# All email clients
+filegroup(
+    name = "all-email-clients",
+    srcs = [
+        "//packages/communication/email-clients/cli:cli-email-clients",
+        "//packages/communication/email-clients/gui:gui-email-clients",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# CLI email clients only
+filegroup(
+    name = "cli-clients",
+    srcs = [
+        "//packages/communication/email-clients/cli:cli-email-clients",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# GUI email clients only
+filegroup(
+    name = "gui-clients",
+    srcs = [
+        "//packages/communication/email-clients/gui:gui-email-clients",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Recommended minimal set for most users
+filegroup(
+    name = "recommended",
+    srcs = [
+        "//packages/communication/email-clients/cli/neomutt:neomutt",
+        "//packages/communication/email-clients/gui/thunderbird:thunderbird",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Lightweight email client collection
+filegroup(
+    name = "lightweight",
+    srcs = [
+        "//packages/communication/email-clients/cli/aerc:aerc",
+        "//packages/communication/email-clients/cli/alpine:alpine",
+        "//packages/communication/email-clients/gui/balsa:balsa",
+        "//packages/communication/email-clients/gui/claws-mail:claws-mail",
+        "//packages/communication/email-clients/gui/sylpheed:sylpheed",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Power-user email clients
+filegroup(
+    name = "power-user",
+    srcs = [
+        "//packages/communication/email-clients/cli/mutt:mutt",
+        "//packages/communication/email-clients/cli/neomutt:neomutt",
+        "//packages/communication/email-clients/gui/evolution:evolution",
+        "//packages/communication/email-clients/gui/kmail:kmail",
+        "//packages/communication/email-clients/gui/thunderbird:thunderbird",
+    ],
+    visibility = ["PUBLIC"],
+)

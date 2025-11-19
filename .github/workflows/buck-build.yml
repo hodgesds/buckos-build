@@ -1,0 +1,197 @@
+name: Buck Build Changed Targets
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build-changed-targets:
+    name: Build Changed Targets
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Install Buck2
+        run: |
+          # Download and install Buck2
+          BUCK2_VERSION="latest"
+          curl -LO "https://github.com/facebook/buck2/releases/download/${BUCK2_VERSION}/buck2-x86_64-unknown-linux-gnu.zst"
+          zstd -d buck2-x86_64-unknown-linux-gnu.zst -o buck2
+          chmod +x buck2
+          sudo mv buck2 /usr/local/bin/
+          buck2 --version
+
+      - name: Install zstd
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zstd
+
+      - name: Get changed files
+        id: changed-files
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            # For PRs, compare against the base branch
+            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+            HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          else
+            # For pushes, compare against the previous commit
+            BASE_SHA="${{ github.event.before }}"
+            HEAD_SHA="${{ github.sha }}"
+
+            # Handle the case of a new branch or force push
+            if [ "$BASE_SHA" == "0000000000000000000000000000000000000000" ]; then
+              # New branch - compare against default branch
+              BASE_SHA=$(git rev-parse origin/main 2>/dev/null || git rev-parse origin/master 2>/dev/null || echo "")
+              if [ -z "$BASE_SHA" ]; then
+                echo "Unable to determine base commit"
+                echo "changed_files=" >> $GITHUB_OUTPUT
+                exit 0
+              fi
+            fi
+          fi
+
+          echo "Comparing $BASE_SHA to $HEAD_SHA"
+
+          # Get list of changed files
+          CHANGED_FILES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | grep -E '\.(bzl|BUCK)$|^BUCK$' || true)
+
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "No BUCK or .bzl files changed"
+            echo "changed_files=" >> $GITHUB_OUTPUT
+          else
+            echo "Changed build files:"
+            echo "$CHANGED_FILES"
+            # Convert to single line for output
+            CHANGED_FILES_ONELINE=$(echo "$CHANGED_FILES" | tr '\n' ' ')
+            echo "changed_files=$CHANGED_FILES_ONELINE" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Find affected targets
+        id: affected-targets
+        if: steps.changed-files.outputs.changed_files != ''
+        run: |
+          CHANGED_FILES="${{ steps.changed-files.outputs.changed_files }}"
+          AFFECTED_TARGETS=""
+
+          echo "Finding targets for changed files..."
+
+          for file in $CHANGED_FILES; do
+            if [ -f "$file" ]; then
+              # Get directory containing the BUCK file
+              if [[ "$file" == *"/BUCK" ]] || [[ "$file" == "BUCK" ]]; then
+                DIR=$(dirname "$file")
+                if [ "$DIR" == "." ]; then
+                  PATTERN="//:"
+                else
+                  PATTERN="//${DIR}:"
+                fi
+              elif [[ "$file" == *".bzl" ]]; then
+                # For .bzl files, we need to find all targets that might use them
+                # This is a conservative approach - build all targets in affected packages
+                DIR=$(dirname "$file")
+                if [ "$DIR" == "." ] || [ "$DIR" == "defs" ]; then
+                  # Changes to root defs might affect everything, but we'll be selective
+                  PATTERN="//packages/..."
+                else
+                  PATTERN="//${DIR}/..."
+                fi
+              fi
+
+              echo "File: $file -> Pattern: $PATTERN"
+
+              # Get targets matching the pattern
+              TARGETS=$(buck2 targets "$PATTERN" 2>/dev/null || echo "")
+              if [ -n "$TARGETS" ]; then
+                AFFECTED_TARGETS="$AFFECTED_TARGETS $TARGETS"
+              fi
+            fi
+          done
+
+          # Deduplicate targets
+          if [ -n "$AFFECTED_TARGETS" ]; then
+            UNIQUE_TARGETS=$(echo "$AFFECTED_TARGETS" | tr ' ' '\n' | sort -u | tr '\n' ' ')
+            echo "Affected targets:"
+            echo "$UNIQUE_TARGETS" | tr ' ' '\n'
+            echo "targets=$UNIQUE_TARGETS" >> $GITHUB_OUTPUT
+          else
+            echo "No buildable targets found for changed files"
+            echo "targets=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build affected targets
+        if: steps.affected-targets.outputs.targets != ''
+        run: |
+          TARGETS="${{ steps.affected-targets.outputs.targets }}"
+
+          echo "========================================"
+          echo "Building affected targets..."
+          echo "========================================"
+
+          # Count targets
+          TARGET_COUNT=$(echo "$TARGETS" | wc -w)
+          echo "Total targets to build: $TARGET_COUNT"
+          echo ""
+
+          # Build each target individually to get clear error reporting
+          FAILED_TARGETS=""
+          PASSED_TARGETS=""
+
+          for target in $TARGETS; do
+            echo "----------------------------------------"
+            echo "Building: $target"
+            echo "----------------------------------------"
+
+            if buck2 build "$target" 2>&1; then
+              echo "✓ SUCCESS: $target"
+              PASSED_TARGETS="$PASSED_TARGETS $target"
+            else
+              echo "✗ FAILED: $target"
+              FAILED_TARGETS="$FAILED_TARGETS $target"
+            fi
+            echo ""
+          done
+
+          # Summary
+          echo "========================================"
+          echo "Build Summary"
+          echo "========================================"
+
+          PASSED_COUNT=$(echo "$PASSED_TARGETS" | wc -w)
+          FAILED_COUNT=$(echo "$FAILED_TARGETS" | wc -w)
+
+          echo "Passed: $PASSED_COUNT"
+          echo "Failed: $FAILED_COUNT"
+
+          if [ -n "$FAILED_TARGETS" ]; then
+            echo ""
+            echo "Failed targets:"
+            echo "$FAILED_TARGETS" | tr ' ' '\n'
+            exit 1
+          fi
+
+          echo ""
+          echo "All affected targets built successfully!"
+
+      - name: No changes to build
+        if: steps.changed-files.outputs.changed_files == ''
+        run: |
+          echo "No BUCK or .bzl files were changed in this commit."
+          echo "Skipping build validation."
+
+      - name: No targets found
+        if: steps.changed-files.outputs.changed_files != '' && steps.affected-targets.outputs.targets == ''
+        run: |
+          echo "Changed files were detected but no buildable targets were found."
+          echo "This may indicate:"
+          echo "  - Changes to non-target files (e.g., documentation in .bzl)"
+          echo "  - Invalid BUCK file patterns"
+          echo ""
+          echo "Changed files:"
+          echo "${{ steps.changed-files.outputs.changed_files }}" | tr ' ' '\n'

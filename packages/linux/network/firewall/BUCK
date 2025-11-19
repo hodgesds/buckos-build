@@ -1,0 +1,78 @@
+# =============================================================================
+# FIREWALL - Linux Firewall and Packet Filtering Tools
+# =============================================================================
+
+# Modern netfilter-based firewalls (nftables ecosystem)
+filegroup(
+    name = "modern-firewalls",
+    srcs = [
+        "//packages/linux/network/firewall/nftables:nftables",
+        "//packages/linux/network/firewall/firewalld:firewalld",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Legacy netfilter-based firewalls (iptables ecosystem)
+filegroup(
+    name = "legacy-firewalls",
+    srcs = [
+        "//packages/linux/network/firewall/iptables:iptables",
+        "//packages/linux/network/firewall/ipset:ipset",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# User-friendly firewall frontends
+filegroup(
+    name = "firewall-frontends",
+    srcs = [
+        "//packages/linux/network/firewall/ufw:ufw",
+        "//packages/linux/network/firewall/firewalld:firewalld",
+        "//packages/linux/network/firewall/ferm:ferm",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Rule generation and configuration tools
+filegroup(
+    name = "firewall-tools",
+    srcs = [
+        "//packages/linux/network/firewall/ferm:ferm",
+        "//packages/linux/network/firewall/ipset:ipset",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Core netfilter stack (both modern and legacy)
+filegroup(
+    name = "netfilter-core",
+    srcs = [
+        "//packages/linux/network/firewall/nftables:nftables",
+        "//packages/linux/network/firewall/iptables:iptables",
+        "//packages/linux/network/firewall/ipset:ipset",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Minimal firewall setup (recommended)
+filegroup(
+    name = "minimal-firewall",
+    srcs = [
+        "//packages/linux/network/firewall/nftables:nftables",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Complete firewall toolkit
+filegroup(
+    name = "all-firewalls",
+    srcs = [
+        "//packages/linux/network/firewall/nftables:nftables",
+        "//packages/linux/network/firewall/iptables:iptables",
+        "//packages/linux/network/firewall/firewalld:firewalld",
+        "//packages/linux/network/firewall/ufw:ufw",
+        "//packages/linux/network/firewall/ipset:ipset",
+        "//packages/linux/network/firewall/ferm:ferm",
+    ],
+    visibility = ["PUBLIC"],
+)

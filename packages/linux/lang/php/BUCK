@@ -1,0 +1,44 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# PHP - General-purpose scripting language
+# =============================================================================
+
+download_source(
+    name = "php-src",
+    src_uri = "https://www.php.net/distributions/php-8.3.2.tar.xz",
+    sha256 = "4ffa3e44afc9c590e28dc0d2d31f1cccb51cdcc81f19d6c0e6abf6f3c0e3e5d5",
+)
+
+configure_make_package(
+    name = "php",
+    source = ":php-src",
+    version = "8.3.2",
+    description = "PHP is a popular general-purpose scripting language especially suited to web development",
+    homepage = "https://www.php.net/",
+    license = "PHP-3.01",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--with-config-file-path=/etc/php",
+        "--with-config-file-scan-dir=/etc/php/conf.d",
+        "--enable-bcmath",
+        "--enable-calendar",
+        "--enable-exif",
+        "--enable-ftp",
+        "--enable-mbstring",
+        "--enable-sockets",
+        "--with-curl",
+        "--with-openssl",
+        "--with-zlib",
+        "--with-readline",
+        "--enable-pcntl",
+        "--enable-opcache",
+    ],
+    deps = [
+        "//packages/linux/core:zlib",
+        "//packages/linux/network:openssl",
+        "//packages/linux/network:curl",
+    ],
+    visibility = ["PUBLIC"],
+)

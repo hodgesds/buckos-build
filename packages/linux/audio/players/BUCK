@@ -1,0 +1,37 @@
+# Audio players and music clients
+
+filegroup(
+    name = "console-players",
+    srcs = [
+        "//packages/linux/audio/players/cmus:cmus",
+        "//packages/linux/audio/players/moc:moc",
+        "//packages/linux/audio/players/ncmpcpp:ncmpcpp",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "gui-players",
+    srcs = [
+        "//packages/linux/audio/players/audacious:audacious",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "daemon-players",
+    srcs = [
+        "//packages/linux/audio/players/mpd:mpd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-players",
+    srcs = [
+        ":console-players",
+        ":gui-players",
+        ":daemon-players",
+    ],
+    visibility = ["PUBLIC"],
+)

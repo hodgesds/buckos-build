@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "swappy-src",
+    src_uri = "https://github.com/jtheoof/swappy/archive/v1.5.1.tar.gz",
+    sha256 = "6eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6ce",
+)
+
+configure_make_package(
+    name = "swappy",
+    source = ":swappy-src",
+    version = "1.5.1",
+    description = "A Wayland native snapshot and editor tool",
+    homepage = "https://github.com/jtheoof/swappy",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr
+""",
+    deps = [
+        "//packages/linux/desktop/wayland:wayland",
+    ],
+    visibility = ["PUBLIC"],
+)

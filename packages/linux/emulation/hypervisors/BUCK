@@ -1,0 +1,39 @@
+# Hypervisor packages aggregator
+
+filegroup(
+    name = "qemu-full",
+    srcs = [
+        "//packages/linux/emulation/hypervisors/qemu:qemu",
+        "//packages/linux/emulation/hypervisors/qemu:qemu-guest-agent",
+        "//packages/linux/emulation/hypervisors/qemu:qemu-img",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "qemu-minimal",
+    srcs = [
+        "//packages/linux/emulation/hypervisors/qemu:qemu-img",
+        "//packages/linux/emulation/hypervisors/qemu:qemu-user",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "xen-full",
+    srcs = [
+        "//packages/linux/emulation/hypervisors/xen:xen",
+        "//packages/linux/emulation/hypervisors/xen:xen-tools",
+        "//packages/linux/emulation/hypervisors/xen:xen-libs",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-hypervisors",
+    srcs = [
+        ":qemu-full",
+        ":xen-full",
+    ],
+    visibility = ["PUBLIC"],
+)

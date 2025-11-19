@@ -1,0 +1,201 @@
+# Graphics packages aggregator
+# This file provides convenient groups for graphics-related packages
+
+# Image Editors - Full-featured image manipulation applications
+filegroup(
+    name = "editors",
+    srcs = [
+        "//packages/linux/graphics/editors/gimp",
+        "//packages/linux/graphics/editors/krita",
+        "//packages/linux/graphics/editors/inkscape",
+        "//packages/linux/graphics/editors/darktable",
+        "//packages/linux/graphics/editors/rawtherapee",
+        "//packages/linux/graphics/editors/mypaint",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# 3D Modeling - 3D creation and CAD applications
+filegroup(
+    name = "3d",
+    srcs = [
+        "//packages/linux/graphics/3d/blender",
+        "//packages/linux/graphics/3d/freecad",
+        "//packages/linux/graphics/3d/openscad",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Image Viewers - Lightweight image viewing applications
+filegroup(
+    name = "viewers",
+    srcs = [
+        "//packages/linux/graphics/viewers/feh",
+        "//packages/linux/graphics/viewers/imv",
+        "//packages/linux/graphics/viewers/geeqie",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Screenshot Tools - Screen capture utilities
+filegroup(
+    name = "screenshot",
+    srcs = [
+        "//packages/linux/graphics/screenshot/flameshot",
+        "//packages/linux/graphics/screenshot/scrot",
+        "//packages/linux/graphics/screenshot/grim",
+        "//packages/linux/graphics/screenshot/maim",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Video Editing - Video production and streaming tools
+filegroup(
+    name = "video",
+    srcs = [
+        "//packages/linux/graphics/video:all",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Video Libraries - Core video encoding/decoding libraries
+filegroup(
+    name = "video-libraries",
+    srcs = [
+        "//packages/linux/graphics/video:libraries",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Video Players - Media playback applications
+filegroup(
+    name = "video-players",
+    srcs = [
+        "//packages/linux/graphics/video:players",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Video Editors - Video editing applications
+filegroup(
+    name = "video-editors",
+    srcs = [
+        "//packages/linux/graphics/video:editors",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Video Utilities - Video conversion and analysis tools
+filegroup(
+    name = "video-utilities",
+    srcs = [
+        "//packages/linux/graphics/video:utilities",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Screen Recording - Screen capture tools
+filegroup(
+    name = "video-recording",
+    srcs = [
+        "//packages/linux/graphics/video:recording",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Video Streaming - Live streaming tools
+filegroup(
+    name = "video-streaming",
+    srcs = [
+        "//packages/linux/graphics/video:streaming",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Animation - 2D animation software
+filegroup(
+    name = "animation",
+    srcs = [
+        "//packages/linux/graphics/animation/synfig",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Utilities - Graphics libraries and command-line tools
+filegroup(
+    name = "utilities",
+    srcs = [
+        "//packages/linux/graphics/utilities/imagemagick",
+        "//packages/linux/graphics/utilities/graphicsmagick",
+        "//packages/linux/graphics/utilities/gpick",
+        "//packages/linux/graphics/utilities/dia",
+        "//packages/linux/graphics/utilities/babl",
+        "//packages/linux/graphics/utilities/gegl",
+        "//packages/linux/graphics/utilities/libmypaint",
+        "//packages/linux/graphics/utilities/slop",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Professional Graphics Suite - Essential tools for professional graphics work
+filegroup(
+    name = "professional",
+    srcs = [
+        "//packages/linux/graphics/editors/gimp",
+        "//packages/linux/graphics/editors/inkscape",
+        "//packages/linux/graphics/editors/krita",
+        "//packages/linux/graphics/3d/blender",
+        "//packages/linux/graphics/video/kdenlive",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Photography Suite - Tools for photographers
+filegroup(
+    name = "photography",
+    srcs = [
+        "//packages/linux/graphics/editors/gimp",
+        "//packages/linux/graphics/editors/darktable",
+        "//packages/linux/graphics/editors/rawtherapee",
+        "//packages/linux/graphics/viewers/geeqie",
+        "//packages/linux/graphics/utilities/imagemagick",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Minimal Graphics - Lightweight tools for basic graphics needs
+filegroup(
+    name = "minimal",
+    srcs = [
+        "//packages/linux/graphics/viewers/feh",
+        "//packages/linux/graphics/screenshot/scrot",
+        "//packages/linux/graphics/utilities/imagemagick",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Wayland Graphics - Wayland-compatible graphics tools
+filegroup(
+    name = "wayland",
+    srcs = [
+        "//packages/linux/graphics/viewers/imv",
+        "//packages/linux/graphics/screenshot/grim",
+        "//packages/linux/graphics/screenshot/flameshot",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All Graphics - Complete graphics package collection
+filegroup(
+    name = "all",
+    srcs = [
+        ":editors",
+        ":3d",
+        ":viewers",
+        ":screenshot",
+        ":video",
+        ":animation",
+        ":utilities",
+    ],
+    visibility = ["PUBLIC"],
+)

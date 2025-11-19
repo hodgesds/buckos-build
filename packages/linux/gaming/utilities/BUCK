@@ -1,0 +1,13 @@
+# Gaming utilities - Performance monitoring and optimization tools
+
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+filegroup(
+    name = "utilities",
+    srcs = [
+        "//packages/linux/gaming/utilities/mangohud:mangohud",
+        "//packages/linux/gaming/utilities/gamemode:gamemode",
+        "//packages/linux/gaming/utilities/gamescope:gamescope",
+    ],
+    visibility = ["PUBLIC"],
+)

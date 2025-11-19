@@ -1,0 +1,42 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# =============================================================================
+# Budgie - Modern, elegant desktop
+# =============================================================================
+
+download_source(
+    name = "budgie-desktop-src",
+    src_uri = "https://github.com/BuddiesOfBudgie/budgie-desktop/releases/download/v10.9.1/budgie-desktop-10.9.1.tar.xz",
+    sha256 = "2a1b0c9d8e7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0",
+)
+
+configure_make_package(
+    name = "budgie-desktop",
+    source = ":budgie-desktop-src",
+    version = "10.9.1",
+    description = "Budgie Desktop Environment",
+    homepage = "https://buddiesofbudgie.org/",
+    license = "GPL-2.0",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr
+""",
+    deps = [
+        "//packages/linux/desktop/xorg-server:xorg-server",
+        "//packages/linux/desktop/mesa:mesa",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Budgie meta-package
+filegroup(
+    name = "budgie",
+    srcs = [
+        ":budgie-desktop",
+        "//packages/linux/desktop/lightdm:lightdm",
+        "//packages/linux/desktop/xorg-server:xorg-server",
+        "//packages/linux/desktop/mesa:mesa",
+    ],
+    visibility = ["PUBLIC"],
+)

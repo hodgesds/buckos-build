@@ -1,0 +1,102 @@
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
+
+# Adobe Source Sans
+download_source(
+    name = "source-sans-src",
+    src_uri = "https://github.com/adobe-fonts/source-sans/releases/download/3.052R/OTF-source-sans-3.052R.zip",
+    sha256 = "b5c0d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1",
+)
+
+# Adobe Source Serif
+download_source(
+    name = "source-serif-src",
+    src_uri = "https://github.com/adobe-fonts/source-serif/releases/download/4.005R/source-serif-4.005_Desktop.zip",
+    sha256 = "c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2",
+)
+
+# Adobe Source Code Pro
+download_source(
+    name = "source-code-pro-src",
+    src_uri = "https://github.com/adobe-fonts/source-code-pro/releases/download/2.042R-u/1.062R-i/OTF-source-code-pro-2.042R-u_1.062R-i.zip",
+    sha256 = "d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
+)
+
+ebuild_package(
+    name = "source-sans",
+    source = ":source-sans-src",
+    version = "3.052",
+    description = "Adobe Source Sans - sans-serif typeface for user interfaces",
+    homepage = "https://github.com/adobe-fonts/source-sans",
+    license = "OFL-1.1",
+    src_install = """
+dodir /usr/share/fonts/source-sans
+
+find . -name "*.otf" | while read font; do
+    insinto /usr/share/fonts/source-sans
+    doins "$font"
+done
+
+dodoc LICENSE.md README.md 2>/dev/null || true
+""",
+    deps = [
+        "//packages/linux/fonts/libraries/fontconfig:fontconfig",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+ebuild_package(
+    name = "source-serif",
+    source = ":source-serif-src",
+    version = "4.005",
+    description = "Adobe Source Serif - serif typeface for setting long texts",
+    homepage = "https://github.com/adobe-fonts/source-serif",
+    license = "OFL-1.1",
+    src_install = """
+dodir /usr/share/fonts/source-serif
+
+find . -name "*.otf" | while read font; do
+    insinto /usr/share/fonts/source-serif
+    doins "$font"
+done
+
+dodoc LICENSE.md README.md 2>/dev/null || true
+""",
+    deps = [
+        "//packages/linux/fonts/libraries/fontconfig:fontconfig",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+ebuild_package(
+    name = "source-code-pro",
+    source = ":source-code-pro-src",
+    version = "2.042",
+    description = "Adobe Source Code Pro - monospaced font for coding environments",
+    homepage = "https://github.com/adobe-fonts/source-code-pro",
+    license = "OFL-1.1",
+    src_install = """
+dodir /usr/share/fonts/source-code-pro
+
+find . -name "*.otf" | while read font; do
+    insinto /usr/share/fonts/source-code-pro
+    doins "$font"
+done
+
+dodoc LICENSE.md README.md 2>/dev/null || true
+""",
+    deps = [
+        "//packages/linux/fonts/libraries/fontconfig:fontconfig",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Convenience alias for all Adobe Source fonts
+filegroup(
+    name = "source-fonts",
+    srcs = [
+        ":source-sans",
+        ":source-serif",
+        ":source-code-pro",
+    ],
+    visibility = ["PUBLIC"],
+)

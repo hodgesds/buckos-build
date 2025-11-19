@@ -1,0 +1,70 @@
+# GUI Email Clients
+# Graphical email clients for desktop environments
+
+filegroup(
+    name = "gui-email-clients",
+    srcs = [
+        "//packages/linux/communication/email-clients/gui/balsa:balsa",
+        "//packages/linux/communication/email-clients/gui/claws-mail:claws-mail",
+        "//packages/linux/communication/email-clients/gui/evolution:evolution",
+        "//packages/linux/communication/email-clients/gui/geary:geary",
+        "//packages/linux/communication/email-clients/gui/kmail:kmail",
+        "//packages/linux/communication/email-clients/gui/sylpheed:sylpheed",
+        "//packages/linux/communication/email-clients/gui/thunderbird:thunderbird",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# GNOME/GTK email clients
+filegroup(
+    name = "gnome-clients",
+    srcs = [
+        "//packages/linux/communication/email-clients/gui/balsa:balsa",
+        "//packages/linux/communication/email-clients/gui/claws-mail:claws-mail",
+        "//packages/linux/communication/email-clients/gui/evolution:evolution",
+        "//packages/linux/communication/email-clients/gui/geary:geary",
+        "//packages/linux/communication/email-clients/gui/sylpheed:sylpheed",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# KDE/Qt email clients
+filegroup(
+    name = "kde-clients",
+    srcs = [
+        "//packages/linux/communication/email-clients/gui/kmail:kmail",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Full-featured email clients (with calendar, contacts, etc.)
+filegroup(
+    name = "full-featured",
+    srcs = [
+        "//packages/linux/communication/email-clients/gui/evolution:evolution",
+        "//packages/linux/communication/email-clients/gui/kmail:kmail",
+        "//packages/linux/communication/email-clients/gui/thunderbird:thunderbird",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Lightweight GTK email clients
+filegroup(
+    name = "lightweight-gui",
+    srcs = [
+        "//packages/linux/communication/email-clients/gui/balsa:balsa",
+        "//packages/linux/communication/email-clients/gui/claws-mail:claws-mail",
+        "//packages/linux/communication/email-clients/gui/geary:geary",
+        "//packages/linux/communication/email-clients/gui/sylpheed:sylpheed",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Mozilla-based clients
+filegroup(
+    name = "mozilla-clients",
+    srcs = [
+        "//packages/linux/communication/email-clients/gui/thunderbird:thunderbird",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,37 @@
+# =============================================================================
+# Native Linux Filesystem Tools
+# =============================================================================
+# Utilities for managing native Linux filesystems including ext2/3/4, btrfs,
+# xfs, f2fs, jfs, and other filesystem-specific tools.
+
+# Filegroup for all native filesystem tools
+filegroup(
+    name = "native",
+    srcs = [
+        "//packages/linux/system/filesystem/native/e2fsprogs:e2fsprogs",
+        "//packages/linux/system/filesystem/native/btrfs-progs:btrfs-progs",
+        "//packages/linux/system/filesystem/native/xfsprogs:xfsprogs",
+        "//packages/linux/system/filesystem/native/f2fs-tools:f2fs-tools",
+        "//packages/linux/system/filesystem/native/dosfstools:dosfstools",
+        "//packages/linux/system/filesystem/native/exfatprogs:exfatprogs",
+        "//packages/linux/system/filesystem/native/jfsutils:jfsutils",
+        "//packages/linux/system/filesystem/native/reiserfsprogs:reiserfsprogs",
+        "//packages/linux/system/filesystem/native/squashfs-tools:squashfs-tools",
+        "//packages/linux/system/filesystem/native/erofs-utils:erofs-utils",
+        "//packages/linux/system/filesystem/native/nilfs-utils:nilfs-utils",
+        "//packages/linux/system/filesystem/native/bcachefs-tools:bcachefs-tools",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Common filesystem tools (most frequently used)
+filegroup(
+    name = "common",
+    srcs = [
+        "//packages/linux/system/filesystem/native/e2fsprogs:e2fsprogs",
+        "//packages/linux/system/filesystem/native/btrfs-progs:btrfs-progs",
+        "//packages/linux/system/filesystem/native/xfsprogs:xfsprogs",
+        "//packages/linux/system/filesystem/native/dosfstools:dosfstools",
+    ],
+    visibility = ["PUBLIC"],
+)

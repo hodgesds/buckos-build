@@ -1,0 +1,30 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libarchive-src",
+    src_uri = "https://www.libarchive.org/downloads/libarchive-3.7.6.tar.xz",
+    sha256 = "6fdc6f94054aaa5dc3eb5f1a88ba37bf18a8c9d6ec9e24b2ea67f81c3fb42ff8",
+)
+
+configure_make_package(
+    name = "libarchive",
+    source = ":libarchive-src",
+    version = "3.7.6",
+    description = "Multi-format archive and compression library",
+    homepage = "https://www.libarchive.org/",
+    license = "BSD-2-Clause",
+    configure_args = [
+        "--disable-static",
+        "--without-xml2",
+    ],
+    deps = [
+        "//packages/linux/linux/core/zlib",
+        "//packages/linux/linux/system/libs/compression/bzip2",
+        "//packages/linux/linux/system/libs/compression/xz",
+        "//packages/linux/linux/system/libs/compression/zstd",
+        "//packages/linux/linux/system/libs/compression/lz4",
+        "//packages/linux/linux/system/libs/crypto/openssl",
+        "//packages/linux/linux/system/libs/data/expat",
+    ],
+    visibility = ["PUBLIC"],
+)

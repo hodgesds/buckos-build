@@ -82,7 +82,7 @@ multi_version_package(
     # Common settings
     description = "TLS/SSL and crypto library",
     license = "Apache-2.0",
-    deps = ["//packages/core/zlib"],
+    deps = ["//packages/linux/core/zlib"],
 )
 ```
 
@@ -152,9 +152,9 @@ Request a specific slot (major version track):
 
 ```python
 deps = [
-    "//packages/dev-libs/openssl:3",      # Any OpenSSL 3.x
-    "//packages/lang/python:3.11",        # Python 3.11.x
-    "//packages/dev-libs/boost:1.84",     # Boost 1.84.x
+    "//packages/linux/dev-libs/openssl:3",      # Any OpenSSL 3.x
+    "//packages/linux/lang/python:3.11",        # Python 3.11.x
+    "//packages/linux/dev-libs/boost:1.84",     # Boost 1.84.x
 ]
 ```
 
@@ -166,9 +166,9 @@ Use version_dep for constraint-based resolution:
 load("//defs:versions.bzl", "version_dep")
 
 deps = [
-    version_dep("//packages/dev-libs/openssl", ">=3.0"),
-    version_dep("//packages/core/zlib", "~>1.2"),      # >=1.2.0, <2.0.0
-    version_dep("//packages/lang/python", ">=3.10 <4.0"),
+    version_dep("//packages/linux/dev-libs/openssl", ">=3.0"),
+    version_dep("//packages/linux/core/zlib", "~>1.2"),      # >=1.2.0, <2.0.0
+    version_dep("//packages/linux/lang/python", ">=3.10 <4.0"),
 ]
 ```
 
@@ -191,17 +191,17 @@ load("//defs:versions.bzl", "virtual_package", "any_of")
 virtual_package(
     name = "libc",
     providers = [
-        "//packages/core/musl",
-        "//packages/core/glibc",
+        "//packages/linux/core/musl",
+        "//packages/linux/core/glibc",
     ],
-    default = "//packages/core/musl",
+    default = "//packages/linux/core/musl",
 )
 
 # Or in deps:
 deps = [
     any_of(
-        "//packages/core/musl",
-        "//packages/core/glibc",
+        "//packages/linux/core/musl",
+        "//packages/linux/core/glibc",
     ),
 ]
 ```

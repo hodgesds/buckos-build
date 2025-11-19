@@ -1,0 +1,31 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "wireless-tools-src",
+    src_uri = "https://hewlettpackard.github.io/wireless-tools/wireless_tools.29.tar.gz",
+    sha256 = "5d05a7c5f8bae0dd0f40a80e67e0bce3b75b25a691c92c8f9ca11f0630c2eb72",
+)
+
+configure_make_package(
+    name = "wireless-tools",
+    source = ":wireless-tools-src",
+    version = "29",
+    description = "Tools for manipulating Linux Wireless Extensions (iwconfig, iwlist, etc.)",
+    homepage = "https://hewlettpackard.github.io/wireless-tools/",
+    license = "GPL-2.0",
+    configure_args = [],
+    make_args = [
+        "PREFIX=/usr",
+        "INSTALL_DIR=/usr/sbin",
+        "INSTALL_LIB=/usr/lib",
+        "INSTALL_INC=/usr/include",
+        "INSTALL_MAN=/usr/share/man",
+    ],
+    post_install = """
+make install PREFIX=/usr INSTALL_DIR="$DESTDIR/usr/sbin" INSTALL_LIB="$DESTDIR/usr/lib" INSTALL_INC="$DESTDIR/usr/include" INSTALL_MAN="$DESTDIR/usr/share/man"
+""",
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

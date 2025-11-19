@@ -1,0 +1,34 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "tinc-src",
+    src_uri = "https://www.tinc-vpn.org/packages/tinc-1.0.36.tar.gz",
+    sha256 = "40f73bb3facc480effe0e771442a706ff0488edea7a5f2014e7f9a33e6e7a249",
+)
+
+configure_make_package(
+    name = "tinc",
+    source = ":tinc-src",
+    version = "1.0.36",
+    description = "Virtual Private Network daemon for mesh networks",
+    homepage = "https://www.tinc-vpn.org/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--with-openssl",
+        "--with-zlib",
+        "--with-lzo",
+    ],
+    post_install = """
+mkdir -p "$DESTDIR/etc/tinc"
+mkdir -p "$DESTDIR/var/run/tinc"
+""",
+    deps = [
+        "//packages/linux/network:openssl",
+        "//packages/linux/core:zlib",
+        "//packages/linux/core:lzo",
+    ],
+    visibility = ["PUBLIC"],
+)

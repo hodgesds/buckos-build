@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "wlr-randr-src",
+    src_uri = "https://gitlab.freedesktop.org/emersion/wlr-randr/-/archive/v0.4.1/wlr-randr-v0.4.1.tar.gz",
+    sha256 = "eeb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6c6",
+)
+
+configure_make_package(
+    name = "wlr-randr",
+    source = ":wlr-randr-src",
+    version = "0.4.1",
+    description = "An xrandr clone for wlroots compositors",
+    homepage = "https://gitlab.freedesktop.org/emersion/wlr-randr",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr
+""",
+    deps = [
+        "//packages/linux/desktop/wayland:wayland",
+    ],
+    visibility = ["PUBLIC"],
+)

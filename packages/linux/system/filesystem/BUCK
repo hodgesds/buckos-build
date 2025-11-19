@@ -1,0 +1,225 @@
+# =============================================================================
+# Filesystem Tools - Comprehensive Linux Filesystem Support
+# =============================================================================
+# This directory contains packages for managing, creating, and mounting
+# filesystems on Linux. It includes native Linux filesystems, network
+# filesystems, FUSE-based filesystems, and disk/volume management tools.
+#
+# Categories:
+# - native/     : Native Linux filesystem tools (ext4, btrfs, xfs, f2fs, etc.)
+# - network/    : Network filesystem clients (NFS, CIFS, SSHFS, GlusterFS)
+# - fuse/       : FUSE framework and FUSE-based filesystems (NTFS-3G, EncFS)
+# - management/ : Disk partitioning, LVM, RAID, encryption, and monitoring
+
+# =============================================================================
+# Native Linux Filesystems
+# =============================================================================
+# Tools for ext2/3/4, btrfs, xfs, f2fs, and other native Linux filesystems
+
+filegroup(
+    name = "native",
+    srcs = [
+        "//packages/linux/system/filesystem/native:native",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "native-common",
+    srcs = [
+        "//packages/linux/system/filesystem/native:common",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Network Filesystems
+# =============================================================================
+# NFS, CIFS/SMB, SSHFS, GlusterFS, and other network filesystem tools
+
+filegroup(
+    name = "network",
+    srcs = [
+        "//packages/linux/system/filesystem/network:network",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "network-common",
+    srcs = [
+        "//packages/linux/system/filesystem/network:common",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# FUSE Filesystems
+# =============================================================================
+# FUSE library and FUSE-based filesystem implementations
+
+filegroup(
+    name = "fuse",
+    srcs = [
+        "//packages/linux/system/filesystem/fuse:fuse",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "fuse-common",
+    srcs = [
+        "//packages/linux/system/filesystem/fuse:common",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "fuse-encrypted",
+    srcs = [
+        "//packages/linux/system/filesystem/fuse:encrypted",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Disk and Volume Management
+# =============================================================================
+# Partitioning, LVM, RAID, encryption, and disk utilities
+
+filegroup(
+    name = "management",
+    srcs = [
+        "//packages/linux/system/filesystem/management:management",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "partitioning",
+    srcs = [
+        "//packages/linux/system/filesystem/management:partitioning",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "volume-management",
+    srcs = [
+        "//packages/linux/system/filesystem/management:volume-management",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "encryption",
+    srcs = [
+        "//packages/linux/system/filesystem/management:encryption",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "disk-utilities",
+    srcs = [
+        "//packages/linux/system/filesystem/management:disk-utilities",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Combined Filegroups
+# =============================================================================
+
+# Complete filesystem stack - all filesystem tools
+filegroup(
+    name = "filesystem",
+    srcs = [
+        ":native",
+        ":network",
+        ":fuse",
+        ":management",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Common/essential filesystem tools for most systems
+filegroup(
+    name = "common",
+    srcs = [
+        "//packages/linux/system/filesystem/native/e2fsprogs:e2fsprogs",
+        "//packages/linux/system/filesystem/native/btrfs-progs:btrfs-progs",
+        "//packages/linux/system/filesystem/native/xfsprogs:xfsprogs",
+        "//packages/linux/system/filesystem/native/dosfstools:dosfstools",
+        "//packages/linux/system/filesystem/fuse/fuse3:fuse3",
+        "//packages/linux/system/filesystem/fuse/ntfs-3g:ntfs-3g",
+        "//packages/linux/system/filesystem/management/parted:parted",
+        "//packages/linux/system/filesystem/management/gptfdisk:gptfdisk",
+        "//packages/linux/system/filesystem/management/lvm2:lvm2",
+        "//packages/linux/system/filesystem/management/cryptsetup:cryptsetup",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Minimal filesystem tools for embedded/rescue systems
+filegroup(
+    name = "minimal",
+    srcs = [
+        "//packages/linux/system/filesystem/native/e2fsprogs:e2fsprogs",
+        "//packages/linux/system/filesystem/native/dosfstools:dosfstools",
+        "//packages/linux/system/filesystem/management/parted:parted",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Desktop-oriented filesystem tools
+filegroup(
+    name = "desktop",
+    srcs = [
+        ":common",
+        "//packages/linux/system/filesystem/native/exfatprogs:exfatprogs",
+        "//packages/linux/system/filesystem/network/cifs-utils:cifs-utils",
+        "//packages/linux/system/filesystem/network/sshfs:sshfs",
+        "//packages/linux/system/filesystem/management/udisks2:udisks2",
+        "//packages/linux/system/filesystem/management/smartmontools:smartmontools",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Server-oriented filesystem tools
+filegroup(
+    name = "server",
+    srcs = [
+        ":common",
+        "//packages/linux/system/filesystem/native/squashfs-tools:squashfs-tools",
+        "//packages/linux/system/filesystem/network/nfs-utils:nfs-utils",
+        "//packages/linux/system/filesystem/network/glusterfs:glusterfs",
+        "//packages/linux/system/filesystem/management/mdadm:mdadm",
+        "//packages/linux/system/filesystem/management/multipath-tools:multipath-tools",
+        "//packages/linux/system/filesystem/management/quota:quota",
+        "//packages/linux/system/filesystem/management/nvme-cli:nvme-cli",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# NVMe and modern storage support
+filegroup(
+    name = "nvme-storage",
+    srcs = [
+        "//packages/linux/system/filesystem/native/f2fs-tools:f2fs-tools",
+        "//packages/linux/system/filesystem/management/nvme-cli:nvme-cli",
+        "//packages/linux/system/filesystem/management/smartmontools:smartmontools",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All encryption-related tools
+filegroup(
+    name = "all-encryption",
+    srcs = [
+        "//packages/linux/system/filesystem/management/cryptsetup:cryptsetup",
+        "//packages/linux/system/filesystem/fuse/encfs:encfs",
+        "//packages/linux/system/filesystem/fuse/gocryptfs:gocryptfs",
+    ],
+    visibility = ["PUBLIC"],
+)

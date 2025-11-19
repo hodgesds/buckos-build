@@ -1,0 +1,135 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# SPICE protocol library
+download_source(
+    name = "spice-protocol-src",
+    src_uri = "https://www.spice-space.org/download/releases/spice-protocol-0.14.4.tar.xz",
+    sha256 = "04ffba610d9fd441cfc47dfaa135d70096e60b1046d2119d8db2f8ea0d17d912",
+)
+
+configure_make_package(
+    name = "spice-protocol",
+    source = ":spice-protocol-src",
+    version = "0.14.4",
+    description = "SPICE protocol headers",
+    homepage = "https://www.spice-space.org/",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# SPICE server library
+download_source(
+    name = "spice-server-src",
+    src_uri = "https://www.spice-space.org/download/releases/spice-0.15.2.tar.bz2",
+    sha256 = "b9e3c3aee2d5e9db7f64c10c1ca4f53d1cfb9d9e2b7e8d0c4f5a6b7c8d9e0f1a2",
+)
+
+configure_make_package(
+    name = "spice-server",
+    source = ":spice-server-src",
+    version = "0.15.2",
+    description = "SPICE server library for virtualization graphics",
+    homepage = "https://www.spice-space.org/",
+    license = "LGPL-2.1",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--enable-gstreamer=1.0",
+        "--enable-opus",
+        "--enable-lz4",
+        "--enable-smartcard",
+    ],
+    deps = [
+        ":spice-protocol",
+        "//packages/linux/core:glib",
+        "//packages/linux/core:pixman",
+        "//packages/linux/core:openssl",
+        "//packages/linux/core:opus",
+        "//packages/linux/core:lz4",
+        "//packages/linux/core:gstreamer",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# SPICE GTK client library
+download_source(
+    name = "spice-gtk-src",
+    src_uri = "https://www.spice-space.org/download/gtk/spice-gtk-0.42.tar.xz",
+    sha256 = "c3e3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+)
+
+configure_make_package(
+    name = "spice-gtk",
+    source = ":spice-gtk-src",
+    version = "0.42",
+    description = "GTK client library for SPICE protocol",
+    homepage = "https://www.spice-space.org/",
+    license = "LGPL-2.1",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "-Dgtk=enabled",
+        "-Dwebdav=enabled",
+        "-Dusbredir=enabled",
+        "-Dpolkit=enabled",
+        "-Dpulse=enabled",
+        "-Dlz4=enabled",
+        "-Dsasl=enabled",
+        "-Dsmartcard=enabled",
+    ],
+    deps = [
+        ":spice-protocol",
+        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/core:glib",
+        "//packages/linux/core:pixman",
+        "//packages/linux/core:lz4",
+        "//packages/linux/audio/daemons/pulseaudio:pulseaudio",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# SPICE VD Agent for guest
+download_source(
+    name = "spice-vdagent-src",
+    src_uri = "https://www.spice-space.org/download/releases/spice-vdagent-0.22.1.tar.bz2",
+    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+)
+
+configure_make_package(
+    name = "spice-vdagent",
+    source = ":spice-vdagent-src",
+    version = "0.22.1",
+    description = "SPICE VD Agent for Linux guests",
+    homepage = "https://www.spice-space.org/",
+    license = "GPL-3.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--with-session-info=systemd",
+        "--with-init-script=systemd",
+    ],
+    post_install = """
+#!/bin/bash
+set -e
+
+# Install systemd service
+mkdir -p "$DESTDIR/usr/lib/systemd/system"
+install -m 0644 data/spice-vdagentd.service "$DESTDIR/usr/lib/systemd/system/"
+
+# Install udev rules
+mkdir -p "$DESTDIR/usr/lib/udev/rules.d"
+install -m 0644 data/70-spice-vdagentd.rules "$DESTDIR/usr/lib/udev/rules.d/" 2>/dev/null || true
+    """,
+    deps = [
+        "//packages/linux/core:glib",
+        "//packages/linux/desktop/xorg:libx11",
+        "//packages/linux/desktop/xorg:libxfixes",
+        "//packages/linux/desktop/xorg:libxrandr",
+        "//packages/linux/system/libs/systemd:libsystemd",
+    ],
+    visibility = ["PUBLIC"],
+)

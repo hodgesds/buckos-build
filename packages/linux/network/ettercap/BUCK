@@ -1,0 +1,31 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# ettercap - Comprehensive suite for man-in-the-middle attacks
+# =============================================================================
+
+download_source(
+    name = "ettercap-src",
+    src_uri = "https://github.com/Ettercap/ettercap/archive/refs/tags/v0.8.3.1.tar.gz",
+    sha256 = "d0e1f2g3h4i5j6k7l8m9n0o1p2q3r4s5t6u7v8w9x0y1z2a3b4c5d6e7f8g9h0i1",
+)
+
+configure_make_package(
+    name = "ettercap",
+    source = ":ettercap-src",
+    version = "0.8.3.1",
+    description = "Comprehensive suite for man-in-the-middle attacks and network analysis",
+    homepage = "https://www.ettercap-project.org/",
+    license = "GPL-2.0-or-later",
+    configure_args = [
+        "--disable-gtk",
+        "--enable-plugins",
+    ],
+    deps = [
+        "//packages/linux/network/libpcap:libpcap",
+        "//packages/linux/network/openssl:openssl",
+        "//packages/linux/core:ncurses",
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

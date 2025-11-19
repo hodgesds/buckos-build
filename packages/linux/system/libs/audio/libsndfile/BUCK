@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libsndfile-src",
+    src_uri = "https://github.com/libsndfile/libsndfile/releases/download/1.2.2/libsndfile-1.2.2.tar.xz",
+    sha256 = "3799ca9924d3125038880367bf1468e53a1b7e3686a934f098b7e1d286cdb80e",
+)
+
+configure_make_package(
+    name = "libsndfile",
+    source = ":libsndfile-src",
+    version = "1.2.2",
+    description = "C library for reading and writing files containing sampled sound",
+    homepage = "https://libsndfile.github.io/libsndfile/",
+    license = "LGPL-2.1",
+    configure_args = [
+        "--disable-static",
+    ],
+    deps = [
+        "//packages/linux/linux/system/libs/audio/flac",
+        "//packages/linux/linux/system/libs/audio/libogg",
+        "//packages/linux/linux/system/libs/audio/libvorbis",
+        "//packages/linux/linux/system/libs/audio/opus",
+    ],
+    visibility = ["PUBLIC"],
+)

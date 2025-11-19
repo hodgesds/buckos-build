@@ -1,0 +1,41 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "balsa-src",
+    src_uri = "https://pawsa.fedorapeople.org/balsa/balsa-2.6.4.tar.xz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+binary_package(
+    name = "balsa",
+    srcs = [":balsa-src"],
+    version = "2.6.4",
+    description = "Lightweight GNOME email client",
+    homepage = "https://pawsa.fedorapeople.org/balsa/",
+    license = "GPL-2+",
+    install_script = """
+        cd $SRCS/balsa-*
+
+        meson setup build \
+            --prefix=/usr \
+            --buildtype=release \
+            -Dgpgme=true \
+            -Dgtkspell=true \
+            -Dldap=true \
+            -Dsqlite=true \
+            -Dwebkit2=true \
+            -Dgnome-desktop=true \
+            -Dlibsecret=true \
+            -Dgcr=true \
+            -Dmore-warnings=false
+
+        ninja -C build
+        DESTDIR="$OUT" ninja -C build install
+    """,
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/desktop/gtk:gtk",
+        "//packages/linux/network/openssl:openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

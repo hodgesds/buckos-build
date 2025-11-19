@@ -1,0 +1,30 @@
+# acpica-tools - ACPI Component Architecture Tools
+# ACPI table compiler and debugging tools
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "acpica-tools-src",
+    src_uri = "https://downloadmirror.intel.com/819451/acpica-unix-20240322.tar.gz",
+    sha256 = "c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9",
+)
+
+configure_make_package(
+    name = "acpica-tools",
+    source = ":acpica-tools-src",
+    version = "20240322",
+    description = "ACPI Component Architecture tools for debugging and development",
+    homepage = "https://www.intel.com/content/www/us/en/developer/topic-technology/open/acpica/overview.html",
+    license = "BSD-3-Clause",
+    configure_args = [],
+    make_args = [
+        "PREFIX=/usr",
+    ],
+    post_install = """
+        make DESTDIR=$OUT PREFIX=/usr install
+    """,
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

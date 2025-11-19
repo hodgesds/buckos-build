@@ -1,0 +1,28 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libass-src",
+    src_uri = "https://github.com/libass/libass/releases/download/0.17.3/libass-0.17.3.tar.xz",
+    sha256 = "da7c348df1a8c3f7ce3a2b0d3d1ad53bb69a3ae4f1fba5c2ca5e4747d8bf6f51",
+)
+
+configure_make_package(
+    name = "libass",
+    source = ":libass-src",
+    version = "0.17.3",
+    description = "Portable subtitle renderer for ASS/SSA format",
+    homepage = "https://github.com/libass/libass",
+    license = "ISC",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-static",
+        "--enable-shared",
+    ],
+    deps = [
+        "//packages/linux/linux/system/libs/font/freetype:freetype",
+        "//packages/linux/linux/system/libs/font/fontconfig:fontconfig",
+        "//packages/linux/linux/system/libs/font/harfbuzz:harfbuzz",
+        "//packages/linux/linux/system/libs/font/fribidi:fribidi",
+    ],
+    visibility = ["PUBLIC"],
+)

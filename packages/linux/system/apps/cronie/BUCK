@@ -1,0 +1,27 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# cronie - Modern cron daemon with PAM support
+download_source(
+    name = "cronie-src",
+    src_uri = "https://github.com/cronie-crond/cronie/releases/download/cronie-1.7.2/cronie-1.7.2.tar.gz",
+    sha256 = "78411a83cd3ea0a5e7e34ad41c859c5098c9fcec17f6faed4c1e9e0eb06b4b7c",
+)
+
+configure_make_package(
+    name = "cronie",
+    source = ":cronie-src",
+    version = "1.7.2",
+    description = "Modern cron daemon with inotify and PAM support",
+    homepage = "https://github.com/cronie-crond/cronie",
+    license = "ISC",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--disable-pam",
+        "--without-selinux",
+        "--with-inotify",
+    ],
+    deps = ["//packages/linux/core:musl"],
+    visibility = ["PUBLIC"],
+)

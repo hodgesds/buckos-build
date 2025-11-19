@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "isl-src",
+    src_uri = "https://libisl.sourceforge.io/isl-0.26.tar.xz",
+    sha256 = "a0b5cb06d24f9fa9e77b55fabbe9a3c94a336190345ac76b46b7d7218b92dd4e",
+)
+
+configure_make_package(
+    name = "isl",
+    source = ":isl-src",
+    version = "0.26",
+    description = "Integer Set Library for loop optimization",
+    homepage = "https://libisl.sourceforge.io/",
+    license = "MIT",
+    configure_args = [
+        "--disable-static",
+    ],
+    deps = [
+        "//packages/linux/linux/system/libs/utility/gmp:gmp",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "iperf3-src",
+    src_uri = "https://github.com/esnet/iperf/releases/download/3.16/iperf-3.16.tar.gz",
+    sha256 = "cc740c6bbea104f62d4b7c05a8227f56d81dc48e94bcb6297636e844b72cb016",
+)
+
+configure_make_package(
+    name = "iperf3",
+    source = ":iperf3-src",
+    version = "3.16",
+    description = "Network bandwidth measurement tool - TCP, UDP, and SCTP",
+    homepage = "https://software.es.net/iperf/",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--disable-static",
+    ],
+    deps = [
+        "//packages/linux/network/openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

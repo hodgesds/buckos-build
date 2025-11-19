@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "procps-ng-src",
+    src_uri = "https://sourceforge.net/projects/procps-ng/files/Production/procps-ng-4.0.4.tar.xz",
+    sha256 = "22870d6befcbb0d30029ef4d9917c88e8dd8cc5e6cdbfa0787c27fce59823e56",
+)
+
+configure_make_package(
+    name = "procps-ng",
+    source = ":procps-ng-src",
+    version = "4.0.4",
+    description = "Utilities for monitoring your system and its processes",
+    homepage = "https://gitlab.com/procps-ng/procps",
+    license = "GPL-2.0",
+    configure_args = [
+        "--disable-nls",
+        "--disable-kill",
+        "--without-systemd",
+    ],
+    deps = ["//packages/linux/core/ncurses"],
+    visibility = ["PUBLIC"],
+)

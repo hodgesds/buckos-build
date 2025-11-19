@@ -1,0 +1,51 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+# -----------------------------------------------------------------------------
+# elogind - Standalone logind from systemd
+# -----------------------------------------------------------------------------
+
+download_source(
+    name = "elogind-src",
+    src_uri = "https://github.com/elogind/elogind/archive/refs/tags/v255.5.tar.gz",
+    sha256 = "57ae4f38c5dc18f6015ea6a2ad5e10d7bf69e21d5fcc4d8f64af77c82c6c58c5",
+)
+
+configure_make_package(
+    name = "elogind",
+    source = ":elogind-src",
+    version = "255.5",
+    description = "Standalone logind extracted from systemd",
+    homepage = "https://github.com/elogind/elogind",
+    license = "LGPL-2.1-or-later",
+    pre_configure = """
+# elogind uses meson build system
+mkdir -p build
+cd build
+meson setup .. \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    -Drootprefix=/usr \
+    -Dcgroup-controller=elogind \
+    -Ddefault-hierarchy=unified \
+    -Dpam=false \
+    -Dselinux=false \
+    -Dacl=false \
+    -Dsmack=false \
+    -Dpolkit=false \
+    -Dman=false \
+    -Dhtml=false
+""",
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+cd build
+DESTDIR=$OUT meson install
+""",
+    deps = [
+        "//packages/linux/core:util-linux",
+        "//packages/linux/core:musl",
+    ],
+    build_deps = [],
+    visibility = ["PUBLIC"],
+)

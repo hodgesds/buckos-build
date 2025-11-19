@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libevent-src",
+    src_uri = "https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz",
+    sha256 = "92e6de1be9ec176428fd2367677e61ceffc2ee1cb119035037a27d346b0403bb",
+)
+
+configure_make_package(
+    name = "libevent",
+    source = ":libevent-src",
+    version = "2.1.12",
+    description = "Event notification library",
+    homepage = "https://libevent.org/",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--disable-static",
+    ],
+    deps = [
+        "//packages/linux/linux/system/libs/crypto/openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

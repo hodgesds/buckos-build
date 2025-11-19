@@ -1,0 +1,74 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "traefik-src",
+    src_uri = "https://github.com/traefik/traefik/releases/download/v3.1.6/traefik_v3.1.6_linux_amd64.tar.gz",
+    sha256 = "d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
+)
+
+binary_package(
+    name = "traefik",
+    srcs = [":traefik-src"],
+    version = "3.1.6",
+    description = "Modern HTTP reverse proxy and load balancer for microservices",
+    homepage = "https://traefik.io/",
+    license = "MIT",
+    install_script = """
+cd $SRCS
+
+# Install binary
+install -Dm755 traefik "$DESTDIR/usr/bin/traefik"
+
+# Create configuration directories
+mkdir -p "$DESTDIR/etc/traefik"
+mkdir -p "$DESTDIR/etc/traefik/dynamic"
+mkdir -p "$DESTDIR/var/log/traefik"
+
+# Create default static configuration
+cat > "$DESTDIR/etc/traefik/traefik.yml" << 'EOF'
+api:
+  dashboard: true
+  insecure: true
+
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+providers:
+  file:
+    directory: /etc/traefik/dynamic
+    watch: true
+
+log:
+  filePath: /var/log/traefik/traefik.log
+  level: INFO
+
+accessLog:
+  filePath: /var/log/traefik/access.log
+EOF
+
+# Create example dynamic configuration
+cat > "$DESTDIR/etc/traefik/dynamic/example.yml" << 'EOF'
+# Example dynamic configuration
+http:
+  routers:
+    example:
+      rule: "Host(\`example.localhost\`)"
+      service: example-service
+      entryPoints:
+        - web
+
+  services:
+    example-service:
+      loadBalancer:
+        servers:
+          - url: "http://127.0.0.1:8080"
+EOF
+""",
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -23,8 +23,8 @@ Example usage:
 
     # Reference in dependencies
     deps = [
-        version_dep("//packages/dev-libs/openssl", ">=1.1.0"),
-        slot_dep("//packages/lang/python", "3"),
+        version_dep("//packages/linux/dev-libs/openssl", ">=1.1.0"),
+        slot_dep("//packages/linux/lang/python", "3"),
     ]
 """
 
@@ -209,7 +209,7 @@ def register_package_versions(
     Returns:
         Dict with version resolution helpers
     """
-    package_path = "//packages/{}/{}".format(category, name)
+    package_path = "//packages/linux/{}/{}".format(category, name)
 
     # Process versions and extract metadata
     version_list = []
@@ -432,7 +432,7 @@ def version_dep(package_path, constraint = None):
     """Create a dependency with version constraint.
 
     Args:
-        package_path: Full package path (e.g., "//packages/core/openssl")
+        package_path: Full package path (e.g., "//packages/linux/core/openssl")
         constraint: Version constraint (e.g., ">=1.1.0", "<3.0")
 
     Returns:
@@ -440,8 +440,8 @@ def version_dep(package_path, constraint = None):
 
     Example:
         deps = [
-            version_dep("//packages/dev-libs/openssl", ">=3.0"),
-            version_dep("//packages/core/zlib", "~>1.2"),
+            version_dep("//packages/linux/dev-libs/openssl", ">=3.0"),
+            version_dep("//packages/linux/core/zlib", "~>1.2"),
         ]
     """
     if constraint:
@@ -464,8 +464,8 @@ def slot_dep(package_path, slot):
 
     Example:
         deps = [
-            slot_dep("//packages/lang/python", "3"),
-            slot_dep("//packages/dev-libs/openssl", "1.1"),
+            slot_dep("//packages/linux/lang/python", "3"),
+            slot_dep("//packages/linux/dev-libs/openssl", "1.1"),
         ]
     """
     return "{}:{}".format(package_path, slot)
@@ -478,8 +478,8 @@ def any_of(*packages):
     Example:
         deps = [
             any_of(
-                "//packages/core/musl",
-                "//packages/core/glibc",
+                "//packages/linux/core/musl",
+                "//packages/linux/core/glibc",
             ),
         ]
     """
@@ -633,10 +633,10 @@ def virtual_package(name, providers, default = None):
         virtual_package(
             name = "libc",
             providers = [
-                "//packages/core/musl",
-                "//packages/core/glibc",
+                "//packages/linux/core/musl",
+                "//packages/linux/core/glibc",
             ],
-            default = "//packages/core/musl",
+            default = "//packages/linux/core/musl",
         )
 
     Args:
@@ -674,9 +674,9 @@ def version_set(name, packages):
         version_set(
             name = "stable-2024.01",
             packages = [
-                "//packages/core/openssl:openssl-3.2.0",
-                "//packages/lang/python:python-3.12.1",
-                "//packages/core/zlib:zlib-1.3.1",
+                "//packages/linux/core/openssl:openssl-3.2.0",
+                "//packages/linux/lang/python:python-3.12.1",
+                "//packages/linux/core/zlib:zlib-1.3.1",
             ],
         )
     """

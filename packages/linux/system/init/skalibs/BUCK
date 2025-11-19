@@ -1,0 +1,31 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+# -----------------------------------------------------------------------------
+# skalibs - General-purpose libraries for skarnet.org software
+# -----------------------------------------------------------------------------
+
+download_source(
+    name = "skalibs-src",
+    src_uri = "https://skarnet.org/software/skalibs/skalibs-2.14.1.1.tar.gz",
+    sha256 = "ec80d5fbf9cb3a0ebecb48ef4b268adff5ab7e0d62e6b0f7f4b26fc8da7e6aca",
+)
+
+configure_make_package(
+    name = "skalibs",
+    source = ":skalibs-src",
+    version = "2.14.1.1",
+    description = "General-purpose libraries for skarnet.org software",
+    homepage = "https://skarnet.org/software/skalibs/",
+    license = "ISC",
+    configure_args = [
+        "--prefix=/usr",
+        "--libdir=/usr/lib",
+        "--enable-shared",
+        "--disable-static",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    build_deps = [],
+    visibility = ["PUBLIC"],
+)

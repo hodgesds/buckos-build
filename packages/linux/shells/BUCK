@@ -1,0 +1,22 @@
+# Filegroup for all shells
+filegroup(
+    name = "all-shells",
+    srcs = [
+        "//packages/linux/core/bash",
+        "//packages/linux/shells/zsh",
+        "//packages/linux/shells/dash",
+        "//packages/linux/shells/fish",
+        "//packages/linux/shells/mksh",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for POSIX-compliant shells
+filegroup(
+    name = "posix-shells",
+    srcs = [
+        "//packages/linux/core/bash",
+        "//packages/linux/shells/dash",
+    ],
+    visibility = ["PUBLIC"],
+)

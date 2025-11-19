@@ -1,0 +1,45 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "mpg123-src",
+    src_uri = "https://www.mpg123.de/download/mpg123-1.32.6.tar.bz2",
+    sha256 = "ccdd1d0abc31d73d8b435fc658c79049d0a905e8b3cc52a0b3a8a09f2e24f857",
+)
+
+configure_make_package(
+    name = "mpg123",
+    source = ":mpg123-src",
+    version = "1.32.6",
+    description = "Fast console MPEG audio player and decoder library",
+    homepage = "https://www.mpg123.de/",
+    license = "LGPL-2.1-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-static",
+        "--enable-shared",
+        "--with-audio=alsa,pulse",
+        "--with-default-audio=pulse",
+    ],
+    deps = [
+        "//packages/linux/linux/system/libs/audio/alsa-lib:alsa-lib",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# libmpg123 - just the library without the player
+configure_make_package(
+    name = "libmpg123",
+    source = ":mpg123-src",
+    version = "1.32.6",
+    description = "MPEG audio decoder library",
+    homepage = "https://www.mpg123.de/",
+    license = "LGPL-2.1-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-static",
+        "--enable-shared",
+        "--disable-programs",
+    ],
+    deps = [],
+    visibility = ["PUBLIC"],
+)

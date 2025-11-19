@@ -1,0 +1,38 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+# -----------------------------------------------------------------------------
+# s6-linux-init - Set of tools to create a s6-based init system
+# -----------------------------------------------------------------------------
+
+download_source(
+    name = "s6-linux-init-src",
+    src_uri = "https://skarnet.org/software/s6-linux-init/s6-linux-init-1.1.2.0.tar.gz",
+    sha256 = "c1e7e72f1e95f1a5b4de91fdbb4e41e00cf6adb40c623d9e14a6aafe4e5b0e10",
+)
+
+configure_make_package(
+    name = "s6-linux-init",
+    source = ":s6-linux-init-src",
+    version = "1.1.2.0",
+    description = "Set of tools to create a s6-based init system",
+    homepage = "https://skarnet.org/software/s6-linux-init/",
+    license = "ISC",
+    configure_args = [
+        "--prefix=/usr",
+        "--libexecdir=/usr/lib/s6-linux-init",
+        "--skeldir=/etc/s6-linux-init/skel",
+        "--enable-shared",
+        "--disable-static",
+        "--with-sysdeps=/usr/lib/skalibs/sysdeps",
+        "--with-include=/usr/include",
+        "--with-lib=/usr/lib",
+    ],
+    deps = [
+        "//packages/linux/system/init/skalibs:skalibs",
+        "//packages/linux/system/init/execline:execline",
+        "//packages/linux/system/init/s6:s6",
+        "//packages/linux/core:musl",
+    ],
+    build_deps = [],
+    visibility = ["PUBLIC"],
+)

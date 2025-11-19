@@ -1,9 +1,0 @@
-# Linux kernel packages
-filegroup(
-    name = "all-kernels",
-    srcs = [
-        "//packages/kernel/linux",
-        "//packages/kernel/linux-defconfig",
-    ],
-    visibility = ["PUBLIC"],
-)

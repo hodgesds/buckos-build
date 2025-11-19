@@ -1,0 +1,35 @@
+# pciutils - PCI Utilities
+# Provides lspci and other PCI device inspection tools
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "pciutils-src",
+    src_uri = "https://mj.ucw.cz/download/linux/pci/pciutils-3.10.0.tar.gz",
+    sha256 = "7deabe38ae5fa88a0a09e2e4f57ec7a9994742d2a8af30a9d040d8d3dc1e1c81",
+)
+
+configure_make_package(
+    name = "pciutils",
+    source = ":pciutils-src",
+    version = "3.10.0",
+    description = "PCI bus utilities including lspci and setpci",
+    homepage = "https://mj.ucw.cz/sw/pciutils/",
+    license = "GPL-2.0",
+    configure_args = [],
+    make_args = [
+        "PREFIX=/usr",
+        "SBINDIR=/usr/sbin",
+        "SHAREDIR=/usr/share/hwdata",
+        "MANDIR=/usr/share/man",
+        "SHARED=yes",
+        "ZLIB=no",
+    ],
+    post_install = """
+        make DESTDIR=$OUT PREFIX=/usr SBINDIR=/usr/sbin SHAREDIR=/usr/share/hwdata MANDIR=/usr/share/man SHARED=yes install install-lib
+    """,
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

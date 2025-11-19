@@ -1,0 +1,84 @@
+# =============================================================================
+# Disk and Volume Management Tools
+# =============================================================================
+# Tools for partitioning, volume management, RAID arrays, encryption,
+# and disk administration.
+
+# Filegroup for all disk/volume management tools
+filegroup(
+    name = "management",
+    srcs = [
+        "//packages/linux/system/filesystem/management/parted:parted",
+        "//packages/linux/system/filesystem/management/gptfdisk:gptfdisk",
+        "//packages/linux/system/filesystem/management/lvm2:lvm2",
+        "//packages/linux/system/filesystem/management/mdadm:mdadm",
+        "//packages/linux/system/filesystem/management/cryptsetup:cryptsetup",
+        "//packages/linux/system/filesystem/management/dmraid:dmraid",
+        "//packages/linux/system/filesystem/management/multipath-tools:multipath-tools",
+        "//packages/linux/system/filesystem/management/hdparm:hdparm",
+        "//packages/linux/system/filesystem/management/nvme-cli:nvme-cli",
+        "//packages/linux/system/filesystem/management/smartmontools:smartmontools",
+        "//packages/linux/system/filesystem/management/udisks2:udisks2",
+        "//packages/linux/system/filesystem/management/quota:quota",
+        "//packages/linux/system/filesystem/management/fio:fio",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Essential partitioning tools
+filegroup(
+    name = "partitioning",
+    srcs = [
+        "//packages/linux/system/filesystem/management/parted:parted",
+        "//packages/linux/system/filesystem/management/gptfdisk:gptfdisk",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Volume and RAID management
+filegroup(
+    name = "volume-management",
+    srcs = [
+        "//packages/linux/system/filesystem/management/lvm2:lvm2",
+        "//packages/linux/system/filesystem/management/mdadm:mdadm",
+        "//packages/linux/system/filesystem/management/dmraid:dmraid",
+        "//packages/linux/system/filesystem/management/multipath-tools:multipath-tools",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Encryption tools
+filegroup(
+    name = "encryption",
+    srcs = [
+        "//packages/linux/system/filesystem/management/cryptsetup:cryptsetup",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Disk utilities and monitoring
+filegroup(
+    name = "disk-utilities",
+    srcs = [
+        "//packages/linux/system/filesystem/management/hdparm:hdparm",
+        "//packages/linux/system/filesystem/management/nvme-cli:nvme-cli",
+        "//packages/linux/system/filesystem/management/smartmontools:smartmontools",
+        "//packages/linux/system/filesystem/management/udisks2:udisks2",
+        "//packages/linux/system/filesystem/management/quota:quota",
+        "//packages/linux/system/filesystem/management/fio:fio",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Common management tools
+filegroup(
+    name = "common",
+    srcs = [
+        "//packages/linux/system/filesystem/management/parted:parted",
+        "//packages/linux/system/filesystem/management/gptfdisk:gptfdisk",
+        "//packages/linux/system/filesystem/management/lvm2:lvm2",
+        "//packages/linux/system/filesystem/management/cryptsetup:cryptsetup",
+        "//packages/linux/system/filesystem/management/smartmontools:smartmontools",
+    ],
+    visibility = ["PUBLIC"],
+)

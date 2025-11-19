@@ -1,0 +1,49 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# Rust - Systems programming language
+# =============================================================================
+
+download_source(
+    name = "rust-src",
+    src_uri = "https://static.rust-lang.org/dist/rustc-1.75.0-src.tar.xz",
+    sha256 = "5b739f45bc9d341e2d1c570d65d2375591e22c2d23ef32f1185f2c4ec4e46f65",
+)
+
+binary_package(
+    name = "rust",
+    srcs = [":rust-src"],
+    version = "1.75.0",
+    description = "Rust is a systems programming language focused on safety, speed, and concurrency",
+    homepage = "https://www.rust-lang.org/",
+    license = "Apache-2.0 AND MIT",
+    install_script = """
+        cd $SRCS/rustc-1.75.0-src
+
+        # Configure Rust build
+        cat > config.toml << 'EOF'
+[llvm]
+link-shared = true
+
+[build]
+docs = false
+extended = true
+tools = ["cargo", "rustfmt", "clippy"]
+
+[install]
+prefix = "/usr"
+
+[rust]
+channel = "stable"
+codegen-units = 1
+EOF
+
+        # Build and install
+        python3 x.py build
+        DESTDIR=$OUT python3 x.py install
+    """,
+    deps = [
+        "//packages/linux/lang/python:python",
+    ],
+    visibility = ["PUBLIC"],
+)

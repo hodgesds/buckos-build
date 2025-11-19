@@ -1,0 +1,39 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "openscad-src",
+    src_uri = "https://github.com/openscad/openscad/releases/download/openscad-2021.01/openscad-2021.01.src.tar.gz",
+    sha256 = "f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2",
+)
+
+configure_make_package(
+    name = "openscad",
+    source = ":openscad-src",
+    version = "2021.01",
+    description = "The Programmers Solid 3D CAD Modeller",
+    homepage = "https://www.openscad.org/",
+    license = "GPL-2.0-or-later",
+    pre_configure = """
+qmake PREFIX=/usr CONFIG+=release
+""",
+    configure_args = [],
+    make_args = [],
+    post_install = """
+make INSTALL_ROOT=$OUT install
+""",
+    deps = [
+        "//packages/linux/desktop/qt:qt5",
+        "//packages/linux/core/cgal:cgal",
+        "//packages/linux/core/boost:boost",
+        "//packages/linux/core/eigen:eigen",
+        "//packages/linux/core/mpfr:mpfr",
+        "//packages/linux/core/gmp:gmp",
+        "//packages/linux/core/glew:glew",
+        "//packages/linux/core/opencsg:opencsg",
+        "//packages/linux/core/double-conversion:double-conversion",
+        "//packages/linux/core/fontconfig:fontconfig",
+        "//packages/linux/core/harfbuzz:harfbuzz",
+    ],
+    build_deps = [],
+    visibility = ["PUBLIC"],
+)

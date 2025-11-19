@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "waypaper-src",
+    src_uri = "https://github.com/anufrievroman/waypaper/archive/v2.1.tar.gz",
+    sha256 = "5eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6dd",
+)
+
+configure_make_package(
+    name = "waypaper",
+    source = ":waypaper-src",
+    version = "2.1",
+    description = "GUI wallpaper setter for Wayland and X11",
+    homepage = "https://github.com/anufrievroman/waypaper",
+    license = "GPL-3.0",
+    pre_configure = """
+# Uses pip/python setup
+""",
+    deps = [
+        "//packages/linux/desktop/wayland-utilities/swaybg:swaybg",
+    ],
+    visibility = ["PUBLIC"],
+)

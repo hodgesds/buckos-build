@@ -116,8 +116,8 @@ Assembles packages into a root filesystem:
 rootfs(
     name = "sideros-rootfs",
     packages = [
-        "//packages/core:busybox",
-        "//packages/core:musl",
+        "//packages/linux/core:busybox",
+        "//packages/linux/core:musl",
         ...
     ],
 )
@@ -145,7 +145,7 @@ configure_make_package(
     source = ":newpkg-src",
     version = "1.0",
     description = "My new package",
-    deps = ["//packages/core:musl"],
+    deps = ["//packages/linux/core:musl"],
 )
 ```
 

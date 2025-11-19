@@ -1,0 +1,27 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# fping - Fast ping utility for multiple hosts
+# =============================================================================
+
+download_source(
+    name = "fping-src",
+    src_uri = "https://fping.org/dist/fping-5.2.tar.gz",
+    sha256 = "4a2f0c59ab7d8d8a6ba9c7bd9cdba5e85a50b87c1c1e52f03c56e51f4e07b51f",
+)
+
+configure_make_package(
+    name = "fping",
+    source = ":fping-src",
+    version = "5.2",
+    description = "Fast ping utility for pinging multiple hosts in parallel",
+    homepage = "https://fping.org/",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--enable-ipv6",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

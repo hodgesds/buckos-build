@@ -1,0 +1,44 @@
+# Core system libraries and utilities
+filegroup(
+    name = "all-core",
+    srcs = [
+        "//packages/linux/core/musl",
+        "//packages/linux/core/zlib",
+        "//packages/linux/core/busybox",
+        "//packages/linux/core/util-linux",
+        "//packages/linux/core/e2fsprogs",
+        "//packages/linux/core/ncurses",
+        "//packages/linux/core/readline",
+        "//packages/linux/core/bash",
+        "//packages/linux/core/bzip2",
+        "//packages/linux/core/xz",
+        "//packages/linux/core/procps-ng",
+        "//packages/linux/core/libffi",
+        "//packages/linux/core/expat",
+        "//packages/linux/core/libnl",
+        "//packages/linux/core/file",
+        "//packages/linux/core/less",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Compression libraries
+filegroup(
+    name = "compression",
+    srcs = [
+        "//packages/linux/core/zlib",
+        "//packages/linux/core/bzip2",
+        "//packages/linux/core/xz",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Terminal libraries
+filegroup(
+    name = "terminal-libs",
+    srcs = [
+        "//packages/linux/core/ncurses",
+        "//packages/linux/core/readline",
+    ],
+    visibility = ["PUBLIC"],
+)

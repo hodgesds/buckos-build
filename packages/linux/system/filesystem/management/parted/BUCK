@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+download_source(
+    name = "parted-src",
+    src_uri = "https://ftp.gnu.org/gnu/parted/parted-3.6.tar.xz",
+    sha256 = "4a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+)
+
+configure_make_package(
+    name = "parted",
+    source = ":parted-src",
+    version = "3.6",
+    description = "Partition manipulation program (parted, partprobe)",
+    homepage = "https://www.gnu.org/software/parted/",
+    license = "GPL-3.0",
+    configure_args = [
+        "--disable-device-mapper",
+        "--without-readline",
+    ],
+    deps = [
+        "//packages/linux/core:util-linux",
+    ],
+    visibility = ["PUBLIC"],
+)

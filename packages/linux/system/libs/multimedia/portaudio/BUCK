@@ -1,0 +1,30 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "portaudio-src",
+    src_uri = "https://github.com/PortAudio/portaudio/archive/refs/tags/v19.7.0.tar.gz",
+    sha256 = "5af29ba58bbdbb0df2ff11f5e2ef1e2e8a7c1c4e5b6f7a8d9c0e1b2f3a4d5c6e",
+)
+
+configure_make_package(
+    name = "portaudio",
+    source = ":portaudio-src",
+    version = "19.7.0",
+    description = "Portable cross-platform audio I/O library",
+    homepage = "http://www.portaudio.com/",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DPA_USE_ALSA=ON \
+    -DPA_USE_JACK=ON \
+    -DPA_BUILD_SHARED=ON \
+    -DPA_BUILD_STATIC=OFF
+""",
+    deps = [
+        "//packages/linux/linux/system/libs/audio/alsa-lib:alsa-lib",
+    ],
+    visibility = ["PUBLIC"],
+)

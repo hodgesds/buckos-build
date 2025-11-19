@@ -1,0 +1,136 @@
+# =============================================================================
+# GPU Driver Packages - Graphics Processing Unit drivers and tools
+# =============================================================================
+#
+# This category contains drivers, libraries, and tools for GPU acceleration:
+# - NVIDIA: NVIDIA drivers, CUDA toolkit
+# - AMD: AMD drivers, ROCm stack
+# - Intel: Intel drivers
+# - Generic: OpenCL support
+#
+# =============================================================================
+
+# =============================================================================
+# GPU Drivers
+# =============================================================================
+
+filegroup(
+    name = "drivers",
+    srcs = [
+        "//packages/linux/system/gpu/drivers/nvidia:nvidia-drivers",
+        "//packages/linux/system/gpu/drivers/amd:amd-drivers",
+        "//packages/linux/system/gpu/drivers/intel:intel-drivers",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Vendor-Specific GPU Stacks
+# =============================================================================
+
+# NVIDIA GPU Stack (drivers + CUDA)
+filegroup(
+    name = "nvidia-stack",
+    srcs = [
+        "//packages/linux/system/gpu/drivers/nvidia:nvidia-drivers",
+        "//packages/linux/system/gpu/libraries/cuda-toolkit:cuda-toolkit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# AMD GPU Stack (drivers + ROCm)
+filegroup(
+    name = "amd-stack",
+    srcs = [
+        "//packages/linux/system/gpu/drivers/amd:amd-drivers",
+        "//packages/linux/system/gpu/libraries/rocm:rocm",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Intel GPU Stack
+filegroup(
+    name = "intel-stack",
+    srcs = [
+        "//packages/linux/system/gpu/drivers/intel:intel-drivers",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# GPU Compute Libraries
+# =============================================================================
+
+filegroup(
+    name = "compute-libraries",
+    srcs = [
+        "//packages/linux/system/gpu/libraries/cuda-toolkit:cuda-toolkit",
+        "//packages/linux/system/gpu/libraries/rocm:rocm",
+        "//packages/linux/system/gpu/libraries/opencl:opencl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# GPU Tools
+# =============================================================================
+
+filegroup(
+    name = "tools",
+    srcs = [
+        "//packages/linux/system/gpu/tools/gpu-monitoring:gpu-monitoring",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Combined GPU Stacks
+# =============================================================================
+
+# Complete GPU stack (all drivers + libraries + tools)
+filegroup(
+    name = "gpu-full",
+    srcs = [
+        ":drivers",
+        ":compute-libraries",
+        ":tools",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Minimal GPU setup (drivers only)
+filegroup(
+    name = "gpu-minimal",
+    srcs = [
+        ":drivers",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Convenience Aliases
+# =============================================================================
+
+alias(
+    name = "nvidia",
+    actual = ":nvidia-stack",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "amd",
+    actual = ":amd-stack",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "intel",
+    actual = ":intel-stack",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "gpu",
+    actual = ":gpu-full",
+    visibility = ["PUBLIC"],
+)

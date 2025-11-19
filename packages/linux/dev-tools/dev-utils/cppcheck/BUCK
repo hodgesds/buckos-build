@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "cppcheck-src",
+    src_uri = "https://github.com/danmar/cppcheck/archive/2.13.0.tar.gz",
+    sha256 = "8229afe1dddc3ed893248b8a723b428dc221ea014a39949f3f1ce4c575bce32a",
+)
+
+configure_make_package(
+    name = "cppcheck",
+    source = ":cppcheck-src",
+    version = "2.13.0",
+    description = "Static analysis tool for C/C++ code",
+    homepage = "https://cppcheck.sourceforge.io/",
+    license = "GPL-3",
+    build_deps = [
+        "//packages/linux/dev-tools/build-systems/cmake:cmake",
+    ],
+    configure_args = [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DUSE_MATCHCOMPILER=ON",
+    ],
+    visibility = ["PUBLIC"],
+)

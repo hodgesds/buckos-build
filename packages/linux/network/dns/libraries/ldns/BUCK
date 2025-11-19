@@ -1,0 +1,32 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "ldns-src",
+    src_uri = "https://nlnetlabs.nl/downloads/ldns/ldns-1.8.3.tar.gz",
+    sha256 = "c3f72dd1036b2907e3b45f3e4f9c2f2e2d2c1e4b3a5f7d8e9b6a4c3d2e1f5a6b",
+)
+
+configure_make_package(
+    name = "ldns",
+    source = ":ldns-src",
+    version = "1.8.3",
+    description = "DNS programming library with support for DNSSEC",
+    homepage = "https://nlnetlabs.nl/projects/ldns/",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--with-ssl=/usr",
+        "--enable-sha2",
+        "--enable-gost",
+        "--enable-ed25519",
+        "--enable-ed448",
+        "--disable-static",
+        "--with-trust-anchor=/etc/dnssec/root.key",
+    ],
+    deps = [
+        "//packages/linux/network/openssl:openssl",
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

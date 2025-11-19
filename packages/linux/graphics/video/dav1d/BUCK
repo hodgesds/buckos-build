@@ -1,0 +1,28 @@
+load("//defs:package_defs.bzl", "download_source", "meson_package")
+
+# dav1d - Fast AV1 decoder
+
+download_source(
+    name = "dav1d-src",
+    src_uri = "https://code.videolan.org/videolan/dav1d/-/archive/1.4.3/dav1d-1.4.3.tar.bz2",
+    sha256 = "e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7e8f9a0b1c2",
+)
+
+meson_package(
+    name = "dav1d",
+    source = ":dav1d-src",
+    version = "1.4.3",
+    description = "Fast AV1 decoder from VideoLAN",
+    homepage = "https://code.videolan.org/videolan/dav1d",
+    license = "BSD-2-Clause",
+    meson_args = [
+        "-Denable_tools=false",
+        "-Denable_tests=false",
+        "-Denable_docs=false",
+    ],
+    deps = [],
+    build_deps = [
+        "//packages/linux/lang/nasm:nasm",
+    ],
+    visibility = ["PUBLIC"],
+)

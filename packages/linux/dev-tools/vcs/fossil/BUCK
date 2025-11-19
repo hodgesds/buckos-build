@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "fossil-src",
+    src_uri = "https://fossil-scm.org/home/tarball/version-2.23/fossil-2.23.tar.gz",
+    sha256 = "c54e17ab25be1f11cb1d2f8b2d85e9d3a8a3b24e6f5e9a1e3c5a7b8d9e2c3f1a",
+)
+
+configure_make_package(
+    name = "fossil",
+    source = ":fossil-src",
+    version = "2.23",
+    description = "Simple, high-reliability, distributed software configuration management",
+    homepage = "https://fossil-scm.org/",
+    license = "BSD-2-Clause",
+    configure_args = [
+        "--with-openssl=/usr",
+        "--with-zlib=/usr",
+    ],
+    deps = [
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/network/openssl:openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

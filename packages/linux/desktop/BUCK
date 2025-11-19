@@ -1,0 +1,241 @@
+# =============================================================================
+# Desktop Environment Build Targets for Sideros Linux
+# Similar to CachyOS desktop options
+# =============================================================================
+# This file contains convenience groups that aggregate individual desktop packages.
+# Individual packages are located in their own subdirectories.
+
+# =============================================================================
+# CONVENIENCE GROUPS - Pre-configured desktop selections
+# =============================================================================
+
+# All desktop foundations (required by all desktops)
+filegroup(
+    name = "desktop-foundation",
+    srcs = [
+        "//packages/linux/desktop/wayland:wayland",
+        "//packages/linux/desktop/wayland:wayland-protocols",
+        "//packages/linux/desktop/mesa:mesa",
+        "//packages/linux/desktop/libdrm:libdrm",
+        "//packages/linux/desktop/libinput:libinput",
+        "//packages/linux/desktop/xorg-server:xorg-server",
+        "//packages/linux/desktop/xorg-server:libx11",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All display managers
+filegroup(
+    name = "display-managers",
+    srcs = [
+        "//packages/linux/desktop/gdm:gdm",
+        "//packages/linux/desktop/sddm:sddm",
+        "//packages/linux/desktop/lightdm:lightdm",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All full desktop environments
+filegroup(
+    name = "all-desktops",
+    srcs = [
+        "//packages/linux/desktop/gnome:gnome",
+        "//packages/linux/desktop/kde:kde-plasma",
+        "//packages/linux/desktop/xfce:xfce",
+        "//packages/linux/desktop/lxqt:lxqt",
+        "//packages/linux/desktop/cinnamon:cinnamon-desktop",
+        "//packages/linux/desktop/mate:mate",
+        "//packages/linux/desktop/budgie:budgie",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All Wayland compositors
+filegroup(
+    name = "wayland-compositors",
+    srcs = [
+        "//packages/linux/desktop/sway:sway-desktop",
+        "//packages/linux/desktop/hyprland:hyprland-desktop",
+        "//packages/linux/desktop/wayfire:wayfire-desktop",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All X11 window managers
+filegroup(
+    name = "x11-window-managers",
+    srcs = [
+        "//packages/linux/desktop/i3:i3-desktop",
+        "//packages/linux/desktop/bspwm:bspwm-desktop",
+        "//packages/linux/desktop/openbox:openbox-desktop",
+        "//packages/linux/desktop/awesome:awesome-desktop",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Lightweight desktops (good for older hardware)
+filegroup(
+    name = "lightweight-desktops",
+    srcs = [
+        "//packages/linux/desktop/xfce:xfce",
+        "//packages/linux/desktop/lxqt:lxqt",
+        "//packages/linux/desktop/openbox:openbox-desktop",
+        "//packages/linux/desktop/i3:i3-desktop",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Modern Wayland desktops
+filegroup(
+    name = "modern-wayland-desktops",
+    srcs = [
+        "//packages/linux/desktop/gnome:gnome",
+        "//packages/linux/desktop/kde:kde-plasma",
+        "//packages/linux/desktop/sway:sway-desktop",
+        "//packages/linux/desktop/hyprland:hyprland-desktop",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Tiling window managers (keyboard-driven)
+filegroup(
+    name = "tiling-desktops",
+    srcs = [
+        "//packages/linux/desktop/sway:sway-desktop",
+        "//packages/linux/desktop/hyprland:hyprland-desktop",
+        "//packages/linux/desktop/i3:i3-desktop",
+        "//packages/linux/desktop/bspwm:bspwm-desktop",
+        "//packages/linux/desktop/awesome:awesome-desktop",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# UTILITY PACKAGES
+# =============================================================================
+
+# All X.Org utilities
+filegroup(
+    name = "xorg-utilities",
+    srcs = [
+        "//packages/linux/desktop/xorg-utilities:all",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All Wayland utilities
+filegroup(
+    name = "wayland-utilities",
+    srcs = [
+        "//packages/linux/desktop/wayland-utilities:all",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Combined utilities (both X11 and Wayland)
+filegroup(
+    name = "all-utilities",
+    srcs = [
+        "//packages/linux/desktop/xorg-utilities:all",
+        "//packages/linux/desktop/wayland-utilities:all",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Essential X11 utilities
+filegroup(
+    name = "xorg-utilities-essential",
+    srcs = [
+        "//packages/linux/desktop/xorg-utilities:essential",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Essential Wayland utilities
+filegroup(
+    name = "wayland-utilities-essential",
+    srcs = [
+        "//packages/linux/desktop/wayland-utilities:essential",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Clipboard utilities (both X11 and Wayland)
+filegroup(
+    name = "clipboard-utilities",
+    srcs = [
+        "//packages/linux/desktop/xorg-utilities:clipboard",
+        "//packages/linux/desktop/wayland-utilities:clipboard",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Application launchers (both X11 and Wayland)
+filegroup(
+    name = "launcher-utilities",
+    srcs = [
+        "//packages/linux/desktop/xorg-utilities:launchers",
+        "//packages/linux/desktop/wayland-utilities:launchers",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Notification utilities (both X11 and Wayland)
+filegroup(
+    name = "notification-utilities",
+    srcs = [
+        "//packages/linux/desktop/xorg-utilities:notification",
+        "//packages/linux/desktop/wayland-utilities:notification",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Screenshot utilities (both X11 and Wayland)
+filegroup(
+    name = "screenshot-utilities",
+    srcs = [
+        "//packages/linux/desktop/xorg-utilities:screenshot",
+        "//packages/linux/desktop/wayland-utilities:screenshot",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Status bar utilities (both X11 and Wayland)
+filegroup(
+    name = "statusbar-utilities",
+    srcs = [
+        "//packages/linux/desktop/xorg-utilities:bars",
+        "//packages/linux/desktop/wayland-utilities:bars",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# i3 complete desktop with utilities
+filegroup(
+    name = "i3-complete",
+    srcs = [
+        "//packages/linux/desktop/i3:i3-desktop",
+        "//packages/linux/desktop/xorg-utilities:i3-companions",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Sway complete desktop with utilities
+filegroup(
+    name = "sway-complete",
+    srcs = [
+        "//packages/linux/desktop/sway:sway-desktop",
+        "//packages/linux/desktop/wayland-utilities:sway-companions",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Hyprland complete desktop with utilities
+filegroup(
+    name = "hyprland-complete",
+    srcs = [
+        "//packages/linux/desktop/hyprland:hyprland-desktop",
+        "//packages/linux/desktop/wayland-utilities:hyprland-companions",
+    ],
+    visibility = ["PUBLIC"],
+)

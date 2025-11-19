@@ -1,0 +1,38 @@
+# Music production and audio editing tools
+
+filegroup(
+    name = "audio-editors",
+    srcs = [
+        "//packages/linux/audio/production/audacity:audacity",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "daws",
+    srcs = [
+        "//packages/linux/audio/production/ardour:ardour",
+        "//packages/linux/audio/production/lmms:lmms",
+        "//packages/linux/audio/production/rosegarden:rosegarden",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "composition-tools",
+    srcs = [
+        "//packages/linux/audio/production/hydrogen:hydrogen",
+        "//packages/linux/audio/production/sonic-pi:sonic-pi",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-production",
+    srcs = [
+        ":audio-editors",
+        ":daws",
+        ":composition-tools",
+    ],
+    visibility = ["PUBLIC"],
+)

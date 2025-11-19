@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libvorbis-src",
+    src_uri = "https://downloads.xiph.org/releases/vorbis/libvorbis-1.3.7.tar.xz",
+    sha256 = "b33cc4934322bcbf6efcbacf49e3ca01aadbea4114ec9589d1b1e9d20f72954b",
+)
+
+configure_make_package(
+    name = "libvorbis",
+    source = ":libvorbis-src",
+    version = "1.3.7",
+    description = "Vorbis audio codec library",
+    homepage = "https://xiph.org/vorbis/",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--disable-static",
+    ],
+    deps = [
+        "//packages/linux/linux/system/libs/audio/libogg",
+    ],
+    visibility = ["PUBLIC"],
+)

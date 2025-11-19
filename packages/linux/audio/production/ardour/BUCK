@@ -1,0 +1,51 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "ardour-src",
+    src_uri = "https://community.ardour.org/src/Ardour-8.6.0.tar.bz2",
+    sha256 = "d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
+)
+
+# Ardour uses waf build system
+binary_package(
+    name = "ardour",
+    srcs = [":ardour-src"],
+    version = "8.6.0",
+    description = "Professional-grade digital audio workstation",
+    homepage = "https://ardour.org/",
+    license = "GPL-2",
+    install_script = """
+        cd $SRCS/Ardour-8.6.0
+
+        # Configure with waf
+        python3 ./waf configure \
+            --prefix=/usr \
+            --configdir=/etc \
+            --with-backend=alsa \
+            --no-phone-home \
+            --optimize \
+            --freedesktop \
+            --no-nls \
+            --with-lv2=no \
+            --with-vst=no \
+            --with-audiounits=no
+
+        # Build
+        python3 ./waf build
+
+        # Install
+        python3 ./waf install --destdir=$OUT
+    """,
+    deps = [
+        "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
+        "//packages/linux/audio/daemons/jack2:jack2",
+        "//packages/linux/audio/libraries/libsndfile:libsndfile",
+        "//packages/linux/audio/libraries/flac:flac",
+        "//packages/linux/audio/libraries/libvorbis:libvorbis",
+        "//packages/linux/audio/libraries/libogg:libogg",
+        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/core:musl",
+        "//packages/linux/lang/python:python",
+    ],
+    visibility = ["PUBLIC"],
+)

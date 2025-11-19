@@ -1,0 +1,36 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "stubby-src",
+    src_uri = "https://github.com/getdnsapi/stubby/releases/download/v0.4.3/stubby-0.4.3.tar.gz",
+    sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+)
+
+configure_make_package(
+    name = "stubby",
+    source = ":stubby-src",
+    version = "0.4.3",
+    description = "DNS Privacy stub resolver using DNS-over-TLS",
+    homepage = "https://dnsprivacy.org/dns_privacy_daemon_-_stubby/",
+    license = "BSD-3-Clause",
+    pre_configure = """
+# Stubby uses CMake
+mkdir -p build && cd build
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DENABLE_GETDNS_STATIC_LINK=OFF
+""",
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+# Install default configuration
+install -Dm644 stubby.yml.example "$DESTDIR/etc/stubby/stubby.yml" || true
+""",
+    deps = [
+        "//packages/linux/network/openssl:openssl",
+        "//packages/linux/core:musl",
+        "//packages/linux/network/dns/libraries/getdns:getdns",
+    ],
+    visibility = ["PUBLIC"],
+)

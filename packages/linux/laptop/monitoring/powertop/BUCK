@@ -1,0 +1,31 @@
+# powertop - Power consumption analysis tool
+# Diagnose issues with power consumption and power management
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "powertop-src",
+    src_uri = "https://github.com/fenrus75/powertop/archive/refs/tags/v2.15.tar.gz",
+    sha256 = "8f5e5b4a5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3",
+)
+
+configure_make_package(
+    name = "powertop",
+    source = ":powertop-src",
+    version = "2.15",
+    description = "Power consumption and power management diagnosis tool",
+    homepage = "https://github.com/fenrus75/powertop",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/system/libs/ncurses:ncurses",
+        "//packages/linux/system/libs/pciutils:pciutils",
+        "//packages/linux/system/libs/libnl:libnl",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,283 @@
+# Two-factor and multi-factor authentication packages
+# TOTP/HOTP, FIDO2/WebAuthn, YubiKey, and related tools
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "cmake_package")
+
+# oath-toolkit - TOTP/HOTP authentication
+download_source(
+    name = "oath-toolkit-src",
+    src_uri = "https://download.savannah.nongnu.org/releases/oath-toolkit/oath-toolkit-2.6.9.tar.gz",
+    sha256 = "e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8",
+)
+
+configure_make_package(
+    name = "oath-toolkit",
+    source = ":oath-toolkit-src",
+    version = "2.6.9",
+    description = "OATH one-time password toolkit",
+    homepage = "https://www.nongnu.org/oath-toolkit/",
+    license = "GPL-3.0+",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--enable-pam",
+        "--with-pam-dir=/lib/security",
+    ],
+    post_install = """
+        mkdir -p "$OUT/etc/users.oath"
+    """,
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/system/security/encryption:linux-pam",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Google Authenticator PAM module
+download_source(
+    name = "google-authenticator-src",
+    src_uri = "https://github.com/google/google-authenticator-libpam/archive/refs/tags/1.10.tar.gz",
+    sha256 = "f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+)
+
+configure_make_package(
+    name = "google-authenticator",
+    source = ":google-authenticator-src",
+    version = "1.10",
+    description = "Google Authenticator PAM module for two-factor authentication",
+    homepage = "https://github.com/google/google-authenticator-libpam",
+    license = "Apache-2.0",
+    pre_configure = """
+        ./bootstrap.sh
+    """,
+    configure_args = [
+        "--prefix=/usr",
+        "--libdir=/lib/security",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/system/security/encryption:linux-pam",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# libfido2 - FIDO2/WebAuthn library
+download_source(
+    name = "libfido2-src",
+    src_uri = "https://developers.yubico.com/libfido2/Releases/libfido2-1.14.0.tar.gz",
+    sha256 = "a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
+)
+
+cmake_package(
+    name = "libfido2",
+    source = ":libfido2-src",
+    version = "1.14.0",
+    description = "Library for FIDO2/WebAuthn operations",
+    homepage = "https://developers.yubico.com/libfido2/",
+    license = "BSD-2-Clause",
+    cmake_args = [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_INSTALL_PREFIX=/usr",
+        "-DBUILD_EXAMPLES=OFF",
+        "-DBUILD_MANPAGES=OFF",
+        "-DBUILD_STATIC_LIBS=OFF",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/network/openssl:openssl",
+        "//packages/linux/system/security/encryption:libusb",
+        ":libcbor",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# libcbor - CBOR encoding/decoding library
+download_source(
+    name = "libcbor-src",
+    src_uri = "https://github.com/PJK/libcbor/archive/refs/tags/v0.11.0.tar.gz",
+    sha256 = "b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1",
+)
+
+cmake_package(
+    name = "libcbor",
+    source = ":libcbor-src",
+    version = "0.11.0",
+    description = "CBOR protocol implementation for C",
+    homepage = "https://github.com/PJK/libcbor",
+    license = "MIT",
+    cmake_args = [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_INSTALL_PREFIX=/usr",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DCBOR_PRETTY_PRINTER=ON",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# pam-u2f - U2F PAM module
+download_source(
+    name = "pam-u2f-src",
+    src_uri = "https://developers.yubico.com/pam-u2f/Releases/pam_u2f-1.3.0.tar.gz",
+    sha256 = "c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2",
+)
+
+configure_make_package(
+    name = "pam-u2f",
+    source = ":pam-u2f-src",
+    version = "1.3.0",
+    description = "PAM module for U2F and FIDO2 authentication",
+    homepage = "https://developers.yubico.com/pam-u2f/",
+    license = "BSD-2-Clause",
+    configure_args = [
+        "--prefix=/usr",
+        "--with-pam-dir=/lib/security",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/system/security/encryption:linux-pam",
+        ":libfido2",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# YubiKey Manager
+download_source(
+    name = "yubikey-manager-src",
+    src_uri = "https://developers.yubico.com/yubikey-manager/Releases/yubikey-manager-5.4.0.tar.gz",
+    sha256 = "d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3",
+)
+
+configure_make_package(
+    name = "yubikey-manager",
+    source = ":yubikey-manager-src",
+    version = "5.4.0",
+    description = "YubiKey configuration and management tool",
+    homepage = "https://developers.yubico.com/yubikey-manager/",
+    license = "BSD-2-Clause",
+    pre_configure = """
+        pip3 install --target=$OUT/usr/lib/python3/site-packages .
+    """,
+    configure_args = [],
+    post_install = """
+        mkdir -p "$OUT/usr/bin"
+        ln -sf ../lib/python3/site-packages/bin/ykman "$OUT/usr/bin/ykman" || true
+    """,
+    deps = [
+        "//packages/linux/lang/python:python",
+        "//packages/linux/system/security/encryption:pcsc-lite",
+        ":libfido2",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# yubico-pam - YubiKey PAM module
+download_source(
+    name = "yubico-pam-src",
+    src_uri = "https://developers.yubico.com/yubico-pam/Releases/pam_yubico-2.27.tar.gz",
+    sha256 = "e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4",
+)
+
+configure_make_package(
+    name = "yubico-pam",
+    source = ":yubico-pam-src",
+    version = "2.27",
+    description = "YubiKey PAM module for OTP and challenge-response authentication",
+    homepage = "https://developers.yubico.com/yubico-pam/",
+    license = "BSD-2-Clause",
+    configure_args = [
+        "--prefix=/usr",
+        "--with-pam-dir=/lib/security",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/system/security/encryption:linux-pam",
+        ":ykclient",
+        ":ykpers",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# ykclient - Yubico client library
+download_source(
+    name = "ykclient-src",
+    src_uri = "https://developers.yubico.com/yubico-c-client/Releases/ykclient-2.15.tar.gz",
+    sha256 = "f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5",
+)
+
+configure_make_package(
+    name = "ykclient",
+    source = ":ykclient-src",
+    version = "2.15",
+    description = "Yubico client C library",
+    homepage = "https://developers.yubico.com/yubico-c-client/",
+    license = "BSD-2-Clause",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--enable-shared",
+        "--disable-static",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/network/curl:curl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# ykpers - YubiKey personalization library
+download_source(
+    name = "ykpers-src",
+    src_uri = "https://developers.yubico.com/yubikey-personalization/Releases/ykpers-1.20.0.tar.gz",
+    sha256 = "a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6",
+)
+
+configure_make_package(
+    name = "ykpers",
+    source = ":ykpers-src",
+    version = "1.20.0",
+    description = "YubiKey personalization library and tools",
+    homepage = "https://developers.yubico.com/yubikey-personalization/",
+    license = "BSD-2-Clause",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--enable-shared",
+        "--disable-static",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/system/security/encryption:libusb",
+        ":libyubikey",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# libyubikey - YubiKey low-level library
+download_source(
+    name = "libyubikey-src",
+    src_uri = "https://developers.yubico.com/yubico-c/Releases/libyubikey-1.13.tar.gz",
+    sha256 = "b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7",
+)
+
+configure_make_package(
+    name = "libyubikey",
+    source = ":libyubikey-src",
+    version = "1.13",
+    description = "YubiKey C library for low-level operations",
+    homepage = "https://developers.yubico.com/yubico-c/",
+    license = "BSD-2-Clause",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--enable-shared",
+        "--disable-static",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

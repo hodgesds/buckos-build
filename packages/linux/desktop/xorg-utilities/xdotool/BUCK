@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "xdotool-src",
+    src_uri = "https://github.com/jordansissel/xdotool/releases/download/v3.20211022.1/xdotool-3.20211022.1.tar.gz",
+    sha256 = "96f0facfde6d78eacad35b91b0f46fecd0b35e474c03e00e30da3fdd345f9ada",
+)
+
+configure_make_package(
+    name = "xdotool",
+    source = ":xdotool-src",
+    version = "3.20211022.1",
+    description = "Fake keyboard/mouse input, window management, and more",
+    homepage = "https://github.com/jordansissel/xdotool",
+    license = "BSD-3-Clause",
+    pre_configure = """
+# xdotool uses make without configure
+sed -i 's|PREFIX=/usr/local|PREFIX=/usr|' Makefile
+""",
+    deps = [
+        "//packages/linux/desktop/xorg-server:libx11",
+    ],
+    visibility = ["PUBLIC"],
+)

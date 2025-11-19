@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "automake-src",
+    src_uri = "https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.xz",
+    sha256 = "f01d58cd6d9d77fbdca9eb4bbd5ead1988228fdb73d6f7a201f5f8d6b118b469",
+)
+
+configure_make_package(
+    name = "automake",
+    source = ":automake-src",
+    version = "1.16.5",
+    description = "Tool for generating GNU Standards-compliant Makefiles",
+    homepage = "https://www.gnu.org/software/automake/",
+    license = "GPL-2+",
+    deps = [
+        "//packages/linux/dev-tools/build-systems/autoconf:autoconf",
+    ],
+    visibility = ["PUBLIC"],
+)

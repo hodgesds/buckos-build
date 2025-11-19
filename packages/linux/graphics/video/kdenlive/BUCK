@@ -1,0 +1,43 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "kdenlive-src",
+    src_uri = "https://download.kde.org/stable/kdenlive/24.02/kdenlive-24.02.0.tar.xz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+configure_make_package(
+    name = "kdenlive",
+    source = ":kdenlive-src",
+    version = "24.02.0",
+    description = "KDE non-linear video editor",
+    homepage = "https://kdenlive.org/",
+    license = "GPL-3.0-or-later",
+    pre_configure = """
+mkdir -p build
+cd build
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_TESTING=OFF \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+    -DRELEASE_BUILD=ON
+""",
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+cd build
+DESTDIR=$OUT make install
+""",
+    deps = [
+        "//packages/linux/desktop/kde:kf5",
+        "//packages/linux/desktop/qt:qt5",
+        "//packages/linux/core/mlt:mlt",
+        "//packages/linux/core/ffmpeg:ffmpeg",
+        "//packages/linux/core/frei0r:frei0r",
+        "//packages/linux/core/libv4l:libv4l",
+        "//packages/linux/core/rttr:rttr",
+    ],
+    build_deps = [],
+    visibility = ["PUBLIC"],
+)

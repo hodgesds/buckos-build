@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "cscope-src",
+    src_uri = "https://downloads.sourceforge.net/cscope/cscope-15.9.tar.gz",
+    sha256 = "c5505ae075a871a9cd8d9801859b0ff1c09782075df281c72c23e72115d9f159",
+)
+
+configure_make_package(
+    name = "cscope",
+    source = ":cscope-src",
+    version = "15.9",
+    description = "Tool for browsing source code",
+    homepage = "http://cscope.sourceforge.net/",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--with-ncurses",
+    ],
+    deps = [
+        "//packages/linux/core/ncurses:ncurses",
+    ],
+    visibility = ["PUBLIC"],
+)

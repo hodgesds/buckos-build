@@ -1,0 +1,57 @@
+# Gamescope - SteamOS session compositing window manager
+# Micro-compositor for running games with improved display features
+
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+download_source(
+    name = "gamescope-src",
+    src_uri = "https://github.com/ValveSoftware/gamescope/archive/refs/tags/3.14.24.tar.gz",
+    sha256 = "4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6",
+)
+
+configure_make_package(
+    name = "gamescope",
+    source = ":gamescope-src",
+    version = "3.14.24",
+    description = "SteamOS session compositing window manager",
+    homepage = "https://github.com/ValveSoftware/gamescope",
+    license = "BSD-2-Clause",
+    pre_configure = """
+# Initialize and update submodules
+git submodule update --init --recursive || true
+
+# Gamescope uses Meson build system
+meson setup build \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --buildtype=release \
+    -Dpipewire=enabled \
+    -Denable_openvr_support=false
+    """,
+    configure_args = [],
+    post_install = """
+#!/bin/bash
+set -e
+
+cd "$SRC_DIR"
+meson compile -C build
+DESTDIR="$DESTDIR" meson install -C build
+
+# Install CAP_SYS_NICE capability helper
+mkdir -p "$DESTDIR/usr/share/doc/gamescope"
+cat > "$DESTDIR/usr/share/doc/gamescope/README.capabilities" << 'EOF'
+Gamescope can benefit from CAP_SYS_NICE to improve scheduling.
+
+To enable, run:
+    sudo setcap 'cap_sys_nice=eip' /usr/bin/gamescope
+
+This allows gamescope to set real-time scheduling for better performance.
+EOF
+    """,
+    deps = [
+        "//packages/linux/desktop/wayland:wayland",
+        "//packages/linux/gaming/libraries/vulkan-tools:vulkan-tools",
+        "//packages/linux/gaming/libraries/sdl2:sdl2",
+    ],
+    visibility = ["PUBLIC"],
+)

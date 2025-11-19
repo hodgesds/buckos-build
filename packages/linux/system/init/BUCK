@@ -1,0 +1,66 @@
+# =============================================================================
+# System Initialization Packages
+# =============================================================================
+# This file contains filegroups for system initialization (init) systems.
+# Individual package definitions are in their respective subdirectories.
+
+# =============================================================================
+# Package Groups
+# =============================================================================
+
+filegroup(
+    name = "systemd-stack",
+    srcs = [
+        "//packages/linux/system/init/systemd:systemd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "openrc-stack",
+    srcs = [
+        "//packages/linux/system/init/openrc:openrc",
+        "//packages/linux/system/init/elogind:elogind",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "s6-stack",
+    srcs = [
+        "//packages/linux/system/init/skalibs:skalibs",
+        "//packages/linux/system/init/execline:execline",
+        "//packages/linux/system/init/s6:s6",
+        "//packages/linux/system/init/s6-linux-init:s6-linux-init",
+        "//packages/linux/system/init/s6-rc:s6-rc",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "lightweight-inits",
+    srcs = [
+        "//packages/linux/system/init/openrc:openrc",
+        "//packages/linux/system/init/runit:runit",
+        "//packages/linux/system/init/dinit:dinit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-inits",
+    srcs = [
+        "//packages/linux/system/init/systemd:systemd",
+        "//packages/linux/system/init/openrc:openrc",
+        "//packages/linux/system/init/elogind:elogind",
+        "//packages/linux/system/init/skalibs:skalibs",
+        "//packages/linux/system/init/execline:execline",
+        "//packages/linux/system/init/s6:s6",
+        "//packages/linux/system/init/s6-linux-init:s6-linux-init",
+        "//packages/linux/system/init/s6-rc:s6-rc",
+        "//packages/linux/system/init/runit:runit",
+        "//packages/linux/system/init/dinit:dinit",
+        "//packages/linux/system/init/sysvinit:sysvinit",
+    ],
+    visibility = ["PUBLIC"],
+)

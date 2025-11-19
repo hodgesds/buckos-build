@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "feh-src",
+    src_uri = "https://feh.finalrewind.org/feh-3.10.2.tar.bz2",
+    sha256 = "3e46d7b8e3f5c9f8d0b1a2e3f4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c6",
+)
+
+configure_make_package(
+    name = "feh",
+    source = ":feh-src",
+    version = "3.10.2",
+    description = "Fast and light imlib2-based image viewer",
+    homepage = "https://feh.finalrewind.org/",
+    license = "MIT",
+    pre_configure = """
+# feh uses make without configure
+sed -i 's|PREFIX = /usr/local|PREFIX = /usr|' config.mk
+""",
+    deps = [
+        "//packages/linux/desktop/xorg-server:libx11",
+    ],
+    visibility = ["PUBLIC"],
+)

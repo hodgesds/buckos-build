@@ -1,0 +1,59 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "opensmtpd-src",
+    src_uri = "https://www.opensmtpd.org/archives/opensmtpd-7.5.0p0.tar.gz",
+    sha256 = "e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+)
+
+configure_make_package(
+    name = "opensmtpd",
+    source = ":opensmtpd-src",
+    version = "7.5.0p0",
+    description = "Free implementation of the server-side SMTP protocol",
+    homepage = "https://www.opensmtpd.org/",
+    license = "ISC",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc/smtpd",
+        "--sbindir=/usr/bin",
+        "--libexecdir=/usr/lib/smtpd",
+        "--with-path-mbox=/var/spool/mail",
+        "--with-path-empty=/var/empty",
+        "--with-path-socket=/run",
+        "--with-path-CAfile=/etc/ssl/certs/ca-certificates.crt",
+        "--with-user-smtpd=smtpd",
+        "--with-user-queue=smtpq",
+        "--with-group-queue=smtpq",
+        "--with-auth-pam",
+        "--with-table-db",
+        "--with-table-ldap",
+    ],
+    post_install = """
+mkdir -p "$DESTDIR/etc/smtpd"
+mkdir -p "$DESTDIR/var/spool/smtpd"
+mkdir -p "$DESTDIR/var/empty"
+
+# Install default config
+cat > "$DESTDIR/etc/smtpd/smtpd.conf" << 'CONFIG'
+# Default OpenSMTPD configuration
+
+table aliases file:/etc/smtpd/aliases
+
+listen on localhost
+
+action "local" mbox alias <aliases>
+action "relay" relay
+
+match for local action "local"
+match for any action "relay"
+CONFIG
+
+touch "$DESTDIR/etc/smtpd/aliases"
+""",
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/network/openssl:openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

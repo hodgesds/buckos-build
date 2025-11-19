@@ -1,0 +1,38 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "slop-src",
+    src_uri = "https://github.com/naelstrof/slop/archive/refs/tags/v7.6.tar.gz",
+    sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+)
+
+configure_make_package(
+    name = "slop",
+    source = ":slop-src",
+    version = "7.6",
+    description = "Select operation - query for a selection from the user and print to stdout",
+    homepage = "https://github.com/naelstrof/slop",
+    license = "GPL-3.0-or-later",
+    pre_configure = """
+mkdir -p build
+cd build
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release
+""",
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+cd build
+DESTDIR=$OUT make install
+""",
+    deps = [
+        "//packages/linux/core/glm:glm",
+        "//packages/linux/core/icu:icu",
+        "//packages/linux/core/libxext:libxext",
+        "//packages/linux/desktop/mesa:mesa",
+        "//packages/linux/core/glew:glew",
+    ],
+    build_deps = [],
+    visibility = ["PUBLIC"],
+)

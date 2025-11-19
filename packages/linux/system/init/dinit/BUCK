@@ -1,0 +1,45 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+# -----------------------------------------------------------------------------
+# dinit - Service manager and init system
+# -----------------------------------------------------------------------------
+
+download_source(
+    name = "dinit-src",
+    src_uri = "https://github.com/davmac314/dinit/releases/download/v0.18.0/dinit-0.18.0.tar.xz",
+    sha256 = "6fdb1ae1f3e77aff83eb25d10c1e00a5d18ce7f3f5f28f1c8bb9ba5b1edbe80e",
+)
+
+configure_make_package(
+    name = "dinit",
+    source = ":dinit-src",
+    version = "0.18.0",
+    description = "Service manager and init system with dependency support",
+    homepage = "https://davmac.org/projects/dinit/",
+    license = "Apache-2.0",
+    pre_configure = """
+# dinit uses meson build system
+mkdir -p build
+cd build
+meson setup .. \
+    --prefix=/usr \
+    --sbindir=/usr/sbin \
+    -Ddinit-control-socket-path=/run/dinitctl \
+    -Dshutdown-prefix="" \
+    -Dbuild-tests=false
+""",
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+cd build
+DESTDIR=$OUT meson install
+# Create init symlink
+mkdir -p $OUT/sbin
+ln -sf ../usr/sbin/dinit $OUT/sbin/init
+""",
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    build_deps = [],
+    visibility = ["PUBLIC"],
+)

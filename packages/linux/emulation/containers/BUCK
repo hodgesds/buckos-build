@@ -1,0 +1,74 @@
+# Container runtime packages aggregator
+
+filegroup(
+    name = "runtimes",
+    srcs = [
+        "//packages/linux/emulation/containers/runc:runc",
+        "//packages/linux/emulation/containers/crun:crun",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "docker-full",
+    srcs = [
+        "//packages/linux/emulation/containers/containerd:containerd",
+        "//packages/linux/emulation/containers/docker:docker-cli",
+        "//packages/linux/emulation/containers/docker:docker-engine",
+        "//packages/linux/emulation/containers/docker:docker-compose",
+        "//packages/linux/emulation/containers/docker:docker-buildx",
+        "//packages/linux/emulation/containers/runc:runc",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "docker-minimal",
+    srcs = [
+        "//packages/linux/emulation/containers/containerd:containerd",
+        "//packages/linux/emulation/containers/docker:docker-cli",
+        "//packages/linux/emulation/containers/docker:docker-engine",
+        "//packages/linux/emulation/containers/runc:runc",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "podman-full",
+    srcs = [
+        "//packages/linux/emulation/containers/podman:podman",
+        "//packages/linux/emulation/containers/podman:buildah",
+        "//packages/linux/emulation/containers/podman:skopeo",
+        "//packages/linux/emulation/containers/podman:conmon",
+        "//packages/linux/emulation/containers/crun:crun",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "podman-minimal",
+    srcs = [
+        "//packages/linux/emulation/containers/podman:podman",
+        "//packages/linux/emulation/containers/podman:conmon",
+        "//packages/linux/emulation/containers/crun:crun",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "containerd-full",
+    srcs = [
+        "//packages/linux/emulation/containers/containerd:containerd",
+        "//packages/linux/emulation/containers/runc:runc",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-containers",
+    srcs = [
+        ":docker-full",
+        ":podman-full",
+    ],
+    visibility = ["PUBLIC"],
+)

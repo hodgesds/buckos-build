@@ -1,0 +1,44 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# MKVToolNix - Set of tools to create, alter and inspect Matroska files
+
+download_source(
+    name = "mkvtoolnix-src",
+    src_uri = "https://mkvtoolnix.download/sources/mkvtoolnix-86.0.tar.xz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+configure_make_package(
+    name = "mkvtoolnix",
+    source = ":mkvtoolnix-src",
+    version = "86.0",
+    description = "Set of tools to create, alter and inspect Matroska files",
+    homepage = "https://mkvtoolnix.download/",
+    license = "GPL-2.0-only",
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-gui",
+        "--enable-optimization",
+        "--disable-debug",
+        "--with-boost=/usr",
+        "--with-qt6",
+    ],
+    make_args = [],
+    post_install = """
+DESTDIR=$OUT rake install
+""",
+    deps = [
+        "//packages/linux/graphics/video/ffmpeg:ffmpeg",
+        "//packages/linux/desktop/qt:qt6",
+        "//packages/linux/core/boost:boost",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/core/pugixml:pugixml",
+        "//packages/linux/audio/libraries/flac:flac",
+        "//packages/linux/audio/libraries/libvorbis:libvorbis",
+    ],
+    build_deps = [
+        "//packages/linux/core/pkg-config:pkg-config",
+        "//packages/linux/lang/ruby:ruby",
+    ],
+    visibility = ["PUBLIC"],
+)

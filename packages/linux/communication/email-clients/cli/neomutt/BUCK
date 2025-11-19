@@ -1,0 +1,40 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "neomutt-src",
+    src_uri = "https://github.com/neomutt/neomutt/archive/20240425.tar.gz",
+    sha256 = "c1552ff370c7d6e4c8e79f6b3e92d9c7a22c0ccbc5b6c5f63f73f8e55de2f3e1",
+)
+
+configure_make_package(
+    name = "neomutt",
+    source = ":neomutt-src",
+    version = "20240425",
+    description = "Feature-rich mail user agent based on mutt with modern enhancements",
+    homepage = "https://neomutt.org/",
+    license = "GPL-2+",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--disable-doc",
+        "--gpgme",
+        "--gnutls",
+        "--gss",
+        "--sasl",
+        "--tokyocabinet",
+        "--notmuch",
+        "--lua",
+        "--idn2",
+        "--autocrypt",
+        "--zlib",
+        "--zstd",
+        "--lz4",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:ncurses",
+        "//packages/linux/core:zlib",
+        "//packages/linux/network/openssl:openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

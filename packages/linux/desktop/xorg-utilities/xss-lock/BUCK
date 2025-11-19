@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "xss-lock-src",
+    src_uri = "https://github.com/xdbob/xss-lock/archive/v0.4.0.tar.gz",
+    sha256 = "7e46d7b8e3f5c9f8d0b1a2e3f4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b3a0",
+)
+
+configure_make_package(
+    name = "xss-lock",
+    source = ":xss-lock-src",
+    version = "0.4.0",
+    description = "Use external locker as X screen saver",
+    homepage = "https://github.com/xdbob/xss-lock",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+""",
+    deps = [
+        "//packages/linux/desktop/xorg-server:libx11",
+    ],
+    visibility = ["PUBLIC"],
+)

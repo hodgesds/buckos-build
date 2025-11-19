@@ -1,0 +1,305 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# DBI - Database independent interface for Perl
+download_source(
+    name = "dbi-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/H/HM/HMBRAND/DBI-1.643.tar.gz",
+    sha256 = "c9d5e4f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+)
+
+configure_make_package(
+    name = "dbi",
+    source = ":dbi-src",
+    version = "1.643",
+    description = "Database independent interface for Perl",
+    homepage = "https://dbi.perl.org/",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/linux/lang/perl:perl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# DBD::SQLite - Self-contained RDBMS in a DBI Driver
+download_source(
+    name = "dbd-sqlite-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/DBD-SQLite-1.74.tar.gz",
+    sha256 = "d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1",
+)
+
+configure_make_package(
+    name = "dbd-sqlite",
+    source = ":dbd-sqlite-src",
+    version = "1.74",
+    description = "Self-contained RDBMS in a DBI Driver",
+    homepage = "https://metacpan.org/pod/DBD::SQLite",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/linux/lang/perl:perl",
+        ":dbi",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# DBD::Pg - PostgreSQL database driver for the DBI module
+download_source(
+    name = "dbd-pg-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.18.0.tar.gz",
+    sha256 = "e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+)
+
+configure_make_package(
+    name = "dbd-pg",
+    source = ":dbd-pg-src",
+    version = "3.18.0",
+    description = "PostgreSQL database driver for the DBI module",
+    homepage = "https://metacpan.org/pod/DBD::Pg",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/linux/lang/perl:perl",
+        ":dbi",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# DBD::mysql - MySQL driver for the Perl5 Database Interface (DBI)
+download_source(
+    name = "dbd-mysql-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/D/DV/DVEEDEN/DBD-mysql-5.004.tar.gz",
+    sha256 = "f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3",
+)
+
+configure_make_package(
+    name = "dbd-mysql",
+    source = ":dbd-mysql-src",
+    version = "5.004",
+    description = "MySQL driver for the Perl5 Database Interface",
+    homepage = "https://metacpan.org/pod/DBD::mysql",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/linux/lang/perl:perl",
+        ":dbi",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# DBIx::Class - Extensible and flexible object <-> relational mapper
+download_source(
+    name = "dbix-class-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/R/RI/RIBASUSHI/DBIx-Class-0.082843.tar.gz",
+    sha256 = "a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4",
+)
+
+configure_make_package(
+    name = "dbix-class",
+    source = ":dbix-class-src",
+    version = "0.082843",
+    description = "Extensible and flexible object <-> relational mapper",
+    homepage = "https://metacpan.org/pod/DBIx::Class",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/linux/lang/perl:perl",
+        ":dbi",
+        "//packages/linux/lang/perl/oop:moo",
+        "//packages/linux/lang/perl/core:try-tiny",
+        "//packages/linux/lang/perl/core:namespace-clean",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# SQL::Abstract - Generate SQL from Perl data structures
+download_source(
+    name = "sql-abstract-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/M/MS/MSTROUT/SQL-Abstract-2.000001.tar.gz",
+    sha256 = "b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5",
+)
+
+configure_make_package(
+    name = "sql-abstract",
+    source = ":sql-abstract-src",
+    version = "2.000001",
+    description = "Generate SQL from Perl data structures",
+    homepage = "https://metacpan.org/pod/SQL::Abstract",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/linux/lang/perl:perl",
+        "//packages/linux/lang/perl/oop:moo",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Rose::DB - A DBI wrapper and target class for the Rose database system
+download_source(
+    name = "rose-db-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/J/JS/JSIRACUSA/Rose-DB-0.778.tar.gz",
+    sha256 = "c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+)
+
+configure_make_package(
+    name = "rose-db",
+    source = ":rose-db-src",
+    version = "0.778",
+    description = "A DBI wrapper and target class for Rose database",
+    homepage = "https://metacpan.org/pod/Rose::DB",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/linux/lang/perl:perl",
+        ":dbi",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Mojo::Pg - Mojolicious and PostgreSQL
+download_source(
+    name = "mojo-pg-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/S/SR/SRI/Mojo-Pg-4.27.tar.gz",
+    sha256 = "d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7",
+)
+
+configure_make_package(
+    name = "mojo-pg",
+    source = ":mojo-pg-src",
+    version = "4.27",
+    description = "Mojolicious and PostgreSQL",
+    homepage = "https://metacpan.org/pod/Mojo::Pg",
+    license = "Artistic-2.0",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/linux/lang/perl:perl",
+        "//packages/linux/lang/perl/web:mojolicious",
+        ":dbd-pg",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Mojo::SQLite - A tiny Mojolicious wrapper for SQLite
+download_source(
+    name = "mojo-sqlite-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/D/DB/DBOOK/Mojo-SQLite-3.009.tar.gz",
+    sha256 = "e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8",
+)
+
+configure_make_package(
+    name = "mojo-sqlite",
+    source = ":mojo-sqlite-src",
+    version = "3.009",
+    description = "A tiny Mojolicious wrapper for SQLite",
+    homepage = "https://metacpan.org/pod/Mojo::SQLite",
+    license = "Artistic-2.0",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/linux/lang/perl:perl",
+        "//packages/linux/lang/perl/web:mojolicious",
+        ":dbd-sqlite",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Redis - Perl binding for Redis database
+download_source(
+    name = "redis-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/D/DA/DAMS/Redis-2.000.tar.gz",
+    sha256 = "f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+)
+
+configure_make_package(
+    name = "redis",
+    source = ":redis-src",
+    version = "2.000",
+    description = "Perl binding for Redis database",
+    homepage = "https://metacpan.org/pod/Redis",
+    license = "Artistic-2.0",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/linux/lang/perl:perl",
+        "//packages/linux/lang/perl/core:try-tiny",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# MongoDB - Official MongoDB Driver for Perl
+download_source(
+    name = "mongodb-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/M/MO/MONGODB/MongoDB-v2.2.2.tar.gz",
+    sha256 = "a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
+)
+
+configure_make_package(
+    name = "mongodb",
+    source = ":mongodb-src",
+    version = "2.2.2",
+    description = "Official MongoDB Driver for Perl",
+    homepage = "https://metacpan.org/pod/MongoDB",
+    license = "Apache-2.0",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/linux/lang/perl:perl",
+        "//packages/linux/lang/perl/oop:moo",
+        "//packages/linux/lang/perl/oop:type-tiny",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Cache::Memcached::Fast - Perl client for memcached
+download_source(
+    name = "cache-memcached-fast-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/K/KR/KROKI/Cache-Memcached-Fast-0.28.tar.gz",
+    sha256 = "b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1",
+)
+
+configure_make_package(
+    name = "cache-memcached-fast",
+    source = ":cache-memcached-fast-src",
+    version = "0.28",
+    description = "Perl client for memcached, in C language",
+    homepage = "https://metacpan.org/pod/Cache::Memcached::Fast",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/linux/lang/perl:perl",
+    ],
+    visibility = ["PUBLIC"],
+)

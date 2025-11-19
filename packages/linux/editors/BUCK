@@ -1,0 +1,168 @@
+# Filegroup for all editors
+filegroup(
+    name = "all-editors",
+    srcs = [
+        "//packages/linux/editors/vim",
+        "//packages/linux/editors/vim-minimal",
+        "//packages/linux/editors/neovim",
+        "//packages/linux/editors/emacs",
+        "//packages/linux/editors/emacs-nox",
+        "//packages/linux/editors/vscodium",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for GUI editors
+filegroup(
+    name = "gui-editors",
+    srcs = [
+        "//packages/linux/editors/emacs",
+        "//packages/linux/editors/vscodium",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for vim variants
+filegroup(
+    name = "vim-editors",
+    srcs = [
+        "//packages/linux/editors/vim",
+        "//packages/linux/editors/vim-minimal",
+        "//packages/linux/editors/neovim",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for minimal editors
+filegroup(
+    name = "minimal-editors",
+    srcs = [
+        "//packages/linux/editors/vim-minimal",
+        "//packages/linux/editors/emacs-nox",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Text Editing Utilities
+# =============================================================================
+
+# Filegroup for all text utilities
+filegroup(
+    name = "all-text-utils",
+    srcs = [
+        "//packages/linux/editors/sed",
+        "//packages/linux/editors/gawk",
+        "//packages/linux/editors/grep",
+        "//packages/linux/editors/diffutils",
+        "//packages/linux/editors/patch",
+        "//packages/linux/editors/jq",
+        "//packages/linux/editors/yq",
+        "//packages/linux/editors/xmlstarlet",
+        "//packages/linux/editors/ripgrep",
+        "//packages/linux/editors/bat",
+        "//packages/linux/editors/fzf",
+        "//packages/linux/editors/pandoc",
+        "//packages/linux/editors/entr",
+        "//packages/linux/editors/delta",
+        "//packages/linux/editors/sd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for GNU text processing utilities
+filegroup(
+    name = "gnu-text-utils",
+    srcs = [
+        "//packages/linux/editors/sed",
+        "//packages/linux/editors/gawk",
+        "//packages/linux/editors/grep",
+        "//packages/linux/editors/diffutils",
+        "//packages/linux/editors/patch",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for structured data processors (JSON, YAML, XML)
+filegroup(
+    name = "data-processors",
+    srcs = [
+        "//packages/linux/editors/jq",
+        "//packages/linux/editors/yq",
+        "//packages/linux/editors/xmlstarlet",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for modern Rust-based text tools
+filegroup(
+    name = "modern-text-utils",
+    srcs = [
+        "//packages/linux/editors/ripgrep",
+        "//packages/linux/editors/bat",
+        "//packages/linux/editors/delta",
+        "//packages/linux/editors/sd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for search and filter tools
+filegroup(
+    name = "search-tools",
+    srcs = [
+        "//packages/linux/editors/grep",
+        "//packages/linux/editors/ripgrep",
+        "//packages/linux/editors/fzf",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for diff and patch tools
+filegroup(
+    name = "diff-tools",
+    srcs = [
+        "//packages/linux/editors/diffutils",
+        "//packages/linux/editors/patch",
+        "//packages/linux/editors/delta",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for stream editors and find-replace tools
+filegroup(
+    name = "stream-editors",
+    srcs = [
+        "//packages/linux/editors/sed",
+        "//packages/linux/editors/gawk",
+        "//packages/linux/editors/sd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for document conversion tools
+filegroup(
+    name = "document-converters",
+    srcs = [
+        "//packages/linux/editors/pandoc",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for file watching utilities
+filegroup(
+    name = "file-watchers",
+    srcs = [
+        "//packages/linux/editors/entr",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Combined filegroup for all editors and text utilities
+filegroup(
+    name = "all-editors-and-utils",
+    srcs = [
+        ":all-editors",
+        ":all-text-utils",
+    ],
+    visibility = ["PUBLIC"],
+)

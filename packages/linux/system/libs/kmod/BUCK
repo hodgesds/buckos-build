@@ -1,0 +1,75 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+# =============================================================================
+# kmod - Linux kernel module handling
+# =============================================================================
+# Provides tools for managing Linux kernel modules:
+# - modprobe, insmod, rmmod, lsmod, depmod, modinfo
+
+download_source(
+    name = "kmod-src",
+    src_uri = "https://kernel.org/pub/linux/utils/kernel/kmod/kmod-32.tar.xz",
+    sha256 = "630ed0d9a14e0671d4569d2f4ef9d7bd4ef8f853e4afba7fd9f7a58c1f77c9a4",
+)
+
+configure_make_package(
+    name = "kmod",
+    source = ":kmod-src",
+    version = "32",
+    description = "Linux kernel module handling tools (modprobe, insmod, rmmod, lsmod, depmod)",
+    homepage = "https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git",
+    license = "LGPL-2.1-or-later",
+    configure_args = [
+        "--with-xz",
+        "--with-zlib",
+        "--with-zstd",
+        "--with-openssl",
+    ],
+    post_install = """
+# Create compatibility symlinks for traditional module tools
+mkdir -p $OUT/sbin
+for tool in insmod rmmod lsmod modprobe modinfo depmod; do
+    ln -sf ../usr/bin/kmod $OUT/sbin/$tool
+done
+# Also create symlinks in /usr/sbin for compatibility
+mkdir -p $OUT/usr/sbin
+for tool in insmod rmmod lsmod modprobe modinfo depmod; do
+    ln -sf ../bin/kmod $OUT/usr/sbin/$tool
+done
+""",
+    deps = [
+        "//packages/linux/linux/core:zlib",
+        "//packages/linux/linux/core:xz",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Static version for use in initramfs
+configure_make_package(
+    name = "kmod-static",
+    source = ":kmod-src",
+    version = "32",
+    description = "Linux kernel module handling tools (static build for initramfs)",
+    homepage = "https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git",
+    license = "LGPL-2.1-or-later",
+    configure_args = [
+        "--disable-shared",
+        "--enable-static",
+        "--with-xz",
+        "--with-zlib",
+        "--with-zstd",
+    ],
+    make_args = ["LDFLAGS=-static"],
+    post_install = """
+# Create compatibility symlinks
+mkdir -p $OUT/sbin
+for tool in insmod rmmod lsmod modprobe modinfo depmod; do
+    ln -sf ../usr/bin/kmod $OUT/sbin/$tool
+done
+""",
+    deps = [
+        "//packages/linux/linux/core:zlib",
+        "//packages/linux/linux/core:xz",
+    ],
+    visibility = ["PUBLIC"],
+)

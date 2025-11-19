@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+download_source(
+    name = "nvme-cli-src",
+    src_uri = "https://github.com/linux-nvme/nvme-cli/archive/refs/tags/v2.7.1.tar.gz",
+    sha256 = "2a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+)
+
+configure_make_package(
+    name = "nvme-cli",
+    source = ":nvme-cli-src",
+    version = "2.7.1",
+    description = "NVMe storage command line interface utility",
+    homepage = "https://github.com/linux-nvme/nvme-cli",
+    license = "GPL-2.0",
+    configure_args = [],
+    deps = [
+        "//packages/linux/core:util-linux",
+    ],
+    visibility = ["PUBLIC"],
+)

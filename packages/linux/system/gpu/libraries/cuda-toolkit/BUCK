@@ -1,0 +1,94 @@
+# =============================================================================
+# CUDA Toolkit - NVIDIA CUDA development toolkit
+# =============================================================================
+#
+# The CUDA Toolkit provides a development environment for creating
+# high-performance GPU-accelerated applications.
+#
+# =============================================================================
+
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "cuda-toolkit-src",
+    src_uri = "https://developer.download.nvidia.com/compute/cuda/12.6.2/local_installers/cuda_12.6.2_560.35.03_linux.run",
+    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+)
+
+binary_package(
+    name = "cuda-toolkit",
+    source = ":cuda-toolkit-src",
+    version = "12.6.2",
+    description = "NVIDIA CUDA Toolkit for GPU computing",
+    homepage = "https://developer.nvidia.com/cuda-toolkit",
+    license = "NVIDIA CUDA EULA",
+    install_script = """
+# Make installer executable
+chmod +x cuda_*.run
+
+# Extract CUDA toolkit (silent mode, toolkit only)
+./cuda_*.run --silent --toolkit --toolkitpath="$PWD/cuda" --no-opengl-libs --no-drm --no-man-page
+
+# Install CUDA to standard locations
+mkdir -p "$DESTDIR/usr/local/cuda-12.6"
+
+# Copy binaries
+mkdir -p "$DESTDIR/usr/local/cuda-12.6/bin"
+cp -a cuda/bin/* "$DESTDIR/usr/local/cuda-12.6/bin/"
+
+# Copy libraries
+mkdir -p "$DESTDIR/usr/local/cuda-12.6/lib64"
+cp -a cuda/lib64/* "$DESTDIR/usr/local/cuda-12.6/lib64/"
+
+# Copy include files
+mkdir -p "$DESTDIR/usr/local/cuda-12.6/include"
+cp -a cuda/include/* "$DESTDIR/usr/local/cuda-12.6/include/"
+
+# Copy nvvm
+cp -a cuda/nvvm "$DESTDIR/usr/local/cuda-12.6/"
+
+# Create symlink
+ln -sf cuda-12.6 "$DESTDIR/usr/local/cuda"
+
+# Create profile script for PATH
+mkdir -p "$DESTDIR/etc/profile.d"
+cat > "$DESTDIR/etc/profile.d/cuda.sh" << 'EOF'
+# CUDA Toolkit environment
+export CUDA_HOME=/usr/local/cuda
+export PATH=$CUDA_HOME/bin:$PATH
+export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+EOF
+
+# Create pkgconfig files
+mkdir -p "$DESTDIR/usr/lib64/pkgconfig"
+cat > "$DESTDIR/usr/lib64/pkgconfig/cuda.pc" << 'EOF'
+prefix=/usr/local/cuda
+exec_prefix=${prefix}
+libdir=${prefix}/lib64
+includedir=${prefix}/include
+
+Name: CUDA
+Description: NVIDIA CUDA Toolkit
+Version: 12.6.2
+Libs: -L${libdir} -lcudart
+Cflags: -I${includedir}
+EOF
+
+cat > "$DESTDIR/usr/lib64/pkgconfig/cudart.pc" << 'EOF'
+prefix=/usr/local/cuda
+exec_prefix=${prefix}
+libdir=${prefix}/lib64
+includedir=${prefix}/include
+
+Name: CUDA Runtime
+Description: NVIDIA CUDA Runtime Library
+Version: 12.6.2
+Libs: -L${libdir} -lcudart
+Cflags: -I${includedir}
+EOF
+""",
+    deps = [
+        "//packages/linux/system/gpu/drivers/nvidia:nvidia-drivers",
+    ],
+    visibility = ["PUBLIC"],
+)

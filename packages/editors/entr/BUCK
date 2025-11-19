@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "entr-src",
+    src_uri = "https://eradman.com/entrproject/code/entr-5.6.tar.gz",
+    sha256 = "8e7d35cc5cd1f82cccba07e7e4716fc54e6a3d38c9e1be20cc3be5e8b2f9f3de",
+)
+
+configure_make_package(
+    name = "entr",
+    source = ":entr-src",
+    version = "5.6",
+    description = "Run arbitrary commands when files change",
+    homepage = "https://eradman.com/entrproject/",
+    license = "ISC",
+    pre_configure = """
+# entr uses a custom configure script
+./configure
+""",
+    deps = [
+        "//packages/core/musl",
+    ],
+    visibility = ["PUBLIC"],
+)

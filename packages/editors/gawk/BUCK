@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "gawk-src",
+    src_uri = "https://ftp.gnu.org/gnu/gawk/gawk-5.3.0.tar.xz",
+    sha256 = "ca9c16d3d11d0ff8c69d79dc0b47267e1329a69b39b799895604ed447d3ca90b",
+)
+
+configure_make_package(
+    name = "gawk",
+    source = ":gawk-src",
+    version = "5.3.0",
+    description = "GNU awk pattern scanning and processing language",
+    homepage = "https://www.gnu.org/software/gawk/",
+    license = "GPL-3.0",
+    configure_args = [
+        "--without-readline",
+        "--without-mpfr",
+    ],
+    deps = [
+        "//packages/core/musl",
+    ],
+    visibility = ["PUBLIC"],
+)

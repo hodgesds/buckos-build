@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# ksh - KornShell, an interactive command and scripting language
+
+download_source(
+    name = "ksh-src",
+    src_uri = "https://github.com/ksh93/ksh/archive/refs/tags/v1.0.8.tar.gz",
+    sha256 = "d3d7ac17ba6f6772b65cc4aaec3db8d4d24c75f2c8a0dc9a6c9d2c1f8e8a9e6b",
+)
+
+configure_make_package(
+    name = "ksh",
+    source = ":ksh-src",
+    version = "1.0.8",
+    description = "KornShell, an interactive command and scripting language",
+    homepage = "https://github.com/ksh93/ksh",
+    license = "EPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

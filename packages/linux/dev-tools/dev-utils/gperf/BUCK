@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# gperf - Perfect hash function generator
+
+download_source(
+    name = "gperf-src",
+    src_uri = "https://ftp.gnu.org/pub/gnu/gperf/gperf-3.1.tar.gz",
+    sha256 = "588546b945bba4b70b6a3a616e80b4ab466e3f33024a352fc2198112cdbb3ae2",
+)
+
+configure_make_package(
+    name = "gperf",
+    source = ":gperf-src",
+    version = "3.1",
+    description = "Perfect hash function generator",
+    homepage = "https://www.gnu.org/software/gperf/",
+    license = "GPL-3",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,53 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "sox-src",
+    src_uri = "https://downloads.sourceforge.net/project/sox/sox/14.4.2/sox-14.4.2.tar.bz2",
+    sha256 = "81a6956d4330e75b5827316e44ae381e6f1e8928003c6aa45896da9041ea149c",
+)
+
+configure_make_package(
+    name = "sox",
+    source = ":sox-src",
+    version = "14.4.2",
+    description = "Sound eXchange - universal sound sample translator",
+    homepage = "https://sox.sourceforge.net/",
+    license = "GPL-2 LGPL-2.1",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--disable-static",
+        "--with-distro=sideros",
+        "--without-ao",
+        "--without-amrnb",
+        "--without-amrwb",
+        "--without-gsm",
+        "--without-lpc10",
+        "--without-magic",
+        "--without-png",
+        "--without-pulseaudio",
+        "--without-sndio",
+        "--without-twolame",
+        "--without-wavpack",
+        "--with-alsa",
+        "--with-flac",
+        "--with-lame",
+        "--with-mad",
+        "--with-mp3",
+        "--with-oggvorbis",
+        "--with-opus",
+        "--with-sndfile",
+    ],
+    deps = [
+        "//packages/audio/daemons/alsa-lib:alsa-lib",
+        "//packages/audio/libraries/libsndfile:libsndfile",
+        "//packages/audio/libraries/flac:flac",
+        "//packages/audio/libraries/libvorbis:libvorbis",
+        "//packages/audio/libraries/libogg:libogg",
+        "//packages/audio/libraries/opus:opus",
+        "//packages/audio/libraries/lame:lame",
+        "//packages/audio/libraries/libmad:libmad",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

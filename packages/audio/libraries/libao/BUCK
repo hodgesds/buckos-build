@@ -1,0 +1,32 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libao-src",
+    src_uri = "https://downloads.xiph.org/releases/ao/libao-1.2.2.tar.gz",
+    sha256 = "df8a6d0e238feeccb26a783e778716fb41a801536fe7b6fce068e313b0e2bf4d",
+)
+
+configure_make_package(
+    name = "libao",
+    source = ":libao-src",
+    version = "1.2.2",
+    description = "Cross-platform audio output library",
+    homepage = "https://www.xiph.org/ao/",
+    license = "GPL-2",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-static",
+        "--enable-alsa",
+        "--enable-alsa-mmap",
+        "--disable-arts",
+        "--disable-esd",
+        "--disable-nas",
+        "--disable-pulse",
+        "--disable-wmm",
+    ],
+    deps = [
+        "//packages/audio/daemons/alsa-lib:alsa-lib",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

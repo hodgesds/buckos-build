@@ -1,0 +1,52 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "moc-src",
+    src_uri = "http://ftp.daper.net/pub/soft/moc/stable/moc-2.5.2.tar.bz2",
+    sha256 = "f3a68115602a4788b7cfa9bbe9397a9d5e24c68cb61a57695d1c2c3ecf49db08",
+)
+
+configure_make_package(
+    name = "moc",
+    source = ":moc-src",
+    version = "2.5.2",
+    description = "Music On Console - ncurses based console audio player",
+    homepage = "https://moc.daper.net/",
+    license = "GPL-2",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--without-rcc",
+        "--without-magic",
+        "--without-oss",
+        "--without-sndio",
+        "--without-aac",
+        "--without-mp4",
+        "--without-mpc",
+        "--without-wavpack",
+        "--without-sidplay2",
+        "--without-modplug",
+        "--without-ffmpeg",
+        "--without-speex",
+        "--without-timidity",
+        "--with-alsa",
+        "--with-flac",
+        "--with-mad",
+        "--with-vorbis",
+        "--with-sndfile",
+        "--with-curl",
+        "--with-ncurses",
+    ],
+    deps = [
+        "//packages/audio/daemons/alsa-lib:alsa-lib",
+        "//packages/audio/libraries/libsndfile:libsndfile",
+        "//packages/audio/libraries/flac:flac",
+        "//packages/audio/libraries/libmad:libmad",
+        "//packages/audio/libraries/libvorbis:libvorbis",
+        "//packages/audio/libraries/libogg:libogg",
+        "//packages/core:ncurses",
+        "//packages/core:curl",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

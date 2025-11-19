@@ -1,0 +1,40 @@
+load("//defs:package_defs.bzl", "download_source", "cmake_package")
+
+download_source(
+    name = "hydrogen-src",
+    src_uri = "https://github.com/hydrogen-music/hydrogen/archive/refs/tags/1.2.3.tar.gz",
+    sha256 = "e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+)
+
+cmake_package(
+    name = "hydrogen",
+    source = ":hydrogen-src",
+    version = "1.2.3",
+    description = "Advanced drum machine for GNU/Linux",
+    homepage = "http://hydrogen-music.org/",
+    license = "GPL-2",
+    cmake_args = [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DWANT_ALSA=ON",
+        "-DWANT_CPPUNIT=OFF",
+        "-DWANT_DEBUG=OFF",
+        "-DWANT_JACK=OFF",
+        "-DWANT_LADSPA=ON",
+        "-DWANT_LASH=OFF",
+        "-DWANT_LIBARCHIVE=OFF",
+        "-DWANT_LRDF=OFF",
+        "-DWANT_OSS=OFF",
+        "-DWANT_PORTAUDIO=OFF",
+        "-DWANT_PORTMIDI=OFF",
+        "-DWANT_PULSEAUDIO=OFF",
+        "-DWANT_RUBBERBAND=OFF",
+        "-DWANT_SHARED=ON",
+    ],
+    deps = [
+        "//packages/audio/daemons/alsa-lib:alsa-lib",
+        "//packages/audio/libraries/libsndfile:libsndfile",
+        "//packages/desktop/qt:qt5",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -10,6 +10,10 @@ jobs:
   build-changed-targets:
     name: Build Changed Targets
     runs-on: ubuntu-latest
+    outputs:
+      quick_targets: ${{ steps.analyze-labels.outputs.quick_targets }}
+      long_build_targets: ${{ steps.analyze-labels.outputs.long_build_targets }}
+      skipped_targets: ${{ steps.analyze-labels.outputs.skipped_targets }}
 
     steps:
       - name: Checkout repository
@@ -125,18 +129,80 @@ jobs:
             echo "targets=" >> $GITHUB_OUTPUT
           fi
 
-      - name: Build affected targets
+      - name: Analyze target labels
+        id: analyze-labels
         if: steps.affected-targets.outputs.targets != ''
         run: |
           TARGETS="${{ steps.affected-targets.outputs.targets }}"
 
+          # Arrays to hold categorized targets
+          QUICK_TARGETS=""
+          LONG_BUILD_TARGETS=""
+          SKIPPED_TARGETS=""
+
           echo "========================================"
-          echo "Building affected targets..."
+          echo "Analyzing target labels..."
+          echo "========================================"
+
+          for target in $TARGETS; do
+            # Query target labels using buck2 cquery
+            # Labels are returned as a JSON array
+            LABELS=$(buck2 cquery "$target" --output-attribute labels 2>/dev/null | grep -o '"labels":\s*\[[^]]*\]' | sed 's/"labels":\s*//' || echo "[]")
+
+            # Check for ci_skip label - these targets are completely skipped
+            if echo "$LABELS" | grep -q '"ci_skip"'; then
+              echo "SKIP (ci_skip): $target"
+              SKIPPED_TARGETS="$SKIPPED_TARGETS $target"
+              continue
+            fi
+
+            # Check for long_build label - these need special handling
+            if echo "$LABELS" | grep -q '"long_build"'; then
+              echo "LONG BUILD: $target"
+              LONG_BUILD_TARGETS="$LONG_BUILD_TARGETS $target"
+              continue
+            fi
+
+            # Default: quick build targets
+            echo "QUICK: $target"
+            QUICK_TARGETS="$QUICK_TARGETS $target"
+          done
+
+          echo ""
+          echo "========================================"
+          echo "Target Classification Summary"
+          echo "========================================"
+
+          QUICK_COUNT=$(echo "$QUICK_TARGETS" | wc -w)
+          LONG_COUNT=$(echo "$LONG_BUILD_TARGETS" | wc -w)
+          SKIP_COUNT=$(echo "$SKIPPED_TARGETS" | wc -w)
+
+          echo "Quick build targets: $QUICK_COUNT"
+          echo "Long build targets: $LONG_COUNT"
+          echo "Skipped targets: $SKIP_COUNT"
+
+          # Output the categorized targets
+          echo "quick_targets=$QUICK_TARGETS" >> $GITHUB_OUTPUT
+          echo "long_build_targets=$LONG_BUILD_TARGETS" >> $GITHUB_OUTPUT
+          echo "skipped_targets=$SKIPPED_TARGETS" >> $GITHUB_OUTPUT
+
+          # Also output counts for conditional job execution
+          echo "quick_count=$QUICK_COUNT" >> $GITHUB_OUTPUT
+          echo "long_count=$LONG_COUNT" >> $GITHUB_OUTPUT
+          echo "skip_count=$SKIP_COUNT" >> $GITHUB_OUTPUT
+
+      - name: Build quick targets
+        if: steps.analyze-labels.outputs.quick_targets != ''
+        run: |
+          TARGETS="${{ steps.analyze-labels.outputs.quick_targets }}"
+
+          echo "========================================"
+          echo "Building quick targets..."
           echo "========================================"
 
           # Count targets
           TARGET_COUNT=$(echo "$TARGETS" | wc -w)
-          echo "Total targets to build: $TARGET_COUNT"
+          echo "Total quick targets to build: $TARGET_COUNT"
           echo ""
 
           # Build each target individually to get clear error reporting
@@ -160,7 +226,7 @@ jobs:
 
           # Summary
           echo "========================================"
-          echo "Build Summary"
+          echo "Quick Build Summary"
           echo "========================================"
 
           PASSED_COUNT=$(echo "$PASSED_TARGETS" | wc -w)
@@ -177,7 +243,22 @@ jobs:
           fi
 
           echo ""
-          echo "All affected targets built successfully!"
+          echo "All quick targets built successfully!"
+
+      - name: Report skipped targets
+        if: steps.analyze-labels.outputs.skipped_targets != ''
+        run: |
+          SKIPPED="${{ steps.analyze-labels.outputs.skipped_targets }}"
+
+          echo "========================================"
+          echo "Skipped Targets (ci_skip label)"
+          echo "========================================"
+          echo ""
+          echo "The following targets were skipped due to ci_skip label:"
+          echo "$SKIPPED" | tr ' ' '\n'
+          echo ""
+          echo "These are typically large packages like chromium, llvm, etc."
+          echo "that would exceed CI time limits."
 
       - name: No changes to build
         if: steps.changed-files.outputs.changed_files == ''
@@ -195,3 +276,84 @@ jobs:
           echo ""
           echo "Changed files:"
           echo "${{ steps.changed-files.outputs.changed_files }}" | tr ' ' '\n'
+
+  # Separate job for long-running builds (optional, triggered manually or on schedule)
+  build-long-targets:
+    name: Build Long-Running Targets
+    runs-on: ubuntu-latest
+    needs: build-changed-targets
+    if: needs.build-changed-targets.outputs.long_build_targets != ''
+    # This job is set to manual trigger by default - uncomment 'if' above to auto-run
+    # For very long builds, consider using self-hosted runners or scheduled jobs
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Install Buck2
+        run: |
+          BUCK2_VERSION="latest"
+          curl -LO "https://github.com/facebook/buck2/releases/download/${BUCK2_VERSION}/buck2-x86_64-unknown-linux-gnu.zst"
+          zstd -d buck2-x86_64-unknown-linux-gnu.zst -o buck2
+          chmod +x buck2
+          sudo mv buck2 /usr/local/bin/
+          buck2 --version
+
+      - name: Install zstd
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zstd
+
+      - name: Build long-running targets
+        run: |
+          TARGETS="${{ needs.build-changed-targets.outputs.long_build_targets }}"
+
+          echo "========================================"
+          echo "Building long-running targets..."
+          echo "========================================"
+          echo ""
+          echo "Note: These targets have the 'long_build' label and may take"
+          echo "significant time to complete."
+          echo ""
+
+          FAILED_TARGETS=""
+          PASSED_TARGETS=""
+
+          for target in $TARGETS; do
+            echo "----------------------------------------"
+            echo "Building: $target"
+            echo "----------------------------------------"
+
+            if buck2 build "$target" 2>&1; then
+              echo "✓ SUCCESS: $target"
+              PASSED_TARGETS="$PASSED_TARGETS $target"
+            else
+              echo "✗ FAILED: $target"
+              FAILED_TARGETS="$FAILED_TARGETS $target"
+            fi
+            echo ""
+          done
+
+          # Summary
+          echo "========================================"
+          echo "Long Build Summary"
+          echo "========================================"
+
+          PASSED_COUNT=$(echo "$PASSED_TARGETS" | wc -w)
+          FAILED_COUNT=$(echo "$FAILED_TARGETS" | wc -w)
+
+          echo "Passed: $PASSED_COUNT"
+          echo "Failed: $FAILED_COUNT"
+
+          if [ -n "$FAILED_TARGETS" ]; then
+            echo ""
+            echo "Failed targets:"
+            echo "$FAILED_TARGETS" | tr ' ' '\n'
+            exit 1
+          fi
+
+    outputs:
+      long_build_targets: ${{ needs.build-changed-targets.outputs.long_build_targets }}

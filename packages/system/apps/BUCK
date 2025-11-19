@@ -24,7 +24,7 @@ filegroup(
         "//packages/system/apps/lsof:lsof",
         "//packages/system/apps/strace:strace",
         "//packages/system/apps/psmisc:psmisc",
-        "//packages/system/apps/procps-ng:procps-ng",
+        "//packages/core/procps-ng:procps-ng",
     ],
     visibility = ["PUBLIC"],
 )
@@ -59,10 +59,10 @@ filegroup(
 filegroup(
     name = "utility-packages",
     srcs = [
-        "//packages/system/apps/file:file",
+        "//packages/core/file:file",
         "//packages/system/apps/which:which",
         "//packages/system/apps/tree:tree",
-        "//packages/system/apps/less:less",
+        "//packages/core/less:less",
         "//packages/system/apps/findutils:findutils",
         "//packages/system/apps/coreutils:coreutils",
     ],

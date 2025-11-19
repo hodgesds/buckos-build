@@ -17,9 +17,9 @@ filegroup(
 filegroup(
     name = "firewall-packages",
     srcs = [
-        "//packages/system/security/nftables:nftables",
-        "//packages/system/security/nftables:libnftnl",
-        "//packages/system/security/nftables:libmnl",
+        "//packages/network/firewall/nftables:nftables",
+        "//packages/network/firewall/nftables:libnftnl",
+        "//packages/network/firewall/nftables:libmnl",
         "//packages/system/security/fail2ban:fail2ban",
     ],
     visibility = ["PUBLIC"],
@@ -84,7 +84,7 @@ alias(
 
 alias(
     name = "nftables",
-    actual = "//packages/system/security/nftables:nftables",
+    actual = "//packages/network/firewall/nftables:nftables",
     visibility = ["PUBLIC"],
 )
 

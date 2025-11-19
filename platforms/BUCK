@@ -37,3 +37,68 @@ constraint_value(
     name = "debug",
     constraint_setting = ":build_type",
 )
+
+# Platform targeting constraint setting
+# Used to tag packages by their supported platforms
+constraint_setting(
+    name = "target_platform",
+    visibility = ["PUBLIC"],
+)
+
+# Platform constraint values
+constraint_value(
+    name = "linux",
+    constraint_setting = ":target_platform",
+    visibility = ["PUBLIC"],
+)
+
+constraint_value(
+    name = "bsd",
+    constraint_setting = ":target_platform",
+    visibility = ["PUBLIC"],
+)
+
+constraint_value(
+    name = "macos",
+    constraint_setting = ":target_platform",
+    visibility = ["PUBLIC"],
+)
+
+constraint_value(
+    name = "windows",
+    constraint_setting = ":target_platform",
+    visibility = ["PUBLIC"],
+)
+
+# Multi-platform target platforms
+platform(
+    name = "linux-target",
+    constraint_values = [
+        ":linux",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+platform(
+    name = "bsd-target",
+    constraint_values = [
+        ":bsd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+platform(
+    name = "macos-target",
+    constraint_values = [
+        ":macos",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+platform(
+    name = "windows-target",
+    constraint_values = [
+        ":windows",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -4,3 +4,9 @@ export_file(
     name = "package_defs.bzl",
     visibility = ["PUBLIC"],
 )
+
+# Platform targeting helpers
+export_file(
+    name = "platform_defs.bzl",
+    visibility = ["PUBLIC"],
+)

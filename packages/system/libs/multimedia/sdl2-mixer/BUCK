@@ -1,0 +1,36 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "sdl2-mixer-src",
+    src_uri = "https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.8.0/SDL2_mixer-2.8.0.tar.gz",
+    sha256 = "1cfb34c87b26dbdbc7afd68c4f545c0116ab5f90bbfecc5aebe2a9cb4bb31549",
+)
+
+configure_make_package(
+    name = "sdl2-mixer",
+    source = ":sdl2-mixer-src",
+    version = "2.8.0",
+    description = "SDL2 multi-channel audio mixer library",
+    homepage = "https://www.libsdl.org/projects/SDL_mixer/",
+    license = "Zlib",
+    pre_configure = """
+mkdir -p build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=ON \
+    -DSDL2MIXER_FLAC=ON \
+    -DSDL2MIXER_MP3=ON \
+    -DSDL2MIXER_OGG=ON \
+    -DSDL2MIXER_OPUS=ON \
+    -DSDL2MIXER_WAVPACK=ON
+""",
+    deps = [
+        "//packages/system/libs/multimedia/sdl2:sdl2",
+        "//packages/system/libs/audio/flac:flac",
+        "//packages/system/libs/audio/libogg:libogg",
+        "//packages/system/libs/audio/libvorbis:libvorbis",
+        "//packages/system/libs/audio/opus:opus",
+    ],
+    visibility = ["PUBLIC"],
+)

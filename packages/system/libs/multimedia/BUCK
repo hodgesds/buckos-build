@@ -1,0 +1,38 @@
+# Multimedia Libraries aggregator
+
+filegroup(
+    name = "sdl2-core",
+    srcs = [
+        "//packages/system/libs/multimedia/sdl2:sdl2",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "sdl2-all",
+    srcs = [
+        "//packages/system/libs/multimedia/sdl2:sdl2",
+        "//packages/system/libs/multimedia/sdl2-image:sdl2-image",
+        "//packages/system/libs/multimedia/sdl2-mixer:sdl2-mixer",
+        "//packages/system/libs/multimedia/sdl2-ttf:sdl2-ttf",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "audio-frameworks",
+    srcs = [
+        "//packages/system/libs/multimedia/openal-soft:openal-soft",
+        "//packages/system/libs/multimedia/portaudio:portaudio",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all",
+    srcs = [
+        ":sdl2-all",
+        ":audio-frameworks",
+    ],
+    visibility = ["PUBLIC"],
+)

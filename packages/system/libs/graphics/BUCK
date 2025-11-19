@@ -1,0 +1,18 @@
+# 2D Graphics Libraries aggregator
+
+filegroup(
+    name = "core-graphics",
+    srcs = [
+        "//packages/system/libs/graphics/pixman:pixman",
+        "//packages/system/libs/graphics/cairo:cairo",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all",
+    srcs = [
+        ":core-graphics",
+    ],
+    visibility = ["PUBLIC"],
+)

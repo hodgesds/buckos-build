@@ -1,0 +1,28 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "iproute2-src",
+    src_uri = "https://mirrors.edge.kernel.org/pub/linux/utils/net/iproute2/iproute2-6.7.0.tar.xz",
+    sha256 = "ff942dd9828d7d1f867f61fe73d63d1e9391a0b587393bce494063c26d746156",
+)
+
+configure_make_package(
+    name = "iproute2",
+    source = ":iproute2-src",
+    version = "6.7.0",
+    description = "IP routing utilities",
+    homepage = "https://wiki.linuxfoundation.org/networking/iproute2",
+    license = "GPL-2.0",
+    pre_configure = """
+# iproute2 uses a simple configure script
+./configure
+""",
+    make_args = [
+        "PREFIX=/usr",
+        "SBINDIR=/sbin",
+    ],
+    env = {
+        "DESTDIR": "$DESTDIR",
+    },
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "dhcpcd-src",
+    src_uri = "https://github.com/NetworkConfiguration/dhcpcd/releases/download/v10.0.6/dhcpcd-10.0.6.tar.xz",
+    sha256 = "779a99d85b66e5e39cd0e8d5b03b4096d89ae87c01aedf16d3f7b4e790163b87",
+)
+
+configure_make_package(
+    name = "dhcpcd",
+    source = ":dhcpcd-src",
+    version = "10.0.6",
+    description = "DHCP/IPv4LL/IPv6RS/DHCPv6 client",
+    homepage = "https://roy.marples.name/projects/dhcpcd",
+    license = "BSD-2-Clause",
+    configure_args = [
+        "--prefix=/usr",
+        "--sbindir=/sbin",
+        "--sysconfdir=/etc",
+        "--rundir=/run",
+        "--without-udev",
+    ],
+    visibility = ["PUBLIC"],
+)

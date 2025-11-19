@@ -4,7 +4,7 @@ load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 download_source(
     name = "atuin-src",
     src_uri = "https://github.com/atuinsh/atuin/archive/refs/tags/v18.4.0.tar.gz",
-    sha256 = "PLACEHOLDER_HASH",
+    sha256 = "de6d2bcf10de4d757916c7e92a70f15929fc1dea75abc4df09b0baedf26a53b2",
 )
 
 configure_make_package(

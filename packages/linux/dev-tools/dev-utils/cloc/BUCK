@@ -4,7 +4,7 @@ load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 download_source(
     name = "cloc-src",
     src_uri = "https://github.com/AlDanial/cloc/releases/download/v2.06/cloc-2.06.tar.gz",
-    sha256 = "PLACEHOLDER_HASH",
+    sha256 = "27b6b007a5d482e5f50b23984cbe10f6a9f26e1052e9c7e010edfdcf879dc554",
 )
 
 configure_make_package(

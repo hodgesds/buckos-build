@@ -4,7 +4,7 @@ load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 download_source(
     name = "wdiff-src",
     src_uri = "https://ftp.gnu.org/gnu/wdiff/wdiff-1.2.2.tar.gz",
-    sha256 = "PLACEHOLDER_HASH",
+    sha256 = "34ff698c870c87e6e47a838eeaaae729fa73349139fc8db12211d2a22b78af6b",
 )
 
 configure_make_package(

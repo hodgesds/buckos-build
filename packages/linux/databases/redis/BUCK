@@ -4,7 +4,7 @@ load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 download_source(
     name = "redis-src",
     src_uri = "https://download.redis.io/releases/redis-7.4.2.tar.gz",
-    sha256 = "PLACEHOLDER_HASH",
+    sha256 = "4ddebbf09061cbb589011786febdb34f29767dd7f89dbe712d2b68e808af6a1f",
 )
 
 configure_make_package(

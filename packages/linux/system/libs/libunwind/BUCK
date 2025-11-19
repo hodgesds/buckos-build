@@ -4,7 +4,7 @@ load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 download_source(
     name = "libunwind-src",
     src_uri = "https://github.com/libunwind/libunwind/releases/download/v1.8.3/libunwind-1.8.3.tar.gz",
-    sha256 = "PLACEHOLDER_HASH",
+    sha256 = "be30d910e67f58d82e753231f1357f326a1a088acf126b21ff77e60aab19b90b",
 )
 
 configure_make_package(

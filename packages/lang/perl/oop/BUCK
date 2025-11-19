@@ -1,0 +1,356 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# Moose - A postmodern object system for Perl 5
+download_source(
+    name = "moose-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/E/ET/ETHER/Moose-2.2207.tar.gz",
+    sha256 = "6e46f2af6e4dba0e60d3b1a59bb7b9c5fc79f17f7f34d5fbb01c4839d0b7b8c4",
+)
+
+configure_make_package(
+    name = "moose",
+    source = ":moose-src",
+    version = "2.2207",
+    description = "A postmodern object system for Perl 5",
+    homepage = "https://metacpan.org/pod/Moose",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+        "//packages/lang/perl/core:try-tiny",
+        "//packages/lang/perl/core:package-stash",
+        "//packages/lang/perl/core:module-runtime",
+        "//packages/lang/perl/core:class-accessor",
+        ":class-load",
+        ":data-visitor",
+        ":eval-closure",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Moo - Minimalist Object Orientation (with Moose compatibility)
+download_source(
+    name = "moo-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/H/HA/HAARG/Moo-2.005005.tar.gz",
+    sha256 = "fb5a2952649faed07373f220b78004a9c6aba387739133740c1770e9b1f4b108",
+)
+
+configure_make_package(
+    name = "moo",
+    source = ":moo-src",
+    version = "2.005005",
+    description = "Minimalist Object Orientation (with Moose compatibility)",
+    homepage = "https://metacpan.org/pod/Moo",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+        "//packages/lang/perl/core:module-runtime",
+        "//packages/lang/perl/core:import-into",
+        ":role-tiny",
+        ":class-method-modifiers",
+        ":sub-quote",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Mouse - Moose minus the antlers
+download_source(
+    name = "mouse-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/S/SK/SKAJI/Mouse-v2.5.10.tar.gz",
+    sha256 = "bf9a8e5c276b20679e8c815c9e6fd47a5b0ca0b2a33ec7ee9f1dcb064efb6e26",
+)
+
+configure_make_package(
+    name = "mouse",
+    source = ":mouse-src",
+    version = "2.5.10",
+    description = "Moose minus the antlers",
+    homepage = "https://metacpan.org/pod/Mouse",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Role::Tiny - Roles: a lightweight alternative to Moose roles
+download_source(
+    name = "role-tiny-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/H/HA/HAARG/Role-Tiny-2.002004.tar.gz",
+    sha256 = "d7bdee9e138a4f83aa52d0a981625644bda87ff16642dfa845dcb44d9a242b45",
+)
+
+configure_make_package(
+    name = "role-tiny",
+    source = ":role-tiny-src",
+    version = "2.002004",
+    description = "Roles: a lightweight alternative to Moose roles",
+    homepage = "https://metacpan.org/pod/Role::Tiny",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Class::Method::Modifiers - Provides Moose-like method modifiers
+download_source(
+    name = "class-method-modifiers-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/E/ET/ETHER/Class-Method-Modifiers-2.15.tar.gz",
+    sha256 = "65cd85bfe475d066e9186f7a8cc636070985b30b0ebb769b3d89c3c0be3be3f8",
+)
+
+configure_make_package(
+    name = "class-method-modifiers",
+    source = ":class-method-modifiers-src",
+    version = "2.15",
+    description = "Provides Moose-like method modifiers",
+    homepage = "https://metacpan.org/pod/Class::Method::Modifiers",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Sub::Quote - Efficient generation of subroutines via string eval
+download_source(
+    name = "sub-quote-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/H/HA/HAARG/Sub-Quote-2.006008.tar.gz",
+    sha256 = "c32cd6b2fd1e0f5f16a11d8af4ecc9e78fb6e9ed7467df0be5c1c3be7cfbcb3a",
+)
+
+configure_make_package(
+    name = "sub-quote",
+    source = ":sub-quote-src",
+    version = "2.006008",
+    description = "Efficient generation of subroutines via string eval",
+    homepage = "https://metacpan.org/pod/Sub::Quote",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Class::Load - A working (require Class::Name) and target
+download_source(
+    name = "class-load-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/E/ET/ETHER/Class-Load-0.25.tar.gz",
+    sha256 = "2a48fa779b5297e56156380e8b32637c6c58decb4f4a7f3c7350523e11275f8f",
+)
+
+configure_make_package(
+    name = "class-load",
+    source = ":class-load-src",
+    version = "0.25",
+    description = "A working (require Class::Name) and target",
+    homepage = "https://metacpan.org/pod/Class::Load",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+        "//packages/lang/perl/core:module-runtime",
+        "//packages/lang/perl/core:try-tiny",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Data::Visitor - Visitor style traversal of Perl data structures
+download_source(
+    name = "data-visitor-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/E/ET/ETHER/Data-Visitor-0.32.tar.gz",
+    sha256 = "c0b09e79ac8b8e08e0c5faac3ca88a31a4d57df7e3ec42c1cb7c2e16e8e47f9b",
+)
+
+configure_make_package(
+    name = "data-visitor",
+    source = ":data-visitor-src",
+    version = "0.32",
+    description = "Visitor style traversal of Perl data structures",
+    homepage = "https://metacpan.org/pod/Data::Visitor",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+        "//packages/lang/perl/core:namespace-clean",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Eval::Closure - Safely and cleanly create closures via string eval
+download_source(
+    name = "eval-closure-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/D/DO/DOY/Eval-Closure-0.14.tar.gz",
+    sha256 = "ea0c6f04986736d8f7b9b79dc4e8c2efe2d19b58ad8a96fdd6f5f8c1a1f2e0a7",
+)
+
+configure_make_package(
+    name = "eval-closure",
+    source = ":eval-closure-src",
+    version = "0.14",
+    description = "Safely and cleanly create closures via string eval",
+    homepage = "https://metacpan.org/pod/Eval::Closure",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+        "//packages/lang/perl/core:try-tiny",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# MooseX::Types - Organise your Moose types in libraries
+download_source(
+    name = "moosex-types-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/E/ET/ETHER/MooseX-Types-0.50.tar.gz",
+    sha256 = "9cd87b3492cbf0be4d9e91b8a9461b3c3f15c7a1e8d29c4c2d30f57e8e3ea2e6",
+)
+
+configure_make_package(
+    name = "moosex-types",
+    source = ":moosex-types-src",
+    version = "0.50",
+    description = "Organise your Moose types in libraries",
+    homepage = "https://metacpan.org/pod/MooseX::Types",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+        ":moose",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# MooseX::Role::Parameterized - Moose roles with parameters
+download_source(
+    name = "moosex-role-parameterized-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/E/ET/ETHER/MooseX-Role-Parameterized-1.11.tar.gz",
+    sha256 = "1f7a3d9c7e8b5d9e6f7a3b9c5d8e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1d0e",
+)
+
+configure_make_package(
+    name = "moosex-role-parameterized",
+    source = ":moosex-role-parameterized-src",
+    version = "1.11",
+    description = "Moose roles with parameters",
+    homepage = "https://metacpan.org/pod/MooseX::Role::Parameterized",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+        ":moose",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Type::Tiny - Tiny, yet Moo(se)-compatible type constraint
+download_source(
+    name = "type-tiny-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/T/TO/TOBYINK/Type-Tiny-2.004000.tar.gz",
+    sha256 = "c90ef677f725b32a0f4e5e9ecc1e92b89eb53bfb1e3d7c2c5e3fb0e7a0f2d3e9",
+)
+
+configure_make_package(
+    name = "type-tiny",
+    source = ":type-tiny-src",
+    version = "2.004000",
+    description = "Tiny, yet Moo(se)-compatible type constraint",
+    homepage = "https://metacpan.org/pod/Type::Tiny",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+        "//packages/lang/perl/core:exporter-tiny",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Object::Pad - A simple object system with type constraints
+download_source(
+    name = "object-pad-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/Object-Pad-0.809.tar.gz",
+    sha256 = "a9b5e4d8e9c3f7e2b1d4a6f8c9e5b2d3a7f4e8c6b9d2f5a8e1c4b7a0f3e6d9c2",
+)
+
+configure_make_package(
+    name = "object-pad",
+    source = ":object-pad-src",
+    version = "0.809",
+    description = "A simple object system with type constraints",
+    homepage = "https://metacpan.org/pod/Object::Pad",
+    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Class::Tiny - Minimalist class construction
+download_source(
+    name = "class-tiny-src",
+    src_uri = "https://cpan.metacpan.org/authors/id/D/DA/DAGOLDEN/Class-Tiny-1.008.tar.gz",
+    sha256 = "ee058a63912fa1fcb9a72498f56ca421a2056dc7f9f4b67837446d6421815615",
+)
+
+configure_make_package(
+    name = "class-tiny",
+    source = ":class-tiny-src",
+    version = "1.008",
+    description = "Minimalist class construction",
+    homepage = "https://metacpan.org/pod/Class::Tiny",
+    license = "Apache-2.0",
+    pre_configure = """
+        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    """,
+    configure_args = [],
+    deps = [
+        "//packages/lang/perl:perl",
+    ],
+    visibility = ["PUBLIC"],
+)

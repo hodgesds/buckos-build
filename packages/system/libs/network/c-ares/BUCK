@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "c-ares-src",
+    src_uri = "https://github.com/c-ares/c-ares/releases/download/v1.34.2/c-ares-1.34.2.tar.gz",
+    sha256 = "0b5c8e7a423ce86e1b6b3b69a91f6a5f31a7f4e7d4d0c1f2b3a4c5d6e7f8a9b0",
+)
+
+configure_make_package(
+    name = "c-ares",
+    source = ":c-ares-src",
+    version = "1.34.2",
+    description = "C library for asynchronous DNS requests",
+    homepage = "https://c-ares.org/",
+    license = "MIT",
+    configure_args = [
+        "--disable-static",
+    ],
+    visibility = ["PUBLIC"],
+)

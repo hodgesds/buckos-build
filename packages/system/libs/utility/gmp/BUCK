@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "gmp-src",
+    src_uri = "https://ftp.gnu.org/gnu/gmp/gmp-6.3.0.tar.xz",
+    sha256 = "a3c2b80201b89e68616f4ad30bc66aee4927c3ce50e33929ca819d5c43538898",
+)
+
+configure_make_package(
+    name = "gmp",
+    source = ":gmp-src",
+    version = "6.3.0",
+    description = "GNU Multiple Precision Arithmetic Library",
+    homepage = "https://gmplib.org/",
+    license = "LGPL-3.0",
+    configure_args = [
+        "--enable-cxx",
+        "--disable-static",
+    ],
+    visibility = ["PUBLIC"],
+)

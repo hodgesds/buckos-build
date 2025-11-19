@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libgpg-error-src",
+    src_uri = "https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.50.tar.bz2",
+    sha256 = "69405349e0a633e444a28c5b35ce8f14484684518a508dc48a089992fe93e20a",
+)
+
+configure_make_package(
+    name = "libgpg-error",
+    source = ":libgpg-error-src",
+    version = "1.50",
+    description = "GnuPG error values library",
+    homepage = "https://gnupg.org/related_software/libgpg-error/",
+    license = "LGPL-2.1",
+    configure_args = [
+        "--disable-static",
+    ],
+    visibility = ["PUBLIC"],
+)

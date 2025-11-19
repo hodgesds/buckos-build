@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "xz-src",
+    src_uri = "https://github.com/tukaani-project/xz/releases/download/v5.6.3/xz-5.6.3.tar.xz",
+    sha256 = "b1d45295d3f71f25a4c9101f17d89d8abad9e8f7a6a5a7c413d1b5b20b6f4d65",
+)
+
+configure_make_package(
+    name = "xz",
+    source = ":xz-src",
+    version = "5.6.3",
+    description = "XZ Utils - LZMA compression utilities and library",
+    homepage = "https://tukaani.org/xz/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--disable-static",
+        "--enable-shared",
+    ],
+    visibility = ["PUBLIC"],
+)

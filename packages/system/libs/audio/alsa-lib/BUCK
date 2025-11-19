@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "alsa-lib-src",
+    src_uri = "https://www.alsa-project.org/files/pub/lib/alsa-lib-1.2.12.tar.bz2",
+    sha256 = "4868cd908627d50f5e21c4d862d88c6406dddc394c15c05dc3e4b33a1f8c25fe",
+)
+
+configure_make_package(
+    name = "alsa-lib",
+    source = ":alsa-lib-src",
+    version = "1.2.12",
+    description = "Advanced Linux Sound Architecture (ALSA) library",
+    homepage = "https://www.alsa-project.org/",
+    license = "LGPL-2.1",
+    configure_args = [
+        "--disable-static",
+    ],
+    visibility = ["PUBLIC"],
+)

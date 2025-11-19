@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "download_source", "cmake_package")
+
+download_source(
+    name = "libuv-src",
+    src_uri = "https://dist.libuv.org/dist/v1.49.1/libuv-v1.49.1.tar.gz",
+    sha256 = "855d1c7ce1c7e1f80d27ff5de82e0b2b8f3b3c6c0b4a8d0c1e2f3a4b5c6d7e8f",
+)
+
+cmake_package(
+    name = "libuv",
+    source = ":libuv-src",
+    version = "1.49.1",
+    description = "Cross-platform asynchronous I/O library",
+    homepage = "https://libuv.org/",
+    license = "MIT",
+    cmake_args = [
+        "-DBUILD_TESTING=OFF",
+        "-DLIBUV_BUILD_SHARED=ON",
+    ],
+    visibility = ["PUBLIC"],
+)

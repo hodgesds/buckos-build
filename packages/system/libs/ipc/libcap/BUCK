@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libcap-src",
+    src_uri = "https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.70.tar.xz",
+    sha256 = "23a6ef8aadaf1e3e875f633bb2d116cfef8952deba594e2a2d5f1c5f0b1562f4",
+)
+
+configure_make_package(
+    name = "libcap",
+    source = ":libcap-src",
+    version = "2.70",
+    description = "POSIX capabilities library",
+    homepage = "https://sites.google.com/site/fullycapable/",
+    license = "BSD-3-Clause",
+    build_in_source = True,
+    configure_args = [],
+    make_args = [
+        "prefix=/usr",
+        "lib=lib",
+        "RAISE_SETFCAP=no",
+    ],
+    install_args = [
+        "prefix=/usr",
+        "lib=lib",
+        "RAISE_SETFCAP=no",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,27 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libtiff-src",
+    src_uri = "https://download.osgeo.org/libtiff/tiff-4.7.0.tar.xz",
+    sha256 = "273a0a73b1f0bed640afee4a5df0337357ced5b53d3d5d1c405b936f69e57f5e",
+)
+
+configure_make_package(
+    name = "libtiff",
+    source = ":libtiff-src",
+    version = "4.7.0",
+    description = "Library for reading and writing TIFF files",
+    homepage = "http://www.libtiff.org/",
+    license = "libtiff",
+    configure_args = [
+        "--disable-static",
+        "--enable-cxx",
+    ],
+    deps = [
+        "//packages/core/zlib",
+        "//packages/system/libs/compression/xz",
+        "//packages/system/libs/compression/zstd",
+        "//packages/system/libs/image/libjpeg-turbo",
+    ],
+    visibility = ["PUBLIC"],
+)

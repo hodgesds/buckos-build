@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libgcrypt-src",
+    src_uri = "https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.11.0.tar.bz2",
+    sha256 = "09120c9867ce7f2081d6aaa1775386b98c2f2f246135761aae47d81f58685b9c",
+)
+
+configure_make_package(
+    name = "libgcrypt",
+    source = ":libgcrypt-src",
+    version = "1.11.0",
+    description = "General purpose cryptographic library based on the code from GnuPG",
+    homepage = "https://gnupg.org/related_software/libgcrypt/",
+    license = "LGPL-2.1",
+    configure_args = [
+        "--disable-static",
+    ],
+    deps = [
+        "//packages/system/libs/crypto/libgpg-error",
+    ],
+    visibility = ["PUBLIC"],
+)

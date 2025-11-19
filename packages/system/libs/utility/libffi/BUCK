@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libffi-src",
+    src_uri = "https://github.com/libffi/libffi/releases/download/v3.4.6/libffi-3.4.6.tar.gz",
+    sha256 = "b0dea9df23c863a7a50e825440f3ebffabd65df1497108e5d437747843895a4e",
+)
+
+configure_make_package(
+    name = "libffi",
+    source = ":libffi-src",
+    version = "3.4.6",
+    description = "Foreign Function Interface library",
+    homepage = "https://sourceware.org/libffi/",
+    license = "MIT",
+    configure_args = [
+        "--disable-static",
+        "--disable-exec-static-tramp",
+    ],
+    visibility = ["PUBLIC"],
+)

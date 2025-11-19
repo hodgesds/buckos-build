@@ -1,0 +1,33 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "bzip2-src",
+    src_uri = "https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
+    sha256 = "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269",
+)
+
+configure_make_package(
+    name = "bzip2",
+    source = ":bzip2-src",
+    version = "1.0.8",
+    description = "High-quality block-sorting file compressor",
+    homepage = "https://sourceware.org/bzip2/",
+    license = "bzip2-1.0.6",
+    build_in_source = True,
+    configure_args = [],
+    make_args = [
+        "-f",
+        "Makefile-libbz2_so",
+    ],
+    post_install = """
+# Install shared library
+install -Dm755 libbz2.so.1.0.8 "$DESTDIR/usr/lib/libbz2.so.1.0.8"
+ln -sf libbz2.so.1.0.8 "$DESTDIR/usr/lib/libbz2.so.1.0"
+ln -sf libbz2.so.1.0.8 "$DESTDIR/usr/lib/libbz2.so.1"
+ln -sf libbz2.so.1.0.8 "$DESTDIR/usr/lib/libbz2.so"
+
+# Install static library and headers
+make PREFIX="$DESTDIR/usr" install
+""",
+    visibility = ["PUBLIC"],
+)

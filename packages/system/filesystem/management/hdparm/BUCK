@@ -1,0 +1,19 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+download_source(
+    name = "hdparm-src",
+    src_uri = "https://sourceforge.net/projects/hdparm/files/hdparm/hdparm-9.65.tar.gz",
+    sha256 = "1a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+)
+
+configure_make_package(
+    name = "hdparm",
+    source = ":hdparm-src",
+    version = "9.65",
+    description = "Get/set hard disk parameters",
+    homepage = "https://sourceforge.net/projects/hdparm/",
+    license = "BSD-2-Clause",
+    configure_args = [],
+    deps = [],
+    visibility = ["PUBLIC"],
+)

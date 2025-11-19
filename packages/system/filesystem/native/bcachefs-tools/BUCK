@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+download_source(
+    name = "bcachefs-tools-src",
+    src_uri = "https://evilpiepirate.org/git/bcachefs-tools.git/snapshot/bcachefs-tools-1.4.1.tar.gz",
+    sha256 = "3a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+)
+
+configure_make_package(
+    name = "bcachefs-tools",
+    source = ":bcachefs-tools-src",
+    version = "1.4.1",
+    description = "Bcachefs filesystem utilities (mkfs.bcachefs, bcachefs)",
+    homepage = "https://bcachefs.org/",
+    license = "GPL-2.0",
+    configure_args = [],
+    deps = [
+        "//packages/core:util-linux",
+        "//packages/core:lz4",
+        "//packages/core:zstd",
+        "//packages/network/openssl:openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

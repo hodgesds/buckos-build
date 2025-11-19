@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+download_source(
+    name = "xfsprogs-src",
+    src_uri = "https://mirrors.edge.kernel.org/pub/linux/utils/fs/xfs/xfsprogs/xfsprogs-6.6.0.tar.xz",
+    sha256 = "6a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+)
+
+configure_make_package(
+    name = "xfsprogs",
+    source = ":xfsprogs-src",
+    version = "6.6.0",
+    description = "XFS filesystem utilities (mkfs.xfs, xfs_repair, xfs_info, etc.)",
+    homepage = "https://xfs.wiki.kernel.org/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--enable-editline=yes",
+        "--enable-blkid=yes",
+    ],
+    deps = [
+        "//packages/core:util-linux",
+        "//packages/core:readline",
+    ],
+    visibility = ["PUBLIC"],
+)

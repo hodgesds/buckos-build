@@ -1,0 +1,27 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+download_source(
+    name = "e2fsprogs-src",
+    src_uri = "https://mirrors.edge.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.47.0/e2fsprogs-1.47.0.tar.xz",
+    sha256 = "c3b6c836e9444ea56c0e3e6ede3f16f1e32ccc7e4e3fae7b35ab20091a4d24c1",
+)
+
+configure_make_package(
+    name = "e2fsprogs",
+    source = ":e2fsprogs-src",
+    version = "1.47.0",
+    description = "Ext2/3/4 filesystem utilities (mke2fs, e2fsck, tune2fs, etc.)",
+    homepage = "http://e2fsprogs.sourceforge.net/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--enable-elf-shlibs",
+        "--disable-libblkid",
+        "--disable-libuuid",
+        "--disable-uuidd",
+        "--disable-fsck",
+    ],
+    deps = [
+        "//packages/core:util-linux",
+    ],
+    visibility = ["PUBLIC"],
+)

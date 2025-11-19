@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+download_source(
+    name = "fuse3-src",
+    src_uri = "https://github.com/libfuse/libfuse/releases/download/fuse-3.16.2/fuse-3.16.2.tar.gz",
+    sha256 = "4a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+)
+
+configure_make_package(
+    name = "fuse3",
+    source = ":fuse3-src",
+    version = "3.16.2",
+    description = "Filesystem in Userspace (FUSE) library and utilities",
+    homepage = "https://github.com/libfuse/libfuse",
+    license = "LGPL-2.1",
+    configure_args = [
+        "--disable-example",
+    ],
+    deps = [],
+    visibility = ["PUBLIC"],
+)

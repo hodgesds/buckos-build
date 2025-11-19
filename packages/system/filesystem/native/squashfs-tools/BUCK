@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+download_source(
+    name = "squashfs-tools-src",
+    src_uri = "https://github.com/plougher/squashfs-tools/archive/refs/tags/4.6.1.tar.gz",
+    sha256 = "0a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+)
+
+configure_make_package(
+    name = "squashfs-tools",
+    source = ":squashfs-tools-src",
+    version = "4.6.1",
+    description = "Tools for creating and extracting SquashFS filesystems",
+    homepage = "https://github.com/plougher/squashfs-tools",
+    license = "GPL-2.0",
+    configure_args = [],
+    make_args = [
+        "XZ_SUPPORT=1",
+        "LZO_SUPPORT=1",
+        "ZSTD_SUPPORT=1",
+    ],
+    deps = [
+        "//packages/core:zlib",
+        "//packages/core:xz",
+        "//packages/core:lzo",
+        "//packages/core:zstd",
+    ],
+    visibility = ["PUBLIC"],
+)

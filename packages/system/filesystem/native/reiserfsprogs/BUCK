@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+
+download_source(
+    name = "reiserfsprogs-src",
+    src_uri = "https://mirrors.edge.kernel.org/pub/linux/kernel/people/jeffm/reiserfsprogs/v3.6.27/reiserfsprogs-3.6.27.tar.xz",
+    sha256 = "9a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+)
+
+configure_make_package(
+    name = "reiserfsprogs",
+    source = ":reiserfsprogs-src",
+    version = "3.6.27",
+    description = "ReiserFS filesystem utilities (mkreiserfs, reiserfsck, etc.)",
+    homepage = "https://reiser4.wiki.kernel.org/",
+    license = "GPL-2.0",
+    configure_args = [],
+    deps = [
+        "//packages/core:util-linux",
+    ],
+    visibility = ["PUBLIC"],
+)

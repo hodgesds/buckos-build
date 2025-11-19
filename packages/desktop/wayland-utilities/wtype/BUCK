@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "wtype-src",
+    src_uri = "https://github.com/atx/wtype/archive/v0.4.tar.gz",
+    sha256 = "deb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6d5",
+)
+
+configure_make_package(
+    name = "wtype",
+    source = ":wtype-src",
+    version = "0.4",
+    description = "xdotool type for Wayland",
+    homepage = "https://github.com/atx/wtype",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr
+""",
+    deps = [
+        "//packages/desktop/wayland:wayland",
+        "//packages/desktop/wayland:wayland-protocols",
+    ],
+    visibility = ["PUBLIC"],
+)

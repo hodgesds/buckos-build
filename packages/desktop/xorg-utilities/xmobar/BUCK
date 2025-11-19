@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "xmobar-src",
+    src_uri = "https://hackage.haskell.org/package/xmobar-0.48.1/xmobar-0.48.1.tar.gz",
+    sha256 = "de46d7b8e3f5c9f8d0b1a2e3f4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b3a6",
+)
+
+configure_make_package(
+    name = "xmobar",
+    source = ":xmobar-src",
+    version = "0.48.1",
+    description = "A minimalistic text-based status bar",
+    homepage = "https://codeberg.org/xmobar/xmobar",
+    license = "BSD-3-Clause",
+    pre_configure = """
+# xmobar uses cabal
+""",
+    deps = [
+        "//packages/desktop/xorg-server:libx11",
+    ],
+    visibility = ["PUBLIC"],
+)

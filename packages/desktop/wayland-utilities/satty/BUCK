@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "satty-src",
+    src_uri = "https://github.com/gabm/Satty/archive/v0.12.0.tar.gz",
+    sha256 = "5eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6cd",
+)
+
+configure_make_package(
+    name = "satty",
+    source = ":satty-src",
+    version = "0.12.0",
+    description = "A screenshot annotation tool inspired by Swappy",
+    homepage = "https://github.com/gabm/Satty",
+    license = "MPL-2.0",
+    pre_configure = """
+# Uses cargo
+""",
+    deps = [
+        "//packages/desktop/wayland-utilities/grim:grim",
+        "//packages/desktop/wayland-utilities/slurp:slurp",
+    ],
+    visibility = ["PUBLIC"],
+)

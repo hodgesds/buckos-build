@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "wl-clip-persist-src",
+    src_uri = "https://github.com/Linus789/wl-clip-persist/archive/v0.3.1.tar.gz",
+    sha256 = "7eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6bf",
+)
+
+configure_make_package(
+    name = "wl-clip-persist",
+    source = ":wl-clip-persist-src",
+    version = "0.3.1",
+    description = "Keep Wayland clipboard after program closes",
+    homepage = "https://github.com/Linus789/wl-clip-persist",
+    license = "MIT",
+    pre_configure = """
+# Uses cargo
+""",
+    deps = [
+        "//packages/desktop/wayland:wayland",
+    ],
+    visibility = ["PUBLIC"],
+)

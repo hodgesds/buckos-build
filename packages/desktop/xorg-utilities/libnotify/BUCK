@@ -1,0 +1,22 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libnotify-src",
+    src_uri = "https://download.gnome.org/sources/libnotify/0.8/libnotify-0.8.3.tar.xz",
+    sha256 = "2e46d7b8e3f5c9f8d0b1a2e3f4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c5",
+)
+
+configure_make_package(
+    name = "libnotify",
+    source = ":libnotify-src",
+    version = "0.8.3",
+    description = "Library for sending desktop notifications",
+    homepage = "https://gitlab.gnome.org/GNOME/libnotify",
+    license = "LGPL-2.1",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr -Dgtk_doc=false -Dman=false
+""",
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "mpvpaper-src",
+    src_uri = "https://github.com/GhostNaN/mpvpaper/archive/1.6.tar.gz",
+    sha256 = "7eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6df",
+)
+
+configure_make_package(
+    name = "mpvpaper",
+    source = ":mpvpaper-src",
+    version = "1.6",
+    description = "A video wallpaper program for wlroots compositors",
+    homepage = "https://github.com/GhostNaN/mpvpaper",
+    license = "GPL-3.0",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr
+""",
+    deps = [
+        "//packages/desktop/wayland:wayland",
+        "//packages/desktop/wayland:wayland-protocols",
+    ],
+    visibility = ["PUBLIC"],
+)

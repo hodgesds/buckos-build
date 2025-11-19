@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "kanshi-src",
+    src_uri = "https://git.sr.ht/~emersion/kanshi/refs/download/v1.5.1/kanshi-1.5.1.tar.gz",
+    sha256 = "feb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6c7",
+)
+
+configure_make_package(
+    name = "kanshi",
+    source = ":kanshi-src",
+    version = "1.5.1",
+    description = "Dynamic display configuration for Wayland",
+    homepage = "https://sr.ht/~emersion/kanshi/",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr \\
+    -Dman-pages=disabled
+""",
+    deps = [
+        "//packages/desktop/wayland:wayland",
+    ],
+    visibility = ["PUBLIC"],
+)

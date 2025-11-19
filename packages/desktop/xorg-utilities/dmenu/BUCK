@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "dmenu-src",
+    src_uri = "https://dl.suckless.org/tools/dmenu-5.2.tar.gz",
+    sha256 = "05cb6778e05d52e01c02abb3803e5fddcb56ced9eb5af4a4dae5e21b71e90bb2",
+)
+
+configure_make_package(
+    name = "dmenu",
+    source = ":dmenu-src",
+    version = "5.2",
+    description = "Dynamic menu for X",
+    homepage = "https://tools.suckless.org/dmenu/",
+    license = "MIT",
+    pre_configure = """
+# dmenu uses make without configure
+sed -i 's|PREFIX = /usr/local|PREFIX = /usr|' config.mk
+""",
+    deps = [
+        "//packages/desktop/xorg-server:libx11",
+    ],
+    visibility = ["PUBLIC"],
+)

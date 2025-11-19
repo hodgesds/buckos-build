@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "wev-src",
+    src_uri = "https://git.sr.ht/~sircmpwn/wev/refs/download/1.0.0/wev-1.0.0.tar.gz",
+    sha256 = "feb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6d7",
+)
+
+configure_make_package(
+    name = "wev",
+    source = ":wev-src",
+    version = "1.0.0",
+    description = "Wayland event viewer",
+    homepage = "https://git.sr.ht/~sircmpwn/wev",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr
+""",
+    deps = [
+        "//packages/desktop/wayland:wayland",
+        "//packages/desktop/wayland:wayland-protocols",
+    ],
+    visibility = ["PUBLIC"],
+)

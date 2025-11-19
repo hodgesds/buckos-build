@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "wayland-utils-src",
+    src_uri = "https://gitlab.freedesktop.org/wayland/wayland-utils/-/releases/1.2.0/downloads/wayland-utils-1.2.0.tar.xz",
+    sha256 = "ceb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6e4",
+)
+
+configure_make_package(
+    name = "wayland-utils",
+    source = ":wayland-utils-src",
+    version = "1.2.0",
+    description = "Wayland utilities (wayland-info)",
+    homepage = "https://gitlab.freedesktop.org/wayland/wayland-utils",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr
+""",
+    deps = [
+        "//packages/desktop/wayland:wayland",
+        "//packages/desktop/wayland:wayland-protocols",
+    ],
+    visibility = ["PUBLIC"],
+)

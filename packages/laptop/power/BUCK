@@ -1,0 +1,57 @@
+# Power management packages for laptops
+
+filegroup(
+    name = "power-profiles",
+    srcs = [
+        "//packages/laptop/power/tlp:tlp",
+        "//packages/laptop/power/auto-cpufreq:auto-cpufreq",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "acpi-tools",
+    srcs = [
+        "//packages/laptop/power/acpid:acpid",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "thermal-management",
+    srcs = [
+        "//packages/laptop/power/thermald:thermald",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "cpu-scaling",
+    srcs = [
+        "//packages/laptop/power/cpupower:cpupower",
+        "//packages/laptop/power/auto-cpufreq:auto-cpufreq",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "essential",
+    srcs = [
+        "//packages/laptop/power/tlp:tlp",
+        "//packages/laptop/power/acpid:acpid",
+        "//packages/laptop/power/cpupower:cpupower",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-power",
+    srcs = [
+        "//packages/laptop/power/tlp:tlp",
+        "//packages/laptop/power/acpid:acpid",
+        "//packages/laptop/power/thermald:thermald",
+        "//packages/laptop/power/cpupower:cpupower",
+        "//packages/laptop/power/auto-cpufreq:auto-cpufreq",
+    ],
+    visibility = ["PUBLIC"],
+)

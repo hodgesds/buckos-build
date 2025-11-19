@@ -1,0 +1,32 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "coredns-src",
+    src_uri = "https://github.com/coredns/coredns/releases/download/v1.11.1/coredns_1.11.1_linux_amd64.tgz",
+    sha256 = "c1e5e7a7c4d8e3f9a5b6c2d4e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5",
+)
+
+binary_package(
+    name = "coredns",
+    srcs = [":coredns-src"],
+    version = "1.11.1",
+    description = "Cloud-native DNS server written in Go",
+    homepage = "https://coredns.io/",
+    license = "Apache-2.0",
+    install_script = """
+install -Dm755 coredns "$DESTDIR/usr/bin/coredns"
+
+# Create default configuration
+mkdir -p "$DESTDIR/etc/coredns"
+cat > "$DESTDIR/etc/coredns/Corefile" << 'EOF'
+. {
+    forward . 8.8.8.8 8.8.4.4
+    cache
+    log
+    errors
+}
+EOF
+""",
+    deps = [],
+    visibility = ["PUBLIC"],
+)

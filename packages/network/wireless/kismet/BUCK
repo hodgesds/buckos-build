@@ -1,0 +1,32 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "kismet-src",
+    src_uri = "https://www.kismetwireless.net/code/kismet-2023-07-R1.tar.xz",
+    sha256 = "5e8c0e29d2850c3ed76b46b6ac3d20b2a7a13952e9c9c56c6ec82c5ed0b2ee26",
+)
+
+configure_make_package(
+    name = "kismet",
+    source = ":kismet-src",
+    version = "2023.07.R1",
+    description = "Wireless network and device detector, sniffer, wardriving tool",
+    homepage = "https://www.kismetwireless.net/",
+    license = "GPL-2.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--disable-python-tools",
+        "--with-netlink-version=3",
+    ],
+    deps = [
+        "//packages/core:musl",
+        "//packages/network/openssl:openssl",
+        "//packages/network/libpcap:libpcap",
+        "//packages/core:sqlite",
+        "//packages/core:zlib",
+        "//packages/core:ncurses",
+    ],
+    visibility = ["PUBLIC"],
+)

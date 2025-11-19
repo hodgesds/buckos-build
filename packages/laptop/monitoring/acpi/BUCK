@@ -1,0 +1,26 @@
+# acpi - ACPI client for battery, thermal, and adapter status
+# Shows battery status and other ACPI information
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "acpi-src",
+    src_uri = "https://downloads.sourceforge.net/acpiclient/acpi-1.7.tar.gz",
+    sha256 = "004fb6cd43102018e4d9acf31419a1bc26e30a1ca3f758e4a4c4c5c4e6e5f6a7",
+)
+
+configure_make_package(
+    name = "acpi",
+    source = ":acpi-src",
+    version = "1.7",
+    description = "ACPI client to show battery, thermal, and adapter status",
+    homepage = "https://sourceforge.net/projects/acpiclient/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

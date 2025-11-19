@@ -1,0 +1,151 @@
+# Laptop packages - power management, hardware control, wireless, and utilities
+# Comprehensive toolset for laptop-specific functionality
+
+# Power management tools
+filegroup(
+    name = "power",
+    srcs = [
+        "//packages/laptop/power:all-power",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Brightness control
+filegroup(
+    name = "brightness",
+    srcs = [
+        "//packages/laptop/brightness:all-brightness",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Hardware monitoring
+filegroup(
+    name = "monitoring",
+    srcs = [
+        "//packages/laptop/monitoring:all-monitoring",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Input devices (touchpad, stylus)
+filegroup(
+    name = "input",
+    srcs = [
+        "//packages/laptop/input:all-input",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Wireless (WiFi, Bluetooth)
+filegroup(
+    name = "wireless",
+    srcs = [
+        "//packages/laptop/wireless:all-wireless",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Battery utilities
+filegroup(
+    name = "battery",
+    srcs = [
+        "//packages/laptop/battery:all-battery",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Essential laptop packages - minimal set for basic functionality
+filegroup(
+    name = "essential",
+    srcs = [
+        "//packages/laptop/power:essential",
+        "//packages/laptop/brightness:essential",
+        "//packages/laptop/monitoring:essential",
+        "//packages/laptop/input:essential",
+        "//packages/laptop/wireless:essential",
+        "//packages/laptop/battery:essential",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Console-only laptop packages (no GUI)
+filegroup(
+    name = "console",
+    srcs = [
+        "//packages/laptop/power/tlp:tlp",
+        "//packages/laptop/power/acpid:acpid",
+        "//packages/laptop/power/cpupower:cpupower",
+        "//packages/laptop/brightness/brightnessctl:brightnessctl",
+        "//packages/laptop/brightness/light:light",
+        "//packages/laptop/monitoring/lm-sensors:lm-sensors",
+        "//packages/laptop/monitoring/acpi:acpi",
+        "//packages/laptop/monitoring/powertop:powertop",
+        "//packages/laptop/input/libevdev:libevdev",
+        "//packages/laptop/input/libinput:libinput",
+        "//packages/laptop/wireless/iwd:iwd",
+        "//packages/laptop/wireless/rfkill:rfkill",
+        "//packages/laptop/battery/upower:upower",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Desktop/GUI laptop packages
+filegroup(
+    name = "desktop",
+    srcs = [
+        ":essential",
+        "//packages/laptop/wireless/blueman:blueman",
+        "//packages/laptop/brightness/ddcutil:ddcutil",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# ThinkPad-specific packages
+filegroup(
+    name = "thinkpad",
+    srcs = [
+        ":essential",
+        "//packages/laptop/battery/tp_smapi:tp_smapi",
+        "//packages/laptop/battery/acpi_call:acpi_call",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Intel-specific packages
+filegroup(
+    name = "intel",
+    srcs = [
+        ":essential",
+        "//packages/laptop/power/thermald:thermald",
+        "//packages/laptop/monitoring/i7z:i7z",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Power-efficient profile for maximum battery life
+filegroup(
+    name = "power-efficient",
+    srcs = [
+        "//packages/laptop/power/tlp:tlp",
+        "//packages/laptop/power/auto-cpufreq:auto-cpufreq",
+        "//packages/laptop/power/thermald:thermald",
+        "//packages/laptop/monitoring/powertop:powertop",
+        "//packages/laptop/battery/laptop-mode-tools:laptop-mode-tools",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All laptop packages
+filegroup(
+    name = "all",
+    srcs = [
+        ":power",
+        ":brightness",
+        ":monitoring",
+        ":input",
+        ":wireless",
+        ":battery",
+    ],
+    visibility = ["PUBLIC"],
+)

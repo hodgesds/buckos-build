@@ -1,0 +1,61 @@
+# Font packages - libraries, tools, and font collections
+
+# Sub-category groups
+filegroup(
+    name = "libraries",
+    srcs = ["//packages/fonts/libraries:all-libraries"],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "tools",
+    srcs = ["//packages/fonts/tools:all-tools"],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "collections",
+    srcs = ["//packages/fonts/collections:all-collections"],
+    visibility = ["PUBLIC"],
+)
+
+# Themed groups
+filegroup(
+    name = "essential",
+    srcs = [
+        "//packages/fonts/libraries/freetype:freetype",
+        "//packages/fonts/libraries/fontconfig:fontconfig",
+        "//packages/fonts/libraries/harfbuzz:harfbuzz",
+        "//packages/fonts/collections:essential-fonts",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "development",
+    srcs = [
+        "//packages/fonts/libraries:all-libraries",
+        "//packages/fonts/tools:all-tools",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "desktop",
+    srcs = [
+        "//packages/fonts/libraries:all-libraries",
+        "//packages/fonts/collections:all-collections",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All fonts packages
+filegroup(
+    name = "all",
+    srcs = [
+        ":libraries",
+        ":tools",
+        ":collections",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -100,6 +100,18 @@ filegroup(
 )
 
 # =============================================================================
+# DNS - Domain Name System servers, tools, and libraries
+# =============================================================================
+
+filegroup(
+    name = "dns",
+    srcs = [
+        "//packages/network/dns:all-dns",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
 # Network Analysis - Packet capture and analysis tools
 # =============================================================================
 
@@ -173,6 +185,18 @@ filegroup(
 )
 
 # =============================================================================
+# Wireless Tools - WiFi, Bluetooth, and SDR
+# =============================================================================
+
+filegroup(
+    name = "wireless",
+    srcs = [
+        "//packages/network/wireless:all",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
 # All Network Tools - Combined category
 # =============================================================================
 
@@ -182,6 +206,18 @@ filegroup(
         ":network-config",
         ":network-analysis",
         ":network-utils",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Messaging - Instant messaging and communication
+# =============================================================================
+
+filegroup(
+    name = "messaging",
+    srcs = [
+        "//packages/network/signal-desktop:signal-desktop",
     ],
     visibility = ["PUBLIC"],
 )
@@ -200,6 +236,9 @@ filegroup(
         ":remote-access",
         ":vpn",
         ":firewall",
+        ":wireless",
+        ":dns",
+        ":messaging",
     ],
     visibility = ["PUBLIC"],
 )

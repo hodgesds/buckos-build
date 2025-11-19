@@ -1,0 +1,27 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# kdevelop - KDE integrated development environment
+download_source(
+    name = "kdevelop-src",
+    src_uri = "https://download.kde.org/stable/kdevelop/5.12.230801/src/kdevelop-5.12.230801.tar.xz",
+    sha256 = "b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9",
+)
+
+configure_make_package(
+    name = "kdevelop",
+    source = ":kdevelop-src",
+    version = "5.12.230801",
+    description = "KDE integrated development environment",
+    homepage = "https://www.kdevelop.org",
+    license = "GPL-2+",
+    build_system = "cmake",
+    configure_args = [
+        "-DCMAKE_INSTALL_PREFIX=/usr",
+        "-DCMAKE_BUILD_TYPE=Release",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/desktop/kde:kf5",
+    ],
+    visibility = ["PUBLIC"],
+)

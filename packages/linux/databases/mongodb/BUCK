@@ -1,0 +1,27 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# mongodb - Document-oriented database
+download_source(
+    name = "mongodb-src",
+    src_uri = "https://fastdl.mongodb.org/src/mongodb-src-r7.0.5.tar.gz",
+    sha256 = "b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9",
+)
+
+configure_make_package(
+    name = "mongodb",
+    source = ":mongodb-src",
+    version = "7.0.5",
+    description = "Document-oriented NoSQL database",
+    homepage = "https://www.mongodb.com",
+    license = "SSPL-1.0",
+    build_system = "scons",
+    build_commands = [
+        "python3 buildscripts/scons.py install-mongod install-mongos --prefix=${DESTDIR}/usr",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/lang/python:python",
+        "//packages/linux/system/libs/crypto/openssl:openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

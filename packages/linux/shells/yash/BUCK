@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# yash - POSIX-compliant command line shell
+download_source(
+    name = "yash-src",
+    src_uri = "https://github.com/magicant/yash/releases/download/2.56.1/yash-2.56.1.tar.xz",
+    sha256 = "f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5",
+)
+
+configure_make_package(
+    name = "yash",
+    source = ":yash-src",
+    version = "2.56.1",
+    description = "POSIX-compliant command line shell",
+    homepage = "https://yash.osdn.jp",
+    license = "GPL-2+",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:ncurses",
+    ],
+    visibility = ["PUBLIC"],
+)

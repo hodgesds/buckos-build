@@ -1,0 +1,31 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# suricata - Network IDS, IPS, and security monitoring engine
+download_source(
+    name = "suricata-src",
+    src_uri = "https://www.openinfosecfoundation.org/download/suricata-7.0.3.tar.gz",
+    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+)
+
+configure_make_package(
+    name = "suricata",
+    source = ":suricata-src",
+    version = "7.0.3",
+    description = "High performance Network IDS, IPS and Network Security Monitoring engine",
+    homepage = "https://suricata.io",
+    license = "GPL-2",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc/suricata",
+        "--localstatedir=/var",
+        "--enable-lua",
+        "--enable-geoip",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/network/libpcap:libpcap",
+        "//packages/linux/core/pcre:pcre",
+        "//packages/linux/lang/lua:lua",
+    ],
+    visibility = ["PUBLIC"],
+)

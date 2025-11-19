@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# unrar - RAR archive extractor
+download_source(
+    name = "unrar-src",
+    src_uri = "https://www.rarlab.com/rar/unrarsrc-6.2.12.tar.gz",
+    sha256 = "a008b5f949bca9bb4ffa1bebbfc8b3c14b89df10a10354f56b0fc35a51b5d1a6",
+)
+
+configure_make_package(
+    name = "unrar",
+    source = ":unrar-src",
+    version = "6.2.12",
+    description = "RAR archive extractor",
+    homepage = "https://www.rarlab.com/rar_add.htm",
+    license = "unRAR",
+    build_system = "make",
+    make_args = [
+        "-f", "makefile",
+    ],
+    install_args = [
+        "DESTDIR=${DESTDIR}",
+        "install",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

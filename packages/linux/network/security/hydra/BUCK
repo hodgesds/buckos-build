@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# hydra - Network logon cracker for security testing
+download_source(
+    name = "hydra-src",
+    src_uri = "https://github.com/vanhauser-thc/thc-hydra/archive/refs/tags/v9.5.tar.gz",
+    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+)
+
+configure_make_package(
+    name = "hydra",
+    source = ":hydra-src",
+    version = "9.5",
+    description = "Network logon cracker for authorized security testing",
+    homepage = "https://github.com/vanhauser-thc/thc-hydra",
+    license = "AGPL-3.0",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/system/libs/crypto/openssl:openssl",
+        "//packages/linux/network/libssh:libssh",
+    ],
+    visibility = ["PUBLIC"],
+)

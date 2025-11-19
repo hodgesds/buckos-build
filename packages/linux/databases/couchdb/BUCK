@@ -1,0 +1,27 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# couchdb - Document-oriented NoSQL database
+download_source(
+    name = "couchdb-src",
+    src_uri = "https://dlcdn.apache.org/couchdb/source/3.3.3/apache-couchdb-3.3.3.tar.gz",
+    sha256 = "d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1",
+)
+
+configure_make_package(
+    name = "couchdb",
+    source = ":couchdb-src",
+    version = "3.3.3",
+    description = "Document-oriented NoSQL database with HTTP API",
+    homepage = "https://couchdb.apache.org",
+    license = "Apache-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--user=couchdb",
+        "--spidermonkey-version=91",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/lang/erlang:erlang",
+    ],
+    visibility = ["PUBLIC"],
+)

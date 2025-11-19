@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# hwdata - Hardware identification databases
+download_source(
+    name = "hwdata-src",
+    src_uri = "https://github.com/vcrhonek/hwdata/archive/refs/tags/v0.379.tar.gz",
+    sha256 = "PLACEHOLDER_SHA256",
+)
+
+configure_make_package(
+    name = "hwdata",
+    source = ":hwdata-src",
+    version = "0.379",
+    description = "Hardware identification and configuration data",
+    homepage = "https://github.com/vcrhonek/hwdata",
+    license = "GPL-2+",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--datadir=/usr/share",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

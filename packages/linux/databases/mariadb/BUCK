@@ -1,0 +1,34 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# mariadb - MySQL-compatible database server
+download_source(
+    name = "mariadb-src",
+    src_uri = "https://downloads.mariadb.org/rest-api/mariadb/11.3.2/mariadb-11.3.2.tar.gz",
+    sha256 = "a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8",
+)
+
+configure_make_package(
+    name = "mariadb",
+    source = ":mariadb-src",
+    version = "11.3.2",
+    description = "MySQL-compatible relational database server",
+    homepage = "https://mariadb.org",
+    license = "GPL-2",
+    build_system = "cmake",
+    configure_args = [
+        "-DCMAKE_INSTALL_PREFIX=/usr",
+        "-DMYSQL_DATADIR=/var/lib/mysql",
+        "-DSYSCONFDIR=/etc/mysql",
+        "-DWITH_SSL=system",
+        "-DWITH_ZLIB=system",
+        "-DWITH_READLINE=ON",
+        "-DDEFAULT_CHARSET=utf8mb4",
+        "-DDEFAULT_COLLATION=utf8mb4_general_ci",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:ncurses",
+        "//packages/linux/system/libs/crypto/openssl:openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# discount - C implementation of Markdown
+download_source(
+    name = "discount-src",
+    src_uri = "https://github.com/Orc/discount/archive/refs/tags/v3.0.0d.tar.gz",
+    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+)
+
+configure_make_package(
+    name = "discount",
+    source = ":discount-src",
+    version = "3.0.0d",
+    description = "C implementation of John Gruber's Markdown",
+    homepage = "https://github.com/Orc/discount",
+    license = "BSD-3",
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-all-features",
+        "--with-fenced-code",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

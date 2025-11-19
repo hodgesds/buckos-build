@@ -1,0 +1,27 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# ntopng - Network traffic analysis tool
+download_source(
+    name = "ntopng-src",
+    src_uri = "https://github.com/ntop/ntopng/archive/refs/tags/6.0.tar.gz",
+    sha256 = "b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g",
+)
+
+configure_make_package(
+    name = "ntopng",
+    source = ":ntopng-src",
+    version = "6.0",
+    description = "High-speed web-based traffic analysis and flow collection",
+    homepage = "https://www.ntop.org/products/traffic-analysis/ntop/",
+    license = "GPL-3",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/network/curl:curl",
+        "//packages/linux/databases/redis:redis",
+    ],
+    visibility = ["PUBLIC"],
+)

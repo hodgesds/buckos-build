@@ -1,0 +1,38 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# tshark - Command-line network protocol analyzer (Wireshark CLI)
+# =============================================================================
+
+download_source(
+    name = "tshark-src",
+    src_uri = "https://www.wireshark.org/download/src/wireshark-4.2.3.tar.xz",
+    sha256 = "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2",
+)
+
+configure_make_package(
+    name = "tshark",
+    source = ":tshark-src",
+    version = "4.2.3",
+    description = "Command-line network protocol analyzer",
+    homepage = "https://www.wireshark.org/",
+    license = "GPL-2.0-or-later",
+    configure_args = [
+        "--disable-wireshark",
+        "--enable-tshark",
+        "--disable-editcap",
+        "--disable-capinfos",
+        "--disable-mergecap",
+        "--disable-text2pcap",
+        "--disable-dftest",
+        "--disable-randpkt",
+        "--disable-dumpcap",
+        "--disable-rawshark",
+    ],
+    deps = [
+        "//packages/network/libpcap:libpcap",
+        "//packages/core:glib",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

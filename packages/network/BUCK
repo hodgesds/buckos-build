@@ -104,11 +104,57 @@ filegroup(
 # =============================================================================
 
 filegroup(
-    name = "network-analysis",
+    name = "packet-capture",
     srcs = [
         "//packages/network/libpcap:libpcap",
         "//packages/network/tcpdump:tcpdump",
+        "//packages/network/ngrep:ngrep",
+        "//packages/network/tshark:tshark",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "bandwidth-monitors",
+    srcs = [
+        "//packages/network/iftop:iftop",
+        "//packages/network/bmon:bmon",
+        "//packages/network/vnstat:vnstat",
+        "//packages/network/bandwhich:bandwhich",
+        "//packages/network/darkstat:darkstat",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "network-diagnostics",
+    srcs = [
+        "//packages/network/mtr:mtr",
+        "//packages/network/fping:fping",
+        "//packages/network/arping:arping",
+        "//packages/network/iperf3:iperf3",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "security-scanners",
+    srcs = [
         "//packages/network/nmap:nmap",
+        "//packages/network/masscan:masscan",
+        "//packages/network/hping3:hping3",
+        "//packages/network/ettercap:ettercap",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "network-analysis",
+    srcs = [
+        ":packet-capture",
+        ":bandwidth-monitors",
+        ":network-diagnostics",
+        ":security-scanners",
     ],
     visibility = ["PUBLIC"],
 )

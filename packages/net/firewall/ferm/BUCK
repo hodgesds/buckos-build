@@ -1,0 +1,69 @@
+# =============================================================================
+# ferm - For Easy Rule Making (firewall rule generator)
+# =============================================================================
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "ferm-src",
+    src_uri = "https://github.com/MaxKellermann/ferm/releases/download/v2.7/ferm-2.7.tar.xz",
+    sha256 = "d7c9d3e8f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7",
+)
+
+configure_make_package(
+    name = "ferm",
+    source = ":ferm-src",
+    version = "2.7",
+    description = "Tool for maintaining complex firewall rules with ease",
+    homepage = "http://ferm.foo-projects.org/",
+    license = "GPL-2.0",
+    pre_configure = "true",  # ferm uses plain Makefile
+    make_args = [
+        "PREFIX=/usr",
+        "SYSCONFDIR=/etc",
+    ],
+    post_install = """
+# Install ferm using make
+make PREFIX=/usr SYSCONFDIR=/etc DESTDIR=$DESTDIR install
+
+# Create ferm configuration directories
+mkdir -p "$DESTDIR/etc/ferm"
+mkdir -p "$DESTDIR/var/lib/ferm"
+
+# Create default ferm configuration
+cat > "$DESTDIR/etc/ferm/ferm.conf" << 'FERMCONF'
+# ferm configuration file
+# See ferm(1) for syntax
+
+table filter {
+    chain INPUT {
+        policy DROP;
+
+        # Connection tracking
+        mod state state INVALID DROP;
+        mod state state (ESTABLISHED RELATED) ACCEPT;
+
+        # Allow loopback
+        interface lo ACCEPT;
+
+        # Allow ping
+        proto icmp ACCEPT;
+    }
+
+    chain OUTPUT {
+        policy ACCEPT;
+    }
+
+    chain FORWARD {
+        policy DROP;
+    }
+}
+FERMCONF
+chmod 600 "$DESTDIR/etc/ferm/ferm.conf"
+""",
+    deps = [
+        "//packages/net/firewall/iptables:iptables",
+        "//packages/core:perl",
+    ],
+    visibility = ["PUBLIC"],
+)

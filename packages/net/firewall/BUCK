@@ -1,0 +1,78 @@
+# =============================================================================
+# FIREWALL - Linux Firewall and Packet Filtering Tools
+# =============================================================================
+
+# Modern netfilter-based firewalls (nftables ecosystem)
+filegroup(
+    name = "modern-firewalls",
+    srcs = [
+        "//packages/net/firewall/nftables:nftables",
+        "//packages/net/firewall/firewalld:firewalld",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Legacy netfilter-based firewalls (iptables ecosystem)
+filegroup(
+    name = "legacy-firewalls",
+    srcs = [
+        "//packages/net/firewall/iptables:iptables",
+        "//packages/net/firewall/ipset:ipset",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# User-friendly firewall frontends
+filegroup(
+    name = "firewall-frontends",
+    srcs = [
+        "//packages/net/firewall/ufw:ufw",
+        "//packages/net/firewall/firewalld:firewalld",
+        "//packages/net/firewall/ferm:ferm",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Rule generation and configuration tools
+filegroup(
+    name = "firewall-tools",
+    srcs = [
+        "//packages/net/firewall/ferm:ferm",
+        "//packages/net/firewall/ipset:ipset",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Core netfilter stack (both modern and legacy)
+filegroup(
+    name = "netfilter-core",
+    srcs = [
+        "//packages/net/firewall/nftables:nftables",
+        "//packages/net/firewall/iptables:iptables",
+        "//packages/net/firewall/ipset:ipset",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Minimal firewall setup (recommended)
+filegroup(
+    name = "minimal-firewall",
+    srcs = [
+        "//packages/net/firewall/nftables:nftables",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Complete firewall toolkit
+filegroup(
+    name = "all-firewalls",
+    srcs = [
+        "//packages/net/firewall/nftables:nftables",
+        "//packages/net/firewall/iptables:iptables",
+        "//packages/net/firewall/firewalld:firewalld",
+        "//packages/net/firewall/ufw:ufw",
+        "//packages/net/firewall/ipset:ipset",
+        "//packages/net/firewall/ferm:ferm",
+    ],
+    visibility = ["PUBLIC"],
+)

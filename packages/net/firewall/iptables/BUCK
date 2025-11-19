@@ -1,0 +1,55 @@
+# =============================================================================
+# iptables - Legacy Linux packet filtering administration
+# =============================================================================
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "iptables-src",
+    src_uri = "https://www.netfilter.org/projects/iptables/files/iptables-1.8.10.tar.xz",
+    sha256 = "5cc255c189356e317d070755ce9371eb63a1b783c34498fb8c30264f3cc59c9c",
+)
+
+configure_make_package(
+    name = "iptables",
+    source = ":iptables-src",
+    version = "1.8.10",
+    description = "Linux kernel packet filtering administration tools",
+    homepage = "https://netfilter.org/projects/iptables/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sbindir=/sbin",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--libexecdir=/lib",
+        "--enable-libipq",
+        "--enable-bpf-compiler",
+        "--enable-nfsynproxy",
+        "--with-xtlibdir=/lib/xtables",
+    ],
+    post_install = """
+# Create iptables configuration directories
+mkdir -p "$DESTDIR/etc/iptables"
+mkdir -p "$DESTDIR/var/lib/iptables"
+
+# Create symlinks for legacy compatibility
+mkdir -p "$DESTDIR/usr/sbin"
+for cmd in iptables iptables-save iptables-restore ip6tables ip6tables-save ip6tables-restore; do
+    ln -sf /sbin/xtables-nft-multi "$DESTDIR/usr/sbin/$cmd" 2>/dev/null || true
+done
+
+# Create default empty rules files
+touch "$DESTDIR/etc/iptables/rules.v4"
+touch "$DESTDIR/etc/iptables/rules.v6"
+chmod 600 "$DESTDIR/etc/iptables/rules.v4"
+chmod 600 "$DESTDIR/etc/iptables/rules.v6"
+""",
+    deps = [
+        "//packages/core:libnl",
+        "//packages/core:libmnl",
+        "//packages/core:libnftnl",
+        "//packages/core:libpcap",
+    ],
+    visibility = ["PUBLIC"],
+)

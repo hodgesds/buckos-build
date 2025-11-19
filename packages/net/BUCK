@@ -61,6 +61,15 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
+# All firewall solutions (from firewall subdirectory)
+filegroup(
+    name = "all-firewalls",
+    srcs = [
+        "//packages/net/firewall:all-firewalls",
+    ],
+    visibility = ["PUBLIC"],
+)
+
 # Complete networking toolkit
 filegroup(
     name = "all-net",
@@ -71,6 +80,7 @@ filegroup(
         "//packages/net/iproute2:iproute2",
         "//packages/net/dhcpcd:dhcpcd",
         "//packages/net/vpn:all-vpns",
+        "//packages/net/firewall:all-firewalls",
     ],
     visibility = ["PUBLIC"],
 )

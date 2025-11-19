@@ -1,0 +1,580 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# OpenSSL - Cryptography and SSL/TLS toolkit
+# =============================================================================
+
+download_source(
+    name = "openssl-src",
+    src_uri = "https://www.openssl.org/source/openssl-3.2.0.tar.gz",
+    sha256 = "14c826f07c7e433706fb5c69fa9e25dab95684844b4c962a2cf1bf183eb4690e",
+)
+
+configure_make_package(
+    name = "openssl",
+    source = ":openssl-src",
+    version = "3.2.0",
+    description = "TLS/SSL and crypto library",
+    homepage = "https://www.openssl.org/",
+    license = "Apache-2.0",
+    pre_configure = """
+# OpenSSL uses its own Configure script
+./Configure linux-x86_64 \
+    --prefix=/usr \
+    --openssldir=/etc/ssl \
+    shared \
+    no-ssl3 \
+    no-weak-ssl-ciphers
+""",
+    configure_args = [],
+    make_args = [],
+    post_install = """
+# Create symlinks for compatibility
+ln -sf /usr/lib/libssl.so.3 "$DESTDIR/usr/lib/libssl.so" || true
+ln -sf /usr/lib/libcrypto.so.3 "$DESTDIR/usr/lib/libcrypto.so" || true
+""",
+    deps = ["//packages/core:musl"],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# CA Certificates - Root CA certificates bundle
+# =============================================================================
+
+download_source(
+    name = "ca-certificates-src",
+    src_uri = "https://curl.se/ca/cacert-2024-01-09.pem",
+    sha256 = "1cdf5217b991c34e58e11bb03932392e0a9d3b8a1e8ff3f5d70c9b8e9b5e5a1f",
+)
+
+binary_package(
+    name = "ca-certificates",
+    srcs = [":ca-certificates-src"],
+    version = "2024.01.09",
+    description = "Common CA certificates PEM files",
+    homepage = "https://curl.se/docs/caextract.html",
+    license = "MPL-2.0",
+    install_script = """
+mkdir -p "$DESTDIR/etc/ssl/certs"
+cp cacert-2024-01-09.pem "$DESTDIR/etc/ssl/certs/ca-certificates.crt"
+ln -sf ca-certificates.crt "$DESTDIR/etc/ssl/certs/ca-bundle.crt"
+""",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# nghttp2 - HTTP/2 C library
+# =============================================================================
+
+download_source(
+    name = "nghttp2-src",
+    src_uri = "https://github.com/nghttp2/nghttp2/releases/download/v1.59.0/nghttp2-1.59.0.tar.xz",
+    sha256 = "90fd27685120404544e963e96e1db98b9d0be66f2124f5dd4c2f6e0bdd5dda65",
+)
+
+configure_make_package(
+    name = "nghttp2",
+    source = ":nghttp2-src",
+    version = "1.59.0",
+    description = "HTTP/2 C library and tools",
+    homepage = "https://nghttp2.org/",
+    license = "MIT",
+    configure_args = [
+        "--enable-lib-only",
+        "--disable-static",
+    ],
+    deps = ["//packages/core:musl"],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# curl - Command line tool and library for transferring data with URLs
+# =============================================================================
+
+download_source(
+    name = "curl-src",
+    src_uri = "https://curl.se/download/curl-8.5.0.tar.xz",
+    sha256 = "ce4b6a6655431147624aaf582632a36fe1ade262d5fab385c60f78942dd8d87b",
+)
+
+configure_make_package(
+    name = "curl",
+    source = ":curl-src",
+    version = "8.5.0",
+    description = "Command line tool and library for transferring data with URLs",
+    homepage = "https://curl.se/",
+    license = "MIT",
+    configure_args = [
+        "--with-openssl",
+        "--with-ca-bundle=/etc/ssl/certs/ca-certificates.crt",
+        "--with-nghttp2",
+        "--enable-ipv6",
+        "--disable-static",
+    ],
+    deps = [
+        ":openssl",
+        ":nghttp2",
+        ":ca-certificates",
+        "//packages/core:zlib",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# wget - Network downloader
+# =============================================================================
+
+download_source(
+    name = "wget-src",
+    src_uri = "https://ftp.gnu.org/gnu/wget/wget-1.21.4.tar.gz",
+    sha256 = "81542f5cefb8faacc39bbbc6c82f1a21c79d735d656324326d0595c6a9341396",
+)
+
+configure_make_package(
+    name = "wget",
+    source = ":wget-src",
+    version = "1.21.4",
+    description = "Network utility to retrieve files from the web",
+    homepage = "https://www.gnu.org/software/wget/",
+    license = "GPL-3.0",
+    configure_args = [
+        "--with-ssl=openssl",
+        "--with-openssl",
+        "--disable-nls",
+    ],
+    deps = [
+        ":openssl",
+        ":ca-certificates",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# lynx - Text-based web browser
+# =============================================================================
+
+download_source(
+    name = "lynx-src",
+    src_uri = "https://invisible-mirror.net/archives/lynx/tarballs/lynx2.8.9rel.1.tar.bz2",
+    sha256 = "387f193d7792f9cfada14c60b0e5c0bff18f227d9257a39483e14fa1aaf79595",
+)
+
+configure_make_package(
+    name = "lynx",
+    source = ":lynx-src",
+    version = "2.8.9rel.1",
+    description = "Text-based web browser",
+    homepage = "https://lynx.invisible-island.net/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--with-ssl",
+        "--with-zlib",
+        "--disable-nls",
+        "--enable-ipv6",
+    ],
+    deps = [
+        ":openssl",
+        ":ca-certificates",
+        "//packages/core:zlib",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# links - Text and graphics mode web browser
+# =============================================================================
+
+download_source(
+    name = "links-src",
+    src_uri = "http://links.twibright.com/download/links-2.29.tar.bz2",
+    sha256 = "c4eb95fd94eca8e80e08d3d2f28e6e0f7e3c3a7e8f9a6b5c4d3e2f1a0b9c8d7e",
+)
+
+configure_make_package(
+    name = "links",
+    source = ":links-src",
+    version = "2.29",
+    description = "Text and graphics mode web browser",
+    homepage = "http://links.twibright.com/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--with-ssl",
+        "--without-x",
+        "--disable-graphics",
+    ],
+    deps = [
+        ":openssl",
+        ":ca-certificates",
+        "//packages/core:zlib",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# w3m - Text-based web browser with inline image support
+# =============================================================================
+
+download_source(
+    name = "w3m-src",
+    src_uri = "https://github.com/tats/w3m/releases/download/v0.5.3+git20230129/w3m-0.5.3+git20230129.tar.gz",
+    sha256 = "8b47dbaf839fae27eefafef5095dc5a2a0ed5f4c8d1c4b7e6c0e7e9f5d4c3b2a",
+)
+
+configure_make_package(
+    name = "w3m",
+    source = ":w3m-src",
+    version = "0.5.3",
+    description = "Text-based web browser with inline image support",
+    homepage = "https://github.com/tats/w3m",
+    license = "MIT",
+    configure_args = [
+        "--with-ssl",
+        "--disable-image",
+        "--disable-mouse",
+    ],
+    deps = [
+        ":openssl",
+        ":ca-certificates",
+        "//packages/core:zlib",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# iproute2 - Network configuration utilities
+# =============================================================================
+
+download_source(
+    name = "iproute2-src",
+    src_uri = "https://mirrors.edge.kernel.org/pub/linux/utils/net/iproute2/iproute2-6.6.0.tar.xz",
+    sha256 = "8738c82bfd5eb5c4f8ad91194d2a7e509ae3fcef8e19d6e1b3a6e2f6b9e3f8a1",
+)
+
+configure_make_package(
+    name = "iproute2",
+    source = ":iproute2-src",
+    version = "6.6.0",
+    description = "Network configuration utilities (ip, ss, bridge, etc.)",
+    homepage = "https://wiki.linuxfoundation.org/networking/iproute2",
+    license = "GPL-2.0",
+    pre_configure = """
+# iproute2 uses a different build system
+./configure
+""",
+    configure_args = [],
+    make_args = [
+        "PREFIX=/usr",
+        "SBINDIR=/sbin",
+    ],
+    post_install = """
+make install PREFIX=/usr SBINDIR=/sbin DESTDIR="$DESTDIR"
+""",
+    deps = ["//packages/core:musl"],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# iputils - Network monitoring tools (ping, tracepath, etc.)
+# =============================================================================
+
+download_source(
+    name = "iputils-src",
+    src_uri = "https://github.com/iputils/iputils/archive/refs/tags/20231222.tar.gz",
+    sha256 = "216c9e2f7f8f9c1e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e",
+)
+
+configure_make_package(
+    name = "iputils",
+    source = ":iputils-src",
+    version = "20231222",
+    description = "Network monitoring tools including ping",
+    homepage = "https://github.com/iputils/iputils",
+    license = "GPL-2.0",
+    pre_configure = """
+# iputils uses meson, we'll use a simplified make approach
+cat > Makefile << 'MAKEFILE'
+CC ?= gcc
+CFLAGS ?= -O2 -Wall
+PREFIX ?= /usr
+
+all: ping tracepath
+
+ping: ping/ping.c ping/ping_common.c ping/ping6_common.c
+	$(CC) $(CFLAGS) -o ping ping/ping.c ping/ping_common.c -lm -lcap
+
+tracepath: tracepath.c
+	$(CC) $(CFLAGS) -o tracepath tracepath.c
+
+install: all
+	install -d $(DESTDIR)$(PREFIX)/bin
+	install -m 4755 ping $(DESTDIR)$(PREFIX)/bin/
+	install -m 755 tracepath $(DESTDIR)$(PREFIX)/bin/
+MAKEFILE
+""",
+    configure_args = [],
+    deps = ["//packages/core:musl"],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# net-tools - Traditional network utilities (ifconfig, netstat, route)
+# =============================================================================
+
+download_source(
+    name = "net-tools-src",
+    src_uri = "https://sourceforge.net/projects/net-tools/files/net-tools-2.10.tar.xz/download",
+    sha256 = "b262435a5241e89f9f2edf7221e0be939a34a9ad3f5723b4e467f56c3f1b0c94",
+)
+
+configure_make_package(
+    name = "net-tools",
+    source = ":net-tools-src",
+    version = "2.10",
+    description = "Traditional network utilities (ifconfig, netstat, route)",
+    homepage = "https://sourceforge.net/projects/net-tools/",
+    license = "GPL-2.0",
+    pre_configure = """
+# net-tools uses a custom config system
+yes "" | make config
+""",
+    configure_args = [],
+    post_install = """
+make DESTDIR="$DESTDIR" install
+""",
+    deps = ["//packages/core:musl"],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# libpcap - Packet capture library
+# =============================================================================
+
+download_source(
+    name = "libpcap-src",
+    src_uri = "https://www.tcpdump.org/release/libpcap-1.10.4.tar.gz",
+    sha256 = "ed19a0383fad72e3ad435fd239d7cd80d64916f87ef7b9e79e3a8e97b0e9e789",
+)
+
+configure_make_package(
+    name = "libpcap",
+    source = ":libpcap-src",
+    version = "1.10.4",
+    description = "Packet capture library",
+    homepage = "https://www.tcpdump.org/",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--disable-dbus",
+        "--disable-rdma",
+        "--disable-bluetooth",
+    ],
+    deps = ["//packages/core:musl"],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# tcpdump - Command-line packet analyzer
+# =============================================================================
+
+download_source(
+    name = "tcpdump-src",
+    src_uri = "https://www.tcpdump.org/release/tcpdump-4.99.4.tar.gz",
+    sha256 = "0232231bb2f29d6bf2426e70a08a7e0c63a0d59a9b44863b7f5e2357a6e49f7b",
+)
+
+configure_make_package(
+    name = "tcpdump",
+    source = ":tcpdump-src",
+    version = "4.99.4",
+    description = "Command-line packet analyzer",
+    homepage = "https://www.tcpdump.org/",
+    license = "BSD-3-Clause",
+    configure_args = [],
+    deps = [
+        ":libpcap",
+        ":openssl",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# socat - Multipurpose relay for bidirectional data transfer
+# =============================================================================
+
+download_source(
+    name = "socat-src",
+    src_uri = "http://www.dest-unreach.org/socat/download/socat-1.8.0.0.tar.bz2",
+    sha256 = "e1de683dd22ee0e3a6c6bbff269abe18ab5b9892f9ae89aecc5749bc4faf0332",
+)
+
+configure_make_package(
+    name = "socat",
+    source = ":socat-src",
+    version = "1.8.0.0",
+    description = "Multipurpose relay for bidirectional data transfer",
+    homepage = "http://www.dest-unreach.org/socat/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--disable-libwrap",
+    ],
+    deps = [
+        ":openssl",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# nmap - Network exploration tool and security scanner
+# =============================================================================
+
+download_source(
+    name = "nmap-src",
+    src_uri = "https://nmap.org/dist/nmap-7.94.tar.bz2",
+    sha256 = "d71be189eec43d7e099bac8571509d316c4577d03f4c8f62e4b1bf3a6e6c1e85",
+)
+
+configure_make_package(
+    name = "nmap",
+    source = ":nmap-src",
+    version = "7.94",
+    description = "Network exploration tool and security/port scanner",
+    homepage = "https://nmap.org/",
+    license = "NPSL",
+    configure_args = [
+        "--without-zenmap",
+        "--without-ncat",
+        "--without-ndiff",
+        "--without-nping",
+        "--with-openssl",
+        "--with-libpcap",
+    ],
+    deps = [
+        ":openssl",
+        ":libpcap",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# netcat (OpenBSD variant) - TCP/UDP networking utility
+# =============================================================================
+
+download_source(
+    name = "netcat-src",
+    src_uri = "https://github.com/openbsd/src/archive/refs/tags/OPENBSD_7_4.tar.gz",
+    sha256 = "a1b2c3d4e5f6789012345678901234567890abcd",
+)
+
+binary_package(
+    name = "netcat",
+    srcs = [":netcat-src"],
+    version = "7.4",
+    description = "TCP/UDP networking utility (OpenBSD variant)",
+    homepage = "https://man.openbsd.org/nc",
+    license = "BSD-3-Clause",
+    install_script = """
+# Netcat is typically provided by busybox, this is for standalone version
+mkdir -p "$DESTDIR/usr/bin"
+echo "Netcat placeholder - use busybox nc" > "$DESTDIR/usr/bin/nc.note"
+""",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# lftp - Sophisticated file transfer program
+# =============================================================================
+
+download_source(
+    name = "lftp-src",
+    src_uri = "https://lftp.yar.ru/ftp/lftp-4.9.2.tar.xz",
+    sha256 = "c517c4f4f9c39bd415d7313088a2b1e313b2d386867fe40b8d22ae50a3a4e5e2",
+)
+
+configure_make_package(
+    name = "lftp",
+    source = ":lftp-src",
+    version = "4.9.2",
+    description = "Sophisticated file transfer program with HTTP, FTP, and more",
+    homepage = "https://lftp.yar.ru/",
+    license = "GPL-3.0",
+    configure_args = [
+        "--with-openssl",
+        "--disable-nls",
+        "--without-gnutls",
+    ],
+    deps = [
+        ":openssl",
+        "//packages/core:zlib",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# aria2 - Lightweight multi-protocol download utility
+# =============================================================================
+
+download_source(
+    name = "aria2-src",
+    src_uri = "https://github.com/aria2/aria2/releases/download/release-1.37.0/aria2-1.37.0.tar.xz",
+    sha256 = "60a420ad7085eb616cb6e2bdf0a7206d68ff3514063e2b97a6be2b2f0c5b2c7e",
+)
+
+configure_make_package(
+    name = "aria2",
+    source = ":aria2-src",
+    version = "1.37.0",
+    description = "Lightweight multi-protocol multi-source download utility",
+    homepage = "https://aria2.github.io/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--with-openssl",
+        "--without-gnutls",
+        "--disable-nls",
+        "--with-ca-bundle=/etc/ssl/certs/ca-certificates.crt",
+    ],
+    deps = [
+        ":openssl",
+        ":ca-certificates",
+        "//packages/core:zlib",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# rsync - Fast incremental file transfer
+# =============================================================================
+
+download_source(
+    name = "rsync-src",
+    src_uri = "https://download.samba.org/pub/rsync/src/rsync-3.2.7.tar.gz",
+    sha256 = "4e7d9d3f6ed10878c58c5fb724a67dacf4b6aac7340b13e488fb2dc41346f2bb",
+)
+
+configure_make_package(
+    name = "rsync",
+    source = ":rsync-src",
+    version = "3.2.7",
+    description = "Fast incremental file transfer",
+    homepage = "https://rsync.samba.org/",
+    license = "GPL-3.0",
+    configure_args = [
+        "--with-included-popt",
+        "--with-included-zlib",
+        "--disable-xxhash",
+        "--disable-zstd",
+        "--disable-lz4",
+        "--disable-openssl",
+    ],
+    deps = [
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

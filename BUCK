@@ -34,6 +34,20 @@ alias(
     visibility = ["PUBLIC"],
 )
 
+# Default shell
+alias(
+    name = "shell",
+    actual = "//packages/shells:bash",
+    visibility = ["PUBLIC"],
+)
+
+# Default terminal
+alias(
+    name = "terminal",
+    actual = "//packages/terminals:st",
+    visibility = ["PUBLIC"],
+)
+
 # =============================================================================
 # Package groups for convenience
 # =============================================================================
@@ -63,6 +77,26 @@ filegroup(
         "//packages/editors:vim",
         "//packages/editors:neovim",
         "//packages/editors:emacs",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "shell-packages",
+    srcs = [
+        "//packages/shells:bash",
+        "//packages/shells:zsh",
+        "//packages/shells:dash",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "terminal-packages",
+    srcs = [
+        "//packages/terminals:st",
+        "//packages/terminals:alacritty",
+        "//packages/terminals:foot",
     ],
     visibility = ["PUBLIC"],
 )

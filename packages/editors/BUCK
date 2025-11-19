@@ -7,6 +7,17 @@ filegroup(
         "//packages/editors/neovim",
         "//packages/editors/emacs",
         "//packages/editors/emacs-nox",
+        "//packages/editors/vscodium",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for GUI editors
+filegroup(
+    name = "gui-editors",
+    srcs = [
+        "//packages/editors/emacs",
+        "//packages/editors/vscodium",
     ],
     visibility = ["PUBLIC"],
 )

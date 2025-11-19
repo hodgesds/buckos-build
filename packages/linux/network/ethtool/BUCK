@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# ethtool - Ethernet device configuration tool
+download_source(
+    name = "ethtool-src",
+    src_uri = "https://mirrors.edge.kernel.org/pub/software/network/ethtool/ethtool-6.7.tar.xz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "ethtool",
+    source = ":ethtool-src",
+    version = "6.7",
+    description = "Utility for controlling network drivers and hardware",
+    homepage = "https://www.kernel.org/pub/software/network/ethtool/",
+    license = "GPL-2",
+    configure_args = [
+        "--prefix=/usr",
+        "--sbindir=/usr/sbin",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/system/libs/libmnl",
+    ],
+    visibility = ["PUBLIC"],
+)

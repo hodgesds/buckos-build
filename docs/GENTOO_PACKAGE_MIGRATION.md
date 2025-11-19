@@ -51,7 +51,7 @@ Agents should:
 | `lsb-release` | sys-apps | system/apps/lsb-release | Already added |
 | `hwdata` | sys-apps | system/hardware/hwdata | Hardware IDs database |
 | `hwloc` | sys-apps | system/hardware/hwloc | Already added |
-| `ethtool` | sys-apps | network/ethtool | Ethernet config |
+| `ethtool` | sys-apps | network/ethtool | Already added |
 | `eza` | sys-apps | system/apps/eza | Modern ls replacement |
 | `fd` | sys-apps | system/apps/fd | Modern find replacement |
 | `bat` | sys-apps | editors/bat | Already exists - verify |
@@ -89,6 +89,7 @@ Agents should:
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
 | `slang` | sys-libs | system/libs/slang | Already added |
+| `tdb` | sys-libs | system/libs/tdb | Already added |
 | `talloc` | sys-libs | system/libs/talloc | Already added |
 | `tdb` | sys-libs | system/libs/tdb | Trivial database |
 | `tevent` | sys-libs | system/libs/tevent | Event system |
@@ -249,7 +250,7 @@ Agents should:
 | `metalog` | app-admin | system/apps/metalog | Modern logger |
 | `monit` | app-admin | system/apps/monit | Already added |
 | `supervisor` | app-admin | system/apps/supervisor | Process control |
-| `lnav` | app-admin | system/apps/lnav | Log navigator |
+| `lnav` | app-admin | system/apps/lnav | Already added |
 
 ---
 

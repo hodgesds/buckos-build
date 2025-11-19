@@ -32,6 +32,14 @@ filegroup(
 )
 
 filegroup(
+    name = "proxy-servers",
+    srcs = [
+        "//packages/linux/www/servers/squid:squid",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
     name = "all-web-servers",
     srcs = [
         "//packages/linux/www/servers/nginx:nginx",
@@ -40,6 +48,7 @@ filegroup(
         "//packages/linux/www/servers/lighttpd:lighttpd",
         "//packages/linux/www/servers/haproxy:haproxy",
         "//packages/linux/www/servers/traefik:traefik",
+        "//packages/linux/www/servers/squid:squid",
     ],
     visibility = ["PUBLIC"],
 )

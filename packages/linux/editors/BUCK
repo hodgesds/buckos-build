@@ -8,6 +8,7 @@ filegroup(
         "//packages/linux/editors/emacs",
         "//packages/linux/editors/emacs-nox",
         "//packages/linux/editors/vscodium",
+        "//packages/linux/editors/ed",
     ],
     visibility = ["PUBLIC"],
 )
@@ -157,12 +158,24 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
+# Spell checking libraries
+filegroup(
+    name = "spell-check",
+    srcs = [
+        "//packages/linux/editors/hunspell",
+        "//packages/linux/editors/aspell",
+        "//packages/linux/editors/enchant",
+    ],
+    visibility = ["PUBLIC"],
+)
+
 # Combined filegroup for all editors and text utilities
 filegroup(
     name = "all-editors-and-utils",
     srcs = [
         ":all-editors",
         ":all-text-utils",
+        ":spell-check",
     ],
     visibility = ["PUBLIC"],
 )

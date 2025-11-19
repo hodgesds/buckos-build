@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# bash-completion - Programmable completion functions for bash
+download_source(
+    name = "bash-completion-src",
+    src_uri = "https://github.com/scop/bash-completion/releases/download/2.14.0/bash-completion-2.14.0.tar.xz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "bash-completion",
+    source = ":bash-completion-src",
+    version = "2.14.0",
+    description = "Programmable completion functions for bash",
+    homepage = "https://github.com/scop/bash-completion",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

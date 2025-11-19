@@ -1,26 +1,23 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 
-# talloc - Hierarchical pool based memory allocator with destructors
-
+# talloc - Memory allocator from Samba project
 download_source(
     name = "talloc-src",
-    src_uri = "https://www.samba.org/ftp/talloc/talloc-2.4.2.tar.gz",
-    sha256 = "d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1",
+    src_uri = "https://www.samba.org/ftp/talloc/talloc-2.4.3.tar.gz",
+    sha256 = "PLACEHOLDER_HASH",
 )
 
 configure_make_package(
     name = "talloc",
     source = ":talloc-src",
-    version = "2.4.2",
+    version = "2.4.3",
     description = "Hierarchical pool based memory allocator with destructors",
     homepage = "https://talloc.samba.org/",
-    license = "LGPL-3.0-or-later",
+    license = "LGPL-3.0",
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
-        "--localstatedir=/var",
         "--disable-python",
-        "--disable-rpath",
     ],
     deps = [
         "//packages/linux/core:musl",

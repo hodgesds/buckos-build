@@ -1,0 +1,33 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# shadow - User and group management utilities
+download_source(
+    name = "shadow-src",
+    src_uri = "https://github.com/shadow-maint/shadow/releases/download/4.14.8/shadow-4.14.8.tar.xz",
+    sha256 = "fc188a1eb5ce6bf26d5dd8f2667a82b4f61bc6ad40d7c8cc6b77549b6e9f0bce",
+)
+
+configure_make_package(
+    name = "shadow",
+    source = ":shadow-src",
+    version = "4.14.8",
+    description = "User and group management utilities (passwd, useradd, etc.)",
+    homepage = "https://github.com/shadow-maint/shadow",
+    license = "BSD",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--disable-nls",
+        "--without-selinux",
+        "--without-audit",
+        "--without-acl",
+        "--without-attr",
+        "--without-tcb",
+        "--without-nscd",
+        "--disable-man",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

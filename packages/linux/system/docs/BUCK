@@ -112,6 +112,31 @@ configure_make_package(
     visibility = ["PUBLIC"],
 )
 
+# texinfo - GNU documentation system
+download_source(
+    name = "texinfo-src",
+    src_uri = "https://ftp.gnu.org/gnu/texinfo/texinfo-7.2.tar.xz",
+    sha256 = "0329d7788fbef113fa82cb80889e5f30c7cde9362a38e7d978269a2d7862f223",
+)
+
+configure_make_package(
+    name = "texinfo",
+    source = ":texinfo-src",
+    version = "7.2",
+    description = "GNU documentation system for producing online and printed manuals",
+    homepage = "https://www.gnu.org/software/texinfo",
+    license = "GPL-3.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-nls",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:ncurses",
+    ],
+    visibility = ["PUBLIC"],
+)
+
 # Filegroup for all documentation packages
 filegroup(
     name = "docs",
@@ -120,6 +145,7 @@ filegroup(
         ":man-pages",
         ":groff",
         ":gdbm",
+        ":texinfo",
     ],
     visibility = ["PUBLIC"],
 )

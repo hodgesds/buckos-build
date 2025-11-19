@@ -1,0 +1,28 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "swaylock-effects-src",
+    src_uri = "https://github.com/mortie/swaylock-effects/archive/v1.6-7.tar.gz",
+    sha256 = "aeb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6c2",
+)
+
+configure_make_package(
+    name = "swaylock-effects",
+    source = ":swaylock-effects-src",
+    version = "1.6-7",
+    description = "Swaylock with effects (screenshots, blur, etc.)",
+    homepage = "https://github.com/mortie/swaylock-effects",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr \\
+    -Dpam=enabled \\
+    -Dman-pages=disabled
+""",
+    deps = [
+        "//packages/desktop/wayland:wayland",
+        "//packages/desktop/wayland:wayland-protocols",
+    ],
+    visibility = ["PUBLIC"],
+)

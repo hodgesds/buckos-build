@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "xrandr-src",
+    src_uri = "https://xorg.freedesktop.org/releases/individual/app/xrandr-1.5.2.tar.xz",
+    sha256 = "c8bee4790d9058bacc4b6246456c58021db58a87ddda1a9d0139bf5f18f1f240",
+)
+
+configure_make_package(
+    name = "xrandr",
+    source = ":xrandr-src",
+    version = "1.5.2",
+    description = "Primitive command line interface to RandR extension",
+    homepage = "https://xorg.freedesktop.org/",
+    license = "MIT",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/desktop/xorg-server:libx11",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "rofi-src",
+    src_uri = "https://github.com/davatorium/rofi/releases/download/1.7.5/rofi-1.7.5.tar.gz",
+    sha256 = "d89a1d0f9e8c71bf853c9ca7d4bcafdb7d6cf5ae5f7c21be7b4c5e1ba0dc1b7e",
+)
+
+configure_make_package(
+    name = "rofi",
+    source = ":rofi-src",
+    version = "1.7.5",
+    description = "A window switcher, application launcher and dmenu replacement",
+    homepage = "https://github.com/davatorium/rofi",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr
+""",
+    deps = [
+        "//packages/desktop/xorg-server:libx11",
+    ],
+    visibility = ["PUBLIC"],
+)

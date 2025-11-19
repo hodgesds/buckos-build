@@ -1,0 +1,28 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "swaybg-src",
+    src_uri = "https://github.com/swaywm/swaybg/releases/download/1.2.0/swaybg-1.2.0.tar.gz",
+    sha256 = "ceb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6c4",
+)
+
+configure_make_package(
+    name = "swaybg",
+    source = ":swaybg-src",
+    version = "1.2.0",
+    description = "Wallpaper tool for Wayland compositors",
+    homepage = "https://github.com/swaywm/swaybg",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr \\
+    -Dgdk-pixbuf=enabled \\
+    -Dman-pages=disabled
+""",
+    deps = [
+        "//packages/desktop/wayland:wayland",
+        "//packages/desktop/wayland:wayland-protocols",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -109,3 +109,133 @@ filegroup(
     ],
     visibility = ["PUBLIC"],
 )
+
+# =============================================================================
+# UTILITY PACKAGES
+# =============================================================================
+
+# All X.Org utilities
+filegroup(
+    name = "xorg-utilities",
+    srcs = [
+        "//packages/desktop/xorg-utilities:all",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All Wayland utilities
+filegroup(
+    name = "wayland-utilities",
+    srcs = [
+        "//packages/desktop/wayland-utilities:all",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Combined utilities (both X11 and Wayland)
+filegroup(
+    name = "all-utilities",
+    srcs = [
+        "//packages/desktop/xorg-utilities:all",
+        "//packages/desktop/wayland-utilities:all",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Essential X11 utilities
+filegroup(
+    name = "xorg-utilities-essential",
+    srcs = [
+        "//packages/desktop/xorg-utilities:essential",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Essential Wayland utilities
+filegroup(
+    name = "wayland-utilities-essential",
+    srcs = [
+        "//packages/desktop/wayland-utilities:essential",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Clipboard utilities (both X11 and Wayland)
+filegroup(
+    name = "clipboard-utilities",
+    srcs = [
+        "//packages/desktop/xorg-utilities:clipboard",
+        "//packages/desktop/wayland-utilities:clipboard",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Application launchers (both X11 and Wayland)
+filegroup(
+    name = "launcher-utilities",
+    srcs = [
+        "//packages/desktop/xorg-utilities:launchers",
+        "//packages/desktop/wayland-utilities:launchers",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Notification utilities (both X11 and Wayland)
+filegroup(
+    name = "notification-utilities",
+    srcs = [
+        "//packages/desktop/xorg-utilities:notification",
+        "//packages/desktop/wayland-utilities:notification",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Screenshot utilities (both X11 and Wayland)
+filegroup(
+    name = "screenshot-utilities",
+    srcs = [
+        "//packages/desktop/xorg-utilities:screenshot",
+        "//packages/desktop/wayland-utilities:screenshot",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Status bar utilities (both X11 and Wayland)
+filegroup(
+    name = "statusbar-utilities",
+    srcs = [
+        "//packages/desktop/xorg-utilities:bars",
+        "//packages/desktop/wayland-utilities:bars",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# i3 complete desktop with utilities
+filegroup(
+    name = "i3-complete",
+    srcs = [
+        "//packages/desktop/i3:i3-desktop",
+        "//packages/desktop/xorg-utilities:i3-companions",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Sway complete desktop with utilities
+filegroup(
+    name = "sway-complete",
+    srcs = [
+        "//packages/desktop/sway:sway-desktop",
+        "//packages/desktop/wayland-utilities:sway-companions",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Hyprland complete desktop with utilities
+filegroup(
+    name = "hyprland-complete",
+    srcs = [
+        "//packages/desktop/hyprland:hyprland-desktop",
+        "//packages/desktop/wayland-utilities:hyprland-companions",
+    ],
+    visibility = ["PUBLIC"],
+)

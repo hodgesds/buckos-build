@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "wlprop-src",
+    src_uri = "https://github.com/wayland-tools/wlprop/archive/v1.0.0.tar.gz",
+    sha256 = "deb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6e5",
+)
+
+configure_make_package(
+    name = "wlprop",
+    source = ":wlprop-src",
+    version = "1.0.0",
+    description = "xprop clone for Wayland",
+    homepage = "https://github.com/wayland-tools/wlprop",
+    license = "MIT",
+    pre_configure = """
+# Simple shell script, copy to /usr/bin
+""",
+    deps = [],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "swaylock-src",
+    src_uri = "https://github.com/swaywm/swaylock/releases/download/1.7.2/swaylock-1.7.2.tar.gz",
+    sha256 = "9eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6c1",
+)
+
+configure_make_package(
+    name = "swaylock",
+    source = ":swaylock-src",
+    version = "1.7.2",
+    description = "Screen locker for Wayland",
+    homepage = "https://github.com/swaywm/swaylock",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr \\
+    -Dpam=enabled \\
+    -Dgdk-pixbuf=enabled \\
+    -Dman-pages=disabled
+""",
+    deps = [
+        "//packages/desktop/wayland:wayland",
+        "//packages/desktop/wayland:wayland-protocols",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,399 +1,357 @@
-# Gentoo to BuckOs Package Migration Plan
+# Gentoo to BuckOs Package Migration
 
-This document lists packages from Gentoo that should be added as buck targets to BuckOs.
-Each section can be assigned to a separate agent for parallel execution.
+This document tracks packages migrated from Gentoo to BuckOs as buck targets.
 
-## How to Use This Document
+## Package Format
 
 Each package entry contains:
 - **Package name**: The Gentoo package name
-- **Gentoo category**: Where it lives in Gentoo (e.g., `sys-apps/package`)
-- **Suggested BuckOs path**: Where to create the BUCK file
-- **Priority**: HIGH (essential), MEDIUM (commonly used), LOW (nice to have)
-
-Agents should:
-1. Check the Gentoo repository for the latest version
-2. Create the BUCK file with proper download_source and configure_make_package
-3. Add to appropriate filegroups
-4. Use placeholder sha256 (can be verified later)
+- **Gentoo category**: Source location in Gentoo (e.g., `sys-apps/package`)
+- **BuckOs path**: Location of the BUCK file
+- **Status**: Migration status
 
 ---
 
 ## Section 1: Core System Utilities (sys-apps)
 
-**Assign to: Agent 1**
 **BuckOs base path**: `packages/linux/system/apps/`
 
-### HIGH Priority - Essential System Tools
+### Essential System Tools
 
-| Package | Gentoo Category | BuckOs Path | Notes |
-|---------|----------------|-------------|-------|
-| `baselayout` | sys-apps | system/apps/baselayout | Already added |
-| `kbd` | sys-apps | system/apps/kbd | Already added |
-| `kmod` | sys-apps | system/libs/kmod | Already exists - verify |
-| `dbus` | sys-apps | system/libs/ipc/dbus | Already exists - verify |
-| `haveged` | sys-apps | system/apps/haveged | Already added |
-| `pciutils` | sys-apps | system/hardware/pciutils | Already exists - verify |
-| `usbutils` | sys-apps | system/hardware/usbutils | Already exists - verify |
-| `systemd-utils` | sys-apps | system/apps/systemd-utils | Already added |
-| `iproute2` | sys-apps | network/iproute2 | Already exists - verify |
-| `openrc` | sys-apps | system/init/openrc | Already exists - verify |
-| `file` | sys-apps | core/file | Already exists - verify |
-| `ed` | sys-apps | editors/ed | Already added |
-| `gawk` | sys-apps | editors/gawk | Already exists - verify |
-| `grep` | sys-apps | editors/grep | Already exists - verify |
-| `sed` | sys-apps | editors/sed | Already exists - verify |
+| Package | Gentoo Category | BuckOs Path | Status |
+|---------|----------------|-------------|--------|
+| `baselayout` | sys-apps | system/apps/baselayout | Added |
+| `kbd` | sys-apps | system/apps/kbd | Added |
+| `kmod` | sys-apps | system/libs/kmod | Exists |
+| `dbus` | sys-apps | system/libs/ipc/dbus | Exists |
+| `haveged` | sys-apps | system/apps/haveged | Added |
+| `pciutils` | sys-apps | system/hardware/pciutils | Exists |
+| `usbutils` | sys-apps | system/hardware/usbutils | Exists |
+| `systemd-utils` | sys-apps | system/apps/systemd-utils | Added |
+| `iproute2` | sys-apps | network/iproute2 | Exists |
+| `openrc` | sys-apps | system/init/openrc | Exists |
+| `file` | sys-apps | core/file | Exists |
+| `ed` | sys-apps | editors/ed | Added |
+| `gawk` | sys-apps | editors/gawk | Exists |
+| `grep` | sys-apps | editors/grep | Exists |
+| `sed` | sys-apps | editors/sed | Exists |
 
-### MEDIUM Priority - Common Admin Tools
+### Common Admin Tools
 
-| Package | Gentoo Category | BuckOs Path | Notes |
-|---------|----------------|-------------|-------|
-| `lsb-release` | sys-apps | system/apps/lsb-release | Already added |
-| `hwdata` | sys-apps | system/hardware/hwdata | Already added |
-| `hwloc` | sys-apps | system/hardware/hwloc | Already added |
-| `ethtool` | sys-apps | network/ethtool | Already added |
-| `eza` | sys-apps | system/apps/eza | Modern ls replacement |
-| `fd` | sys-apps | system/apps/fd | Modern find replacement |
-| `bat` | sys-apps | editors/bat | Already exists - verify |
-| `ripgrep` | sys-apps | editors/ripgrep | Already exists - verify |
-| `keyutils` | sys-apps | system/security/keyutils | Already added |
-| `kexec-tools` | sys-apps | system/apps/kexec-tools | Fast reboot |
-| `inxi` | sys-apps | system/apps/inxi | Already added |
+| Package | Gentoo Category | BuckOs Path | Status |
+|---------|----------------|-------------|--------|
+| `lsb-release` | sys-apps | system/apps/lsb-release | Added |
+| `hwdata` | sys-apps | system/hardware/hwdata | Added |
+| `hwloc` | sys-apps | system/hardware/hwloc | Added |
+| `ethtool` | sys-apps | network/ethtool | Added |
+| `eza` | sys-apps | system/apps/eza | Pending |
+| `fd` | sys-apps | system/apps/fd | Pending |
+| `bat` | sys-apps | editors/bat | Exists |
+| `ripgrep` | sys-apps | editors/ripgrep | Exists |
+| `keyutils` | sys-apps | system/security/keyutils | Added |
+| `kexec-tools` | sys-apps | system/apps/kexec-tools | Pending |
+| `inxi` | sys-apps | system/apps/inxi | Added |
 
 ---
 
 ## Section 2: System Libraries (sys-libs)
 
-**Assign to: Agent 2**
 **BuckOs base path**: `packages/linux/system/libs/`
 
-### HIGH Priority - Essential Libraries
+### Essential Libraries
 
-| Package | Gentoo Category | BuckOs Path | Notes |
-|---------|----------------|-------------|-------|
-| `glibc` | sys-libs | core/glibc | GNU C library (alt to musl) |
-| `zlib` | sys-libs | core/zlib | Already exists |
-| `ncurses` | sys-libs | core/ncurses | Already exists |
-| `readline` | sys-libs | core/readline | Already exists |
-| `pam` | sys-libs | system/security/auth/pam | Already added |
-| `libcap` | sys-libs | system/libs/ipc/libcap | Already exists |
-| `libseccomp` | sys-libs | system/libs/ipc/libseccomp | Already exists |
-| `libunwind` | sys-libs | system/libs/libunwind | Already added |
-| `liburing` | sys-libs | system/libs/liburing | Already added |
-| `cracklib` | sys-libs | system/security/cracklib | Already added |
-| `gdbm` | sys-libs | system/docs/gdbm | Already exists in docs |
-| `timezone-data` | sys-libs | system/libs/timezone-data | Already added |
+| Package | Gentoo Category | BuckOs Path | Status |
+|---------|----------------|-------------|--------|
+| `glibc` | sys-libs | core/glibc | Pending |
+| `zlib` | sys-libs | core/zlib | Exists |
+| `ncurses` | sys-libs | core/ncurses | Exists |
+| `readline` | sys-libs | core/readline | Exists |
+| `pam` | sys-libs | system/security/auth/pam | Added |
+| `libcap` | sys-libs | system/libs/ipc/libcap | Exists |
+| `libseccomp` | sys-libs | system/libs/ipc/libseccomp | Exists |
+| `libunwind` | sys-libs | system/libs/libunwind | Added |
+| `liburing` | sys-libs | system/libs/liburing | Added |
+| `cracklib` | sys-libs | system/security/cracklib | Added |
+| `gdbm` | sys-libs | system/docs/gdbm | Exists |
+| `timezone-data` | sys-libs | system/libs/timezone-data | Added |
 
-### MEDIUM Priority
+### Additional Libraries
 
-| Package | Gentoo Category | BuckOs Path | Notes |
-|---------|----------------|-------------|-------|
-| `slang` | sys-libs | system/libs/slang | Already added |
-| `talloc` | sys-libs | system/libs/talloc | Already added |
-| `tdb` | sys-libs | system/libs/tdb | Already added |
-| `tevent` | sys-libs | system/libs/tevent | Already added |
-| `ldb` | sys-libs | system/libs/ldb | Already added |
-| `efivar` | sys-libs | system/libs/efivar | Already added |
-| `mtdev` | sys-libs | system/libs/input/mtdev | Already exists |
+| Package | Gentoo Category | BuckOs Path | Status |
+|---------|----------------|-------------|--------|
+| `slang` | sys-libs | system/libs/slang | Added |
+| `talloc` | sys-libs | system/libs/talloc | Added |
+| `tdb` | sys-libs | system/libs/tdb | Added |
+| `tevent` | sys-libs | system/libs/tevent | Added |
+| `ldb` | sys-libs | system/libs/ldb | Added |
+| `efivar` | sys-libs | system/libs/efivar | Added |
+| `mtdev` | sys-libs | system/libs/input/mtdev | Exists |
 
 ---
 
 ## Section 3: Archive/Compression (app-arch)
 
-**Assign to: Agent 3**
 **BuckOs base path**: `packages/linux/system/libs/compression/`
 
-### HIGH Priority
+### Core Compression Tools
 
-| Package | Gentoo Category | BuckOs Path | Notes |
-|---------|----------------|-------------|-------|
-| `tar` | app-arch | system/apps/tar | Already added |
-| `gzip` | app-arch | system/libs/compression/gzip | Already added |
-| `bzip2` | app-arch | core/bzip2 | Already exists |
-| `xz-utils` | app-arch | core/xz | Already exists |
-| `zstd` | app-arch | system/libs/compression/zstd | Already exists |
-| `lz4` | app-arch | system/libs/compression/lz4 | Already exists |
-| `p7zip` | app-arch | system/libs/compression/p7zip | Already added |
-| `unzip` | app-arch | system/libs/compression/unzip | Already added |
-| `zip` | app-arch | system/libs/compression/zip | Already added |
-| `cpio` | app-arch | system/libs/cpio | Already exists |
-| `libarchive` | app-arch | system/libs/utility/libarchive | Already exists |
-| `pigz` | app-arch | system/libs/compression/pigz | Already added |
+| Package | Gentoo Category | BuckOs Path | Status |
+|---------|----------------|-------------|--------|
+| `tar` | app-arch | system/apps/tar | Added |
+| `gzip` | app-arch | system/libs/compression/gzip | Added |
+| `bzip2` | app-arch | core/bzip2 | Exists |
+| `xz-utils` | app-arch | core/xz | Exists |
+| `zstd` | app-arch | system/libs/compression/zstd | Exists |
+| `lz4` | app-arch | system/libs/compression/lz4 | Exists |
+| `p7zip` | app-arch | system/libs/compression/p7zip | Added |
+| `unzip` | app-arch | system/libs/compression/unzip | Added |
+| `zip` | app-arch | system/libs/compression/zip | Added |
+| `cpio` | app-arch | system/libs/cpio | Exists |
+| `libarchive` | app-arch | system/libs/utility/libarchive | Exists |
+| `pigz` | app-arch | system/libs/compression/pigz | Added |
 
-### MEDIUM Priority
+### Additional Compression Tools
 
-| Package | Gentoo Category | BuckOs Path | Notes |
-|---------|----------------|-------------|-------|
-| `lzip` | app-arch | system/libs/compression/lzip | Already added |
-| `lzop` | app-arch | system/libs/compression/lzop | Already added |
-| `rar` | app-arch | system/libs/compression/rar | RAR archiver |
-| `unrar` | app-arch | system/libs/compression/unrar | Already added |
-| `cabextract` | app-arch | system/libs/compression/cabextract | Already added |
-| `arj` | app-arch | system/libs/compression/arj | Already added |
-| `pbzip2` | app-arch | system/libs/compression/pbzip2 | Already added |
-| `pixz` | app-arch | system/libs/compression/pixz | Already added |
+| Package | Gentoo Category | BuckOs Path | Status |
+|---------|----------------|-------------|--------|
+| `lzip` | app-arch | system/libs/compression/lzip | Added |
+| `lzop` | app-arch | system/libs/compression/lzop | Added |
+| `rar` | app-arch | system/libs/compression/rar | Pending |
+| `unrar` | app-arch | system/libs/compression/unrar | Added |
+| `cabextract` | app-arch | system/libs/compression/cabextract | Added |
+| `arj` | app-arch | system/libs/compression/arj | Added |
+| `pbzip2` | app-arch | system/libs/compression/pbzip2 | Added |
+| `pixz` | app-arch | system/libs/compression/pixz | Added |
 
 ---
 
 ## Section 4: Network Analysis Tools (net-analyzer)
 
-**Assign to: Agent 4**
 **BuckOs base path**: `packages/linux/network/`
 
-### HIGH Priority
+### Core Network Tools
 
-| Package | Gentoo Category | BuckOs Path | Notes |
-|---------|----------------|-------------|-------|
-| `nmap` | net-analyzer | network/nmap | Already exists |
-| `tcpdump` | net-analyzer | network/tcpdump | Already exists |
-| `wireshark` | net-analyzer | network/wireshark | Already added |
-| `iftop` | net-analyzer | network/iftop | Already exists |
-| `nethogs` | net-analyzer | network/nethogs | Already added |
-| `iperf` | net-analyzer | network/iperf | Already added |
-| `netcat` | net-analyzer | network/netcat | Already exists |
-| `traceroute` | net-analyzer | network/traceroute | Already added |
-| `mtr` | net-analyzer | network/mtr | Already exists |
-| `arping` | net-analyzer | network/arping | Already exists |
-| `fail2ban` | net-analyzer | system/security/fail2ban | Already exists |
+| Package | Gentoo Category | BuckOs Path | Status |
+|---------|----------------|-------------|--------|
+| `nmap` | net-analyzer | network/nmap | Exists |
+| `tcpdump` | net-analyzer | network/tcpdump | Exists |
+| `wireshark` | net-analyzer | network/wireshark | Added |
+| `iftop` | net-analyzer | network/iftop | Exists |
+| `nethogs` | net-analyzer | network/nethogs | Added |
+| `iperf` | net-analyzer | network/iperf | Added |
+| `netcat` | net-analyzer | network/netcat | Exists |
+| `traceroute` | net-analyzer | network/traceroute | Added |
+| `mtr` | net-analyzer | network/mtr | Exists |
+| `arping` | net-analyzer | network/arping | Exists |
+| `fail2ban` | net-analyzer | system/security/fail2ban | Exists |
 
-### MEDIUM Priority
+### Monitoring and Security
 
-| Package | Gentoo Category | BuckOs Path | Notes |
-|---------|----------------|-------------|-------|
-| `nagios` | net-analyzer | network/monitoring/nagios | Already added |
-| `zabbix` | net-analyzer | network/monitoring/zabbix | Already added |
-| `netdata` | net-analyzer | network/monitoring/netdata | Already added |
-| `snort` | net-analyzer | network/security/snort | Already added |
-| `suricata` | net-analyzer | network/security/suricata | Already added |
-| `hydra` | net-analyzer | network/security/hydra | Already added |
-| `nikto` | net-analyzer | network/security/nikto | Already added |
-| `speedtest-cli` | net-analyzer | network/speedtest-cli | Already added |
-| `ntopng` | net-analyzer | network/monitoring/ntopng | Already added |
-| `arpwatch` | net-analyzer | network/arpwatch | Already added |
+| Package | Gentoo Category | BuckOs Path | Status |
+|---------|----------------|-------------|--------|
+| `nagios` | net-analyzer | network/monitoring/nagios | Added |
+| `zabbix` | net-analyzer | network/monitoring/zabbix | Added |
+| `netdata` | net-analyzer | network/monitoring/netdata | Added |
+| `snort` | net-analyzer | network/security/snort | Added |
+| `suricata` | net-analyzer | network/security/suricata | Added |
+| `hydra` | net-analyzer | network/security/hydra | Added |
+| `nikto` | net-analyzer | network/security/nikto | Added |
+| `speedtest-cli` | net-analyzer | network/speedtest-cli | Added |
+| `ntopng` | net-analyzer | network/monitoring/ntopng | Added |
+| `arpwatch` | net-analyzer | network/arpwatch | Added |
 
 ---
 
 ## Section 5: Development Utilities (dev-util)
 
-**Assign to: Agent 5**
 **BuckOs base path**: `packages/linux/dev-tools/`
 
-### HIGH Priority
+### Core Development Tools
 
-| Package | Gentoo Category | BuckOs Path | Notes |
-|---------|----------------|-------------|-------|
-| `cmake` | dev-util | dev-tools/build-systems/cmake | Already exists |
-| `meson` | dev-util | dev-tools/build-systems/meson | Already exists |
-| `ninja` | dev-util | dev-tools/build-systems/ninja | Already exists |
-| `gdb` | dev-util | dev-tools/debuggers/gdb | Already exists |
-| `valgrind` | dev-util | dev-tools/profilers/valgrind | Already exists |
-| `strace` | dev-util | dev-tools/debuggers/strace | Already exists |
-| `ltrace` | dev-util | dev-tools/debuggers/ltrace | Already exists |
-| `perf` | dev-util | benchmarks/perf | Already exists |
-| `cscope` | dev-util | dev-tools/dev-utils/cscope | Already exists |
-| `ctags` | dev-util | dev-tools/dev-utils/ctags | Already exists |
-| `global` | dev-util | dev-tools/dev-utils/global | Already exists |
-| `shellcheck` | dev-util | dev-tools/dev-utils/shellcheck | Already exists |
+| Package | Gentoo Category | BuckOs Path | Status |
+|---------|----------------|-------------|--------|
+| `cmake` | dev-util | dev-tools/build-systems/cmake | Exists |
+| `meson` | dev-util | dev-tools/build-systems/meson | Exists |
+| `ninja` | dev-util | dev-tools/build-systems/ninja | Exists |
+| `gdb` | dev-util | dev-tools/debuggers/gdb | Exists |
+| `valgrind` | dev-util | dev-tools/profilers/valgrind | Exists |
+| `strace` | dev-util | dev-tools/debuggers/strace | Exists |
+| `ltrace` | dev-util | dev-tools/debuggers/ltrace | Exists |
+| `perf` | dev-util | benchmarks/perf | Exists |
+| `cscope` | dev-util | dev-tools/dev-utils/cscope | Exists |
+| `ctags` | dev-util | dev-tools/dev-utils/ctags | Exists |
+| `global` | dev-util | dev-tools/dev-utils/global | Exists |
+| `shellcheck` | dev-util | dev-tools/dev-utils/shellcheck | Exists |
 
-### MEDIUM Priority - Need to Add
+### Additional Development Tools
 
-| Package | Gentoo Category | BuckOs Path | Notes |
-|---------|----------------|-------------|-------|
-| `gperf` | dev-util | dev-tools/dev-utils/gperf | Already added |
-| `gengetopt` | dev-util | dev-tools/dev-utils/gengetopt | Already added |
-| `intltool` | dev-util | dev-tools/dev-utils/intltool | Already added |
-| `itstool` | dev-util | dev-tools/dev-utils/itstool | Already added |
-| `gtk-doc` | dev-util | dev-tools/dev-utils/gtk-doc | Already added |
-| `pkgconf` | dev-util | dev-tools/build-systems/pkgconf | Already added |
-| `meld` | dev-util | dev-tools/dev-utils/meld | Already exists |
-| `kdevelop` | dev-util | dev-tools/ide/kdevelop | Already added |
-| `geany` | dev-util | dev-tools/ide/geany | Already added |
-| `kcov` | dev-util | dev-tools/dev-utils/kcov | Already added |
-| `coccinelle` | dev-util | dev-tools/dev-utils/coccinelle | Already added |
-| `cloc` | dev-util | dev-tools/dev-utils/cloc | Already added |
-| `github-cli` | dev-util | dev-tools/vcs/github-cli | Already added |
-| `heaptrack` | dev-util | dev-tools/profilers/heaptrack | Already added |
+| Package | Gentoo Category | BuckOs Path | Status |
+|---------|----------------|-------------|--------|
+| `gperf` | dev-util | dev-tools/dev-utils/gperf | Added |
+| `gengetopt` | dev-util | dev-tools/dev-utils/gengetopt | Added |
+| `intltool` | dev-util | dev-tools/dev-utils/intltool | Added |
+| `itstool` | dev-util | dev-tools/dev-utils/itstool | Added |
+| `gtk-doc` | dev-util | dev-tools/dev-utils/gtk-doc | Added |
+| `pkgconf` | dev-util | dev-tools/build-systems/pkgconf | Added |
+| `meld` | dev-util | dev-tools/dev-utils/meld | Exists |
+| `kdevelop` | dev-util | dev-tools/ide/kdevelop | Added |
+| `geany` | dev-util | dev-tools/ide/geany | Added |
+| `kcov` | dev-util | dev-tools/dev-utils/kcov | Added |
+| `coccinelle` | dev-util | dev-tools/dev-utils/coccinelle | Added |
+| `cloc` | dev-util | dev-tools/dev-utils/cloc | Added |
+| `github-cli` | dev-util | dev-tools/vcs/github-cli | Added |
+| `heaptrack` | dev-util | dev-tools/profilers/heaptrack | Added |
 
 ---
 
 ## Section 6: Admin Tools (app-admin)
 
-**Assign to: Agent 6**
 **BuckOs base path**: `packages/linux/system/`
 
-### HIGH Priority
+### Core Admin Tools
 
-| Package | Gentoo Category | BuckOs Path | Notes |
-|---------|----------------|-------------|-------|
-| `sudo` | app-admin | system/apps/sudo | Already exists |
-| `doas` | app-admin | system/apps/doas | Already exists |
-| `logrotate` | app-admin | system/apps/logrotate | Already exists |
-| `sysstat` | app-admin | system/apps/sysstat | Already added |
-| `sysklogd` | app-admin | system/apps/sysklogd | Already added |
-| `rsyslog` | app-admin | system/apps/rsyslog | Already exists |
-| `conky` | app-admin | desktop/conky | Already added |
-| `htop` | app-admin | system/apps/htop | Already exists |
+| Package | Gentoo Category | BuckOs Path | Status |
+|---------|----------------|-------------|--------|
+| `sudo` | app-admin | system/apps/sudo | Exists |
+| `doas` | app-admin | system/apps/doas | Exists |
+| `logrotate` | app-admin | system/apps/logrotate | Exists |
+| `sysstat` | app-admin | system/apps/sysstat | Added |
+| `sysklogd` | app-admin | system/apps/sysklogd | Added |
+| `rsyslog` | app-admin | system/apps/rsyslog | Exists |
+| `conky` | app-admin | desktop/conky | Added |
+| `htop` | app-admin | system/apps/htop | Exists |
 
-### MEDIUM Priority - Need to Add
+### Configuration Management and Security
 
-| Package | Gentoo Category | BuckOs Path | Notes |
-|---------|----------------|-------------|-------|
-| `ansible` | app-admin | system/admin/ansible | Already added |
-| `puppet` | app-admin | system/admin/puppet | Already added |
-| `salt` | app-admin | system/admin/salt | Already added |
-| `terraform` | app-admin | system/admin/terraform | Already added |
-| `consul` | app-admin | system/admin/consul | Already added |
-| `vault` | app-admin | system/admin/vault | Already added |
-| `keepassxc` | app-admin | system/security/keepassxc | Already added |
-| `pass` | app-admin | system/security/pass | Already added |
-| `metalog` | app-admin | system/apps/metalog | Already added |
-| `monit` | app-admin | system/apps/monit | Already added |
-| `supervisor` | app-admin | system/apps/supervisor | Already added |
-| `lnav` | app-admin | system/apps/lnav | Already added |
+| Package | Gentoo Category | BuckOs Path | Status |
+|---------|----------------|-------------|--------|
+| `ansible` | app-admin | system/admin/ansible | Added |
+| `puppet` | app-admin | system/admin/puppet | Added |
+| `salt` | app-admin | system/admin/salt | Added |
+| `terraform` | app-admin | system/admin/terraform | Added |
+| `consul` | app-admin | system/admin/consul | Added |
+| `vault` | app-admin | system/admin/vault | Added |
+| `keepassxc` | app-admin | system/security/keepassxc | Added |
+| `pass` | app-admin | system/security/pass | Added |
+| `metalog` | app-admin | system/apps/metalog | Added |
+| `monit` | app-admin | system/apps/monit | Added |
+| `supervisor` | app-admin | system/apps/supervisor | Added |
+| `lnav` | app-admin | system/apps/lnav | Added |
 
 ---
 
 ## Section 7: Shells (app-shells)
 
-**Assign to: Agent 7**
 **BuckOs base path**: `packages/linux/shells/`
 
-### Already Have
+### Pre-existing Shells
 - bash, zsh, dash, fish, mksh
 
-### Need to Add
+### Migrated Shells and Tools
 
-| Package | Gentoo Category | BuckOs Path | Priority |
-|---------|----------------|-------------|----------|
-| `tcsh` | app-shells | shells/tcsh | Already added |
-| `ksh` | app-shells | shells/ksh | Already added |
-| `nushell` | app-shells | shells/nushell | Already added |
-| `pwsh` | app-shells | shells/pwsh | Already added |
-| `rc` | app-shells | shells/rc | Already added |
-| `yash` | app-shells | shells/yash | Already added |
-| `bash-completion` | app-shells | shells/bash-completion | Already added |
-| `zsh-completions` | app-shells | shells/zsh-completions | Already added |
-| `gentoo-zsh-completions` | app-shells | shells/gentoo-zsh-completions | Already added |
-| `starship` | app-shells | shells/starship | Already added |
-| `tmux-bash-completion` | app-shells | shells/tmux-bash-completion | Already added |
-| `fzf` | app-shells | editors/fzf | Already exists |
-| `atuin` | app-shells | shells/atuin | Already added |
-| `zoxide` | app-shells | shells/zoxide | Already added |
-| `mcfly` | app-shells | shells/mcfly | Already added |
-| `thefuck` | app-shells | shells/thefuck | Already added |
+| Package | Gentoo Category | BuckOs Path | Status |
+|---------|----------------|-------------|--------|
+| `tcsh` | app-shells | shells/tcsh | Added |
+| `ksh` | app-shells | shells/ksh | Added |
+| `nushell` | app-shells | shells/nushell | Added |
+| `pwsh` | app-shells | shells/pwsh | Added |
+| `rc` | app-shells | shells/rc | Added |
+| `yash` | app-shells | shells/yash | Added |
+| `bash-completion` | app-shells | shells/bash-completion | Added |
+| `zsh-completions` | app-shells | shells/zsh-completions | Added |
+| `gentoo-zsh-completions` | app-shells | shells/gentoo-zsh-completions | Added |
+| `starship` | app-shells | shells/starship | Added |
+| `tmux-bash-completion` | app-shells | shells/tmux-bash-completion | Added |
+| `fzf` | app-shells | editors/fzf | Exists |
+| `atuin` | app-shells | shells/atuin | Added |
+| `zoxide` | app-shells | shells/zoxide | Added |
+| `mcfly` | app-shells | shells/mcfly | Added |
+| `thefuck` | app-shells | shells/thefuck | Added |
 
 ---
 
 ## Section 8: Text Processing (app-text)
 
-**Assign to: Agent 8**
 **BuckOs base path**: `packages/linux/editors/` and `packages/linux/system/docs/`
 
-### HIGH Priority
+### Document Processing
 
-| Package | Gentoo Category | BuckOs Path | Notes |
-|---------|----------------|-------------|-------|
-| `groff` | app-text | system/docs/groff | Already exists |
-| `ghostscript` | app-text | editors/ghostscript | Already added |
-| `poppler` | app-text | editors/poppler | Already added |
-| `mupdf` | app-text | editors/mupdf | Already added |
-| `zathura` | app-text | editors/zathura | Already added |
-| `evince` | app-text | editors/evince | Already added |
-| `okular` | app-text | editors/okular | Already added |
-| `aspell` | app-text | editors/aspell | Already added |
-| `hunspell` | app-text | editors/hunspell | Already added |
-| `enchant` | app-text | editors/enchant | Already added |
+| Package | Gentoo Category | BuckOs Path | Status |
+|---------|----------------|-------------|--------|
+| `groff` | app-text | system/docs/groff | Exists |
+| `ghostscript` | app-text | editors/ghostscript | Added |
+| `poppler` | app-text | editors/poppler | Added |
+| `mupdf` | app-text | editors/mupdf | Added |
+| `zathura` | app-text | editors/zathura | Added |
+| `evince` | app-text | editors/evince | Added |
+| `okular` | app-text | editors/okular | Added |
+| `aspell` | app-text | editors/aspell | Added |
+| `hunspell` | app-text | editors/hunspell | Added |
+| `enchant` | app-text | editors/enchant | Added |
 
-### MEDIUM Priority
+### Text Utilities
 
-| Package | Gentoo Category | BuckOs Path | Notes |
-|---------|----------------|-------------|-------|
-| `asciidoc` | app-text | dev-tools/dev-utils/asciidoc | Already exists |
-| `asciidoctor` | app-text | dev-tools/dev-utils/asciidoctor | Already exists |
-| `dos2unix` | app-text | editors/dos2unix | Already added |
-| `tree` | app-text | system/apps/tree | Already exists |
-| `wdiff` | app-text | editors/wdiff | Already added |
-| `colordiff` | app-text | dev-tools/dev-utils/colordiff | Already exists |
-| `csvtool` | app-text | editors/csvtool | Already added |
-| `discount` | app-text | editors/discount | Already added |
-| `mdp` | app-text | editors/mdp | Already added |
+| Package | Gentoo Category | BuckOs Path | Status |
+|---------|----------------|-------------|--------|
+| `asciidoc` | app-text | dev-tools/dev-utils/asciidoc | Exists |
+| `asciidoctor` | app-text | dev-tools/dev-utils/asciidoctor | Exists |
+| `dos2unix` | app-text | editors/dos2unix | Added |
+| `tree` | app-text | system/apps/tree | Exists |
+| `wdiff` | app-text | editors/wdiff | Added |
+| `colordiff` | app-text | dev-tools/dev-utils/colordiff | Exists |
+| `csvtool` | app-text | editors/csvtool | Added |
+| `discount` | app-text | editors/discount | Added |
+| `mdp` | app-text | editors/mdp | Added |
 
 ---
 
 ## Section 9: Databases (dev-db)
 
-**Assign to: Agent 9**
 **BuckOs base path**: `packages/linux/databases/`
 
-### HIGH Priority - Need to Add Category
+### Core Databases
 
-| Package | Gentoo Category | BuckOs Path | Notes |
-|---------|----------------|-------------|-------|
-| `sqlite` | dev-db | system/libs/database/sqlite | Already exists |
-| `postgresql` | dev-db | databases/postgresql | Already added |
-| `mariadb` | dev-db | databases/mariadb | Already added |
-| `redis` | dev-db | databases/redis | Already added |
-| `mongodb` | dev-db | databases/mongodb | Already added |
-| `memcached` | dev-db | databases/memcached | Already added |
-| `lmdb` | dev-db | system/libs/database/lmdb | Already exists |
+| Package | Gentoo Category | BuckOs Path | Status |
+|---------|----------------|-------------|--------|
+| `sqlite` | dev-db | system/libs/database/sqlite | Exists |
+| `postgresql` | dev-db | databases/postgresql | Added |
+| `mariadb` | dev-db | databases/mariadb | Added |
+| `redis` | dev-db | databases/redis | Added |
+| `mongodb` | dev-db | databases/mongodb | Added |
+| `memcached` | dev-db | databases/memcached | Added |
+| `lmdb` | dev-db | system/libs/database/lmdb | Exists |
 
-### MEDIUM Priority
+### Additional Databases
 
-| Package | Gentoo Category | BuckOs Path | Notes |
-|---------|----------------|-------------|-------|
-| `influxdb` | dev-db | databases/influxdb | Already added |
-| `couchdb` | dev-db | databases/couchdb | Already added |
-| `neo4j` | dev-db | databases/neo4j | Already added |
-| `etcd` | dev-db | databases/etcd | Already added |
+| Package | Gentoo Category | BuckOs Path | Status |
+|---------|----------------|-------------|--------|
+| `influxdb` | dev-db | databases/influxdb | Added |
+| `couchdb` | dev-db | databases/couchdb | Added |
+| `neo4j` | dev-db | databases/neo4j | Added |
+| `etcd` | dev-db | databases/etcd | Added |
 
 ---
 
 ## Section 10: Web Servers (www-servers)
 
-**Assign to: Agent 10**
 **BuckOs base path**: `packages/linux/www/servers/`
 
-### Already Have
+### Pre-existing Servers
 - nginx, apache, caddy, lighttpd, haproxy, traefik
 
-### Need to Add
+### Migrated Servers
 
-| Package | Gentoo Category | BuckOs Path | Priority |
-|---------|----------------|-------------|----------|
-| `tomcat` | www-servers | www/servers/tomcat | Already added |
-| `jetty` | www-servers | www/servers/jetty | Already added |
-| `varnish` | www-servers | www/servers/varnish | Already added |
-| `squid` | www-servers | www/servers/squid | Already added |
-| `pound` | www-servers | www/servers/pound | Already added |
-
----
-
-## Summary Statistics
-
-### Packages by Priority
-
-- **HIGH Priority**: ~80 packages
-- **MEDIUM Priority**: ~120 packages
-- **LOW Priority**: ~50 packages
-
-### Estimated Work Per Agent
-
-| Agent | Section | Est. Packages to Add |
-|-------|---------|---------------------|
-| 1 | Core System | 15-20 |
-| 2 | System Libraries | 10-15 |
-| 3 | Compression | 10-15 |
-| 4 | Network Analysis | 15-20 |
-| 5 | Dev Utilities | 15-20 |
-| 6 | Admin Tools | 15-20 |
-| 7 | Shells | 10-15 |
-| 8 | Text Processing | 15-20 |
-| 9 | Databases | 10-12 |
-| 10 | Web Servers | 5-8 |
+| Package | Gentoo Category | BuckOs Path | Status |
+|---------|----------------|-------------|--------|
+| `tomcat` | www-servers | www/servers/tomcat | Added |
+| `jetty` | www-servers | www/servers/jetty | Added |
+| `varnish` | www-servers | www/servers/varnish | Added |
+| `squid` | www-servers | www/servers/squid | Added |
+| `pound` | www-servers | www/servers/pound | Added |
 
 ---
 
-## Template for New Package
+## Template for New Packages
 
 ```python
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
@@ -422,9 +380,9 @@ configure_make_package(
 )
 ```
 
-## Notes for Agents
+## Adding New Packages
 
-1. **Check Gentoo first**: Look at the ebuild for configure flags, dependencies
+1. **Check Gentoo first**: Look at the ebuild for configure flags and dependencies
 2. **Use latest stable version**: Check what version Gentoo marks as stable
 3. **Placeholder hashes**: Use placeholder SHA256 (can be verified later)
 4. **Add to filegroups**: Update relevant category BUCK files

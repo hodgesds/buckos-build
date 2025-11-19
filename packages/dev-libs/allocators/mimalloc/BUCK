@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "download_source", "cmake_package")
+
+download_source(
+    name = "mimalloc-src",
+    src_uri = "https://github.com/microsoft/mimalloc/archive/refs/tags/v2.1.2.tar.gz",
+    sha256 = "2b1bff6f717f9725c70bf8d79e4786da13de8a270059e4ba0bdd262ae7be46eb",
+)
+
+cmake_package(
+    name = "mimalloc",
+    source = ":mimalloc-src",
+    version = "2.1.2",
+    description = "Microsoft's compact general purpose allocator with excellent performance",
+    homepage = "https://github.com/microsoft/mimalloc",
+    license = "MIT",
+    cmake_args = [
+        "-DMI_BUILD_STATIC=OFF",
+        "-DMI_BUILD_TESTS=OFF",
+    ],
+    visibility = ["PUBLIC"],
+)

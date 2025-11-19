@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libedit-src",
+    src_uri = "https://thrysoee.dk/editline/libedit-20230828-3.1.tar.gz",
+    sha256 = "4ee8182b6a2a9a1e84f49bca5f78e85395b2d3e8a7aba095eb82dd76f2d9259a",
+)
+
+configure_make_package(
+    name = "libedit",
+    source = ":libedit-src",
+    version = "3.1.20230828",
+    description = "BSD-licensed readline replacement",
+    homepage = "https://thrysoee.dk/editline/",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--disable-static",
+    ],
+    deps = [
+        "//packages/core/ncurses",
+    ],
+    visibility = ["PUBLIC"],
+)

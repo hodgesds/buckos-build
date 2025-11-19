@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "cmake_package")
+
+download_source(
+    name = "abseil-cpp-src",
+    src_uri = "https://github.com/abseil/abseil-cpp/releases/download/20240116.2/abseil-cpp-20240116.2.tar.gz",
+    sha256 = "733726b8c3a6d39a4120d7e45ea8b41a434cdacde401cba500f14236c49b39dc",
+)
+
+cmake_package(
+    name = "abseil-cpp",
+    source = ":abseil-cpp-src",
+    version = "20240116.2",
+    description = "Abseil C++ Common Libraries",
+    homepage = "https://abseil.io/",
+    license = "Apache-2.0",
+    cmake_args = [
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DABSL_BUILD_TESTING=OFF",
+        "-DABSL_USE_EXTERNAL_GOOGLETEST=OFF",
+        "-DCMAKE_CXX_STANDARD=17",
+    ],
+    visibility = ["PUBLIC"],
+)

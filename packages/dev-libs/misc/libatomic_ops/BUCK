@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libatomic_ops-src",
+    src_uri = "https://github.com/ivmai/libatomic_ops/releases/download/v7.8.2/libatomic_ops-7.8.2.tar.gz",
+    sha256 = "d305207fe207f2b3fb5cb4c019f96ab6868363e0faa9b3e89e03ec5d653b5e6e",
+)
+
+configure_make_package(
+    name = "libatomic_ops",
+    source = ":libatomic_ops-src",
+    version = "7.8.2",
+    description = "Implementation for atomic memory update operations",
+    homepage = "https://github.com/ivmai/libatomic_ops",
+    license = "GPL-2.0+ OR MIT",
+    configure_args = [
+        "--disable-static",
+    ],
+    visibility = ["PUBLIC"],
+)

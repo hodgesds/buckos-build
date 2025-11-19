@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "meson_package")
+
+download_source(
+    name = "glib-src",
+    src_uri = "https://download.gnome.org/sources/glib/2.80/glib-2.80.0.tar.xz",
+    sha256 = "8228a92f92a412160b139ae68b6345bd28f24f5f4f4c4818a82b2a5ea0c6c90a",
+)
+
+meson_package(
+    name = "glib",
+    source = ":glib-src",
+    version = "2.80.0",
+    description = "Low-level core library for GNOME projects",
+    homepage = "https://wiki.gnome.org/Projects/GLib",
+    license = "LGPL-2.1+",
+    meson_args = [
+        "-Dman-pages=disabled",
+        "-Ddtrace=false",
+        "-Dsystemtap=false",
+        "-Dgtk_doc=false",
+        "-Dtests=false",
+    ],
+    deps = [
+        "//packages/system/libs/utility/libffi",
+        "//packages/core/zlib",
+        "//packages/system/libs/utility/pcre2",
+    ],
+    visibility = ["PUBLIC"],
+)

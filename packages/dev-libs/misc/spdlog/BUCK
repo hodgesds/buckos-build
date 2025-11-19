@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "cmake_package")
+
+download_source(
+    name = "spdlog-src",
+    src_uri = "https://github.com/gabime/spdlog/archive/refs/tags/v1.13.0.tar.gz",
+    sha256 = "534f2ee1a4dcb8712c921a94f1841410b3f8f33d2a3b7134a0097bc8838d6a1f",
+)
+
+cmake_package(
+    name = "spdlog",
+    source = ":spdlog-src",
+    version = "1.13.0",
+    description = "Fast C++ logging library",
+    homepage = "https://github.com/gabime/spdlog",
+    license = "MIT",
+    cmake_args = [
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DSPDLOG_BUILD_EXAMPLE=OFF",
+        "-DSPDLOG_BUILD_TESTS=OFF",
+        "-DSPDLOG_FMT_EXTERNAL=ON",
+    ],
+    deps = [
+        "//packages/dev-libs/misc/fmt",
+    ],
+    visibility = ["PUBLIC"],
+)

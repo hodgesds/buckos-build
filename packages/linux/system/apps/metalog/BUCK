@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# metalog - Modern replacement for syslogd and klogd
+download_source(
+    name = "metalog-src",
+    src_uri = "https://github.com/hvisage/metalog/archive/metalog-20230719.tar.gz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "metalog",
+    source = ":metalog-src",
+    version = "20230719",
+    description = "Modern replacement for syslogd and klogd",
+    homepage = "https://github.com/hvisage/metalog",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:pcre2",
+    ],
+    visibility = ["PUBLIC"],
+)

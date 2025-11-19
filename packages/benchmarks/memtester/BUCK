@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "memtester-src",
+    src_uri = "https://pyropus.ca/software/memtester/old-versions/memtester-4.6.0.tar.gz",
+    sha256 = "c9fe4eb7e80c8cef5202f9065c4c0682f5616647c0455e916a5700f98e3dbb2e",
+)
+
+configure_make_package(
+    name = "memtester",
+    source = ":memtester-src",
+    version = "4.6.0",
+    description = "Userspace utility for testing memory subsystem for faults",
+    homepage = "https://pyropus.ca/software/memtester/",
+    license = "GPL-2.0",
+    pre_configure = """
+# memtester uses make directly without configure
+true
+""",
+    configure_args = [],
+    post_install = """
+mkdir -p "$DESTDIR/usr/bin"
+cp memtester "$DESTDIR/usr/bin/" 2>/dev/null || true
+""",
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "netperf-src",
+    src_uri = "https://github.com/HewlettPackard/netperf/archive/refs/tags/netperf-2.7.0.tar.gz",
+    sha256 = "4569bafa4cca3d548eb96a486b2c5b1cc0136b6e4e8f5d5f8a9a9a9b9c9d9e9f",
+)
+
+configure_make_package(
+    name = "netperf",
+    source = ":netperf-src",
+    version = "2.7.0",
+    description = "Network performance benchmark - measures various network metrics",
+    homepage = "https://github.com/HewlettPackard/netperf",
+    license = "HP",
+    configure_args = [
+        "--enable-histogram",
+        "--enable-demo",
+    ],
+    visibility = ["PUBLIC"],
+)

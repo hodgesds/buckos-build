@@ -1,0 +1,18 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "bonnie-src",
+    src_uri = "https://www.coker.com.au/bonnie++/bonnie++-2.00a.tgz",
+    sha256 = "3c6fa6f8b5c5a8cdc7a8b6f1e8b9db6b8a9f8c6d5e4f3a2b1c0d9e8f7a6b5c4d",
+)
+
+configure_make_package(
+    name = "bonnie",
+    source = ":bonnie-src",
+    version = "2.00a",
+    description = "Filesystem and disk I/O benchmark suite",
+    homepage = "https://www.coker.com.au/bonnie++/",
+    license = "GPL-2.0",
+    configure_args = [],
+    visibility = ["PUBLIC"],
+)

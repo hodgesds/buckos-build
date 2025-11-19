@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "rt-tests-src",
+    src_uri = "https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git/snapshot/rt-tests-2.6.tar.gz",
+    sha256 = "b19e2d1e9fdf11d27a1aadf5d3e3a2e3e5a9b9f9c6be1aa0c1eb8ab8b8e5b7e1",
+)
+
+configure_make_package(
+    name = "hackbench",
+    source = ":rt-tests-src",
+    version = "2.6",
+    description = "Scheduler benchmark and stress test - measures process scheduling",
+    homepage = "https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git",
+    license = "GPL-2.0",
+    pre_configure = """
+# rt-tests uses make directly
+true
+""",
+    configure_args = [],
+    post_install = """
+mkdir -p "$DESTDIR/usr/bin"
+cp hackbench "$DESTDIR/usr/bin/" 2>/dev/null || true
+""",
+    visibility = ["PUBLIC"],
+)

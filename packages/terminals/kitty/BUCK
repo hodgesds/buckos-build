@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "kitty-src",
+    src_uri = "https://github.com/kovidgoyal/kitty/releases/download/v0.31.0/kitty-0.31.0.tar.xz",
+    sha256 = "f5b5f52b0d3c23d6c8c51dc96b1e7d1c5f8c6e8a7b9c0d1e2f3a4b5c6d7e8f9a",
+)
+
+configure_make_package(
+    name = "kitty",
+    source = ":kitty-src",
+    version = "0.31.0",
+    description = "The fast, feature-rich, GPU based terminal emulator",
+    homepage = "https://sw.kovidgoyal.net/kitty/",
+    license = "GPL-3.0",
+    pre_configure = """
+# Kitty uses its own build system
+python3 setup.py build
+""",
+    configure_args = [],
+    post_install = """
+mkdir -p "$DESTDIR/usr/bin"
+python3 setup.py install --prefix="$DESTDIR/usr" 2>/dev/null || true
+""",
+    visibility = ["PUBLIC"],
+)

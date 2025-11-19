@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "syslinux-src",
+    src_uri = "https://mirrors.edge.kernel.org/pub/linux/utils/boot/syslinux/syslinux-6.03.tar.xz",
+    sha256 = "26d3986d2bea109d5dc0e4f8c4822a459276cf021125e8c9f23c3cca5d8c850e",
+)
+
+configure_make_package(
+    name = "syslinux",
+    source = ":syslinux-src",
+    version = "6.03",
+    description = "Lightweight bootloader for DOS FAT filesystems",
+    homepage = "https://wiki.syslinux.org/",
+    license = "GPL-2.0",
+    pre_configure = """
+# Syslinux doesn't use configure
+true
+""",
+    make_args = [
+        "bios",
+        "installer",
+    ],
+    visibility = ["PUBLIC"],
+)

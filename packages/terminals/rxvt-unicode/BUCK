@@ -1,0 +1,22 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "rxvt-unicode-src",
+    src_uri = "http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-9.31.tar.bz2",
+    sha256 = "aaa13fcbc149fe0f3f391f933279580f74a96fd312d6ed06b8ff03c2d46672e8",
+)
+
+configure_make_package(
+    name = "rxvt-unicode",
+    source = ":rxvt-unicode-src",
+    version = "9.31",
+    description = "rxvt-unicode is a clone of the well known terminal emulator rxvt",
+    homepage = "http://software.schmorp.de/pkg/rxvt-unicode.html",
+    license = "GPL-3.0",
+    configure_args = [
+        "--enable-everything",
+        "--enable-256-color",
+        "--enable-unicode3",
+    ],
+    visibility = ["PUBLIC"],
+)

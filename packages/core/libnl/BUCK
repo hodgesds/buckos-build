@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libnl-src",
+    src_uri = "https://github.com/thom311/libnl/releases/download/libnl3_9_0/libnl-3.9.0.tar.gz",
+    sha256 = "aed507004d728a5cf11eab48ca4bf9e6e1f4571a4acfc8a971b4f1f7b89f50ee",
+)
+
+configure_make_package(
+    name = "libnl",
+    source = ":libnl-src",
+    version = "3.9.0",
+    description = "Library for applications dealing with netlink sockets",
+    homepage = "https://www.infradead.org/~tgr/libnl/",
+    license = "LGPL-2.1",
+    configure_args = [
+        "--disable-cli",
+        "--disable-pthreads",
+    ],
+    visibility = ["PUBLIC"],
+)

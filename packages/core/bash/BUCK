@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "bash-src",
+    src_uri = "https://ftp.gnu.org/gnu/bash/bash-5.2.21.tar.gz",
+    sha256 = "c8e31bdc59b69aaffc5b36509905ba3e5cbb12747091d27b4b977f078560d5b8",
+)
+
+configure_make_package(
+    name = "bash",
+    source = ":bash-src",
+    version = "5.2.21",
+    description = "The GNU Bourne Again SHell",
+    homepage = "https://www.gnu.org/software/bash/",
+    license = "GPL-3.0",
+    configure_args = [
+        "--without-bash-malloc",
+        "--with-installed-readline",
+    ],
+    post_install = """
+# Create sh symlink
+ln -sf bash "$DESTDIR/usr/bin/sh"
+""",
+    deps = ["//packages/core/readline", "//packages/core/ncurses"],
+    visibility = ["PUBLIC"],
+)

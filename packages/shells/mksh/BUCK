@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "mksh-src",
+    src_uri = "http://www.mirbsd.org/MirOS/dist/mir/mksh/mksh-R59c.tgz",
+    sha256 = "77ae1665a337f1c48c61d6b961db3e282b331c562c8b2aacd2f8b6e9665c4c3c",
+)
+
+configure_make_package(
+    name = "mksh",
+    source = ":mksh-src",
+    version = "R59c",
+    description = "MirBSD Korn Shell - an enhanced version of the public domain ksh",
+    homepage = "http://www.mirbsd.org/mksh.htm",
+    license = "MirOS",
+    pre_configure = """
+# mksh uses its own build script
+sh Build.sh -r
+""",
+    configure_args = [],
+    post_install = """
+mkdir -p "$DESTDIR/bin"
+cp mksh "$DESTDIR/bin/"
+""",
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "lmbench-src",
+    src_uri = "https://github.com/intel/lmbench/archive/refs/tags/v3.0-a9.tar.gz",
+    sha256 = "cb0e47c1f80f6cdcaa9eac5ff364c1dc37ee95fe22823d8b0c4a16a526e6eca8",
+)
+
+binary_package(
+    name = "lmbench",
+    srcs = [":lmbench-src"],
+    version = "3.0-a9",
+    description = "Suite of portable micro-benchmarks for UNIX/POSIX systems",
+    homepage = "http://lmbench.sourceforge.net/",
+    license = "GPL-2.0",
+    install_script = """
+        cd $SRCS/lmbench-*
+        make build
+        mkdir -p $OUT/usr/bin
+        cp bin/*/lmbench $OUT/usr/bin/ 2>/dev/null || true
+        cp bin/*/lat_* $OUT/usr/bin/ 2>/dev/null || true
+        cp bin/*/bw_* $OUT/usr/bin/ 2>/dev/null || true
+    """,
+    visibility = ["PUBLIC"],
+)

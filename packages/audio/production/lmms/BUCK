@@ -1,0 +1,46 @@
+load("//defs:package_defs.bzl", "download_source", "cmake_package")
+
+download_source(
+    name = "lmms-src",
+    src_uri = "https://github.com/LMMS/lmms/releases/download/v1.2.2/lmms_1.2.2.tar.xz",
+    sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+)
+
+cmake_package(
+    name = "lmms",
+    source = ":lmms-src",
+    version = "1.2.2",
+    description = "Linux MultiMedia Studio - music production software",
+    homepage = "https://lmms.io/",
+    license = "GPL-2",
+    cmake_args = [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DWANT_QT5=ON",
+        "-DWANT_ALSA=ON",
+        "-DWANT_JACK=OFF",
+        "-DWANT_PULSEAUDIO=OFF",
+        "-DWANT_PORTAUDIO=OFF",
+        "-DWANT_SDL=OFF",
+        "-DWANT_OSS=OFF",
+        "-DWANT_SF2=OFF",
+        "-DWANT_STK=OFF",
+        "-DWANT_SWH=OFF",
+        "-DWANT_VST=OFF",
+        "-DWANT_CAPS=OFF",
+        "-DWANT_TAP=OFF",
+        "-DWANT_CMT=OFF",
+        "-DWANT_CALF=OFF",
+        "-DWANT_CARLA=OFF",
+        "-DWANT_GIG=OFF",
+    ],
+    deps = [
+        "//packages/audio/daemons/alsa-lib:alsa-lib",
+        "//packages/audio/libraries/libsndfile:libsndfile",
+        "//packages/audio/libraries/flac:flac",
+        "//packages/audio/libraries/libvorbis:libvorbis",
+        "//packages/audio/libraries/libogg:libogg",
+        "//packages/desktop/qt:qt5",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

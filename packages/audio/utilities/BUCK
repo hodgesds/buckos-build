@@ -1,0 +1,37 @@
+# Audio utilities and tools
+
+filegroup(
+    name = "conversion-tools",
+    srcs = [
+        "//packages/audio/utilities/sox:sox",
+        "//packages/audio/utilities/abcde:abcde",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "info-tools",
+    srcs = [
+        "//packages/audio/utilities/mediainfo:mediainfo",
+        "//packages/audio/utilities/id3v2:id3v2",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "control-tools",
+    srcs = [
+        "//packages/audio/utilities/pavucontrol:pavucontrol",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-utilities",
+    srcs = [
+        ":conversion-tools",
+        ":info-tools",
+        ":control-tools",
+    ],
+    visibility = ["PUBLIC"],
+)

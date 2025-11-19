@@ -1,0 +1,31 @@
+load("//defs:package_defs.bzl", "download_source", "cmake_package")
+
+download_source(
+    name = "rosegarden-src",
+    src_uri = "https://downloads.sourceforge.net/project/rosegarden/rosegarden/23.12/rosegarden-23.12.tar.xz",
+    sha256 = "f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2",
+)
+
+cmake_package(
+    name = "rosegarden",
+    source = ":rosegarden-src",
+    version = "23.12",
+    description = "MIDI sequencer, music notation editor and audio recorder",
+    homepage = "https://www.rosegardenmusic.com/",
+    license = "GPL-2",
+    cmake_args = [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DDISABLE_LIRC=ON",
+        "-DDISABLE_OSC=ON",
+    ],
+    deps = [
+        "//packages/audio/daemons/alsa-lib:alsa-lib",
+        "//packages/audio/libraries/libsndfile:libsndfile",
+        "//packages/audio/libraries/flac:flac",
+        "//packages/audio/libraries/libvorbis:libvorbis",
+        "//packages/audio/libraries/libogg:libogg",
+        "//packages/desktop/qt:qt5",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

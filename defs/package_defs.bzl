@@ -14,6 +14,7 @@ PackageInfo = provider(fields = [
     "checksum",
     "dependencies",
     "build_dependencies",
+    "maintainers",  # List of maintainer IDs for package support contacts
 ])
 
 def _download_source_impl(ctx: AnalysisContext) -> list[Provider]:
@@ -143,6 +144,7 @@ make install DESTDIR="$DESTDIR" {make_args}
             checksum = "",
             dependencies = ctx.attrs.deps,
             build_dependencies = ctx.attrs.build_deps,
+            maintainers = ctx.attrs.maintainers,
         ),
     ]
 
@@ -161,6 +163,7 @@ configure_make_package = rule(
         "post_install": attrs.string(default = ""),
         "deps": attrs.list(attrs.dep(), default = []),
         "build_deps": attrs.list(attrs.dep(), default = []),
+        "maintainers": attrs.list(attrs.string(), default = []),
     },
 )
 
@@ -355,6 +358,7 @@ done
             checksum = "",
             dependencies = ctx.attrs.deps,
             build_dependencies = ctx.attrs.build_deps,
+            maintainers = ctx.attrs.maintainers,
         ),
     ]
 
@@ -371,6 +375,7 @@ binary_package = rule(
         "license": attrs.string(default = ""),
         "deps": attrs.list(attrs.dep(), default = []),
         "build_deps": attrs.list(attrs.dep(), default = []),
+        "maintainers": attrs.list(attrs.string(), default = []),
     },
 )
 
@@ -448,6 +453,7 @@ cp -r "$SRC"/* "$OUT{extract_to}/" 2>/dev/null || true
             checksum = "",
             dependencies = ctx.attrs.deps,
             build_dependencies = [],
+            maintainers = ctx.attrs.maintainers,
         ),
     ]
 
@@ -462,6 +468,7 @@ precompiled_package = rule(
         "homepage": attrs.string(default = ""),
         "license": attrs.string(default = ""),
         "deps": attrs.list(attrs.dep(), default = []),
+        "maintainers": attrs.list(attrs.string(), default = []),
     },
 )
 
@@ -1432,6 +1439,7 @@ fi
             checksum = "",
             dependencies = ctx.attrs.rdepend,
             build_dependencies = ctx.attrs.bdepend,
+            maintainers = ctx.attrs.maintainers,
         ),
     ]
 
@@ -1458,6 +1466,7 @@ ebuild_package = rule(
         "rdepend": attrs.list(attrs.dep(), default = []),
         "bdepend": attrs.list(attrs.dep(), default = []),
         "pdepend": attrs.list(attrs.dep(), default = []),
+        "maintainers": attrs.list(attrs.string(), default = []),
     },
 )
 
@@ -1473,6 +1482,7 @@ def simple_package(
         configure_args: list[str] = [],
         make_args: list[str] = [],
         deps: list[str] = [],
+        maintainers: list[str] = [],
         **kwargs):
     """
     Convenience macro for standard autotools packages.
@@ -1493,6 +1503,7 @@ def simple_package(
         configure_args = configure_args,
         make_args = make_args,
         deps = deps,
+        maintainers = maintainers,
         **kwargs
     )
 
@@ -1503,6 +1514,7 @@ def cmake_package(
         sha256: str,
         cmake_args: list[str] = [],
         deps: list[str] = [],
+        maintainers: list[str] = [],
         **kwargs):
     """
     Convenience macro for CMake packages.
@@ -1523,6 +1535,7 @@ def cmake_package(
         src_compile = cmake_src_compile(),
         src_install = cmake_src_install(),
         rdepend = deps,
+        maintainers = maintainers,
         **kwargs
     )
 
@@ -1533,6 +1546,7 @@ def meson_package(
         sha256: str,
         meson_args: list[str] = [],
         deps: list[str] = [],
+        maintainers: list[str] = [],
         **kwargs):
     """
     Convenience macro for Meson packages.
@@ -1553,6 +1567,7 @@ def meson_package(
         src_compile = meson_src_compile(),
         src_install = meson_src_install(),
         rdepend = deps,
+        maintainers = maintainers,
         **kwargs
     )
 
@@ -1564,6 +1579,7 @@ def cargo_package(
         bins: list[str] = [],
         cargo_args: list[str] = [],
         deps: list[str] = [],
+        maintainers: list[str] = [],
         **kwargs):
     """
     Convenience macro for Rust/Cargo packages.
@@ -1584,6 +1600,7 @@ def cargo_package(
         src_compile = cargo_src_compile(cargo_args),
         src_install = cargo_src_install(bins),
         rdepend = deps,
+        maintainers = maintainers,
         **kwargs
     )
 
@@ -1595,6 +1612,7 @@ def go_package(
         bins: list[str] = [],
         packages: list[str] = ["."],
         deps: list[str] = [],
+        maintainers: list[str] = [],
         **kwargs):
     """
     Convenience macro for Go packages.
@@ -1614,6 +1632,7 @@ def go_package(
         src_compile = go_src_compile(packages),
         src_install = go_src_install(bins),
         rdepend = deps,
+        maintainers = maintainers,
         **kwargs
     )
 
@@ -1624,6 +1643,7 @@ def python_package(
         sha256: str,
         python: str = "python3",
         deps: list[str] = [],
+        maintainers: list[str] = [],
         **kwargs):
     """
     Convenience macro for Python packages.
@@ -1643,6 +1663,7 @@ def python_package(
         src_compile = "",  # Python packages often don't need compilation
         src_install = python_src_install(python),
         rdepend = deps,
+        maintainers = maintainers,
         **kwargs
     )
 
@@ -1810,6 +1831,7 @@ def simple_binary_package(
         extract_to: str = "/usr",
         symlinks: dict[str, str] = {},
         deps: list[str] = [],
+        maintainers: list[str] = [],
         **kwargs):
     """
     Convenience macro for simple precompiled binary packages.
@@ -1851,6 +1873,7 @@ def simple_binary_package(
         version = version,
         install_script = "\n".join(install_cmds),
         deps = deps,
+        maintainers = maintainers,
         **kwargs
     )
 
@@ -1865,6 +1888,7 @@ def bootstrap_package(
         install_prefix: str = "/usr",
         bins: list[str] = [],
         deps: list[str] = [],
+        maintainers: list[str] = [],
         **kwargs):
     """
     Convenience macro for bootstrap-compiled packages (compilers that need
@@ -1913,5 +1937,6 @@ def bootstrap_package(
             bins = bins,
         ),
         deps = deps,
+        maintainers = maintainers,
         **kwargs
     )

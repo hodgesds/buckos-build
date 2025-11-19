@@ -73,6 +73,38 @@ alias(
     visibility = ["PUBLIC"],
 )
 
+# Default init system
+alias(
+    name = "init",
+    actual = "//packages/sys-init:systemd",
+    visibility = ["PUBLIC"],
+)
+
+# Alternative init systems
+alias(
+    name = "init-openrc",
+    actual = "//packages/sys-init:openrc",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "init-s6",
+    actual = "//packages/sys-init:s6",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "init-runit",
+    actual = "//packages/sys-init:runit",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "init-dinit",
+    actual = "//packages/sys-init:dinit",
+    visibility = ["PUBLIC"],
+)
+
 # =============================================================================
 # Package groups for convenience
 # =============================================================================
@@ -158,6 +190,10 @@ filegroup(
         "//packages/benchmarks:iperf3",
         "//packages/benchmarks:hackbench",
         "//packages/benchmarks:memtester",
+    ],
+    visibility = ["PUBLIC"],
+)
+
 # Terminal/shell libraries
 filegroup(
     name = "shell-libs",
@@ -197,6 +233,28 @@ filegroup(
         "//packages/core:libffi",
         "//packages/core:expat",
         "//packages/core:libnl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Init system packages
+filegroup(
+    name = "init-packages",
+    srcs = [
+        "//packages/sys-init:systemd",
+        "//packages/sys-init:openrc",
+        "//packages/sys-init:runit",
+        "//packages/sys-init:dinit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "init-lightweight",
+    srcs = [
+        "//packages/sys-init:openrc",
+        "//packages/sys-init:runit",
+        "//packages/sys-init:dinit",
     ],
     visibility = ["PUBLIC"],
 )

@@ -1,0 +1,30 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# varnish - High-performance HTTP accelerator
+
+download_source(
+    name = "varnish-src",
+    src_uri = "https://varnish-cache.org/_downloads/varnish-7.5.0.tgz",
+    sha256 = "b5e8a3c2d4f5e6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1",
+)
+
+configure_make_package(
+    name = "varnish",
+    source = ":varnish-src",
+    version = "7.5.0",
+    description = "High-performance HTTP accelerator",
+    homepage = "https://varnish-cache.org/",
+    license = "BSD-2-Clause",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:ncurses",
+        "//packages/linux/core:readline",
+        "//packages/linux/core:pcre2",
+    ],
+    visibility = ["PUBLIC"],
+)

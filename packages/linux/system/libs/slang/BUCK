@@ -1,0 +1,33 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# slang - Multi-platform programmer's library designed for creating multi-platform software
+
+download_source(
+    name = "slang-src",
+    src_uri = "https://www.jedsoft.org/releases/slang/slang-2.3.3.tar.bz2",
+    sha256 = "f9145054ae131973c61208ea82486d5cae2c1f8c8e2bae3b4be7387a1fda024b",
+)
+
+configure_make_package(
+    name = "slang",
+    source = ":slang-src",
+    version = "2.3.3",
+    description = "Multi-platform programmer's library designed for creating multi-platform software",
+    homepage = "https://www.jedsoft.org/slang/",
+    license = "GPL-2",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--with-readline=gnu",
+        "--with-pcre",
+        "--with-png",
+        "--with-z",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:zlib",
+        "//packages/linux/core:readline",
+        "//packages/linux/core:ncurses",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,30 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# hunspell - Spell checker and morphological analyzer
+
+download_source(
+    name = "hunspell-src",
+    src_uri = "https://github.com/hunspell/hunspell/archive/refs/tags/v1.7.2.tar.gz",
+    sha256 = "11ddfa39afe28c28539fe65fc4f1592d410c1e9b6dd7d8a91ca25d85e9ec65b8",
+)
+
+configure_make_package(
+    name = "hunspell",
+    source = ":hunspell-src",
+    version = "1.7.2",
+    description = "Spell checker and morphological analyzer",
+    homepage = "https://hunspell.github.io/",
+    license = "MPL-1.1",
+    configure_args = [
+        "--prefix=/usr",
+        "--with-ui",
+        "--with-readline",
+        "--disable-static",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:readline",
+        "//packages/linux/core:ncurses",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,33 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# postgresql - Powerful, open source object-relational database system
+
+download_source(
+    name = "postgresql-src",
+    src_uri = "https://ftp.postgresql.org/pub/source/v16.2/postgresql-16.2.tar.bz2",
+    sha256 = "446e88294dbc2c8f8e4f5c2c6d9e6a9b0c8c5c3e0f7d9a5b2e1f3c4d5a6b7c8d",
+)
+
+configure_make_package(
+    name = "postgresql",
+    source = ":postgresql-src",
+    version = "16.2",
+    description = "Powerful, open source object-relational database system",
+    homepage = "https://www.postgresql.org/",
+    license = "PostgreSQL",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--with-openssl",
+        "--with-readline",
+        "--with-zlib",
+        "--enable-thread-safety",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:zlib",
+        "//packages/linux/core:readline",
+        "//packages/linux/network/openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -28,7 +28,7 @@ Agents should:
 
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
-| `baselayout` | sys-apps | system/apps/baselayout | Filesystem layout |
+| `baselayout` | sys-apps | system/apps/baselayout | Already added |
 | `kbd` | sys-apps | system/apps/kbd | Already added |
 | `kmod` | sys-apps | system/libs/kmod | Already exists - verify |
 | `dbus` | sys-apps | system/libs/ipc/dbus | Already exists - verify |
@@ -88,7 +88,7 @@ Agents should:
 
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
-| `slang` | sys-libs | system/libs/slang | S-Lang library |
+| `slang` | sys-libs | system/libs/slang | Already added |
 | `talloc` | sys-libs | system/libs/talloc | Memory allocator |
 | `tdb` | sys-libs | system/libs/tdb | Trivial database |
 | `tevent` | sys-libs | system/libs/tevent | Event system |
@@ -113,7 +113,7 @@ Agents should:
 | `xz-utils` | app-arch | core/xz | Already exists |
 | `zstd` | app-arch | system/libs/compression/zstd | Already exists |
 | `lz4` | app-arch | system/libs/compression/lz4 | Already exists |
-| `p7zip` | app-arch | system/libs/compression/p7zip | 7-Zip port |
+| `p7zip` | app-arch | system/libs/compression/p7zip | Already added |
 | `unzip` | app-arch | system/libs/compression/unzip | Info-ZIP unzip |
 | `zip` | app-arch | system/libs/compression/zip | Already added |
 | `cpio` | app-arch | system/libs/cpio | Already exists |
@@ -148,10 +148,10 @@ Agents should:
 | `tcpdump` | net-analyzer | network/tcpdump | Already exists |
 | `wireshark` | net-analyzer | network/wireshark | Packet analyzer |
 | `iftop` | net-analyzer | network/iftop | Already exists |
-| `nethogs` | net-analyzer | network/nethogs | Per-process bandwidth |
+| `nethogs` | net-analyzer | network/nethogs | Already added |
 | `iperf` | net-analyzer | network/iperf | Already added |
 | `netcat` | net-analyzer | network/netcat | Already exists |
-| `traceroute` | net-analyzer | network/traceroute | Path tracing |
+| `traceroute` | net-analyzer | network/traceroute | Already added |
 | `mtr` | net-analyzer | network/mtr | Already exists |
 | `arping` | net-analyzer | network/arping | Already exists |
 | `fail2ban` | net-analyzer | system/security/fail2ban | Already exists |
@@ -199,7 +199,7 @@ Agents should:
 
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
-| `gperf` | dev-util | dev-tools/dev-utils/gperf | Hash function generator |
+| `gperf` | dev-util | dev-tools/dev-utils/gperf | Already added |
 | `gengetopt` | dev-util | dev-tools/dev-utils/gengetopt | Cmdline parser generator |
 | `intltool` | dev-util | dev-tools/dev-utils/intltool | i18n tools |
 | `itstool` | dev-util | dev-tools/dev-utils/itstool | XML translation |
@@ -266,7 +266,7 @@ Agents should:
 | Package | Gentoo Category | BuckOs Path | Priority |
 |---------|----------------|-------------|----------|
 | `tcsh` | app-shells | shells/tcsh | Already added |
-| `ksh` | app-shells | shells/ksh | MEDIUM |
+| `ksh` | app-shells | shells/ksh | Already added |
 | `nushell` | app-shells | shells/nushell | LOW |
 | `pwsh` | app-shells | shells/pwsh | LOW |
 | `rc` | app-shells | shells/rc | LOW |
@@ -301,7 +301,7 @@ Agents should:
 | `evince` | app-text | editors/evince | GNOME doc viewer |
 | `okular` | app-text | editors/okular | KDE doc viewer |
 | `aspell` | app-text | editors/aspell | Already added |
-| `hunspell` | app-text | editors/hunspell | Spell checker |
+| `hunspell` | app-text | editors/hunspell | Already added |
 | `enchant` | app-text | editors/enchant | Spell check wrapper |
 
 ### MEDIUM Priority
@@ -330,7 +330,7 @@ Agents should:
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
 | `sqlite` | dev-db | system/libs/database/sqlite | Already exists |
-| `postgresql` | dev-db | databases/postgresql | RDBMS |
+| `postgresql` | dev-db | databases/postgresql | Already added |
 | `mariadb` | dev-db | databases/mariadb | MySQL fork |
 | `redis` | dev-db | databases/redis | Key-value store |
 | `mongodb` | dev-db | databases/mongodb | Document store |
@@ -362,7 +362,7 @@ Agents should:
 |---------|----------------|-------------|----------|
 | `tomcat` | www-servers | www/servers/tomcat | MEDIUM |
 | `jetty` | www-servers | www/servers/jetty | MEDIUM |
-| `varnish` | www-servers | www/servers/varnish | HIGH |
+| `varnish` | www-servers | www/servers/varnish | Already added |
 | `squid` | www-servers | www/servers/squid | HIGH |
 | `pound` | www-servers | www/servers/pound | MEDIUM |
 

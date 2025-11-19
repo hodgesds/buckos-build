@@ -28,9 +28,9 @@ configure_make_package(
         "--with-lib=/usr/lib",
     ],
     deps = [
-        "//packages/sys-init/skalibs:skalibs",
-        "//packages/sys-init/execline:execline",
-        "//packages/sys-init/s6:s6",
+        "//packages/system/init/skalibs:skalibs",
+        "//packages/system/init/execline:execline",
+        "//packages/system/init/s6:s6",
         "//packages/core:musl",
     ],
     build_deps = [],

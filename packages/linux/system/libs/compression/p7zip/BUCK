@@ -1,0 +1,28 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# p7zip - 7-Zip file archiver port for Unix systems
+
+download_source(
+    name = "p7zip-src",
+    src_uri = "https://github.com/p7zip-project/p7zip/archive/refs/tags/v17.05.tar.gz",
+    sha256 = "d2788f892571058c08d27095c22154571d2571c1dbe02b9e319b4a1765a7a5a3",
+)
+
+configure_make_package(
+    name = "p7zip",
+    source = ":p7zip-src",
+    version = "17.05",
+    description = "7-Zip file archiver port for Unix systems",
+    homepage = "https://github.com/p7zip-project/p7zip",
+    license = "LGPL-2.1-or-later",
+    build_in_source = True,
+    configure_args = [],
+    make_args = [
+        "all3",
+    ],
+    install_args = [
+        "DEST_HOME=/usr",
+        "DEST_DIR=${DESTDIR}",
+    ],
+    visibility = ["PUBLIC"],
+)

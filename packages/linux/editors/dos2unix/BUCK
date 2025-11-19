@@ -1,0 +1,31 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# dos2unix - Text file format converter between DOS and Unix
+
+download_source(
+    name = "dos2unix-src",
+    src_uri = "https://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.5.2.tar.gz",
+    sha256 = "264742446608442eb48f96c20af6f6ec3a5fefdf89e801a3a6cd12efc28ef6b2",
+)
+
+configure_make_package(
+    name = "dos2unix",
+    source = ":dos2unix-src",
+    version = "7.5.2",
+    description = "Text file format converter between DOS and Unix",
+    homepage = "https://waterlan.home.xs4all.nl/dos2unix.html",
+    license = "BSD-2-Clause",
+    build_in_source = True,
+    configure_args = [],
+    make_args = [
+        "prefix=/usr",
+    ],
+    install_args = [
+        "prefix=/usr",
+        "DESTDIR=${DESTDIR}",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,33 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# lnav - Advanced log file viewer with query support
+
+download_source(
+    name = "lnav-src",
+    src_uri = "https://github.com/tstack/lnav/releases/download/v0.12.3/lnav-0.12.3.tar.gz",
+    sha256 = "2c6b5b5a1e5b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+)
+
+configure_make_package(
+    name = "lnav",
+    source = ":lnav-src",
+    version = "0.12.3",
+    description = "Advanced log file viewer with query support",
+    homepage = "https://lnav.org/",
+    license = "BSD-2-Clause",
+    configure_args = [
+        "--with-ncurses",
+        "--with-readline",
+        "--with-sqlite3",
+        "--with-pcre2",
+    ],
+    deps = [
+        "//packages/linux/core:ncurses",
+        "//packages/linux/core:readline",
+        "//packages/linux/system/libs/database/sqlite",
+        "//packages/linux/core:pcre2",
+        "//packages/linux/core:zlib",
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

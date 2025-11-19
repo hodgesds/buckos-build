@@ -4,7 +4,7 @@ load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 download_source(
     name = "haveged-src",
     src_uri = "https://github.com/jirka-h/haveged/archive/refs/tags/v1.9.19.tar.gz",
-    sha256 = "PLACEHOLDER_HASH",
+    sha256 = "acbb05776668657012273be9bb3310e3140b79959aa4538e4cca8d30d40c0b8f",
 )
 
 configure_make_package(

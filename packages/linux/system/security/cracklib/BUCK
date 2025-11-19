@@ -4,7 +4,7 @@ load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 download_source(
     name = "cracklib-src",
     src_uri = "https://github.com/cracklib/cracklib/releases/download/v2.10.3/cracklib-2.10.3.tar.xz",
-    sha256 = "PLACEHOLDER_HASH",
+    sha256 = "1d1b83676b5673051b9373e1ca0db81c1fa88faf9a195a3c1af984fd9c250d66",
 )
 
 configure_make_package(

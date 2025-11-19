@@ -4,7 +4,7 @@ load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 download_source(
     name = "tdb-src",
     src_uri = "https://www.samba.org/ftp/tdb/tdb-1.4.10.tar.gz",
-    sha256 = "PLACEHOLDER_HASH",
+    sha256 = "02338e33c16c21c9e29571cef523e76b2b708636254f6f30c6cf195d48c62daf",
 )
 
 configure_make_package(

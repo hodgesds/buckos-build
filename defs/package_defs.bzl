@@ -301,3 +301,1133 @@ rootfs = rule(
         "packages": attrs.list(attrs.dep()),
     },
 )
+
+# =============================================================================
+# EBUILD-STYLE HELPER FUNCTIONS
+# =============================================================================
+# These helpers mirror Gentoo's ebuild system functionality for Buck2
+
+# -----------------------------------------------------------------------------
+# Logging and Output Helpers
+# -----------------------------------------------------------------------------
+
+def einfo(msg: str) -> str:
+    """Print an informational message (green asterisk)."""
+    return 'echo -e "\\033[32m * \\033[0m{}"'.format(msg)
+
+def ewarn(msg: str) -> str:
+    """Print a warning message (yellow asterisk)."""
+    return 'echo -e "\\033[33m * \\033[0mWARNING: {}"'.format(msg)
+
+def eerror(msg: str) -> str:
+    """Print an error message (red asterisk)."""
+    return 'echo -e "\\033[31m * \\033[0mERROR: {}"'.format(msg)
+
+def ebegin(msg: str) -> str:
+    """Print a message indicating start of a process."""
+    return 'echo -e "\\033[32m * \\033[0m{}..."'.format(msg)
+
+def eend(retval: str = "$?") -> str:
+    """Print success/failure based on return value."""
+    return '''
+if [ {} -eq 0 ]; then
+    echo -e "\\033[32m [ ok ]\\033[0m"
+else
+    echo -e "\\033[31m [ !! ]\\033[0m"
+fi
+'''.format(retval)
+
+def die(msg: str) -> str:
+    """Print error and exit with failure."""
+    return '{}\nexit 1'.format(eerror(msg))
+
+# -----------------------------------------------------------------------------
+# Installation Directory Helpers
+# -----------------------------------------------------------------------------
+
+def into(dir: str) -> str:
+    """Set the installation prefix for subsequent do* commands."""
+    return 'export INSDESTTREE="{}"'.format(dir)
+
+def insinto(dir: str) -> str:
+    """Set installation directory for doins."""
+    return 'export INSDESTTREE="{}"'.format(dir)
+
+def exeinto(dir: str) -> str:
+    """Set installation directory for doexe."""
+    return 'export EXEDESTTREE="{}"'.format(dir)
+
+def docinto(dir: str) -> str:
+    """Set installation subdirectory for dodoc."""
+    return 'export DOCDESTTREE="{}"'.format(dir)
+
+# -----------------------------------------------------------------------------
+# File Installation Helpers
+# -----------------------------------------------------------------------------
+
+def dobin(files: list[str]) -> str:
+    """Install executables into /usr/bin."""
+    cmds = ['mkdir -p "$DESTDIR/usr/bin"']
+    for f in files:
+        cmds.append('install -m 0755 "{}" "$DESTDIR/usr/bin/"'.format(f))
+    return "\n".join(cmds)
+
+def dosbin(files: list[str]) -> str:
+    """Install system executables into /usr/sbin."""
+    cmds = ['mkdir -p "$DESTDIR/usr/sbin"']
+    for f in files:
+        cmds.append('install -m 0755 "{}" "$DESTDIR/usr/sbin/"'.format(f))
+    return "\n".join(cmds)
+
+def dolib_so(files: list[str]) -> str:
+    """Install shared libraries into /usr/lib64 (or /usr/lib)."""
+    cmds = ['mkdir -p "$DESTDIR/${LIBDIR:-usr/lib64}"']
+    for f in files:
+        cmds.append('install -m 0755 "{}" "$DESTDIR/${{LIBDIR:-usr/lib64}}/"'.format(f))
+    return "\n".join(cmds)
+
+def dolib_a(files: list[str]) -> str:
+    """Install static libraries into /usr/lib64 (or /usr/lib)."""
+    cmds = ['mkdir -p "$DESTDIR/${LIBDIR:-usr/lib64}"']
+    for f in files:
+        cmds.append('install -m 0644 "{}" "$DESTDIR/${{LIBDIR:-usr/lib64}}/"'.format(f))
+    return "\n".join(cmds)
+
+def newlib_so(src: str, dst: str) -> str:
+    """Install shared library with new name."""
+    return '''mkdir -p "$DESTDIR/${{LIBDIR:-usr/lib64}}"
+install -m 0755 "{}" "$DESTDIR/${{LIBDIR:-usr/lib64}}/{}"'''.format(src, dst)
+
+def newlib_a(src: str, dst: str) -> str:
+    """Install static library with new name."""
+    return '''mkdir -p "$DESTDIR/${{LIBDIR:-usr/lib64}}"
+install -m 0644 "{}" "$DESTDIR/${{LIBDIR:-usr/lib64}}/{}"'''.format(src, dst)
+
+def doins(files: list[str]) -> str:
+    """Install files into INSDESTTREE (default: /usr/share)."""
+    cmds = ['mkdir -p "$DESTDIR/${INSDESTTREE:-usr/share}"']
+    for f in files:
+        cmds.append('install -m 0644 "{}" "$DESTDIR/${{INSDESTTREE:-usr/share}}/"'.format(f))
+    return "\n".join(cmds)
+
+def newins(src: str, dst: str) -> str:
+    """Install file with new name into INSDESTTREE."""
+    return '''mkdir -p "$DESTDIR/${{INSDESTTREE:-usr/share}}"
+install -m 0644 "{}" "$DESTDIR/${{INSDESTTREE:-usr/share}}/{}"'''.format(src, dst)
+
+def doexe(files: list[str]) -> str:
+    """Install executables into EXEDESTTREE."""
+    cmds = ['mkdir -p "$DESTDIR/${EXEDESTTREE:-usr/bin}"']
+    for f in files:
+        cmds.append('install -m 0755 "{}" "$DESTDIR/${{EXEDESTTREE:-usr/bin}}/"'.format(f))
+    return "\n".join(cmds)
+
+def newexe(src: str, dst: str) -> str:
+    """Install executable with new name."""
+    return '''mkdir -p "$DESTDIR/${{EXEDESTTREE:-usr/bin}}"
+install -m 0755 "{}" "$DESTDIR/${{EXEDESTTREE:-usr/bin}}/{}"'''.format(src, dst)
+
+def doheader(files: list[str]) -> str:
+    """Install header files into /usr/include."""
+    cmds = ['mkdir -p "$DESTDIR/usr/include"']
+    for f in files:
+        cmds.append('install -m 0644 "{}" "$DESTDIR/usr/include/"'.format(f))
+    return "\n".join(cmds)
+
+def newheader(src: str, dst: str) -> str:
+    """Install header file with new name."""
+    return '''mkdir -p "$DESTDIR/usr/include"
+install -m 0644 "{}" "$DESTDIR/usr/include/{}"'''.format(src, dst)
+
+def doconfd(files: list[str]) -> str:
+    """Install config files into /etc/conf.d."""
+    cmds = ['mkdir -p "$DESTDIR/etc/conf.d"']
+    for f in files:
+        cmds.append('install -m 0644 "{}" "$DESTDIR/etc/conf.d/"'.format(f))
+    return "\n".join(cmds)
+
+def doenvd(files: list[str]) -> str:
+    """Install environment files into /etc/env.d."""
+    cmds = ['mkdir -p "$DESTDIR/etc/env.d"']
+    for f in files:
+        cmds.append('install -m 0644 "{}" "$DESTDIR/etc/env.d/"'.format(f))
+    return "\n".join(cmds)
+
+def doinitd(files: list[str]) -> str:
+    """Install init scripts into /etc/init.d."""
+    cmds = ['mkdir -p "$DESTDIR/etc/init.d"']
+    for f in files:
+        cmds.append('install -m 0755 "{}" "$DESTDIR/etc/init.d/"'.format(f))
+    return "\n".join(cmds)
+
+def dosym(target: str, link: str) -> str:
+    """Create a symbolic link."""
+    return '''mkdir -p "$DESTDIR/$(dirname "{}")"
+ln -sf "{}" "$DESTDIR/{}"'''.format(link, target, link)
+
+def dosym_rel(target: str, link: str) -> str:
+    """Create a relative symbolic link."""
+    return '''mkdir -p "$DESTDIR/$(dirname "{}")"
+ln -srf "$DESTDIR/{}" "$DESTDIR/{}"'''.format(link, target, link)
+
+def newbin(src: str, dst: str) -> str:
+    """Install executable with new name into /usr/bin."""
+    return '''mkdir -p "$DESTDIR/usr/bin"
+install -m 0755 "{}" "$DESTDIR/usr/bin/{}"'''.format(src, dst)
+
+def newsbin(src: str, dst: str) -> str:
+    """Install system executable with new name into /usr/sbin."""
+    return '''mkdir -p "$DESTDIR/usr/sbin"
+install -m 0755 "{}" "$DESTDIR/usr/sbin/{}"'''.format(src, dst)
+
+# -----------------------------------------------------------------------------
+# Documentation Helpers
+# -----------------------------------------------------------------------------
+
+def dodoc(files: list[str]) -> str:
+    """Install documentation files."""
+    cmds = ['mkdir -p "$DESTDIR/usr/share/doc/${PN:-$PACKAGE_NAME}/${DOCDESTTREE:-}"']
+    for f in files:
+        cmds.append('install -m 0644 "{}" "$DESTDIR/usr/share/doc/${{PN:-$PACKAGE_NAME}}/${{DOCDESTTREE:-}}/"'.format(f))
+    return "\n".join(cmds)
+
+def newdoc(src: str, dst: str) -> str:
+    """Install documentation file with new name."""
+    return '''mkdir -p "$DESTDIR/usr/share/doc/${{PN:-$PACKAGE_NAME}}/${{DOCDESTTREE:-}}"
+install -m 0644 "{}" "$DESTDIR/usr/share/doc/${{PN:-$PACKAGE_NAME}}/${{DOCDESTTREE:-}}/{}"'''.format(src, dst)
+
+def doman(files: list[str]) -> str:
+    """Install man pages."""
+    cmds = []
+    for f in files:
+        # Detect man section from filename
+        cmds.append('''
+_manfile="{}"
+_section="${{_manfile##*.}}"
+mkdir -p "$DESTDIR/usr/share/man/man$_section"
+install -m 0644 "$_manfile" "$DESTDIR/usr/share/man/man$_section/"
+'''.format(f))
+    return "\n".join(cmds)
+
+def newman(src: str, dst: str) -> str:
+    """Install man page with new name."""
+    return '''
+_section="${{{1}##*.}}"
+mkdir -p "$DESTDIR/usr/share/man/man$_section"
+install -m 0644 "{}" "$DESTDIR/usr/share/man/man$_section/{}"
+'''.format(dst, src, dst)
+
+def doinfo(files: list[str]) -> str:
+    """Install GNU info files."""
+    cmds = ['mkdir -p "$DESTDIR/usr/share/info"']
+    for f in files:
+        cmds.append('install -m 0644 "{}" "$DESTDIR/usr/share/info/"'.format(f))
+    return "\n".join(cmds)
+
+def dohtml(files: list[str], recursive: bool = False) -> str:
+    """Install HTML documentation."""
+    cmds = ['mkdir -p "$DESTDIR/usr/share/doc/${PN:-$PACKAGE_NAME}/html"']
+    if recursive:
+        for f in files:
+            cmds.append('cp -r "{}" "$DESTDIR/usr/share/doc/${{PN:-$PACKAGE_NAME}}/html/"'.format(f))
+    else:
+        for f in files:
+            cmds.append('install -m 0644 "{}" "$DESTDIR/usr/share/doc/${{PN:-$PACKAGE_NAME}}/html/"'.format(f))
+    return "\n".join(cmds)
+
+# -----------------------------------------------------------------------------
+# Directory and Permission Helpers
+# -----------------------------------------------------------------------------
+
+def dodir(dirs: list[str]) -> str:
+    """Create directories in DESTDIR."""
+    cmds = []
+    for d in dirs:
+        cmds.append('mkdir -p "$DESTDIR/{}"'.format(d))
+    return "\n".join(cmds)
+
+def keepdir(dirs: list[str]) -> str:
+    """Create directories and add .keep files to preserve empty dirs."""
+    cmds = []
+    for d in dirs:
+        cmds.append('mkdir -p "$DESTDIR/{}"'.format(d))
+        cmds.append('touch "$DESTDIR/{}/.keep"'.format(d))
+    return "\n".join(cmds)
+
+def fowners(owner: str, files: list[str]) -> str:
+    """Change file ownership (recorded for package manager)."""
+    cmds = []
+    for f in files:
+        cmds.append('chown {} "$DESTDIR/{}"'.format(owner, f))
+    return "\n".join(cmds)
+
+def fperms(mode: str, files: list[str]) -> str:
+    """Change file permissions."""
+    cmds = []
+    for f in files:
+        cmds.append('chmod {} "$DESTDIR/{}"'.format(mode, f))
+    return "\n".join(cmds)
+
+# -----------------------------------------------------------------------------
+# Compilation Helpers
+# -----------------------------------------------------------------------------
+
+def emake(args: list[str] = []) -> str:
+    """Run make with standard parallel jobs and arguments."""
+    args_str = " ".join(args) if args else ""
+    return 'make -j${{MAKEOPTS:-$(nproc)}} {}'.format(args_str)
+
+def econf(args: list[str] = []) -> str:
+    """Run configure with standard arguments."""
+    args_str = " ".join(args) if args else ""
+    return '''
+ECONF_SOURCE="${{ECONF_SOURCE:-.}}"
+"$ECONF_SOURCE/configure" \\
+    --prefix="${{EPREFIX:-/usr}}" \\
+    --build="${{CBUILD:-$(gcc -dumpmachine)}}" \\
+    --host="${{CHOST:-$(gcc -dumpmachine)}}" \\
+    --mandir="${{EPREFIX:-/usr}}/share/man" \\
+    --infodir="${{EPREFIX:-/usr}}/share/info" \\
+    --datadir="${{EPREFIX:-/usr}}/share" \\
+    --sysconfdir="${{EPREFIX:-/etc}}" \\
+    --localstatedir="${{EPREFIX:-/var}}" \\
+    --libdir="${{EPREFIX:-/usr}}/${{LIBDIR_SUFFIX:-lib64}}" \\
+    {}
+'''.format(args_str)
+
+def einstall(args: list[str] = []) -> str:
+    """Run make install with DESTDIR."""
+    args_str = " ".join(args) if args else ""
+    return 'make DESTDIR="$DESTDIR" {} install'.format(args_str)
+
+def eautoreconf() -> str:
+    """Run autoreconf to regenerate autotools files."""
+    return '''
+{begin}
+if [ -f configure.ac ] || [ -f configure.in ]; then
+    autoreconf -fiv
+fi
+{end}
+'''.format(begin = ebegin("Running autoreconf"), end = eend())
+
+def elibtoolize() -> str:
+    """Run libtoolize to update libtool scripts."""
+    return '''
+{begin}
+if [ -f configure.ac ] || [ -f configure.in ]; then
+    libtoolize --copy --force
+fi
+{end}
+'''.format(begin = ebegin("Running libtoolize"), end = eend())
+
+# -----------------------------------------------------------------------------
+# Patch Helpers
+# -----------------------------------------------------------------------------
+
+def epatch(patches: list[str], strip: int = 1) -> str:
+    """Apply patches to source."""
+    cmds = []
+    for p in patches:
+        cmds.append('{}\npatch -p{} < "{}"'.format(
+            ebegin("Applying patch {}".format(p)),
+            strip,
+            p,
+        ))
+    return "\n".join(cmds)
+
+def eapply(patches: list[str], strip: int = 1) -> str:
+    """Modern patch application (EAPI 6+)."""
+    cmds = []
+    for p in patches:
+        cmds.append('''
+{begin}
+if [ -d "{patch}" ]; then
+    for _p in "{patch}"/*.patch; do
+        patch -p{strip} < "$_p" || die "Patch failed: $_p"
+    done
+else
+    patch -p{strip} < "{patch}" || die "Patch failed: {patch}"
+fi
+'''.format(begin = ebegin("Applying {}".format(p)), patch = p, strip = strip))
+    return "\n".join(cmds)
+
+def eapply_user() -> str:
+    """Apply user patches from /etc/portage/patches."""
+    return '''
+# Apply user patches if they exist
+_user_patches="${{EPREFIX:-}}/etc/portage/patches/${{CATEGORY}}/${{PN}}"
+if [ -d "$_user_patches" ]; then
+    {}
+    for _p in "$_user_patches"/*.patch; do
+        [ -f "$_p" ] && patch -p1 < "$_p"
+    done
+fi
+'''.format(ebegin("Applying user patches"))
+
+# -----------------------------------------------------------------------------
+# USE Flag Helpers
+# -----------------------------------------------------------------------------
+
+def use_enable(flag: str, option: str = "") -> str:
+    """Generate --enable-X or --disable-X based on USE flag."""
+    opt = option if option else flag
+    return '''
+if use {}; then
+    echo "--enable-{}"
+else
+    echo "--disable-{}"
+fi
+'''.format(flag, opt, opt)
+
+def use_with(flag: str, option: str = "") -> str:
+    """Generate --with-X or --without-X based on USE flag."""
+    opt = option if option else flag
+    return '''
+if use {}; then
+    echo "--with-{}"
+else
+    echo "--without-{}"
+fi
+'''.format(flag, opt, opt)
+
+def usev(flag: str, value: str = "") -> str:
+    """Echo value if USE flag is enabled."""
+    val = value if value else flag
+    return '''
+if use {}; then
+    echo "{}"
+fi
+'''.format(flag, val)
+
+def usex(flag: str, yes_val: str = "yes", no_val: str = "no") -> str:
+    """Return different values based on USE flag."""
+    return '''
+if use {}; then
+    echo "{}"
+else
+    echo "{}"
+fi
+'''.format(flag, yes_val, no_val)
+
+def use_check(flag: str) -> str:
+    """Return shell code to check if a USE flag is set."""
+    return '[[ " $USE " == *" {} "* ]]'.format(flag)
+
+# -----------------------------------------------------------------------------
+# Build System Specific Helpers
+# -----------------------------------------------------------------------------
+
+def cmake_src_configure(args: list[str] = [], build_type: str = "Release") -> str:
+    """Configure CMake project."""
+    args_str = " ".join(args) if args else ""
+    return '''
+mkdir -p "${{BUILD_DIR:-build}}"
+cd "${{BUILD_DIR:-build}}"
+cmake \\
+    -DCMAKE_INSTALL_PREFIX="${{EPREFIX:-/usr}}" \\
+    -DCMAKE_BUILD_TYPE={build_type} \\
+    -DCMAKE_INSTALL_LIBDIR="${{LIBDIR:-lib64}}" \\
+    -DCMAKE_C_FLAGS="${{CFLAGS:-}}" \\
+    -DCMAKE_CXX_FLAGS="${{CXXFLAGS:-}}" \\
+    {args} \\
+    ..
+'''.format(build_type = build_type, args = args_str)
+
+def cmake_src_compile(args: list[str] = []) -> str:
+    """Build CMake project."""
+    args_str = " ".join(args) if args else ""
+    return '''
+cd "${{BUILD_DIR:-build}}"
+cmake --build . -j${{MAKEOPTS:-$(nproc)}} {}
+'''.format(args_str)
+
+def cmake_src_install(args: list[str] = []) -> str:
+    """Install CMake project."""
+    args_str = " ".join(args) if args else ""
+    return '''
+cd "${{BUILD_DIR:-build}}"
+DESTDIR="$DESTDIR" cmake --install . {}
+'''.format(args_str)
+
+def meson_src_configure(args: list[str] = [], build_type: str = "release") -> str:
+    """Configure Meson project."""
+    args_str = " ".join(args) if args else ""
+    return '''
+meson setup "${{BUILD_DIR:-build}}" \\
+    --prefix="${{EPREFIX:-/usr}}" \\
+    --libdir="${{LIBDIR:-lib64}}" \\
+    --buildtype={build_type} \\
+    {}
+'''.format(args_str, build_type = build_type)
+
+def meson_src_compile() -> str:
+    """Build Meson project."""
+    return 'meson compile -C "${BUILD_DIR:-build}" -j${MAKEOPTS:-$(nproc)}'
+
+def meson_src_install() -> str:
+    """Install Meson project."""
+    return 'DESTDIR="$DESTDIR" meson install -C "${BUILD_DIR:-build}"'
+
+def cargo_src_configure(args: list[str] = []) -> str:
+    """Configure Cargo/Rust project."""
+    args_str = " ".join(args) if args else ""
+    return '''
+export CARGO_HOME="${{CARGO_HOME:-$PWD/.cargo}}"
+mkdir -p "$CARGO_HOME"
+# Configure offline mode if vendor dir exists
+if [ -d vendor ]; then
+    mkdir -p .cargo
+    cat > .cargo/config.toml << 'CARGO_EOF'
+[source.crates-io]
+replace-with = "vendored-sources"
+
+[source.vendored-sources]
+directory = "vendor"
+CARGO_EOF
+fi
+{}
+'''.format(args_str)
+
+def cargo_src_compile(args: list[str] = []) -> str:
+    """Build Cargo/Rust project."""
+    args_str = " ".join(args) if args else ""
+    return '''
+cargo build --release \\
+    --jobs ${{MAKEOPTS:-$(nproc)}} \\
+    {}
+'''.format(args_str)
+
+def cargo_src_install(bins: list[str] = []) -> str:
+    """Install Cargo/Rust binaries."""
+    if bins:
+        cmds = ['mkdir -p "$DESTDIR/usr/bin"']
+        for b in bins:
+            cmds.append('install -m 0755 "target/release/{}" "$DESTDIR/usr/bin/"'.format(b))
+        return "\n".join(cmds)
+    return '''
+mkdir -p "$DESTDIR/usr/bin"
+find target/release -maxdepth 1 -type f -executable ! -name "*.d" -exec install -m 0755 {{}} "$DESTDIR/usr/bin/" \\;
+'''
+
+def go_src_compile(packages: list[str] = ["."], ldflags: str = "") -> str:
+    """Build Go project."""
+    pkgs = " ".join(packages)
+    return '''
+export GOPATH="${{GOPATH:-$PWD/go}}"
+export GOCACHE="${{GOCACHE:-$PWD/.cache/go-build}}"
+export CGO_ENABLED="${{CGO_ENABLED:-1}}"
+go build \\
+    -v \\
+    -ldflags="-s -w {ldflags}" \\
+    -o "${{BUILD_DIR:-build}}/" \\
+    {packages}
+'''.format(ldflags = ldflags, packages = pkgs)
+
+def go_src_install(bins: list[str] = []) -> str:
+    """Install Go binaries."""
+    if bins:
+        cmds = ['mkdir -p "$DESTDIR/usr/bin"']
+        for b in bins:
+            cmds.append('install -m 0755 "${{BUILD_DIR:-build}}/{}" "$DESTDIR/usr/bin/"'.format(b))
+        return "\n".join(cmds)
+    return '''
+mkdir -p "$DESTDIR/usr/bin"
+find "${{BUILD_DIR:-build}}" -maxdepth 1 -type f -executable -exec install -m 0755 {{}} "$DESTDIR/usr/bin/" \\;
+'''
+
+def ninja_src_compile(args: list[str] = []) -> str:
+    """Build with Ninja."""
+    args_str = " ".join(args) if args else ""
+    return 'ninja -C "${{BUILD_DIR:-build}}" -j${{MAKEOPTS:-$(nproc)}} {}'.format(args_str)
+
+def ninja_src_install() -> str:
+    """Install with Ninja."""
+    return 'DESTDIR="$DESTDIR" ninja -C "${BUILD_DIR:-build}" install'
+
+def python_src_install(python: str = "python3") -> str:
+    """Install Python package."""
+    return '''
+{python} setup.py install \\
+    --prefix=/usr \\
+    --root="$DESTDIR" \\
+    --optimize=1 \\
+    --skip-build
+'''.format(python = python)
+
+def pip_src_install(python: str = "python3") -> str:
+    """Install Python package with pip."""
+    return '''
+{python} -m pip install \\
+    --prefix=/usr \\
+    --root="$DESTDIR" \\
+    --no-deps \\
+    --no-build-isolation \\
+    .
+'''.format(python = python)
+
+# -----------------------------------------------------------------------------
+# VCS Source Helpers
+# -----------------------------------------------------------------------------
+
+def git_src_unpack(repo: str, branch: str = "main", depth: int = 1) -> str:
+    """Clone git repository."""
+    return '''
+git clone \\
+    --depth={depth} \\
+    --branch={branch} \\
+    "{repo}" \\
+    "${{S:-source}}"
+'''.format(repo = repo, branch = branch, depth = depth)
+
+def git_src_prepare() -> str:
+    """Prepare git source (submodules, etc.)."""
+    return '''
+cd "${S:-source}"
+if [ -f .gitmodules ]; then
+    git submodule update --init --recursive --depth=1
+fi
+'''
+
+def svn_src_unpack(repo: str, revision: str = "HEAD") -> str:
+    """Checkout SVN repository."""
+    return '''
+svn checkout \\
+    -r {revision} \\
+    "{repo}" \\
+    "${{S:-source}}"
+'''.format(repo = repo, revision = revision)
+
+def hg_src_unpack(repo: str, branch: str = "default") -> str:
+    """Clone Mercurial repository."""
+    return '''
+hg clone \\
+    -b {branch} \\
+    "{repo}" \\
+    "${{S:-source}}"
+'''.format(repo = repo, branch = branch)
+
+# -----------------------------------------------------------------------------
+# Test Helpers
+# -----------------------------------------------------------------------------
+
+def default_src_test() -> str:
+    """Default test phase implementation."""
+    return '''
+if [ -f Makefile ] || [ -f GNUmakefile ] || [ -f makefile ]; then
+    if make -q check 2>/dev/null; then
+        emake check
+    elif make -q test 2>/dev/null; then
+        emake test
+    fi
+fi
+'''
+
+def python_test(args: list[str] = []) -> str:
+    """Run Python tests with pytest."""
+    args_str = " ".join(args) if args else ""
+    return 'python3 -m pytest {} -v'.format(args_str)
+
+def go_test(packages: list[str] = ["./..."]) -> str:
+    """Run Go tests."""
+    pkgs = " ".join(packages)
+    return 'go test -v {}'.format(pkgs)
+
+def cargo_test(args: list[str] = []) -> str:
+    """Run Cargo tests."""
+    args_str = " ".join(args) if args else ""
+    return 'cargo test --release {}'.format(args_str)
+
+# -----------------------------------------------------------------------------
+# Environment Setup Helpers
+# -----------------------------------------------------------------------------
+
+def tc_export(vars: list[str] = ["CC", "CXX", "LD", "AR", "RANLIB", "NM"]) -> str:
+    """Export toolchain variables."""
+    exports = []
+    for var in vars:
+        if var == "CC":
+            exports.append('export CC="${CC:-gcc}"')
+        elif var == "CXX":
+            exports.append('export CXX="${CXX:-g++}"')
+        elif var == "LD":
+            exports.append('export LD="${LD:-ld}"')
+        elif var == "AR":
+            exports.append('export AR="${AR:-ar}"')
+        elif var == "RANLIB":
+            exports.append('export RANLIB="${RANLIB:-ranlib}"')
+        elif var == "NM":
+            exports.append('export NM="${NM:-nm}"')
+        elif var == "STRIP":
+            exports.append('export STRIP="${STRIP:-strip}"')
+        elif var == "OBJCOPY":
+            exports.append('export OBJCOPY="${OBJCOPY:-objcopy}"')
+        elif var == "PKG_CONFIG":
+            exports.append('export PKG_CONFIG="${PKG_CONFIG:-pkg-config}"')
+    return "\n".join(exports)
+
+def append_cflags(flags: list[str]) -> str:
+    """Append flags to CFLAGS."""
+    return 'export CFLAGS="$CFLAGS {}"'.format(" ".join(flags))
+
+def append_cxxflags(flags: list[str]) -> str:
+    """Append flags to CXXFLAGS."""
+    return 'export CXXFLAGS="$CXXFLAGS {}"'.format(" ".join(flags))
+
+def append_ldflags(flags: list[str]) -> str:
+    """Append flags to LDFLAGS."""
+    return 'export LDFLAGS="$LDFLAGS {}"'.format(" ".join(flags))
+
+def filter_flags(patterns: list[str]) -> str:
+    """Remove flags matching patterns from CFLAGS/CXXFLAGS."""
+    cmds = []
+    for pat in patterns:
+        cmds.append('CFLAGS=$(echo "$CFLAGS" | sed "s/{}//g")'.format(pat))
+        cmds.append('CXXFLAGS=$(echo "$CXXFLAGS" | sed "s/{}//g")'.format(pat))
+    return "\n".join(cmds)
+
+def replace_flags(old: str, new: str) -> str:
+    """Replace flag in CFLAGS/CXXFLAGS."""
+    return '''
+CFLAGS="${{CFLAGS//{old}/{new}}}"
+CXXFLAGS="${{CXXFLAGS//{old}/{new}}}"
+'''.format(old = old, new = new)
+
+# -----------------------------------------------------------------------------
+# Package Information Helpers
+# -----------------------------------------------------------------------------
+
+def get_version_component_range(component_range: str, version: str) -> str:
+    """Extract version components (e.g., '1-2' from '1.2.3')."""
+    return '''
+_ver="{version}"
+_range="{range}"
+echo "$_ver" | cut -d. -f"$_range"
+'''.format(version = version, range = component_range)
+
+def get_major_version(version: str) -> str:
+    """Get major version number."""
+    return 'echo "{}" | cut -d. -f1'.format(version)
+
+def get_minor_version(version: str) -> str:
+    """Get minor version number (major.minor)."""
+    return 'echo "{}" | cut -d. -f1-2'.format(version)
+
+def ver_cut(range: str, version: str) -> str:
+    """Cut version string by components."""
+    return 'echo "{}" | cut -d. -f{}'.format(version, range)
+
+def ver_rs(sep_from: str, sep_to: str, version: str) -> str:
+    """Replace version separator."""
+    return 'echo "{}" | sed "s/{}/${}$/g"'.format(version, sep_from, sep_to)
+
+# -----------------------------------------------------------------------------
+# Systemd Helpers
+# -----------------------------------------------------------------------------
+
+def systemd_dounit(files: list[str]) -> str:
+    """Install systemd unit files."""
+    cmds = ['mkdir -p "$DESTDIR/usr/lib/systemd/system"']
+    for f in files:
+        cmds.append('install -m 0644 "{}" "$DESTDIR/usr/lib/systemd/system/"'.format(f))
+    return "\n".join(cmds)
+
+def systemd_newunit(src: str, dst: str) -> str:
+    """Install systemd unit file with new name."""
+    return '''mkdir -p "$DESTDIR/usr/lib/systemd/system"
+install -m 0644 "{}" "$DESTDIR/usr/lib/systemd/system/{}"'''.format(src, dst)
+
+def systemd_douserunit(files: list[str]) -> str:
+    """Install systemd user unit files."""
+    cmds = ['mkdir -p "$DESTDIR/usr/lib/systemd/user"']
+    for f in files:
+        cmds.append('install -m 0644 "{}" "$DESTDIR/usr/lib/systemd/user/"'.format(f))
+    return "\n".join(cmds)
+
+def systemd_enable_service(service: str, target: str = "multi-user.target") -> str:
+    """Create symlink to enable systemd service."""
+    return '''mkdir -p "$DESTDIR/usr/lib/systemd/system/{target}.wants"
+ln -sf "../{service}" "$DESTDIR/usr/lib/systemd/system/{target}.wants/{service}"
+'''.format(service = service, target = target)
+
+# -----------------------------------------------------------------------------
+# OpenRC Helpers
+# -----------------------------------------------------------------------------
+
+def openrc_doinitd(files: list[str]) -> str:
+    """Install OpenRC init scripts."""
+    return doinitd(files)
+
+def openrc_doconfd(files: list[str]) -> str:
+    """Install OpenRC conf.d files."""
+    return doconfd(files)
+
+def newinitd(src: str, dst: str) -> str:
+    """Install OpenRC init script with new name."""
+    return '''mkdir -p "$DESTDIR/etc/init.d"
+install -m 0755 "{}" "$DESTDIR/etc/init.d/{}"'''.format(src, dst)
+
+def newconfd(src: str, dst: str) -> str:
+    """Install conf.d file with new name."""
+    return '''mkdir -p "$DESTDIR/etc/conf.d"
+install -m 0644 "{}" "$DESTDIR/etc/conf.d/{}"'''.format(src, dst)
+
+# -----------------------------------------------------------------------------
+# Portage/Package Manager Helpers
+# -----------------------------------------------------------------------------
+
+def has_version(atom: str) -> str:
+    """Check if package is installed (shell condition)."""
+    # This would integrate with the package manager
+    return '[ -n "$(find "${{EPREFIX:-}}/var/db/pkg" -maxdepth 2 -name "{}*" 2>/dev/null)" ]'.format(atom)
+
+def best_version(atom: str) -> str:
+    """Get best matching installed version."""
+    return 'find "${EPREFIX:-}/var/db/pkg" -maxdepth 2 -name "{}*" -printf "%f\\n" 2>/dev/null | sort -V | tail -1'.format(atom)
+
+# -----------------------------------------------------------------------------
+# Ebuild Phase Package Rule
+# -----------------------------------------------------------------------------
+
+def _ebuild_package_impl(ctx: AnalysisContext) -> list[Provider]:
+    """
+    Build a package using ebuild-style phases:
+    - src_unpack: Extract sources
+    - src_prepare: Apply patches, run autoreconf
+    - src_configure: Run configure/cmake/meson setup
+    - src_compile: Build the software
+    - src_test: Run tests (optional)
+    - src_install: Install to DESTDIR
+    """
+    install_dir = ctx.actions.declare_output(ctx.attrs.name, dir = True)
+
+    # Get source directory from dependency
+    src_dir = ctx.attrs.source[DefaultInfo].default_outputs[0]
+
+    # Build phases
+    src_unpack = ctx.attrs.src_unpack if ctx.attrs.src_unpack else ""
+    src_prepare = ctx.attrs.src_prepare if ctx.attrs.src_prepare else ""
+    src_configure = ctx.attrs.src_configure if ctx.attrs.src_configure else ""
+    src_compile = ctx.attrs.src_compile if ctx.attrs.src_compile else "make -j$(nproc)"
+    src_test = ctx.attrs.src_test if ctx.attrs.src_test else ""
+    src_install = ctx.attrs.src_install if ctx.attrs.src_install else "make install DESTDIR=\"$DESTDIR\""
+
+    # Environment variables
+    env_setup = []
+    for k, v in ctx.attrs.env.items():
+        env_setup.append('export {}="{}"'.format(k, v))
+    env_str = "\n".join(env_setup)
+
+    # USE flags
+    use_flags = " ".join(ctx.attrs.use_flags) if ctx.attrs.use_flags else ""
+
+    script = ctx.actions.write(
+        "ebuild.sh",
+        '''#!/bin/bash
+set -e
+
+# Package variables
+export PN="{name}"
+export PV="{version}"
+export PACKAGE_NAME="{name}"
+export CATEGORY="{category}"
+export SLOT="{slot}"
+export USE="{use_flags}"
+
+# Installation directories
+export DESTDIR="$1"
+export S="$2"
+export EPREFIX="${{EPREFIX:-}}"
+export PREFIX="${{PREFIX:-/usr}}"
+export LIBDIR="${{LIBDIR:-lib64}}"
+export LIBDIR_SUFFIX="${{LIBDIR_SUFFIX:-64}}"
+
+# Build directories
+export BUILD_DIR="${{BUILD_DIR:-$S/build}}"
+export WORKDIR="$(dirname "$S")"
+export T="$WORKDIR/temp"
+export FILESDIR="${{FILESDIR:-}}"
+
+mkdir -p "$T"
+
+# Custom environment
+{env}
+
+# USE flag helper
+use() {{
+    [[ " $USE " == *" $1 "* ]]
+}}
+
+cd "$S"
+
+# Phase: src_unpack (already done by download_source)
+{src_unpack}
+
+# Phase: src_prepare
+{src_prepare}
+
+# Phase: src_configure
+{src_configure}
+
+# Phase: src_compile
+{src_compile}
+
+# Phase: src_test
+if [ -n "{run_tests}" ]; then
+    {src_test}
+fi
+
+# Phase: src_install
+{src_install}
+'''.format(
+            name = ctx.attrs.name,
+            version = ctx.attrs.version,
+            category = ctx.attrs.category,
+            slot = ctx.attrs.slot,
+            use_flags = use_flags,
+            env = env_str,
+            src_unpack = src_unpack,
+            src_prepare = src_prepare,
+            src_configure = src_configure,
+            src_compile = src_compile,
+            src_test = src_test,
+            src_install = src_install,
+            run_tests = "yes" if ctx.attrs.run_tests else "",
+        ),
+    )
+
+    ctx.actions.run(
+        cmd_args([
+            "bash",
+            script,
+            install_dir.as_output(),
+            src_dir,
+        ]),
+        category = "ebuild",
+        identifier = ctx.attrs.name,
+    )
+
+    return [
+        DefaultInfo(default_output = install_dir),
+        PackageInfo(
+            name = ctx.attrs.name,
+            version = ctx.attrs.version,
+            description = ctx.attrs.description,
+            homepage = ctx.attrs.homepage,
+            license = ctx.attrs.license,
+            src_uri = "",
+            checksum = "",
+            dependencies = ctx.attrs.rdepend,
+            build_dependencies = ctx.attrs.bdepend,
+        ),
+    ]
+
+ebuild_package = rule(
+    impl = _ebuild_package_impl,
+    attrs = {
+        "source": attrs.dep(),
+        "version": attrs.string(),
+        "category": attrs.string(default = ""),
+        "slot": attrs.string(default = "0"),
+        "description": attrs.string(default = ""),
+        "homepage": attrs.string(default = ""),
+        "license": attrs.string(default = ""),
+        "use_flags": attrs.list(attrs.string(), default = []),
+        "src_unpack": attrs.string(default = ""),
+        "src_prepare": attrs.string(default = ""),
+        "src_configure": attrs.string(default = ""),
+        "src_compile": attrs.string(default = ""),
+        "src_test": attrs.string(default = ""),
+        "src_install": attrs.string(default = ""),
+        "run_tests": attrs.bool(default = False),
+        "env": attrs.dict(attrs.string(), attrs.string(), default = {}),
+        "depend": attrs.list(attrs.dep(), default = []),
+        "rdepend": attrs.list(attrs.dep(), default = []),
+        "bdepend": attrs.list(attrs.dep(), default = []),
+        "pdepend": attrs.list(attrs.dep(), default = []),
+    },
+)
+
+# -----------------------------------------------------------------------------
+# Convenience Macros
+# -----------------------------------------------------------------------------
+
+def simple_package(
+        name: str,
+        version: str,
+        src_uri: str,
+        sha256: str,
+        configure_args: list[str] = [],
+        make_args: list[str] = [],
+        deps: list[str] = [],
+        **kwargs):
+    """
+    Convenience macro for standard autotools packages.
+    Creates both source download and build rules.
+    """
+    src_name = name + "-src"
+
+    download_source(
+        name = src_name,
+        src_uri = src_uri,
+        sha256 = sha256,
+    )
+
+    configure_make_package(
+        name = name,
+        source = ":" + src_name,
+        version = version,
+        configure_args = configure_args,
+        make_args = make_args,
+        deps = deps,
+        **kwargs
+    )
+
+def cmake_package(
+        name: str,
+        version: str,
+        src_uri: str,
+        sha256: str,
+        cmake_args: list[str] = [],
+        deps: list[str] = [],
+        **kwargs):
+    """
+    Convenience macro for CMake packages.
+    """
+    src_name = name + "-src"
+
+    download_source(
+        name = src_name,
+        src_uri = src_uri,
+        sha256 = sha256,
+    )
+
+    ebuild_package(
+        name = name,
+        source = ":" + src_name,
+        version = version,
+        src_configure = cmake_src_configure(cmake_args),
+        src_compile = cmake_src_compile(),
+        src_install = cmake_src_install(),
+        rdepend = deps,
+        **kwargs
+    )
+
+def meson_package(
+        name: str,
+        version: str,
+        src_uri: str,
+        sha256: str,
+        meson_args: list[str] = [],
+        deps: list[str] = [],
+        **kwargs):
+    """
+    Convenience macro for Meson packages.
+    """
+    src_name = name + "-src"
+
+    download_source(
+        name = src_name,
+        src_uri = src_uri,
+        sha256 = sha256,
+    )
+
+    ebuild_package(
+        name = name,
+        source = ":" + src_name,
+        version = version,
+        src_configure = meson_src_configure(meson_args),
+        src_compile = meson_src_compile(),
+        src_install = meson_src_install(),
+        rdepend = deps,
+        **kwargs
+    )
+
+def cargo_package(
+        name: str,
+        version: str,
+        src_uri: str,
+        sha256: str,
+        bins: list[str] = [],
+        cargo_args: list[str] = [],
+        deps: list[str] = [],
+        **kwargs):
+    """
+    Convenience macro for Rust/Cargo packages.
+    """
+    src_name = name + "-src"
+
+    download_source(
+        name = src_name,
+        src_uri = src_uri,
+        sha256 = sha256,
+    )
+
+    ebuild_package(
+        name = name,
+        source = ":" + src_name,
+        version = version,
+        src_configure = cargo_src_configure(),
+        src_compile = cargo_src_compile(cargo_args),
+        src_install = cargo_src_install(bins),
+        rdepend = deps,
+        **kwargs
+    )
+
+def go_package(
+        name: str,
+        version: str,
+        src_uri: str,
+        sha256: str,
+        bins: list[str] = [],
+        packages: list[str] = ["."],
+        deps: list[str] = [],
+        **kwargs):
+    """
+    Convenience macro for Go packages.
+    """
+    src_name = name + "-src"
+
+    download_source(
+        name = src_name,
+        src_uri = src_uri,
+        sha256 = sha256,
+    )
+
+    ebuild_package(
+        name = name,
+        source = ":" + src_name,
+        version = version,
+        src_compile = go_src_compile(packages),
+        src_install = go_src_install(bins),
+        rdepend = deps,
+        **kwargs
+    )
+
+def python_package(
+        name: str,
+        version: str,
+        src_uri: str,
+        sha256: str,
+        python: str = "python3",
+        deps: list[str] = [],
+        **kwargs):
+    """
+    Convenience macro for Python packages.
+    """
+    src_name = name + "-src"
+
+    download_source(
+        name = src_name,
+        src_uri = src_uri,
+        sha256 = sha256,
+    )
+
+    ebuild_package(
+        name = name,
+        source = ":" + src_name,
+        version = version,
+        src_compile = "",  # Python packages often don't need compilation
+        src_install = python_src_install(python),
+        rdepend = deps,
+        **kwargs
+    )

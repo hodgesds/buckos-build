@@ -1,0 +1,248 @@
+load("//defs:package_defs.bzl", "binary_package", "rootfs")
+
+# =============================================================================
+# Base system files - Essential configuration and scripts
+# =============================================================================
+
+# Init script for BusyBox init
+genrule(
+    name = "init-scripts-gen",
+    out = "init-scripts",
+    cmd = """
+mkdir -p $OUT/etc/init.d
+mkdir -p $OUT/etc/rc.d
+
+# Create inittab for busybox init
+cat > $OUT/etc/inittab << 'INITTAB'
+# /etc/inittab - BusyBox init configuration
+
+# System initialization
+::sysinit:/etc/init.d/rcS
+
+# Start a shell on the console
+::respawn:/bin/sh
+
+# What to do when restarting the init process
+::restart:/sbin/init
+
+# What to do before rebooting
+::ctrlaltdel:/sbin/reboot
+::shutdown:/bin/umount -a -r
+::shutdown:/sbin/swapoff -a
+INITTAB
+
+# Create rcS startup script
+cat > $OUT/etc/init.d/rcS << 'RCS'
+#!/bin/sh
+# System initialization script
+
+echo "Sideros Linux - Booting..."
+
+# Mount essential filesystems
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mount -t devtmpfs devtmpfs /dev || mount -t tmpfs tmpfs /dev
+
+# Create essential device nodes if devtmpfs failed
+if [ ! -c /dev/null ]; then
+    mknod -m 666 /dev/null c 1 3
+    mknod -m 666 /dev/zero c 1 5
+    mknod -m 666 /dev/random c 1 8
+    mknod -m 666 /dev/urandom c 1 9
+    mknod -m 600 /dev/console c 5 1
+    mknod -m 666 /dev/tty c 5 0
+    mknod -m 660 /dev/ttyS0 c 4 64
+fi
+
+# Mount /dev/pts for pseudo-terminals
+mkdir -p /dev/pts
+mount -t devpts devpts /dev/pts
+
+# Mount /run
+mount -t tmpfs tmpfs /run
+
+# Set hostname
+hostname sideros
+
+# Configure loopback
+ip link set lo up
+
+echo "System initialization complete."
+RCS
+
+chmod +x $OUT/etc/init.d/rcS
+
+# Create fstab
+cat > $OUT/etc/fstab << 'FSTAB'
+# /etc/fstab - Static file system information
+
+# <file system>  <mount point>  <type>  <options>         <dump>  <pass>
+proc             /proc          proc    defaults          0       0
+sysfs            /sys           sysfs   defaults          0       0
+devtmpfs         /dev           devtmpfs defaults         0       0
+tmpfs            /tmp           tmpfs   defaults,nodev    0       0
+tmpfs            /run           tmpfs   defaults,nodev    0       0
+FSTAB
+
+# Create passwd
+cat > $OUT/etc/passwd << 'PASSWD'
+root:x:0:0:root:/root:/bin/sh
+nobody:x:65534:65534:Nobody:/:/bin/false
+PASSWD
+
+# Create group
+cat > $OUT/etc/group << 'GROUP'
+root:x:0:
+wheel:x:10:root
+nobody:x:65534:
+GROUP
+
+# Create shadow (empty password for root - LOGIN REQUIRES SETTING PASSWORD)
+cat > $OUT/etc/shadow << 'SHADOW'
+root::0:0:99999:7:::
+nobody:!:0:0:99999:7:::
+SHADOW
+chmod 640 $OUT/etc/shadow
+
+# Create shells
+cat > $OUT/etc/shells << 'SHELLS'
+/bin/sh
+/bin/ash
+SHELLS
+
+# Create hostname
+echo "sideros" > $OUT/etc/hostname
+
+# Create hosts
+cat > $OUT/etc/hosts << 'HOSTS'
+127.0.0.1   localhost
+127.0.1.1   sideros
+::1         localhost ip6-localhost ip6-loopback
+HOSTS
+
+# Create resolv.conf
+cat > $OUT/etc/resolv.conf << 'RESOLV'
+# DNS configuration
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+RESOLV
+
+# Create os-release
+cat > $OUT/etc/os-release << 'OSRELEASE'
+NAME="Sideros Linux"
+VERSION="0.1"
+ID=sideros
+ID_LIKE=gentoo
+PRETTY_NAME="Sideros Linux 0.1"
+HOME_URL="https://github.com/hodgesds/sideros-build"
+OSRELEASE
+
+# Create profile
+cat > $OUT/etc/profile << 'PROFILE'
+# /etc/profile - System-wide shell profile
+
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export PS1='\\u@\\h:\\w\\$ '
+export TERM=linux
+
+# Set up home directory
+cd ~
+PROFILE
+
+# Create issue (login banner)
+cat > $OUT/etc/issue << 'ISSUE'
+Sideros Linux 0.1
+Kernel \\r on \\m
+
+ISSUE
+""",
+    visibility = ["PUBLIC"],
+)
+
+# Package the init scripts
+filegroup(
+    name = "init-scripts",
+    srcs = [":init-scripts-gen"],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Baselayout - Core filesystem layout
+# =============================================================================
+
+genrule(
+    name = "baselayout-gen",
+    out = "baselayout",
+    cmd = """
+mkdir -p $OUT
+
+# Create FHS directory structure
+mkdir -p $OUT/bin
+mkdir -p $OUT/sbin
+mkdir -p $OUT/lib
+mkdir -p $OUT/lib64
+mkdir -p $OUT/usr/bin
+mkdir -p $OUT/usr/sbin
+mkdir -p $OUT/usr/lib
+mkdir -p $OUT/usr/lib64
+mkdir -p $OUT/usr/share
+mkdir -p $OUT/usr/include
+mkdir -p $OUT/usr/local/bin
+mkdir -p $OUT/usr/local/sbin
+mkdir -p $OUT/usr/local/lib
+mkdir -p $OUT/etc
+mkdir -p $OUT/var/log
+mkdir -p $OUT/var/tmp
+mkdir -p $OUT/var/run
+mkdir -p $OUT/var/lock
+mkdir -p $OUT/tmp
+mkdir -p $OUT/proc
+mkdir -p $OUT/sys
+mkdir -p $OUT/dev
+mkdir -p $OUT/run
+mkdir -p $OUT/root
+mkdir -p $OUT/home
+mkdir -p $OUT/mnt
+mkdir -p $OUT/opt
+mkdir -p $OUT/boot
+
+# Set permissions
+chmod 1777 $OUT/tmp
+chmod 1777 $OUT/var/tmp
+chmod 700 $OUT/root
+""",
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "baselayout",
+    srcs = [":baselayout-gen"],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Root filesystem assembly
+# =============================================================================
+
+rootfs(
+    name = "sideros-rootfs",
+    packages = [
+        ":init-scripts-gen",
+        ":baselayout-gen",
+        "//packages/core:musl",
+        "//packages/core:busybox",
+        "//packages/core:util-linux",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Complete system with kernel
+filegroup(
+    name = "sideros-complete",
+    srcs = [
+        ":sideros-rootfs",
+        "//packages/kernel:linux",
+        "//packages/boot:grub",
+    ],
+    visibility = ["PUBLIC"],
+)

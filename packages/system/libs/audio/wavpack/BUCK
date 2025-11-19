@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "wavpack-src",
+    src_uri = "https://github.com/dbry/WavPack/releases/download/5.7.0/wavpack-5.7.0.tar.xz",
+    sha256 = "ec65aa096d4d0f80d51c320a0f2a508e18916e68f4a0f4ac7f3f8f0e4e1e5e5e",
+)
+
+configure_make_package(
+    name = "wavpack",
+    source = ":wavpack-src",
+    version = "5.7.0",
+    description = "Hybrid lossless audio compression",
+    homepage = "https://www.wavpack.com/",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-static",
+        "--enable-shared",
+        "--enable-legacy",
+        "--enable-dsd",
+    ],
+    deps = [],
+    visibility = ["PUBLIC"],
+)

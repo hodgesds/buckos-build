@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libxkbcommon-src",
+    src_uri = "https://xkbcommon.org/download/libxkbcommon-1.7.0.tar.xz",
+    sha256 = "65782f0a10a4b455af9c6f454ac27b7e0f2a1d15ab7a60d7b4b9f57f9b4e0f3a",
+)
+
+configure_make_package(
+    name = "libxkbcommon",
+    source = ":libxkbcommon-src",
+    version = "1.7.0",
+    description = "Keymap handling library for toolkits and window systems",
+    homepage = "https://xkbcommon.org/",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr \
+    -Ddefault_library=shared \
+    -Denable-x11=true \
+    -Denable-wayland=true \
+    -Denable-docs=false
+""",
+    deps = [
+        "//packages/system/libs/data/libxml2:libxml2",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libdvdnav-src",
+    src_uri = "https://download.videolan.org/pub/videolan/libdvdnav/6.1.1/libdvdnav-6.1.1.tar.bz2",
+    sha256 = "c191a7475947d323ff7680cf92c0fb1be8237701885f37656c64d04e98d18d48",
+)
+
+configure_make_package(
+    name = "libdvdnav",
+    source = ":libdvdnav-src",
+    version = "6.1.1",
+    description = "Library for DVD navigation features",
+    homepage = "https://www.videolan.org/developers/libdvdnav.html",
+    license = "GPL-2.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-static",
+        "--enable-shared",
+    ],
+    deps = [
+        "//packages/system/libs/video/libdvdread:libdvdread",
+    ],
+    visibility = ["PUBLIC"],
+)

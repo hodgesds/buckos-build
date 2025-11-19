@@ -1,0 +1,31 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "openal-soft-src",
+    src_uri = "https://github.com/kcat/openal-soft/archive/refs/tags/1.23.1.tar.gz",
+    sha256 = "796f4b89134c4e57270b7f0d755f0fa3b91b8b2e2c4d7c6ec2e3e0c7a8b9d1e0f",
+)
+
+configure_make_package(
+    name = "openal-soft",
+    source = ":openal-soft-src",
+    version = "1.23.1",
+    description = "Cross-platform 3D audio library (OpenAL implementation)",
+    homepage = "https://openal-soft.org/",
+    license = "LGPL-2.0-or-later",
+    pre_configure = """
+mkdir -p build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DALSOFT_EXAMPLES=OFF \
+    -DALSOFT_UTILS=ON \
+    -DALSOFT_BACKEND_ALSA=ON \
+    -DALSOFT_BACKEND_PULSEAUDIO=ON \
+    -DALSOFT_BACKEND_PIPEWIRE=ON
+""",
+    deps = [
+        "//packages/system/libs/audio/alsa-lib:alsa-lib",
+    ],
+    visibility = ["PUBLIC"],
+)

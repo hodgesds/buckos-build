@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "pixman-src",
+    src_uri = "https://www.cairographics.org/releases/pixman-0.43.4.tar.gz",
+    sha256 = "a0624db90180c7ddb79fc7a9151093dc37c646d8c38d3f232f767cf64b85a226",
+)
+
+configure_make_package(
+    name = "pixman",
+    source = ":pixman-src",
+    version = "0.43.4",
+    description = "Low-level pixel manipulation library",
+    homepage = "https://www.pixman.org/",
+    license = "MIT",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-static",
+        "--enable-shared",
+    ],
+    deps = [
+        "//packages/core/musl",
+    ],
+    visibility = ["PUBLIC"],
+)

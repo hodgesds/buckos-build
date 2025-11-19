@@ -1,0 +1,34 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "dnscrypt-proxy-src",
+    src_uri = "https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.1.5/dnscrypt-proxy-linux_x86_64-2.1.5.tar.gz",
+    sha256 = "f1e2d3c4b5a6f7e8d9c0b1a2f3e4d5c6b7a8f9e0d1c2b3a4f5e6d7c8b9a0f1e2",
+)
+
+binary_package(
+    name = "dnscrypt-proxy",
+    srcs = [":dnscrypt-proxy-src"],
+    version = "2.1.5",
+    description = "Flexible DNS proxy with encrypted DNS protocols support",
+    homepage = "https://dnscrypt.info/",
+    license = "ISC",
+    install_script = """
+install -Dm755 dnscrypt-proxy "$DESTDIR/usr/bin/dnscrypt-proxy"
+
+# Install default configuration
+mkdir -p "$DESTDIR/etc/dnscrypt-proxy"
+if [ -f example-dnscrypt-proxy.toml ]; then
+    install -Dm644 example-dnscrypt-proxy.toml "$DESTDIR/etc/dnscrypt-proxy/dnscrypt-proxy.toml"
+fi
+
+# Install blocklist and other example files
+for f in *.txt *.md; do
+    if [ -f "$f" ]; then
+        install -Dm644 "$f" "$DESTDIR/usr/share/dnscrypt-proxy/$f"
+    fi
+done
+""",
+    deps = [],
+    visibility = ["PUBLIC"],
+)

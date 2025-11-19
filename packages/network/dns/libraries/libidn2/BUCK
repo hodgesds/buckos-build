@@ -1,0 +1,28 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "libidn2-src",
+    src_uri = "https://ftp.gnu.org/gnu/libidn/libidn2-2.3.7.tar.gz",
+    sha256 = "4c21a791b610b9519b9d0e12b8097bf2f359b12f8dd92647611a929e6bfd7d64",
+)
+
+configure_make_package(
+    name = "libidn2",
+    source = ":libidn2-src",
+    version = "2.3.7",
+    description = "Implementation of IDNA2008 Internationalized Domain Names",
+    homepage = "https://www.gnu.org/software/libidn/#libidn2",
+    license = "LGPL-3.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--disable-static",
+        "--disable-doc",
+        "--disable-gtk-doc",
+        "--with-libunistring-prefix=/usr",
+    ],
+    deps = [
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

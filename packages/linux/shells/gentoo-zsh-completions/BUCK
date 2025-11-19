@@ -1,0 +1,27 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# gentoo-zsh-completions - Gentoo-specific Zsh completions
+download_source(
+    name = "gentoo-zsh-completions-src",
+    src_uri = "https://github.com/gentoo/gentoo-zsh-completions/archive/refs/tags/20230911.tar.gz",
+    sha256 = "b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7",
+)
+
+configure_make_package(
+    name = "gentoo-zsh-completions",
+    source = ":gentoo-zsh-completions-src",
+    version = "20230911",
+    description = "Gentoo-specific Zsh completions",
+    homepage = "https://github.com/gentoo/gentoo-zsh-completions",
+    license = "GPL-2",
+    build_system = "make",
+    install_args = [
+        "PREFIX=/usr",
+        "DESTDIR=${DESTDIR}",
+        "install",
+    ],
+    deps = [
+        "//packages/linux/shells/zsh:zsh",
+    ],
+    visibility = ["PUBLIC"],
+)

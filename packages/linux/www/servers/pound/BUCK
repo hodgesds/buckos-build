@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# pound - Reverse proxy and load balancer
+download_source(
+    name = "pound-src",
+    src_uri = "https://github.com/graygnuorg/pound/releases/download/v4.12/pound-4.12.tar.gz",
+    sha256 = "c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+)
+
+configure_make_package(
+    name = "pound",
+    source = ":pound-src",
+    version = "4.12",
+    description = "Reverse proxy, load balancer and HTTPS front-end",
+    homepage = "https://github.com/graygnuorg/pound",
+    license = "GPL-3+",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/system/libs/crypto/openssl:openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

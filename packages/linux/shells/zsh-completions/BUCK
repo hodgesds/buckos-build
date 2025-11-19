@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# zsh-completions - Additional completion definitions for Zsh
+download_source(
+    name = "zsh-completions-src",
+    src_uri = "https://github.com/zsh-users/zsh-completions/archive/refs/tags/0.35.0.tar.gz",
+    sha256 = "a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6",
+)
+
+configure_make_package(
+    name = "zsh-completions",
+    source = ":zsh-completions-src",
+    version = "0.35.0",
+    description = "Additional completion definitions for Zsh",
+    homepage = "https://github.com/zsh-users/zsh-completions",
+    license = "BSD",
+    build_system = "none",
+    install_commands = [
+        "mkdir -p ${DESTDIR}/usr/share/zsh/site-functions",
+        "cp src/* ${DESTDIR}/usr/share/zsh/site-functions/",
+    ],
+    deps = [
+        "//packages/linux/shells/zsh:zsh",
+    ],
+    visibility = ["PUBLIC"],
+)

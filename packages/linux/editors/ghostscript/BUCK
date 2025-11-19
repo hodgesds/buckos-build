@@ -1,0 +1,30 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# ghostscript - PostScript and PDF interpreter
+download_source(
+    name = "ghostscript-src",
+    src_uri = "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs10030/ghostscript-10.03.0.tar.xz",
+    sha256 = "d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9",
+)
+
+configure_make_package(
+    name = "ghostscript",
+    source = ":ghostscript-src",
+    version = "10.03.0",
+    description = "PostScript and PDF interpreter",
+    homepage = "https://www.ghostscript.com",
+    license = "AGPL-3",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--with-system-libtiff",
+        "--disable-compile-inits",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/system/libs/image/libjpeg-turbo:libjpeg-turbo",
+        "//packages/linux/system/libs/image/libpng:libpng",
+        "//packages/linux/system/libs/image/libtiff:libtiff",
+    ],
+    visibility = ["PUBLIC"],
+)

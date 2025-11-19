@@ -1,0 +1,32 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# mupdf - Lightweight PDF and XPS viewer
+download_source(
+    name = "mupdf-src",
+    src_uri = "https://mupdf.com/downloads/archive/mupdf-1.23.11-source.tar.gz",
+    sha256 = "f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1",
+)
+
+configure_make_package(
+    name = "mupdf",
+    source = ":mupdf-src",
+    version = "1.23.11",
+    description = "Lightweight PDF and XPS viewer",
+    homepage = "https://mupdf.com",
+    license = "AGPL-3+",
+    build_system = "make",
+    make_args = [
+        "prefix=/usr",
+        "USE_SYSTEM_LIBS=yes",
+    ],
+    install_args = [
+        "prefix=/usr",
+        "DESTDIR=${DESTDIR}",
+        "install",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/fonts/libraries/freetype:freetype",
+    ],
+    visibility = ["PUBLIC"],
+)

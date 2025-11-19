@@ -1,0 +1,28 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# nushell - Modern shell with structured data
+download_source(
+    name = "nushell-src",
+    src_uri = "https://github.com/nushell/nushell/archive/refs/tags/0.90.1.tar.gz",
+    sha256 = "c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2",
+)
+
+configure_make_package(
+    name = "nushell",
+    source = ":nushell-src",
+    version = "0.90.1",
+    description = "Modern shell for the GitHub era with structured data support",
+    homepage = "https://www.nushell.sh",
+    license = "MIT",
+    build_system = "cargo",
+    build_commands = [
+        "cargo build --release",
+    ],
+    install_commands = [
+        "install -Dm755 target/release/nu ${DESTDIR}/usr/bin/nu",
+    ],
+    deps = [
+        "//packages/linux/lang/rust:rust",
+    ],
+    visibility = ["PUBLIC"],
+)

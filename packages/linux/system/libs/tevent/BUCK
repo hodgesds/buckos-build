@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# tevent - Event system library
+download_source(
+    name = "tevent-src",
+    src_uri = "https://www.samba.org/ftp/tevent/tevent-0.16.1.tar.gz",
+    sha256 = "PLACEHOLDER_SHA256",
+)
+
+configure_make_package(
+    name = "tevent",
+    source = ":tevent-src",
+    version = "0.16.1",
+    description = "Event system based on the talloc memory management library",
+    homepage = "https://tevent.samba.org",
+    license = "LGPL-3+",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--bundled-libraries=NONE",
+        "--builtin-libraries=replace",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/system/libs/talloc:talloc",
+    ],
+    visibility = ["PUBLIC"],
+)

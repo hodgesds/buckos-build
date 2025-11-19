@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# cabextract - Microsoft cabinet file extractor
+download_source(
+    name = "cabextract-src",
+    src_uri = "https://www.cabextract.org.uk/cabextract-1.11.tar.gz",
+    sha256 = "b5546db1155e4c718ff3d4b278573604f30dd64c3c5bfd4657cd089b823a3ac6",
+)
+
+configure_make_package(
+    name = "cabextract",
+    source = ":cabextract-src",
+    version = "1.11",
+    description = "Microsoft cabinet file extractor",
+    homepage = "https://www.cabextract.org.uk",
+    license = "GPL-3+",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

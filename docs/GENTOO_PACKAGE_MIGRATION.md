@@ -35,7 +35,7 @@ Agents should:
 | `haveged` | sys-apps | system/apps/haveged | Already added |
 | `pciutils` | sys-apps | system/hardware/pciutils | Already exists - verify |
 | `usbutils` | sys-apps | system/hardware/usbutils | Already exists - verify |
-| `systemd-utils` | sys-apps | system/apps/systemd-utils | Standalone systemd tools |
+| `systemd-utils` | sys-apps | system/apps/systemd-utils | Already added |
 | `iproute2` | sys-apps | network/iproute2 | Already exists - verify |
 | `openrc` | sys-apps | system/init/openrc | Already exists - verify |
 | `file` | sys-apps | core/file | Already exists - verify |
@@ -49,7 +49,7 @@ Agents should:
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
 | `lsb-release` | sys-apps | system/apps/lsb-release | Already added |
-| `hwdata` | sys-apps | system/hardware/hwdata | Hardware IDs database |
+| `hwdata` | sys-apps | system/hardware/hwdata | Already added |
 | `hwloc` | sys-apps | system/hardware/hwloc | Already added |
 | `ethtool` | sys-apps | network/ethtool | Already added |
 | `eza` | sys-apps | system/apps/eza | Modern ls replacement |
@@ -91,8 +91,8 @@ Agents should:
 | `slang` | sys-libs | system/libs/slang | Already added |
 | `talloc` | sys-libs | system/libs/talloc | Already added |
 | `tdb` | sys-libs | system/libs/tdb | Already added |
-| `tevent` | sys-libs | system/libs/tevent | Event system |
-| `ldb` | sys-libs | system/libs/ldb | LDAP-like database |
+| `tevent` | sys-libs | system/libs/tevent | Already added |
+| `ldb` | sys-libs | system/libs/ldb | Already added |
 | `efivar` | sys-libs | system/libs/efivar | Already added |
 | `mtdev` | sys-libs | system/libs/input/mtdev | Already exists |
 
@@ -127,11 +127,11 @@ Agents should:
 | `lzip` | app-arch | system/libs/compression/lzip | Already added |
 | `lzop` | app-arch | system/libs/compression/lzop | Already added |
 | `rar` | app-arch | system/libs/compression/rar | RAR archiver |
-| `unrar` | app-arch | system/libs/compression/unrar | RAR extractor |
-| `cabextract` | app-arch | system/libs/compression/cabextract | CAB extractor |
-| `arj` | app-arch | system/libs/compression/arj | ARJ archiver |
+| `unrar` | app-arch | system/libs/compression/unrar | Already added |
+| `cabextract` | app-arch | system/libs/compression/cabextract | Already added |
+| `arj` | app-arch | system/libs/compression/arj | Already added |
 | `pbzip2` | app-arch | system/libs/compression/pbzip2 | Already added |
-| `pixz` | app-arch | system/libs/compression/pixz | Parallel xz |
+| `pixz` | app-arch | system/libs/compression/pixz | Already added |
 
 ---
 
@@ -160,15 +160,15 @@ Agents should:
 
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
-| `nagios` | net-analyzer | network/monitoring/nagios | Monitoring system |
-| `zabbix` | net-analyzer | network/monitoring/zabbix | Monitoring |
-| `netdata` | net-analyzer | network/monitoring/netdata | Real-time monitoring |
-| `snort` | net-analyzer | network/security/snort | IDS |
-| `suricata` | net-analyzer | network/security/suricata | IDS/IPS |
-| `hydra` | net-analyzer | network/security/hydra | Login cracker |
-| `nikto` | net-analyzer | network/security/nikto | Web scanner |
+| `nagios` | net-analyzer | network/monitoring/nagios | Already added |
+| `zabbix` | net-analyzer | network/monitoring/zabbix | Already added |
+| `netdata` | net-analyzer | network/monitoring/netdata | Already added |
+| `snort` | net-analyzer | network/security/snort | Already added |
+| `suricata` | net-analyzer | network/security/suricata | Already added |
+| `hydra` | net-analyzer | network/security/hydra | Already added |
+| `nikto` | net-analyzer | network/security/nikto | Already added |
 | `speedtest-cli` | net-analyzer | network/speedtest-cli | Already added |
-| `ntopng` | net-analyzer | network/monitoring/ntopng | Traffic analysis |
+| `ntopng` | net-analyzer | network/monitoring/ntopng | Already added |
 | `arpwatch` | net-analyzer | network/arpwatch | Already added |
 
 ---
@@ -201,18 +201,18 @@ Agents should:
 |---------|----------------|-------------|-------|
 | `gperf` | dev-util | dev-tools/dev-utils/gperf | Already added |
 | `gengetopt` | dev-util | dev-tools/dev-utils/gengetopt | Already added |
-| `intltool` | dev-util | dev-tools/dev-utils/intltool | i18n tools |
-| `itstool` | dev-util | dev-tools/dev-utils/itstool | XML translation |
-| `gtk-doc` | dev-util | dev-tools/dev-utils/gtk-doc | GTK documentation |
+| `intltool` | dev-util | dev-tools/dev-utils/intltool | Already added |
+| `itstool` | dev-util | dev-tools/dev-utils/itstool | Already added |
+| `gtk-doc` | dev-util | dev-tools/dev-utils/gtk-doc | Already added |
 | `pkgconf` | dev-util | dev-tools/build-systems/pkgconf | Already added |
 | `meld` | dev-util | dev-tools/dev-utils/meld | Already exists |
-| `kdevelop` | dev-util | dev-tools/ide/kdevelop | KDE IDE |
-| `geany` | dev-util | dev-tools/ide/geany | Lightweight IDE |
-| `kcov` | dev-util | dev-tools/dev-utils/kcov | Code coverage |
-| `coccinelle` | dev-util | dev-tools/dev-utils/coccinelle | Semantic patching |
+| `kdevelop` | dev-util | dev-tools/ide/kdevelop | Already added |
+| `geany` | dev-util | dev-tools/ide/geany | Already added |
+| `kcov` | dev-util | dev-tools/dev-utils/kcov | Already added |
+| `coccinelle` | dev-util | dev-tools/dev-utils/coccinelle | Already added |
 | `cloc` | dev-util | dev-tools/dev-utils/cloc | Already added |
-| `github-cli` | dev-util | dev-tools/vcs/github-cli | GitHub CLI |
-| `heaptrack` | dev-util | dev-tools/profilers/heaptrack | Heap profiler |
+| `github-cli` | dev-util | dev-tools/vcs/github-cli | Already added |
+| `heaptrack` | dev-util | dev-tools/profilers/heaptrack | Already added |
 
 ---
 
@@ -231,24 +231,24 @@ Agents should:
 | `sysstat` | app-admin | system/apps/sysstat | Already added |
 | `sysklogd` | app-admin | system/apps/sysklogd | Already added |
 | `rsyslog` | app-admin | system/apps/rsyslog | Already exists |
-| `conky` | app-admin | desktop/conky | System monitor widget |
+| `conky` | app-admin | desktop/conky | Already added |
 | `htop` | app-admin | system/apps/htop | Already exists |
 
 ### MEDIUM Priority - Need to Add
 
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
-| `ansible` | app-admin | system/admin/ansible | Automation |
-| `puppet` | app-admin | system/admin/puppet | Config management |
-| `salt` | app-admin | system/admin/salt | Config management |
-| `terraform` | app-admin | system/admin/terraform | Infrastructure |
-| `consul` | app-admin | system/admin/consul | Service mesh |
-| `vault` | app-admin | system/admin/vault | Secrets management |
-| `keepassxc` | app-admin | system/security/keepassxc | Password manager |
-| `pass` | app-admin | system/security/pass | Password store |
+| `ansible` | app-admin | system/admin/ansible | Already added |
+| `puppet` | app-admin | system/admin/puppet | Already added |
+| `salt` | app-admin | system/admin/salt | Already added |
+| `terraform` | app-admin | system/admin/terraform | Already added |
+| `consul` | app-admin | system/admin/consul | Already added |
+| `vault` | app-admin | system/admin/vault | Already added |
+| `keepassxc` | app-admin | system/security/keepassxc | Already added |
+| `pass` | app-admin | system/security/pass | Already added |
 | `metalog` | app-admin | system/apps/metalog | Already added |
 | `monit` | app-admin | system/apps/monit | Already added |
-| `supervisor` | app-admin | system/apps/supervisor | Process control |
+| `supervisor` | app-admin | system/apps/supervisor | Already added |
 | `lnav` | app-admin | system/apps/lnav | Already added |
 
 ---
@@ -267,18 +267,18 @@ Agents should:
 |---------|----------------|-------------|----------|
 | `tcsh` | app-shells | shells/tcsh | Already added |
 | `ksh` | app-shells | shells/ksh | Already added |
-| `nushell` | app-shells | shells/nushell | LOW |
-| `pwsh` | app-shells | shells/pwsh | LOW |
-| `rc` | app-shells | shells/rc | LOW |
-| `yash` | app-shells | shells/yash | LOW |
+| `nushell` | app-shells | shells/nushell | Already added |
+| `pwsh` | app-shells | shells/pwsh | Already added |
+| `rc` | app-shells | shells/rc | Already added |
+| `yash` | app-shells | shells/yash | Already added |
 | `bash-completion` | app-shells | shells/bash-completion | Already added |
-| `zsh-completions` | app-shells | shells/zsh-completions | HIGH |
-| `gentoo-zsh-completions` | app-shells | shells/gentoo-zsh-completions | LOW |
-| `starship` | app-shells | shells/starship | MEDIUM |
-| `tmux-bash-completion` | app-shells | shells/tmux-bash-completion | LOW |
+| `zsh-completions` | app-shells | shells/zsh-completions | Already added |
+| `gentoo-zsh-completions` | app-shells | shells/gentoo-zsh-completions | Already added |
+| `starship` | app-shells | shells/starship | Already added |
+| `tmux-bash-completion` | app-shells | shells/tmux-bash-completion | Already added |
 | `fzf` | app-shells | editors/fzf | Already exists |
 | `atuin` | app-shells | shells/atuin | Already added |
-| `zoxide` | app-shells | shells/zoxide | Smarter cd |
+| `zoxide` | app-shells | shells/zoxide | Already added |
 | `mcfly` | app-shells | shells/mcfly | Already added |
 | `thefuck` | app-shells | shells/thefuck | Already added |
 
@@ -294,12 +294,12 @@ Agents should:
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
 | `groff` | app-text | system/docs/groff | Already exists |
-| `ghostscript` | app-text | editors/ghostscript | PostScript interpreter |
-| `poppler` | app-text | editors/poppler | PDF library |
-| `mupdf` | app-text | editors/mupdf | PDF viewer |
-| `zathura` | app-text | editors/zathura | Document viewer |
-| `evince` | app-text | editors/evince | GNOME doc viewer |
-| `okular` | app-text | editors/okular | KDE doc viewer |
+| `ghostscript` | app-text | editors/ghostscript | Already added |
+| `poppler` | app-text | editors/poppler | Already added |
+| `mupdf` | app-text | editors/mupdf | Already added |
+| `zathura` | app-text | editors/zathura | Already added |
+| `evince` | app-text | editors/evince | Already added |
+| `okular` | app-text | editors/okular | Already added |
 | `aspell` | app-text | editors/aspell | Already added |
 | `hunspell` | app-text | editors/hunspell | Already added |
 | `enchant` | app-text | editors/enchant | Already added |
@@ -310,13 +310,13 @@ Agents should:
 |---------|----------------|-------------|-------|
 | `asciidoc` | app-text | dev-tools/dev-utils/asciidoc | Already exists |
 | `asciidoctor` | app-text | dev-tools/dev-utils/asciidoctor | Already exists |
-| `dos2unix` | app-text | editors/dos2unix | Line ending converter |
+| `dos2unix` | app-text | editors/dos2unix | Already added |
 | `tree` | app-text | system/apps/tree | Already exists |
 | `wdiff` | app-text | editors/wdiff | Already added |
 | `colordiff` | app-text | dev-tools/dev-utils/colordiff | Already exists |
-| `csvtool` | app-text | editors/csvtool | CSV processor |
-| `discount` | app-text | editors/discount | Markdown |
-| `mdp` | app-text | editors/mdp | Markdown presenter |
+| `csvtool` | app-text | editors/csvtool | Already added |
+| `discount` | app-text | editors/discount | Already added |
+| `mdp` | app-text | editors/mdp | Already added |
 
 ---
 
@@ -331,9 +331,9 @@ Agents should:
 |---------|----------------|-------------|-------|
 | `sqlite` | dev-db | system/libs/database/sqlite | Already exists |
 | `postgresql` | dev-db | databases/postgresql | Already added |
-| `mariadb` | dev-db | databases/mariadb | MySQL fork |
+| `mariadb` | dev-db | databases/mariadb | Already added |
 | `redis` | dev-db | databases/redis | Already added |
-| `mongodb` | dev-db | databases/mongodb | Document store |
+| `mongodb` | dev-db | databases/mongodb | Already added |
 | `memcached` | dev-db | databases/memcached | Already added |
 | `lmdb` | dev-db | system/libs/database/lmdb | Already exists |
 
@@ -341,10 +341,10 @@ Agents should:
 
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
-| `influxdb` | dev-db | databases/influxdb | Time series |
-| `couchdb` | dev-db | databases/couchdb | Document store |
-| `neo4j` | dev-db | databases/neo4j | Graph database |
-| `etcd` | dev-db | databases/etcd | Key-value store |
+| `influxdb` | dev-db | databases/influxdb | Already added |
+| `couchdb` | dev-db | databases/couchdb | Already added |
+| `neo4j` | dev-db | databases/neo4j | Already added |
+| `etcd` | dev-db | databases/etcd | Already added |
 
 ---
 
@@ -360,11 +360,11 @@ Agents should:
 
 | Package | Gentoo Category | BuckOs Path | Priority |
 |---------|----------------|-------------|----------|
-| `tomcat` | www-servers | www/servers/tomcat | MEDIUM |
-| `jetty` | www-servers | www/servers/jetty | MEDIUM |
+| `tomcat` | www-servers | www/servers/tomcat | Already added |
+| `jetty` | www-servers | www/servers/jetty | Already added |
 | `varnish` | www-servers | www/servers/varnish | Already added |
 | `squid` | www-servers | www/servers/squid | Already added |
-| `pound` | www-servers | www/servers/pound | MEDIUM |
+| `pound` | www-servers | www/servers/pound | Already added |
 
 ---
 

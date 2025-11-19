@@ -1,0 +1,37 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "dog-src",
+    src_uri = "https://github.com/ogham/dog/releases/download/v0.1.0/dog-v0.1.0-x86_64-unknown-linux-gnu.zip",
+    sha256 = "c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2",
+)
+
+binary_package(
+    name = "dog",
+    srcs = [":dog-src"],
+    version = "0.1.0",
+    description = "Command-line DNS client written in Rust",
+    homepage = "https://dns.lookup.dog/",
+    license = "EUPL-1.2",
+    install_script = """
+install -Dm755 dog "$DESTDIR/usr/bin/dog"
+
+# Install man page if available
+if [ -f man/dog.1 ]; then
+    install -Dm644 man/dog.1 "$DESTDIR/usr/share/man/man1/dog.1"
+fi
+
+# Install shell completions
+if [ -f completions/dog.bash ]; then
+    install -Dm644 completions/dog.bash "$DESTDIR/usr/share/bash-completion/completions/dog"
+fi
+if [ -f completions/dog.zsh ]; then
+    install -Dm644 completions/dog.zsh "$DESTDIR/usr/share/zsh/site-functions/_dog"
+fi
+if [ -f completions/dog.fish ]; then
+    install -Dm644 completions/dog.fish "$DESTDIR/usr/share/fish/vendor_completions.d/dog.fish"
+fi
+""",
+    deps = [],
+    visibility = ["PUBLIC"],
+)

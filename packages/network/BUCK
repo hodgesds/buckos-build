@@ -100,6 +100,18 @@ filegroup(
 )
 
 # =============================================================================
+# DNS - Domain Name System servers, tools, and libraries
+# =============================================================================
+
+filegroup(
+    name = "dns",
+    srcs = [
+        "//packages/network/dns:all-dns",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
 # Network Analysis - Packet capture and analysis tools
 # =============================================================================
 
@@ -213,6 +225,7 @@ filegroup(
         ":vpn",
         ":firewall",
         ":wireless",
+        ":dns",
     ],
     visibility = ["PUBLIC"],
 )

@@ -454,9 +454,109 @@ filegroup(
         "//packages/system/apps:lsof",
         "//packages/system/apps:strace",
         "//packages/system/apps:procps-ng",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
     name = "lightweight-desktops",
     srcs = [
         "//packages/desktop:lightweight-desktops",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Container aliases
+# =============================================================================
+
+# Main container tool
+alias(
+    name = "podman",
+    actual = "//packages/system/containers:podman",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "buildah",
+    actual = "//packages/system/containers:buildah",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "skopeo",
+    actual = "//packages/system/containers:skopeo",
+    visibility = ["PUBLIC"],
+)
+
+# Container orchestration
+alias(
+    name = "podman-compose",
+    actual = "//packages/system/containers:podman-compose",
+    visibility = ["PUBLIC"],
+)
+
+# Container security
+alias(
+    name = "trivy",
+    actual = "//packages/system/containers:trivy",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Container package groups
+# =============================================================================
+
+# Core container runtime
+filegroup(
+    name = "container-runtime",
+    srcs = [
+        "//packages/system/containers:container-runtime",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Container networking
+filegroup(
+    name = "container-networking",
+    srcs = [
+        "//packages/system/containers:container-networking",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Podman ecosystem tools
+filegroup(
+    name = "podman-tools",
+    srcs = [
+        "//packages/system/containers:podman-tools",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Container utilities and monitoring
+filegroup(
+    name = "container-utilities",
+    srcs = [
+        "//packages/system/containers:container-utilities",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Container security tools
+filegroup(
+    name = "container-security",
+    srcs = [
+        "//packages/system/containers:container-security",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Complete container stack
+filegroup(
+    name = "container-packages",
+    srcs = [
+        "//packages/system/containers:all-containers",
     ],
     visibility = ["PUBLIC"],
 )

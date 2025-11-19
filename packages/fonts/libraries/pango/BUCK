@@ -1,0 +1,32 @@
+load("//defs:package_defs.bzl", "download_source", "meson_package")
+
+download_source(
+    name = "pango-src",
+    src_uri = "https://download.gnome.org/sources/pango/1.52/pango-1.52.2.tar.xz",
+    sha256 = "d0076ecdcd68f2d28d8e054a31a2b7e9379ed1f10b1c56c81cd2e63f62a1b6b7",
+)
+
+meson_package(
+    name = "pango",
+    source = ":pango-src",
+    version = "1.52.2",
+    description = "Library for layout and rendering of text",
+    homepage = "https://pango.gnome.org/",
+    license = "LGPL-2.0-or-later",
+    meson_args = [
+        "-Dintrospection=disabled",
+        "-Dgtk_doc=false",
+        "-Dbuild-testsuite=false",
+        "-Dbuild-examples=false",
+    ],
+    deps = [
+        "//packages/core:musl",
+        "//packages/core:glib",
+        "//packages/core:fribidi",
+        "//packages/fonts/libraries/freetype:freetype",
+        "//packages/fonts/libraries/fontconfig:fontconfig",
+        "//packages/fonts/libraries/harfbuzz:harfbuzz",
+        "//packages/graphics/utilities/cairo:cairo",
+    ],
+    visibility = ["PUBLIC"],
+)

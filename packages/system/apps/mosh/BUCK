@@ -1,0 +1,30 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# mosh - Mobile shell with roaming and intelligent local echo
+download_source(
+    name = "mosh-src",
+    src_uri = "https://github.com/mobile-shell/mosh/releases/download/mosh-1.4.0/mosh-1.4.0.tar.gz",
+    sha256 = "872e4b134e5df29c8933dff12f401c3a8f94d3f71ec8c3d27e52e58986e2e1a3",
+)
+
+configure_make_package(
+    name = "mosh",
+    source = ":mosh-src",
+    version = "1.4.0",
+    description = "Mobile shell with roaming and intelligent local echo",
+    homepage = "https://mosh.org",
+    license = "GPL-3+",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--disable-hardening",
+    ],
+    deps = [
+        "//packages/core:musl",
+        "//packages/core/ncurses",
+        "//packages/system/libs/crypto/openssl:openssl",
+        "//packages/dev-libs/serialization/protobuf:protobuf",
+        "//packages/core/zlib",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -134,3 +134,291 @@ configure_make_package(
     deps = [":util-linux"],
     visibility = ["PUBLIC"],
 )
+
+# =============================================================================
+# ncurses - Terminal handling library
+# =============================================================================
+
+download_source(
+    name = "ncurses-src",
+    src_uri = "https://ftp.gnu.org/gnu/ncurses/ncurses-6.4.tar.gz",
+    sha256 = "6931283d9ac87c5073f30b6290c4c75f21632bb4fc3603ac8100812bed248159",
+)
+
+configure_make_package(
+    name = "ncurses",
+    source = ":ncurses-src",
+    version = "6.4",
+    description = "Libraries for terminal handling",
+    homepage = "https://invisible-island.net/ncurses/",
+    license = "MIT",
+    configure_args = [
+        "--with-shared",
+        "--without-debug",
+        "--without-ada",
+        "--enable-widec",
+        "--enable-pc-files",
+        "--with-pkg-config-libdir=/usr/lib/pkgconfig",
+    ],
+    post_install = """
+# Create compatibility symlinks for wide-character libraries
+cd "$DESTDIR/usr/lib"
+for lib in ncurses form panel menu; do
+    ln -sf lib${lib}w.so lib${lib}.so
+    ln -sf lib${lib}w.a lib${lib}.a
+done
+ln -sf libncursesw.so libcurses.so
+""",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# readline - Command line editing library
+# =============================================================================
+
+download_source(
+    name = "readline-src",
+    src_uri = "https://ftp.gnu.org/gnu/readline/readline-8.2.tar.gz",
+    sha256 = "3feb7171f16a84ee82ca18a36d7b9be109a52c04f492a053331571d0f8e7a2d7",
+)
+
+configure_make_package(
+    name = "readline",
+    source = ":readline-src",
+    version = "8.2",
+    description = "Library for editing typed command lines",
+    homepage = "https://tiswww.case.edu/php/chet/readline/rltop.html",
+    license = "GPL-3.0",
+    configure_args = [
+        "--with-curses",
+    ],
+    deps = [":ncurses"],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# bash - The GNU Bourne Again SHell
+# =============================================================================
+
+download_source(
+    name = "bash-src",
+    src_uri = "https://ftp.gnu.org/gnu/bash/bash-5.2.21.tar.gz",
+    sha256 = "c8e31bdc59b69aaffc5b36509905ba3e5cbb12747091d27b4b977f078560d5b8",
+)
+
+configure_make_package(
+    name = "bash",
+    source = ":bash-src",
+    version = "5.2.21",
+    description = "The GNU Bourne Again SHell",
+    homepage = "https://www.gnu.org/software/bash/",
+    license = "GPL-3.0",
+    configure_args = [
+        "--without-bash-malloc",
+        "--with-installed-readline",
+    ],
+    post_install = """
+# Create sh symlink
+ln -sf bash "$DESTDIR/usr/bin/sh"
+""",
+    deps = [":readline", ":ncurses"],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# bzip2 - High-quality data compressor
+# =============================================================================
+
+download_source(
+    name = "bzip2-src",
+    src_uri = "https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
+    sha256 = "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269",
+)
+
+configure_make_package(
+    name = "bzip2",
+    source = ":bzip2-src",
+    version = "1.0.8",
+    description = "High-quality data compressor",
+    homepage = "https://sourceware.org/bzip2/",
+    license = "bzip2-1.0.6",
+    pre_configure = """
+# bzip2 doesn't have a configure script, patch the Makefile
+sed -i 's|^CC=.*|CC=cc|' Makefile
+sed -i 's|^CFLAGS=.*|CFLAGS=-O2 -fPIC|' Makefile
+""",
+    make_args = [
+        "-f", "Makefile-libbz2_so",
+    ],
+    post_install = """
+# Install shared library
+cp -a libbz2.so* "$DESTDIR/usr/lib/"
+# Also build and install static library and binaries
+make clean
+make
+make install PREFIX="$DESTDIR/usr"
+# Fix symlinks
+cd "$DESTDIR/usr/lib"
+ln -sf libbz2.so.1.0.8 libbz2.so.1.0
+ln -sf libbz2.so.1.0 libbz2.so
+""",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# xz - XZ compression utilities
+# =============================================================================
+
+download_source(
+    name = "xz-src",
+    src_uri = "https://github.com/tukaani-project/xz/releases/download/v5.4.5/xz-5.4.5.tar.xz",
+    sha256 = "8ccf5fff868c006f29522e386fb4c6a1b66463fbca65a4cfc3c4bd596e895e79",
+)
+
+configure_make_package(
+    name = "xz",
+    source = ":xz-src",
+    version = "5.4.5",
+    description = "XZ Utils - Lossless data compression",
+    homepage = "https://tukaani.org/xz/",
+    license = "public-domain",
+    configure_args = [
+        "--disable-doc",
+        "--disable-nls",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# procps-ng - System and process monitoring utilities
+# =============================================================================
+
+download_source(
+    name = "procps-ng-src",
+    src_uri = "https://sourceforge.net/projects/procps-ng/files/Production/procps-ng-4.0.4.tar.xz",
+    sha256 = "22870d6befcbb0d30029ef4d9917c88e8dd8cc5e6cdbfa0787c27fce59823e56",
+)
+
+configure_make_package(
+    name = "procps-ng",
+    source = ":procps-ng-src",
+    version = "4.0.4",
+    description = "Utilities for monitoring your system and its processes",
+    homepage = "https://gitlab.com/procps-ng/procps",
+    license = "GPL-2.0",
+    configure_args = [
+        "--disable-nls",
+        "--disable-kill",
+        "--without-systemd",
+    ],
+    deps = [":ncurses"],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# libffi - Foreign Function Interface library
+# =============================================================================
+
+download_source(
+    name = "libffi-src",
+    src_uri = "https://github.com/libffi/libffi/releases/download/v3.4.4/libffi-3.4.4.tar.gz",
+    sha256 = "d66c56ad259a82cf2a9dfc408b32bf5da52371500b84745f7fb8b645712df676",
+)
+
+configure_make_package(
+    name = "libffi",
+    source = ":libffi-src",
+    version = "3.4.4",
+    description = "Foreign Function Interface library",
+    homepage = "https://sourceware.org/libffi/",
+    license = "MIT",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# expat - XML parser library
+# =============================================================================
+
+download_source(
+    name = "expat-src",
+    src_uri = "https://github.com/libexpat/libexpat/releases/download/R_2_6_0/expat-2.6.0.tar.xz",
+    sha256 = "cb5f5a4dfe68e9cc63ccf8a92a7385f985b6ed8149e0c9a0cf68aa0f3a6a59fb",
+)
+
+configure_make_package(
+    name = "expat",
+    source = ":expat-src",
+    version = "2.6.0",
+    description = "Stream-oriented XML parser library",
+    homepage = "https://libexpat.github.io/",
+    license = "MIT",
+    configure_args = [
+        "--without-docbook",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# libnl - Netlink Protocol Library Suite
+# =============================================================================
+
+download_source(
+    name = "libnl-src",
+    src_uri = "https://github.com/thom311/libnl/releases/download/libnl3_9_0/libnl-3.9.0.tar.gz",
+    sha256 = "aed507004d728a5cf11eab48ca4bf9e6e1f4571a4acfc8a971b4f1f7b89f50ee",
+)
+
+configure_make_package(
+    name = "libnl",
+    source = ":libnl-src",
+    version = "3.9.0",
+    description = "Library for applications dealing with netlink sockets",
+    homepage = "https://www.infradead.org/~tgr/libnl/",
+    license = "LGPL-2.1",
+    configure_args = [
+        "--disable-cli",
+        "--disable-pthreads",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# file - File type identification utility
+# =============================================================================
+
+download_source(
+    name = "file-src",
+    src_uri = "https://astron.com/pub/file/file-5.45.tar.gz",
+    sha256 = "fc97f51029bb0e2c9f4e3bfbd5f4c8f3e2b9e08047e5b70d4e4e4e8d4c5be8c0",
+)
+
+configure_make_package(
+    name = "file",
+    source = ":file-src",
+    version = "5.45",
+    description = "File type identification utility",
+    homepage = "https://www.darwinsys.com/file/",
+    license = "BSD-2-Clause",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# less - Text file viewer
+# =============================================================================
+
+download_source(
+    name = "less-src",
+    src_uri = "https://www.greenwoodsoftware.com/less/less-643.tar.gz",
+    sha256 = "2911b5432c836fa084c8a2e68f0d81b3ce40b17aa8d0e3e07aca473a9a9c53e8",
+)
+
+configure_make_package(
+    name = "less",
+    source = ":less-src",
+    version = "643",
+    description = "Less is a free, open-source file pager",
+    homepage = "https://www.greenwoodsoftware.com/less/",
+    license = "GPL-3.0",
+    deps = [":ncurses"],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,28 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# socat - Multipurpose relay for bidirectional data transfer
+# =============================================================================
+
+download_source(
+    name = "socat-src",
+    src_uri = "http://www.dest-unreach.org/socat/download/socat-1.8.0.0.tar.bz2",
+    sha256 = "e1de683dd22ee0e3a6c6bbff269abe18ab5b9892f9ae89aecc5749bc4faf0332",
+)
+
+configure_make_package(
+    name = "socat",
+    source = ":socat-src",
+    version = "1.8.0.0",
+    description = "Multipurpose relay for bidirectional data transfer",
+    homepage = "http://www.dest-unreach.org/socat/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--disable-libwrap",
+    ],
+    deps = [
+        "//packages/network/openssl:openssl",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

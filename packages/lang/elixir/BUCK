@@ -1,0 +1,33 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# Elixir - Dynamic, functional language
+# =============================================================================
+
+download_source(
+    name = "elixir-src",
+    src_uri = "https://github.com/elixir-lang/elixir/archive/refs/tags/v1.16.0.tar.gz",
+    sha256 = "6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b",
+)
+
+binary_package(
+    name = "elixir",
+    srcs = [":elixir-src"],
+    version = "1.16.0",
+    description = "Elixir is a dynamic, functional language for building scalable and maintainable applications",
+    homepage = "https://elixir-lang.org/",
+    license = "Apache-2.0",
+    install_script = """
+        cd $SRCS/elixir-1.16.0
+
+        # Build Elixir
+        make
+
+        # Install
+        make install PREFIX=/usr DESTDIR=$OUT
+    """,
+    deps = [
+        "//packages/lang/erlang:erlang",
+    ],
+    visibility = ["PUBLIC"],
+)

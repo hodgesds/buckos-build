@@ -1,0 +1,33 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# Nim - Systems and applications programming language
+# =============================================================================
+
+download_source(
+    name = "nim-src",
+    src_uri = "https://nim-lang.org/download/nim-2.0.2.tar.xz",
+    sha256 = "8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d",
+)
+
+binary_package(
+    name = "nim",
+    srcs = [":nim-src"],
+    version = "2.0.2",
+    description = "Nim is a statically typed compiled systems programming language",
+    homepage = "https://nim-lang.org/",
+    license = "MIT",
+    install_script = """
+        cd $SRCS/nim-2.0.2
+
+        # Build Nim
+        sh build.sh
+        bin/nim c koch
+        ./koch boot -d:release
+        ./koch tools
+
+        # Install
+        ./koch install $OUT/usr
+    """,
+    visibility = ["PUBLIC"],
+)

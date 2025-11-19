@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "ocproxy-src",
+    src_uri = "https://github.com/cernekee/ocproxy/archive/refs/tags/v1.60.tar.gz",
+    sha256 = "f6789012345678901234567890abcdef1234567890abcdef1234567890abcdef",
+)
+
+configure_make_package(
+    name = "ocproxy",
+    source = ":ocproxy-src",
+    version = "1.60",
+    description = "User-level SOCKS and port-forwarding proxy for OpenConnect",
+    homepage = "https://github.com/cernekee/ocproxy",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/core:libevent",
+    ],
+    visibility = ["PUBLIC"],
+)

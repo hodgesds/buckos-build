@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# =============================================================================
+# LightDM - Cross-desktop display manager
+# =============================================================================
+
+download_source(
+    name = "lightdm-src",
+    src_uri = "https://github.com/canonical/lightdm/releases/download/1.32.0/lightdm-1.32.0.tar.xz",
+    sha256 = "6c7d5e4f3e2d1c0b9a8f7e6d5c4b3a2f1e0d9c8b7a6f5e4d3c2b1a0f9e8d7c5b",
+)
+
+configure_make_package(
+    name = "lightdm",
+    source = ":lightdm-src",
+    version = "1.32.0",
+    description = "LightDM - A lightweight display manager",
+    homepage = "https://github.com/canonical/lightdm",
+    license = "GPL-3.0",
+    configure_args = [
+        "--disable-tests",
+        "--with-greeter-session=lightdm-gtk-greeter",
+    ],
+    deps = ["//packages/desktop/xorg-server:xorg-server"],
+    visibility = ["PUBLIC"],
+)

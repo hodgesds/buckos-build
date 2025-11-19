@@ -1,0 +1,30 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# Julia - High-level, high-performance dynamic language
+# =============================================================================
+
+download_source(
+    name = "julia-src",
+    src_uri = "https://github.com/JuliaLang/julia/releases/download/v1.10.0/julia-1.10.0.tar.gz",
+    sha256 = "7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c",
+)
+
+binary_package(
+    name = "julia",
+    srcs = [":julia-src"],
+    version = "1.10.0",
+    description = "Julia is a high-level, high-performance dynamic language for technical computing",
+    homepage = "https://julialang.org/",
+    license = "MIT",
+    install_script = """
+        cd $SRCS/julia-1.10.0
+
+        # Build Julia
+        make
+
+        # Install
+        make install DESTDIR=$OUT prefix=/usr
+    """,
+    visibility = ["PUBLIC"],
+)

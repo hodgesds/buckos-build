@@ -1,0 +1,75 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# =============================================================================
+# GNOME - Modern, elegant desktop environment
+# =============================================================================
+
+download_source(
+    name = "gnome-shell-src",
+    src_uri = "https://download.gnome.org/sources/gnome-shell/45/gnome-shell-45.4.tar.xz",
+    sha256 = "5a4b3c2d1e0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1e0d9c8b7a6f5e4d3",
+)
+
+configure_make_package(
+    name = "gnome-shell",
+    source = ":gnome-shell-src",
+    version = "45.4",
+    description = "GNOME Shell - Core user interface of GNOME",
+    homepage = "https://wiki.gnome.org/Projects/GnomeShell",
+    license = "GPL-2.0",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr \\
+    -Dextensions-tool=true \\
+    -Dman=false \\
+    -Dtests=false
+""",
+    deps = [
+        "//packages/desktop/wayland:wayland",
+        "//packages/desktop/mesa:mesa",
+        "//packages/desktop/gdm:gdm",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+download_source(
+    name = "mutter-src",
+    src_uri = "https://download.gnome.org/sources/mutter/45/mutter-45.4.tar.xz",
+    sha256 = "4a3b2c1d0e9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2",
+)
+
+configure_make_package(
+    name = "mutter",
+    source = ":mutter-src",
+    version = "45.4",
+    description = "Mutter - GNOME window manager and compositor",
+    homepage = "https://wiki.gnome.org/Projects/Mutter",
+    license = "GPL-2.0",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr \\
+    -Dtests=false \\
+    -Dprofiler=false
+""",
+    deps = [
+        "//packages/desktop/wayland:wayland",
+        "//packages/desktop/mesa:mesa",
+        "//packages/desktop/libinput:libinput",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# GNOME meta-package
+filegroup(
+    name = "gnome",
+    srcs = [
+        ":gnome-shell",
+        ":mutter",
+        "//packages/desktop/gdm:gdm",
+        "//packages/desktop/wayland:wayland",
+        "//packages/desktop/mesa:mesa",
+    ],
+    visibility = ["PUBLIC"],
+)

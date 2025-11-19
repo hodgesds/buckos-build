@@ -1,659 +1,91 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+# =============================================================================
+# Programming Languages - Category Organization
+# =============================================================================
+#
+# This file organizes programming languages into categories.
+# Individual package definitions are in their respective subdirectories.
+# =============================================================================
 
 # =============================================================================
-# Python - General-purpose programming language
+# Compiled Languages
+# Systems and native compiled languages
 # =============================================================================
 
-download_source(
-    name = "python-src",
-    src_uri = "https://www.python.org/ftp/python/3.12.1/Python-3.12.1.tar.xz",
-    sha256 = "8dfb8f426fcd226657f9e2bd5f1e96e53264965176f745d2102c2f5c3b8e7da3",
-)
-
-configure_make_package(
-    name = "python",
-    source = ":python-src",
-    version = "3.12.1",
-    description = "Python is a powerful, easy to learn programming language",
-    homepage = "https://www.python.org/",
-    license = "PSF-2.0",
-    configure_args = [
-        "--enable-shared",
-        "--enable-optimizations",
-        "--with-system-expat",
-        "--with-system-ffi",
-        "--with-ensurepip=install",
-        "--enable-loadable-sqlite-extensions",
-    ],
-    deps = [
-        "//packages/core:zlib",
-        "//packages/network:openssl",
+filegroup(
+    name = "compiled-languages",
+    srcs = [
+        "//packages/lang/go:go",
+        "//packages/lang/rust:rust",
+        "//packages/lang/zig:zig",
+        "//packages/lang/nim:nim",
+        "//packages/lang/crystal:crystal",
+        "//packages/lang/swift:swift",
+        "//packages/lang/kotlin-native:kotlin-native",
     ],
     visibility = ["PUBLIC"],
 )
 
 # =============================================================================
-# Go - Open source programming language
+# Interpreted Languages
+# Scripting and interpreted languages
 # =============================================================================
 
-download_source(
-    name = "go-bootstrap-src",
-    src_uri = "https://go.dev/dl/go1.21.6.linux-amd64.tar.gz",
-    sha256 = "3f934f40ac360b9c01f616a9aa1796d227d8b0328bf64cb045c7b8c4ee9caea4",
-)
-
-download_source(
-    name = "go-src",
-    src_uri = "https://go.dev/dl/go1.22.0.src.tar.gz",
-    sha256 = "4d196c3d41a0d6c1dfc64d04e3cc1f608b0c436bd87b7060ce3e23234e1f4d5c",
-)
-
-binary_package(
-    name = "go",
-    srcs = [":go-src", ":go-bootstrap-src"],
-    version = "1.22.0",
-    description = "Go is an open source programming language that makes it easy to build simple, reliable, and efficient software",
-    homepage = "https://go.dev/",
-    license = "BSD-3-Clause",
-    install_script = """
-        # Setup bootstrap Go
-        mkdir -p $WORK/bootstrap
-        tar -xzf $SRCS/go1.21.6.linux-amd64.tar.gz -C $WORK/bootstrap --strip-components=1
-        export GOROOT_BOOTSTRAP=$WORK/bootstrap
-
-        # Build Go from source
-        cd $SRCS/go/src
-        ./make.bash
-
-        # Install
-        mkdir -p $OUT/usr/local/go
-        cp -r $SRCS/go/* $OUT/usr/local/go/
-        mkdir -p $OUT/usr/bin
-        ln -s /usr/local/go/bin/go $OUT/usr/bin/go
-        ln -s /usr/local/go/bin/gofmt $OUT/usr/bin/gofmt
-    """,
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# Rust - Systems programming language
-# =============================================================================
-
-download_source(
-    name = "rust-src",
-    src_uri = "https://static.rust-lang.org/dist/rustc-1.75.0-src.tar.xz",
-    sha256 = "5b739f45bc9d341e2d1c570d65d2375591e22c2d23ef32f1185f2c4ec4e46f65",
-)
-
-binary_package(
-    name = "rust",
-    srcs = [":rust-src"],
-    version = "1.75.0",
-    description = "Rust is a systems programming language focused on safety, speed, and concurrency",
-    homepage = "https://www.rust-lang.org/",
-    license = "Apache-2.0 AND MIT",
-    install_script = """
-        cd $SRCS/rustc-1.75.0-src
-
-        # Configure Rust build
-        cat > config.toml << 'EOF'
-[llvm]
-link-shared = true
-
-[build]
-docs = false
-extended = true
-tools = ["cargo", "rustfmt", "clippy"]
-
-[install]
-prefix = "/usr"
-
-[rust]
-channel = "stable"
-codegen-units = 1
-EOF
-
-        # Build and install
-        python3 x.py build
-        DESTDIR=$OUT python3 x.py install
-    """,
-    deps = [
-        ":python",
+filegroup(
+    name = "interpreted-languages",
+    srcs = [
+        "//packages/lang/python:python",
+        "//packages/lang/ruby:ruby",
+        "//packages/lang/perl:perl",
+        "//packages/lang/nodejs:nodejs",
+        "//packages/lang/lua:lua",
+        "//packages/lang/tcl:tcl",
+        "//packages/lang/php:php",
     ],
     visibility = ["PUBLIC"],
 )
 
 # =============================================================================
-# Ruby - Dynamic, open source programming language
+# Functional Languages
+# Functional and declarative programming languages
 # =============================================================================
 
-download_source(
-    name = "ruby-src",
-    src_uri = "https://cache.ruby-lang.org/pub/ruby/3.3/ruby-3.3.0.tar.xz",
-    sha256 = "96518814d9832bece92a85415a819d4893b307db5921ae1f0f751a9a89a56b7d",
-)
-
-configure_make_package(
-    name = "ruby",
-    source = ":ruby-src",
-    version = "3.3.0",
-    description = "Ruby is a dynamic, open source programming language with a focus on simplicity and productivity",
-    homepage = "https://www.ruby-lang.org/",
-    license = "BSD-2-Clause",
-    configure_args = [
-        "--enable-shared",
-        "--disable-install-doc",
-        "--with-compress-debug-sections=no",
-    ],
-    deps = [
-        "//packages/core:zlib",
-        "//packages/network:openssl",
+filegroup(
+    name = "functional-languages",
+    srcs = [
+        "//packages/lang/ghc:ghc",
+        "//packages/lang/ocaml:ocaml",
+        "//packages/lang/erlang:erlang",
+        "//packages/lang/elixir:elixir",
+        "//packages/lang/racket:racket",
     ],
     visibility = ["PUBLIC"],
 )
 
 # =============================================================================
-# Perl - Practical Extraction and Report Language
+# Scientific Computing Languages
+# Languages optimized for scientific and numerical computing
 # =============================================================================
 
-download_source(
-    name = "perl-src",
-    src_uri = "https://www.cpan.org/src/5.0/perl-5.38.2.tar.xz",
-    sha256 = "a0a31534451eb7b83c7d6594a497543a54d488bc90ca00f5e34762577f40571d",
-)
-
-configure_make_package(
-    name = "perl",
-    source = ":perl-src",
-    version = "5.38.2",
-    description = "Perl is a highly capable, feature-rich programming language",
-    homepage = "https://www.perl.org/",
-    license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
-    pre_configure = """
-        # Perl uses its own Configure script (capital C)
-        chmod +x Configure
-    """,
-    configure_args = [
-        "-des",
-        "-Dprefix=/usr",
-        "-Dvendorprefix=/usr",
-        "-Dprivlib=/usr/lib/perl5/5.38/core_perl",
-        "-Darchlib=/usr/lib/perl5/5.38/core_perl",
-        "-Dsitelib=/usr/lib/perl5/5.38/site_perl",
-        "-Dsitearch=/usr/lib/perl5/5.38/site_perl",
-        "-Dvendorlib=/usr/lib/perl5/5.38/vendor_perl",
-        "-Dvendorarch=/usr/lib/perl5/5.38/vendor_perl",
-        "-Dman1dir=/usr/share/man/man1",
-        "-Dman3dir=/usr/share/man/man3",
-        "-Duseshrplib",
-        "-Dusethreads",
-    ],
-    deps = [
-        "//packages/core:zlib",
+filegroup(
+    name = "scientific-languages",
+    srcs = [
+        "//packages/lang/julia:julia",
     ],
     visibility = ["PUBLIC"],
 )
 
 # =============================================================================
-# Node.js - JavaScript runtime
+# All Languages
+# Complete collection of all programming languages
 # =============================================================================
 
-download_source(
-    name = "nodejs-src",
-    src_uri = "https://nodejs.org/dist/v20.11.0/node-v20.11.0.tar.xz",
-    sha256 = "2deb7103477a58e66f4d20c8a1de42b76a07dfe5e548e31f0c86f5cec2fe8595",
-)
-
-configure_make_package(
-    name = "nodejs",
-    source = ":nodejs-src",
-    version = "20.11.0",
-    description = "Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine",
-    homepage = "https://nodejs.org/",
-    license = "MIT",
-    pre_configure = """
-        # Node.js uses a Python configure script
-        chmod +x configure
-    """,
-    configure_args = [
-        "--prefix=/usr",
-        "--shared-zlib",
-        "--shared-openssl",
-        "--with-intl=system-icu",
+filegroup(
+    name = "all-languages",
+    srcs = [
+        ":compiled-languages",
+        ":interpreted-languages",
+        ":functional-languages",
+        ":scientific-languages",
     ],
-    deps = [
-        "//packages/core:zlib",
-        "//packages/network:openssl",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# Lua - Lightweight scripting language
-# =============================================================================
-
-download_source(
-    name = "lua-src",
-    src_uri = "https://www.lua.org/ftp/lua-5.4.6.tar.gz",
-    sha256 = "7d5ea1b9cb6aa0b59ca3dde1c6adcb57ef83a1ba8e5432c0ecd06bf439b3ad88",
-)
-
-binary_package(
-    name = "lua",
-    srcs = [":lua-src"],
-    version = "5.4.6",
-    description = "Lua is a powerful, efficient, lightweight, embeddable scripting language",
-    homepage = "https://www.lua.org/",
-    license = "MIT",
-    install_script = """
-        cd $SRCS/lua-5.4.6
-
-        # Build Lua
-        make linux MYCFLAGS="-fPIC" MYLDFLAGS="-Wl,-E"
-
-        # Install
-        make install INSTALL_TOP=$OUT/usr
-    """,
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# Haskell (GHC) - Functional programming language
-# =============================================================================
-
-download_source(
-    name = "ghc-src",
-    src_uri = "https://downloads.haskell.org/~ghc/9.4.8/ghc-9.4.8-src.tar.xz",
-    sha256 = "0bf407eb67a3a0013f5c0d5a59e0679f6a6ac3e5f9c5c5b5f9a5b5b5b5b5b5b5",
-)
-
-download_source(
-    name = "ghc-bootstrap-src",
-    src_uri = "https://downloads.haskell.org/~ghc/9.4.8/ghc-9.4.8-x86_64-alpine3_12-linux.tar.xz",
-    sha256 = "1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a",
-)
-
-binary_package(
-    name = "ghc",
-    srcs = [":ghc-src", ":ghc-bootstrap-src"],
-    version = "9.4.8",
-    description = "The Glasgow Haskell Compiler",
-    homepage = "https://www.haskell.org/ghc/",
-    license = "BSD-3-Clause",
-    install_script = """
-        # Setup bootstrap GHC
-        mkdir -p $WORK/bootstrap
-        tar -xJf $SRCS/ghc-*-x86_64-alpine3_12-linux.tar.xz -C $WORK/bootstrap --strip-components=1
-        cd $WORK/bootstrap
-        ./configure --prefix=$WORK/ghc-boot
-        make install
-        export PATH=$WORK/ghc-boot/bin:$PATH
-
-        # Build GHC from source
-        cd $SRCS/ghc-9.4.8
-        ./configure --prefix=/usr
-        make
-        make install DESTDIR=$OUT
-    """,
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# OCaml - Functional programming language
-# =============================================================================
-
-download_source(
-    name = "ocaml-src",
-    src_uri = "https://github.com/ocaml/ocaml/archive/refs/tags/5.1.1.tar.gz",
-    sha256 = "57920d5c8d5b39d7c89b1f3c1d7b3e5a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b",
-)
-
-configure_make_package(
-    name = "ocaml",
-    source = ":ocaml-src",
-    version = "5.1.1",
-    description = "OCaml is an industrial-strength functional programming language",
-    homepage = "https://ocaml.org/",
-    license = "LGPL-2.1-or-later WITH OCaml-LGPL-linking-exception",
-    configure_args = [
-        "--prefix=/usr",
-        "--enable-ocamltest",
-        "--enable-native-compiler",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# Tcl - Tool Command Language
-# =============================================================================
-
-download_source(
-    name = "tcl-src",
-    src_uri = "https://prdownloads.sourceforge.net/tcl/tcl8.6.13-src.tar.gz",
-    sha256 = "43a1fae7412f61ff11de2cfd05d28cfc3a73762f354a417c62370a54e5e5c8a1",
-)
-
-configure_make_package(
-    name = "tcl",
-    source = ":tcl-src",
-    version = "8.6.13",
-    description = "Tcl is a very powerful but easy to learn dynamic programming language",
-    homepage = "https://www.tcl.tk/",
-    license = "TCL",
-    pre_configure = """
-        cd unix
-    """,
-    configure_args = [
-        "--prefix=/usr",
-        "--enable-threads",
-        "--enable-64bit",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# PHP - General-purpose scripting language
-# =============================================================================
-
-download_source(
-    name = "php-src",
-    src_uri = "https://www.php.net/distributions/php-8.3.2.tar.xz",
-    sha256 = "4ffa3e44afc9c590e28dc0d2d31f1cccb51cdcc81f19d6c0e6abf6f3c0e3e5d5",
-)
-
-configure_make_package(
-    name = "php",
-    source = ":php-src",
-    version = "8.3.2",
-    description = "PHP is a popular general-purpose scripting language especially suited to web development",
-    homepage = "https://www.php.net/",
-    license = "PHP-3.01",
-    configure_args = [
-        "--prefix=/usr",
-        "--sysconfdir=/etc",
-        "--with-config-file-path=/etc/php",
-        "--with-config-file-scan-dir=/etc/php/conf.d",
-        "--enable-bcmath",
-        "--enable-calendar",
-        "--enable-exif",
-        "--enable-ftp",
-        "--enable-mbstring",
-        "--enable-sockets",
-        "--with-curl",
-        "--with-openssl",
-        "--with-zlib",
-        "--with-readline",
-        "--enable-pcntl",
-        "--enable-opcache",
-    ],
-    deps = [
-        "//packages/core:zlib",
-        "//packages/network:openssl",
-        "//packages/network:curl",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# Erlang/OTP - Concurrent functional programming language
-# =============================================================================
-
-download_source(
-    name = "erlang-src",
-    src_uri = "https://github.com/erlang/otp/releases/download/OTP-26.2.1/otp_src_26.2.1.tar.gz",
-    sha256 = "5a5f5a5f5a5f5a5f5a5f5a5f5a5f5a5f5a5f5a5f5a5f5a5f5a5f5a5f5a5f5a5f",
-)
-
-configure_make_package(
-    name = "erlang",
-    source = ":erlang-src",
-    version = "26.2.1",
-    description = "Erlang/OTP is a programming language used to build massively scalable soft real-time systems",
-    homepage = "https://www.erlang.org/",
-    license = "Apache-2.0",
-    configure_args = [
-        "--prefix=/usr",
-        "--enable-threads",
-        "--enable-smp-support",
-        "--enable-kernel-poll",
-        "--enable-hipe",
-        "--with-ssl",
-    ],
-    deps = [
-        "//packages/network:openssl",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# Elixir - Dynamic, functional language
-# =============================================================================
-
-download_source(
-    name = "elixir-src",
-    src_uri = "https://github.com/elixir-lang/elixir/archive/refs/tags/v1.16.0.tar.gz",
-    sha256 = "6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b",
-)
-
-binary_package(
-    name = "elixir",
-    srcs = [":elixir-src"],
-    version = "1.16.0",
-    description = "Elixir is a dynamic, functional language for building scalable and maintainable applications",
-    homepage = "https://elixir-lang.org/",
-    license = "Apache-2.0",
-    install_script = """
-        cd $SRCS/elixir-1.16.0
-
-        # Build Elixir
-        make
-
-        # Install
-        make install PREFIX=/usr DESTDIR=$OUT
-    """,
-    deps = [
-        ":erlang",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# Julia - High-level, high-performance dynamic language
-# =============================================================================
-
-download_source(
-    name = "julia-src",
-    src_uri = "https://github.com/JuliaLang/julia/releases/download/v1.10.0/julia-1.10.0.tar.gz",
-    sha256 = "7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c",
-)
-
-binary_package(
-    name = "julia",
-    srcs = [":julia-src"],
-    version = "1.10.0",
-    description = "Julia is a high-level, high-performance dynamic language for technical computing",
-    homepage = "https://julialang.org/",
-    license = "MIT",
-    install_script = """
-        cd $SRCS/julia-1.10.0
-
-        # Build Julia
-        make
-
-        # Install
-        make install DESTDIR=$OUT prefix=/usr
-    """,
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# Nim - Systems and applications programming language
-# =============================================================================
-
-download_source(
-    name = "nim-src",
-    src_uri = "https://nim-lang.org/download/nim-2.0.2.tar.xz",
-    sha256 = "8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d",
-)
-
-binary_package(
-    name = "nim",
-    srcs = [":nim-src"],
-    version = "2.0.2",
-    description = "Nim is a statically typed compiled systems programming language",
-    homepage = "https://nim-lang.org/",
-    license = "MIT",
-    install_script = """
-        cd $SRCS/nim-2.0.2
-
-        # Build Nim
-        sh build.sh
-        bin/nim c koch
-        ./koch boot -d:release
-        ./koch tools
-
-        # Install
-        ./koch install $OUT/usr
-    """,
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# Zig - Systems programming language
-# =============================================================================
-
-download_source(
-    name = "zig-src",
-    src_uri = "https://ziglang.org/download/0.11.0/zig-0.11.0.tar.xz",
-    sha256 = "9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d",
-)
-
-binary_package(
-    name = "zig",
-    srcs = [":zig-src"],
-    version = "0.11.0",
-    description = "Zig is a general-purpose programming language and build system",
-    homepage = "https://ziglang.org/",
-    license = "MIT",
-    install_script = """
-        cd $SRCS/zig-0.11.0
-
-        # Build Zig using cmake
-        mkdir build
-        cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
-        make
-        make install DESTDIR=$OUT
-    """,
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# Crystal - Ruby-like compiled language
-# =============================================================================
-
-download_source(
-    name = "crystal-src",
-    src_uri = "https://github.com/crystal-lang/crystal/archive/refs/tags/1.11.2.tar.gz",
-    sha256 = "aeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeae",
-)
-
-binary_package(
-    name = "crystal",
-    srcs = [":crystal-src"],
-    version = "1.11.2",
-    description = "Crystal is a programming language with Ruby-like syntax and static type-checking",
-    homepage = "https://crystal-lang.org/",
-    license = "Apache-2.0",
-    install_script = """
-        cd $SRCS/crystal-1.11.2
-
-        # Build Crystal (requires bootstrap compiler)
-        make crystal release=1
-
-        # Install
-        make install PREFIX=/usr DESTDIR=$OUT
-    """,
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# Racket - General-purpose programming language
-# =============================================================================
-
-download_source(
-    name = "racket-src",
-    src_uri = "https://download.racket-lang.org/installers/8.11.1/racket-8.11.1-src.tgz",
-    sha256 = "bfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbf",
-)
-
-configure_make_package(
-    name = "racket",
-    source = ":racket-src",
-    version = "8.11.1",
-    description = "Racket is a general-purpose, multi-paradigm programming language",
-    homepage = "https://racket-lang.org/",
-    license = "Apache-2.0 OR MIT",
-    pre_configure = """
-        cd src
-    """,
-    configure_args = [
-        "--prefix=/usr",
-        "--enable-shared",
-        "--enable-lt=/usr/bin/libtool",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# Kotlin Native - Kotlin compiler for native platforms
-# =============================================================================
-
-download_source(
-    name = "kotlin-native-src",
-    src_uri = "https://github.com/JetBrains/kotlin/releases/download/v1.9.22/kotlin-native-linux-x86_64-1.9.22.tar.gz",
-    sha256 = "cfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcf",
-)
-
-binary_package(
-    name = "kotlin-native",
-    srcs = [":kotlin-native-src"],
-    version = "1.9.22",
-    description = "Kotlin/Native is a technology for compiling Kotlin code to native binaries",
-    homepage = "https://kotlinlang.org/",
-    license = "Apache-2.0",
-    install_script = """
-        mkdir -p $OUT/usr/local/kotlin-native
-        cp -r $SRCS/kotlin-native-linux-x86_64-1.9.22/* $OUT/usr/local/kotlin-native/
-        mkdir -p $OUT/usr/bin
-        ln -s /usr/local/kotlin-native/bin/kotlinc-native $OUT/usr/bin/kotlinc-native
-    """,
-    visibility = ["PUBLIC"],
-)
-
-# =============================================================================
-# Swift - Apple's systems programming language
-# =============================================================================
-
-download_source(
-    name = "swift-src",
-    src_uri = "https://download.swift.org/swift-5.9.2-release/ubuntu2204/swift-5.9.2-RELEASE/swift-5.9.2-RELEASE-ubuntu22.04.tar.gz",
-    sha256 = "dfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdf",
-)
-
-binary_package(
-    name = "swift",
-    srcs = [":swift-src"],
-    version = "5.9.2",
-    description = "Swift is a powerful and intuitive programming language for all Apple platforms and beyond",
-    homepage = "https://www.swift.org/",
-    license = "Apache-2.0",
-    install_script = """
-        mkdir -p $OUT/usr/local/swift
-        tar -xzf $SRCS/swift-5.9.2-RELEASE-ubuntu22.04.tar.gz -C $OUT/usr/local/swift --strip-components=1
-        mkdir -p $OUT/usr/bin
-        ln -s /usr/local/swift/usr/bin/swift $OUT/usr/bin/swift
-        ln -s /usr/local/swift/usr/bin/swiftc $OUT/usr/bin/swiftc
-    """,
     visibility = ["PUBLIC"],
 )

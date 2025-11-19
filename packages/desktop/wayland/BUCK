@@ -1,0 +1,53 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# =============================================================================
+# Wayland - Next-generation display protocol
+# =============================================================================
+
+download_source(
+    name = "wayland-src",
+    src_uri = "https://gitlab.freedesktop.org/wayland/wayland/-/releases/1.22.0/downloads/wayland-1.22.0.tar.xz",
+    sha256 = "1540af1ea698a471c2d8e9d288c05f7e6ab3ac02792b9e16a3e7e7c8a8a94c6a",
+)
+
+configure_make_package(
+    name = "wayland",
+    source = ":wayland-src",
+    version = "1.22.0",
+    description = "Wayland display protocol libraries",
+    homepage = "https://wayland.freedesktop.org/",
+    license = "MIT",
+    configure_args = [
+        "-Ddocumentation=false",
+        "-Dtests=false",
+    ],
+    pre_configure = """
+# Wayland uses meson
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr -Ddocumentation=false -Dtests=false
+""",
+    visibility = ["PUBLIC"],
+)
+
+download_source(
+    name = "wayland-protocols-src",
+    src_uri = "https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.33/downloads/wayland-protocols-1.33.tar.xz",
+    sha256 = "5ad6e8e66c1275f50e97ab8a11fa564ee070c1d9c2e58de50c49f0a9c3047d3b",
+)
+
+configure_make_package(
+    name = "wayland-protocols",
+    source = ":wayland-protocols-src",
+    version = "1.33",
+    description = "Wayland protocol extensions",
+    homepage = "https://wayland.freedesktop.org/",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr -Dtests=false
+""",
+    deps = [":wayland"],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,79 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# =============================================================================
+# Sway - i3-compatible Wayland compositor
+# =============================================================================
+
+download_source(
+    name = "sway-src",
+    src_uri = "https://github.com/swaywm/sway/releases/download/1.9/sway-1.9.tar.gz",
+    sha256 = "1a0b9c8d7e6f5e4d3c2b1a0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1e0d9",
+)
+
+configure_make_package(
+    name = "sway",
+    source = ":sway-src",
+    version = "1.9",
+    description = "Sway - i3-compatible Wayland compositor",
+    homepage = "https://swaywm.org/",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr \\
+    -Ddefault-wallpaper=false \\
+    -Dzsh-completions=false \\
+    -Dbash-completions=false \\
+    -Dfish-completions=false \\
+    -Dxwayland=enabled \\
+    -Dman-pages=disabled
+""",
+    deps = [
+        "//packages/desktop/wayland:wayland",
+        "//packages/desktop/wayland:wayland-protocols",
+        "//packages/desktop/mesa:mesa",
+        "//packages/desktop/libinput:libinput",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+download_source(
+    name = "wlroots-src",
+    src_uri = "https://gitlab.freedesktop.org/wlroots/wlroots/-/releases/0.17.1/downloads/wlroots-0.17.1.tar.gz",
+    sha256 = "0a9b8c7d6e5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8",
+)
+
+configure_make_package(
+    name = "wlroots",
+    source = ":wlroots-src",
+    version = "0.17.1",
+    description = "wlroots - Modular Wayland compositor library",
+    homepage = "https://gitlab.freedesktop.org/wlroots/wlroots",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr \\
+    -Dexamples=false
+""",
+    deps = [
+        "//packages/desktop/wayland:wayland",
+        "//packages/desktop/wayland:wayland-protocols",
+        "//packages/desktop/mesa:mesa",
+        "//packages/desktop/libinput:libinput",
+        "//packages/desktop/libdrm:libdrm",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Sway meta-package
+filegroup(
+    name = "sway-desktop",
+    srcs = [
+        ":sway",
+        ":wlroots",
+        "//packages/desktop/wayland:wayland",
+        "//packages/desktop/mesa:mesa",
+    ],
+    visibility = ["PUBLIC"],
+)

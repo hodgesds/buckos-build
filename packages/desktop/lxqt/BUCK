@@ -1,0 +1,62 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# =============================================================================
+# LXQt - Lightweight Qt desktop
+# =============================================================================
+
+download_source(
+    name = "lxqt-session-src",
+    src_uri = "https://github.com/lxqt/lxqt-session/releases/download/1.4.0/lxqt-session-1.4.0.tar.xz",
+    sha256 = "8a7b6c5d4e3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6",
+)
+
+configure_make_package(
+    name = "lxqt-session",
+    source = ":lxqt-session-src",
+    version = "1.4.0",
+    description = "LXQt Session Manager",
+    homepage = "https://lxqt-project.org/",
+    license = "LGPL-2.1",
+    pre_configure = """
+mkdir -p build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+""",
+    deps = ["//packages/desktop/xorg-server:xorg-server"],
+    visibility = ["PUBLIC"],
+)
+
+download_source(
+    name = "lxqt-panel-src",
+    src_uri = "https://github.com/lxqt/lxqt-panel/releases/download/1.4.0/lxqt-panel-1.4.0.tar.xz",
+    sha256 = "7a6b5c4d3e2f1e0d9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5",
+)
+
+configure_make_package(
+    name = "lxqt-panel",
+    source = ":lxqt-panel-src",
+    version = "1.4.0",
+    description = "LXQt Panel",
+    homepage = "https://lxqt-project.org/",
+    license = "LGPL-2.1",
+    pre_configure = """
+mkdir -p build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+""",
+    deps = ["//packages/desktop/xorg-server:xorg-server"],
+    visibility = ["PUBLIC"],
+)
+
+# LXQt meta-package
+filegroup(
+    name = "lxqt",
+    srcs = [
+        ":lxqt-session",
+        ":lxqt-panel",
+        "//packages/desktop/sddm:sddm",
+        "//packages/desktop/xorg-server:xorg-server",
+        "//packages/desktop/mesa:mesa",
+    ],
+    visibility = ["PUBLIC"],
+)

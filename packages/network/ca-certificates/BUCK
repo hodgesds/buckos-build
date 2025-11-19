@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# CA Certificates - Root CA certificates bundle
+# =============================================================================
+
+download_source(
+    name = "ca-certificates-src",
+    src_uri = "https://curl.se/ca/cacert-2024-01-09.pem",
+    sha256 = "1cdf5217b991c34e58e11bb03932392e0a9d3b8a1e8ff3f5d70c9b8e9b5e5a1f",
+)
+
+binary_package(
+    name = "ca-certificates",
+    srcs = [":ca-certificates-src"],
+    version = "2024.01.09",
+    description = "Common CA certificates PEM files",
+    homepage = "https://curl.se/docs/caextract.html",
+    license = "MPL-2.0",
+    install_script = """
+mkdir -p "$DESTDIR/etc/ssl/certs"
+cp cacert-2024-01-09.pem "$DESTDIR/etc/ssl/certs/ca-certificates.crt"
+ln -sf ca-certificates.crt "$DESTDIR/etc/ssl/certs/ca-bundle.crt"
+""",
+    visibility = ["PUBLIC"],
+)

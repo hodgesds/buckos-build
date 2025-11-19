@@ -1,475 +1,8 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-
 # =============================================================================
 # System Initialization Packages
 # =============================================================================
-# This file contains build targets for system initialization (init) systems
-# including systemd, OpenRC, and alternative init systems.
-
-# -----------------------------------------------------------------------------
-# systemd - System and Service Manager
-# -----------------------------------------------------------------------------
-
-download_source(
-    name = "systemd-src",
-    src_uri = "https://github.com/systemd/systemd/archive/refs/tags/v255.tar.gz",
-    sha256 = "28854ffb2cb5f9e07fcbdbf1e16e1e4a73cfbe7449dae12392a5477c5b89bc5c",
-)
-
-configure_make_package(
-    name = "systemd",
-    source = ":systemd-src",
-    version = "255",
-    description = "System and Service Manager",
-    homepage = "https://systemd.io/",
-    license = "LGPL-2.1-or-later",
-    pre_configure = """
-# systemd uses meson build system
-mkdir -p build
-cd build
-meson setup .. \
-    --prefix=/usr \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    -Dmode=release \
-    -Dsplit-bin=true \
-    -Dsplit-usr=false \
-    -Drootprefix=/usr \
-    -Dsysvinit-path=/etc/init.d \
-    -Ddefault-hierarchy=unified \
-    -Dpam=false \
-    -Dselinux=false \
-    -Dapparmor=false \
-    -Daudit=false \
-    -Dpolkit=false \
-    -Dacl=false \
-    -Dsmack=false \
-    -Dgcrypt=false \
-    -Dgnutls=false \
-    -Dopenssl=false \
-    -Dp11kit=false \
-    -Dlibfido2=false \
-    -Dtpm2=false \
-    -Dcurl=false \
-    -Didn=false \
-    -Dlibidn2=false \
-    -Dlibiptc=false \
-    -Dqrencode=false \
-    -Dmicrohttpd=false \
-    -Dglib=false \
-    -Ddbus=false \
-    -Dman=false \
-    -Dhtml=false \
-    -Dtests=false
-""",
-    configure_args = [],
-    make_args = ["-C", "build"],
-    post_install = """
-cd build
-DESTDIR=$OUT meson install
-# Create essential symlinks
-mkdir -p $OUT/sbin
-ln -sf ../usr/lib/systemd/systemd $OUT/sbin/init
-""",
-    deps = [
-        "//packages/core:util-linux",
-        "//packages/core:musl",
-    ],
-    build_deps = [],
-    visibility = ["PUBLIC"],
-)
-
-# -----------------------------------------------------------------------------
-# OpenRC - Dependency-based init system
-# -----------------------------------------------------------------------------
-
-download_source(
-    name = "openrc-src",
-    src_uri = "https://github.com/OpenRC/openrc/archive/refs/tags/0.54.2.tar.gz",
-    sha256 = "61f598c69ce04c0faa2dbde2f6df4c15ee97180b98de4c8f2c3b3ea1f7391d2f",
-)
-
-configure_make_package(
-    name = "openrc",
-    source = ":openrc-src",
-    version = "0.54.2",
-    description = "Dependency-based init system that works with sysvinit",
-    homepage = "https://github.com/OpenRC/openrc",
-    license = "BSD-2-Clause",
-    pre_configure = """
-# OpenRC uses meson build system
-mkdir -p build
-cd build
-meson setup .. \
-    --prefix=/usr \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    -Dbranding="Sideros Linux" \
-    -Dnewnet=false \
-    -Daudit=disabled \
-    -Dselinux=disabled \
-    -Dpam=false \
-    -Dtermcap=ncurses \
-    -Dbash-completions=false \
-    -Dzsh-completions=false
-""",
-    configure_args = [],
-    make_args = ["-C", "build"],
-    post_install = """
-cd build
-DESTDIR=$OUT meson install
-# Create rc directories
-mkdir -p $OUT/etc/runlevels/boot
-mkdir -p $OUT/etc/runlevels/default
-mkdir -p $OUT/etc/runlevels/nonetwork
-mkdir -p $OUT/etc/runlevels/shutdown
-mkdir -p $OUT/etc/runlevels/sysinit
-""",
-    deps = [
-        "//packages/core:musl",
-    ],
-    build_deps = [],
-    visibility = ["PUBLIC"],
-)
-
-# -----------------------------------------------------------------------------
-# elogind - Standalone logind from systemd
-# -----------------------------------------------------------------------------
-
-download_source(
-    name = "elogind-src",
-    src_uri = "https://github.com/elogind/elogind/archive/refs/tags/v255.5.tar.gz",
-    sha256 = "57ae4f38c5dc18f6015ea6a2ad5e10d7bf69e21d5fcc4d8f64af77c82c6c58c5",
-)
-
-configure_make_package(
-    name = "elogind",
-    source = ":elogind-src",
-    version = "255.5",
-    description = "Standalone logind extracted from systemd",
-    homepage = "https://github.com/elogind/elogind",
-    license = "LGPL-2.1-or-later",
-    pre_configure = """
-# elogind uses meson build system
-mkdir -p build
-cd build
-meson setup .. \
-    --prefix=/usr \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    -Drootprefix=/usr \
-    -Dcgroup-controller=elogind \
-    -Ddefault-hierarchy=unified \
-    -Dpam=false \
-    -Dselinux=false \
-    -Dacl=false \
-    -Dsmack=false \
-    -Dpolkit=false \
-    -Dman=false \
-    -Dhtml=false
-""",
-    configure_args = [],
-    make_args = ["-C", "build"],
-    post_install = """
-cd build
-DESTDIR=$OUT meson install
-""",
-    deps = [
-        "//packages/core:util-linux",
-        "//packages/core:musl",
-    ],
-    build_deps = [],
-    visibility = ["PUBLIC"],
-)
-
-# -----------------------------------------------------------------------------
-# s6 - Small and secure supervision software suite
-# -----------------------------------------------------------------------------
-
-download_source(
-    name = "skalibs-src",
-    src_uri = "https://skarnet.org/software/skalibs/skalibs-2.14.1.1.tar.gz",
-    sha256 = "ec80d5fbf9cb3a0ebecb48ef4b268adff5ab7e0d62e6b0f7f4b26fc8da7e6aca",
-)
-
-configure_make_package(
-    name = "skalibs",
-    source = ":skalibs-src",
-    version = "2.14.1.1",
-    description = "General-purpose libraries for skarnet.org software",
-    homepage = "https://skarnet.org/software/skalibs/",
-    license = "ISC",
-    configure_args = [
-        "--prefix=/usr",
-        "--libdir=/usr/lib",
-        "--enable-shared",
-        "--disable-static",
-    ],
-    deps = [
-        "//packages/core:musl",
-    ],
-    build_deps = [],
-    visibility = ["PUBLIC"],
-)
-
-download_source(
-    name = "execline-src",
-    src_uri = "https://skarnet.org/software/execline/execline-2.9.4.0.tar.gz",
-    sha256 = "573eb76d8e3c32915b23d49bde63c25e8f3c01ff6b4ad1a6fd456b1ea11a2195",
-)
-
-configure_make_package(
-    name = "execline",
-    source = ":execline-src",
-    version = "2.9.4.0",
-    description = "Non-interactive scripting language",
-    homepage = "https://skarnet.org/software/execline/",
-    license = "ISC",
-    configure_args = [
-        "--prefix=/usr",
-        "--libdir=/usr/lib",
-        "--enable-shared",
-        "--disable-static",
-        "--with-sysdeps=/usr/lib/skalibs/sysdeps",
-        "--with-include=/usr/include",
-        "--with-lib=/usr/lib",
-    ],
-    deps = [
-        ":skalibs",
-        "//packages/core:musl",
-    ],
-    build_deps = [],
-    visibility = ["PUBLIC"],
-)
-
-download_source(
-    name = "s6-src",
-    src_uri = "https://skarnet.org/software/s6/s6-2.12.0.3.tar.gz",
-    sha256 = "d66bcd79f4eb93e85f6c7c1fffa81d546350ed1b5a94c2bf2ba3e4139e39c135",
-)
-
-configure_make_package(
-    name = "s6",
-    source = ":s6-src",
-    version = "2.12.0.3",
-    description = "Small and secure supervision software suite",
-    homepage = "https://skarnet.org/software/s6/",
-    license = "ISC",
-    configure_args = [
-        "--prefix=/usr",
-        "--libexecdir=/usr/lib/s6",
-        "--libdir=/usr/lib",
-        "--enable-shared",
-        "--disable-static",
-        "--with-sysdeps=/usr/lib/skalibs/sysdeps",
-        "--with-include=/usr/include",
-        "--with-lib=/usr/lib",
-    ],
-    deps = [
-        ":skalibs",
-        ":execline",
-        "//packages/core:musl",
-    ],
-    build_deps = [],
-    visibility = ["PUBLIC"],
-)
-
-download_source(
-    name = "s6-linux-init-src",
-    src_uri = "https://skarnet.org/software/s6-linux-init/s6-linux-init-1.1.2.0.tar.gz",
-    sha256 = "c1e7e72f1e95f1a5b4de91fdbb4e41e00cf6adb40c623d9e14a6aafe4e5b0e10",
-)
-
-configure_make_package(
-    name = "s6-linux-init",
-    source = ":s6-linux-init-src",
-    version = "1.1.2.0",
-    description = "Set of tools to create a s6-based init system",
-    homepage = "https://skarnet.org/software/s6-linux-init/",
-    license = "ISC",
-    configure_args = [
-        "--prefix=/usr",
-        "--libexecdir=/usr/lib/s6-linux-init",
-        "--skeldir=/etc/s6-linux-init/skel",
-        "--enable-shared",
-        "--disable-static",
-        "--with-sysdeps=/usr/lib/skalibs/sysdeps",
-        "--with-include=/usr/include",
-        "--with-lib=/usr/lib",
-    ],
-    deps = [
-        ":skalibs",
-        ":execline",
-        ":s6",
-        "//packages/core:musl",
-    ],
-    build_deps = [],
-    visibility = ["PUBLIC"],
-)
-
-download_source(
-    name = "s6-rc-src",
-    src_uri = "https://skarnet.org/software/s6-rc/s6-rc-0.5.4.2.tar.gz",
-    sha256 = "ac46dbd8c04c49e37a8bea3ec2fbc06ce0e7a6e09018dedfc1a8d0d5b7d1aa5d",
-)
-
-configure_make_package(
-    name = "s6-rc",
-    source = ":s6-rc-src",
-    version = "0.5.4.2",
-    description = "Service manager for s6-based systems",
-    homepage = "https://skarnet.org/software/s6-rc/",
-    license = "ISC",
-    configure_args = [
-        "--prefix=/usr",
-        "--libexecdir=/usr/lib/s6-rc",
-        "--livedir=/run/s6-rc",
-        "--enable-shared",
-        "--disable-static",
-        "--with-sysdeps=/usr/lib/skalibs/sysdeps",
-        "--with-include=/usr/include",
-        "--with-lib=/usr/lib",
-    ],
-    deps = [
-        ":skalibs",
-        ":execline",
-        ":s6",
-        "//packages/core:musl",
-    ],
-    build_deps = [],
-    visibility = ["PUBLIC"],
-)
-
-# -----------------------------------------------------------------------------
-# runit - UNIX init scheme with service supervision
-# -----------------------------------------------------------------------------
-
-download_source(
-    name = "runit-src",
-    src_uri = "http://smarden.org/runit/runit-2.1.2.tar.gz",
-    sha256 = "6fd0160cb0cf1207de4e66754b6d39750cff14bb0aa66ab49490992c0c47ba18",
-)
-
-configure_make_package(
-    name = "runit",
-    source = ":runit-src",
-    version = "2.1.2",
-    description = "UNIX init scheme with service supervision",
-    homepage = "http://smarden.org/runit/",
-    license = "BSD-3-Clause",
-    pre_configure = """
-# runit has a non-standard build process
-cd admin/runit-2.1.2
-# Patch package/compile to use system compiler
-echo 'gcc -O2 -Wall' > src/conf-cc
-echo 'gcc -s' > src/conf-ld
-""",
-    configure_args = [],
-    make_args = ["-C", "admin/runit-2.1.2"],
-    post_install = """
-cd admin/runit-2.1.2
-mkdir -p $OUT/usr/bin
-mkdir -p $OUT/usr/sbin
-mkdir -p $OUT/etc/runit
-mkdir -p $OUT/etc/sv
-
-# Install binaries
-for bin in chpst runit runit-init runsv runsvchdir runsvdir sv svlogd utmpset; do
-    if [ -f "src/$bin" ]; then
-        cp "src/$bin" $OUT/usr/bin/
-    fi
-done
-
-# Create init symlink
-ln -sf ../usr/bin/runit-init $OUT/sbin/init || true
-""",
-    deps = [
-        "//packages/core:musl",
-    ],
-    build_deps = [],
-    visibility = ["PUBLIC"],
-)
-
-# -----------------------------------------------------------------------------
-# dinit - Service manager and init system
-# -----------------------------------------------------------------------------
-
-download_source(
-    name = "dinit-src",
-    src_uri = "https://github.com/davmac314/dinit/releases/download/v0.18.0/dinit-0.18.0.tar.xz",
-    sha256 = "6fdb1ae1f3e77aff83eb25d10c1e00a5d18ce7f3f5f28f1c8bb9ba5b1edbe80e",
-)
-
-configure_make_package(
-    name = "dinit",
-    source = ":dinit-src",
-    version = "0.18.0",
-    description = "Service manager and init system with dependency support",
-    homepage = "https://davmac.org/projects/dinit/",
-    license = "Apache-2.0",
-    pre_configure = """
-# dinit uses meson build system
-mkdir -p build
-cd build
-meson setup .. \
-    --prefix=/usr \
-    --sbindir=/usr/sbin \
-    -Ddinit-control-socket-path=/run/dinitctl \
-    -Dshutdown-prefix="" \
-    -Dbuild-tests=false
-""",
-    configure_args = [],
-    make_args = ["-C", "build"],
-    post_install = """
-cd build
-DESTDIR=$OUT meson install
-# Create init symlink
-mkdir -p $OUT/sbin
-ln -sf ../usr/sbin/dinit $OUT/sbin/init
-""",
-    deps = [
-        "//packages/core:musl",
-    ],
-    build_deps = [],
-    visibility = ["PUBLIC"],
-)
-
-# -----------------------------------------------------------------------------
-# sysvinit - Classic System V init
-# -----------------------------------------------------------------------------
-
-download_source(
-    name = "sysvinit-src",
-    src_uri = "https://github.com/slicer69/sysvinit/releases/download/3.08/sysvinit-3.08.tar.xz",
-    sha256 = "1b47c3f8e70f4a9a3a3b2e7a889ad3b8c29a9fdbe82b7ac7b2e5ed0ff6c1f6c9",
-)
-
-configure_make_package(
-    name = "sysvinit",
-    source = ":sysvinit-src",
-    version = "3.08",
-    description = "Classic System V style init programs",
-    homepage = "https://github.com/slicer69/sysvinit",
-    license = "GPL-2.0-or-later",
-    pre_configure = """
-# sysvinit uses plain Makefile
-true
-""",
-    configure_args = [],
-    make_args = [
-        "CFLAGS=-O2",
-        "ROOT=$OUT",
-        "INSTALL=install",
-    ],
-    post_install = """
-make ROOT=$OUT install
-""",
-    deps = [
-        "//packages/core:musl",
-    ],
-    build_deps = [],
-    visibility = ["PUBLIC"],
-)
+# This file contains filegroups for system initialization (init) systems.
+# Individual package definitions are in their respective subdirectories.
 
 # =============================================================================
 # Package Groups
@@ -478,7 +11,7 @@ make ROOT=$OUT install
 filegroup(
     name = "systemd-stack",
     srcs = [
-        ":systemd",
+        "//packages/sys-init/systemd:systemd",
     ],
     visibility = ["PUBLIC"],
 )
@@ -486,8 +19,8 @@ filegroup(
 filegroup(
     name = "openrc-stack",
     srcs = [
-        ":openrc",
-        ":elogind",
+        "//packages/sys-init/openrc:openrc",
+        "//packages/sys-init/elogind:elogind",
     ],
     visibility = ["PUBLIC"],
 )
@@ -495,11 +28,11 @@ filegroup(
 filegroup(
     name = "s6-stack",
     srcs = [
-        ":skalibs",
-        ":execline",
-        ":s6",
-        ":s6-linux-init",
-        ":s6-rc",
+        "//packages/sys-init/skalibs:skalibs",
+        "//packages/sys-init/execline:execline",
+        "//packages/sys-init/s6:s6",
+        "//packages/sys-init/s6-linux-init:s6-linux-init",
+        "//packages/sys-init/s6-rc:s6-rc",
     ],
     visibility = ["PUBLIC"],
 )
@@ -507,9 +40,9 @@ filegroup(
 filegroup(
     name = "lightweight-inits",
     srcs = [
-        ":openrc",
-        ":runit",
-        ":dinit",
+        "//packages/sys-init/openrc:openrc",
+        "//packages/sys-init/runit:runit",
+        "//packages/sys-init/dinit:dinit",
     ],
     visibility = ["PUBLIC"],
 )
@@ -517,17 +50,17 @@ filegroup(
 filegroup(
     name = "all-inits",
     srcs = [
-        ":systemd",
-        ":openrc",
-        ":elogind",
-        ":skalibs",
-        ":execline",
-        ":s6",
-        ":s6-linux-init",
-        ":s6-rc",
-        ":runit",
-        ":dinit",
-        ":sysvinit",
+        "//packages/sys-init/systemd:systemd",
+        "//packages/sys-init/openrc:openrc",
+        "//packages/sys-init/elogind:elogind",
+        "//packages/sys-init/skalibs:skalibs",
+        "//packages/sys-init/execline:execline",
+        "//packages/sys-init/s6:s6",
+        "//packages/sys-init/s6-linux-init:s6-linux-init",
+        "//packages/sys-init/s6-rc:s6-rc",
+        "//packages/sys-init/runit:runit",
+        "//packages/sys-init/dinit:dinit",
+        "//packages/sys-init/sysvinit:sysvinit",
     ],
     visibility = ["PUBLIC"],
 )

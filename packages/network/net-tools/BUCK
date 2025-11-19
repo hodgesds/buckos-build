@@ -1,0 +1,30 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# net-tools - Traditional network utilities (ifconfig, netstat, route)
+# =============================================================================
+
+download_source(
+    name = "net-tools-src",
+    src_uri = "https://sourceforge.net/projects/net-tools/files/net-tools-2.10.tar.xz/download",
+    sha256 = "b262435a5241e89f9f2edf7221e0be939a34a9ad3f5723b4e467f56c3f1b0c94",
+)
+
+configure_make_package(
+    name = "net-tools",
+    source = ":net-tools-src",
+    version = "2.10",
+    description = "Traditional network utilities (ifconfig, netstat, route)",
+    homepage = "https://sourceforge.net/projects/net-tools/",
+    license = "GPL-2.0",
+    pre_configure = """
+# net-tools uses a custom config system
+yes "" | make config
+""",
+    configure_args = [],
+    post_install = """
+make DESTDIR="$DESTDIR" install
+""",
+    deps = ["//packages/core:musl"],
+    visibility = ["PUBLIC"],
+)

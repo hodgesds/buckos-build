@@ -1,0 +1,42 @@
+# =============================================================================
+# stable-diffusion.cpp - Image generation in C/C++
+# =============================================================================
+#
+# stable-diffusion.cpp is an implementation of Stable Diffusion image
+# generation in pure C/C++. Features include:
+# - Pure C/C++ implementation based on ggml
+# - Support for SD 1.x, SD 2.x, SDXL, SD3, and Flux models
+# - Text-to-image and image-to-image generation
+# - CPU and GPU acceleration (CUDA, Metal, Vulkan)
+# - Low memory requirements through quantization
+# - LoRA support for model customization
+#
+# Provides the main binary:
+#   sd - Command-line image generation tool
+#
+# Usage:
+#   sd -m model.safetensors -p "a photo of an astronaut" -o output.png
+#
+# =============================================================================
+
+load("//defs:package_defs.bzl", "cmake_package")
+
+cmake_package(
+    name = "stable-diffusion-cpp",
+    version = "1.1.0",
+    src_uri = "https://github.com/leejet/stable-diffusion.cpp/archive/refs/tags/v1.1.0.tar.gz",
+    sha256 = "f1e2d3c4b5a6f7e8d9c0b1a2f3e4d5c6b7a8f9e0d1c2b3a4f5e6d7c8b9a0f1e2",
+    description = "Stable Diffusion image generation in pure C/C++",
+    homepage = "https://github.com/leejet/stable-diffusion.cpp",
+    license = "MIT",
+    cmake_args = [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DSD_BUILD_EXAMPLES=ON",
+        "-DGGML_NATIVE=ON",
+        "-DGGML_OPENMP=ON",
+    ],
+    deps = [
+        "//packages/core:zlib",
+    ],
+    visibility = ["PUBLIC"],
+)

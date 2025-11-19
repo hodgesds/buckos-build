@@ -1,0 +1,171 @@
+# =============================================================================
+# Linux Firmware - Firmware files for Linux kernel drivers
+# =============================================================================
+#
+# This package provides firmware files required by various Linux kernel drivers
+# for hardware such as WiFi adapters, Bluetooth controllers, GPUs, and more.
+#
+# The linux-firmware repository aggregates firmware from various vendors that
+# are redistributable under their respective licenses.
+#
+# =============================================================================
+
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "linux-firmware-src",
+    src_uri = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-20241017.tar.gz",
+    sha256 = "c5f7d5a35e3e9b5a8b1c3d7f2a4e6b8c0d2f4a6e8b0c2d4f6a8e0b2c4d6f8a0b",
+)
+
+binary_package(
+    name = "linux-firmware",
+    source = ":linux-firmware-src",
+    version = "20241017",
+    description = "Firmware files for Linux kernel drivers",
+    homepage = "https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git",
+    license = "GPL-2.0 AND BSD-3-Clause AND MIT AND proprietary",
+    install_script = """
+# Extract firmware archive
+cd "$SRCS"
+tar xf linux-firmware-*.tar.gz
+
+# Create firmware directories
+mkdir -p "$DESTDIR/lib/firmware"
+mkdir -p "$DESTDIR/usr/share/doc/linux-firmware"
+
+# Navigate to extracted directory
+cd linux-firmware-*
+
+# Install all firmware files preserving directory structure
+# This includes firmware for: WiFi, Bluetooth, GPUs, Audio, Network, etc.
+
+# AMD GPU firmware (AMDGPU and Radeon)
+if [ -d "amdgpu" ]; then
+    cp -r amdgpu "$DESTDIR/lib/firmware/"
+fi
+if [ -d "radeon" ]; then
+    cp -r radeon "$DESTDIR/lib/firmware/"
+fi
+
+# Intel firmware (WiFi, Bluetooth, GPU, Sound)
+if [ -d "intel" ]; then
+    cp -r intel "$DESTDIR/lib/firmware/"
+fi
+for iwl in iwlwifi-*.ucode; do
+    [ -f "$iwl" ] && cp "$iwl" "$DESTDIR/lib/firmware/"
+done
+
+# NVIDIA firmware
+if [ -d "nvidia" ]; then
+    cp -r nvidia "$DESTDIR/lib/firmware/"
+fi
+
+# Realtek firmware (WiFi, Ethernet, Bluetooth)
+if [ -d "rtl_nic" ]; then
+    cp -r rtl_nic "$DESTDIR/lib/firmware/"
+fi
+if [ -d "rtl_bt" ]; then
+    cp -r rtl_bt "$DESTDIR/lib/firmware/"
+fi
+if [ -d "rtlwifi" ]; then
+    cp -r rtlwifi "$DESTDIR/lib/firmware/"
+fi
+if [ -d "rtw88" ]; then
+    cp -r rtw88 "$DESTDIR/lib/firmware/"
+fi
+if [ -d "rtw89" ]; then
+    cp -r rtw89 "$DESTDIR/lib/firmware/"
+fi
+
+# Broadcom firmware (WiFi, Bluetooth)
+if [ -d "brcm" ]; then
+    cp -r brcm "$DESTDIR/lib/firmware/"
+fi
+
+# Atheros/Qualcomm firmware
+if [ -d "ath10k" ]; then
+    cp -r ath10k "$DESTDIR/lib/firmware/"
+fi
+if [ -d "ath11k" ]; then
+    cp -r ath11k "$DESTDIR/lib/firmware/"
+fi
+if [ -d "ath12k" ]; then
+    cp -r ath12k "$DESTDIR/lib/firmware/"
+fi
+if [ -d "qca" ]; then
+    cp -r qca "$DESTDIR/lib/firmware/"
+fi
+
+# MediaTek firmware
+if [ -d "mediatek" ]; then
+    cp -r mediatek "$DESTDIR/lib/firmware/"
+fi
+
+# Marvell firmware
+if [ -d "mrvl" ]; then
+    cp -r mrvl "$DESTDIR/lib/firmware/"
+fi
+
+# Mellanox firmware
+if [ -d "mellanox" ]; then
+    cp -r mellanox "$DESTDIR/lib/firmware/"
+fi
+
+# TI firmware
+if [ -d "ti" ]; then
+    cp -r ti "$DESTDIR/lib/firmware/"
+fi
+if [ -d "ti-connectivity" ]; then
+    cp -r ti-connectivity "$DESTDIR/lib/firmware/"
+fi
+
+# Cypress firmware (WiFi/Bluetooth)
+if [ -d "cypress" ]; then
+    cp -r cypress "$DESTDIR/lib/firmware/"
+fi
+
+# i915 (Intel Graphics)
+if [ -d "i915" ]; then
+    cp -r i915 "$DESTDIR/lib/firmware/"
+fi
+
+# Netronome firmware (SmartNICs)
+if [ -d "netronome" ]; then
+    cp -r netronome "$DESTDIR/lib/firmware/"
+fi
+
+# QLogic firmware
+if [ -d "qlogic" ]; then
+    cp -r qlogic "$DESTDIR/lib/firmware/"
+fi
+if [ -d "qed" ]; then
+    cp -r qed "$DESTDIR/lib/firmware/"
+fi
+
+# AMD Audio (ACP)
+if [ -d "amd" ]; then
+    cp -r amd "$DESTDIR/lib/firmware/"
+fi
+
+# Cirrus Logic audio firmware
+if [ -d "cirrus" ]; then
+    cp -r cirrus "$DESTDIR/lib/firmware/"
+fi
+
+# Copy WHENCE and license documentation
+if [ -f "WHENCE" ]; then
+    cp WHENCE "$DESTDIR/usr/share/doc/linux-firmware/"
+fi
+if [ -f "LICENCE.iwlwifi_firmware" ]; then
+    cp LICENCE.* "$DESTDIR/usr/share/doc/linux-firmware/" 2>/dev/null || true
+fi
+if [ -f "LICENSE.amdgpu" ]; then
+    cp LICENSE.* "$DESTDIR/usr/share/doc/linux-firmware/" 2>/dev/null || true
+fi
+
+# Create symlink for compatibility
+ln -sf /lib/firmware "$DESTDIR/usr/lib/firmware" 2>/dev/null || true
+""",
+    visibility = ["PUBLIC"],
+)

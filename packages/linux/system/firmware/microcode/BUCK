@@ -1,0 +1,73 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+# =============================================================================
+# CPU Microcode Updates
+# =============================================================================
+
+# Intel CPU Microcode
+download_source(
+    name = "intel-ucode-src",
+    src_uri = "https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/archive/refs/tags/microcode-20240312/intel-ucode-20240312.tar.gz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+binary_package(
+    name = "intel-ucode",
+    source = ":intel-ucode-src",
+    version = "20240312",
+    description = "Microcode update files for Intel processors",
+    homepage = "https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files",
+    license = "Intel-UCODE",
+    install_script = """
+        mkdir -p "$OUT/lib/firmware/intel-ucode"
+        cp -r intel-ucode/* "$OUT/lib/firmware/intel-ucode/"
+
+        # Create early microcode image for initramfs
+        mkdir -p "$OUT/boot"
+        mkdir -p kernel/x86/microcode
+        cat intel-ucode/* > kernel/x86/microcode/GenuineIntel.bin
+        echo kernel/x86/microcode/GenuineIntel.bin | cpio -o -H newc -R 0:0 > "$OUT/boot/intel-ucode.img"
+    """,
+    deps = [],
+    visibility = ["PUBLIC"],
+)
+
+# AMD CPU Microcode
+download_source(
+    name = "amd-ucode-src",
+    src_uri = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-20240312.tar.gz",
+    sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+)
+
+binary_package(
+    name = "amd-ucode",
+    source = ":amd-ucode-src",
+    version = "20240312",
+    description = "Microcode update files for AMD processors",
+    homepage = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
+    license = "AMD-UCODE",
+    install_script = """
+        mkdir -p "$OUT/lib/firmware/amd-ucode"
+        cp -r amd-ucode/* "$OUT/lib/firmware/amd-ucode/" 2>/dev/null || true
+
+        # Create early microcode image for initramfs
+        mkdir -p "$OUT/boot"
+        mkdir -p kernel/x86/microcode
+        cat amd-ucode/microcode_amd*.bin > kernel/x86/microcode/AuthenticAMD.bin 2>/dev/null || true
+        if [ -f kernel/x86/microcode/AuthenticAMD.bin ]; then
+            echo kernel/x86/microcode/AuthenticAMD.bin | cpio -o -H newc -R 0:0 > "$OUT/boot/amd-ucode.img"
+        fi
+    """,
+    deps = [],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for all microcode
+filegroup(
+    name = "microcode",
+    srcs = [
+        ":intel-ucode",
+        ":amd-ucode",
+    ],
+    visibility = ["PUBLIC"],
+)

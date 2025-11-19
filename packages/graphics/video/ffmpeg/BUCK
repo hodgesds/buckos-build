@@ -1,0 +1,78 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# FFmpeg - Complete, cross-platform solution for recording, converting and streaming audio and video
+
+download_source(
+    name = "ffmpeg-src",
+    src_uri = "https://ffmpeg.org/releases/ffmpeg-7.0.tar.xz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+configure_make_package(
+    name = "ffmpeg",
+    source = ":ffmpeg-src",
+    version = "7.0",
+    description = "Complete solution for recording, converting and streaming audio and video",
+    homepage = "https://ffmpeg.org/",
+    license = "LGPL-2.1-or-later GPL-2.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-gpl",
+        "--enable-version3",
+        "--enable-nonfree",
+        "--enable-shared",
+        "--disable-static",
+        "--enable-pthreads",
+        "--enable-libass",
+        "--enable-libfdk-aac",
+        "--enable-libfreetype",
+        "--enable-libmp3lame",
+        "--enable-libopus",
+        "--enable-libtheora",
+        "--enable-libvorbis",
+        "--enable-libvpx",
+        "--enable-libx264",
+        "--enable-libx265",
+        "--enable-libwebp",
+        "--enable-libxvid",
+        "--enable-libdav1d",
+        "--enable-libaom",
+        "--enable-libsoxr",
+        "--enable-libspeex",
+        "--enable-libvidstab",
+        "--enable-libzimg",
+        "--enable-openssl",
+        "--enable-vaapi",
+        "--enable-vdpau",
+        "--enable-vulkan",
+        "--enable-libdrm",
+        "--enable-libv4l2",
+        "--enable-opencl",
+        "--enable-opengl",
+        "--enable-sdl2",
+    ],
+    make_args = [],
+    post_install = """
+DESTDIR=$OUT make install
+""",
+    deps = [
+        "//packages/graphics/video/x264:x264",
+        "//packages/graphics/video/x265:x265",
+        "//packages/graphics/video/libvpx:libvpx",
+        "//packages/graphics/video/dav1d:dav1d",
+        "//packages/graphics/video/aom:aom",
+        "//packages/graphics/video/libva:libva",
+        "//packages/graphics/video/vdpau:vdpau",
+        "//packages/audio/libraries/opus:opus",
+        "//packages/audio/libraries/libvorbis:libvorbis",
+        "//packages/audio/libraries/lame:lame",
+        "//packages/audio/libraries/libsndfile:libsndfile",
+        "//packages/core/zlib:zlib",
+        "//packages/core/openssl:openssl",
+    ],
+    build_deps = [
+        "//packages/core/pkg-config:pkg-config",
+        "//packages/lang/nasm:nasm",
+    ],
+    visibility = ["PUBLIC"],
+)

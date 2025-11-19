@@ -1,0 +1,33 @@
+load("//defs:package_defs.bzl", "download_source", "meson_package")
+
+# GPU Screen Recorder - Shadow Play-like screen recorder for Linux
+
+download_source(
+    name = "gpu-screen-recorder-src",
+    src_uri = "https://git.dec05eba.com/gpu-screen-recorder/snapshot/gpu-screen-recorder-master.tar.gz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+meson_package(
+    name = "gpu-screen-recorder",
+    source = ":gpu-screen-recorder-src",
+    version = "3.0",
+    description = "Shadow Play-like screen recorder for Linux with hardware encoding",
+    homepage = "https://git.dec05eba.com/gpu-screen-recorder/about/",
+    license = "GPL-3.0-or-later",
+    meson_args = [
+        "-Dsystemd=false",
+        "-Dcapabilities=false",
+    ],
+    deps = [
+        "//packages/graphics/video/ffmpeg:ffmpeg",
+        "//packages/graphics/video/libva:libva",
+        "//packages/audio/daemons/pulseaudio:pulseaudio",
+        "//packages/audio/daemons/pipewire:pipewire",
+        "//packages/core/libdrm:libdrm",
+    ],
+    build_deps = [
+        "//packages/core/pkg-config:pkg-config",
+    ],
+    visibility = ["PUBLIC"],
+)

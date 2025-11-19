@@ -48,6 +48,13 @@ alias(
     visibility = ["PUBLIC"],
 )
 
+# Benchmarking tools
+alias(
+    name = "benchmarks",
+    actual = "//packages/benchmarks:all-benchmarks",
+    visibility = ["PUBLIC"],
+)
+
 # =============================================================================
 # Package groups for convenience
 # =============================================================================
@@ -116,6 +123,15 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
+filegroup(
+    name = "benchmark-packages",
+    srcs = [
+        "//packages/benchmarks:stress-ng",
+        "//packages/benchmarks:fio",
+        "//packages/benchmarks:sysbench",
+        "//packages/benchmarks:iperf3",
+        "//packages/benchmarks:hackbench",
+        "//packages/benchmarks:memtester",
 # Terminal/shell libraries
 filegroup(
     name = "shell-libs",

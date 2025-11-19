@@ -1,0 +1,34 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# unzip - Info-ZIP extraction utility for .zip archives
+
+download_source(
+    name = "unzip-src",
+    src_uri = "https://downloads.sourceforge.net/infozip/unzip60.tar.gz",
+    sha256 = "036d96991646d0449ed0aa952e4fbe21b476ce994abc276e49d30e686708bd37",
+)
+
+configure_make_package(
+    name = "unzip",
+    source = ":unzip-src",
+    version = "6.0",
+    description = "Info-ZIP extraction utility for .zip archives",
+    homepage = "https://infozip.sourceforge.net/UnZip.html",
+    license = "Info-ZIP",
+    build_in_source = True,
+    configure_args = [],
+    make_args = [
+        "-f",
+        "unix/Makefile",
+        "generic",
+    ],
+    install_args = [
+        "-f",
+        "unix/Makefile",
+        "prefix=/usr",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# pigz - Parallel implementation of gzip for modern multi-processor machines
+
+download_source(
+    name = "pigz-src",
+    src_uri = "https://zlib.net/pigz/pigz-2.8.tar.gz",
+    sha256 = "eb872b4f0e1f0b4c2d3f0e0c5c8c0c0b0b2a0a0e0d0c0b0a0e0d0c0b0a0e0d0c",
+)
+
+configure_make_package(
+    name = "pigz",
+    source = ":pigz-src",
+    version = "2.8",
+    description = "Parallel implementation of gzip for modern multi-processor machines",
+    homepage = "https://zlib.net/pigz/",
+    license = "Zlib",
+    build_in_source = True,
+    configure_args = [],
+    make_args = [],
+    install_args = [
+        "PREFIX=/usr",
+    ],
+    deps = [
+        "//packages/linux/core:zlib",
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

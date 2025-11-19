@@ -35,7 +35,7 @@ Agents should:
 | `haveged` | sys-apps | system/apps/haveged | Already added |
 | `pciutils` | sys-apps | system/hardware/pciutils | Already exists - verify |
 | `usbutils` | sys-apps | system/hardware/usbutils | Already exists - verify |
-| `systemd-utils` | sys-apps | system/apps/systemd-utils | Standalone systemd tools |
+| `systemd-utils` | sys-apps | system/apps/systemd-utils | Already added |
 | `iproute2` | sys-apps | network/iproute2 | Already exists - verify |
 | `openrc` | sys-apps | system/init/openrc | Already exists - verify |
 | `file` | sys-apps | core/file | Already exists - verify |
@@ -91,8 +91,8 @@ Agents should:
 | `slang` | sys-libs | system/libs/slang | Already added |
 | `talloc` | sys-libs | system/libs/talloc | Already added |
 | `tdb` | sys-libs | system/libs/tdb | Already added |
-| `tevent` | sys-libs | system/libs/tevent | Event system |
-| `ldb` | sys-libs | system/libs/ldb | LDAP-like database |
+| `tevent` | sys-libs | system/libs/tevent | Already added |
+| `ldb` | sys-libs | system/libs/ldb | Already added |
 | `efivar` | sys-libs | system/libs/efivar | Already added |
 | `mtdev` | sys-libs | system/libs/input/mtdev | Already exists |
 
@@ -131,7 +131,7 @@ Agents should:
 | `cabextract` | app-arch | system/libs/compression/cabextract | CAB extractor |
 | `arj` | app-arch | system/libs/compression/arj | ARJ archiver |
 | `pbzip2` | app-arch | system/libs/compression/pbzip2 | Already added |
-| `pixz` | app-arch | system/libs/compression/pixz | Parallel xz |
+| `pixz` | app-arch | system/libs/compression/pixz | Already added |
 
 ---
 
@@ -162,7 +162,7 @@ Agents should:
 |---------|----------------|-------------|-------|
 | `nagios` | net-analyzer | network/monitoring/nagios | Monitoring system |
 | `zabbix` | net-analyzer | network/monitoring/zabbix | Monitoring |
-| `netdata` | net-analyzer | network/monitoring/netdata | Real-time monitoring |
+| `netdata` | net-analyzer | network/monitoring/netdata | Already added |
 | `snort` | net-analyzer | network/security/snort | IDS |
 | `suricata` | net-analyzer | network/security/suricata | IDS/IPS |
 | `hydra` | net-analyzer | network/security/hydra | Login cracker |
@@ -201,18 +201,18 @@ Agents should:
 |---------|----------------|-------------|-------|
 | `gperf` | dev-util | dev-tools/dev-utils/gperf | Already added |
 | `gengetopt` | dev-util | dev-tools/dev-utils/gengetopt | Already added |
-| `intltool` | dev-util | dev-tools/dev-utils/intltool | i18n tools |
-| `itstool` | dev-util | dev-tools/dev-utils/itstool | XML translation |
+| `intltool` | dev-util | dev-tools/dev-utils/intltool | Already added |
+| `itstool` | dev-util | dev-tools/dev-utils/itstool | Already added |
 | `gtk-doc` | dev-util | dev-tools/dev-utils/gtk-doc | GTK documentation |
 | `pkgconf` | dev-util | dev-tools/build-systems/pkgconf | Already added |
 | `meld` | dev-util | dev-tools/dev-utils/meld | Already exists |
 | `kdevelop` | dev-util | dev-tools/ide/kdevelop | KDE IDE |
 | `geany` | dev-util | dev-tools/ide/geany | Lightweight IDE |
-| `kcov` | dev-util | dev-tools/dev-utils/kcov | Code coverage |
-| `coccinelle` | dev-util | dev-tools/dev-utils/coccinelle | Semantic patching |
+| `kcov` | dev-util | dev-tools/dev-utils/kcov | Already added |
+| `coccinelle` | dev-util | dev-tools/dev-utils/coccinelle | Already added |
 | `cloc` | dev-util | dev-tools/dev-utils/cloc | Already added |
 | `github-cli` | dev-util | dev-tools/vcs/github-cli | GitHub CLI |
-| `heaptrack` | dev-util | dev-tools/profilers/heaptrack | Heap profiler |
+| `heaptrack` | dev-util | dev-tools/profilers/heaptrack | Already added |
 
 ---
 
@@ -231,7 +231,7 @@ Agents should:
 | `sysstat` | app-admin | system/apps/sysstat | Already added |
 | `sysklogd` | app-admin | system/apps/sysklogd | Already added |
 | `rsyslog` | app-admin | system/apps/rsyslog | Already exists |
-| `conky` | app-admin | desktop/conky | System monitor widget |
+| `conky` | app-admin | desktop/conky | Already added |
 | `htop` | app-admin | system/apps/htop | Already exists |
 
 ### MEDIUM Priority - Need to Add
@@ -294,9 +294,9 @@ Agents should:
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
 | `groff` | app-text | system/docs/groff | Already exists |
-| `ghostscript` | app-text | editors/ghostscript | PostScript interpreter |
+| `ghostscript` | app-text | editors/ghostscript | Already added |
 | `poppler` | app-text | editors/poppler | PDF library |
-| `mupdf` | app-text | editors/mupdf | PDF viewer |
+| `mupdf` | app-text | editors/mupdf | Already added |
 | `zathura` | app-text | editors/zathura | Document viewer |
 | `evince` | app-text | editors/evince | GNOME doc viewer |
 | `okular` | app-text | editors/okular | KDE doc viewer |
@@ -331,7 +331,7 @@ Agents should:
 |---------|----------------|-------------|-------|
 | `sqlite` | dev-db | system/libs/database/sqlite | Already exists |
 | `postgresql` | dev-db | databases/postgresql | Already added |
-| `mariadb` | dev-db | databases/mariadb | MySQL fork |
+| `mariadb` | dev-db | databases/mariadb | Already added |
 | `redis` | dev-db | databases/redis | Already added |
 | `mongodb` | dev-db | databases/mongodb | Document store |
 | `memcached` | dev-db | databases/memcached | Already added |
@@ -344,7 +344,7 @@ Agents should:
 | `influxdb` | dev-db | databases/influxdb | Time series |
 | `couchdb` | dev-db | databases/couchdb | Document store |
 | `neo4j` | dev-db | databases/neo4j | Graph database |
-| `etcd` | dev-db | databases/etcd | Key-value store |
+| `etcd` | dev-db | databases/etcd | Already added |
 
 ---
 

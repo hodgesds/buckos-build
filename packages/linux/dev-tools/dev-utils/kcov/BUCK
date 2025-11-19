@@ -1,0 +1,28 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# kcov - Code coverage tool for compiled languages
+download_source(
+    name = "kcov-src",
+    src_uri = "https://github.com/SimonKagworthy/kcov/archive/v42/kcov-42.tar.gz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "kcov",
+    source = ":kcov-src",
+    version = "42",
+    description = "Code coverage tool for compiled languages",
+    homepage = "https://github.com/SimonKagworthy/kcov",
+    license = "GPL-2.0",
+    configure_args = [
+        "-DCMAKE_INSTALL_PREFIX=/usr",
+        "-DCMAKE_BUILD_TYPE=Release",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:zlib",
+        "//packages/linux/network/curl:curl",
+        "//packages/linux/dev-libs/elfutils:elfutils",
+    ],
+    visibility = ["PUBLIC"],
+)

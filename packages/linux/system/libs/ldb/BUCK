@@ -1,0 +1,30 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# ldb - LDAP-like embedded database
+download_source(
+    name = "ldb-src",
+    src_uri = "https://www.samba.org/ftp/ldb/ldb-2.9.1.tar.gz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "ldb",
+    source = ":ldb-src",
+    version = "2.9.1",
+    description = "LDAP-like embedded database library",
+    homepage = "https://ldb.samba.org/",
+    license = "LGPL-3.0+",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-python",
+        "--bundled-libraries=NONE",
+        "--with-modulesdir=/usr/lib/ldb/modules",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/system/libs/talloc:talloc",
+        "//packages/linux/system/libs/tdb:tdb",
+        "//packages/linux/system/libs/tevent:tevent",
+    ],
+    visibility = ["PUBLIC"],
+)

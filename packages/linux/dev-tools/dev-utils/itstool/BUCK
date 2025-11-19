@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# itstool - XML translation tool
+download_source(
+    name = "itstool-src",
+    src_uri = "https://files.itstool.org/itstool/itstool-2.0.7.tar.bz2",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "itstool",
+    source = ":itstool-src",
+    version = "2.0.7",
+    description = "XML translation tool using ITS rules",
+    homepage = "http://itstool.org/",
+    license = "GPL-3.0+",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/lang/python:python3",
+        "//packages/linux/dev-libs/libxml2:libxml2",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# coccinelle - Semantic patching tool for C
+download_source(
+    name = "coccinelle-src",
+    src_uri = "https://coccinelle.gitlabpages.inria.fr/website/distrib/coccinelle-1.1.1.tar.gz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "coccinelle",
+    source = ":coccinelle-src",
+    version = "1.1.1",
+    description = "Semantic patching tool for C code",
+    homepage = "https://coccinelle.lip6.fr/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-python",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/lang/ocaml:ocaml",
+    ],
+    visibility = ["PUBLIC"],
+)

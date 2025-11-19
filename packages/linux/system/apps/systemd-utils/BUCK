@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# systemd-utils - Standalone systemd utility tools
+download_source(
+    name = "systemd-utils-src",
+    src_uri = "https://github.com/systemd/systemd/archive/v256/systemd-256.tar.gz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "systemd-utils",
+    source = ":systemd-utils-src",
+    version = "256",
+    description = "Standalone systemd utility tools (systemd-tmpfiles, systemd-sysusers, etc.)",
+    homepage = "https://systemd.io/",
+    license = "LGPL-2.1+",
+    configure_args = [
+        "--prefix=/usr",
+        "-Dmode=release",
+        "-Dstandalone-binaries=true",
+        "-Dsysvinit-path=",
+        "-Ddefault-dnssec=no",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/system/libs/ipc/libcap:libcap",
+    ],
+    visibility = ["PUBLIC"],
+)

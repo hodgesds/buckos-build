@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# intltool - Internationalization tools
+download_source(
+    name = "intltool-src",
+    src_uri = "https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "intltool",
+    source = ":intltool-src",
+    version = "0.51.0",
+    description = "Tools for extracting translatable strings from source files",
+    homepage = "https://launchpad.net/intltool",
+    license = "GPL-2.0+",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/lang/perl:perl",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,25 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# etcd - Distributed key-value store
+download_source(
+    name = "etcd-src",
+    src_uri = "https://github.com/etcd-io/etcd/archive/v3.5.14/etcd-3.5.14.tar.gz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "etcd",
+    source = ":etcd-src",
+    version = "3.5.14",
+    description = "Distributed reliable key-value store",
+    homepage = "https://etcd.io/",
+    license = "Apache-2.0",
+    configure_args = [
+        "CGO_ENABLED=0",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/lang/go:go",
+    ],
+    visibility = ["PUBLIC"],
+)

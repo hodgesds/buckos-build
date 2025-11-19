@@ -1,0 +1,31 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# netdata - Real-time performance monitoring
+download_source(
+    name = "netdata-src",
+    src_uri = "https://github.com/netdata/netdata/releases/download/v1.45.0/netdata-v1.45.0.tar.gz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "netdata",
+    source = ":netdata-src",
+    version = "1.45.0",
+    description = "Real-time performance monitoring system",
+    homepage = "https://www.netdata.cloud/",
+    license = "GPL-3.0+",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--with-user=netdata",
+        "--disable-cloud",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:zlib",
+        "//packages/linux/network/openssl:openssl",
+        "//packages/linux/network/curl:curl",
+    ],
+    visibility = ["PUBLIC"],
+)

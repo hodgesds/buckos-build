@@ -1,0 +1,28 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# heaptrack - Heap memory profiler
+download_source(
+    name = "heaptrack-src",
+    src_uri = "https://download.kde.org/stable/heaptrack/1.5.0/heaptrack-1.5.0.tar.xz",
+    sha256 = "PLACEHOLDER_HASH",
+)
+
+configure_make_package(
+    name = "heaptrack",
+    source = ":heaptrack-src",
+    version = "1.5.0",
+    description = "Heap memory profiler for Linux",
+    homepage = "https://kde.org/applications/development/heaptrack",
+    license = "GPL-2.0+",
+    configure_args = [
+        "-DCMAKE_INSTALL_PREFIX=/usr",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DHEAPTRACK_BUILD_GUI=OFF",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:zlib",
+        "//packages/linux/system/libs/libunwind:libunwind",
+    ],
+    visibility = ["PUBLIC"],
+)

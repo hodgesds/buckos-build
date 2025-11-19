@@ -1,0 +1,39 @@
+load("@prelude//platforms:defs.bzl", "execution_platform", "host_configuration")
+
+# Target platform detection
+platform(
+    name = "detect",
+    constraint_values = [],
+)
+
+# Default execution platform
+execution_platform(
+    name = "default",
+    cpu_configuration = host_configuration.cpu,
+    os_configuration = host_configuration.os,
+    use_windows_path_separators = host_configuration.os == "windows",
+)
+
+# x86_64 Linux target
+platform(
+    name = "linux-x86_64",
+    constraint_values = [
+        "config//cpu:x86_64",
+        "config//os:linux",
+    ],
+)
+
+# Configuration for building packages
+constraint_setting(
+    name = "build_type",
+)
+
+constraint_value(
+    name = "release",
+    constraint_setting = ":build_type",
+)
+
+constraint_value(
+    name = "debug",
+    constraint_setting = ":build_type",
+)

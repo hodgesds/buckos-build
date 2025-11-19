@@ -11,7 +11,15 @@ fbsource = none
 buck = none
 
 [parser]
-target_platform_detector_spec = target:root//...->prelude//platforms:default
+target_platform_detector_spec = target:root//platforms:detect
+
+[build]
+execution_platforms = root//platforms:default
 
 [project]
 ignore = .git
+package_boundary_exceptions = ...
+
+[buck2]
+materializations = deferred
+digest_algorithms = SHA256

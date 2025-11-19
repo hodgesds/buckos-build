@@ -1,0 +1,136 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# =============================================================================
+# musl libc - Lightweight C library
+# =============================================================================
+
+download_source(
+    name = "musl-src",
+    src_uri = "https://musl.libc.org/releases/musl-1.2.4.tar.gz",
+    sha256 = "7a35eae33d5372a7c0da1188de798726f68825513b7ae3ebe97aaaa52114f039",
+)
+
+configure_make_package(
+    name = "musl",
+    source = ":musl-src",
+    version = "1.2.4",
+    description = "musl is a lightweight, fast, simple, free C library",
+    homepage = "https://musl.libc.org/",
+    license = "MIT",
+    configure_args = [
+        "--disable-static",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# zlib - Compression library
+# =============================================================================
+
+download_source(
+    name = "zlib-src",
+    src_uri = "https://zlib.net/fossils/zlib-1.3.1.tar.gz",
+    sha256 = "9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23",
+)
+
+configure_make_package(
+    name = "zlib",
+    source = ":zlib-src",
+    version = "1.3.1",
+    description = "A massively spiffy yet delicately unobtrusive compression library",
+    homepage = "https://zlib.net/",
+    license = "zlib",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# busybox - Swiss army knife of embedded Linux
+# =============================================================================
+
+download_source(
+    name = "busybox-src",
+    src_uri = "https://busybox.net/downloads/busybox-1.36.1.tar.bz2",
+    sha256 = "b8cc24c9574d809e7279c3be349795c5d5ceb6fdf19ca709f80cde50e47de314",
+)
+
+configure_make_package(
+    name = "busybox",
+    source = ":busybox-src",
+    version = "1.36.1",
+    description = "BusyBox combines tiny versions of many common UNIX utilities into a single small executable",
+    homepage = "https://busybox.net/",
+    license = "GPL-2.0",
+    pre_configure = """
+# Use default config and enable static linking for init
+make defconfig
+sed -i 's/# CONFIG_STATIC is not set/CONFIG_STATIC=y/' .config
+""",
+    make_args = [
+        "CONFIG_PREFIX=$DESTDIR",
+    ],
+    post_install = """
+# Create symlinks in standard locations
+mkdir -p "$DESTDIR/bin" "$DESTDIR/sbin"
+cd "$DESTDIR"
+# busybox installs with CONFIG_PREFIX, symlinks are auto-created
+""",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# util-linux - Essential system utilities
+# =============================================================================
+
+download_source(
+    name = "util-linux-src",
+    src_uri = "https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.39/util-linux-2.39.tar.xz",
+    sha256 = "32b744f9c8e97d3b4d2a3a8d4ec5e652cfb51ed4fb8c1f0c55dc9e3c1f9bddd4",
+)
+
+configure_make_package(
+    name = "util-linux",
+    source = ":util-linux-src",
+    version = "2.39",
+    description = "Miscellaneous system utilities for Linux",
+    homepage = "https://github.com/util-linux/util-linux",
+    license = "GPL-2.0",
+    configure_args = [
+        "--disable-all-programs",
+        "--enable-mount",
+        "--enable-losetup",
+        "--enable-fsck",
+        "--enable-blkid",
+        "--enable-libblkid",
+        "--enable-libuuid",
+        "--without-systemd",
+        "--without-udev",
+    ],
+    deps = [":musl"],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# e2fsprogs - Ext2/3/4 filesystem utilities
+# =============================================================================
+
+download_source(
+    name = "e2fsprogs-src",
+    src_uri = "https://mirrors.edge.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.47.0/e2fsprogs-1.47.0.tar.xz",
+    sha256 = "144af53f2bbd921cef6f8bea88bb9faddca865da3fbc657cc9b4d2001097d5db",
+)
+
+configure_make_package(
+    name = "e2fsprogs",
+    source = ":e2fsprogs-src",
+    version = "1.47.0",
+    description = "Ext2/3/4 filesystem utilities",
+    homepage = "http://e2fsprogs.sourceforge.net/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--disable-nls",
+        "--disable-defrag",
+        "--disable-fuse2fs",
+    ],
+    deps = [":util-linux"],
+    visibility = ["PUBLIC"],
+)

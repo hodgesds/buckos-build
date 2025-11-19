@@ -1,0 +1,6 @@
+# Package definitions exports
+
+export_file(
+    name = "package_defs.bzl",
+    visibility = ["PUBLIC"],
+)

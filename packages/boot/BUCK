@@ -1,0 +1,70 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# =============================================================================
+# GRUB - Grand Unified Bootloader
+# =============================================================================
+
+download_source(
+    name = "grub-src",
+    src_uri = "https://ftp.gnu.org/gnu/grub/grub-2.12.tar.xz",
+    sha256 = "f3c97391f7c4eaa677a78e090c7e97e6dc47b16f655f04683ebd37bef7fe0faa",
+)
+
+configure_make_package(
+    name = "grub",
+    source = ":grub-src",
+    version = "2.12",
+    description = "GNU GRUB is a Multiboot boot loader",
+    homepage = "https://www.gnu.org/software/grub/",
+    license = "GPL-3.0",
+    configure_args = [
+        "--target=x86_64",
+        "--with-platform=efi",
+        "--disable-werror",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# GRUB for BIOS systems
+configure_make_package(
+    name = "grub-bios",
+    source = ":grub-src",
+    version = "2.12",
+    description = "GNU GRUB for BIOS systems",
+    homepage = "https://www.gnu.org/software/grub/",
+    license = "GPL-3.0",
+    configure_args = [
+        "--target=i386",
+        "--with-platform=pc",
+        "--disable-werror",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Syslinux - Lightweight bootloader
+# =============================================================================
+
+download_source(
+    name = "syslinux-src",
+    src_uri = "https://mirrors.edge.kernel.org/pub/linux/utils/boot/syslinux/syslinux-6.03.tar.xz",
+    sha256 = "26d3986d2bea109d5dc0e4f8c4822a459276cf021125e8c9f23c3cca5d8c850e",
+)
+
+configure_make_package(
+    name = "syslinux",
+    source = ":syslinux-src",
+    version = "6.03",
+    description = "Lightweight bootloader for DOS FAT filesystems",
+    homepage = "https://wiki.syslinux.org/",
+    license = "GPL-2.0",
+    pre_configure = """
+# Syslinux doesn't use configure
+true
+""",
+    make_args = [
+        "bios",
+        "installer",
+    ],
+    visibility = ["PUBLIC"],
+)

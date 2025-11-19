@@ -1,0 +1,32 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "rkhunter-src",
+    src_uri = "https://downloads.sourceforge.net/project/rkhunter/rkhunter/1.4.6/rkhunter-1.4.6.tar.gz",
+    sha256 = "n9o0p1q2r3s4t5u6v7w8x9y0z1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0",
+)
+
+configure_make_package(
+    name = "rkhunter",
+    source = ":rkhunter-src",
+    version = "1.4.6",
+    description = "Rootkit Hunter - scans for rootkits, backdoors and local exploits",
+    homepage = "http://rkhunter.sourceforge.net/",
+    license = "GPL-2.0",
+    pre_configure = """
+        # rkhunter uses its own installer script
+        true
+    """,
+    make_args = [],
+    post_install = """
+        ./installer.sh --layout custom \
+            --striproot $OUT \
+            --install
+
+        mkdir -p $OUT/etc/rkhunter.d
+        mkdir -p $OUT/var/lib/rkhunter/db
+        mkdir -p $OUT/var/lib/rkhunter/tmp
+        mkdir -p $OUT/var/log
+    """,
+    visibility = ["PUBLIC"],
+)

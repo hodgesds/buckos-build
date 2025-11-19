@@ -1,0 +1,140 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "gnupg-src",
+    src_uri = "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.4.3.tar.bz2",
+    sha256 = "d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3",
+)
+
+download_source(
+    name = "libgpg-error-src",
+    src_uri = "https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.47.tar.bz2",
+    sha256 = "a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4",
+)
+
+download_source(
+    name = "libgcrypt-src",
+    src_uri = "https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.10.3.tar.bz2",
+    sha256 = "b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5",
+)
+
+download_source(
+    name = "libksba-src",
+    src_uri = "https://gnupg.org/ftp/gcrypt/libksba/libksba-1.6.5.tar.bz2",
+    sha256 = "c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6",
+)
+
+download_source(
+    name = "libassuan-src",
+    src_uri = "https://gnupg.org/ftp/gcrypt/libassuan/libassuan-2.5.6.tar.bz2",
+    sha256 = "d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7",
+)
+
+download_source(
+    name = "npth-src",
+    src_uri = "https://gnupg.org/ftp/gcrypt/npth/npth-1.6.tar.bz2",
+    sha256 = "e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8",
+)
+
+configure_make_package(
+    name = "libgpg-error",
+    source = ":libgpg-error-src",
+    version = "1.47",
+    description = "GnuPG error library",
+    homepage = "https://gnupg.org/",
+    license = "LGPL-2.1+",
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-shared",
+        "--disable-static",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+configure_make_package(
+    name = "libgcrypt",
+    source = ":libgcrypt-src",
+    version = "1.10.3",
+    description = "General purpose cryptographic library",
+    homepage = "https://gnupg.org/",
+    license = "LGPL-2.1+",
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-shared",
+        "--disable-static",
+    ],
+    deps = [":libgpg-error"],
+    visibility = ["PUBLIC"],
+)
+
+configure_make_package(
+    name = "libksba",
+    source = ":libksba-src",
+    version = "1.6.5",
+    description = "X.509 and CMS library",
+    homepage = "https://gnupg.org/",
+    license = "LGPL-2.1+",
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-shared",
+        "--disable-static",
+    ],
+    deps = [":libgpg-error"],
+    visibility = ["PUBLIC"],
+)
+
+configure_make_package(
+    name = "libassuan",
+    source = ":libassuan-src",
+    version = "2.5.6",
+    description = "IPC library for GnuPG",
+    homepage = "https://gnupg.org/",
+    license = "LGPL-2.1+",
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-shared",
+        "--disable-static",
+    ],
+    deps = [":libgpg-error"],
+    visibility = ["PUBLIC"],
+)
+
+configure_make_package(
+    name = "npth",
+    source = ":npth-src",
+    version = "1.6",
+    description = "New portable threads library",
+    homepage = "https://gnupg.org/",
+    license = "LGPL-2.1+",
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-shared",
+        "--disable-static",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+configure_make_package(
+    name = "gnupg",
+    source = ":gnupg-src",
+    version = "2.4.3",
+    description = "GNU Privacy Guard - encryption and signing tools",
+    homepage = "https://gnupg.org/",
+    license = "GPL-3.0+",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--enable-symcryptrun",
+        "--enable-maintainer-mode",
+    ],
+    deps = [
+        ":libgpg-error",
+        ":libgcrypt",
+        ":libksba",
+        ":libassuan",
+        ":npth",
+        "//packages/core:zlib",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,149 @@
+# Security packages for Linux systems
+# This directory contains various security-related programs and utilities
+
+# Auditing and monitoring tools
+filegroup(
+    name = "audit-packages",
+    srcs = [
+        "//packages/system/security/audit:audit",
+        "//packages/system/security/aide:aide",
+        "//packages/system/security/lynis:lynis",
+        "//packages/system/security/rkhunter:rkhunter",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Firewall and network security
+filegroup(
+    name = "firewall-packages",
+    srcs = [
+        "//packages/system/security/nftables:nftables",
+        "//packages/system/security/nftables:libnftnl",
+        "//packages/system/security/nftables:libmnl",
+        "//packages/system/security/fail2ban:fail2ban",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Encryption and cryptography
+filegroup(
+    name = "crypto-packages",
+    srcs = [
+        "//packages/system/security/gnupg:gnupg",
+        "//packages/system/security/gnupg:libgpg-error",
+        "//packages/system/security/gnupg:libgcrypt",
+        "//packages/system/security/gnupg:libksba",
+        "//packages/system/security/gnupg:libassuan",
+        "//packages/system/security/gnupg:npth",
+        "//packages/system/security/cryptsetup:cryptsetup",
+        "//packages/system/security/cryptsetup:popt",
+        "//packages/system/security/cryptsetup:lvm2",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Sandboxing and isolation
+filegroup(
+    name = "sandbox-packages",
+    srcs = [
+        "//packages/system/security/firejail:firejail",
+        "//packages/system/security/bubblewrap:bubblewrap",
+        "//packages/system/security/apparmor:apparmor",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Antivirus and malware detection
+filegroup(
+    name = "antivirus-packages",
+    srcs = [
+        "//packages/system/security/clamav:clamav",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All security packages
+filegroup(
+    name = "all-security",
+    srcs = [
+        ":audit-packages",
+        ":firewall-packages",
+        ":crypto-packages",
+        ":sandbox-packages",
+        ":antivirus-packages",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Convenience aliases for commonly used packages
+alias(
+    name = "gnupg",
+    actual = "//packages/system/security/gnupg:gnupg",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "nftables",
+    actual = "//packages/system/security/nftables:nftables",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "cryptsetup",
+    actual = "//packages/system/security/cryptsetup:cryptsetup",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "firejail",
+    actual = "//packages/system/security/firejail:firejail",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "clamav",
+    actual = "//packages/system/security/clamav:clamav",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "apparmor",
+    actual = "//packages/system/security/apparmor:apparmor",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "audit",
+    actual = "//packages/system/security/audit:audit",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "fail2ban",
+    actual = "//packages/system/security/fail2ban:fail2ban",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "lynis",
+    actual = "//packages/system/security/lynis:lynis",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "bubblewrap",
+    actual = "//packages/system/security/bubblewrap:bubblewrap",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "rkhunter",
+    actual = "//packages/system/security/rkhunter:rkhunter",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "aide",
+    actual = "//packages/system/security/aide:aide",
+    visibility = ["PUBLIC"],
+)

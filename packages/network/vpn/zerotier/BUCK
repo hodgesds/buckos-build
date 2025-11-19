@@ -1,0 +1,30 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "zerotier-src",
+    src_uri = "https://github.com/zerotier/ZeroTierOne/archive/refs/tags/1.14.0.tar.gz",
+    sha256 = "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456",
+)
+
+configure_make_package(
+    name = "zerotier",
+    source = ":zerotier-src",
+    version = "1.14.0",
+    description = "ZeroTier One - software-defined networking",
+    homepage = "https://www.zerotier.com/",
+    license = "BSL-1.1",
+    pre_configure = "true",
+    make_args = [
+        "one",
+        "ZT_SSO_SUPPORTED=0",
+    ],
+    post_install = """
+make DESTDIR=$DESTDIR install
+mkdir -p "$DESTDIR/var/lib/zerotier-one"
+mkdir -p "$DESTDIR/etc/zerotier-one"
+""",
+    deps = [
+        "//packages/network:openssl",
+    ],
+    visibility = ["PUBLIC"],
+)

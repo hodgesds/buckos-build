@@ -75,7 +75,7 @@ configure_make_package(
     deps = [
         ":popt",
         ":lvm2",
-        "//packages/net/openssl:openssl",
+        "//packages/network/openssl:openssl",
         "//packages/core:util-linux",
     ],
     visibility = ["PUBLIC"],

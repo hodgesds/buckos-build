@@ -1,0 +1,33 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "openssh-src",
+    src_uri = "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.6p1.tar.gz",
+    sha256 = "910211c07255a8c5ad654391f0c9c50e9871a0d2cb67c1e4c032acf18dc4144f",
+)
+
+configure_make_package(
+    name = "openssh",
+    source = ":openssh-src",
+    version = "9.6p1",
+    description = "OpenSSH SSH connectivity tools",
+    homepage = "https://www.openssh.com/",
+    license = "BSD",
+    configure_args = [
+        "--sysconfdir=/etc/ssh",
+        "--with-ssl-dir=/usr",
+        "--with-zlib=/usr",
+        "--disable-strip",
+        "--with-privsep-user=nobody",
+        "--with-privsep-path=/var/empty",
+    ],
+    post_install = """
+# Create privilege separation directory
+mkdir -p "$DESTDIR/var/empty"
+chmod 755 "$DESTDIR/var/empty"
+# Create ssh config directory
+mkdir -p "$DESTDIR/etc/ssh"
+""",
+    deps = ["//packages/network/openssl:openssl", "//packages/core:zlib"],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,68 @@
+# =============================================================================
+# firewalld - Dynamic firewall daemon with D-Bus interface
+# =============================================================================
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "firewalld-src",
+    src_uri = "https://github.com/firewalld/firewalld/releases/download/v2.1.2/firewalld-2.1.2.tar.bz2",
+    sha256 = "7d6a43e5b7a8b8b5a8c9d3e2f1a0b8c6d4e2f0a8b6c4d2e0f8a6b4c2d0e8f6a4",
+)
+
+configure_make_package(
+    name = "firewalld",
+    source = ":firewalld-src",
+    version = "2.1.2",
+    description = "Dynamic firewall daemon with D-Bus interface",
+    homepage = "https://firewalld.org/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--with-systemd-unitdir=/usr/lib/systemd/system",
+        "--with-iptables=/sbin/iptables",
+        "--with-iptables-restore=/sbin/iptables-restore",
+        "--with-ip6tables=/sbin/ip6tables",
+        "--with-ip6tables-restore=/sbin/ip6tables-restore",
+        "--with-ebtables=/sbin/ebtables",
+        "--with-ipset=/sbin/ipset",
+    ],
+    post_install = """
+# Create firewalld configuration directories
+mkdir -p "$DESTDIR/etc/firewalld/zones"
+mkdir -p "$DESTDIR/etc/firewalld/services"
+mkdir -p "$DESTDIR/etc/firewalld/icmptypes"
+mkdir -p "$DESTDIR/etc/firewalld/helpers"
+mkdir -p "$DESTDIR/etc/firewalld/ipsets"
+mkdir -p "$DESTDIR/etc/firewalld/policies"
+mkdir -p "$DESTDIR/var/lib/firewalld"
+mkdir -p "$DESTDIR/var/log/firewalld"
+
+# Create default firewalld.conf
+cat > "$DESTDIR/etc/firewalld/firewalld.conf" << 'FWCONF'
+# firewalld config file
+DefaultZone=public
+CleanupOnExit=yes
+CleanupModulesOnExit=no
+IPv6_rpfilter=yes
+IndividualCalls=no
+LogDenied=off
+AutomaticHelpers=system
+FirewallBackend=nftables
+FlushAllOnReload=yes
+RFC3964_IPv4=yes
+FWCONF
+chmod 644 "$DESTDIR/etc/firewalld/firewalld.conf"
+""",
+    deps = [
+        "//packages/network/firewall/nftables:nftables",
+        "//packages/network/firewall/iptables:iptables",
+        "//packages/network/firewall/ipset:ipset",
+        "//packages/core:dbus",
+        "//packages/core:glib",
+        "//packages/core:python",
+    ],
+    visibility = ["PUBLIC"],
+)

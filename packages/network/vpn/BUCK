@@ -1,0 +1,104 @@
+# =============================================================================
+# NET-VPN - VPN and Secure Tunneling Solutions for Linux
+# =============================================================================
+
+# Modern VPN solutions
+filegroup(
+    name = "modern-vpns",
+    srcs = [
+        "//packages/network/vpn/wireguard-tools:wireguard-tools",
+        "//packages/network/vpn/openvpn:openvpn",
+        "//packages/network/vpn/strongswan:strongswan",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# IPsec-based VPNs
+filegroup(
+    name = "ipsec-vpns",
+    srcs = [
+        "//packages/network/vpn/strongswan:strongswan",
+        "//packages/network/vpn/libreswan:libreswan",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Corporate/Enterprise VPN clients
+filegroup(
+    name = "enterprise-vpns",
+    srcs = [
+        "//packages/network/vpn/openconnect:openconnect",
+        "//packages/network/vpn/vpnc:vpnc",
+        "//packages/network/vpn/ocproxy:ocproxy",
+        "//packages/network/vpn/vpnc-scripts:vpnc-scripts",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Mesh/Overlay networking
+filegroup(
+    name = "mesh-vpns",
+    srcs = [
+        "//packages/network/vpn/tinc:tinc",
+        "//packages/network/vpn/zerotier:zerotier",
+        "//packages/network/vpn/nebula:nebula",
+        "//packages/network/vpn/n2n:n2n",
+        "//packages/network/vpn/tailscale:tailscale",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Multi-protocol VPN servers
+filegroup(
+    name = "vpn-servers",
+    srcs = [
+        "//packages/network/vpn/openvpn:openvpn",
+        "//packages/network/vpn/strongswan:strongswan",
+        "//packages/network/vpn/softether:softether",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Lightweight VPN clients
+filegroup(
+    name = "lightweight-vpns",
+    srcs = [
+        "//packages/network/vpn/wireguard-tools:wireguard-tools",
+        "//packages/network/vpn/tinc:tinc",
+        "//packages/network/vpn/n2n:n2n",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Legacy VPN protocols (not recommended for new deployments)
+filegroup(
+    name = "legacy-vpns",
+    srcs = [
+        "//packages/network/vpn/pptp-linux:pptp-linux",
+        "//packages/network/vpn/vpnc:vpnc",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Complete VPN toolkit
+filegroup(
+    name = "all-vpns",
+    srcs = [
+        "//packages/network/vpn/wireguard-tools:wireguard-tools",
+        "//packages/network/vpn/openvpn:openvpn",
+        "//packages/network/vpn/strongswan:strongswan",
+        "//packages/network/vpn/libreswan:libreswan",
+        "//packages/network/vpn/openconnect:openconnect",
+        "//packages/network/vpn/vpnc:vpnc",
+        "//packages/network/vpn/tinc:tinc",
+        "//packages/network/vpn/softether:softether",
+        "//packages/network/vpn/zerotier:zerotier",
+        "//packages/network/vpn/nebula:nebula",
+        "//packages/network/vpn/n2n:n2n",
+        "//packages/network/vpn/pptp-linux:pptp-linux",
+        "//packages/network/vpn/tailscale:tailscale",
+        "//packages/network/vpn/ocproxy:ocproxy",
+        "//packages/network/vpn/vpnc-scripts:vpnc-scripts",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -173,6 +173,18 @@ filegroup(
 )
 
 # =============================================================================
+# Wireless Tools - WiFi, Bluetooth, and SDR
+# =============================================================================
+
+filegroup(
+    name = "wireless",
+    srcs = [
+        "//packages/network/wireless:all",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
 # All Network Tools - Combined category
 # =============================================================================
 
@@ -200,6 +212,7 @@ filegroup(
         ":remote-access",
         ":vpn",
         ":firewall",
+        ":wireless",
     ],
     visibility = ["PUBLIC"],
 )

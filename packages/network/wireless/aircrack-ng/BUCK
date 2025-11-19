@@ -1,0 +1,34 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+download_source(
+    name = "aircrack-ng-src",
+    src_uri = "https://download.aircrack-ng.org/aircrack-ng-1.7.tar.gz",
+    sha256 = "05a704e3c8f7792a17315080a21214a4448fd2452c1b0dd5226a3a55f90b58c3",
+)
+
+configure_make_package(
+    name = "aircrack-ng",
+    source = ":aircrack-ng-src",
+    version = "1.7",
+    description = "WiFi security auditing tools suite",
+    homepage = "https://www.aircrack-ng.org/",
+    license = "GPL-2.0-or-later",
+    pre_configure = """
+autoreconf -fiv
+""",
+    configure_args = [
+        "--prefix=/usr",
+        "--with-experimental",
+        "--with-openssl",
+        "--with-sqlite3",
+        "--enable-shared",
+    ],
+    deps = [
+        "//packages/core:musl",
+        "//packages/network/openssl:openssl",
+        "//packages/core:sqlite",
+        "//packages/core:zlib",
+        "//packages/network/libpcap:libpcap",
+    ],
+    visibility = ["PUBLIC"],
+)

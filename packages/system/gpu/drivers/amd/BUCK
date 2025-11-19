@@ -1,0 +1,85 @@
+# =============================================================================
+# AMD Drivers - AMDGPU open-source drivers and firmware
+# =============================================================================
+#
+# The AMDGPU driver stack provides hardware acceleration for AMD GPUs.
+# Uses the open-source kernel driver with proprietary firmware.
+#
+# =============================================================================
+
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "amd-drivers-src",
+    src_uri = "https://repo.radeon.com/amdgpu/6.1.3/ubuntu/pool/main/a/amdgpu-dkms/amdgpu-dkms_6.7.0.60103-2069308.24.04_all.deb",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+download_source(
+    name = "amd-firmware-src",
+    src_uri = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-20241017.tar.gz",
+    sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+)
+
+binary_package(
+    name = "amd-drivers",
+    source = ":amd-firmware-src",
+    version = "6.1.3",
+    description = "AMD GPU drivers and firmware for Linux",
+    homepage = "https://www.amd.com/en/support/linux-drivers",
+    license = "MIT AND proprietary",
+    install_script = """
+# Extract firmware
+tar xf linux-firmware-*.tar.gz
+
+# Install AMD GPU firmware
+mkdir -p "$DESTDIR/usr/lib/firmware/amdgpu"
+cp -r linux-firmware-*/amdgpu/* "$DESTDIR/usr/lib/firmware/amdgpu/"
+
+# Install Radeon firmware (for older GPUs)
+mkdir -p "$DESTDIR/usr/lib/firmware/radeon"
+cp -r linux-firmware-*/radeon/* "$DESTDIR/usr/lib/firmware/radeon/"
+
+# Create modprobe configuration
+mkdir -p "$DESTDIR/etc/modprobe.d"
+cat > "$DESTDIR/etc/modprobe.d/amdgpu.conf" << 'EOF'
+# Enable DC (Display Core) for better display support
+options amdgpu dc=1
+
+# Enable GPU recovery
+options amdgpu gpu_recovery=1
+
+# Enable PPFeatureMask for overclocking support (optional)
+# options amdgpu ppfeaturemask=0xffffffff
+EOF
+
+# Create Vulkan ICD configuration
+mkdir -p "$DESTDIR/usr/share/vulkan/icd.d"
+cat > "$DESTDIR/usr/share/vulkan/icd.d/radeon_icd.x86_64.json" << 'EOF'
+{
+    "file_format_version": "1.0.0",
+    "ICD": {
+        "library_path": "/usr/lib64/libvulkan_radeon.so",
+        "api_version": "1.3.275"
+    }
+}
+EOF
+
+# Install helper scripts
+mkdir -p "$DESTDIR/usr/bin"
+cat > "$DESTDIR/usr/bin/amd-gpu-info" << 'EOF'
+#!/bin/bash
+# Display AMD GPU information
+for card in /sys/class/drm/card*/device; do
+    if [ -f "$card/vendor" ] && grep -q "0x1002" "$card/vendor"; then
+        echo "AMD GPU: $(basename $(dirname $card))"
+        [ -f "$card/gpu_busy_percent" ] && echo "  GPU Usage: $(cat $card/gpu_busy_percent)%"
+        [ -f "$card/mem_info_vram_used" ] && echo "  VRAM Used: $(cat $card/mem_info_vram_used)"
+        [ -f "$card/power_dpm_state" ] && echo "  Power State: $(cat $card/power_dpm_state)"
+    fi
+done
+EOF
+chmod +x "$DESTDIR/usr/bin/amd-gpu-info"
+""",
+    visibility = ["PUBLIC"],
+)

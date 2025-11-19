@@ -1,0 +1,27 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# arping - Send ARP requests to identify hosts on a network
+# =============================================================================
+
+download_source(
+    name = "arping-src",
+    src_uri = "https://github.com/ThomasHabets/arping/archive/refs/tags/arping-2.24.tar.gz",
+    sha256 = "915e3e4a4b3b6e9b4c0d8a7f6e5d4c3b2a1a0b9c8d7e6f5a4b3c2d1e0f9a8b7c",
+)
+
+configure_make_package(
+    name = "arping",
+    source = ":arping-src",
+    version = "2.24",
+    description = "Send ARP requests to identify hosts on a network",
+    homepage = "https://github.com/ThomasHabets/arping",
+    license = "GPL-2.0-or-later",
+    configure_args = [],
+    deps = [
+        "//packages/network/libpcap:libpcap",
+        "//packages/core:libnet",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

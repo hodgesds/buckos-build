@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# masscan - Fast TCP port scanner
+# =============================================================================
+
+download_source(
+    name = "masscan-src",
+    src_uri = "https://github.com/robertdavidgraham/masscan/archive/refs/tags/1.3.2.tar.gz",
+    sha256 = "6b9d8c2a2e4f5g6h7i8j9k0l1m2n3o4p5q6r7s8t9u0v1w2x3y4z5a6b7c8d9e0f",
+)
+
+configure_make_package(
+    name = "masscan",
+    source = ":masscan-src",
+    version = "1.3.2",
+    description = "Fast TCP port scanner transmitting 10 million packets per second",
+    homepage = "https://github.com/robertdavidgraham/masscan",
+    license = "AGPL-3.0-only",
+    configure_args = [],
+    deps = [
+        "//packages/network/libpcap:libpcap",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

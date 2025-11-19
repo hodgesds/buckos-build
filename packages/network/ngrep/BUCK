@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# ngrep - Network packet analyzer with grep-like functionality
+# =============================================================================
+
+download_source(
+    name = "ngrep-src",
+    src_uri = "https://github.com/jpr5/ngrep/archive/refs/tags/V1_47.tar.gz",
+    sha256 = "dc4dbe20991cc36bac5e97e99475e2a1522fd88c59ee2e08f813432c04c5fff3",
+)
+
+configure_make_package(
+    name = "ngrep",
+    source = ":ngrep-src",
+    version = "1.47",
+    description = "Network packet analyzer with grep-like functionality",
+    homepage = "https://github.com/jpr5/ngrep",
+    license = "BSD-3-Clause",
+    configure_args = [
+        "--enable-ipv6",
+        "--with-pcap-includes=/usr/include",
+    ],
+    deps = [
+        "//packages/network/libpcap:libpcap",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

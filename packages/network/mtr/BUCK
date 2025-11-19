@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+
+# =============================================================================
+# mtr - Network diagnostic tool combining ping and traceroute
+# =============================================================================
+
+download_source(
+    name = "mtr-src",
+    src_uri = "https://github.com/traviscross/mtr/archive/refs/tags/v0.95.tar.gz",
+    sha256 = "12dd57c80b1c0f1a4c5f752f697c0e90b8dda198e1a7e7d749a81aea2e07b46e",
+)
+
+configure_make_package(
+    name = "mtr",
+    source = ":mtr-src",
+    version = "0.95",
+    description = "Network diagnostic tool combining ping and traceroute",
+    homepage = "https://www.bitwizard.nl/mtr/",
+    license = "GPL-2.0-only",
+    configure_args = [
+        "--without-gtk",
+        "--with-ncurses",
+    ],
+    deps = [
+        "//packages/core:ncurses",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

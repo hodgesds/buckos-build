@@ -1,0 +1,45 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# runc - CLI tool for spawning containers per OCI spec
+download_source(
+    name = "runc-src",
+    src_uri = "https://github.com/opencontainers/runc/archive/refs/tags/v1.2.2.tar.gz",
+    sha256 = "c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0",
+)
+
+configure_make_package(
+    name = "runc",
+    source = ":runc-src",
+    version = "1.2.2",
+    description = "CLI tool for spawning and running containers according to OCI specification",
+    homepage = "https://github.com/opencontainers/runc",
+    license = "Apache-2.0",
+    env = {
+        "CGO_ENABLED": "1",
+        "GO111MODULE": "on",
+        "BUILDTAGS": "seccomp apparmor",
+    },
+    pre_configure = """
+make BUILDTAGS='seccomp apparmor' runc
+    """,
+    post_install = """
+#!/bin/bash
+set -e
+
+mkdir -p "$DESTDIR/usr/bin"
+install -m 0755 runc "$DESTDIR/usr/bin/"
+
+# Install man pages
+mkdir -p "$DESTDIR/usr/share/man/man8"
+install -m 0644 man/man8/*.8 "$DESTDIR/usr/share/man/man8/" 2>/dev/null || true
+
+# Install shell completions
+mkdir -p "$DESTDIR/usr/share/bash-completion/completions"
+install -m 0644 contrib/completions/bash/runc "$DESTDIR/usr/share/bash-completion/completions/" 2>/dev/null || true
+    """,
+    deps = [
+        "//packages/lang/go:go",
+        "//packages/system/libs/libseccomp:libseccomp",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,57 @@
+# Emulation utilities aggregator
+
+filegroup(
+    name = "spice-full",
+    srcs = [
+        "//packages/emulation/utilities/spice:spice-protocol",
+        "//packages/emulation/utilities/spice:spice-server",
+        "//packages/emulation/utilities/spice:spice-gtk",
+        "//packages/emulation/utilities/spice:spice-vdagent",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "spice-server-only",
+    srcs = [
+        "//packages/emulation/utilities/spice:spice-protocol",
+        "//packages/emulation/utilities/spice:spice-server",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "spice-guest",
+    srcs = [
+        "//packages/emulation/utilities/spice:spice-vdagent",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "microvm-hypervisors",
+    srcs = [
+        "//packages/emulation/utilities/firecracker:firecracker",
+        "//packages/emulation/utilities/cloud-hypervisor:cloud-hypervisor",
+        "//packages/emulation/utilities/crosvm:crosvm",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "virtio-tools",
+    srcs = [
+        "//packages/emulation/utilities/virtiofsd:virtiofsd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-utilities",
+    srcs = [
+        ":spice-full",
+        ":microvm-hypervisors",
+        ":virtio-tools",
+    ],
+    visibility = ["PUBLIC"],
+)

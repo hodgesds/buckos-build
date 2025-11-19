@@ -1,0 +1,143 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# QEMU - Full system emulator and virtualizer
+download_source(
+    name = "qemu-src",
+    src_uri = "https://download.qemu.org/qemu-9.1.0.tar.xz",
+    sha256 = "816b7022a8ba7c2ac30e2e0cf973e826f6bcc8505339603212c5ede8e94d7834",
+)
+
+configure_make_package(
+    name = "qemu",
+    source = ":qemu-src",
+    version = "9.1.0",
+    description = "Generic and open source machine emulator and virtualizer",
+    homepage = "https://www.qemu.org/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--libexecdir=/usr/lib/qemu",
+        "--enable-kvm",
+        "--enable-linux-aio",
+        "--enable-linux-io-uring",
+        "--enable-virtfs",
+        "--enable-vhost-net",
+        "--enable-vhost-kernel",
+        "--enable-vhost-user",
+        "--enable-spice",
+        "--enable-usb-redir",
+        "--enable-curses",
+        "--enable-vnc",
+        "--enable-vnc-jpeg",
+        "--enable-vnc-png",
+        "--enable-gtk",
+        "--enable-sdl",
+        "--enable-opengl",
+        "--enable-virglrenderer",
+        "--enable-libusb",
+        "--enable-smartcard",
+        "--enable-libnfs",
+        "--enable-libssh",
+        "--enable-lzo",
+        "--enable-snappy",
+        "--enable-bzip2",
+        "--enable-zstd",
+        "--enable-seccomp",
+        "--enable-cap-ng",
+        "--enable-attr",
+        "--enable-vde",
+        "--enable-nettle",
+        "--enable-gnutls",
+        "--enable-numa",
+        "--enable-fdt",
+        "--enable-membarrier",
+        "--enable-docs",
+        "--enable-tools",
+        "--enable-guest-agent",
+        "--audio-drv-list=pa,alsa,sdl,oss",
+        "--target-list=x86_64-softmmu,x86_64-linux-user,i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,arm-softmmu,arm-linux-user,riscv64-softmmu,riscv64-linux-user,riscv32-softmmu,riscv32-linux-user,ppc64-softmmu,ppc64-linux-user,s390x-softmmu,s390x-linux-user,mips64el-softmmu,mips64el-linux-user",
+    ],
+    deps = [
+        "//packages/core:glib",
+        "//packages/core:pixman",
+        "//packages/core:zlib",
+        "//packages/core:zstd",
+        "//packages/core:lzo",
+        "//packages/core:snappy",
+        "//packages/core:bzip2",
+        "//packages/network/gnutls:gnutls",
+        "//packages/network/nettle:nettle",
+        "//packages/emulation/utilities/spice:spice-server",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# QEMU guest agent
+configure_make_package(
+    name = "qemu-guest-agent",
+    source = ":qemu-src",
+    version = "9.1.0",
+    description = "QEMU Guest Agent for improved host-guest communication",
+    homepage = "https://www.qemu.org/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--disable-system",
+        "--disable-user",
+        "--enable-guest-agent",
+    ],
+    deps = [
+        "//packages/core:glib",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# QEMU user-space emulation only
+configure_make_package(
+    name = "qemu-user",
+    source = ":qemu-src",
+    version = "9.1.0",
+    description = "QEMU user-space emulation for running foreign binaries",
+    homepage = "https://www.qemu.org/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--disable-system",
+        "--enable-linux-user",
+        "--enable-binfmt",
+        "--target-list=x86_64-linux-user,i386-linux-user,aarch64-linux-user,arm-linux-user,riscv64-linux-user,riscv32-linux-user,ppc64-linux-user,s390x-linux-user,mips64el-linux-user",
+    ],
+    deps = [
+        "//packages/core:glib",
+        "//packages/core:zlib",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# QEMU image utilities
+configure_make_package(
+    name = "qemu-img",
+    source = ":qemu-src",
+    version = "9.1.0",
+    description = "QEMU disk image utility (qemu-img, qemu-nbd)",
+    homepage = "https://www.qemu.org/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--disable-system",
+        "--disable-user",
+        "--enable-tools",
+    ],
+    deps = [
+        "//packages/core:glib",
+        "//packages/core:zlib",
+        "//packages/core:zstd",
+    ],
+    visibility = ["PUBLIC"],
+)

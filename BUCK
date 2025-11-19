@@ -460,3 +460,151 @@ filegroup(
     ],
     visibility = ["PUBLIC"],
 )
+
+# =============================================================================
+# Emulation and Virtualization aliases
+# =============================================================================
+
+# QEMU - Full system emulator
+alias(
+    name = "qemu",
+    actual = "//packages/emulation/hypervisors/qemu:qemu",
+    visibility = ["PUBLIC"],
+)
+
+# libvirt - Virtualization API
+alias(
+    name = "libvirt",
+    actual = "//packages/emulation/virtualization/libvirt:libvirt",
+    visibility = ["PUBLIC"],
+)
+
+# virt-manager - VM management GUI
+alias(
+    name = "virt-manager",
+    actual = "//packages/emulation/virtualization/virt-manager:virt-manager",
+    visibility = ["PUBLIC"],
+)
+
+# VirtualBox - Desktop virtualization
+alias(
+    name = "virtualbox",
+    actual = "//packages/emulation/virtualization/virtualbox:virtualbox",
+    visibility = ["PUBLIC"],
+)
+
+# Docker
+alias(
+    name = "docker",
+    actual = "//packages/emulation/containers:docker-full",
+    visibility = ["PUBLIC"],
+)
+
+# Podman
+alias(
+    name = "podman",
+    actual = "//packages/emulation/containers:podman-full",
+    visibility = ["PUBLIC"],
+)
+
+# containerd
+alias(
+    name = "containerd",
+    actual = "//packages/emulation/containers/containerd:containerd",
+    visibility = ["PUBLIC"],
+)
+
+# Firecracker - Secure microVMs
+alias(
+    name = "firecracker",
+    actual = "//packages/emulation/utilities/firecracker:firecracker",
+    visibility = ["PUBLIC"],
+)
+
+# Cloud Hypervisor
+alias(
+    name = "cloud-hypervisor",
+    actual = "//packages/emulation/utilities/cloud-hypervisor:cloud-hypervisor",
+    visibility = ["PUBLIC"],
+)
+
+# crosvm - Chrome OS VMM
+alias(
+    name = "crosvm",
+    actual = "//packages/emulation/utilities/crosvm:crosvm",
+    visibility = ["PUBLIC"],
+)
+
+# virtme-ng - Fast kernel testing
+alias(
+    name = "virtme-ng",
+    actual = "//packages/emulation/kernel/virtme-ng:virtme-ng",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Emulation package groups
+# =============================================================================
+
+# Essential virtualization (QEMU + libvirt + virt-manager)
+filegroup(
+    name = "emulation-essential",
+    srcs = [
+        "//packages/emulation:essential",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Server virtualization
+filegroup(
+    name = "emulation-server",
+    srcs = [
+        "//packages/emulation:server",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Desktop virtualization (with GUI)
+filegroup(
+    name = "emulation-desktop",
+    srcs = [
+        "//packages/emulation:desktop",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Cloud/microVM hypervisors
+filegroup(
+    name = "emulation-cloud",
+    srcs = [
+        "//packages/emulation:cloud",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Development tools for kernel testing
+filegroup(
+    name = "emulation-development",
+    srcs = [
+        "//packages/emulation:development",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Container runtimes
+filegroup(
+    name = "container-packages",
+    srcs = [
+        "//packages/emulation/containers:all-containers",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# All emulation packages
+filegroup(
+    name = "emulation-all",
+    srcs = [
+        "//packages/emulation:all",
+    ],
+    visibility = ["PUBLIC"],
+)

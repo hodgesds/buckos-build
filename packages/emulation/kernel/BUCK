@@ -1,0 +1,27 @@
+# Kernel virtualization tools aggregator
+
+filegroup(
+    name = "virtme-tools",
+    srcs = [
+        "//packages/emulation/kernel/virtme-ng:virtme-ng",
+        "//packages/emulation/kernel/virtme-ng:virtme",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "kvm-tools",
+    srcs = [
+        "//packages/emulation/kernel/kvmtool:kvmtool",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "all-kernel-tools",
+    srcs = [
+        ":virtme-tools",
+        ":kvm-tools",
+    ],
+    visibility = ["PUBLIC"],
+)

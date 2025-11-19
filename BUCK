@@ -66,6 +66,28 @@ alias(
 alias(
     name = "multiplexer",
     actual = "//packages/sys-apps:tmux",
+    visibility = ["PUBLIC"],
+)
+
+# VPN solutions
+alias(
+    name = "wireguard",
+    actual = "//packages/net-vpn:wireguard-tools",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "openvpn",
+    actual = "//packages/net-vpn:openvpn",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "strongswan",
+    actual = "//packages/net-vpn:strongswan",
+    visibility = ["PUBLIC"],
+)
+
 # Benchmarking tools
 alias(
     name = "benchmarks",
@@ -137,6 +159,45 @@ filegroup(
         "//packages/net:openssh",
         "//packages/net:iproute2",
         "//packages/net:dhcpcd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# VPN packages
+filegroup(
+    name = "vpn-packages",
+    srcs = [
+        "//packages/net-vpn:wireguard-tools",
+        "//packages/net-vpn:openvpn",
+        "//packages/net-vpn:strongswan",
+        "//packages/net-vpn:libreswan",
+        "//packages/net-vpn:openconnect",
+        "//packages/net-vpn:tinc",
+        "//packages/net-vpn:zerotier",
+        "//packages/net-vpn:nebula",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Modern VPN solutions
+filegroup(
+    name = "vpn-modern",
+    srcs = [
+        "//packages/net-vpn:wireguard-tools",
+        "//packages/net-vpn:openvpn",
+        "//packages/net-vpn:strongswan",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Mesh VPN solutions
+filegroup(
+    name = "vpn-mesh",
+    srcs = [
+        "//packages/net-vpn:tinc",
+        "//packages/net-vpn:zerotier",
+        "//packages/net-vpn:nebula",
+        "//packages/net-vpn:tailscale",
     ],
     visibility = ["PUBLIC"],
 )

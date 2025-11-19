@@ -32,14 +32,14 @@ Agents should:
 | `kbd` | sys-apps | system/apps/kbd | Already added |
 | `kmod` | sys-apps | system/libs/kmod | Already exists - verify |
 | `dbus` | sys-apps | system/libs/ipc/dbus | Already exists - verify |
-| `haveged` | sys-apps | system/apps/haveged | Entropy daemon |
+| `haveged` | sys-apps | system/apps/haveged | Already added |
 | `pciutils` | sys-apps | system/hardware/pciutils | Already exists - verify |
 | `usbutils` | sys-apps | system/hardware/usbutils | Already exists - verify |
 | `systemd-utils` | sys-apps | system/apps/systemd-utils | Standalone systemd tools |
 | `iproute2` | sys-apps | network/iproute2 | Already exists - verify |
 | `openrc` | sys-apps | system/init/openrc | Already exists - verify |
 | `file` | sys-apps | core/file | Already exists - verify |
-| `ed` | sys-apps | editors/ed | Line editor |
+| `ed` | sys-apps | editors/ed | Already added |
 | `gawk` | sys-apps | editors/gawk | Already exists - verify |
 | `grep` | sys-apps | editors/grep | Already exists - verify |
 | `sed` | sys-apps | editors/sed | Already exists - verify |
@@ -48,7 +48,7 @@ Agents should:
 
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
-| `lsb-release` | sys-apps | system/apps/lsb-release | LSB info |
+| `lsb-release` | sys-apps | system/apps/lsb-release | Already added |
 | `hwdata` | sys-apps | system/hardware/hwdata | Hardware IDs database |
 | `hwloc` | sys-apps | system/hardware/hwloc | Already added |
 | `ethtool` | sys-apps | network/ethtool | Ethernet config |
@@ -56,9 +56,9 @@ Agents should:
 | `fd` | sys-apps | system/apps/fd | Modern find replacement |
 | `bat` | sys-apps | editors/bat | Already exists - verify |
 | `ripgrep` | sys-apps | editors/ripgrep | Already exists - verify |
-| `keyutils` | sys-apps | system/security/keyutils | Kernel key management |
+| `keyutils` | sys-apps | system/security/keyutils | Already added |
 | `kexec-tools` | sys-apps | system/apps/kexec-tools | Fast reboot |
-| `inxi` | sys-apps | system/apps/inxi | System info script |
+| `inxi` | sys-apps | system/apps/inxi | Already added |
 
 ---
 
@@ -78,22 +78,22 @@ Agents should:
 | `pam` | sys-libs | system/security/auth/pam | Auth modules |
 | `libcap` | sys-libs | system/libs/ipc/libcap | Already exists |
 | `libseccomp` | sys-libs | system/libs/ipc/libseccomp | Already exists |
-| `libunwind` | sys-libs | system/libs/libunwind | Stack unwinding |
+| `libunwind` | sys-libs | system/libs/libunwind | Already added |
 | `liburing` | sys-libs | system/libs/liburing | Already added |
-| `cracklib` | sys-libs | system/security/cracklib | Password checker |
+| `cracklib` | sys-libs | system/security/cracklib | Already added |
 | `gdbm` | sys-libs | system/docs/gdbm | Already exists in docs |
-| `timezone-data` | sys-libs | system/libs/timezone-data | Timezone info |
+| `timezone-data` | sys-libs | system/libs/timezone-data | Already added |
 
 ### MEDIUM Priority
 
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
 | `slang` | sys-libs | system/libs/slang | Already added |
-| `talloc` | sys-libs | system/libs/talloc | Memory allocator |
+| `talloc` | sys-libs | system/libs/talloc | Already added |
 | `tdb` | sys-libs | system/libs/tdb | Trivial database |
 | `tevent` | sys-libs | system/libs/tevent | Event system |
 | `ldb` | sys-libs | system/libs/ldb | LDAP-like database |
-| `efivar` | sys-libs | system/libs/efivar | EFI variables |
+| `efivar` | sys-libs | system/libs/efivar | Already added |
 | `mtdev` | sys-libs | system/libs/input/mtdev | Already exists |
 
 ---
@@ -124,8 +124,8 @@ Agents should:
 
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
-| `lzip` | app-arch | system/libs/compression/lzip | LZMA compressor |
-| `lzop` | app-arch | system/libs/compression/lzop | LZO compressor |
+| `lzip` | app-arch | system/libs/compression/lzip | Already added |
+| `lzop` | app-arch | system/libs/compression/lzop | Already added |
 | `rar` | app-arch | system/libs/compression/rar | RAR archiver |
 | `unrar` | app-arch | system/libs/compression/unrar | RAR extractor |
 | `cabextract` | app-arch | system/libs/compression/cabextract | CAB extractor |
@@ -146,7 +146,7 @@ Agents should:
 |---------|----------------|-------------|-------|
 | `nmap` | net-analyzer | network/nmap | Already exists |
 | `tcpdump` | net-analyzer | network/tcpdump | Already exists |
-| `wireshark` | net-analyzer | network/wireshark | Packet analyzer |
+| `wireshark` | net-analyzer | network/wireshark | Already added |
 | `iftop` | net-analyzer | network/iftop | Already exists |
 | `nethogs` | net-analyzer | network/nethogs | Already added |
 | `iperf` | net-analyzer | network/iperf | Already added |
@@ -200,7 +200,7 @@ Agents should:
 | Package | Gentoo Category | BuckOs Path | Notes |
 |---------|----------------|-------------|-------|
 | `gperf` | dev-util | dev-tools/dev-utils/gperf | Already added |
-| `gengetopt` | dev-util | dev-tools/dev-utils/gengetopt | Cmdline parser generator |
+| `gengetopt` | dev-util | dev-tools/dev-utils/gengetopt | Already added |
 | `intltool` | dev-util | dev-tools/dev-utils/intltool | i18n tools |
 | `itstool` | dev-util | dev-tools/dev-utils/itstool | XML translation |
 | `gtk-doc` | dev-util | dev-tools/dev-utils/gtk-doc | GTK documentation |
@@ -229,7 +229,7 @@ Agents should:
 | `doas` | app-admin | system/apps/doas | Already exists |
 | `logrotate` | app-admin | system/apps/logrotate | Already exists |
 | `sysstat` | app-admin | system/apps/sysstat | Already added |
-| `sysklogd` | app-admin | system/apps/sysklogd | System logger |
+| `sysklogd` | app-admin | system/apps/sysklogd | Already added |
 | `rsyslog` | app-admin | system/apps/rsyslog | Already exists |
 | `conky` | app-admin | desktop/conky | System monitor widget |
 | `htop` | app-admin | system/apps/htop | Already exists |

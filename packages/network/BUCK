@@ -58,6 +58,43 @@ filegroup(
         "//packages/network/iproute2:iproute2",
         "//packages/network/iputils:iputils",
         "//packages/network/net-tools:net-tools",
+        "//packages/network/dhcpcd:dhcpcd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Remote Access - SSH and remote connectivity
+# =============================================================================
+
+filegroup(
+    name = "remote-access",
+    srcs = [
+        "//packages/network/openssh:openssh",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# VPN Solutions - Virtual private network tools
+# =============================================================================
+
+filegroup(
+    name = "vpn",
+    srcs = [
+        "//packages/network/vpn:all-vpns",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Firewall - Network security and filtering
+# =============================================================================
+
+filegroup(
+    name = "firewall",
+    srcs = [
+        "//packages/network/firewall:all-firewalls",
     ],
     visibility = ["PUBLIC"],
 )
@@ -114,6 +151,9 @@ filegroup(
         ":transfer-utils",
         ":browsers",
         ":network-tools",
+        ":remote-access",
+        ":vpn",
+        ":firewall",
     ],
     visibility = ["PUBLIC"],
 )

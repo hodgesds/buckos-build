@@ -35,7 +35,7 @@ configure_make_package(
     """,
     deps = [
         "//packages/core:zlib",
-        "//packages/net/openssl:openssl",
+        "//packages/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],
 )

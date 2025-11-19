@@ -154,11 +154,11 @@ filegroup(
 filegroup(
     name = "net-packages",
     srcs = [
-        "//packages/net:openssl",
-        "//packages/net:curl",
-        "//packages/net:openssh",
-        "//packages/net:iproute2",
-        "//packages/net:dhcpcd",
+        "//packages/network:openssl",
+        "//packages/network:curl",
+        "//packages/network:openssh",
+        "//packages/network:iproute2",
+        "//packages/network:dhcpcd",
     ],
     visibility = ["PUBLIC"],
 )

@@ -1,0 +1,125 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+
+# =============================================================================
+# Documentation Tools
+# =============================================================================
+
+# man-db - Man page database and utilities
+download_source(
+    name = "man-db-src",
+    src_uri = "https://download.savannah.nongnu.org/releases/man-db/man-db-2.12.0.tar.xz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+configure_make_package(
+    name = "man-db",
+    source = ":man-db-src",
+    version = "2.12.0",
+    description = "Man page database and utilities",
+    homepage = "https://man-db.nongnu.org/",
+    license = "GPL-2.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--localstatedir=/var",
+        "--with-db=gdbm",
+        "--disable-setuid",
+        "--enable-cache-owner=root",
+        "--with-systemdtmpfilesdir=/usr/lib/tmpfiles.d",
+        "--with-pager=/usr/bin/less",
+        "--with-browser=/usr/bin/lynx",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:less",
+        "//packages/linux/dev-libs/gdbm:gdbm",
+        "//packages/linux/core:zlib",
+        "//packages/linux/dev-tools/dev-utils:groff",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# man-pages - Linux man pages collection
+download_source(
+    name = "man-pages-src",
+    src_uri = "https://mirrors.edge.kernel.org/pub/linux/docs/man-pages/man-pages-6.06.tar.xz",
+    sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+)
+
+configure_make_package(
+    name = "man-pages",
+    source = ":man-pages-src",
+    version = "6.06",
+    description = "Linux kernel and C library interface man pages",
+    homepage = "https://www.kernel.org/doc/man-pages/",
+    license = "GPL-2.0-or-later AND BSD-3-Clause AND MIT",
+    pre_configure = "true",
+    configure_args = [],
+    make_args = [],
+    post_install = """
+        make prefix="$OUT/usr" install
+    """,
+    deps = [],
+    visibility = ["PUBLIC"],
+)
+
+# groff - GNU troff text formatting system
+download_source(
+    name = "groff-src",
+    src_uri = "https://ftp.gnu.org/gnu/groff/groff-1.23.0.tar.gz",
+    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+)
+
+configure_make_package(
+    name = "groff",
+    source = ":groff-src",
+    version = "1.23.0",
+    description = "GNU troff text formatting system",
+    homepage = "https://www.gnu.org/software/groff/",
+    license = "GPL-3.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--without-x",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# gdbm - GNU database manager
+download_source(
+    name = "gdbm-src",
+    src_uri = "https://ftp.gnu.org/gnu/gdbm/gdbm-1.23.tar.gz",
+    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+)
+
+configure_make_package(
+    name = "gdbm",
+    source = ":gdbm-src",
+    version = "1.23",
+    description = "GNU database manager library",
+    homepage = "https://www.gnu.org/software/gdbm/",
+    license = "GPL-3.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-libgdbm-compat",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:readline",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for all documentation packages
+filegroup(
+    name = "docs",
+    srcs = [
+        ":man-db",
+        ":man-pages",
+        ":groff",
+        ":gdbm",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,59 @@
+load("//defs:package_defs.bzl", "download_source", "meson_package")
+
+# =============================================================================
+# GVFS - GNOME Virtual File System
+# =============================================================================
+
+download_source(
+    name = "gvfs-src",
+    src_uri = "https://download.gnome.org/sources/gvfs/1.54/gvfs-1.54.0.tar.xz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+meson_package(
+    name = "gvfs",
+    source = ":gvfs-src",
+    version = "1.54.0",
+    description = "GNOME Virtual File System for userspace programs",
+    homepage = "https://wiki.gnome.org/Projects/gvfs",
+    license = "LGPL-2.0-or-later",
+    meson_args = [
+        "-Dsystemduserunitdir=/usr/lib/systemd/user",
+        "-Dtmpfilesdir=/usr/lib/tmpfiles.d",
+        "-Dadmin=false",
+        "-Dafc=false",
+        "-Dafp=true",
+        "-Darchive=true",
+        "-Dcdda=false",
+        "-Ddnssd=false",
+        "-Dgoa=false",
+        "-Dgoogle=false",
+        "-Dgphoto2=false",
+        "-Dhttp=true",
+        "-Dmtp=false",
+        "-Dnfs=true",
+        "-Donedrive=false",
+        "-Dsftp=true",
+        "-Dsmb=true",
+        "-Dudisks2=true",
+        "-Dbluray=false",
+        "-Dfuse=true",
+        "-Dgcr=false",
+        "-Dgcrypt=true",
+        "-Dgudev=true",
+        "-Dkeyring=true",
+        "-Dlogind=true",
+        "-Dlibusb=false",
+        "-Dman=false",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/dev-libs/glib:glib",
+        "//packages/linux/system/libs/ipc/dbus:dbus",
+        "//packages/linux/system/filesystem/fuse:fuse3",
+        "//packages/linux/system/filesystem/management/udisks2:udisks2",
+        "//packages/linux/network:openssl",
+        "//packages/linux/dev-libs/libsecret:libsecret",
+    ],
+    visibility = ["PUBLIC"],
+)

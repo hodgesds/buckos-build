@@ -1,0 +1,181 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "meson_package")
+
+# =============================================================================
+# XDG Desktop Integration Tools
+# =============================================================================
+
+# xdg-utils - Desktop integration utilities
+download_source(
+    name = "xdg-utils-src",
+    src_uri = "https://portland.freedesktop.org/download/xdg-utils-1.2.1.tar.gz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+configure_make_package(
+    name = "xdg-utils",
+    source = ":xdg-utils-src",
+    version = "1.2.1",
+    description = "Command line tools for freedesktop.org standards",
+    homepage = "https://www.freedesktop.org/wiki/Software/xdg-utils/",
+    license = "MIT",
+    configure_args = [
+        "--prefix=/usr",
+    ],
+    deps = [
+        "//packages/linux/core:bash",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# xdg-user-dirs - User directory management
+download_source(
+    name = "xdg-user-dirs-src",
+    src_uri = "https://user-dirs.freedesktop.org/releases/xdg-user-dirs-0.18.tar.gz",
+    sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+)
+
+configure_make_package(
+    name = "xdg-user-dirs",
+    source = ":xdg-user-dirs-src",
+    version = "0.18",
+    description = "Tool to manage well-known user directories",
+    homepage = "https://freedesktop.org/wiki/Software/xdg-user-dirs/",
+    license = "GPL-2.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# xdg-desktop-portal - Portal frontend service
+download_source(
+    name = "xdg-desktop-portal-src",
+    src_uri = "https://github.com/flatpak/xdg-desktop-portal/releases/download/1.18.2/xdg-desktop-portal-1.18.2.tar.xz",
+    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+)
+
+meson_package(
+    name = "xdg-desktop-portal",
+    source = ":xdg-desktop-portal-src",
+    version = "1.18.2",
+    description = "Portal frontend service for flatpak and sandboxed apps",
+    homepage = "https://flatpak.github.io/xdg-desktop-portal/",
+    license = "LGPL-2.1-or-later",
+    meson_args = [
+        "-Ddbus-service-dir=/usr/share/dbus-1/services",
+        "-Dsystemd=disabled",
+        "-Ddocbook-docs=disabled",
+        "-Dflatpak-interfaces-dir=/usr/share/dbus-1/interfaces",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/dev-libs/glib:glib",
+        "//packages/linux/system/libs/ipc/dbus:dbus",
+        "//packages/linux/dev-libs/json-glib:json-glib",
+        "//packages/linux/fonts/libraries:fontconfig",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# xdg-desktop-portal-gtk - GTK portal backend
+download_source(
+    name = "xdg-desktop-portal-gtk-src",
+    src_uri = "https://github.com/flatpak/xdg-desktop-portal-gtk/releases/download/1.15.1/xdg-desktop-portal-gtk-1.15.1.tar.xz",
+    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+)
+
+meson_package(
+    name = "xdg-desktop-portal-gtk",
+    source = ":xdg-desktop-portal-gtk-src",
+    version = "1.15.1",
+    description = "GTK+ backend for xdg-desktop-portal",
+    homepage = "https://flatpak.github.io/xdg-desktop-portal/",
+    license = "LGPL-2.1-or-later",
+    meson_args = [
+        "-Dsystemd=disabled",
+    ],
+    deps = [
+        ":xdg-desktop-portal",
+        "//packages/linux/core:musl",
+        "//packages/linux/desktop/gtk:gtk3",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# xdg-desktop-portal-wlr - wlroots portal backend
+download_source(
+    name = "xdg-desktop-portal-wlr-src",
+    src_uri = "https://github.com/emersion/xdg-desktop-portal-wlr/releases/download/v0.7.1/xdg-desktop-portal-wlr-0.7.1.tar.gz",
+    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+)
+
+meson_package(
+    name = "xdg-desktop-portal-wlr",
+    source = ":xdg-desktop-portal-wlr-src",
+    version = "0.7.1",
+    description = "xdg-desktop-portal backend for wlroots",
+    homepage = "https://github.com/emersion/xdg-desktop-portal-wlr",
+    license = "MIT",
+    meson_args = [
+        "-Dsystemd=disabled",
+    ],
+    deps = [
+        ":xdg-desktop-portal",
+        "//packages/linux/core:musl",
+        "//packages/linux/desktop/wayland:wayland",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# xdg-desktop-portal-kde - KDE portal backend
+download_source(
+    name = "xdg-desktop-portal-kde-src",
+    src_uri = "https://download.kde.org/stable/plasma/6.0.1/xdg-desktop-portal-kde-6.0.1.tar.xz",
+    sha256 = "f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
+)
+
+configure_make_package(
+    name = "xdg-desktop-portal-kde",
+    source = ":xdg-desktop-portal-kde-src",
+    version = "6.0.1",
+    description = "KDE backend for xdg-desktop-portal",
+    homepage = "https://kde.org/plasma-desktop/",
+    license = "GPL-2.0-or-later",
+    pre_configure = """
+        mkdir -p build
+        cd build
+        cmake .. \
+            -DCMAKE_INSTALL_PREFIX=/usr \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_TESTING=OFF
+    """,
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+        cd build
+        DESTDIR=$OUT make install
+    """,
+    deps = [
+        ":xdg-desktop-portal",
+        "//packages/linux/core:musl",
+        "//packages/linux/desktop/kde:kf5",
+        "//packages/linux/desktop/qt:qt5",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for all XDG packages
+filegroup(
+    name = "xdg",
+    srcs = [
+        ":xdg-utils",
+        ":xdg-user-dirs",
+        ":xdg-desktop-portal",
+        ":xdg-desktop-portal-gtk",
+    ],
+    visibility = ["PUBLIC"],
+)

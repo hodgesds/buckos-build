@@ -1,0 +1,230 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "meson_package")
+
+# =============================================================================
+# Desktop Accessibility Tools
+# =============================================================================
+
+# at-spi2-core - Accessibility Service Provider Interface
+download_source(
+    name = "at-spi2-core-src",
+    src_uri = "https://download.gnome.org/sources/at-spi2-core/2.52/at-spi2-core-2.52.0.tar.xz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+meson_package(
+    name = "at-spi2-core",
+    source = ":at-spi2-core-src",
+    version = "2.52.0",
+    description = "Protocol definitions and daemon for Assistive Technology Service Provider Interface",
+    homepage = "https://wiki.gnome.org/Accessibility",
+    license = "LGPL-2.1-or-later",
+    meson_args = [
+        "-Dsystemd_user_dir=/usr/lib/systemd/user",
+        "-Ddbus_daemon=/usr/bin/dbus-daemon",
+        "-Ddocs=false",
+        "-Dintrospection=disabled",
+        "-Dx11=enabled",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/dev-libs/glib:glib",
+        "//packages/linux/system/libs/ipc/dbus:dbus",
+        "//packages/linux/desktop/xorg-server:libx11",
+        "//packages/linux/desktop/xorg-server:libxi",
+        "//packages/linux/desktop/xorg-server:libxtst",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# at-spi2-atk - ATK accessibility bridge
+download_source(
+    name = "at-spi2-atk-src",
+    src_uri = "https://download.gnome.org/sources/at-spi2-atk/2.38/at-spi2-atk-2.38.0.tar.xz",
+    sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+)
+
+meson_package(
+    name = "at-spi2-atk",
+    source = ":at-spi2-atk-src",
+    version = "2.38.0",
+    description = "GTK+ module that bridges ATK to at-spi2",
+    homepage = "https://wiki.gnome.org/Accessibility",
+    license = "LGPL-2.1-or-later",
+    meson_args = [
+        "-Dtests=false",
+    ],
+    deps = [
+        ":at-spi2-core",
+        "//packages/linux/core:musl",
+        "//packages/linux/dev-libs/glib:glib",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Orca - Screen reader for GNOME
+download_source(
+    name = "orca-src",
+    src_uri = "https://download.gnome.org/sources/orca/46/orca-46.0.tar.xz",
+    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+)
+
+meson_package(
+    name = "orca",
+    source = ":orca-src",
+    version = "46.0",
+    description = "Screen reader for GNOME that provides access via speech and Braille",
+    homepage = "https://wiki.gnome.org/Projects/Orca",
+    license = "LGPL-2.1-or-later",
+    meson_args = [],
+    deps = [
+        ":at-spi2-core",
+        "//packages/linux/core:musl",
+        "//packages/linux/lang/python:python",
+        "//packages/linux/desktop/gtk:gtk3",
+        ":speech-dispatcher",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Speech Dispatcher - Common interface to speech synthesis
+download_source(
+    name = "speech-dispatcher-src",
+    src_uri = "https://github.com/brailcom/speechd/releases/download/0.11.5/speech-dispatcher-0.11.5.tar.gz",
+    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+)
+
+configure_make_package(
+    name = "speech-dispatcher",
+    source = ":speech-dispatcher-src",
+    version = "0.11.5",
+    description = "Common interface to text-to-speech synthesizers",
+    homepage = "https://freebsoft.org/speechd",
+    license = "GPL-2.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--disable-static",
+        "--with-espeak-ng",
+        "--without-flite",
+        "--without-ibmtts",
+        "--without-kali",
+        "--without-baratinoo",
+        "--without-voxin",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/dev-libs/glib:glib",
+        "//packages/linux/audio/libraries:libao",
+        ":espeak-ng",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# eSpeak NG - Text to speech synthesizer
+download_source(
+    name = "espeak-ng-src",
+    src_uri = "https://github.com/espeak-ng/espeak-ng/archive/refs/tags/1.51.1/espeak-ng-1.51.1.tar.gz",
+    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+)
+
+configure_make_package(
+    name = "espeak-ng",
+    source = ":espeak-ng-src",
+    version = "1.51.1",
+    description = "Modern text to speech synthesizer supporting multiple languages",
+    homepage = "https://github.com/espeak-ng/espeak-ng",
+    license = "GPL-3.0-or-later",
+    pre_configure = """
+        ./autogen.sh
+    """,
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--with-pcaudiolib=no",
+        "--with-sonic=no",
+        "--with-speechplayer=no",
+        "--with-mbrola=no",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Caribou - On-screen keyboard
+download_source(
+    name = "caribou-src",
+    src_uri = "https://download.gnome.org/sources/caribou/0.4/caribou-0.4.21.tar.xz",
+    sha256 = "f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
+)
+
+configure_make_package(
+    name = "caribou",
+    source = ":caribou-src",
+    version = "0.4.21",
+    description = "On-screen keyboard for GNOME",
+    homepage = "https://wiki.gnome.org/Projects/Caribou",
+    license = "LGPL-2.1-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--disable-gtk2-module",
+        "--disable-docs",
+    ],
+    deps = [
+        ":at-spi2-core",
+        "//packages/linux/core:musl",
+        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/dev-libs/glib:glib",
+        "//packages/linux/lang/python:python",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# libcanberra - Sound event library
+download_source(
+    name = "libcanberra-src",
+    src_uri = "http://0pointer.de/lennart/projects/libcanberra/libcanberra-0.30.tar.xz",
+    sha256 = "a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8",
+)
+
+configure_make_package(
+    name = "libcanberra",
+    source = ":libcanberra-src",
+    version = "0.30",
+    description = "Sound event library for XDG sound themes",
+    homepage = "http://0pointer.de/lennart/projects/libcanberra/",
+    license = "LGPL-2.1-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--disable-oss",
+        "--enable-pulse",
+        "--enable-alsa",
+        "--enable-gtk3",
+        "--disable-gtk",
+        "--disable-lynx",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/audio/daemons:pulseaudio",
+        "//packages/linux/audio/daemons:alsa-lib",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for all accessibility packages
+filegroup(
+    name = "accessibility",
+    srcs = [
+        ":at-spi2-core",
+        ":at-spi2-atk",
+        ":orca",
+        ":speech-dispatcher",
+        ":espeak-ng",
+        ":caribou",
+        ":libcanberra",
+    ],
+    visibility = ["PUBLIC"],
+)

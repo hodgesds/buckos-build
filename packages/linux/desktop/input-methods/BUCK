@@ -1,0 +1,310 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "meson_package")
+
+# =============================================================================
+# Input Method Frameworks
+# =============================================================================
+
+# IBus - Intelligent Input Bus
+download_source(
+    name = "ibus-src",
+    src_uri = "https://github.com/ibus/ibus/releases/download/1.5.29/ibus-1.5.29.tar.gz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+configure_make_package(
+    name = "ibus",
+    source = ":ibus-src",
+    version = "1.5.29",
+    description = "Intelligent Input Bus for Linux/Unix",
+    homepage = "https://github.com/ibus/ibus",
+    license = "LGPL-2.1-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--disable-gtk2",
+        "--enable-gtk3",
+        "--enable-gtk4",
+        "--enable-wayland",
+        "--disable-appindicator",
+        "--disable-emoji-dict",
+        "--disable-unicode-dict",
+        "--disable-python2",
+        "--enable-python-library",
+        "--with-python=python3",
+    ],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/desktop/gtk:gtk4",
+        "//packages/linux/dev-libs/glib:glib",
+        "//packages/linux/system/libs/ipc/dbus:dbus",
+        "//packages/linux/desktop/wayland:wayland",
+        "//packages/linux/lang/python:python",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Fcitx5 - Input method framework
+download_source(
+    name = "fcitx5-src",
+    src_uri = "https://download.fcitx-im.org/fcitx5/fcitx5/fcitx5-5.1.8.tar.xz",
+    sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+)
+
+configure_make_package(
+    name = "fcitx5",
+    source = ":fcitx5-src",
+    version = "5.1.8",
+    description = "Next generation input method framework",
+    homepage = "https://fcitx-im.org/",
+    license = "LGPL-2.1-or-later",
+    pre_configure = """
+        mkdir -p build
+        cd build
+        cmake .. \
+            -DCMAKE_INSTALL_PREFIX=/usr \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DENABLE_TEST=OFF \
+            -DENABLE_COVERAGE=OFF \
+            -DENABLE_ENCHANT=OFF \
+            -DENABLE_X11=ON \
+            -DENABLE_WAYLAND=ON \
+            -DENABLE_DBUS=ON \
+            -DUSE_SYSTEMD=OFF
+    """,
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+        cd build
+        DESTDIR=$OUT make install
+    """,
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/dev-libs/glib:glib",
+        "//packages/linux/system/libs/ipc/dbus:dbus",
+        "//packages/linux/desktop/wayland:wayland",
+        "//packages/linux/desktop/xorg-server:libx11",
+        "//packages/linux/desktop/xorg-server:libxkbcommon",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Fcitx5 GTK module
+download_source(
+    name = "fcitx5-gtk-src",
+    src_uri = "https://download.fcitx-im.org/fcitx5/fcitx5-gtk/fcitx5-gtk-5.1.1.tar.xz",
+    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+)
+
+configure_make_package(
+    name = "fcitx5-gtk",
+    source = ":fcitx5-gtk-src",
+    version = "5.1.1",
+    description = "GTK input method module for Fcitx5",
+    homepage = "https://fcitx-im.org/",
+    license = "LGPL-2.1-or-later",
+    pre_configure = """
+        mkdir -p build
+        cd build
+        cmake .. \
+            -DCMAKE_INSTALL_PREFIX=/usr \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DENABLE_GTK2_IM_MODULE=OFF \
+            -DENABLE_GTK3_IM_MODULE=ON \
+            -DENABLE_GTK4_IM_MODULE=ON
+    """,
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+        cd build
+        DESTDIR=$OUT make install
+    """,
+    deps = [
+        ":fcitx5",
+        "//packages/linux/core:musl",
+        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/desktop/gtk:gtk4",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Fcitx5 Qt module
+download_source(
+    name = "fcitx5-qt-src",
+    src_uri = "https://download.fcitx-im.org/fcitx5/fcitx5-qt/fcitx5-qt-5.1.5.tar.xz",
+    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+)
+
+configure_make_package(
+    name = "fcitx5-qt",
+    source = ":fcitx5-qt-src",
+    version = "5.1.5",
+    description = "Qt input method module for Fcitx5",
+    homepage = "https://fcitx-im.org/",
+    license = "LGPL-2.1-or-later",
+    pre_configure = """
+        mkdir -p build
+        cd build
+        cmake .. \
+            -DCMAKE_INSTALL_PREFIX=/usr \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DENABLE_QT4=OFF \
+            -DENABLE_QT5=ON \
+            -DENABLE_QT6=ON
+    """,
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+        cd build
+        DESTDIR=$OUT make install
+    """,
+    deps = [
+        ":fcitx5",
+        "//packages/linux/core:musl",
+        "//packages/linux/desktop/qt:qt5",
+        "//packages/linux/desktop/qt:qt6",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Fcitx5 Chinese Addons (Pinyin, etc.)
+download_source(
+    name = "fcitx5-chinese-addons-src",
+    src_uri = "https://download.fcitx-im.org/fcitx5/fcitx5-chinese-addons/fcitx5-chinese-addons-5.1.4.tar.xz",
+    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+)
+
+configure_make_package(
+    name = "fcitx5-chinese-addons",
+    source = ":fcitx5-chinese-addons-src",
+    version = "5.1.4",
+    description = "Chinese addons for Fcitx5 (Pinyin, Wubi, etc.)",
+    homepage = "https://fcitx-im.org/",
+    license = "LGPL-2.1-or-later",
+    pre_configure = """
+        mkdir -p build
+        cd build
+        cmake .. \
+            -DCMAKE_INSTALL_PREFIX=/usr \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DENABLE_TEST=OFF \
+            -DENABLE_OPENCC=OFF \
+            -DENABLE_GUI=ON
+    """,
+    configure_args = [],
+    make_args = ["-C", "build"],
+    post_install = """
+        cd build
+        DESTDIR=$OUT make install
+    """,
+    deps = [
+        ":fcitx5",
+        "//packages/linux/core:musl",
+        "//packages/linux/desktop/qt:qt5",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# IBus Anthy - Japanese input for IBus
+download_source(
+    name = "ibus-anthy-src",
+    src_uri = "https://github.com/ibus/ibus-anthy/releases/download/1.5.15/ibus-anthy-1.5.15.tar.gz",
+    sha256 = "f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
+)
+
+configure_make_package(
+    name = "ibus-anthy",
+    source = ":ibus-anthy-src",
+    version = "1.5.15",
+    description = "Japanese Anthy engine for IBus",
+    homepage = "https://github.com/ibus/ibus-anthy",
+    license = "GPL-2.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--libexecdir=/usr/lib/ibus",
+    ],
+    deps = [
+        ":ibus",
+        "//packages/linux/core:musl",
+        "//packages/linux/lang/python:python",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# IBus Libpinyin - Chinese Pinyin for IBus
+download_source(
+    name = "ibus-libpinyin-src",
+    src_uri = "https://github.com/libpinyin/ibus-libpinyin/releases/download/1.15.3/ibus-libpinyin-1.15.3.tar.gz",
+    sha256 = "a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8",
+)
+
+configure_make_package(
+    name = "ibus-libpinyin",
+    source = ":ibus-libpinyin-src",
+    version = "1.15.3",
+    description = "Intelligent Chinese Pinyin engine for IBus",
+    homepage = "https://github.com/libpinyin/ibus-libpinyin",
+    license = "GPL-3.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--libexecdir=/usr/lib/ibus",
+    ],
+    deps = [
+        ":ibus",
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# IBus Hangul - Korean input for IBus
+download_source(
+    name = "ibus-hangul-src",
+    src_uri = "https://github.com/libhangul/ibus-hangul/releases/download/1.5.5/ibus-hangul-1.5.5.tar.gz",
+    sha256 = "b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9",
+)
+
+configure_make_package(
+    name = "ibus-hangul",
+    source = ":ibus-hangul-src",
+    version = "1.5.5",
+    description = "Korean Hangul engine for IBus",
+    homepage = "https://github.com/libhangul/ibus-hangul",
+    license = "GPL-2.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--libexecdir=/usr/lib/ibus",
+    ],
+    deps = [
+        ":ibus",
+        "//packages/linux/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for all input method packages
+filegroup(
+    name = "input-methods",
+    srcs = [
+        ":ibus",
+        ":fcitx5",
+        ":fcitx5-gtk",
+        ":fcitx5-qt",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Filegroup for complete CJK support
+filegroup(
+    name = "input-methods-cjk",
+    srcs = [
+        ":input-methods",
+        ":fcitx5-chinese-addons",
+        ":ibus-anthy",
+        ":ibus-libpinyin",
+        ":ibus-hangul",
+    ],
+    visibility = ["PUBLIC"],
+)

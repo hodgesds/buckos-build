@@ -1,0 +1,43 @@
+# =============================================================================
+# llama.cpp - LLM inference in C/C++
+# =============================================================================
+#
+# llama.cpp is a port of Facebook's LLaMA model in C/C++ for efficient
+# CPU and GPU inference. Features include:
+# - Pure C/C++ implementation with no dependencies
+# - Support for various model formats (GGUF, GGML)
+# - CPU inference with AVX, AVX2, AVX512 support
+# - GPU acceleration via CUDA, Metal, OpenCL, Vulkan
+# - Quantization support (2-bit to 8-bit)
+#
+# Provides several binaries:
+#   llama-cli      - Interactive chat interface
+#   llama-server   - OpenAI-compatible API server
+#   llama-quantize - Model quantization tool
+#   llama-bench    - Benchmarking tool
+#
+# =============================================================================
+
+load("//defs:package_defs.bzl", "cmake_package")
+
+cmake_package(
+    name = "llama-cpp",
+    version = "b4154",
+    src_uri = "https://github.com/ggerganov/llama.cpp/archive/refs/tags/b4154.tar.gz",
+    sha256 = "b5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5",
+    description = "LLM inference in C/C++ with minimal dependencies",
+    homepage = "https://github.com/ggerganov/llama.cpp",
+    license = "MIT",
+    cmake_args = [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DGGML_NATIVE=ON",
+        "-DGGML_OPENMP=ON",
+        "-DLLAMA_BUILD_TESTS=OFF",
+        "-DLLAMA_BUILD_EXAMPLES=ON",
+        "-DLLAMA_BUILD_SERVER=ON",
+    ],
+    deps = [
+        "//packages/core:zlib",
+    ],
+    visibility = ["PUBLIC"],
+)

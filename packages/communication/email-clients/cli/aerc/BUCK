@@ -1,0 +1,28 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "aerc-src",
+    src_uri = "https://git.sr.ht/~rjarry/aerc/archive/0.18.2.tar.gz",
+    sha256 = "e8a3f5b9c2d1a7f6e4b8c9d0a3b5e7f9a1c3d5e7f9b1d3e5f7a9c1d3e5f7a9b1",
+)
+
+binary_package(
+    name = "aerc",
+    srcs = [":aerc-src"],
+    version = "0.18.2",
+    description = "Pretty good terminal email client",
+    homepage = "https://aerc-mail.org/",
+    license = "MIT",
+    install_script = """
+        cd $SRCS/aerc-*
+        export CGO_ENABLED=0
+        export GOFLAGS="-buildmode=pie"
+        make PREFIX=/usr
+        make PREFIX=/usr DESTDIR="$OUT" install
+    """,
+    deps = [
+        "//packages/lang/go:go",
+        "//packages/core:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

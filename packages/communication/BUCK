@@ -1,0 +1,56 @@
+# Communication Packages
+# Email clients, messaging, and communication tools
+
+# All communication packages
+filegroup(
+    name = "communication-packages",
+    srcs = [
+        "//packages/communication/email-clients:all-email-clients",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Email clients - all
+filegroup(
+    name = "email-clients",
+    srcs = [
+        "//packages/communication/email-clients:all-email-clients",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# CLI email clients
+filegroup(
+    name = "cli-email",
+    srcs = [
+        "//packages/communication/email-clients:cli-clients",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# GUI email clients
+filegroup(
+    name = "gui-email",
+    srcs = [
+        "//packages/communication/email-clients:gui-clients",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Recommended communication tools
+filegroup(
+    name = "recommended",
+    srcs = [
+        "//packages/communication/email-clients:recommended",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Lightweight communication suite
+filegroup(
+    name = "lightweight",
+    srcs = [
+        "//packages/communication/email-clients:lightweight",
+    ],
+    visibility = ["PUBLIC"],
+)

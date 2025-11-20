@@ -14,7 +14,15 @@ buckos-build/
 ├── BUCK                  # Root build targets
 ├── defs/
 │   ├── package_defs.bzl  # Package build rules (like eclass)
-│   └── platform_defs.bzl # Platform targeting helpers
+│   ├── platform_defs.bzl # Platform targeting helpers
+│   ├── use_flags.bzl     # USE flag system
+│   ├── package_sets.bzl  # Package set definitions (like profiles)
+│   ├── registry.bzl      # Package version registry
+│   └── versions.bzl      # Multi-version support
+├── docs/
+│   ├── USE_FLAGS.md      # USE flag documentation
+│   ├── PACKAGE_SETS.md   # Package set documentation
+│   └── VERSIONING.md     # Version management docs
 ├── platforms/
 │   └── BUCK              # Platform definitions and constraints
 ├── toolchains/
@@ -236,6 +244,101 @@ The following constants are available in `platform_defs.bzl`:
 | `UNIX_PLATFORMS` | List | Linux, BSD, macOS |
 | `POSIX_PLATFORMS` | List | Linux, BSD, macOS |
 
+## Package Sets
+
+Package sets allow you to build complete systems by selecting predefined collections of packages, similar to Gentoo's system profiles.
+
+### Available Profiles
+
+| Profile | Description |
+|---------|-------------|
+| `minimal` | Bare essentials for bootable system |
+| `server` | Headless server configuration |
+| `desktop` | Full desktop with multimedia |
+| `developer` | Development tools and languages |
+| `hardened` | Security-focused configuration |
+| `embedded` | Minimal footprint for IoT |
+| `container` | Container base image |
+
+### Using Package Sets
+
+```python
+load("//defs:package_sets.bzl", "system_set")
+
+# Create a customized server
+system_set(
+    name = "my-server",
+    profile = "server",
+    additions = [
+        "//packages/linux/net-vpn:wireguard-tools",
+        "//packages/linux/www-servers:nginx",
+    ],
+    removals = [
+        "//packages/linux/editors:emacs",
+    ],
+)
+```
+
+### Task-Specific Sets
+
+Pre-configured sets for common use cases:
+
+- `web-server` - Web server packages
+- `database-server` - Database packages
+- `container-host` - Container runtime and tools
+- `virtualization-host` - VM hypervisor setup
+- `vpn-server` - VPN server packages
+- `monitoring` - System monitoring tools
+
+### Desktop Environments
+
+- `gnome-desktop` - GNOME
+- `kde-desktop` - KDE Plasma
+- `xfce-desktop` - XFCE
+- `sway-desktop` - Sway (Wayland)
+- `i3-desktop` - i3 (X11)
+
+### Combining Sets
+
+```python
+load("//defs:package_sets.bzl", "combined_set")
+
+combined_set(
+    name = "full-stack-server",
+    sets = ["@web-server", "@database-server", "@monitoring"],
+)
+```
+
+See [docs/PACKAGE_SETS.md](docs/PACKAGE_SETS.md) for complete documentation.
+
+## USE Flags
+
+BuckOs includes a USE flag system similar to Gentoo for conditional package features:
+
+```python
+load("//defs:use_flags.bzl", "use_package")
+
+use_package(
+    name = "curl",
+    version = "8.5.0",
+    src_uri = "https://curl.se/download/curl-8.5.0.tar.xz",
+    sha256 = "...",
+    iuse = ["ssl", "http2", "zstd", "ipv6"],
+    use_defaults = ["ssl", "ipv6"],
+    use_deps = {
+        "ssl": ["//packages/linux/dev-libs/openssl"],
+        "http2": ["//packages/linux/net-libs/nghttp2"],
+    },
+    use_configure = {
+        "ssl": "--with-ssl",
+        "-ssl": "--without-ssl",
+        "http2": "--with-nghttp2",
+    },
+)
+```
+
+See [docs/USE_FLAGS.md](docs/USE_FLAGS.md) for complete documentation.
+
 ## Core Packages
 
 ### Currently Included
@@ -288,9 +391,15 @@ qemu-system-x86_64 \
 | eclass | package_defs.bzl |
 | emerge | buck2 build |
 | PORTDIR | packages/ |
-| USE flags | Buck select() |
+| USE flags | use_flags.bzl |
 | DEPEND | deps |
 | BDEPEND | build_deps |
+| make.profile | package_sets.bzl profiles |
+| @system | SYSTEM_PACKAGES |
+| @world | custom package_set() |
+| /etc/portage/package.use | package_use() |
+| SLOT | versions.bzl slots |
+| package.mask | registry status: masked |
 
 ## License
 
@@ -306,10 +415,11 @@ MIT License - See individual packages for their respective licenses.
 ## Roadmap
 
 - [x] Platform targeting support (Linux, BSD, macOS, Windows)
-- [ ] Add more packages (openssl, openssh, networking tools)
+- [x] Add more packages (openssl, openssh, networking tools)
+- [x] Implement USE flag-like configuration
+- [x] Add package versioning and slots
+- [x] Implement system profiles and package sets
 - [ ] Create initramfs generation target
 - [ ] Add ISO image generation
-- [ ] Implement USE flag-like configuration
-- [ ] Add package versioning and slots
 - [ ] Create package manager for installed systems
 - [ ] Add packages for BSD, macOS, and Windows platforms

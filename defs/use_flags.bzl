@@ -1,0 +1,965 @@
+"""
+USE Flag system for BuckOs Linux Distribution.
+
+Similar to Gentoo's USE flags, this provides:
+- Global USE flag definitions with descriptions
+- Per-package USE flag customization
+- Conditional dependencies based on USE flags
+- Build configuration profiles (minimal, default, full)
+- USE flag expansion and inheritance
+
+Example usage:
+    # Define package with USE flags
+    use_package(
+        name = "curl",
+        version = "8.5.0",
+        src_uri = "https://curl.se/download/curl-8.5.0.tar.xz",
+        sha256 = "...",
+        iuse = ["ssl", "gnutls", "http2", "zstd", "brotli", "ipv6", "ldap"],
+        use_defaults = ["ssl", "http2", "ipv6"],
+        use_deps = {
+            "ssl": ["//packages/linux/dev-libs/openssl"],
+            "gnutls": ["//packages/linux/net-libs/gnutls"],
+            "http2": ["//packages/linux/net-libs/nghttp2"],
+            "zstd": ["//packages/linux/app-arch/zstd"],
+            "brotli": ["//packages/linux/app-arch/brotli"],
+        },
+        use_configure = {
+            "ssl": "--with-ssl",
+            "-ssl": "--without-ssl",
+            "gnutls": "--with-gnutls",
+            "http2": "--with-nghttp2",
+            "zstd": "--with-zstd",
+            "brotli": "--with-brotli",
+            "ipv6": "--enable-ipv6",
+            "-ipv6": "--disable-ipv6",
+            "ldap": "--enable-ldap",
+            "-ldap": "--disable-ldap",
+        },
+    )
+
+    # Set global USE flags in profile
+    set_use_flags(["ssl", "ipv6", "-ldap", "http2"])
+
+    # Override for specific package
+    package_use("curl", ["-ssl", "gnutls", "brotli"])
+"""
+
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "ebuild_package")
+
+# =============================================================================
+# GLOBAL USE FLAG REGISTRY
+# =============================================================================
+
+# Global USE flag definitions - maps flag name to description
+GLOBAL_USE_FLAGS = {
+    # Build options
+    "debug": "Enable debugging symbols and assertions",
+    "doc": "Build and install documentation",
+    "examples": "Install example files",
+    "static": "Build static libraries",
+    "static-libs": "Build static libraries instead of shared",
+    "test": "Enable test suite during build",
+
+    # Optimization
+    "lto": "Enable Link Time Optimization",
+    "pgo": "Enable Profile Guided Optimization",
+    "native": "Optimize for the current CPU architecture",
+
+    # Security
+    "caps": "Use Linux capabilities library",
+    "hardened": "Enable security hardening features",
+    "pie": "Build position independent executables",
+    "seccomp": "Enable seccomp sandboxing",
+    "selinux": "Enable SELinux support",
+    "ssp": "Enable stack smashing protection",
+
+    # Networking
+    "ipv6": "Enable IPv6 support",
+    "ssl": "Enable SSL/TLS support (typically OpenSSL)",
+    "gnutls": "Enable GnuTLS support",
+    "libressl": "Use LibreSSL instead of OpenSSL",
+    "nss": "Use Mozilla NSS for crypto",
+    "http2": "Enable HTTP/2 support",
+    "curl": "Use libcurl for HTTP operations",
+
+    # Compression
+    "brotli": "Enable Brotli compression support",
+    "bzip2": "Enable bzip2 compression support",
+    "lz4": "Enable LZ4 compression support",
+    "lzma": "Enable LZMA compression support",
+    "zlib": "Enable zlib compression support",
+    "zstd": "Enable Zstandard compression support",
+
+    # Graphics & Display
+    "X": "Enable X11 support",
+    "wayland": "Enable Wayland support",
+    "opengl": "Enable OpenGL support",
+    "vulkan": "Enable Vulkan support",
+    "egl": "Enable EGL support",
+    "gtk": "Enable GTK+ toolkit support",
+    "qt5": "Enable Qt5 toolkit support",
+    "qt6": "Enable Qt6 toolkit support",
+    "cairo": "Enable Cairo graphics library",
+    "pango": "Enable Pango text rendering",
+
+    # Audio & Video
+    "alsa": "Enable ALSA audio support",
+    "pulseaudio": "Enable PulseAudio support",
+    "pipewire": "Enable PipeWire support",
+    "ffmpeg": "Enable FFmpeg support",
+    "gstreamer": "Enable GStreamer support",
+    "v4l": "Enable Video4Linux support",
+
+    # Language bindings
+    "python": "Build Python bindings",
+    "perl": "Build Perl bindings",
+    "ruby": "Build Ruby bindings",
+    "lua": "Build Lua bindings",
+    "tcl": "Build Tcl bindings",
+    "java": "Build Java bindings",
+
+    # Database
+    "mysql": "Enable MySQL/MariaDB support",
+    "postgres": "Enable PostgreSQL support",
+    "sqlite": "Enable SQLite support",
+    "berkdb": "Enable Berkeley DB support",
+    "ldap": "Enable LDAP support",
+
+    # System features
+    "acl": "Enable Access Control Lists support",
+    "attr": "Enable extended attributes support",
+    "dbus": "Enable D-Bus message bus support",
+    "fam": "Enable FAM/Gamin file monitoring",
+    "inotify": "Enable inotify file monitoring",
+    "pam": "Enable PAM authentication support",
+    "systemd": "Enable systemd integration",
+    "udev": "Enable udev device management",
+
+    # Text & Localization
+    "icu": "Enable ICU library for Unicode",
+    "idn": "Enable IDN (internationalized domain names)",
+    "nls": "Enable native language support",
+    "unicode": "Enable Unicode support",
+    "pcre": "Use PCRE for regular expressions",
+    "pcre2": "Use PCRE2 for regular expressions",
+
+    # Misc
+    "ncurses": "Enable ncurses TUI support",
+    "readline": "Enable readline support",
+    "threads": "Enable multi-threading support",
+    "xml": "Enable XML support",
+    "json": "Enable JSON support",
+    "yaml": "Enable YAML support",
+}
+
+# =============================================================================
+# USE FLAG PROFILES
+# =============================================================================
+
+# Predefined profiles for common use cases
+USE_PROFILES = {
+    # Minimal system - bare essentials
+    "minimal": {
+        "enabled": [
+            "ipv6",
+            "ssl",
+            "zlib",
+        ],
+        "disabled": [
+            "X", "wayland", "gtk", "qt5", "qt6",
+            "debug", "doc", "examples", "test",
+            "pulseaudio", "pipewire", "alsa",
+            "python", "perl", "ruby", "lua",
+        ],
+        "description": "Minimal system with essential features only",
+    },
+
+    # Server profile - headless server optimizations
+    "server": {
+        "enabled": [
+            "ipv6", "ssl", "http2",
+            "zlib", "zstd", "lz4",
+            "acl", "attr", "caps",
+            "hardened", "pie", "ssp",
+            "threads", "pam",
+            "postgres", "mysql", "sqlite",
+        ],
+        "disabled": [
+            "X", "wayland", "gtk", "qt5", "qt6",
+            "opengl", "vulkan",
+            "pulseaudio", "pipewire", "alsa",
+            "debug",
+        ],
+        "description": "Server-optimized profile without GUI",
+    },
+
+    # Desktop profile - full desktop experience
+    "desktop": {
+        "enabled": [
+            "X", "wayland",
+            "opengl", "vulkan", "egl",
+            "gtk", "qt5",
+            "pulseaudio", "pipewire",
+            "ipv6", "ssl", "http2",
+            "zlib", "zstd", "brotli",
+            "unicode", "icu", "nls",
+            "dbus", "udev",
+            "ffmpeg", "gstreamer",
+            "cairo", "pango",
+        ],
+        "disabled": [
+            "debug", "static",
+            "minimal",
+        ],
+        "description": "Full desktop environment with multimedia",
+    },
+
+    # Developer profile - development tools enabled
+    "developer": {
+        "enabled": [
+            "debug", "doc", "examples", "test",
+            "python", "perl", "ruby",
+            "git", "subversion",
+            "xml", "json", "yaml",
+        ],
+        "disabled": [],
+        "description": "Development-focused with documentation and tests",
+    },
+
+    # Hardened profile - security focus
+    "hardened": {
+        "enabled": [
+            "hardened", "pie", "ssp",
+            "caps", "seccomp", "selinux",
+            "acl", "attr",
+            "ssl",
+        ],
+        "disabled": [
+            "debug",
+        ],
+        "description": "Security-hardened configuration",
+    },
+
+    # Default profile - reasonable defaults
+    "default": {
+        "enabled": [
+            "ipv6", "ssl", "http2",
+            "zlib", "bzip2",
+            "unicode", "nls",
+            "readline", "ncurses",
+            "threads",
+            "pcre2",
+        ],
+        "disabled": [
+            "debug",
+            "static",
+        ],
+        "description": "Balanced default configuration",
+    },
+}
+
+# =============================================================================
+# GLOBAL STATE
+# =============================================================================
+
+# Current global USE flags (set by profile or manually)
+_GLOBAL_USE = []
+
+# Per-package USE flag overrides
+_PACKAGE_USE = {}
+
+# Current profile
+_CURRENT_PROFILE = "default"
+
+# =============================================================================
+# USE FLAG CONFIGURATION FUNCTIONS
+# =============================================================================
+
+def set_profile(profile_name):
+    """Set the active USE flag profile.
+
+    Args:
+        profile_name: Name of profile (minimal, server, desktop, developer, hardened, default)
+
+    Returns:
+        The profile configuration dict
+    """
+    if profile_name not in USE_PROFILES:
+        fail("Unknown profile: {}. Available: {}".format(
+            profile_name, ", ".join(USE_PROFILES.keys())))
+
+    return USE_PROFILES[profile_name]
+
+def set_use_flags(flags):
+    """Set global USE flags.
+
+    Args:
+        flags: List of USE flags. Prefix with "-" to disable.
+               Example: ["ssl", "ipv6", "-ldap", "http2"]
+
+    Returns:
+        Processed USE flags dict
+    """
+    enabled = []
+    disabled = []
+
+    for flag in flags:
+        if flag.startswith("-"):
+            disabled.append(flag[1:])
+        else:
+            enabled.append(flag)
+
+    return {
+        "enabled": enabled,
+        "disabled": disabled,
+    }
+
+def package_use(package_name, flags):
+    """Set USE flags for a specific package.
+
+    This overrides global settings for the specified package.
+
+    Args:
+        package_name: Package name (e.g., "curl", "openssl")
+        flags: List of USE flags for this package
+
+    Returns:
+        Package USE configuration
+    """
+    enabled = []
+    disabled = []
+
+    for flag in flags:
+        if flag.startswith("-"):
+            disabled.append(flag[1:])
+        else:
+            enabled.append(flag)
+
+    return {
+        "package": package_name,
+        "enabled": enabled,
+        "disabled": disabled,
+    }
+
+def get_effective_use(package_name, iuse, use_defaults, global_use = None, package_overrides = None):
+    """Calculate effective USE flags for a package.
+
+    Resolution order (later overrides earlier):
+    1. Package IUSE defaults (from use_defaults)
+    2. Global profile USE flags
+    3. Global USE flags (from set_use_flags)
+    4. Per-package overrides (from package_use)
+
+    Args:
+        package_name: Package name
+        iuse: List of USE flags the package supports
+        use_defaults: Default USE flags for this package
+        global_use: Global USE flag settings
+        package_overrides: Package-specific USE overrides
+
+    Returns:
+        List of enabled USE flags for this package
+    """
+    # Start with package defaults
+    effective = set(use_defaults) if use_defaults else set()
+
+    # Apply global USE settings
+    if global_use:
+        for flag in global_use.get("enabled", []):
+            if flag in iuse:
+                effective.add(flag)
+        for flag in global_use.get("disabled", []):
+            if flag in effective:
+                effective.remove(flag)
+
+    # Apply package-specific overrides
+    if package_overrides:
+        for flag in package_overrides.get("enabled", []):
+            if flag in iuse:
+                effective.add(flag)
+        for flag in package_overrides.get("disabled", []):
+            if flag in effective:
+                effective.remove(flag)
+
+    return sorted(list(effective))
+
+# =============================================================================
+# USE FLAG CONDITIONAL HELPERS
+# =============================================================================
+
+def use_conditional(flag, if_enabled, if_disabled = None):
+    """Return value based on USE flag state.
+
+    Args:
+        flag: USE flag name
+        if_enabled: Value if flag is enabled
+        if_disabled: Value if flag is disabled (default: None)
+
+    Returns:
+        Dict with conditional information for build-time resolution
+    """
+    return {
+        "type": "use_conditional",
+        "flag": flag,
+        "if_enabled": if_enabled,
+        "if_disabled": if_disabled,
+    }
+
+def resolve_use_conditionals(items, enabled_flags):
+    """Resolve USE flag conditionals to actual values.
+
+    Args:
+        items: List of items, some may be use_conditional dicts
+        enabled_flags: Set of enabled USE flags
+
+    Returns:
+        Resolved list of items
+    """
+    result = []
+
+    for item in items:
+        if isinstance(item, dict) and item.get("type") == "use_conditional":
+            flag = item["flag"]
+            if flag in enabled_flags:
+                if item["if_enabled"]:
+                    if isinstance(item["if_enabled"], list):
+                        result.extend(item["if_enabled"])
+                    else:
+                        result.append(item["if_enabled"])
+            else:
+                if item.get("if_disabled"):
+                    if isinstance(item["if_disabled"], list):
+                        result.extend(item["if_disabled"])
+                    else:
+                        result.append(item["if_disabled"])
+        else:
+            result.append(item)
+
+    return result
+
+# =============================================================================
+# USE FLAG DEPENDENCY RESOLUTION
+# =============================================================================
+
+def use_dep(deps_map, enabled_flags):
+    """Resolve USE-flag conditional dependencies.
+
+    Args:
+        deps_map: Dict mapping USE flag to dependencies
+                  Example: {"ssl": ["//pkg/openssl"], "gnutls": ["//pkg/gnutls"]}
+        enabled_flags: List of enabled USE flags
+
+    Returns:
+        List of resolved dependencies
+    """
+    result = []
+    enabled_set = set(enabled_flags)
+
+    for flag, deps in deps_map.items():
+        if flag in enabled_set:
+            if isinstance(deps, list):
+                result.extend(deps)
+            else:
+                result.append(deps)
+
+    return result
+
+def use_required_deps(deps_map, enabled_flags):
+    """Get dependencies with USE flag requirements.
+
+    Used for dependencies that require specific USE flags on the dep.
+
+    Args:
+        deps_map: Dict mapping dep to required USE flags
+                  Example: {"//pkg/openssl": ["ssl"], "//pkg/curl": ["ssl", "http2"]}
+        enabled_flags: List of enabled USE flags
+
+    Returns:
+        List of dependency targets with USE requirements
+    """
+    result = []
+    enabled_set = set(enabled_flags)
+
+    for dep, required_flags in deps_map.items():
+        # Check if all required flags are enabled
+        if all(f in enabled_set for f in required_flags):
+            result.append(dep)
+
+    return result
+
+# =============================================================================
+# USE FLAG CONFIGURE ARGUMENT GENERATION
+# =============================================================================
+
+def use_configure_args(use_configure, enabled_flags):
+    """Generate configure arguments based on USE flags.
+
+    Args:
+        use_configure: Dict mapping USE flag to configure arg
+                       Use "-flag" for disabled state
+                       Example: {
+                           "ssl": "--with-ssl",
+                           "-ssl": "--without-ssl",
+                           "debug": "--enable-debug",
+                       }
+        enabled_flags: List of enabled USE flags
+
+    Returns:
+        List of configure arguments
+    """
+    result = []
+    enabled_set = set(enabled_flags)
+
+    for flag, arg in use_configure.items():
+        if flag.startswith("-"):
+            # This is a disabled flag config
+            actual_flag = flag[1:]
+            if actual_flag not in enabled_set:
+                result.append(arg)
+        else:
+            # This is an enabled flag config
+            if flag in enabled_set:
+                result.append(arg)
+
+    return result
+
+def use_enable(flag, option = None, enabled_flags = None):
+    """Generate --enable-X or --disable-X based on USE flag.
+
+    Args:
+        flag: USE flag name
+        option: Configure option name (defaults to flag name)
+        enabled_flags: List of enabled USE flags
+
+    Returns:
+        Configure argument string
+    """
+    opt = option if option else flag
+    if enabled_flags and flag in enabled_flags:
+        return "--enable-{}".format(opt)
+    return "--disable-{}".format(opt)
+
+def use_with(flag, option = None, enabled_flags = None):
+    """Generate --with-X or --without-X based on USE flag.
+
+    Args:
+        flag: USE flag name
+        option: Configure option name (defaults to flag name)
+        enabled_flags: List of enabled USE flags
+
+    Returns:
+        Configure argument string
+    """
+    opt = option if option else flag
+    if enabled_flags and flag in enabled_flags:
+        return "--with-{}".format(opt)
+    return "--without-{}".format(opt)
+
+# =============================================================================
+# USE-AWARE PACKAGE MACRO
+# =============================================================================
+
+def use_package(
+        name,
+        version,
+        src_uri,
+        sha256,
+        iuse = [],
+        use_defaults = [],
+        use_deps = {},
+        use_configure = {},
+        use_env = {},
+        use_patches = {},
+        global_use = None,
+        package_overrides = None,
+        configure_args = [],
+        make_args = [],
+        deps = [],
+        build_deps = [],
+        maintainers = [],
+        **kwargs):
+    """Create a package with USE flag support.
+
+    This is the main macro for creating packages with conditional features.
+
+    Args:
+        name: Package name
+        version: Package version
+        src_uri: Source download URL
+        sha256: Source checksum
+        iuse: List of USE flags this package supports
+        use_defaults: Default enabled USE flags for this package
+        use_deps: Dict mapping USE flag to conditional dependencies
+        use_configure: Dict mapping USE flag to configure arguments
+        use_env: Dict mapping USE flag to environment variables
+        use_patches: Dict mapping USE flag to patches to apply
+        global_use: Global USE flag configuration (from set_use_flags)
+        package_overrides: Package-specific USE overrides (from package_use)
+        configure_args: Base configure arguments (always applied)
+        make_args: Make arguments
+        deps: Base dependencies (always applied)
+        build_deps: Build dependencies
+        maintainers: Package maintainers
+        **kwargs: Additional arguments passed to underlying rule
+
+    Example:
+        use_package(
+            name = "curl",
+            version = "8.5.0",
+            src_uri = "https://curl.se/download/curl-8.5.0.tar.xz",
+            sha256 = "...",
+            iuse = ["ssl", "gnutls", "http2", "zstd", "ipv6"],
+            use_defaults = ["ssl", "ipv6"],
+            use_deps = {
+                "ssl": ["//packages/linux/dev-libs/openssl"],
+                "http2": ["//packages/linux/net-libs/nghttp2"],
+            },
+            use_configure = {
+                "ssl": "--with-ssl",
+                "-ssl": "--without-ssl",
+                "http2": "--with-nghttp2",
+                "ipv6": "--enable-ipv6",
+                "-ipv6": "--disable-ipv6",
+            },
+            global_use = set_use_flags(["ssl", "http2", "-ipv6"]),
+        )
+    """
+    src_name = name + "-src"
+
+    # Download source
+    download_source(
+        name = src_name,
+        src_uri = src_uri,
+        sha256 = sha256,
+    )
+
+    # Calculate effective USE flags
+    effective_use = get_effective_use(
+        name,
+        iuse,
+        use_defaults,
+        global_use,
+        package_overrides,
+    )
+
+    # Resolve conditional dependencies
+    resolved_deps = list(deps)
+    resolved_deps.extend(use_dep(use_deps, effective_use))
+
+    # Generate configure arguments
+    resolved_configure = list(configure_args)
+    resolved_configure.extend(use_configure_args(use_configure, effective_use))
+
+    # Resolve environment variables
+    resolved_env = dict(kwargs.get("env", {}))
+    for flag, env_dict in use_env.items():
+        if flag in effective_use:
+            resolved_env.update(env_dict)
+
+    # Generate patch application in pre_configure
+    pre_configure = kwargs.get("pre_configure", "")
+    for flag, patches in use_patches.items():
+        if flag in effective_use:
+            for patch in patches:
+                pre_configure += '\npatch -p1 < "{}"'.format(patch)
+
+    # Create the package
+    configure_make_package(
+        name = name,
+        source = ":" + src_name,
+        version = version,
+        configure_args = resolved_configure,
+        make_args = make_args,
+        deps = resolved_deps,
+        build_deps = build_deps,
+        maintainers = maintainers,
+        env = resolved_env,
+        pre_configure = pre_configure if pre_configure else kwargs.get("pre_configure", ""),
+        post_install = kwargs.get("post_install", ""),
+        description = kwargs.get("description", ""),
+        homepage = kwargs.get("homepage", ""),
+        license = kwargs.get("license", ""),
+    )
+
+    return effective_use
+
+# =============================================================================
+# EBUILD-STYLE USE PACKAGE
+# =============================================================================
+
+def use_ebuild_package(
+        name,
+        version,
+        src_uri,
+        sha256,
+        iuse = [],
+        use_defaults = [],
+        use_deps = {},
+        use_bdeps = {},
+        global_use = None,
+        package_overrides = None,
+        category = "",
+        slot = "0",
+        src_prepare = "",
+        src_configure = "",
+        src_compile = "",
+        src_install = "",
+        rdepend = [],
+        bdepend = [],
+        maintainers = [],
+        **kwargs):
+    """Create an ebuild-style package with full USE flag support.
+
+    This provides maximum flexibility with custom phase functions.
+    USE flags are available in build scripts via the `use` function.
+
+    Args:
+        name: Package name
+        version: Package version
+        src_uri: Source download URL
+        sha256: Source checksum
+        iuse: List of USE flags this package supports
+        use_defaults: Default enabled USE flags
+        use_deps: Dict mapping USE flag to runtime dependencies
+        use_bdeps: Dict mapping USE flag to build dependencies
+        global_use: Global USE configuration
+        package_overrides: Package-specific USE overrides
+        category: Package category
+        slot: Package slot
+        src_prepare: Source preparation script
+        src_configure: Configure script
+        src_compile: Compile script
+        src_install: Install script
+        rdepend: Runtime dependencies
+        bdepend: Build dependencies
+        maintainers: Package maintainers
+        **kwargs: Additional arguments
+    """
+    src_name = name + "-src"
+
+    # Download source
+    download_source(
+        name = src_name,
+        src_uri = src_uri,
+        sha256 = sha256,
+    )
+
+    # Calculate effective USE flags
+    effective_use = get_effective_use(
+        name,
+        iuse,
+        use_defaults,
+        global_use,
+        package_overrides,
+    )
+
+    # Resolve conditional dependencies
+    resolved_rdepend = list(rdepend)
+    resolved_rdepend.extend(use_dep(use_deps, effective_use))
+
+    resolved_bdepend = list(bdepend)
+    resolved_bdepend.extend(use_dep(use_bdeps, effective_use))
+
+    # Create the package with USE flags
+    ebuild_package(
+        name = name,
+        source = ":" + src_name,
+        version = version,
+        category = category,
+        slot = slot,
+        use_flags = effective_use,
+        src_prepare = src_prepare,
+        src_configure = src_configure,
+        src_compile = src_compile,
+        src_install = src_install,
+        rdepend = resolved_rdepend,
+        bdepend = resolved_bdepend,
+        maintainers = maintainers,
+        env = kwargs.get("env", {}),
+        description = kwargs.get("description", ""),
+        homepage = kwargs.get("homepage", ""),
+        license = kwargs.get("license", ""),
+    )
+
+    return effective_use
+
+# =============================================================================
+# USE FLAG VALIDATION
+# =============================================================================
+
+def validate_use_flags(iuse, requested_flags):
+    """Validate that requested USE flags are supported.
+
+    Args:
+        iuse: List of supported USE flags for the package
+        requested_flags: List of requested USE flags
+
+    Returns:
+        List of warning messages for unknown flags
+    """
+    warnings = []
+    iuse_set = set(iuse)
+
+    for flag in requested_flags:
+        actual_flag = flag[1:] if flag.startswith("-") else flag
+        if actual_flag not in iuse_set and actual_flag not in GLOBAL_USE_FLAGS:
+            warnings.append("Unknown USE flag: {}".format(actual_flag))
+
+    return warnings
+
+def required_use_check(required_use, enabled_flags):
+    """Check REQUIRED_USE constraints.
+
+    Supports Gentoo-style REQUIRED_USE syntax:
+    - "flag1? ( flag2 )" - if flag1 then flag2
+    - "flag1? ( !flag2 )" - if flag1 then not flag2
+    - "|| ( flag1 flag2 )" - at least one of
+    - "^^ ( flag1 flag2 )" - exactly one of
+    - "?? ( flag1 flag2 )" - at most one of
+
+    Args:
+        required_use: REQUIRED_USE specification string
+        enabled_flags: List of enabled USE flags
+
+    Returns:
+        True if constraints satisfied, error message otherwise
+    """
+    enabled_set = set(enabled_flags)
+
+    # Simple implementation - parse basic patterns
+    # Full implementation would need a proper parser
+
+    # Check "at least one" - || ( flag1 flag2 )
+    if "|| (" in required_use:
+        start = required_use.find("|| (") + 4
+        end = required_use.find(")", start)
+        flags = required_use[start:end].split()
+        if not any(f in enabled_set for f in flags):
+            return "At least one of {} must be enabled".format(flags)
+
+    # Check "exactly one" - ^^ ( flag1 flag2 )
+    if "^^ (" in required_use:
+        start = required_use.find("^^ (") + 4
+        end = required_use.find(")", start)
+        flags = required_use[start:end].split()
+        count = sum(1 for f in flags if f in enabled_set)
+        if count != 1:
+            return "Exactly one of {} must be enabled".format(flags)
+
+    # Check "at most one" - ?? ( flag1 flag2 )
+    if "?? (" in required_use:
+        start = required_use.find("?? (") + 4
+        end = required_use.find(")", start)
+        flags = required_use[start:end].split()
+        count = sum(1 for f in flags if f in enabled_set)
+        if count > 1:
+            return "At most one of {} can be enabled".format(flags)
+
+    return True
+
+# =============================================================================
+# USE FLAG DESCRIPTION HELPERS
+# =============================================================================
+
+def describe_use_flags(iuse, custom_descriptions = {}):
+    """Get descriptions for a list of USE flags.
+
+    Args:
+        iuse: List of USE flags
+        custom_descriptions: Package-specific flag descriptions
+
+    Returns:
+        Dict mapping flag to description
+    """
+    result = {}
+
+    for flag in iuse:
+        if flag in custom_descriptions:
+            result[flag] = custom_descriptions[flag]
+        elif flag in GLOBAL_USE_FLAGS:
+            result[flag] = GLOBAL_USE_FLAGS[flag]
+        else:
+            result[flag] = "Local USE flag"
+
+    return result
+
+def format_use_string(iuse, enabled_flags):
+    """Format USE flags for display (like `emerge --info`).
+
+    Args:
+        iuse: List of supported USE flags
+        enabled_flags: List of enabled USE flags
+
+    Returns:
+        Formatted string like "ssl http2 -debug -ldap"
+    """
+    enabled_set = set(enabled_flags)
+    parts = []
+
+    for flag in sorted(iuse):
+        if flag in enabled_set:
+            parts.append(flag)
+        else:
+            parts.append("-" + flag)
+
+    return " ".join(parts)
+
+# =============================================================================
+# PROFILE-BASED PACKAGE CREATION
+# =============================================================================
+
+def profile_package(
+        name,
+        version,
+        src_uri,
+        sha256,
+        iuse = [],
+        profile = "default",
+        **kwargs):
+    """Create a package using a predefined profile.
+
+    This is a convenience wrapper that applies profile USE flags.
+
+    Args:
+        name: Package name
+        version: Package version
+        src_uri: Source download URL
+        sha256: Source checksum
+        iuse: Supported USE flags
+        profile: Profile name (minimal, server, desktop, developer, hardened, default)
+        **kwargs: Additional arguments for use_package
+
+    Example:
+        profile_package(
+            name = "nginx",
+            version = "1.25.3",
+            src_uri = "...",
+            sha256 = "...",
+            iuse = ["ssl", "http2", "debug", "pcre"],
+            profile = "server",
+            use_deps = {...},
+            use_configure = {...},
+        )
+    """
+    profile_config = set_profile(profile)
+
+    global_use = {
+        "enabled": profile_config["enabled"],
+        "disabled": profile_config["disabled"],
+    }
+
+    # Filter to only flags in iuse
+    iuse_set = set(iuse)
+    use_defaults = [f for f in profile_config["enabled"] if f in iuse_set]
+
+    return use_package(
+        name = name,
+        version = version,
+        src_uri = src_uri,
+        sha256 = sha256,
+        iuse = iuse,
+        use_defaults = use_defaults,
+        global_use = global_use,
+        **kwargs
+    )

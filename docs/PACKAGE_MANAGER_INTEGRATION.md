@@ -14,12 +14,13 @@ This document specifies how package managers should interact with the BuckOS Buc
 8. [Version Management](#version-management)
 9. [USE Flag System](#use-flag-system)
 10. [Package Sets](#package-sets)
-11. [CLI Requirements](#cli-requirements)
-12. [Export Formats](#export-formats)
-13. [Error Handling](#error-handling)
-14. [Extension Points](#extension-points)
-15. [Security Considerations](#security-considerations)
-16. [Best Practices](#best-practices)
+11. [Patch System](#patch-system)
+12. [CLI Requirements](#cli-requirements)
+13. [Export Formats](#export-formats)
+14. [Error Handling](#error-handling)
+15. [Extension Points](#extension-points)
+16. [Security Considerations](#security-considerations)
+17. [Best Practices](#best-practices)
 
 ---
 
@@ -929,6 +930,237 @@ buck2 query "rdeps(//defs:package_sets.bzl#..., //packages/linux/core/bash:bash)
 
 ---
 
+## Patch System
+
+### Overview
+
+The patch system allows users and distributions to customize package builds through multiple patch sources with clear precedence ordering.
+
+### Patch Source Precedence
+
+Patches are applied in this order (later patches override earlier ones):
+
+1. **Package Patches** - Bundled with package definition
+2. **Distribution Patches** - Applied by overlay/distribution
+3. **Profile Patches** - Applied based on build profile
+4. **USE Flag Patches** - Conditional on USE flag settings
+5. **User Patches** - Applied from user configuration
+
+### Patch Directory Structure
+
+```
+buckos-build/
+├── patches/
+│   ├── global/                    # Global patches
+│   │   └── security/              # Security patches
+│   ├── profiles/
+│   │   ├── hardened/              # Hardened profile patches
+│   │   └── musl/                  # musl compatibility patches
+│   └── packages/
+│       └── <category>/
+│           └── <package>/
+│               ├── *.patch        # Package-specific patches
+│               └── series         # Patch application order
+└── user/
+    └── patches/                   # User-specific patches
+        └── <category>/
+            └── <package>/
+```
+
+### Patch Configuration in Buck Targets
+
+#### Basic Patch Application
+
+```python
+configure_make_package(
+    name = "mypackage",
+    source = ":mypackage-src",
+    version = "1.0",
+    pre_configure = """
+        patch -p1 < "$FILESDIR/fix-build.patch"
+        patch -p1 < "$FILESDIR/security-fix.patch"
+    """,
+)
+```
+
+#### USE-Conditional Patches
+
+```python
+use_package(
+    name = "openssl",
+    version = "3.2.0",
+    src_uri = "...",
+    sha256 = "...",
+    iuse = ["bindist", "ktls"],
+    use_patches = {
+        "bindist": ["//patches/packages/dev-libs/openssl:ec-curves-bindist.patch"],
+        "ktls": ["//patches/packages/dev-libs/openssl:ktls-support.patch"],
+    },
+)
+```
+
+#### Package Customization Patches
+
+```python
+load("//defs:package_customize.bzl", "package_config")
+
+CUSTOMIZATIONS = package_config(
+    profile = "hardened",
+    package_patches = {
+        "glibc": [
+            "//patches/packages/sys-libs/glibc:hardened-all.patch",
+        ],
+        "openssh": [
+            "//patches/packages/net-misc/openssh:hpn-performance.patch",
+        ],
+    },
+)
+```
+
+### Patch Management Functions
+
+```python
+# Apply patches in order
+epatch(["fix.patch", "optimize.patch"])
+
+# Apply directory of patches
+eapply(["${FILESDIR}/patches"])
+
+# Apply user patches automatically
+eapply_user()
+```
+
+### Series File Format
+
+Control patch application order with a `series` file:
+
+```
+# patches/packages/dev-libs/openssl/series
+# Applied in order listed
+
+# Core fixes
+fix-build.patch
+fix-tests.patch
+
+# Security (apply last)
+cve-2024-xxxx.patch
+```
+
+### Package Manager Patch Operations
+
+Package managers SHOULD implement these patch-related commands:
+
+```bash
+# List patches for a package
+pkgmgr patch list <package>
+
+# Show patch information
+pkgmgr patch info <package> <patch-name>
+
+# Add user patch
+pkgmgr patch add <package> <patch-file>
+
+# Remove user patch
+pkgmgr patch remove <package> <patch-name>
+
+# Validate patches apply cleanly
+pkgmgr patch check <package>
+
+# Show patch application order
+pkgmgr patch order <package>
+```
+
+### Patch Metadata Structure
+
+```python
+PatchInfo = {
+    "name": "cve-2024-xxxx.patch",
+    "package": "//packages/linux/dev-libs/openssl:openssl",
+    "description": "Fix for CVE-2024-XXXX",
+    "source": "user|package|profile|distribution",
+    "strip_level": 1,
+    "conditional": {
+        "use_flag": "bindist",  # Optional: only if USE flag enabled
+        "profile": "hardened",   # Optional: only for profile
+        "platform": "linux",     # Optional: platform-specific
+    },
+}
+```
+
+### Patch Validation
+
+Package managers MUST validate patches before application:
+
+```python
+def validate_patch(package, patch_file):
+    """
+    Validate that a patch applies cleanly
+
+    Returns: {
+        "valid": True/False,
+        "fuzz_factor": 0,        # Lines of context fuzz needed
+        "offset": 0,             # Offset from original location
+        "warnings": [...],
+        "errors": [...],
+    }
+    """
+    pass
+```
+
+### Patch Query Functions
+
+```python
+# Get all patches for a package
+get_package_patches(package) -> list[PatchInfo]
+
+# Get patches by source
+get_patches_by_source(package, source) -> list[PatchInfo]
+
+# Get conditional patches
+get_conditional_patches(package, use_flags, profile) -> list[PatchInfo]
+
+# Check if patch is applied
+is_patch_applied(package, patch_name) -> bool
+
+# Get patch application order
+get_patch_order(package) -> list[str]
+```
+
+### Integration with Build Phases
+
+Patches are applied during the `prepare` build phase:
+
+1. **fetch**: Download source archives
+2. **unpack**: Extract source archives
+3. **prepare**: Apply patches (in precedence order)
+4. **configure**: Run configuration
+5. **compile**: Build from source
+
+### User Patch Directory
+
+User patches are automatically applied from:
+
+```
+/etc/portage/patches/<category>/<package>/*.patch
+```
+
+Or configured via:
+
+```toml
+# /etc/buckos-pkgmgr.toml
+[patches.user]
+base_dir = "/etc/portage/patches"
+
+[patches.package.openssl]
+files = [
+    "/path/to/custom.patch",
+]
+```
+
+For complete patch system documentation, see [PATCHES.md](PATCHES.md).
+
+---
+
 ## CLI Requirements
 
 ### Required Commands
@@ -1689,4 +1921,5 @@ install_package(target, destdir) -> InstallResult
 - [BuckOS USE Flags Documentation](USE_FLAGS.md)
 - [BuckOS Package Sets Documentation](PACKAGE_SETS.md)
 - [BuckOS Versioning Documentation](VERSIONING.md)
+- [BuckOS Patch System Documentation](PATCHES.md)
 - [Gentoo Portage Specification](https://wiki.gentoo.org/wiki/Portage)

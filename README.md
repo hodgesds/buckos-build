@@ -22,7 +22,12 @@ buckos-build/
 ├── docs/
 │   ├── USE_FLAGS.md      # USE flag documentation
 │   ├── PACKAGE_SETS.md   # Package set documentation
-│   └── VERSIONING.md     # Version management docs
+│   ├── VERSIONING.md     # Version management docs
+│   └── PATCHES.md        # Patch system documentation
+├── patches/              # Patch files for packages
+│   ├── global/           # Global patches (security, etc.)
+│   ├── profiles/         # Profile-specific patches
+│   └── packages/         # Per-package patches
 ├── platforms/
 │   └── BUCK              # Platform definitions and constraints
 ├── toolchains/
@@ -498,6 +503,83 @@ use_package(
 
 See [docs/USE_FLAGS.md](docs/USE_FLAGS.md) for complete documentation.
 
+## Patch System
+
+BuckOs includes a comprehensive patch system for customizing package builds, similar to Gentoo's `/etc/portage/patches` and ebuild patch management.
+
+### Patch Sources
+
+Patches can come from multiple sources with clear precedence:
+1. **Package patches** - Bundled with the package definition
+2. **Distribution patches** - Applied by overlays/distributions
+3. **Profile patches** - Applied based on build profile (hardened, musl, etc.)
+4. **USE flag patches** - Applied conditionally based on USE flags
+5. **User patches** - Applied from user configuration
+
+### Using Patches in Packages
+
+```python
+load("//defs:package_defs.bzl", "configure_make_package", "epatch")
+
+configure_make_package(
+    name = "mypackage",
+    source = ":mypackage-src",
+    version = "1.0",
+    pre_configure = epatch([
+        "fix-build.patch",
+        "security-fix.patch",
+    ]),
+)
+```
+
+### USE-Conditional Patches
+
+```python
+load("//defs:use_flags.bzl", "use_package")
+
+use_package(
+    name = "openssl",
+    version = "3.2.0",
+    src_uri = "...",
+    sha256 = "...",
+    iuse = ["bindist", "ktls"],
+    use_patches = {
+        "bindist": ["//patches/packages/dev-libs/openssl:ec-curves.patch"],
+        "ktls": ["//patches/packages/dev-libs/openssl:ktls-support.patch"],
+    },
+)
+```
+
+### Profile-Based Patches
+
+Apply patches based on build profile:
+
+```python
+load("//defs:package_customize.bzl", "package_config")
+
+HARDENED_CONFIG = package_config(
+    profile = "hardened",
+    package_patches = {
+        "glibc": ["//patches/profiles/hardened/glibc:ssp-all.patch"],
+        "gcc": ["//patches/profiles/hardened/gcc:stack-clash.patch"],
+    },
+)
+```
+
+### User Patches
+
+User patches are automatically applied from `/etc/portage/patches/<category>/<package>/`:
+
+```bash
+# Create user patch directory
+mkdir -p /etc/portage/patches/dev-libs/openssl
+
+# Add custom patch
+cp my-custom-fix.patch /etc/portage/patches/dev-libs/openssl/
+```
+
+See [docs/PATCHES.md](docs/PATCHES.md) for complete documentation.
+
 ## Core Packages
 
 ### Currently Included
@@ -711,6 +793,8 @@ qemu-system-x86_64 \
 | /etc/portage/package.use | package_use() |
 | SLOT | versions.bzl slots |
 | package.mask | registry status: masked |
+| /etc/portage/patches | patches/, user/patches |
+| epatch | epatch(), eapply() |
 
 ## License
 
@@ -733,5 +817,6 @@ MIT License - See individual packages for their respective licenses.
 - [x] Create initramfs generation target
 - [x] Add QEMU testing infrastructure
 - [x] Add ISO image generation
+- [x] Implement patch system for package customization
 - [ ] Create package manager for installed systems
 - [ ] Add packages for BSD, macOS, and Windows platforms

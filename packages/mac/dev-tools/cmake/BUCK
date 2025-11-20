@@ -1,0 +1,47 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
+
+use_package(
+    name = "cmake",
+    version = "3.30.5",
+    src_uri = "https://github.com/Kitware/CMake/releases/download/v3.30.5/cmake-3.30.5.tar.gz",
+    sha256 = "9f55e1a40508f2f29b7e065fa08c29f82c402c0eb432c0e6ed9c0c47b6cf894c",
+    description = "Cross-platform make",
+    homepage = "https://cmake.org/",
+    license = "BSD-3-Clause",
+
+    # USE flags this package supports
+    iuse = [
+        "doc",
+        "ncurses",
+        "qt",
+    ],
+
+    # Default USE flags
+    use_defaults = ["ncurses"],
+
+    # Conditional dependencies
+    use_deps = {
+        "ncurses": ["//packages/mac/core/ncurses"],
+    },
+
+    # Bootstrap uses different configure
+    configure_args = [
+        "--prefix=/usr/local",
+        "--parallel=4",
+        "--system-curl",
+        "--system-zlib",
+        "--system-bzip2",
+        "--system-expat",
+    ],
+
+    deps = [
+        "//packages/mac/network/curl",
+        "//packages/mac/core/zlib",
+        "//packages/mac/core/bzip2",
+    ],
+
+    maintainers = ["mac-team"],
+    visibility = ["PUBLIC"],
+)

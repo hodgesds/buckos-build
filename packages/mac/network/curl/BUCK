@@ -1,0 +1,56 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
+
+use_package(
+    name = "curl",
+    version = "8.10.1",
+    src_uri = "https://curl.se/download/curl-8.10.1.tar.xz",
+    sha256 = "b3bd7c92bfa47481d52d3b29f8c45481c64e476b9c32de28dd37b3f1f989d4d6",
+
+    iuse = ["ssl", "http2", "ipv6", "zstd", "brotli", "idn", "static-libs", "libressl", "rtmp", "ssh"],
+    use_defaults = ["ssl", "http2", "ipv6"],
+
+    use_deps = {
+        "ssl": ["//packages/mac/network/openssl:openssl"],
+        "zstd": ["//packages/mac/core:zstd"],
+        "brotli": ["//packages/mac/core:brotli"],
+    },
+
+    use_configure = {
+        "ssl": "--with-openssl",
+        "-ssl": "--without-ssl",
+        "libressl": "--with-openssl",
+        "http2": "--with-nghttp2",
+        "-http2": "--without-nghttp2",
+        "ipv6": "--enable-ipv6",
+        "-ipv6": "--disable-ipv6",
+        "zstd": "--with-zstd",
+        "-zstd": "--without-zstd",
+        "brotli": "--with-brotli",
+        "-brotli": "--without-brotli",
+        "idn": "--with-libidn2",
+        "-idn": "--without-libidn2",
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+        "rtmp": "--with-librtmp",
+        "-rtmp": "--without-librtmp",
+        "ssh": "--with-libssh2",
+        "-ssh": "--without-libssh2",
+    },
+
+    configure_args = [
+        "--with-ca-bundle=/usr/local/etc/ssl/certs/ca-certificates.crt",
+        "--with-secure-transport",
+    ],
+
+    deps = [
+        "//packages/mac/network/ca-certificates:ca-certificates",
+        "//packages/mac/core/zlib",
+    ],
+
+    description = "Command line tool and library for transferring data with URLs",
+    homepage = "https://curl.se/",
+    license = "MIT",
+    visibility = ["PUBLIC"],
+)

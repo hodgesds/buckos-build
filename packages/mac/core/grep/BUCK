@@ -1,0 +1,38 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
+
+use_package(
+    name = "grep",
+    version = "3.11",
+    src_uri = "https://ftp.gnu.org/gnu/grep/grep-3.11.tar.xz",
+    sha256 = "1db2aedde89d0dea42b16d9528f894c8d15dae4e190b59aecc78f5a951276eab",
+    description = "GNU grep pattern matching utility (macOS)",
+    homepage = "https://www.gnu.org/software/grep/",
+    license = "GPL-3.0",
+
+    # USE flags this package supports
+    iuse = [
+        "nls",
+        "pcre",
+    ],
+
+    # Default USE flags
+    use_defaults = ["nls", "pcre"],
+
+    # Conditional configure arguments
+    use_configure = {
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+        "pcre": "--enable-perl-regexp",
+        "-pcre": "--disable-perl-regexp",
+    },
+
+    # Base configure arguments (always applied)
+    configure_args = [
+        "--program-prefix=g",
+    ],
+
+    maintainers = ["mac-team"],
+    visibility = ["PUBLIC"],
+)

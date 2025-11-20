@@ -1,0 +1,11 @@
+# System utilities for macOS
+
+filegroup(
+    name = "all-system",
+    srcs = [
+        "//packages/mac/system/htop",
+        "//packages/mac/system/tree",
+        "//packages/mac/system/jq",
+    ],
+    visibility = ["PUBLIC"],
+)

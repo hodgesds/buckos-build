@@ -1,0 +1,56 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
+
+use_package(
+    name = "zsh",
+    version = "5.9",
+    src_uri = "https://sourceforge.net/projects/zsh/files/zsh/5.9/zsh-5.9.tar.xz",
+    sha256 = "9b8d1ecedd5b5e81fbf1918e876752a7dd948e05c1a0dba10ab863842d45acd5",
+    description = "Z shell",
+    homepage = "https://www.zsh.org/",
+    license = "MIT-like",
+
+    # USE flags this package supports
+    iuse = [
+        "doc",
+        "gdbm",
+        "pcre",
+        "unicode",
+    ],
+
+    # Default USE flags
+    use_defaults = ["pcre", "unicode"],
+
+    # Conditional dependencies
+    use_deps = {
+        "pcre": [],
+    },
+
+    # Conditional configure arguments
+    use_configure = {
+        "doc": "--enable-etcdir=/usr/local/etc",
+        "gdbm": "--enable-gdbm",
+        "-gdbm": "--disable-gdbm",
+        "pcre": "--enable-pcre",
+        "-pcre": "--disable-pcre",
+        "unicode": "--enable-multibyte",
+        "-unicode": "--disable-multibyte",
+    },
+
+    # Base configure arguments (always applied)
+    configure_args = [
+        "--enable-fndir=/usr/local/share/zsh/functions",
+        "--enable-scriptdir=/usr/local/share/zsh/scripts",
+        "--enable-site-fndir=/usr/local/share/zsh/site-functions",
+        "--enable-cap",
+        "--with-tcsetpgrp",
+    ],
+
+    deps = [
+        "//packages/mac/core/ncurses",
+    ],
+
+    maintainers = ["mac-team"],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,41 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
+
+use_package(
+    name = "gawk",
+    version = "5.3.1",
+    src_uri = "https://ftp.gnu.org/gnu/gawk/gawk-5.3.1.tar.xz",
+    sha256 = "2c2d0d048bc86eed0c99c7d5e7be1f2a3d6c3e16ac7c38c01e19bffece8f3ca4",
+    description = "GNU awk utility (macOS)",
+    homepage = "https://www.gnu.org/software/gawk/",
+    license = "GPL-3.0",
+
+    # USE flags this package supports
+    iuse = [
+        "nls",
+        "readline",
+        "mpfr",
+    ],
+
+    # Default USE flags
+    use_defaults = ["nls", "readline"],
+
+    # Conditional dependencies
+    use_deps = {
+        "readline": ["//packages/mac/core/readline"],
+    },
+
+    # Conditional configure arguments
+    use_configure = {
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+        "readline": "--with-readline",
+        "-readline": "--without-readline",
+        "mpfr": "--with-mpfr",
+        "-mpfr": "--without-mpfr",
+    },
+
+    maintainers = ["mac-team"],
+    visibility = ["PUBLIC"],
+)

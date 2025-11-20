@@ -1,0 +1,50 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
+
+use_package(
+    name = "openssh",
+    version = "9.9p1",
+    src_uri = "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.9p1.tar.gz",
+    sha256 = "b343fbcdbff87f15b1986e6e15d6d4fc9a7d36066be6b7fb507087f8f8a9a4c3",
+    description = "OpenSSH secure shell client and server",
+    homepage = "https://www.openssh.com/",
+    license = "BSD",
+
+    # USE flags this package supports
+    iuse = [
+        "ldns",
+        "libedit",
+        "kerberos",
+    ],
+
+    # Default USE flags
+    use_defaults = ["libedit"],
+
+    # Conditional configure arguments
+    use_configure = {
+        "ldns": "--with-ldns",
+        "-ldns": "--without-ldns",
+        "libedit": "--with-libedit",
+        "-libedit": "--without-libedit",
+        "kerberos": "--with-kerberos5",
+        "-kerberos": "--without-kerberos5",
+    },
+
+    # Base configure arguments for macOS
+    configure_args = [
+        "--with-ssl-dir=/usr/local",
+        "--with-privsep-path=/var/empty",
+        "--with-privsep-user=nobody",
+        "--sysconfdir=/usr/local/etc/ssh",
+        "--with-pam",
+    ],
+
+    deps = [
+        "//packages/mac/network/openssl:openssl",
+        "//packages/mac/core/zlib",
+    ],
+
+    maintainers = ["mac-team"],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,31 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
+
+use_package(
+    name = "bzip2",
+    version = "1.0.8",
+    src_uri = "https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
+    sha256 = "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269",
+    description = "High-quality data compression program",
+    homepage = "https://sourceware.org/bzip2/",
+    license = "bzip2-1.0.6",
+
+    # USE flags this package supports
+    iuse = [
+        "static-libs",
+    ],
+
+    # Default USE flags
+    use_defaults = [],
+
+    make_args = [
+        "PREFIX=/usr/local",
+        "CC=cc",
+    ],
+
+    install_target = "install",
+
+    maintainers = ["mac-team"],
+    visibility = ["PUBLIC"],
+)

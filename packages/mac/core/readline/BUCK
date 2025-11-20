@@ -1,0 +1,39 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
+
+use_package(
+    name = "readline",
+    version = "8.2",
+    src_uri = "https://ftp.gnu.org/gnu/readline/readline-8.2.tar.gz",
+    sha256 = "3feb7171f16a84ee82ca18a36d7b9be109a52c04f492a053331d7d1095007c35",
+    description = "GNU readline library for command-line editing",
+    homepage = "https://tiswww.case.edu/php/chet/readline/rltop.html",
+    license = "GPL-3.0",
+
+    # USE flags this package supports
+    iuse = [
+        "static-libs",
+    ],
+
+    # Default USE flags
+    use_defaults = [],
+
+    # Conditional configure arguments
+    use_configure = {
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+    },
+
+    # Base configure arguments (always applied)
+    configure_args = [
+        "--with-curses",
+    ],
+
+    deps = [
+        "//packages/mac/core/ncurses",
+    ],
+
+    maintainers = ["mac-team"],
+    visibility = ["PUBLIC"],
+)

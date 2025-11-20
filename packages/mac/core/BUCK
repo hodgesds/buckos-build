@@ -1,0 +1,55 @@
+# Core system libraries and utilities for macOS
+
+filegroup(
+    name = "all-core",
+    srcs = [
+        "//packages/mac/core/zlib",
+        "//packages/mac/core/bzip2",
+        "//packages/mac/core/xz",
+        "//packages/mac/core/ncurses",
+        "//packages/mac/core/readline",
+        "//packages/mac/core/libffi",
+        "//packages/mac/core/coreutils",
+        "//packages/mac/core/findutils",
+        "//packages/mac/core/gnu-sed",
+        "//packages/mac/core/gnu-tar",
+        "//packages/mac/core/gawk",
+        "//packages/mac/core/grep",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Compression libraries
+filegroup(
+    name = "compression",
+    srcs = [
+        "//packages/mac/core/zlib",
+        "//packages/mac/core/bzip2",
+        "//packages/mac/core/xz",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Terminal libraries
+filegroup(
+    name = "terminal-libs",
+    srcs = [
+        "//packages/mac/core/ncurses",
+        "//packages/mac/core/readline",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# GNU utilities (prefixed with 'g' on macOS)
+filegroup(
+    name = "gnu-utils",
+    srcs = [
+        "//packages/mac/core/coreutils",
+        "//packages/mac/core/findutils",
+        "//packages/mac/core/gnu-sed",
+        "//packages/mac/core/gnu-tar",
+        "//packages/mac/core/gawk",
+        "//packages/mac/core/grep",
+    ],
+    visibility = ["PUBLIC"],
+)

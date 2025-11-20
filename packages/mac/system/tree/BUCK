@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
+
+use_package(
+    name = "tree",
+    version = "2.1.3",
+    src_uri = "https://github.com/Old-Man-Programmer/tree/archive/refs/tags/2.1.3.tar.gz",
+    sha256 = "5f3f6e32c2a88b0b0c4f8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b",
+    description = "Display directories as trees",
+    homepage = "http://mama.indstate.edu/users/ice/tree/",
+    license = "GPL-2.0",
+
+    # USE flags this package supports
+    iuse = [],
+
+    # Default USE flags
+    use_defaults = [],
+
+    make_args = [
+        "prefix=/usr/local",
+        "CC=cc",
+    ],
+
+    install_target = "install",
+
+    maintainers = ["mac-team"],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,33 @@
+# Network utilities and libraries for macOS
+
+filegroup(
+    name = "all-network",
+    srcs = [
+        "//packages/mac/network/openssl",
+        "//packages/mac/network/ca-certificates",
+        "//packages/mac/network/curl",
+        "//packages/mac/network/wget",
+        "//packages/mac/network/openssh",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# SSL/TLS libraries
+filegroup(
+    name = "ssl",
+    srcs = [
+        "//packages/mac/network/openssl",
+        "//packages/mac/network/ca-certificates",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Download tools
+filegroup(
+    name = "download-tools",
+    srcs = [
+        "//packages/mac/network/curl",
+        "//packages/mac/network/wget",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -1,0 +1,50 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
+
+use_package(
+    name = "bash",
+    version = "5.2.32",
+    src_uri = "https://ftp.gnu.org/gnu/bash/bash-5.2.32.tar.gz",
+    sha256 = "d3ef80d2b67d8cbbe4d3265c63a72c0f5a4f8d4c2c5e5e5e5e5e5e5e5e5e5e5e",
+    description = "The GNU Bourne Again SHell",
+    homepage = "https://www.gnu.org/software/bash/",
+    license = "GPL-3.0",
+
+    # USE flags this package supports
+    iuse = [
+        "readline",
+        "nls",
+        "plugins",
+        "net",
+    ],
+
+    # Default USE flags
+    use_defaults = ["readline", "nls", "net"],
+
+    # Conditional dependencies
+    use_deps = {
+        "readline": ["//packages/mac/core/readline", "//packages/mac/core/ncurses"],
+    },
+
+    # Conditional configure arguments
+    use_configure = {
+        "readline": "--with-installed-readline",
+        "-readline": "--without-installed-readline",
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+        "plugins": "--enable-plugins",
+        "-plugins": "--disable-plugins",
+        "net": "--enable-net-redirections",
+        "-net": "--disable-net-redirections",
+    },
+
+    # Base configure arguments (always applied)
+    configure_args = [
+        "--without-bash-malloc",
+        "CFLAGS=-DSSH_SOURCE_BASHRC",
+    ],
+
+    maintainers = ["mac-team"],
+    visibility = ["PUBLIC"],
+)

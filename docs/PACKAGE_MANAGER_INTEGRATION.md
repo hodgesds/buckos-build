@@ -61,9 +61,12 @@ This document specifies how package managers should interact with the BuckOS Buc
 | `defs/package_defs.bzl` | Package build rules | Build invocation |
 | `defs/use_flags.bzl` | USE flag definitions | Flag management |
 | `defs/package_sets.bzl` | Package collections | Set operations |
-| `defs/versions.bzl` | Version management | Version resolution |
+| `defs/versions.bzl` | Version management | Version/slot/subslot resolution |
 | `defs/maintainers.bzl` | Maintainer registry | Package ownership |
 | `defs/package_customize.bzl` | User customization | Configuration overlay |
+| `defs/eclasses.bzl` | Eclass inheritance | Build pattern reuse |
+| `defs/licenses.bzl` | License management | License validation and groups |
+| `defs/eapi.bzl` | EAPI versioning | API feature management |
 
 ### Integration Principles
 
@@ -645,6 +648,46 @@ Slots allow parallel installation of different major versions:
 "stable"# Named slot
 ```
 
+### Subslot System
+
+Subslots track ABI compatibility within a slot:
+
+```python
+# Slot/Subslot format: "SLOT/SUBSLOT"
+"3/3.2"   # Slot 3, subslot 3.2 (for openssl 3.2.x)
+"3/3.1"   # Slot 3, subslot 3.1 (for openssl 3.1.x)
+
+# Subslot-aware dependencies
+from defs.versions import subslot_dep
+
+deps = [
+    # Rebuild when ABI changes
+    subslot_dep("//packages/linux/dev-libs/openssl", "3", "="),
+
+    # Don't rebuild on ABI changes (build-time only)
+    subslot_dep("//packages/linux/dev-util/cmake", "3", "*"),
+]
+```
+
+Package managers MUST track subslot changes and trigger rebuilds of dependent packages when:
+- The subslot value changes between versions in the same slot
+- The library soname changes
+- ABI-breaking changes are detected
+
+#### Subslot Query Functions
+
+```python
+# Parse slot/subslot string
+parse_slot_subslot("3/3.2")  # Returns: ("3", "3.2")
+
+# Format slot and subslot
+format_slot_subslot("3", "3.2")  # Returns: "3/3.2"
+
+# Check ABI compatibility
+check_abi_compatibility(old_version_info, new_version_info)
+# Returns: {"compatible": bool, "reason": str, "rebuild_required": [...]}
+```
+
 ### Version Lifecycle
 
 ```
@@ -926,6 +969,245 @@ buck2 query "deps(//defs:package_sets.bzl#desktop)"
 
 # Find sets containing a package
 buck2 query "rdeps(//defs:package_sets.bzl#..., //packages/linux/core/bash:bash)"
+```
+
+---
+
+## Eclass System
+
+The eclass system provides reusable build patterns, similar to Gentoo's eclasses.
+
+### Available Eclasses
+
+Package managers MUST understand these built-in eclasses:
+
+| Eclass | Purpose | Build Tools |
+|--------|---------|-------------|
+| `cmake` | CMake-based packages | cmake, ninja |
+| `meson` | Meson-based packages | meson, ninja |
+| `autotools` | Traditional configure/make | autoconf, automake, libtool |
+| `python-single-r1` | Single Python implementation | setuptools |
+| `python-r1` | Multiple Python versions | setuptools |
+| `go-module` | Go module packages | go |
+| `cargo` | Rust/Cargo packages | cargo |
+| `xdg` | Desktop applications | update-desktop-database |
+| `linux-mod` | Kernel modules | linux-headers |
+| `systemd` | Systemd services | systemd |
+| `qt5` | Qt5 applications | qt5 |
+
+### Eclass Inheritance
+
+```python
+load("//defs:eclasses.bzl", "inherit", "ECLASSES", "get_eclass")
+
+# Get merged configuration from multiple eclasses
+config = inherit(["cmake", "xdg"])
+
+# Use in package definition
+ebuild_package(
+    name = "my-app",
+    source = ":my-app-src",
+    version = "1.0.0",
+    src_configure = config["src_configure"],
+    src_compile = config["src_compile"],
+    src_install = config["src_install"],
+    bdepend = config["bdepend"],
+    rdepend = config["rdepend"],
+)
+```
+
+### Eclass Query Functions
+
+```python
+# List all available eclasses
+list_eclasses()  # Returns: ["cmake", "meson", "autotools", ...]
+
+# Get eclass definition
+get_eclass("cmake")
+# Returns: {
+#   "name": "cmake",
+#   "description": "Support for cmake-based packages",
+#   "src_configure": "...",
+#   "src_compile": "...",
+#   "bdepend": [...],
+#   "exports": [...],
+# }
+
+# Check if eclass provides a phase
+eclass_has_phase("cmake", "src_configure")  # Returns: True
+```
+
+---
+
+## License System
+
+The license system provides license tracking, validation, and compliance checking.
+
+### License Definitions
+
+Package managers MUST understand the license metadata structure:
+
+```python
+LICENSES = {
+    "GPL-2": {
+        "name": "GNU General Public License v2",
+        "url": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html",
+        "free": True,
+        "osi": True,
+    },
+    "MIT": {
+        "name": "MIT License",
+        "url": "https://opensource.org/licenses/MIT",
+        "free": True,
+        "osi": True,
+    },
+    # ... 60+ licenses defined
+}
+```
+
+### License Groups
+
+Package managers MUST support license group expansion:
+
+| Group | Description | Examples |
+|-------|-------------|----------|
+| `@FREE` | All free software licenses | GPL-2, MIT, BSD, Apache-2.0 |
+| `@OSI-APPROVED` | OSI-approved licenses | GPL-2, MIT, Apache-2.0 |
+| `@GPL-COMPATIBLE` | GPL-compatible licenses | MIT, BSD, LGPL-2.1 |
+| `@COPYLEFT` | Copyleft licenses | GPL-2, GPL-3, AGPL-3 |
+| `@PERMISSIVE` | Permissive licenses | MIT, BSD, Apache-2.0 |
+| `@BINARY-REDISTRIBUTABLE` | Binary redistribution allowed | Most free licenses |
+
+### License Validation
+
+```python
+from defs.licenses import check_license, check_license_expression
+
+# Simple check
+if not check_license("GPL-2", ["@FREE"]):
+    fail("License not accepted")
+
+# Expression check (dual licensing)
+if not check_license_expression("GPL-2 || MIT", ["@PERMISSIVE"]):
+    fail("No acceptable license option")
+```
+
+### ACCEPT_LICENSE Configuration
+
+Package managers MUST support ACCEPT_LICENSE configuration:
+
+```python
+# Default configurations
+DEFAULT_ACCEPT_LICENSE = ["@FREE"]
+SERVER_ACCEPT_LICENSE = ["@FREE", "@FIRMWARE"]
+DESKTOP_ACCEPT_LICENSE = ["@FREE", "@FIRMWARE", "@BINARY-REDISTRIBUTABLE"]
+DEVELOPER_ACCEPT_LICENSE = ["*", "-unknown"]
+```
+
+### License Query Functions
+
+```python
+# Expand license group
+expand_license_group("@FREE")  # Returns: ["GPL-2", "MIT", ...]
+
+# Get license info
+get_license_info("GPL-2")
+# Returns: {"name": "...", "url": "...", "free": True, "osi": True}
+
+# Check if license is free
+is_free_license("GPL-2")  # Returns: True
+
+# Check if OSI approved
+is_osi_approved("GPL-2")  # Returns: True
+
+# Parse license expression
+parse_license_expression("GPL-2 || MIT")
+# Returns: {"type": "or", "licenses": ["GPL-2", "MIT"]}
+
+# Generate license report
+generate_license_report(packages)
+# Returns: {"by_license": {...}, "free_count": N, "non_free_count": N}
+```
+
+---
+
+## EAPI System
+
+EAPI (Ebuild API) versioning allows safe evolution of the build macro API.
+
+### Supported EAPI Versions
+
+| EAPI | Status | Key Features |
+|------|--------|--------------|
+| 6 | Supported | Base functionality, eapply, user patches |
+| 7 | Supported | BDEPEND, version functions, sysroot |
+| 8 | Current | Subslots, selective fetch, strict USE |
+
+### EAPI Feature Flags
+
+Package managers MUST check EAPI features before using them:
+
+```python
+from defs.eapi import eapi_has_feature, require_eapi, CURRENT_EAPI
+
+# Require minimum EAPI
+require_eapi(8)
+
+# Check for feature availability
+if eapi_has_feature("subslots"):
+    deps = [subslot_dep("//pkg/openssl", "3", "=")]
+
+if eapi_has_feature("bdepend"):
+    # Use BDEPEND for build-time dependencies
+    pass
+```
+
+### EAPI Validation
+
+```python
+# Validate EAPI is supported
+validate_eapi(8)  # Returns: True
+
+# Get features for an EAPI
+get_eapi_features(8)
+# Returns: {"subslots": True, "bdepend": True, ...}
+
+# Check if function is deprecated
+is_deprecated("dohtml", 8)  # Returns: True
+
+# Check if function is banned
+is_banned("dohtml", 8)  # Returns: True
+```
+
+### EAPI Migration
+
+Package managers SHOULD provide migration guidance:
+
+```python
+# Get migration steps between EAPI versions
+migration_guide(6, 8)
+# Returns: [
+#   "Convert DEPEND to BDEPEND for build-time only dependencies",
+#   "Replace dohtml with dodoc for HTML documentation",
+#   "Add subslots for packages with ABI-sensitive libraries",
+# ]
+
+# Check compatibility
+check_eapi_compatibility(package_eapi=6, system_eapi=8)
+# Returns: {"compatible": True, "warnings": [...], "errors": [...]}
+```
+
+### Default Phase Implementations
+
+Each EAPI defines default phase implementations:
+
+```python
+# Get default phase for EAPI
+get_default_phase("src_prepare", eapi=8)
+# Returns shell script for default prepare phase
+
+get_default_phase("src_compile", eapi=8)
+# Returns shell script for default compile phase
 ```
 
 ---

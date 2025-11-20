@@ -18,7 +18,14 @@ buckos-build/
 │   ├── use_flags.bzl     # USE flag system
 │   ├── package_sets.bzl  # Package set definitions (like profiles)
 │   ├── registry.bzl      # Package version registry
-│   └── versions.bzl      # Multi-version support
+│   ├── versions.bzl      # Multi-version and subslot support
+│   ├── eclasses.bzl      # Eclass inheritance system
+│   ├── licenses.bzl      # License tracking and validation
+│   ├── eapi.bzl          # EAPI versioning system
+│   ├── vdb.bzl           # Installed package database (VDB)
+│   ├── overlays.bzl      # Overlay/repository system
+│   ├── config_protect.bzl # Configuration protection
+│   └── use_expand.bzl    # USE_EXPAND variables
 ├── docs/
 │   ├── USE_FLAGS.md      # USE flag documentation
 │   ├── PACKAGE_SETS.md   # Package set documentation
@@ -781,20 +788,28 @@ qemu-system-x86_64 \
 | Gentoo | BuckOs |
 |--------|---------|
 | ebuild | BUCK file |
-| eclass | package_defs.bzl |
+| eclass | eclasses.bzl, inherit() |
 | emerge | buck2 build |
 | PORTDIR | packages/ |
 | USE flags | use_flags.bzl |
 | DEPEND | deps |
-| BDEPEND | build_deps |
+| BDEPEND | bdepend |
+| RDEPEND | rdepend |
+| LICENSE | licenses.bzl |
+| EAPI | eapi.bzl |
 | make.profile | package_sets.bzl profiles |
 | @system | SYSTEM_PACKAGES |
 | @world | custom package_set() |
 | /etc/portage/package.use | package_use() |
 | SLOT | versions.bzl slots |
+| SUBSLOT | versions.bzl subslots |
 | package.mask | registry status: masked |
 | /etc/portage/patches | patches/, user/patches |
 | epatch | epatch(), eapply() |
+| inherit | inherit() from eclasses.bzl |
+| @FREE license group | @FREE from licenses.bzl |
+
+For detailed comparison, see [docs/gentoo-comparison.md](docs/gentoo-comparison.md).
 
 ## License
 
@@ -818,5 +833,11 @@ MIT License - See individual packages for their respective licenses.
 - [x] Add QEMU testing infrastructure
 - [x] Add ISO image generation
 - [x] Implement patch system for package customization
+- [x] Implement eclass inheritance system (11 eclasses)
+- [x] Add license tracking with license groups
+- [x] Implement EAPI versioning (EAPI 6-8)
+- [x] Add subslot support for ABI compatibility
+- [ ] Implement VDB (installed package database)
 - [ ] Create package manager for installed systems
 - [ ] Add packages for BSD, macOS, and Windows platforms
+- [ ] Implement overlay system for local customizations

@@ -15,6 +15,10 @@ use_package(
     use_deps = {
         "ncurses": ["//packages/linux/core/ncurses"],
     },
+    use_configure = {
+        "ncurses": "--with-ncurses",
+        "-ncurses": "--without-ncurses",
+    },
 
     visibility = ["PUBLIC"],
 )

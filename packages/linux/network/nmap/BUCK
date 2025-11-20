@@ -16,11 +16,14 @@ use_package(
 
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
+        "lua": ["//packages/linux/lang/lua:lua"],
     },
 
     use_configure = {
         "ssl": "--with-openssl",
         "-ssl": "--without-openssl",
+        "ipv6": "--enable-ipv6",
+        "-ipv6": "--disable-ipv6",
         "zenmap": "--with-zenmap",
         "-zenmap": "--without-zenmap",
         "ncat": "--with-ncat",

@@ -126,6 +126,12 @@ GLOBAL_USE_FLAGS = {
     "berkdb": "Enable Berkeley DB support",
     "ldap": "Enable LDAP support",
 
+    # Authentication & Security Extensions
+    "kerberos": "Enable Kerberos authentication support",
+    "libedit": "Use libedit for line editing",
+    "dnssec": "Enable DNSSEC validation support",
+    "gssapi": "Enable GSSAPI authentication",
+
     # System features
     "acl": "Enable Access Control Lists support",
     "attr": "Enable extended attributes support",

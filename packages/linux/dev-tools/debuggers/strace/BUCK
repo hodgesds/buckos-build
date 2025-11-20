@@ -19,6 +19,11 @@ use_package(
     # Default USE flags
     use_defaults = ["unwind"],
 
+    # Conditional dependencies
+    use_deps = {
+        "unwind": ["//packages/linux/system/libs/libunwind:libunwind"],
+    },
+
     # Conditional configure arguments
     use_configure = {
         "unwind": "--with-libunwind",

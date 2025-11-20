@@ -1,29 +1,43 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "openssl-src",
+use_package(
+    name = "openssl",
+    version = "3.3.2",
     src_uri = "https://www.openssl.org/source/openssl-3.3.2.tar.gz",
     sha256 = "2e8a40b01979571a0124e00a257335fdee3bb7f570c70e4e4fab27e6efa9e6e5",
-)
 
-configure_make_package(
-    name = "openssl",
-    source = ":openssl-src",
-    version = "3.3.2",
-    description = "TLS/SSL and crypto library",
-    homepage = "https://www.openssl.org/",
-    license = "Apache-2.0",
+    iuse = ["zlib", "static-libs", "threads", "test"],
+    use_defaults = ["zlib", "threads"],
+
+    use_deps = {
+        "zlib": ["//packages/linux/linux/core/zlib"],
+    },
+
+    use_configure = {
+        "zlib": "zlib-dynamic",
+        "-zlib": "no-zlib",
+        "static-libs": "no-shared",
+        "-static-libs": "shared",
+        "threads": "threads",
+        "-threads": "no-threads",
+        "test": "enable-tests",
+        "-test": "no-tests",
+    },
+
     configure_args = [
         "--prefix=/usr",
         "--openssldir=/etc/ssl",
         "--libdir=lib",
-        "shared",
-        "zlib-dynamic",
     ],
-    configure_command = "./config",
-    deps = [
-        "//packages/linux/linux/core/zlib",
-    ],
+
+    pre_configure = """
+# OpenSSL uses ./config instead of ./configure
+# The use_package macro will handle this
+""",
+
+    description = "TLS/SSL and crypto library",
+    homepage = "https://www.openssl.org/",
+    license = "Apache-2.0",
     visibility = ["PUBLIC"],
 )

@@ -13,9 +13,17 @@ use_package(
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
         "idn": ["//packages/linux/network/dns/libraries/libidn2:libidn2"],
+        "stubby": ["//packages/linux/network/dns/tools/stubby:stubby"],
     },
 
-    use_configure = {},
+    use_configure = {
+        "ssl": "-DUSE_OPENSSL=ON",
+        "-ssl": "-DUSE_OPENSSL=OFF",
+        "idn": "-DUSE_LIBIDN2=ON",
+        "-idn": "-DUSE_LIBIDN2=OFF",
+        "stubby": "-DBUILD_STUBBY=ON",
+        "-stubby": "-DBUILD_STUBBY=OFF",
+    },
 
     pre_configure = """
 # getdns uses CMake
@@ -23,9 +31,7 @@ mkdir -p build && cd build
 cmake .. \\
     -DCMAKE_INSTALL_PREFIX=/usr \\
     -DCMAKE_BUILD_TYPE=Release \\
-    -DBUILD_STUBBY=OFF \\
     -DENABLE_STUB_ONLY=OFF \\
-    -DUSE_LIBIDN2=ON \\
     -DBUILD_GETDNS_QUERY=ON \\
     -DBUILD_GETDNS_SERVER_MON=ON
 """,

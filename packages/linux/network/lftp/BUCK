@@ -17,6 +17,8 @@ use_package(
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
         "gnutls": ["//packages/linux/network/gnutls:gnutls"],
+        "idn": ["//packages/linux/network/dns/libraries/libidn2:libidn2"],
+        "nls": ["//packages/linux/system/libs/i18n:gettext"],
     },
 
     use_configure = {

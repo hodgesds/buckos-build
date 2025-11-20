@@ -13,15 +13,27 @@ use_package(
     use_defaults = ["ssl", "gnutls", "zlib", "pcre", "xml"],
 
     use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
         "gnutls": ["//packages/linux/system/libs/crypto:gnutls", "//packages/linux/system/libs/crypto:libgcrypt"],
         "xml": ["//packages/linux/system/libs/data:libxml2"],
         "pcre": ["//packages/linux/system/libs/utility:pcre2"],
         "lua": ["//packages/linux/lang/lua:lua"],
+        "zlib": ["//packages/linux/core:zlib"],
     },
 
     use_configure = {
+        "ssl": "--with-ssl",
+        "-ssl": "--without-ssl",
+        "gnutls": "--with-gnutls",
+        "-gnutls": "--without-gnutls",
         "lua": "--with-lua",
         "-lua": "--without-lua",
+        "zlib": "--with-zlib",
+        "-zlib": "--without-zlib",
+        "pcre": "--with-pcre2",
+        "-pcre": "--without-pcre2",
+        "xml": "--with-libxml2",
+        "-xml": "--without-libxml2",
     },
 
     configure_args = [

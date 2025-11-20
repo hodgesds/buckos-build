@@ -27,6 +27,8 @@ use_package(
         "curl": ["//packages/linux/network/curl:curl"],
         "perl": ["//packages/linux/lang/perl:perl"],
         "python": ["//packages/linux/lang/python:python"],
+        "pcre2": ["//packages/linux/system/libs/utility:pcre2"],
+        "nls": ["//packages/linux/system/libs/i18n:gettext"],
     },
 
     # Conditional configure arguments

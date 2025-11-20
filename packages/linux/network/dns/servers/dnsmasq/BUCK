@@ -12,9 +12,19 @@ use_package(
 
     use_deps = {
         "idn": ["//packages/linux/network/dns/libraries/libidn2:libidn2"],
+        "dbus": ["//packages/linux/system/libs/ipc/dbus:dbus"],
+        "dnssec": ["//packages/linux/system/libs/crypto:nettle"],
     },
 
-    use_configure = {},
+    use_configure = {
+        # dnsmasq uses COPTS for feature configuration
+        "dnssec": "COPTS+=-DHAVE_DNSSEC",
+        "dbus": "COPTS+=-DHAVE_DBUS",
+        "idn": "COPTS+=-DHAVE_LIBIDN2",
+        "-idn": "COPTS+=-DNO_ICONV",
+        "ipv6": "COPTS+=-DHAVE_IPV6",
+        "-ipv6": "COPTS+=-DNO_IPV6",
+    },
 
     pre_configure = """
 # dnsmasq doesn't use autoconf
@@ -25,7 +35,6 @@ true
         "PREFIX=/usr",
         "SYSCONFDIR=/etc",
         "LOCALSTATEDIR=/var",
-        "COPTS=-DHAVE_DNSSEC -DHAVE_DBUS",
     ],
 
     env = {

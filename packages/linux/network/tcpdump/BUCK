@@ -17,6 +17,7 @@ use_package(
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
         "caps": ["//packages/linux/core:libcap"],
+        "smi": ["//packages/linux/network/libsmi:libsmi"],
     },
 
     use_configure = {

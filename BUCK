@@ -171,10 +171,10 @@ alias(
 filegroup(
     name = "core-packages",
     srcs = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:busybox",
-        "//packages/linux/core:util-linux",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/busybox:busybox",
+        "//packages/linux/core/util-linux:util-linux",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )
@@ -182,7 +182,7 @@ filegroup(
 filegroup(
     name = "filesystem-packages",
     srcs = [
-        "//packages/linux/core:e2fsprogs",
+        "//packages/linux/core/e2fsprogs:e2fsprogs",
     ],
     visibility = ["PUBLIC"],
 )
@@ -191,7 +191,7 @@ filegroup(
 filegroup(
     name = "net-packages",
     srcs = [
-        "//packages/linux/network:openssl",
+        "//packages/linux/network/openssl:openssl",
         "//packages/linux/network:curl",
         "//packages/linux/network:openssh",
         "//packages/linux/network:iproute2",
@@ -305,9 +305,9 @@ filegroup(
 filegroup(
     name = "shell-libs",
     srcs = [
-        "//packages/linux/core:readline",
-        "//packages/linux/core:ncurses",
-        "//packages/linux/core:less",
+        "//packages/linux/core/readline:readline",
+        "//packages/linux/core/ncurses:ncurses",
+        "//packages/linux/core/less:less",
     ],
     visibility = ["PUBLIC"],
 )
@@ -316,9 +316,9 @@ filegroup(
 filegroup(
     name = "compression-packages",
     srcs = [
-        "//packages/linux/core:zlib",
-        "//packages/linux/core:bzip2",
-        "//packages/linux/core:xz",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/core/bzip2:bzip2",
+        "//packages/linux/core/xz:xz",
         "//packages/linux/system/libs/compression/gzip:gzip",
         "//packages/linux/system/apps/tar:tar",
     ],
@@ -350,8 +350,8 @@ filegroup(
 filegroup(
     name = "system-packages",
     srcs = [
-        "//packages/linux/core:procps-ng",
-        "//packages/linux/core:file",
+        "//packages/linux/core/procps-ng:procps-ng",
+        "//packages/linux/core/file:file",
     ],
     visibility = ["PUBLIC"],
 )
@@ -360,9 +360,9 @@ filegroup(
 filegroup(
     name = "dev-libraries",
     srcs = [
-        "//packages/linux/core:libffi",
-        "//packages/linux/core:expat",
-        "//packages/linux/core:libnl",
+        "//packages/linux/core/libffi:libffi",
+        "//packages/linux/core/expat:expat",
+        "//packages/linux/core/libnl:libnl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -613,39 +613,6 @@ alias(
 alias(
     name = "virtme-ng",
     actual = "//packages/linux/emulation/kernel/virtme-ng:virtme-ng",
-# Container aliases
-# =============================================================================
-
-# Main container tool
-alias(
-    name = "podman",
-    actual = "//packages/linux/system/containers:podman",
-    visibility = ["PUBLIC"],
-)
-
-alias(
-    name = "buildah",
-    actual = "//packages/linux/system/containers:buildah",
-    visibility = ["PUBLIC"],
-)
-
-alias(
-    name = "skopeo",
-    actual = "//packages/linux/system/containers:skopeo",
-    visibility = ["PUBLIC"],
-)
-
-# Container orchestration
-alias(
-    name = "podman-compose",
-    actual = "//packages/linux/system/containers:podman-compose",
-    visibility = ["PUBLIC"],
-)
-
-# Container security
-alias(
-    name = "trivy",
-    actual = "//packages/linux/system/containers:trivy",
     visibility = ["PUBLIC"],
 )
 
@@ -658,6 +625,11 @@ filegroup(
     name = "emulation-essential",
     srcs = [
         "//packages/linux/emulation:essential",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
 # Container package groups
 # =============================================================================
 
@@ -675,6 +647,10 @@ filegroup(
     name = "emulation-server",
     srcs = [
         "//packages/linux/emulation:server",
+    ],
+    visibility = ["PUBLIC"],
+)
+
 # Container networking
 filegroup(
     name = "container-networking",
@@ -689,6 +665,10 @@ filegroup(
     name = "emulation-desktop",
     srcs = [
         "//packages/linux/emulation:desktop",
+    ],
+    visibility = ["PUBLIC"],
+)
+
 # Podman ecosystem tools
 filegroup(
     name = "podman-tools",
@@ -703,6 +683,10 @@ filegroup(
     name = "emulation-cloud",
     srcs = [
         "//packages/linux/emulation:cloud",
+    ],
+    visibility = ["PUBLIC"],
+)
+
 # Container utilities and monitoring
 filegroup(
     name = "container-utilities",
@@ -717,6 +701,10 @@ filegroup(
     name = "emulation-development",
     srcs = [
         "//packages/linux/emulation:development",
+    ],
+    visibility = ["PUBLIC"],
+)
+
 # Container security tools
 filegroup(
     name = "container-security",
@@ -740,9 +728,13 @@ filegroup(
     name = "emulation-all",
     srcs = [
         "//packages/linux/emulation:all",
+    ],
+    visibility = ["PUBLIC"],
+)
+
 # Complete container stack
 filegroup(
-    name = "container-packages",
+    name = "container-packages-complete",
     srcs = [
         "//packages/linux/system/containers:all-containers",
     ],

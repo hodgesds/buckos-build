@@ -3,6 +3,8 @@ Package build rules for BuckOs Linux Distribution.
 Similar to Gentoo's ebuild system but using Buck2.
 """
 
+load("//defs:eclasses.bzl", "ECLASSES", "inherit")
+
 # Package metadata structure
 PackageInfo = provider(fields = [
     "name",
@@ -2090,6 +2092,7 @@ def cmake_package(
         **kwargs):
     """
     Convenience macro for CMake packages.
+    Uses the cmake eclass for standardized build phases.
     """
     src_name = name + "-src"
 
@@ -2099,14 +2102,30 @@ def cmake_package(
         sha256 = sha256,
     )
 
+    # Use eclass inheritance for cmake
+    eclass_config = inherit(["cmake"])
+
+    # Handle cmake_args by setting environment variable
+    env = kwargs.pop("env", {})
+    if cmake_args:
+        env["CMAKE_EXTRA_ARGS"] = " ".join(cmake_args)
+
+    # Merge eclass bdepend with any existing bdepend
+    bdepend = list(kwargs.pop("bdepend", []))
+    for dep in eclass_config["bdepend"]:
+        if dep not in bdepend:
+            bdepend.append(dep)
+
     ebuild_package(
         name = name,
         source = ":" + src_name,
         version = version,
-        src_configure = cmake_src_configure(cmake_args),
-        src_compile = cmake_src_compile(),
-        src_install = cmake_src_install(),
+        src_configure = eclass_config["src_configure"],
+        src_compile = eclass_config["src_compile"],
+        src_install = eclass_config["src_install"],
         rdepend = deps,
+        bdepend = bdepend,
+        env = env,
         maintainers = maintainers,
         **kwargs
     )
@@ -2122,6 +2141,7 @@ def meson_package(
         **kwargs):
     """
     Convenience macro for Meson packages.
+    Uses the meson eclass for standardized build phases.
     """
     src_name = name + "-src"
 
@@ -2131,14 +2151,30 @@ def meson_package(
         sha256 = sha256,
     )
 
+    # Use eclass inheritance for meson
+    eclass_config = inherit(["meson"])
+
+    # Handle meson_args by setting environment variable
+    env = kwargs.pop("env", {})
+    if meson_args:
+        env["MESON_EXTRA_ARGS"] = " ".join(meson_args)
+
+    # Merge eclass bdepend with any existing bdepend
+    bdepend = list(kwargs.pop("bdepend", []))
+    for dep in eclass_config["bdepend"]:
+        if dep not in bdepend:
+            bdepend.append(dep)
+
     ebuild_package(
         name = name,
         source = ":" + src_name,
         version = version,
-        src_configure = meson_src_configure(meson_args),
-        src_compile = meson_src_compile(),
-        src_install = meson_src_install(),
+        src_configure = eclass_config["src_configure"],
+        src_compile = eclass_config["src_compile"],
+        src_install = eclass_config["src_install"],
         rdepend = deps,
+        bdepend = bdepend,
+        env = env,
         maintainers = maintainers,
         **kwargs
     )
@@ -2155,6 +2191,7 @@ def cargo_package(
         **kwargs):
     """
     Convenience macro for Rust/Cargo packages.
+    Uses the cargo eclass for standardized build phases.
     """
     src_name = name + "-src"
 
@@ -2164,14 +2201,33 @@ def cargo_package(
         sha256 = sha256,
     )
 
+    # Use eclass inheritance for cargo
+    eclass_config = inherit(["cargo"])
+
+    # Handle cargo_args by setting environment variable
+    env = kwargs.pop("env", {})
+    if cargo_args:
+        env["CARGO_BUILD_FLAGS"] = " ".join(cargo_args)
+
+    # Merge eclass bdepend with any existing bdepend
+    bdepend = list(kwargs.pop("bdepend", []))
+    for dep in eclass_config["bdepend"]:
+        if dep not in bdepend:
+            bdepend.append(dep)
+
+    # Use custom install if bins specified, otherwise use eclass default
+    src_install = cargo_src_install(bins) if bins else eclass_config["src_install"]
+
     ebuild_package(
         name = name,
         source = ":" + src_name,
         version = version,
-        src_configure = cargo_src_configure(),
-        src_compile = cargo_src_compile(cargo_args),
-        src_install = cargo_src_install(bins),
+        src_configure = eclass_config["src_configure"],
+        src_compile = eclass_config["src_compile"],
+        src_install = src_install,
         rdepend = deps,
+        bdepend = bdepend,
+        env = env,
         maintainers = maintainers,
         **kwargs
     )
@@ -2188,6 +2244,7 @@ def go_package(
         **kwargs):
     """
     Convenience macro for Go packages.
+    Uses the go-module eclass for standardized build phases.
     """
     src_name = name + "-src"
 
@@ -2197,13 +2254,33 @@ def go_package(
         sha256 = sha256,
     )
 
+    # Use eclass inheritance for go-module
+    eclass_config = inherit(["go-module"])
+
+    # Handle packages by setting environment variable
+    env = kwargs.pop("env", {})
+    if packages != ["."]:
+        env["GO_PACKAGES"] = " ".join(packages)
+
+    # Merge eclass bdepend with any existing bdepend
+    bdepend = list(kwargs.pop("bdepend", []))
+    for dep in eclass_config["bdepend"]:
+        if dep not in bdepend:
+            bdepend.append(dep)
+
+    # Use custom install if bins specified, otherwise use eclass default
+    src_install = go_src_install(bins) if bins else eclass_config["src_install"]
+
     ebuild_package(
         name = name,
         source = ":" + src_name,
         version = version,
-        src_compile = go_src_compile(packages),
-        src_install = go_src_install(bins),
+        src_configure = eclass_config["src_configure"],
+        src_compile = eclass_config["src_compile"],
+        src_install = src_install,
         rdepend = deps,
+        bdepend = bdepend,
+        env = env,
         maintainers = maintainers,
         **kwargs
     )
@@ -2219,6 +2296,7 @@ def python_package(
         **kwargs):
     """
     Convenience macro for Python packages.
+    Uses the python-single-r1 eclass for standardized build phases.
     """
     src_name = name + "-src"
 
@@ -2228,13 +2306,36 @@ def python_package(
         sha256 = sha256,
     )
 
+    # Use eclass inheritance for python-single-r1
+    eclass_config = inherit(["python-single-r1"])
+
+    # Handle python version by setting environment variable
+    env = kwargs.pop("env", {})
+    if python != "python3":
+        env["PYTHON"] = python
+
+    # Merge eclass bdepend with any existing bdepend
+    bdepend = list(kwargs.pop("bdepend", []))
+    for dep in eclass_config["bdepend"]:
+        if dep not in bdepend:
+            bdepend.append(dep)
+
+    # Merge eclass rdepend with any existing rdepend
+    rdepend = list(deps)
+    for dep in eclass_config.get("rdepend", []):
+        if dep not in rdepend:
+            rdepend.append(dep)
+
     ebuild_package(
         name = name,
         source = ":" + src_name,
         version = version,
-        src_compile = "",  # Python packages often don't need compilation
-        src_install = python_src_install(python),
-        rdepend = deps,
+        src_configure = eclass_config["src_configure"],
+        src_compile = eclass_config["src_compile"],
+        src_install = eclass_config["src_install"],
+        rdepend = rdepend,
+        bdepend = bdepend,
+        env = env,
         maintainers = maintainers,
         **kwargs
     )

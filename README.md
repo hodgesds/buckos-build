@@ -25,7 +25,8 @@ buckos-build/
 │   ├── vdb.bzl           # Installed package database (VDB)
 │   ├── overlays.bzl      # Overlay/repository system
 │   ├── config_protect.bzl # Configuration protection
-│   └── use_expand.bzl    # USE_EXPAND variables
+│   ├── use_expand.bzl    # USE_EXPAND variables
+│   └── advanced_deps.bzl # Blockers, SRC_URI, REQUIRED_USE, pkg env
 ├── docs/
 │   ├── USE_FLAGS.md      # USE flag documentation
 │   ├── PACKAGE_SETS.md   # Package set documentation
@@ -837,7 +838,10 @@ MIT License - See individual packages for their respective licenses.
 - [x] Add license tracking with license groups
 - [x] Implement EAPI versioning (EAPI 6-8)
 - [x] Add subslot support for ABI compatibility
-- [ ] Implement VDB (installed package database)
+- [x] Implement VDB (installed package database)
+- [x] Implement overlay system for local customizations
+- [x] Add configuration protection (CONFIG_PROTECT)
+- [x] Implement USE_EXPAND (PYTHON_TARGETS, CPU_FLAGS_X86, etc.)
+- [x] Add advanced dependencies (blockers, SRC_URI features, REQUIRED_USE)
 - [ ] Create package manager for installed systems
 - [ ] Add packages for BSD, macOS, and Windows platforms
-- [ ] Implement overlay system for local customizations

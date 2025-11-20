@@ -18,6 +18,8 @@ use_package(
         "pam": ["//packages/linux/system/security/auth/pam"],
         "selinux": ["//packages/linux/system/security/selinux"],
         "ldap": ["//packages/linux/system/security/auth/directory/openldap"],
+        "nls": ["//packages/linux/system/libs/i18n:gettext"],
+        "sssd": ["//packages/linux/system/security/auth/sssd:sssd"],
     },
     use_configure = {
         "pam": "--with-pam",
@@ -30,6 +32,8 @@ use_package(
         "-sssd": "--without-sssd",
         "ldap": "--with-ldap",
         "-ldap": "--without-ldap",
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
     },
     configure_args = [
         "--prefix=/usr",

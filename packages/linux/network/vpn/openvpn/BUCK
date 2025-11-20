@@ -14,9 +14,12 @@ use_package(
         "ssl": ["//packages/linux/network/openssl:openssl"],
         "lzo": ["//packages/linux/core:lzo"],
         "lz4": ["//packages/linux/core:lz4"],
+        "systemd": ["//packages/linux/system/init/systemd:systemd"],
     },
 
     use_configure = {
+        "ssl": "--enable-crypto",
+        "-ssl": "--disable-crypto",
         "lzo": "--enable-lzo",
         "-lzo": "--disable-lzo",
         "lz4": "--enable-lz4",
@@ -35,7 +38,6 @@ use_package(
         "--prefix=/usr",
         "--sysconfdir=/etc",
         "--localstatedir=/var",
-        "--enable-crypto",
         "--enable-server",
         "--enable-management",
     ],

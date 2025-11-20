@@ -12,6 +12,8 @@ use_package(
 
     use_deps = {
         "readline": ["//packages/linux/core:readline"],
+        "systemd": ["//packages/linux/system/init/systemd:systemd"],
+        "udev": ["//packages/linux/system/hardware/eudev:eudev"],
     },
 
     use_configure = {

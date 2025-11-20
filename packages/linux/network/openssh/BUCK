@@ -17,9 +17,14 @@ use_package(
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
         "pam": ["//packages/linux/core:linux-pam"],
+        "kerberos": ["//packages/linux/system/libs/auth:krb5"],
+        "ldap": ["//packages/linux/system/libs/directory:openldap"],
+        "libedit": ["//packages/linux/system/libs/utility:libedit"],
     },
 
     use_configure = {
+        "ssl": "--with-openssl",
+        "-ssl": "--without-openssl",
         "pam": "--with-pam",
         "-pam": "--without-pam",
         "kerberos": "--with-kerberos5",

@@ -17,6 +17,8 @@ use_package(
     use_deps = {},
 
     use_configure = {
+        "ipv6": "--enable-ipv6",
+        "-ipv6": "--disable-ipv6",
         "bpf": "--enable-bpf-compiler",
         "-bpf": "--disable-bpf-compiler",
         "nfsynproxy": "--enable-nfsynproxy",

@@ -1,0 +1,49 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "bpftrace-src",
+    src_uri = "https://github.com/bpftrace/bpftrace/archive/refs/tags/v0.21.2.tar.gz",
+    sha256 = "a60adf7e6ac7ceb5d0c19c8cfe5e5a22c8af69dbec6e29c3e4adf38c95b68c0b",
+)
+
+binary_package(
+    name = "bpftrace",
+    srcs = [":bpftrace-src"],
+    version = "0.21.2",
+    description = "High-level tracing language for Linux eBPF",
+    homepage = "https://github.com/bpftrace/bpftrace",
+    license = "Apache-2.0",
+    install_script = """
+        cd $SRCS/bpftrace-*
+
+        # Create build directory
+        mkdir -p build && cd build
+
+        # Configure with CMake
+        cmake .. \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=/usr \
+            -DSTATIC_LINKING=ON \
+            -DBUILD_TESTING=OFF \
+            -DCMAKE_PREFIX_PATH=$DEPS/usr \
+            -DLIBBPF_INCLUDE_DIRS=$DEPS/usr/include \
+            -DLIBBPF_LIBRARIES=$DEPS/usr/lib/libbpf.a
+
+        # Build
+        make -j$(nproc)
+
+        # Install
+        mkdir -p $OUT/usr/bin $OUT/usr/share/bpftrace/tools $OUT/usr/share/man/man8
+
+        cp src/bpftrace $OUT/usr/bin/
+        cp -r ../tools/*.bt $OUT/usr/share/bpftrace/tools/ 2>/dev/null || true
+        cp ../man/man8/*.8 $OUT/usr/share/man/man8/ 2>/dev/null || true
+    """,
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:zlib",
+        "//packages/linux/dev-tools/dev-utils/elfutils:elfutils",
+        "//packages/linux/system/libs/bpf/libbpf:libbpf",
+    ],
+    visibility = ["PUBLIC"],
+)

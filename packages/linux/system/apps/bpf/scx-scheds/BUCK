@@ -1,0 +1,57 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "scx-scheds-src",
+    src_uri = "https://github.com/sched-ext/scx/archive/refs/tags/v1.0.7.tar.gz",
+    sha256 = "8a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+binary_package(
+    name = "scx-scheds",
+    srcs = [":scx-scheds-src"],
+    version = "1.0.7",
+    description = "sched_ext schedulers and tools - BPF-based CPU schedulers",
+    homepage = "https://github.com/sched-ext/scx",
+    license = "GPL-2.0",
+    install_script = """
+        cd $SRCS/scx-*
+
+        # Build scx schedulers using meson
+        meson setup build \
+            --prefix=/usr \
+            -Dsystemd=disabled \
+            -Dopenrc=disabled \
+            -Dlibbpf_a=$DEPS/usr/lib/libbpf.a
+
+        meson compile -C build
+
+        # Install
+        mkdir -p $OUT/usr/bin $OUT/usr/share/scx
+
+        # Install scheduler binaries
+        for sched in build/scheds/rust/scx_*; do
+            if [ -f "$sched" ] && [ -x "$sched" ]; then
+                cp "$sched" $OUT/usr/bin/
+            fi
+        done
+
+        # Install C schedulers if present
+        for sched in build/scheds/c/scx_*; do
+            if [ -f "$sched" ] && [ -x "$sched" ]; then
+                cp "$sched" $OUT/usr/bin/
+            fi
+        done
+
+        # Install scx_loader if present
+        if [ -f build/rust/scx_loader/scx_loader ]; then
+            cp build/rust/scx_loader/scx_loader $OUT/usr/bin/
+        fi
+    """,
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:zlib",
+        "//packages/linux/dev-tools/dev-utils/elfutils:elfutils",
+        "//packages/linux/system/libs/bpf/libbpf:libbpf",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -75,6 +75,18 @@ filegroup(
 )
 
 filegroup(
+    name = "bpf-packages",
+    srcs = [
+        "//packages/linux/system/libs/bpf/libbpf:libbpf",
+        "//packages/linux/system/apps/bpf/bpftool:bpftool",
+        "//packages/linux/system/apps/bpf/bpftrace:bpftrace",
+        "//packages/linux/system/apps/bpf/bpftop:bpftop",
+        "//packages/linux/system/apps/bpf/scx-scheds:scx-scheds",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
     name = "utility-packages",
     srcs = [
         "//packages/linux/core/file:file",
@@ -108,6 +120,7 @@ filegroup(
         ":user-management-packages",
         ":entropy-packages",
         ":process-monitoring-packages",
+        ":bpf-packages",
         "//packages/linux/system/apps/rsync:rsync",
         "//packages/linux/system/apps/acpid:acpid",
         "//packages/linux/system/apps/at:at",

@@ -1,0 +1,34 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+load("//defs:use_flags.bzl", "use_dep")
+
+download_source(
+    name = "libbpf-src",
+    src_uri = "https://github.com/libbpf/libbpf/archive/refs/tags/v1.4.6.tar.gz",
+    sha256 = "74e1e2aca2cb9e81e0158d6e77ef475ed2f63f01147c57a67c53effa5a6789c6",
+)
+
+binary_package(
+    name = "libbpf",
+    srcs = [":libbpf-src"],
+    version = "1.4.6",
+    description = "Library for loading and interacting with BPF programs from userspace",
+    homepage = "https://github.com/libbpf/libbpf",
+    license = "LGPL-2.1 BSD-2",
+    install_script = """
+        cd $SRCS/libbpf-*/src
+
+        # Build libbpf
+        make BUILD_STATIC_ONLY=1 PREFIX=/usr LIBDIR=/usr/lib
+
+        # Install
+        mkdir -p $OUT/usr/lib $OUT/usr/include/bpf $OUT/usr/lib/pkgconfig
+
+        make BUILD_STATIC_ONLY=1 PREFIX=/usr LIBDIR=/usr/lib DESTDIR=$OUT install
+    """,
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:zlib",
+        "//packages/linux/dev-tools/dev-utils/elfutils:elfutils",
+    ],
+    visibility = ["PUBLIC"],
+)

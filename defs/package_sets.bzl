@@ -101,7 +101,7 @@ BASE_PACKAGES = SYSTEM_PACKAGES + [
     "//packages/linux/core:expat",
 
     # Shell and terminal
-    "//packages/linux/shells:bash",
+    "//packages/linux/core:bash",
 
     # Compression
     "//packages/linux/core:bzip2",

@@ -48,5 +48,31 @@ use_package(
     deps = [
         "//packages/linux/core:musl",
     ],
+
+    post_install = """
+# Ensure utilities are in expected locations
+mkdir -p "$DESTDIR/usr/bin" "$DESTDIR/usr/sbin"
+
+# Verify critical binaries exist for the installer
+if [ ! -f "$DESTDIR/usr/bin/chpasswd" ]; then
+    echo "ERROR: chpasswd not found in $DESTDIR/usr/bin"
+    ls -la "$DESTDIR/usr/bin" || true
+    ls -la "$DESTDIR/usr/sbin" || true
+    exit 1
+fi
+
+if [ ! -f "$DESTDIR/usr/sbin/useradd" ]; then
+    echo "ERROR: useradd not found in $DESTDIR/usr/sbin"
+    ls -la "$DESTDIR/usr/bin" || true
+    ls -la "$DESTDIR/usr/sbin" || true
+    exit 1
+fi
+
+echo "✓ Shadow package installed successfully"
+echo "  - chpasswd: $DESTDIR/usr/bin/chpasswd"
+echo "  - useradd: $DESTDIR/usr/sbin/useradd"
+echo "  - passwd: $DESTDIR/usr/bin/passwd"
+""",
+
     visibility = ["PUBLIC"],
 )

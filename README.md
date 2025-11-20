@@ -157,6 +157,165 @@ configure_make_package(
 )
 ```
 
+## Multi-Version Package Support
+
+BuckOs supports maintaining multiple versions of the same package simultaneously, similar to Gentoo's SLOT system. This enables legacy compatibility, gradual migrations, and supporting different dependency requirements.
+
+### Key Concepts
+
+- **Slots**: Logical groupings of package versions (e.g., `openssl:3` vs `openssl:1.1`)
+- **Default Version**: The version used when no specific version is requested
+- **Version Status**: `stable`, `testing`, `deprecated`, or `masked`
+
+### Defining Multi-Version Packages
+
+Use `multi_version_package()` for packages with multiple versions:
+
+```python
+load("//defs:versions.bzl", "multi_version_package")
+
+multi_version_package(
+    name = "openssl",
+    versions = {
+        "3.2.0": {
+            "slot": "3",
+            "keywords": ["stable"],
+            "src_uri": "https://www.openssl.org/source/openssl-3.2.0.tar.gz",
+            "sha256": "...",
+            "configure_args": ["--prefix=/usr"],
+        },
+        "1.1.1w": {
+            "slot": "1.1",
+            "keywords": ["stable"],
+            "src_uri": "https://www.openssl.org/source/openssl-1.1.1w.tar.gz",
+            "sha256": "...",
+            "configure_args": ["--prefix=/usr/lib/openssl-1.1"],
+        },
+    },
+    default_version = "3.2.0",  # Main tagged target
+)
+```
+
+This automatically creates:
+- Versioned targets: `openssl-3.2.0`, `openssl-1.1.1w`
+- Slot aliases: `openssl:3`, `openssl:1.1`
+- Default alias: `openssl` → `openssl-3.2.0`
+
+### Main Tagged Target (Default Version)
+
+When a package has multiple versions, the `default_version` specifies which version is used when building without an explicit version:
+
+```bash
+# Build default version (3.2.0)
+buck2 build //packages/linux/dev-libs:openssl
+
+# Build specific version
+buck2 build //packages/linux/dev-libs:openssl-1.1.1w
+
+# Build by slot
+buck2 build //packages/linux/dev-libs:openssl:1.1
+```
+
+If `default_version` is not specified, the system selects the newest stable version automatically.
+
+### Specifying Version Dependencies
+
+Packages can depend on specific versions using several methods:
+
+#### Method 1: Slot Dependencies (Recommended)
+
+Reference a slot to depend on any version within that slot:
+
+```python
+configure_make_package(
+    name = "nginx",
+    deps = [
+        "//packages/linux/dev-libs/openssl:3",      # Any OpenSSL 3.x
+        "//packages/linux/lang/python:3.11",        # Python 3.11.x
+    ],
+)
+```
+
+#### Method 2: Version Constraints
+
+Use `version_dep()` for flexible version requirements:
+
+```python
+load("//defs:versions.bzl", "version_dep")
+
+configure_make_package(
+    name = "myapp",
+    deps = [
+        version_dep("//packages/linux/dev-libs/openssl", ">=3.0"),
+        version_dep("//packages/linux/core/zlib", "~>1.2"),
+        version_dep("//packages/linux/lang/python", ">=3.10 <4.0"),
+    ],
+)
+```
+
+Supported constraint operators:
+
+| Operator | Example | Meaning |
+|----------|---------|---------|
+| (none) | `1.2.3` | Exact match |
+| `>=` | `>=1.2.3` | Greater than or equal |
+| `>` | `>1.2.3` | Greater than |
+| `<=` | `<=1.2.3` | Less than or equal |
+| `<` | `<1.2.3` | Less than |
+| `~>` | `~>1.2` | Pessimistic (>=1.2.0, <2.0.0) |
+| `*` | `1.2.*` | Wildcard match |
+
+#### Method 3: Exact Version
+
+For pinned dependencies:
+
+```python
+configure_make_package(
+    name = "legacy-app",
+    deps = [
+        "//packages/linux/dev-libs/openssl:openssl-1.1.1w",
+    ],
+)
+```
+
+### Version Registry
+
+For large codebases, use the central registry to manage versions:
+
+```python
+load("//defs:registry.bzl", "get_default_version", "get_stable_versions")
+
+# Get default version for a package
+default = get_default_version("core/openssl")  # Returns "3.2.0"
+
+# Get all stable versions
+stable = get_stable_versions("lang/python")  # Returns ["3.12.1", "3.11.7", ...]
+```
+
+### Best Practices
+
+1. **Use slots for major versions**: Group compatible versions (e.g., `python:3.11`, `python:3.12`)
+
+2. **Prefer slot dependencies**: Use `//pkg:slot` over exact versions for flexibility
+
+3. **Set explicit defaults**: Always specify `default_version` to ensure predictable builds
+
+4. **Mark legacy versions**: Use `masked` status for security-deprecated versions:
+   ```python
+   "1.0.2u": {
+       "slot": "1.0",
+       "keywords": ["masked"],  # Prevents accidental use
+   },
+   ```
+
+5. **Use different install prefixes**: Allow co-installation of multiple versions:
+   ```python
+   "3.2.0": {"configure_args": ["--prefix=/usr"]},
+   "1.1.1w": {"configure_args": ["--prefix=/usr/lib/openssl-1.1"]},
+   ```
+
+See [docs/VERSIONING.md](docs/VERSIONING.md) for complete documentation including version comparison algorithms, migration guides, and advanced registry functions.
+
 ## Platform Targeting
 
 BuckOs supports tagging packages by their target platform, enabling future support for BSD, macOS, and Windows alongside Linux.

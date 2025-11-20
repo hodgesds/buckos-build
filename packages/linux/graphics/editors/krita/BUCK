@@ -33,8 +33,8 @@ DESTDIR=$OUT make install
     deps = [
         "//packages/linux/desktop/kde:kf5",
         "//packages/linux/desktop/qt:qt5",
-        "//packages/linux/core/boost:boost",
-        "//packages/linux/core/eigen:eigen",
+        "//packages/linux/dev-libs/boost:boost",
+        "//packages/linux/dev-libs/eigen:eigen",
     ],
     build_deps = [
         "//packages/linux/lang/python:python",

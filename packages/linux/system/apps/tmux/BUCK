@@ -30,8 +30,8 @@ use_package(
         "--sysconfdir=/etc",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:ncurses",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/ncurses:ncurses",
         "//packages/linux/core:libevent",
     ],
     visibility = ["PUBLIC"],

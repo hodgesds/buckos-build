@@ -35,14 +35,14 @@ DESTDIR=$OUT make install
 """,
     deps = [
         "//packages/linux/desktop/gtk:gtk3",
-        "//packages/linux/core/sqlite:sqlite",
-        "//packages/linux/core/curl:curl",
-        "//packages/linux/core/exiv2:exiv2",
-        "//packages/linux/core/lcms2:lcms2",
-        "//packages/linux/core/pugixml:pugixml",
+        "//packages/linux/system/libs/database/sqlite:sqlite",
+        "//packages/linux/system/libs/curl:curl",
+        "//packages/linux/dev-libs/exiv2:exiv2",
+        "//packages/linux/system/libs/graphics/lcms2:lcms2",
+        "//packages/linux/dev-libs/pugixml:pugixml",
     ],
     build_deps = [
-        "//packages/linux/core/intltool:intltool",
+        "//packages/linux/system/libs/intltool:intltool",
     ],
     visibility = ["PUBLIC"],
 )

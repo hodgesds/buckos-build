@@ -34,9 +34,9 @@ configure_make_package(
         "--with-python=python3",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/desktop/gtk:gtk3",
-        "//packages/linux/desktop/gtk:gtk4",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/desktop/gnome:gtk3",
+        "//packages/linux/desktop/gnome:gtk4",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/desktop/wayland:wayland",
@@ -80,7 +80,7 @@ configure_make_package(
         DESTDIR=$OUT make install
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/desktop/wayland:wayland",
@@ -122,9 +122,9 @@ configure_make_package(
     """,
     deps = [
         ":fcitx5",
-        "//packages/linux/core:musl",
-        "//packages/linux/desktop/gtk:gtk3",
-        "//packages/linux/desktop/gtk:gtk4",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/desktop/gnome:gtk3",
+        "//packages/linux/desktop/gnome:gtk4",
     ],
     visibility = ["PUBLIC"],
 )
@@ -161,7 +161,7 @@ configure_make_package(
     """,
     deps = [
         ":fcitx5",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/qt:qt5",
         "//packages/linux/desktop/qt:qt6",
     ],
@@ -200,7 +200,7 @@ configure_make_package(
     """,
     deps = [
         ":fcitx5",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/qt:qt5",
     ],
     visibility = ["PUBLIC"],
@@ -227,7 +227,7 @@ configure_make_package(
     ],
     deps = [
         ":ibus",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/lang/python:python",
     ],
     visibility = ["PUBLIC"],
@@ -254,7 +254,7 @@ configure_make_package(
     ],
     deps = [
         ":ibus",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -280,7 +280,7 @@ configure_make_package(
     ],
     deps = [
         ":ibus",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

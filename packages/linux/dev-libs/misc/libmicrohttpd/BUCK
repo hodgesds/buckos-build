@@ -19,7 +19,7 @@ configure_make_package(
         "--enable-https",
     ],
     deps = [
-        "//packages/linux/system/libs/crypto/gnutls",
+        "//packages/linux/system/libs/crypto/gnutls:gnutls",
     ],
     visibility = ["PUBLIC"],
 )

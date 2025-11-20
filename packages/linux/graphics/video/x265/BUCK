@@ -1,18 +1,13 @@
-load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # x265 - Free H.265/HEVC encoder
 
-download_source(
-    name = "x265-src",
-    src_uri = "https://bitbucket.org/multicoreware/x265_git/downloads/x265_3.6.tar.gz",
-    sha256 = "c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8e9f0a1b2",
-)
-
 cmake_package(
     name = "x265",
-    source = ":x265-src",
     version = "3.6",
+    src_uri = "https://bitbucket.org/multicoreware/x265_git/downloads/x265_3.6.tar.gz",
+    sha256 = "c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8e9f0a1b2",
     description = "Free library for encoding H265/HEVC video streams",
     homepage = "https://www.x265.org/",
     license = "GPL-2.0-or-later",
@@ -26,7 +21,7 @@ cmake_package(
         "-DENABLE_HDR10_PLUS=ON",
     ],
     deps = [],
-    build_deps = [
+    bdepend = [
         "//packages/linux/lang/nasm:nasm",
     ],
     visibility = ["PUBLIC"],

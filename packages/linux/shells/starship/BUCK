@@ -11,7 +11,7 @@ download_source(
 
 cargo_package(
     name = "starship",
-    source = ":starship-src",
+    srcs = [":starship-src"],
     version = "1.21.1",
     description = "Cross-shell prompt with customizable features",
     homepage = "https://starship.rs/",
@@ -20,7 +20,7 @@ cargo_package(
         "--release",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/network/openssl",
     ],
     visibility = ["PUBLIC"],

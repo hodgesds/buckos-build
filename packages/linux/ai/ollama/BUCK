@@ -22,12 +22,12 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "ollama-src",
     src_uri = "https://github.com/ollama/ollama/releases/download/v0.4.6/ollama-linux-amd64.tgz",
-    sha256 = "0634c55ef05afcce9fc5c8a58a56a6e927c0ad9b0bf50a618c16a8414a1b08e7",
+    sha256 = "1866b7fc11ee301dc3e488dc7d7631bd79e0e2a188919d7cdd1a02515087a672",
 )
 
 binary_package(
     name = "ollama",
-    source = ":ollama-src",
+    srcs = [":ollama-src"],
     version = "0.4.6",
     description = "Get up and running with large language models locally",
     homepage = "https://ollama.ai/",

@@ -1,30 +1,23 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "cmake_package")
 
 # heaptrack - Heap memory profiler (cmake build)
 # USE flags: gui, test
 # Default: none
 
-download_source(
-    name = "heaptrack-src",
+cmake_package(
+    name = "heaptrack",
+    version = "1.5.0",
     src_uri = "https://download.kde.org/stable/heaptrack/1.5.0/heaptrack-1.5.0.tar.xz",
     sha256 = "e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
-)
-
-configure_make_package(
-    name = "heaptrack",
-    source = ":heaptrack-src",
-    version = "1.5.0",
     description = "Heap memory profiler for Linux",
     homepage = "https://github.com/KDE/heaptrack",
     license = "GPL-2+",
-    build_system = "cmake",
-    configure_args = [
+    cmake_args = [
         "-DCMAKE_INSTALL_PREFIX=/usr",
         "-DCMAKE_BUILD_TYPE=Release",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/libunwind:libunwind",
         "//packages/linux/dev-libs/boost:boost",
     ],

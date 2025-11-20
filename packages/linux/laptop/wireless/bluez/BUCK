@@ -32,7 +32,7 @@ configure_make_package(
         "--enable-sixaxis",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/dbus:dbus",
         "//packages/linux/system/libs/glib:glib",
         "//packages/linux/system/libs/readline:readline",

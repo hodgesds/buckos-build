@@ -65,11 +65,11 @@ configure_make_package(
     deps = [
         "//packages/linux/core:glib",
         "//packages/linux/core:pixman",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/zlib:zlib",
         "//packages/linux/core:zstd",
         "//packages/linux/core:lzo",
         "//packages/linux/core:snappy",
-        "//packages/linux/core:bzip2",
+        "//packages/linux/core/bzip2:bzip2",
         "//packages/linux/network/gnutls:gnutls",
         "//packages/linux/network/nettle:nettle",
         "//packages/linux/emulation/utilities/spice:spice-server",
@@ -121,7 +121,7 @@ configure_make_package(
     ],
     deps = [
         "//packages/linux/core:glib",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )
@@ -145,7 +145,7 @@ configure_make_package(
     ],
     deps = [
         "//packages/linux/core:glib",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/zlib:zlib",
         "//packages/linux/core:zstd",
     ],
     visibility = ["PUBLIC"],

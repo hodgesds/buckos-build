@@ -9,7 +9,7 @@ download_source(
 
 meson_package(
     name = "networkmanager",
-    source = ":networkmanager-src",
+    srcs = [":networkmanager-src"],
     version = "1.46.0",
     description = "Network connection manager and user applications",
     homepage = "https://networkmanager.dev/",
@@ -33,13 +33,13 @@ meson_package(
         "-Dqt=false",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/security/auth/privilege:polkit",
-        "//packages/linux/core:readline",
-        "//packages/linux/core:ncurses",
-        "//packages/linux/core:util-linux",
+        "//packages/linux/core/readline:readline",
+        "//packages/linux/core/ncurses:ncurses",
+        "//packages/linux/core/util-linux:util-linux",
         "//packages/linux/network:curl",
     ],
     visibility = ["PUBLIC"],
@@ -54,7 +54,7 @@ download_source(
 
 meson_package(
     name = "nm-applet",
-    source = ":nm-applet-src",
+    srcs = [":nm-applet-src"],
     version = "1.36.0",
     description = "NetworkManager GUI client for GNOME and other desktops",
     homepage = "https://networkmanager.dev/",
@@ -68,7 +68,7 @@ meson_package(
     ],
     deps = [
         ":networkmanager",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gtk:gtk3",
     ],
     visibility = ["PUBLIC"],

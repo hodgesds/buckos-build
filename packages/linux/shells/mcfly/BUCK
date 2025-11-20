@@ -10,7 +10,7 @@ download_source(
 
 cargo_package(
     name = "mcfly",
-    source = ":mcfly-src",
+    srcs = [":mcfly-src"],
     version = "0.9.2",
     description = "Fly through your shell history",
     homepage = "https://github.com/cantino/mcfly",
@@ -19,7 +19,7 @@ cargo_package(
         "--release",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/database/sqlite",
     ],
     visibility = ["PUBLIC"],

@@ -9,7 +9,7 @@ download_source(
 
 precompiled_package(
     name = "ripgrep",
-    source = ":ripgrep-src",
+    srcs = [":ripgrep-src"],
     version = "14.1.0",
     description = "Recursively searches directories for a regex pattern",
     homepage = "https://github.com/BurntSushi/ripgrep",

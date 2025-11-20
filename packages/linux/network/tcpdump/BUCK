@@ -16,7 +16,7 @@ use_package(
 
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
-        "caps": ["//packages/linux/core:libcap"],
+        "caps": ["//packages/linux/system/libs/ipc/libcap:libcap"],
         "smi": ["//packages/linux/network/libsmi:libsmi"],
     },
 
@@ -33,7 +33,7 @@ use_package(
 
     deps = [
         "//packages/linux/network/libpcap:libpcap",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "Command-line packet analyzer",

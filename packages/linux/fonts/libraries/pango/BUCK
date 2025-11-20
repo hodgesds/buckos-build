@@ -8,7 +8,7 @@ download_source(
 
 meson_package(
     name = "pango",
-    source = ":pango-src",
+    srcs = [":pango-src"],
     version = "1.52.2",
     description = "Library for layout and rendering of text",
     homepage = "https://pango.gnome.org/",
@@ -20,7 +20,7 @@ meson_package(
         "-Dbuild-examples=false",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/core:glib",
         "//packages/linux/core:fribidi",
         "//packages/linux/fonts/libraries/freetype:freetype",

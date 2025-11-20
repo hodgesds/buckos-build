@@ -34,9 +34,9 @@ configure_make_package(
         "--lz4",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:ncurses",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/ncurses:ncurses",
+        "//packages/linux/core/zlib:zlib",
         "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],

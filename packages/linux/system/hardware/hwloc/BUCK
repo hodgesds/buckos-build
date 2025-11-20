@@ -26,9 +26,9 @@ configure_make_package(
         "--disable-rsmi",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:ncurses",
-        "//packages/linux/system/hardware/pciutils",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/ncurses:ncurses",
+        "//packages/linux/system/hardware/pciutils:pciutils",
     ],
     visibility = ["PUBLIC"],
 )

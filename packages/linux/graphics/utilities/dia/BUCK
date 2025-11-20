@@ -30,9 +30,9 @@ DESTDIR=$OUT meson install
 """,
     deps = [
         "//packages/linux/desktop/gtk:gtk3",
-        "//packages/linux/core/libxml2:libxml2",
-        "//packages/linux/core/cairo:cairo",
-        "//packages/linux/core/pango:pango",
+        "//packages/linux/dev-libs/libxml2:libxml2",
+        "//packages/linux/system/libs/graphics/cairo:cairo",
+        "//packages/linux/system/libs/graphics/pango:pango",
         "//packages/linux/core/graphene:graphene",
     ],
     build_deps = [],

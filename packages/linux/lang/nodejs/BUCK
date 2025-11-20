@@ -29,8 +29,8 @@ configure_make_package(
         "--with-intl=system-icu",
     ],
     deps = [
-        "//packages/linux/core:zlib",
-        "//packages/linux/network:openssl",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],
 )

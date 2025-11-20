@@ -27,7 +27,7 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "Implementation of Internationalized Domain Names (IDN)",

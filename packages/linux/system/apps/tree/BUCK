@@ -20,6 +20,6 @@ use_package(
     make_args = [
         "PREFIX=/usr",
     ],
-    deps = ["//packages/linux/core:musl"],
+    deps = ["//packages/linux/core/musl:musl"],
     visibility = ["PUBLIC"],
 )

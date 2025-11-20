@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "msgpack",
-    source = ":msgpack-src",
+    srcs = [":msgpack-src"],
     version = "6.0.0",
     description = "MessagePack implementation for C",
     homepage = "https://msgpack.org/",

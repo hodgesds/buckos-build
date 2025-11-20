@@ -1,24 +1,18 @@
-load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 # =============================================================================
 # Clang - C/C++/Objective-C compiler
 # =============================================================================
 
-download_source(
-    name = "clang-src",
-    src_uri = "https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/llvm-project-18.1.8.src.tar.xz",
-    sha256 = "f68cf90f369bc7d0158ba70d860b0cb34dbc163d6ff0ebc6cfa5e515b9b2e28d",
-)
-
 cmake_package(
     name = "clang",
-    source = ":clang-src",
     version = "18.1.8",
+    src_uri = "https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/llvm-project-18.1.8.src.tar.xz",
+    sha256 = "f68cf90f369bc7d0158ba70d860b0cb34dbc163d6ff0ebc6cfa5e515b9b2e28d",
     description = "C/C++/Objective-C compiler based on LLVM",
     homepage = "https://clang.llvm.org/",
     license = "Apache-2.0 WITH LLVM-exception",
-    source_dir = "clang",
     cmake_args = [
         "-DCMAKE_BUILD_TYPE=Release",
         "-DCLANG_LINK_CLANG_DYLIB=ON",

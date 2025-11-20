@@ -19,8 +19,8 @@ use_package(
         "-static-libs": "--disable-static",
     },
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core/zlib",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

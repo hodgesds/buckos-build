@@ -23,8 +23,8 @@ use_package(
     iuse = ["ssl", "http2", "stream", "pcre", "gzip", "realip", "stub_status"],
     use_defaults = ["ssl", "http2", "pcre", "gzip", "realip", "stub_status"],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/zlib:zlib",
     ],
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],

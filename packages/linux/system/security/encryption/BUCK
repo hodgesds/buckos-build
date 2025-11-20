@@ -8,23 +8,16 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 # AGE - Simple, modern, secure file encryption
 # =============================================================================
 
-download_source(
-    name = "age-src",
-    src_uri = "https://github.com/FiloSottile/age/archive/refs/tags/v1.2.0.tar.gz",
-    sha256 = "a8a9e2e22ae8e0c9f3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
-)
-
 go_package(
     name = "age",
-    source = ":age-src",
     version = "1.2.0",
+    src_uri = "https://github.com/FiloSottile/age/archive/refs/tags/v1.2.0.tar.gz",
+    sha256 = "a8a9e2e22ae8e0c9f3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
     description = "Simple, modern, secure file encryption tool with small explicit keys",
     homepage = "https://age-encryption.org/",
     license = "BSD-3-Clause",
-    build_command = """
-        cd cmd/age && go build -o $OUT/usr/bin/age .
-        cd ../age-keygen && go build -o $OUT/usr/bin/age-keygen .
-    """,
+    packages = ["./cmd/age", "./cmd/age-keygen"],
+    bins = ["age", "age-keygen"],
     deps = [
         "//packages/linux/lang/go:go",
     ],
@@ -35,16 +28,11 @@ go_package(
 # RAGE - Rust implementation of age
 # =============================================================================
 
-download_source(
-    name = "rage-src",
-    src_uri = "https://github.com/str4d/rage/archive/refs/tags/v0.10.0.tar.gz",
-    sha256 = "b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0",
-)
-
 cargo_package(
     name = "rage",
-    source = ":rage-src",
     version = "0.10.0",
+    src_uri = "https://github.com/str4d/rage/archive/refs/tags/v0.10.0.tar.gz",
+    sha256 = "b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0",
     description = "Rust implementation of the age encryption tool",
     homepage = "https://github.com/str4d/rage",
     license = "Apache-2.0 OR MIT",
@@ -67,16 +55,11 @@ cargo_package(
 # MINISIGN - Dead simple signing tool
 # =============================================================================
 
-download_source(
-    name = "minisign-src",
-    src_uri = "https://github.com/jedisct1/minisign/archive/refs/tags/0.11.tar.gz",
-    sha256 = "c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1",
-)
-
 cmake_package(
     name = "minisign",
-    source = ":minisign-src",
     version = "0.11",
+    src_uri = "https://github.com/jedisct1/minisign/archive/refs/tags/0.11.tar.gz",
+    sha256 = "c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1",
     description = "Dead simple tool to sign files and verify signatures",
     homepage = "https://jedisct1.github.io/minisign/",
     license = "ISC",
@@ -85,7 +68,7 @@ cmake_package(
         "-DCMAKE_INSTALL_PREFIX=/usr",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         ":libsodium",
     ],
     visibility = ["PUBLIC"],
@@ -116,7 +99,7 @@ configure_make_package(
         "--enable-opt",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -147,12 +130,8 @@ configure_make_package(
         "PREFIX=/usr",
         "MANDIR=/usr/share/man",
     ],
-    make_install_args = [
-        "PREFIX=/usr",
-        "DESTDIR=$OUT",
-    ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         ":libbsd",
     ],
     visibility = ["PUBLIC"],
@@ -182,7 +161,7 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         ":libmd",
     ],
     visibility = ["PUBLIC"],
@@ -212,7 +191,7 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -246,7 +225,7 @@ configure_make_package(
         ln -sf ccrypt "$OUT/usr/bin/ccat"
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -278,14 +257,10 @@ configure_make_package(
         "SYSCONFDIR=/etc",
         "MANDIR=/usr/share/man",
     ],
-    make_install_args = [
-        "PREFIX=/usr",
-        "DESTDIR=$OUT",
-    ],
     deps = [
         "//packages/linux/system/security/gnupg:gnupg",
         "//packages/linux/core:coreutils",
-        "//packages/linux/core:util-linux",
+        "//packages/linux/core/util-linux:util-linux",
     ],
     visibility = ["PUBLIC"],
 )
@@ -315,15 +290,11 @@ configure_make_package(
     make_args = [
         "PREFIX=/usr",
     ],
-    make_install_args = [
-        "PREFIX=/usr",
-        "DESTDIR=$OUT",
-    ],
     deps = [
         "//packages/linux/system/security/gnupg:gnupg",
         "//packages/linux/system/security/cryptsetup:cryptsetup",
-        "//packages/linux/core:e2fsprogs",
-        "//packages/linux/core:util-linux",
+        "//packages/linux/core/e2fsprogs:e2fsprogs",
+        "//packages/linux/core/util-linux:util-linux",
     ],
     visibility = ["PUBLIC"],
 )
@@ -332,23 +303,16 @@ configure_make_package(
 # GOCRYPTFS - Encrypted overlay filesystem
 # =============================================================================
 
-download_source(
-    name = "gocryptfs-src",
-    src_uri = "https://github.com/rfjakob/gocryptfs/archive/refs/tags/v2.4.0.tar.gz",
-    sha256 = "e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9",
-)
-
 go_package(
     name = "gocryptfs",
-    source = ":gocryptfs-src",
     version = "2.4.0",
+    src_uri = "https://github.com/rfjakob/gocryptfs/archive/refs/tags/v2.4.0.tar.gz",
+    sha256 = "e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9",
     description = "Encrypted overlay filesystem written in Go",
     homepage = "https://nuetzlich.net/gocryptfs/",
     license = "MIT",
-    build_command = """
-        go build -o $OUT/usr/bin/gocryptfs .
-        go build -o $OUT/usr/bin/gocryptfs-xray ./gocryptfs-xray
-    """,
+    packages = [".", "./gocryptfs-xray"],
+    bins = ["gocryptfs", "gocryptfs-xray"],
     deps = [
         "//packages/linux/lang/go:go",
         "//packages/linux/network/openssl:openssl",
@@ -360,24 +324,16 @@ go_package(
 # FSCRYPT - Linux native filesystem encryption
 # =============================================================================
 
-download_source(
-    name = "fscrypt-src",
-    src_uri = "https://github.com/google/fscrypt/archive/refs/tags/v0.3.5.tar.gz",
-    sha256 = "f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0",
-)
-
 go_package(
     name = "fscrypt",
-    source = ":fscrypt-src",
     version = "0.3.5",
+    src_uri = "https://github.com/google/fscrypt/archive/refs/tags/v0.3.5.tar.gz",
+    sha256 = "f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0",
     description = "Tool for managing Linux native filesystem encryption",
     homepage = "https://github.com/google/fscrypt",
     license = "Apache-2.0",
-    build_command = """
-        go build -o $OUT/usr/bin/fscrypt ./cmd/fscrypt
-        mkdir -p $OUT/usr/lib
-        go build -buildmode=c-shared -o $OUT/usr/lib/libfscrypt.so ./pam_fscrypt
-    """,
+    packages = ["./cmd/fscrypt"],
+    bins = ["fscrypt"],
     deps = [
         "//packages/linux/lang/go:go",
         "//packages/linux/system/security/linux-pam:linux-pam",
@@ -418,7 +374,7 @@ configure_make_package(
         chmod 4755 "$OUT/sbin/unix_chkpwd" || true
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -450,8 +406,8 @@ configure_make_package(
         "--with-pamdir=/lib/security",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:keyutils",
+        "//packages/linux/core/musl:musl",
+        ":keyutils",
         "//packages/linux/system/security/gnupg:libgcrypt",
         "//packages/linux/network/openssl:openssl",
     ],
@@ -490,12 +446,8 @@ configure_make_package(
         "MANDIR=/usr/share/man",
         "INCLUDEDIR=/usr/include",
     ],
-    make_install_args = [
-        "PREFIX=/usr",
-        "DESTDIR=$OUT",
-    ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -504,22 +456,16 @@ configure_make_package(
 # SOPS - Secrets OPerationS
 # =============================================================================
 
-download_source(
-    name = "sops-src",
-    src_uri = "https://github.com/getsops/sops/archive/refs/tags/v3.8.1.tar.gz",
-    sha256 = "d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4",
-)
-
 go_package(
     name = "sops",
-    source = ":sops-src",
     version = "3.8.1",
+    src_uri = "https://github.com/getsops/sops/archive/refs/tags/v3.8.1.tar.gz",
+    sha256 = "d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4",
     description = "Simple and flexible tool for managing secrets",
     homepage = "https://github.com/getsops/sops",
     license = "MPL-2.0",
-    build_command = """
-        go build -o $OUT/usr/bin/sops ./cmd/sops
-    """,
+    packages = ["./cmd/sops"],
+    bins = ["sops"],
     deps = [
         "//packages/linux/lang/go:go",
     ],
@@ -552,15 +498,11 @@ configure_make_package(
         "WX_CONFIG=",
         "TC_NO_GUI=1",
     ],
-    make_install_args = [
-        "DESTDIR=$OUT",
-        "install",
-    ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:lvm2",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/system/security/cryptsetup:lvm2",
         "//packages/linux/system/security/cryptsetup:cryptsetup",
-        "//packages/linux/core:fuse3",
+        ":fuse3",
     ],
     visibility = ["PUBLIC"],
 )
@@ -591,13 +533,8 @@ configure_make_package(
     make_args = [
         "-C", "build",
     ],
-    make_install_args = [
-        "-C", "build",
-        "DESTDIR=$OUT",
-        "install",
-    ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -606,16 +543,11 @@ configure_make_package(
 # AGE-PLUGIN-YUBIKEY - YubiKey plugin for age
 # =============================================================================
 
-download_source(
-    name = "age-plugin-yubikey-src",
-    src_uri = "https://github.com/str4d/age-plugin-yubikey/archive/refs/tags/v0.5.0.tar.gz",
-    sha256 = "a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7",
-)
-
 cargo_package(
     name = "age-plugin-yubikey",
-    source = ":age-plugin-yubikey-src",
     version = "0.5.0",
+    src_uri = "https://github.com/str4d/age-plugin-yubikey/archive/refs/tags/v0.5.0.tar.gz",
+    sha256 = "a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7",
     description = "YubiKey plugin for age",
     homepage = "https://github.com/str4d/age-plugin-yubikey",
     license = "Apache-2.0 OR MIT",
@@ -662,8 +594,8 @@ configure_make_package(
         mkdir -p "$OUT/var/run/pcscd"
     """,
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:libusb",
+        "//packages/linux/core/musl:musl",
+        ":libusb",
     ],
     visibility = ["PUBLIC"],
 )
@@ -693,8 +625,8 @@ configure_make_package(
         "--enable-udev",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/system/init/systemd:libudev",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/system/init/systemd:systemd",
     ],
     visibility = ["PUBLIC"],
 )
@@ -703,16 +635,11 @@ configure_make_package(
 # SEQUOIA-SQ - Modern PGP implementation
 # =============================================================================
 
-download_source(
-    name = "sequoia-sq-src",
-    src_uri = "https://gitlab.com/sequoia-pgp/sequoia-sq/-/archive/v0.35.0/sequoia-sq-v0.35.0.tar.gz",
-    sha256 = "d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0",
-)
-
 cargo_package(
     name = "sequoia-sq",
-    source = ":sequoia-sq-src",
     version = "0.35.0",
+    src_uri = "https://gitlab.com/sequoia-pgp/sequoia-sq/-/archive/v0.35.0/sequoia-sq-v0.35.0.tar.gz",
+    sha256 = "d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0",
     description = "Command-line frontend for Sequoia, a modern OpenPGP implementation",
     homepage = "https://sequoia-pgp.org/",
     license = "GPL-2.0+",
@@ -755,7 +682,7 @@ configure_make_package(
         "--enable-mini-gmp",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -789,7 +716,7 @@ configure_make_package(
         mkdir -p "$OUT/etc/opensc"
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         ":pcsc-lite",
         "//packages/linux/network/openssl:openssl",
     ],
@@ -823,13 +750,8 @@ configure_make_package(
         "LIBRARY_REL=lib",
         "OPTTEST=1",
     ],
-    make_install_args = [
-        "PREFIX=/usr",
-        "LIBRARY_REL=lib",
-        "DESTDIR=$OUT",
-    ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -859,7 +781,7 @@ configure_make_package(
         "--with-openssldir=/etc/ssl",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -890,9 +812,9 @@ configure_make_package(
     """,
     configure_args = [],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:zlib",
-        "//packages/linux/core:bzip2",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/core/bzip2:bzip2",
     ],
     visibility = ["PUBLIC"],
 )
@@ -923,12 +845,8 @@ configure_make_package(
         "PREFIX=/usr",
         "SHARED=1",
     ],
-    make_install_args = [
-        "PREFIX=/usr",
-        "DESTDIR=$OUT",
-    ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],
@@ -968,7 +886,7 @@ configure_make_package(
         ln -sf john "$OUT/usr/bin/unique"
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],
@@ -1003,8 +921,8 @@ configure_make_package(
         cp bcrypt.1 "$OUT/usr/share/man/man1/"
     """,
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )
@@ -1034,7 +952,7 @@ configure_make_package(
         "--with-enginesdir=/usr/lib/engines-3",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],
@@ -1065,13 +983,8 @@ configure_make_package(
     make_args = [
         "-C", "build",
     ],
-    make_install_args = [
-        "-C", "build",
-        "DESTDIR=$OUT",
-        "install",
-    ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         ":jose",
         "//packages/linux/system/security/cryptsetup:cryptsetup",
     ],
@@ -1103,14 +1016,9 @@ configure_make_package(
     make_args = [
         "-C", "build",
     ],
-    make_install_args = [
-        "-C", "build",
-        "DESTDIR=$OUT",
-        "install",
-    ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/zlib:zlib",
         "//packages/linux/network/openssl:openssl",
         ":jansson",
     ],
@@ -1141,7 +1049,7 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

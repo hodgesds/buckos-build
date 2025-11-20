@@ -16,15 +16,14 @@ configure_make_package(
     homepage = "https://www.gnu.org/software/gettext",
     license = "GPL-3+",
     configure_args = [
-        "--prefix=/usr",
         "--disable-java",
         "--disable-csharp",
         "--disable-openmp",
         "--without-emacs",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:ncurses",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/ncurses:ncurses",
     ],
     visibility = ["PUBLIC"],
 )

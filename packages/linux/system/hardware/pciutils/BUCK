@@ -30,7 +30,7 @@ configure_make_package(
         make DESTDIR=$OUT PREFIX=/usr SBINDIR=/usr/sbin SHAREDIR=/usr/share/hwdata MANDIR=/usr/share/man SHARED=yes install install-lib
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

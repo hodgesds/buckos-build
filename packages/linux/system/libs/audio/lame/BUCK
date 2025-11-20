@@ -23,7 +23,7 @@ configure_make_package(
         "--with-fileio=lame",
     ],
     deps = [
-        "//packages/linux/linux/core/ncurses",
+        "//packages/linux/core/ncurses:ncurses",
     ],
     visibility = ["PUBLIC"],
 )

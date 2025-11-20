@@ -12,7 +12,7 @@ download_source(
 
 cmake_package(
     name = "intel-undervolt",
-    source = ":intel-undervolt-src",
+    srcs = [":intel-undervolt-src"],
     version = "1.7",
     description = "Intel CPU undervolting and power limit tool",
     homepage = "https://github.com/kitsunyan/intel-undervolt",
@@ -23,7 +23,7 @@ cmake_package(
         "-DENABLE_SYSTEMD=ON",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

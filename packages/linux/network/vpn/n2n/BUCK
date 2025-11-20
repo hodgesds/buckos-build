@@ -12,7 +12,7 @@ use_package(
 
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
-        "zlib": ["//packages/linux/core:zlib"],
+        "zlib": ["//packages/linux/core/zlib:zlib"],
     },
 
     use_configure = {},

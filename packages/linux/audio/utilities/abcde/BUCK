@@ -22,7 +22,7 @@ use_package(
         "opus": ["//packages/linux/audio/libraries/opus:opus"],
     },
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

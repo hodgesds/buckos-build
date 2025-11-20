@@ -13,7 +13,7 @@ use_package(
     iuse = ["ncurses"],
     use_defaults = ["ncurses"],
     use_deps = {
-        "ncurses": ["//packages/linux/core/ncurses"],
+        "ncurses": ["//packages/linux/core/ncurses:ncurses"],
     },
     use_configure = {
         "ncurses": "--with-ncurses",

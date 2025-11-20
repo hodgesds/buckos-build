@@ -16,13 +16,8 @@ configure_make_package(
     homepage = "https://www.passwordstore.org",
     license = "GPL-2+",
     build_system = "make",
-    install_args = [
-        "PREFIX=/usr",
-        "DESTDIR=${DESTDIR}",
-        "install",
-    ],
     deps = [
-        "//packages/linux/core:bash",
+        "//packages/linux/core/bash:bash",
         "//packages/linux/dev-tools/vcs/git:git",
         "//packages/linux/system/security/gnupg:gnupg",
     ],

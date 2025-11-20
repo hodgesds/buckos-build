@@ -31,11 +31,11 @@ INSTALL_ROOT=$OUT make install
         "//packages/linux/graphics/video/ffmpeg:ffmpeg",
         "//packages/linux/desktop/qt:qt5",
         "//packages/linux/graphics/utilities/imagemagick:imagemagick",
-        "//packages/linux/core/boost:boost",
-        "//packages/linux/core/cairo:cairo",
+        "//packages/linux/dev-libs/boost:boost",
+        "//packages/linux/system/libs/graphics/cairo:cairo",
     ],
     build_deps = [
-        "//packages/linux/core/pkg-config:pkg-config",
+        "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
     ],
     visibility = ["PUBLIC"],
 )

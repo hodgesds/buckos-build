@@ -15,7 +15,7 @@ use_package(
     use_defaults = ["ncurses", "ipv6", "dns"],
 
     use_deps = {
-        "ncurses": ["//packages/linux/core:ncurses"],
+        "ncurses": ["//packages/linux/core/ncurses:ncurses"],
         "gtk": ["//packages/linux/gui:gtk3"],
     },
 
@@ -29,7 +29,7 @@ use_package(
     },
 
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "Network diagnostic tool combining ping and traceroute",

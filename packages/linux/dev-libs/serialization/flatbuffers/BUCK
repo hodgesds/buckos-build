@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "flatbuffers",
-    source = ":flatbuffers-src",
+    srcs = [":flatbuffers-src"],
     version = "24.3.25",
     description = "Memory efficient serialization library",
     homepage = "https://google.github.io/flatbuffers/",

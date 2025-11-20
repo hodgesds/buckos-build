@@ -16,7 +16,7 @@ configure_make_package(
     license = "GPL-2.0",
     configure_args = [],
     deps = [
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

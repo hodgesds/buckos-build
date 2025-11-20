@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "libjpeg-turbo",
-    source = ":libjpeg-turbo-src",
+    srcs = [":libjpeg-turbo-src"],
     version = "3.0.4",
     description = "JPEG image codec with SIMD acceleration",
     homepage = "https://libjpeg-turbo.org/",

@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "openjpeg",
-    source = ":openjpeg-src",
+    srcs = [":openjpeg-src"],
     version = "2.5.2",
     description = "JPEG 2000 codec library",
     homepage = "https://www.openjpeg.org/",
@@ -19,8 +19,8 @@ cmake_package(
         "-DBUILD_STATIC_LIBS=OFF",
     ],
     deps = [
-        "//packages/linux/linux/system/libs/image/libpng",
-        "//packages/linux/linux/system/libs/image/libtiff",
+        "//packages/linux/system/libs/image/libpng:libpng",
+        "//packages/linux/system/libs/image/libtiff:libtiff",
     ],
     visibility = ["PUBLIC"],
 )

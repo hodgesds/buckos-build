@@ -18,7 +18,7 @@ download_source(
 
 binary_package(
     name = "cuda-toolkit",
-    source = ":cuda-toolkit-src",
+    srcs = [":cuda-toolkit-src"],
     version = "12.6.2",
     description = "NVIDIA CUDA Toolkit for GPU computing",
     homepage = "https://developer.nvidia.com/cuda-toolkit",

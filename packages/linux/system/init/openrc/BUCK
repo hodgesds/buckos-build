@@ -48,7 +48,7 @@ mkdir -p $OUT/etc/runlevels/shutdown
 mkdir -p $OUT/etc/runlevels/sysinit
 """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     build_deps = [],
     visibility = ["PUBLIC"],

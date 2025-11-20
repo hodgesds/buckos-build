@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "mimalloc",
-    source = ":mimalloc-src",
+    srcs = [":mimalloc-src"],
     version = "2.1.2",
     description = "Microsoft's compact general purpose allocator with excellent performance",
     homepage = "https://github.com/microsoft/mimalloc",

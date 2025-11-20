@@ -21,7 +21,7 @@ configure_make_package(
         "--disable-python",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

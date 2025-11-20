@@ -29,7 +29,7 @@ configure_make_package(
         mkdir -p "$OUT/etc/security"
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:linux-pam",
         ":cracklib",
     ],
@@ -64,7 +64,7 @@ configure_make_package(
         touch "$OUT/usr/share/cracklib/pw_dict.pwd"
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -94,13 +94,8 @@ configure_make_package(
         "SHARED_LIBDIR=/usr/lib",
         "DEVEL_LIBDIR=/usr/lib",
     ],
-    make_install_args = [
-        "PREFIX=/usr",
-        "SECUREDIR=/lib/security",
-        "DESTDIR=$OUT",
-    ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:linux-pam",
     ],
     visibility = ["PUBLIC"],

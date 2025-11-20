@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "spdlog",
-    source = ":spdlog-src",
+    srcs = [":spdlog-src"],
     version = "1.13.0",
     description = "Fast C++ logging library",
     homepage = "https://github.com/gabime/spdlog",
@@ -21,7 +21,7 @@ cmake_package(
         "-DSPDLOG_FMT_EXTERNAL=ON",
     ],
     deps = [
-        "//packages/linux/dev-libs/misc/fmt",
+        "//packages/linux/dev-libs/misc/fmt:fmt",
     ],
     visibility = ["PUBLIC"],
 )

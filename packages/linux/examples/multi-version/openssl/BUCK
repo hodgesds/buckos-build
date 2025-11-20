@@ -96,7 +96,7 @@ multi_version_package(
     license = "Apache-2.0",
     configure_command = "./config",
     deps = [
-        "//packages/linux/core/zlib",
+        "//packages/linux/core/zlib:zlib",
     ],
 )
 
@@ -130,7 +130,7 @@ configure_make_package(
     ],
     configure_command = "./config",
     deps = [
-        "//packages/linux/core/zlib",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )
@@ -158,7 +158,7 @@ configure_make_package(
     ],
     configure_command = "./config",
     deps = [
-        "//packages/linux/core/zlib",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

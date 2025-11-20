@@ -62,11 +62,11 @@ DESKTOP
         chmod 4755 "$OUT/opt/Signal/chrome-sandbox" 2>/dev/null || true
     """,
     deps = [
-        "//packages/linux/core/glib",
-        "//packages/linux/desktop/gtk",
-        "//packages/linux/network/nss",
-        "//packages/linux/network/nspr",
-        "//packages/linux/audio/pulseaudio:pulseaudio",
+        "//packages/linux/dev-libs/glib:glib",
+        "//packages/linux/desktop/gnome:gtk3",
+        "//packages/linux/system/security/auth/biometric:nss",
+        "//packages/linux/system/security/auth/biometric:nspr",
+        "//packages/linux/audio/daemons/pulseaudio:pulseaudio",
     ],
     visibility = ["PUBLIC"],
 )

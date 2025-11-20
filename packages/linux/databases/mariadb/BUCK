@@ -22,13 +22,13 @@ use_package(
     iuse = ["ssl", "zlib", "readline", "embedded", "profiling", "systemd"],
     use_defaults = ["ssl", "zlib", "readline"],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     use_deps = {
         "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
-        "zlib": ["//packages/linux/core:zlib"],
-        "readline": ["//packages/linux/core:ncurses"],
-        "systemd": ["//packages/linux/system/systemd:systemd"],
+        "zlib": ["//packages/linux/core/zlib:zlib"],
+        "readline": ["//packages/linux/core/ncurses:ncurses"],
+        "systemd": ["//packages/linux/system/core/systemd:systemd"],
     },
     build_system = "cmake",
     configure_args = [

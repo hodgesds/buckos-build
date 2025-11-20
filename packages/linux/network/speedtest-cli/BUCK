@@ -1,22 +1,17 @@
-load("//defs:package_defs.bzl", "download_source", "python_package")
+load("//defs:package_defs.bzl", "python_package")
 
 # speedtest-cli - Command line interface for testing internet bandwidth using speedtest.net
 
-download_source(
-    name = "speedtest-cli-src",
-    src_uri = "https://github.com/sivel/speedtest-cli/archive/refs/tags/v2.1.3.tar.gz",
-    sha256 = "5e2773233cedb5fa3d8120eb7f97d467f4ad4d906c5b1a0d9bde1c28e3d87d8f",
-)
-
 python_package(
     name = "speedtest-cli",
-    source = ":speedtest-cli-src",
     version = "2.1.3",
+    src_uri = "https://github.com/sivel/speedtest-cli/archive/refs/tags/v2.1.3.tar.gz",
+    sha256 = "5e2773233cedb5fa3d8120eb7f97d467f4ad4d906c5b1a0d9bde1c28e3d87d8f",
     description = "Command line interface for testing internet bandwidth using speedtest.net",
     homepage = "https://github.com/sivel/speedtest-cli",
     license = "Apache-2.0",
     deps = [
-        "//packages/linux/languages/python",
+        "//packages/linux/lang/python:python",
     ],
     visibility = ["PUBLIC"],
 )

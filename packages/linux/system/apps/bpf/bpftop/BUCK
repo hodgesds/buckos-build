@@ -27,8 +27,8 @@ binary_package(
         cp target/release/bpftop $OUT/usr/bin/
     """,
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/zlib:zlib",
         "//packages/linux/dev-tools/dev-utils/elfutils:elfutils",
         "//packages/linux/system/libs/bpf/libbpf:libbpf",
     ],

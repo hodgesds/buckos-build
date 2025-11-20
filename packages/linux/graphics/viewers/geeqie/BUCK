@@ -31,9 +31,9 @@ DESTDIR=$OUT meson install
 """,
     deps = [
         "//packages/linux/desktop/gtk:gtk3",
-        "//packages/linux/core/exiv2:exiv2",
-        "//packages/linux/core/lcms2:lcms2",
-        "//packages/linux/core/libjpeg-turbo:libjpeg-turbo",
+        "//packages/linux/dev-libs/exiv2:exiv2",
+        "//packages/linux/system/libs/graphics/lcms2:lcms2",
+        "//packages/linux/system/libs/graphics/libjpeg-turbo:libjpeg-turbo",
         "//packages/linux/core/libraw:libraw",
         "//packages/linux/core/libheif:libheif",
         "//packages/linux/core/djvulibre:djvulibre",

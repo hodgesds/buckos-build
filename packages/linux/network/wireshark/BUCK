@@ -18,7 +18,7 @@ use_package(
         "xml": ["//packages/linux/system/libs/data:libxml2"],
         "pcre": ["//packages/linux/system/libs/utility:pcre2"],
         "lua": ["//packages/linux/lang/lua:lua"],
-        "zlib": ["//packages/linux/core:zlib"],
+        "zlib": ["//packages/linux/core/zlib:zlib"],
     },
 
     use_configure = {
@@ -49,8 +49,8 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/zlib:zlib",
     ],
 
     description = "Network protocol analyzer",

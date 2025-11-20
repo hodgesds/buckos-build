@@ -20,7 +20,7 @@ configure_make_package(
         "--enable-shared",
     ],
     deps = [
-        "//packages/linux/linux/system/libs/video/libdvdread:libdvdread",
+        "//packages/linux/system/libs/video/libdvdread:libdvdread",
     ],
     visibility = ["PUBLIC"],
 )

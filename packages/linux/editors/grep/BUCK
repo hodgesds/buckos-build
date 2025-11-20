@@ -18,7 +18,7 @@ configure_make_package(
         "--without-included-regex",
     ],
     deps = [
-        "//packages/linux/core/musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/core/pcre2",
     ],
     visibility = ["PUBLIC"],

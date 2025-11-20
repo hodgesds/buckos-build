@@ -12,7 +12,7 @@ download_source(
 
 binary_package(
     name = "steam",
-    source = ":steam-src",
+    srcs = [":steam-src"],
     version = "1.0.0.79",
     description = "Valve's digital software delivery system",
     homepage = "https://store.steampowered.com/",

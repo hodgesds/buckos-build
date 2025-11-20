@@ -17,7 +17,7 @@ use_package(
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
         "lua": ["//packages/linux/dev:lua"],
-        "zlib": ["//packages/linux/core:zlib"],
+        "zlib": ["//packages/linux/core/zlib:zlib"],
         "nghttp2": ["//packages/linux/network/nghttp2:nghttp2"],
     },
 
@@ -51,8 +51,8 @@ use_package(
 
     deps = [
         "//packages/linux/network/libpcap:libpcap",
-        "//packages/linux/core:glib",
-        "//packages/linux/core:musl",
+        "//packages/linux/dev-libs/glib:glib",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "Command-line network protocol analyzer",

@@ -20,12 +20,8 @@ configure_make_package(
         "LIBDIR=/usr/lib",
         "PREFIX=/usr",
     ],
-    install_args = [
-        "LIBDIR=/usr/lib",
-        "PREFIX=/usr",
-    ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

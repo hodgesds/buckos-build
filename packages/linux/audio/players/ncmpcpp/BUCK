@@ -30,12 +30,12 @@ use_package(
         "-fftw": "--without-fftw",
     },
     use_deps = {
-        "curl": ["//packages/linux/core:curl"],
+        "curl": ["//packages/linux/network/curl:curl"],
     },
     deps = [
-        "//packages/linux/core:ncurses",
-        "//packages/linux/core:musl",
-        "//packages/linux/core:readline",
+        "//packages/linux/core/ncurses:ncurses",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/readline:readline",
     ],
     visibility = ["PUBLIC"],
 )

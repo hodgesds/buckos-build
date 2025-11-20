@@ -12,7 +12,7 @@ download_source(
 
 meson_package(
     name = "nvme-cli",
-    source = ":nvme-cli-src",
+    srcs = [":nvme-cli-src"],
     version = "2.7.1",
     description = "NVMe storage management utilities with power state control",
     homepage = "https://github.com/linux-nvme/nvme-cli",
@@ -23,7 +23,7 @@ meson_package(
         "-Dhtmldir=/usr/share/doc/nvme",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/libnvme:libnvme",
         "//packages/linux/system/libs/json-c:json-c",
     ],

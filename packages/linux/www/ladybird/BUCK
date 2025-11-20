@@ -39,7 +39,7 @@ binary_package(
     """,
     deps = use_dep(
         {
-            "zlib": ["//packages/linux/core/zlib"],
+            "zlib": ["//packages/linux/core/zlib:zlib"],
             "qt6": ["//packages/linux/desktop/qt6-base"],
             "clang": ["//packages/linux/lang/clang:clang"],
             "curl": ["//packages/linux/network/curl"],

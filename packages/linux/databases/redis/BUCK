@@ -20,12 +20,12 @@ use_package(
     iuse = ["ssl", "systemd", "jemalloc", "lua"],
     use_defaults = ["jemalloc"],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     use_deps = {
-        "ssl": ["//packages/linux/network/openssl:openssl"],
-        "systemd": ["//packages/linux/system/systemd:systemd"],
-        "jemalloc": ["//packages/linux/core:jemalloc"],
+        "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
+        "systemd": ["//packages/linux/system/core/systemd:systemd"],
+        "jemalloc": ["//packages/linux/dev-libs/allocators/jemalloc:jemalloc"],
     },
     build_in_source = True,
     configure_args = [],
@@ -40,7 +40,7 @@ use_package(
         "jemalloc": "MALLOC=jemalloc",
         "-jemalloc": "MALLOC=libc",
     },
-    install_args = [
+    make_install_args = [
         "PREFIX=/usr",
     ],
     visibility = ["PUBLIC"],

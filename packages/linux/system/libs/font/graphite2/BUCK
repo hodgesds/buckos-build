@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "graphite2",
-    source = ":graphite2-src",
+    srcs = [":graphite2-src"],
     version = "1.3.14",
     description = "Reimplementation of the SIL Graphite text processing engine",
     homepage = "https://graphite.sil.org/",

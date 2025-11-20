@@ -28,6 +28,6 @@ use_package(
         "--prefix=/usr",
         "--with-state-file-path=/var/lib/logrotate/status",
     ],
-    deps = ["//packages/linux/core:musl"],
+    deps = ["//packages/linux/core/musl:musl"],
     visibility = ["PUBLIC"],
 )

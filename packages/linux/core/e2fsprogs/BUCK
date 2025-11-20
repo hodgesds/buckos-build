@@ -22,7 +22,7 @@ use_package(
     use_defaults = ["threads"],
 
     # Base dependencies
-    deps = ["//packages/linux/core/util-linux"],
+    deps = ["//packages/linux/core/util-linux:util-linux"],
 
     # Conditional configure arguments
     use_configure = {

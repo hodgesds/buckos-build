@@ -28,8 +28,8 @@ use_package(
 
     # Conditional dependencies
     use_deps = {
-        "gd": ["//packages/linux/graphics/gd"],
-        "selinux": ["//packages/linux/system/security/selinux"],
+        "gd": ["//packages/linux/graphics/gd:gd"],
+        "selinux": ["//packages/linux/system/security/selinux:selinux"],
     },
 
     # Conditional configure arguments
@@ -47,6 +47,21 @@ use_package(
         "systemtap": "--enable-systemtap",
         "-systemtap": "--disable-systemtap",
     },
+
+    pre_configure = """
+# glibc requires out-of-tree build
+mkdir -p ../glibc-build
+cd ../glibc-build
+# Run configure from build directory
+"$SRCDIR"/configure --prefix=/usr --with-headers=/usr/include --enable-kernel=3.2 --enable-add-ons --enable-bind-now --enable-stack-protector=strong --enable-stackguard-randomization --disable-werror
+# Skip the automatic configure step by creating a dummy configure
+cd "$SRCDIR"
+mv configure configure.orig || true
+echo '#!/bin/bash' > configure
+echo 'exit 0' >> configure
+chmod +x configure
+cd ../glibc-build
+""",
 
     configure_args = [
         "--prefix=/usr",

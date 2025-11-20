@@ -23,8 +23,8 @@ configure_make_package(
         "--disable-doc",
     ],
     deps = [
-        "//packages/linux/linux/system/libs/crypto/nettle",
-        "//packages/linux/linux/system/libs/crypto/libgcrypt",
+        "//packages/linux/system/libs/crypto/nettle:nettle",
+        "//packages/linux/system/libs/crypto/libgcrypt:libgcrypt",
     ],
     visibility = ["PUBLIC"],
 )

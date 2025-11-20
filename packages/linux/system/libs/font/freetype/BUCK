@@ -23,9 +23,9 @@ configure_make_package(
         "--with-harfbuzz=no",
     ],
     deps = [
-        "//packages/linux/linux/core/zlib",
-        "//packages/linux/linux/system/libs/compression/bzip2",
-        "//packages/linux/linux/system/libs/image/libpng",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/system/libs/compression/bzip2:bzip2",
+        "//packages/linux/system/libs/image/libpng:libpng",
     ],
     visibility = ["PUBLIC"],
 )

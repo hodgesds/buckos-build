@@ -29,8 +29,8 @@ use_package(
 
     deps = [
         "//packages/linux/network/libpcap:libpcap",
-        "//packages/linux/core:zlib",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "Network statistics gatherer with embedded web server",

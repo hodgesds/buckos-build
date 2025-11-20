@@ -12,7 +12,7 @@ download_source(
 
 cargo_package(
     name = "bandwhich",
-    source = ":bandwhich-src",
+    srcs = [":bandwhich-src"],
     version = "0.22.2",
     description = "Terminal bandwidth utilization tool showing per-process usage",
     homepage = "https://github.com/imsnif/bandwhich",
@@ -21,7 +21,7 @@ cargo_package(
         "--release",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

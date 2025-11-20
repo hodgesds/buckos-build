@@ -36,8 +36,8 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/zlib:zlib",
     ],
 
     description = "BIND - Berkeley Internet Name Domain (DNS server)",

@@ -31,14 +31,14 @@ DESTDIR=$OUT rake install
     deps = [
         "//packages/linux/graphics/video/ffmpeg:ffmpeg",
         "//packages/linux/desktop/qt:qt6",
-        "//packages/linux/core/boost:boost",
+        "//packages/linux/dev-libs/boost:boost",
         "//packages/linux/core/zlib:zlib",
-        "//packages/linux/core/pugixml:pugixml",
+        "//packages/linux/dev-libs/pugixml:pugixml",
         "//packages/linux/audio/libraries/flac:flac",
         "//packages/linux/audio/libraries/libvorbis:libvorbis",
     ],
     build_deps = [
-        "//packages/linux/core/pkg-config:pkg-config",
+        "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
         "//packages/linux/lang/ruby:ruby",
     ],
     visibility = ["PUBLIC"],

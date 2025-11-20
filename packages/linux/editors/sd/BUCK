@@ -9,7 +9,7 @@ download_source(
 
 cargo_package(
     name = "sd",
-    source = ":sd-src",
+    srcs = [":sd-src"],
     version = "1.0.0",
     description = "Intuitive find-and-replace CLI tool (sed alternative)",
     homepage = "https://github.com/chmln/sd",
@@ -18,7 +18,7 @@ cargo_package(
         "--release",
     ],
     deps = [
-        "//packages/linux/core/musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

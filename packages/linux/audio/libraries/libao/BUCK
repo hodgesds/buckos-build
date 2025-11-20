@@ -34,7 +34,7 @@ use_package(
         "pulseaudio": ["//packages/linux/audio/daemons/pulseaudio:pulseaudio"],
     },
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

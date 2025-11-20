@@ -17,8 +17,9 @@ use_package(
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
         "http2": ["//packages/linux/network/nghttp2:nghttp2"],
-        "zstd": ["//packages/linux/core:zstd"],
-        "brotli": ["//packages/linux/core:brotli"],
+        "zstd": ["//packages/linux/system/libs/compression/zstd:zstd"],
+        # TODO: Add brotli when available:
+        # "brotli": ["//packages/linux/system/libs/compression/brotli:brotli"],
     },
 
     use_configure = {
@@ -42,7 +43,7 @@ use_package(
 
     deps = [
         "//packages/linux/network/ca-certificates:ca-certificates",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/zlib:zlib",
     ],
 
     description = "Command line tool and library for transferring data with URLs",

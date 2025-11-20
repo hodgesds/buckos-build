@@ -24,7 +24,7 @@ download_source(
 
 binary_package(
     name = "rocm",
-    source = ":rocm-src",
+    srcs = [":rocm-src"],
     version = "6.2.2",
     description = "AMD ROCm platform for GPU computing",
     homepage = "https://rocm.docs.amd.com/",

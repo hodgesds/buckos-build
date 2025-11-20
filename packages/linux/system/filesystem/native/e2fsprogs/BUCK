@@ -22,7 +22,7 @@ configure_make_package(
         "--disable-fsck",
     ],
     deps = [
-        "//packages/linux/core:util-linux",
+        "//packages/linux/core/util-linux:util-linux",
     ],
     visibility = ["PUBLIC"],
 )

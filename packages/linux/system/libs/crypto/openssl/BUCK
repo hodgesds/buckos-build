@@ -11,7 +11,7 @@ use_package(
     use_defaults = ["zlib", "threads"],
 
     use_deps = {
-        "zlib": ["//packages/linux/linux/core/zlib"],
+        "zlib": ["//packages/linux/core/zlib:zlib"],
     },
 
     use_configure = {

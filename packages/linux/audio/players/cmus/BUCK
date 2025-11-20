@@ -62,8 +62,8 @@ use_package(
         "mp3": ["//packages/linux/audio/libraries/libmad:libmad"],
     },
     deps = [
-        "//packages/linux/core:ncurses",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/ncurses:ncurses",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

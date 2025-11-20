@@ -8,7 +8,7 @@ download_source(
 
 meson_package(
     name = "fontconfig",
-    source = ":fontconfig-src",
+    srcs = [":fontconfig-src"],
     version = "2.15.0",
     description = "Library for configuring and customizing font access",
     homepage = "https://www.freedesktop.org/wiki/Software/fontconfig/",
@@ -19,8 +19,8 @@ meson_package(
         "-Dcache-build=disabled",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:expat",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/expat:expat",
         "//packages/linux/fonts/libraries/freetype:freetype",
     ],
     visibility = ["PUBLIC"],

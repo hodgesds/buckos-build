@@ -35,7 +35,7 @@ configure_make_package(
         mkdir -p $OUT/var/log/clamav
     """,
     deps = [
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/zlib:zlib",
         "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],

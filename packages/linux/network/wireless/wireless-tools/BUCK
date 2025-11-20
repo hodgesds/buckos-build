@@ -27,7 +27,7 @@ make install PREFIX=/usr INSTALL_DIR="$DESTDIR/usr/sbin" INSTALL_LIB="$DESTDIR/u
 """,
 
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "Tools for manipulating Linux Wireless Extensions (iwconfig, iwlist, etc.)",

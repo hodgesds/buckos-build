@@ -14,7 +14,7 @@ download_source(
 
 meson_package(
     name = "accountsservice",
-    source = ":accountsservice-src",
+    srcs = [":accountsservice-src"],
     version = "23.13.9",
     description = "D-Bus interface for user account management",
     homepage = "https://www.freedesktop.org/wiki/Software/AccountsService/",
@@ -31,7 +31,7 @@ meson_package(
         "-Dintrospection=false",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/system/security/auth/privilege:polkit",
@@ -50,7 +50,7 @@ download_source(
 
 meson_package(
     name = "colord",
-    source = ":colord-src",
+    srcs = [":colord-src"],
     version = "1.4.7",
     description = "System daemon for managing color devices",
     homepage = "https://www.freedesktop.org/software/colord/",
@@ -70,7 +70,7 @@ meson_package(
         "-Dargyllcms_sensor=false",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/system/security/auth/privilege:polkit",
@@ -90,7 +90,7 @@ download_source(
 
 meson_package(
     name = "colord-gtk",
-    source = ":colord-gtk-src",
+    srcs = [":colord-gtk-src"],
     version = "0.3.1",
     description = "GTK integration for colord",
     homepage = "https://www.freedesktop.org/software/colord/",
@@ -104,7 +104,7 @@ meson_package(
     ],
     deps = [
         ":colord",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gtk:gtk3",
         "//packages/linux/desktop/gtk:gtk4",
     ],

@@ -1,6 +1,10 @@
 load("//defs:package_defs.bzl", "download_source", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
+# FIXME: This package requires Qt5 which is not yet available in the build system
+# Dependencies: //packages/linux/desktop/qt:qt5 (does not exist)
+# Status: Disabled until Qt5 is implemented
+
 # USE flags for sonic-pi (cmake build):
 # - alsa: ALSA support (default: enabled)
 # - jack: JACK support (default: enabled)
@@ -15,7 +19,7 @@ download_source(
 
 cmake_package(
     name = "sonic-pi",
-    source = ":sonic-pi-src",
+    srcs = [":sonic-pi-src"],
     version = "4.5.1",
     description = "Live coding music synthesizer for everyone",
     homepage = "https://sonic-pi.net/",
@@ -27,9 +31,9 @@ cmake_package(
     deps = [
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
         "//packages/linux/audio/daemons/jack2:jack2",
-        "//packages/linux/desktop/qt:qt5",
+        # "//packages/linux/desktop/qt:qt5",  # FIXME: Qt5 not yet implemented
         "//packages/linux/lang/ruby:ruby",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

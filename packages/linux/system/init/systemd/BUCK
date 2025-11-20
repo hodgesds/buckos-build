@@ -82,8 +82,8 @@ mkdir -p $OUT/sbin
 ln -sf ../usr/lib/systemd/systemd $OUT/sbin/init
 """,
     deps = [
-        "//packages/linux/core:util-linux",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/util-linux:util-linux",
+        "//packages/linux/core/musl:musl",
     ],
     build_deps = [],
     visibility = ["PUBLIC"],

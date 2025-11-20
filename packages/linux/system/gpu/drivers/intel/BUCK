@@ -25,7 +25,7 @@ download_source(
 # Intel GPU firmware
 binary_package(
     name = "intel-firmware",
-    source = ":intel-firmware-src",
+    srcs = [":intel-firmware-src"],
     version = "20241017",
     description = "Intel GPU firmware files",
     homepage = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",

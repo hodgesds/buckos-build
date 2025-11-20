@@ -8,7 +8,7 @@ download_source(
 
 ebuild_package(
     name = "dejavu-fonts",
-    source = ":dejavu-fonts-src",
+    srcs = [":dejavu-fonts-src"],
     version = "2.37",
     description = "DejaVu fonts - derivative of Bitstream Vera with extended Unicode coverage",
     homepage = "https://dejavu-fonts.github.io/",

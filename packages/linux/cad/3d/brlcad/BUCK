@@ -8,7 +8,7 @@ download_source(
 
 ebuild_package(
     name = "brlcad",
-    source = ":brlcad-src",
+    srcs = [":brlcad-src"],
     version = "7.38.2",
     description = "Constructive Solid Geometry modeling system with ray-tracing and analysis",
     homepage = "https://brlcad.org/",

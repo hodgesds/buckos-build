@@ -42,7 +42,7 @@ configure_make_package(
         mkdir -p "$OUT/var/lib/krb5kdc"
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/network/openssl:openssl",
         ":openldap",
         ":e2fsprogs-libs",
@@ -74,7 +74,7 @@ configure_make_package(
         "--disable-libblkid",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -115,7 +115,7 @@ configure_make_package(
         mkdir -p "$OUT/var/run/openldap"
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/network/openssl:openssl",
         ":cyrus-sasl",
     ],
@@ -162,7 +162,7 @@ configure_make_package(
         mkdir -p "$OUT/etc/sasl2"
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/network/openssl:openssl",
         "//packages/linux/system/security/encryption:linux-pam",
         ":lmdb",
@@ -191,12 +191,8 @@ configure_make_package(
     make_args = [
         "prefix=/usr",
     ],
-    make_install_args = [
-        "prefix=/usr",
-        "DESTDIR=$OUT",
-    ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -241,7 +237,7 @@ configure_make_package(
         mkdir -p "$OUT/var/log/sssd"
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/system/security/encryption:linux-pam",
         ":krb5",
@@ -276,7 +272,7 @@ configure_make_package(
     """,
     configure_args = [],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -299,7 +295,7 @@ configure_make_package(
     """,
     configure_args = [],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -322,7 +318,7 @@ configure_make_package(
     """,
     configure_args = [],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         ":talloc",
     ],
     visibility = ["PUBLIC"],
@@ -346,7 +342,7 @@ configure_make_package(
     """,
     configure_args = [],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         ":talloc",
         ":tdb",
         ":tevent",
@@ -376,7 +372,7 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -402,7 +398,7 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -437,7 +433,7 @@ configure_make_package(
         mkdir -p "$OUT/etc/nslcd"
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         ":openldap",
         "//packages/linux/system/security/encryption:linux-pam",
     ],

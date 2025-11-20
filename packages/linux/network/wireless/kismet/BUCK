@@ -12,8 +12,8 @@ use_package(
 
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
-        "ncurses": ["//packages/linux/core:ncurses"],
-        "sqlite": ["//packages/linux/core:sqlite"],
+        "ncurses": ["//packages/linux/core/ncurses:ncurses"],
+        "sqlite": ["//packages/linux/system/libs/database/sqlite:sqlite"],
     },
 
     use_configure = {
@@ -29,9 +29,9 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/network/libpcap:libpcap",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/zlib:zlib",
     ],
 
     description = "Wireless network and device detector, sniffer, wardriving tool",

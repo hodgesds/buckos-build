@@ -31,7 +31,7 @@ DESTDIR=$OUT make install
 """,
     deps = [
         "//packages/linux/desktop/qt:qt5",
-        "//packages/linux/core/kguiaddons:kguiaddons",
+        "//packages/linux/desktop/kde/kguiaddons:kguiaddons",
     ],
     build_deps = [],
     visibility = ["PUBLIC"],

@@ -21,7 +21,7 @@ configure_make_package(
         "-Dtests=false",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/lang/python:python",
         "//packages/linux/dev-tools/dev-utils/itstool:itstool",
     ],

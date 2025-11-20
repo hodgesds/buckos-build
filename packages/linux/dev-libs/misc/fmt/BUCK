@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "fmt",
-    source = ":fmt-src",
+    srcs = [":fmt-src"],
     version = "10.2.1",
     description = "Modern formatting library for C++",
     homepage = "https://fmt.dev/",

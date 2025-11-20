@@ -3,7 +3,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 filegroup(
     name = "all-shells",
     srcs = [
-        "//packages/linux/core/bash",
+        "//packages/linux/core/bash:bash",
         "//packages/linux/shells/zsh",
         "//packages/linux/shells/dash",
         "//packages/linux/shells/fish",
@@ -27,7 +27,7 @@ filegroup(
 filegroup(
     name = "posix-shells",
     srcs = [
-        "//packages/linux/core/bash",
+        "//packages/linux/core/bash:bash",
         "//packages/linux/shells/dash",
     ],
     visibility = ["PUBLIC"],

@@ -29,7 +29,7 @@ use_package(
         "--localstatedir=/var",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

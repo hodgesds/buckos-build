@@ -24,8 +24,8 @@ use_package(
 
     deps = [
         "//packages/linux/network/libpcap:libpcap",
-        "//packages/linux/core:ncurses",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/ncurses:ncurses",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "Per-process network bandwidth monitor",

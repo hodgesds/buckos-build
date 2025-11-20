@@ -15,17 +15,13 @@ configure_make_package(
     description = "Parallel implementation of bzip2 for multi-processor systems",
     homepage = "http://compression.ca/pbzip2/",
     license = "BSD",
-    build_in_source = True,
     configure_args = [],
     make_args = [
         "PREFIX=/usr",
     ],
-    install_args = [
-        "PREFIX=/usr",
-    ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:bzip2",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/bzip2:bzip2",
     ],
     visibility = ["PUBLIC"],
 )

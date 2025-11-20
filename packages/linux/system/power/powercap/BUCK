@@ -12,7 +12,7 @@ download_source(
 
 cmake_package(
     name = "powercap",
-    source = ":powercap-src",
+    srcs = [":powercap-src"],
     version = "0.6.0",
     description = "Power capping framework utilities for managing RAPL and other power caps",
     homepage = "https://github.com/powercap/powercap",
@@ -23,7 +23,7 @@ cmake_package(
         "-DBUILD_SHARED_LIBS=ON",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

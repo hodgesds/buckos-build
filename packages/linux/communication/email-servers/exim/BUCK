@@ -51,7 +51,7 @@ MAKEFILE
         install -Dm644 src/configure.default "$OUT/etc/exim/exim.conf"
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],

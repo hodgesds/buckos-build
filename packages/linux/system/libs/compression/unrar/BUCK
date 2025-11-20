@@ -19,12 +19,8 @@ configure_make_package(
     make_args = [
         "-f", "makefile",
     ],
-    install_args = [
-        "DESTDIR=${DESTDIR}",
-        "install",
-    ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

@@ -16,7 +16,7 @@ use_package(
 
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
-        "readline": ["//packages/linux/core:readline"],
+        "readline": ["//packages/linux/core/readline:readline"],
         "tcpwrap": ["//packages/linux/network/tcp-wrappers:tcp-wrappers"],
     },
 
@@ -32,7 +32,7 @@ use_package(
     },
 
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "Multipurpose relay for bidirectional data transfer",

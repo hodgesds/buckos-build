@@ -11,7 +11,7 @@ download_source(
 
 cargo_package(
     name = "zoxide",
-    source = ":zoxide-src",
+    srcs = [":zoxide-src"],
     version = "0.9.6",
     description = "Smarter cd command that learns your habits",
     homepage = "https://github.com/ajeetdsouza/zoxide",
@@ -20,7 +20,7 @@ cargo_package(
         "--release",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

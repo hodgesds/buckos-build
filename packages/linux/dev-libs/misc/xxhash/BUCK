@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "xxhash",
-    source = ":xxhash-src",
+    srcs = [":xxhash-src"],
     version = "0.8.2",
     description = "Extremely fast non-cryptographic hash algorithm",
     homepage = "https://cyan4973.github.io/xxHash/",

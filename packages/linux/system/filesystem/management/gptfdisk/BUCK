@@ -16,8 +16,8 @@ configure_make_package(
     license = "GPL-2.0",
     configure_args = [],
     deps = [
-        "//packages/linux/core:util-linux",
-        "//packages/linux/core:ncurses",
+        "//packages/linux/core/util-linux:util-linux",
+        "//packages/linux/core/ncurses:ncurses",
     ],
     visibility = ["PUBLIC"],
 )

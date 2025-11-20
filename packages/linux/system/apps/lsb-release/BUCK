@@ -19,7 +19,7 @@ use_package(
     configure_args = [],
     make_args = [],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

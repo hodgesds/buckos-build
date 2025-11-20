@@ -15,8 +15,8 @@ use_package(
     iuse = ["ncurses", "readline", "sqlite", "pcre2"],
     use_defaults = ["ncurses", "readline", "sqlite", "pcre2"],
     use_deps = {
-        "ncurses": ["//packages/linux/core:ncurses"],
-        "readline": ["//packages/linux/core:readline"],
+        "ncurses": ["//packages/linux/core/ncurses:ncurses"],
+        "readline": ["//packages/linux/core/readline:readline"],
         "sqlite": ["//packages/linux/system/libs/database/sqlite"],
         "pcre2": ["//packages/linux/core:pcre2"],
     },
@@ -32,8 +32,8 @@ use_package(
     },
     configure_args = [],
     deps = [
-        "//packages/linux/core:zlib",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

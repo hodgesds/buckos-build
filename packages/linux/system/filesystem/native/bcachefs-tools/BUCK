@@ -16,9 +16,9 @@ configure_make_package(
     license = "GPL-2.0",
     configure_args = [],
     deps = [
-        "//packages/linux/core:util-linux",
-        "//packages/linux/core:lz4",
-        "//packages/linux/core:zstd",
+        "//packages/linux/core/util-linux:util-linux",
+        "//packages/linux/system/libs/compression/lz4:lz4",
+        "//packages/linux/system/libs/compression/zstd:zstd",
         "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],

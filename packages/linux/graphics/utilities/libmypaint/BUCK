@@ -24,12 +24,12 @@ configure_make_package(
 make DESTDIR=$OUT install
 """,
     deps = [
-        "//packages/linux/core/glib:glib",
-        "//packages/linux/core/json-c:json-c",
+        "//packages/linux/dev-libs/glib:glib",
+        "//packages/linux/system/libs/data/json-c:json-c",
         "//packages/linux/graphics/utilities/gegl:gegl",
     ],
     build_deps = [
-        "//packages/linux/core/gobject-introspection:gobject-introspection",
+        "//packages/linux/system/libs/gobject-introspection:gobject-introspection",
     ],
     visibility = ["PUBLIC"],
 )

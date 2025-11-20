@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "glog",
-    source = ":glog-src",
+    srcs = [":glog-src"],
     version = "0.7.0",
     description = "Google logging library for C++",
     homepage = "https://github.com/google/glog",
@@ -20,7 +20,7 @@ cmake_package(
         "-DWITH_GFLAGS=ON",
     ],
     deps = [
-        "//packages/linux/dev-libs/google/gflags",
+        "//packages/linux/dev-libs/google/gflags:gflags",
     ],
     visibility = ["PUBLIC"],
 )

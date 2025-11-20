@@ -24,8 +24,8 @@ meson setup .. --prefix=/usr \
     -Ddebug-gui=false
 """,
     deps = [
-        "//packages/linux/linux/system/libs/input/libevdev:libevdev",
-        "//packages/linux/linux/system/libs/input/mtdev:mtdev",
+        "//packages/linux/system/libs/input/libevdev:libevdev",
+        "//packages/linux/system/libs/input/mtdev:mtdev",
     ],
     visibility = ["PUBLIC"],
 )

@@ -16,8 +16,8 @@ use_package(
 
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
-        "gnutls": ["//packages/linux/network/gnutls:gnutls"],
-        "xml": ["//packages/linux/core:libxml2"],
+        "gnutls": ["//packages/linux/system/libs/crypto/gnutls:gnutls"],
+        "xml": ["//packages/linux/system/libs/data/libxml2:libxml2"],
     },
 
     use_configure = {
@@ -41,8 +41,8 @@ use_package(
 
     deps = [
         "//packages/linux/network/ca-certificates:ca-certificates",
-        "//packages/linux/core:zlib",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "Lightweight multi-protocol multi-source download utility",

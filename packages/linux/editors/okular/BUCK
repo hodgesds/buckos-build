@@ -21,7 +21,7 @@ configure_make_package(
         "-DCMAKE_BUILD_TYPE=Release",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/kde:kf5",
         "//packages/linux/editors/poppler:poppler",
     ],

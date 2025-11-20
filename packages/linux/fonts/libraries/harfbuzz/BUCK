@@ -8,7 +8,7 @@ download_source(
 
 meson_package(
     name = "harfbuzz",
-    source = ":harfbuzz-src",
+    srcs = [":harfbuzz-src"],
     version = "8.4.0",
     description = "OpenType text shaping engine",
     homepage = "https://harfbuzz.github.io/",
@@ -27,7 +27,7 @@ meson_package(
         "-Dbenchmark=disabled",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/core:glib",
         "//packages/linux/fonts/libraries/freetype:freetype",
         "//packages/linux/graphics/utilities/cairo:cairo",

@@ -50,7 +50,7 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core/musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

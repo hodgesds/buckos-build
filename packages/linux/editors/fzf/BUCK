@@ -9,7 +9,7 @@ download_source(
 
 go_package(
     name = "fzf",
-    source = ":fzf-src",
+    srcs = [":fzf-src"],
     version = "0.55.0",
     description = "Command-line fuzzy finder for interactive filtering",
     homepage = "https://github.com/junegunn/fzf",

@@ -25,6 +25,8 @@ use_package(
 # Use default config and enable static linking for init
 make defconfig
 sed -i 's/# CONFIG_STATIC is not set/CONFIG_STATIC=y/' .config
+# Disable tc which has kernel header incompatibilities
+sed -i 's/CONFIG_TC=y/# CONFIG_TC is not set/' .config
 """,
     make_args = [
         "CONFIG_PREFIX=$DESTDIR",

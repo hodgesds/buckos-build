@@ -24,7 +24,7 @@ configure_make_package(
         "--with-modulesdir=/usr/lib/ldb/modules",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/talloc:talloc",
         "//packages/linux/system/libs/tdb:tdb",
         "//packages/linux/system/libs/tevent:tevent",

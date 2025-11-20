@@ -61,10 +61,10 @@ mkdir -p $OUT/etc/mkinitcpio.d
 """,
     deps = [
         "//packages/linux/system/libs/kmod:kmod",
-        "//packages/linux/core:bash",
+        "//packages/linux/core/bash:bash",
         "//packages/linux/core:coreutils",
-        "//packages/linux/core:util-linux",
-        "//packages/linux/core:xz",
+        "//packages/linux/core/util-linux:util-linux",
+        "//packages/linux/core/xz:xz",
     ],
     visibility = ["PUBLIC"],
 )
@@ -72,7 +72,7 @@ mkdir -p $OUT/etc/mkinitcpio.d
 # mkinitcpio-busybox - Busybox for use in initramfs
 configure_make_package(
     name = "mkinitcpio-busybox",
-    source = "//packages/linux/core:busybox-src",
+    source = "//packages/linux/core/busybox:busybox-src",
     version = "1.36.1",
     description = "Busybox configured for mkinitcpio initramfs",
     homepage = "https://busybox.net/",

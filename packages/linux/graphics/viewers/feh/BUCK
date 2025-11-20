@@ -25,11 +25,11 @@ configure_make_package(
 make PREFIX=/usr DESTDIR=$OUT install
 """,
     deps = [
-        "//packages/linux/core/imlib2:imlib2",
-        "//packages/linux/core/libpng:libpng",
+        "//packages/linux/system/libs/graphics/imlib2:imlib2",
+        "//packages/linux/system/libs/graphics/libpng:libpng",
         "//packages/linux/core/libexif:libexif",
         "//packages/linux/core/file:file",
-        "//packages/linux/core/curl:curl",
+        "//packages/linux/system/libs/curl:curl",
     ],
     build_deps = [],
     visibility = ["PUBLIC"],

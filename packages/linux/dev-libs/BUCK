@@ -10,8 +10,8 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 filegroup(
     name = "allocator-libs",
     srcs = [
-        "//packages/linux/dev-libs/allocators/jemalloc",
-        "//packages/linux/dev-libs/allocators/mimalloc",
+        "//packages/linux/dev-libs/allocators/jemalloc:jemalloc",
+        "//packages/linux/dev-libs/allocators/mimalloc:mimalloc",
     ],
     visibility = ["PUBLIC"],
 )
@@ -23,7 +23,7 @@ filegroup(
 filegroup(
     name = "boost-libs",
     srcs = [
-        "//packages/linux/dev-libs/boost",
+        "//packages/linux/dev-libs/boost:boost",
     ],
     visibility = ["PUBLIC"],
 )
@@ -35,7 +35,7 @@ filegroup(
 filegroup(
     name = "glib-libs",
     srcs = [
-        "//packages/linux/dev-libs/glib",
+        "//packages/linux/dev-libs/glib:glib",
     ],
     visibility = ["PUBLIC"],
 )
@@ -47,10 +47,10 @@ filegroup(
 filegroup(
     name = "serialization-libs",
     srcs = [
-        "//packages/linux/dev-libs/serialization/protobuf",
-        "//packages/linux/dev-libs/serialization/flatbuffers",
-        "//packages/linux/dev-libs/serialization/msgpack",
-        "//packages/linux/dev-libs/serialization/capnproto",
+        "//packages/linux/dev-libs/serialization/protobuf:protobuf",
+        "//packages/linux/dev-libs/serialization/flatbuffers:flatbuffers",
+        "//packages/linux/dev-libs/serialization/msgpack:msgpack",
+        "//packages/linux/dev-libs/serialization/capnproto:capnproto",
     ],
     visibility = ["PUBLIC"],
 )
@@ -62,10 +62,10 @@ filegroup(
 filegroup(
     name = "text-libs",
     srcs = [
-        "//packages/linux/dev-libs/text/oniguruma",
-        "//packages/linux/dev-libs/text/re2",
-        "//packages/linux/dev-libs/text/libunistring",
-        "//packages/linux/dev-libs/text/utf8proc",
+        "//packages/linux/dev-libs/text/oniguruma:oniguruma",
+        "//packages/linux/dev-libs/text/re2:re2",
+        "//packages/linux/dev-libs/text/libunistring:libunistring",
+        "//packages/linux/dev-libs/text/utf8proc:utf8proc",
     ],
     visibility = ["PUBLIC"],
 )
@@ -77,9 +77,9 @@ filegroup(
 filegroup(
     name = "json-libs",
     srcs = [
-        "//packages/linux/dev-libs/json/rapidjson",
-        "//packages/linux/dev-libs/json/simdjson",
-        "//packages/linux/dev-libs/misc/cjson",
+        "//packages/linux/dev-libs/json/rapidjson:rapidjson",
+        "//packages/linux/dev-libs/json/simdjson:simdjson",
+        "//packages/linux/dev-libs/misc/cjson:cjson",
     ],
     visibility = ["PUBLIC"],
 )
@@ -91,7 +91,7 @@ filegroup(
 filegroup(
     name = "testing-libs",
     srcs = [
-        "//packages/linux/dev-libs/testing/check",
+        "//packages/linux/dev-libs/testing/check:check",
     ],
     visibility = ["PUBLIC"],
 )
@@ -103,7 +103,7 @@ filegroup(
 filegroup(
     name = "config-libs",
     srcs = [
-        "//packages/linux/dev-libs/config/libconfig",
+        "//packages/linux/dev-libs/config/libconfig:libconfig",
     ],
     visibility = ["PUBLIC"],
 )
@@ -115,9 +115,9 @@ filegroup(
 filegroup(
     name = "google-libs",
     srcs = [
-        "//packages/linux/dev-libs/google/gflags",
-        "//packages/linux/dev-libs/google/glog",
-        "//packages/linux/dev-libs/google/abseil-cpp",
+        "//packages/linux/dev-libs/google/gflags:gflags",
+        "//packages/linux/dev-libs/google/glog:glog",
+        "//packages/linux/dev-libs/google/abseil-cpp:abseil-cpp",
     ],
     visibility = ["PUBLIC"],
 )
@@ -129,8 +129,8 @@ filegroup(
 filegroup(
     name = "database-libs",
     srcs = [
-        "//packages/linux/dev-libs/database/leveldb",
-        "//packages/linux/dev-libs/database/rocksdb",
+        "//packages/linux/dev-libs/database/leveldb:leveldb",
+        "//packages/linux/dev-libs/database/rocksdb:rocksdb",
     ],
     visibility = ["PUBLIC"],
 )
@@ -142,9 +142,9 @@ filegroup(
 filegroup(
     name = "event-libs",
     srcs = [
-        "//packages/linux/dev-libs/misc/libev",
-        "//packages/linux/system/libs/utility/libevent",
-        "//packages/linux/system/libs/utility/libuv",
+        "//packages/linux/dev-libs/misc/libev:libev",
+        "//packages/linux/system/libs/utility/libevent:libevent",
+        "//packages/linux/system/libs/utility/libuv:libuv",
     ],
     visibility = ["PUBLIC"],
 )
@@ -156,9 +156,9 @@ filegroup(
 filegroup(
     name = "cpp-utility-libs",
     srcs = [
-        "//packages/linux/dev-libs/misc/fmt",
-        "//packages/linux/dev-libs/misc/spdlog",
-        "//packages/linux/dev-libs/misc/double-conversion",
+        "//packages/linux/dev-libs/misc/fmt:fmt",
+        "//packages/linux/dev-libs/misc/spdlog:spdlog",
+        "//packages/linux/dev-libs/misc/double-conversion:double-conversion",
     ],
     visibility = ["PUBLIC"],
 )
@@ -170,8 +170,8 @@ filegroup(
 filegroup(
     name = "gc-libs",
     srcs = [
-        "//packages/linux/dev-libs/misc/boehm-gc",
-        "//packages/linux/dev-libs/misc/libatomic_ops",
+        "//packages/linux/dev-libs/misc/boehm-gc:boehm-gc",
+        "//packages/linux/dev-libs/misc/libatomic_ops:libatomic_ops",
     ],
     visibility = ["PUBLIC"],
 )
@@ -183,12 +183,12 @@ filegroup(
 filegroup(
     name = "misc-libs",
     srcs = [
-        "//packages/linux/dev-libs/misc/xxhash",
-        "//packages/linux/dev-libs/misc/libmicrohttpd",
-        "//packages/linux/dev-libs/misc/tree-sitter",
-        "//packages/linux/dev-libs/misc/libedit",
-        "//packages/linux/dev-libs/misc/c-blosc",
-        "//packages/linux/dev-libs/misc/libgit2",
+        "//packages/linux/dev-libs/misc/xxhash:xxhash",
+        "//packages/linux/dev-libs/misc/libmicrohttpd:libmicrohttpd",
+        "//packages/linux/dev-libs/misc/tree-sitter:tree-sitter",
+        "//packages/linux/dev-libs/misc/libedit:libedit",
+        "//packages/linux/dev-libs/misc/c-blosc:c-blosc",
+        "//packages/linux/dev-libs/misc/libgit2:libgit2",
     ],
     visibility = ["PUBLIC"],
 )
@@ -203,8 +203,8 @@ filegroup(
     srcs = [
         ":boost-libs",
         ":glib-libs",
-        "//packages/linux/dev-libs/google/abseil-cpp",
-        "//packages/linux/dev-libs/misc/fmt",
+        "//packages/linux/dev-libs/google/abseil-cpp:abseil-cpp",
+        "//packages/linux/dev-libs/misc/fmt:fmt",
     ],
     visibility = ["PUBLIC"],
 )
@@ -216,7 +216,7 @@ filegroup(
         ":boost-libs",
         ":google-libs",
         ":cpp-utility-libs",
-        "//packages/linux/dev-libs/text/re2",
+        "//packages/linux/dev-libs/text/re2:re2",
     ],
     visibility = ["PUBLIC"],
 )
@@ -228,8 +228,8 @@ filegroup(
         ":allocator-libs",
         ":event-libs",
         ":gc-libs",
-        "//packages/linux/dev-libs/misc/xxhash",
-        "//packages/linux/dev-libs/misc/libatomic_ops",
+        "//packages/linux/dev-libs/misc/xxhash:xxhash",
+        "//packages/linux/dev-libs/misc/libatomic_ops:libatomic_ops",
     ],
     visibility = ["PUBLIC"],
 )

@@ -24,13 +24,13 @@ configure_make_package(
 DESTDIR=$OUT make install
 """,
     deps = [
-        "//packages/linux/core/libxml2:libxml2",
+        "//packages/linux/dev-libs/libxml2:libxml2",
         "//packages/linux/graphics/utilities/imagemagick:imagemagick",
-        "//packages/linux/core/freetype:freetype",
-        "//packages/linux/core/fribidi:fribidi",
+        "//packages/linux/fonts/libraries/freetype:freetype",
+        "//packages/linux/system/libs/font/fribidi:fribidi",
     ],
     build_deps = [
-        "//packages/linux/core/pkg-config:pkg-config",
+        "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
     ],
     visibility = ["PUBLIC"],
 )

@@ -18,7 +18,7 @@ use_package(
     iuse = ["ssl", "pcre"],
     use_defaults = ["ssl"],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     use_deps = {
         "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],

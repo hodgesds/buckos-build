@@ -41,7 +41,7 @@ mkdir -p "$DESTDIR/usr/share/applications"
 mkdir -p "$DESTDIR/etc/claws-mail"
 """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gtk:gtk",
         "//packages/linux/network/openssl:openssl",
     ],

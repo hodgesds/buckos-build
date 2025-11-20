@@ -9,7 +9,7 @@ download_source(
 
 binary_package(
     name = "tree-sitter",
-    source = ":tree-sitter-src",
+    srcs = [":tree-sitter-src"],
     version = "0.22.6",
     description = "Incremental parsing system for programming tools",
     homepage = "https://tree-sitter.github.io/tree-sitter/",

@@ -15,7 +15,7 @@ use_package(
     use_defaults = [],
 
     use_deps = {
-        "dbus": ["//packages/linux/core:dbus"],
+        "dbus": ["//packages/linux/system/libs/ipc/dbus:dbus"],
         "usb": ["//packages/linux/core:libusb"],
     },
 
@@ -32,7 +32,7 @@ use_package(
         "-static-libs": "--disable-static",
     },
 
-    deps = ["//packages/linux/core:musl"],
+    deps = ["//packages/linux/core/musl:musl"],
 
     description = "Packet capture library",
     homepage = "https://www.tcpdump.org/",

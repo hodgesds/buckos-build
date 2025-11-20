@@ -16,15 +16,11 @@ configure_make_package(
     description = "Parallel implementation of gzip for modern multi-processor machines",
     homepage = "https://zlib.net/pigz/",
     license = "Zlib",
-    build_in_source = True,
     configure_args = [],
     make_args = [],
-    install_args = [
-        "PREFIX=/usr",
-    ],
     deps = [
-        "//packages/linux/core:zlib",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

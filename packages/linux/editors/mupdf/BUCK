@@ -26,7 +26,7 @@ configure_make_package(
         "install",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/fonts/libraries/freetype:freetype",
     ],
     visibility = ["PUBLIC"],

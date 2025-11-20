@@ -14,14 +14,10 @@ configure_make_package(
     description = "Fast lossless compression algorithm",
     homepage = "https://facebook.github.io/zstd/",
     license = "BSD-3-Clause",
-    build_in_source = True,
     configure_args = [],
     make_args = [
         "prefix=/usr",
         "lib-mt",
-    ],
-    install_args = [
-        "prefix=/usr",
     ],
     visibility = ["PUBLIC"],
 )

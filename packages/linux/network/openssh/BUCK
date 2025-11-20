@@ -44,7 +44,7 @@ use_package(
         "--with-privsep-path=/var/empty",
     ],
 
-    deps = ["//packages/linux/core:zlib"],
+    deps = ["//packages/linux/core/zlib:zlib"],
 
     post_install = """
 # Create privilege separation directory

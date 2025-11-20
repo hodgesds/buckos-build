@@ -14,7 +14,6 @@ configure_make_package(
     description = "High-quality block-sorting file compressor",
     homepage = "https://sourceware.org/bzip2/",
     license = "bzip2-1.0.6",
-    build_in_source = True,
     configure_args = [],
     make_args = [
         "-f",

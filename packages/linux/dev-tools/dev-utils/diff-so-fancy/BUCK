@@ -9,7 +9,7 @@ download_source(
 
 precompiled_package(
     name = "diff-so-fancy",
-    source = ":diff-so-fancy-src",
+    srcs = [":diff-so-fancy-src"],
     version = "1.4.4",
     description = "Good-lookin' diffs with diff-highlight and more",
     homepage = "https://github.com/so-fancy/diff-so-fancy",

@@ -19,7 +19,7 @@ download_source(
 
 cmake_package(
     name = "audacity",
-    source = ":audacity-src",
+    srcs = [":audacity-src"],
     version = "3.5.1",
     description = "Multi-track audio editor and recorder",
     homepage = "https://www.audacityteam.org/",
@@ -69,8 +69,8 @@ cmake_package(
         "//packages/linux/audio/libraries/libogg:libogg",
         "//packages/linux/audio/libraries/lame:lame",
         "//packages/linux/audio/libraries/libmad:libmad",
-        "//packages/linux/desktop/gtk:gtk3",
-        "//packages/linux/core:musl",
+        "//packages/linux/desktop/gnome:gtk3",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

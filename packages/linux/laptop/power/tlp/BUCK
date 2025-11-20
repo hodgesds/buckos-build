@@ -34,7 +34,7 @@ configure_make_package(
         "TLP_ULIB=/usr/lib/udev",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/shells/bash:bash",
     ],
     visibility = ["PUBLIC"],

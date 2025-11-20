@@ -18,7 +18,7 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/linux/core/zlib",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

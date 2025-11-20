@@ -25,7 +25,7 @@ cmake_package(
     name = "llama-cpp",
     version = "b4154",
     src_uri = "https://github.com/ggerganov/llama.cpp/archive/refs/tags/b4154.tar.gz",
-    sha256 = "b5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5",
+    sha256 = "0fbaaf63d10108c0b49eb9aa99bd908bac04c3b301addb2d6da3b27a980da1e1",
     description = "LLM inference in C/C++ with minimal dependencies",
     homepage = "https://github.com/ggerganov/llama.cpp",
     license = "MIT",
@@ -38,7 +38,7 @@ cmake_package(
         "-DLLAMA_BUILD_SERVER=ON",
     ],
     deps = [
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

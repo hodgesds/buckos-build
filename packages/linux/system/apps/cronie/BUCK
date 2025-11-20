@@ -33,6 +33,6 @@ use_package(
         "--sysconfdir=/etc",
         "--localstatedir=/var",
     ],
-    deps = ["//packages/linux/core:musl"],
+    deps = ["//packages/linux/core/musl:musl"],
     visibility = ["PUBLIC"],
 )

@@ -16,21 +16,14 @@ configure_make_package(
     description = "Linux key management utilities",
     homepage = "https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git",
     license = "GPL-2.0-or-later AND LGPL-2.1-or-later",
-    build_in_source = True,
     configure_args = [],
     make_args = [
         "NO_ARLIB=1",
         "LIBDIR=/usr/lib",
         "USRLIBDIR=/usr/lib",
     ],
-    install_args = [
-        "NO_ARLIB=1",
-        "LIBDIR=/usr/lib",
-        "USRLIBDIR=/usr/lib",
-        "DESTDIR=$(location)",
-    ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

@@ -6,16 +6,11 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 # =============================================================================
 
 # Nautilus - GNOME Files
-download_source(
-    name = "nautilus-src",
-    src_uri = "https://download.gnome.org/sources/nautilus/46/nautilus-46.0.tar.xz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
-)
-
 meson_package(
     name = "nautilus",
-    source = ":nautilus-src",
     version = "46.0",
+    src_uri = "https://download.gnome.org/sources/nautilus/46/nautilus-46.0.tar.xz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
     description = "GNOME Files - file manager for GNOME",
     homepage = "https://wiki.gnome.org/Apps/Files",
     license = "GPL-3.0-or-later",
@@ -25,8 +20,8 @@ meson_package(
         "-Dextensions=true",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/desktop/gtk:gtk4",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/desktop/gnome:gtk4",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/filesystem:gvfs",
         "//packages/linux/desktop/gnome:libadwaita",
@@ -58,8 +53,8 @@ configure_make_package(
         "--enable-pcre2",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/filesystem:gvfs",
         "//packages/linux/desktop/xfce:libxfce4ui",
@@ -86,8 +81,8 @@ configure_make_package(
         "--sysconfdir=/etc",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/desktop/gnome:gtk3",
         ":libfm",
     ],
     visibility = ["PUBLIC"],
@@ -113,24 +108,19 @@ configure_make_package(
         "--disable-gtk-doc",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/dev-libs/glib:glib",
     ],
     visibility = ["PUBLIC"],
 )
 
 # Nemo - Cinnamon File Manager (fork of Nautilus)
-download_source(
-    name = "nemo-src",
-    src_uri = "https://github.com/linuxmint/nemo/archive/refs/tags/6.0.2/nemo-6.0.2.tar.gz",
-    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
-)
-
 meson_package(
     name = "nemo",
-    source = ":nemo-src",
     version = "6.0.2",
+    src_uri = "https://github.com/linuxmint/nemo/archive/refs/tags/6.0.2/nemo-6.0.2.tar.gz",
+    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
     description = "File manager for Cinnamon",
     homepage = "https://github.com/linuxmint/nemo",
     license = "GPL-2.0-or-later",
@@ -139,8 +129,8 @@ meson_package(
         "-Dselinux=false",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/filesystem:gvfs",
     ],
@@ -167,8 +157,8 @@ configure_make_package(
         "--disable-update-mimedb",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/filesystem:gvfs",
     ],
@@ -196,7 +186,7 @@ configure_make_package(
         python setup.py install --prefix=/usr --root="$OUT"
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/lang/python:python",
     ],
     visibility = ["PUBLIC"],

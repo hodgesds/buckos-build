@@ -22,12 +22,12 @@ use_package(
     iuse = ["ssl", "pcre2", "zlib", "bzip2", "mysql", "ldap"],
     use_defaults = ["ssl", "pcre2", "zlib", "bzip2"],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
-        "zlib": ["//packages/linux/core:zlib"],
-        "bzip2": ["//packages/linux/core:bzip2"],
+        "zlib": ["//packages/linux/core/zlib:zlib"],
+        "bzip2": ["//packages/linux/core/bzip2:bzip2"],
         "pcre2": ["//packages/linux/core:pcre2"],
         "mysql": ["//packages/linux/databases/mariadb:mariadb"],
         "ldap": ["//packages/linux/network/openldap:openldap"],

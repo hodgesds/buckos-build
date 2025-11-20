@@ -19,7 +19,7 @@ configure_make_package(
         "--without-python",
     ],
     deps = [
-        "//packages/linux/linux/system/libs/data/libxml2",
+        "//packages/linux/system/libs/data/libxml2:libxml2",
     ],
     visibility = ["PUBLIC"],
 )

@@ -19,7 +19,7 @@ configure_make_package(
         "--disable-thorough-tests",
     ],
     deps = [
-        "//packages/linux/linux/system/libs/audio/libogg",
+        "//packages/linux/system/libs/audio/libogg:libogg",
     ],
     visibility = ["PUBLIC"],
 )

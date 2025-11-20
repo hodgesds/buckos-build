@@ -23,7 +23,7 @@ configure_make_package(
         "ln -s /usr/lib/powershell/pwsh ${DESTDIR}/usr/bin/pwsh",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

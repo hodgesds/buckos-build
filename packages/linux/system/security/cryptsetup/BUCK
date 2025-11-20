@@ -39,8 +39,8 @@ use_package(
     iuse = ["udev", "readline", "thin", "cache"],
     use_defaults = ["udev"],
     use_deps = {
-        "udev": ["//packages/linux/system/init/eudev"],
-        "readline": ["//packages/linux/core:readline"],
+        "udev": ["//packages/linux/system/init/eudev:eudev"],
+        "readline": ["//packages/linux/core/readline:readline"],
     },
     use_configure = {
         "udev": "--enable-udev_rules --enable-udev_sync",
@@ -75,8 +75,8 @@ use_package(
     use_defaults = ["openssl", "argon2", "reencrypt"],
     use_deps = {
         "openssl": ["//packages/linux/network/openssl:openssl"],
-        "gcrypt": ["//packages/linux/system/libs/crypto/libgcrypt"],
-        "nettle": ["//packages/linux/system/libs/crypto/nettle"],
+        "gcrypt": ["//packages/linux/system/libs/crypto/libgcrypt:libgcrypt"],
+        "nettle": ["//packages/linux/system/libs/crypto/nettle:nettle"],
     },
     use_configure = {
         "openssl": "--with-crypto_backend=openssl",
@@ -105,7 +105,7 @@ use_package(
     deps = [
         ":popt",
         ":lvm2",
-        "//packages/linux/core:util-linux",
+        "//packages/linux/core/util-linux:util-linux",
     ],
     visibility = ["PUBLIC"],
 )

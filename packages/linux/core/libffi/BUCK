@@ -20,6 +20,11 @@ use_package(
     # Default USE flags
     use_defaults = [],
 
+    # Base configure arguments
+    configure_args = [
+        "--disable-exec-static-tramp",
+    ],
+
     # Conditional configure arguments
     use_configure = {
         "debug": "--enable-debug",

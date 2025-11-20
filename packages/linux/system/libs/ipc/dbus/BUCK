@@ -25,7 +25,7 @@ configure_make_package(
         "--runstatedir=/run",
     ],
     deps = [
-        "//packages/linux/linux/system/libs/data/expat",
+        "//packages/linux/system/libs/data/expat:expat",
     ],
     visibility = ["PUBLIC"],
 )

@@ -40,12 +40,12 @@ DESTDIR=$OUT meson install
 """,
     deps = [
         "//packages/linux/desktop/gtk:gtk3",
-        "//packages/linux/core/glib:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/graphics/utilities/gegl:gegl",
         "//packages/linux/graphics/utilities/babl:babl",
     ],
     build_deps = [
-        "//packages/linux/core/python:python",
+        "//packages/linux/lang/python:python",
     ],
     visibility = ["PUBLIC"],
 )

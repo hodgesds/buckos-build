@@ -27,7 +27,7 @@ configure_make_package(
         "LIB_D=/usr/lib",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/shells/bash:bash",
     ],
     visibility = ["PUBLIC"],

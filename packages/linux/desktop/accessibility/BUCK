@@ -6,16 +6,11 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 # =============================================================================
 
 # at-spi2-core - Accessibility Service Provider Interface
-download_source(
-    name = "at-spi2-core-src",
-    src_uri = "https://download.gnome.org/sources/at-spi2-core/2.52/at-spi2-core-2.52.0.tar.xz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
-)
-
 meson_package(
     name = "at-spi2-core",
-    source = ":at-spi2-core-src",
     version = "2.52.0",
+    src_uri = "https://download.gnome.org/sources/at-spi2-core/2.52/at-spi2-core-2.52.0.tar.xz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
     description = "Protocol definitions and daemon for Assistive Technology Service Provider Interface",
     homepage = "https://wiki.gnome.org/Accessibility",
     license = "LGPL-2.1-or-later",
@@ -27,7 +22,7 @@ meson_package(
         "-Dx11=enabled",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/desktop/xorg-server:libx11",
@@ -38,16 +33,11 @@ meson_package(
 )
 
 # at-spi2-atk - ATK accessibility bridge
-download_source(
-    name = "at-spi2-atk-src",
-    src_uri = "https://download.gnome.org/sources/at-spi2-atk/2.38/at-spi2-atk-2.38.0.tar.xz",
-    sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
-)
-
 meson_package(
     name = "at-spi2-atk",
-    source = ":at-spi2-atk-src",
     version = "2.38.0",
+    src_uri = "https://download.gnome.org/sources/at-spi2-atk/2.38/at-spi2-atk-2.38.0.tar.xz",
+    sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
     description = "GTK+ module that bridges ATK to at-spi2",
     homepage = "https://wiki.gnome.org/Accessibility",
     license = "LGPL-2.1-or-later",
@@ -56,32 +46,27 @@ meson_package(
     ],
     deps = [
         ":at-spi2-core",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
     ],
     visibility = ["PUBLIC"],
 )
 
 # Orca - Screen reader for GNOME
-download_source(
-    name = "orca-src",
-    src_uri = "https://download.gnome.org/sources/orca/46/orca-46.0.tar.xz",
-    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
-)
-
 meson_package(
     name = "orca",
-    source = ":orca-src",
     version = "46.0",
+    src_uri = "https://download.gnome.org/sources/orca/46/orca-46.0.tar.xz",
+    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
     description = "Screen reader for GNOME that provides access via speech and Braille",
     homepage = "https://wiki.gnome.org/Projects/Orca",
     license = "LGPL-2.1-or-later",
     meson_args = [],
     deps = [
         ":at-spi2-core",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/lang/python:python",
-        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/desktop/gnome:gtk3",
         ":speech-dispatcher",
     ],
     visibility = ["PUBLIC"],
@@ -113,7 +98,7 @@ configure_make_package(
         "--without-voxin",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/audio/libraries:libao",
         ":espeak-ng",
@@ -147,7 +132,7 @@ configure_make_package(
         "--with-mbrola=no",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -174,8 +159,8 @@ configure_make_package(
     ],
     deps = [
         ":at-spi2-core",
-        "//packages/linux/core:musl",
-        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/lang/python:python",
     ],
@@ -207,8 +192,8 @@ configure_make_package(
         "--disable-lynx",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/audio/daemons:pulseaudio",
         "//packages/linux/audio/daemons:alsa-lib",
     ],

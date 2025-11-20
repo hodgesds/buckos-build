@@ -10,7 +10,7 @@ download_source(
 
 python_package(
     name = "thefuck",
-    source = ":thefuck-src",
+    srcs = [":thefuck-src"],
     version = "3.32",
     description = "Magnificent app that corrects your previous console command",
     homepage = "https://github.com/nvbn/thefuck",

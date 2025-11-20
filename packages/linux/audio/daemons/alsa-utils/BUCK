@@ -27,11 +27,11 @@ use_package(
         "-nls": "--disable-nls",
     },
     use_deps = {
-        "ncurses": ["//packages/linux/core:ncurses"],
+        "ncurses": ["//packages/linux/core/ncurses:ncurses"],
     },
     deps = [
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

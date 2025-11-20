@@ -19,7 +19,7 @@ configure_make_package(
         "--disable-gtk-doc",
     ],
     deps = [
-        "//packages/linux/core:util-linux",
+        "//packages/linux/core/util-linux:util-linux",
         "//packages/linux/system/filesystem/management/lvm2:lvm2",
         "//packages/linux/system/init:eudev",
     ],

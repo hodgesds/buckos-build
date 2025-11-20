@@ -10,7 +10,7 @@ download_source(
 
 binary_package(
     name = "pandoc",
-    source = ":pandoc-src",
+    srcs = [":pandoc-src"],
     version = "3.5",
     description = "Universal document converter supporting markdown, HTML, LaTeX, and more",
     homepage = "https://pandoc.org/",

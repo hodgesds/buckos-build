@@ -21,8 +21,8 @@ configure_make_package(
         "--disable-docs",
     ],
     deps = [
-        "//packages/linux/linux/system/libs/font/freetype",
-        "//packages/linux/linux/system/libs/data/expat",
+        "//packages/linux/system/libs/font/freetype:freetype",
+        "//packages/linux/system/libs/data/expat:expat",
     ],
     visibility = ["PUBLIC"],
 )

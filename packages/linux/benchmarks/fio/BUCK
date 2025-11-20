@@ -22,7 +22,7 @@ use_package(
     use_defaults = ["zlib", "libaio"],
     deps = [],
     use_deps = {
-        "zlib": ["//packages/linux/core/zlib"],
+        "zlib": ["//packages/linux/core/zlib:zlib"],
         "libaio": ["//packages/linux/core:libaio"],
         "numa": ["//packages/linux/core:numactl"],
         "http": ["//packages/linux/network/curl"],

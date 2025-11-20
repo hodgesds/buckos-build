@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "utf8proc",
-    source = ":utf8proc-src",
+    srcs = [":utf8proc-src"],
     version = "2.9.0",
     description = "Clean C library for processing UTF-8 Unicode data",
     homepage = "https://github.com/JuliaStrings/utf8proc",

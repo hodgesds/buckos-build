@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "cjson",
-    source = ":cjson-src",
+    srcs = [":cjson-src"],
     version = "1.7.17",
     description = "Ultralightweight JSON parser in ANSI C",
     homepage = "https://github.com/DaveGamble/cJSON",

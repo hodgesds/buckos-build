@@ -30,10 +30,43 @@ def _download_source_impl(ctx: AnalysisContext) -> list[Provider]:
 set -e
 mkdir -p "$1"
 cd "$1"
-curl -L -o source.tar.gz "$2"
-echo "$3  source.tar.gz" | sha256sum -c -
-tar xzf source.tar.gz --strip-components=1
-rm source.tar.gz
+
+# Download with original filename
+URL="$2"
+FILENAME="${URL##*/}"
+curl -L -o "$FILENAME" "$URL"
+
+# Verify checksum
+echo "$3  $FILENAME" | sha256sum -c -
+
+# Extract based on file extension
+case "$FILENAME" in
+    *.tar.gz|*.tgz)
+        tar xzf "$FILENAME" --strip-components=1
+        ;;
+    *.tar.xz|*.txz)
+        tar xJf "$FILENAME" --strip-components=1
+        ;;
+    *.tar.bz2|*.tbz2)
+        tar xjf "$FILENAME" --strip-components=1
+        ;;
+    *.tar)
+        tar xf "$FILENAME" --strip-components=1
+        ;;
+    *.zip)
+        unzip -q "$FILENAME"
+        # For zip files, find the top-level dir and move contents up
+        if [ $(ls -1 | wc -l) -eq 1 ] && [ -d "$(ls -1)" ]; then
+            mv "$(ls -1)"/* . && rmdir "$(ls -1)"
+        fi
+        ;;
+    *)
+        echo "Error: Unknown archive format: $FILENAME" >&2
+        exit 1
+        ;;
+esac
+
+rm "$FILENAME"
 """,
     )
 
@@ -89,6 +122,7 @@ export PREFIX="${{PREFIX:-/usr}}"
 mkdir -p "$DESTDIR"
 
 cd "$2"
+export SRCDIR="$(pwd)"
 
 # Set environment
 {env}
@@ -97,20 +131,28 @@ cd "$2"
 {pre_configure}
 
 # Configure
-if [ -f configure ]; then
-    ./configure --prefix="$PREFIX" {configure_args}
-elif [ -f Configure ]; then
-    ./Configure --prefix="$PREFIX" {configure_args}
-elif [ -f CMakeLists.txt ]; then
-    mkdir -p build && cd build
-    cmake .. -DCMAKE_INSTALL_PREFIX="$PREFIX" {configure_args}
+CONFIGURE_ARGS="{configure_args}"
+if [ -n "$CONFIGURE_ARGS" ] || [ -f configure ] || [ -f Configure ] || [ -f CMakeLists.txt ]; then
+    if [ -f configure ]; then
+        ./configure --prefix="$PREFIX" {configure_args}
+    elif [ -f Configure ]; then
+        ./Configure --prefix="$PREFIX" {configure_args}
+    elif [ -f CMakeLists.txt ]; then
+        mkdir -p build && cd build
+        cmake .. -DCMAKE_INSTALL_PREFIX="$PREFIX" {configure_args}
+    fi
 fi
 
 # Build
-make -j$(nproc) {make_args}
+MAKE_ARGS="{make_args}"
+if [ -n "$MAKE_ARGS" ] || [ -f Makefile ] || [ -f makefile ]; then
+    make -j$(nproc) {make_args}
+fi
 
 # Install
-make install DESTDIR="$DESTDIR" {make_args}
+if [ -f Makefile ] || [ -f makefile ]; then
+    make install DESTDIR="$DESTDIR" {make_args} || true
+fi
 
 # Post-install hook
 {post_install}
@@ -1934,8 +1976,9 @@ export SLOT="{slot}"
 export USE="{use_flags}"
 
 # Installation directories
-export DESTDIR="$1"
-export S="$2"
+mkdir -p "$1"
+export DESTDIR="$(cd "$1" && pwd)"
+export S="$(cd "$2" && pwd)"
 export EPREFIX="${{EPREFIX:-}}"
 export PREFIX="${{PREFIX:-/usr}}"
 export LIBDIR="${{LIBDIR:-lib64}}"
@@ -1974,6 +2017,7 @@ cd "$S"
 # Phase: src_test
 if [ -n "{run_tests}" ]; then
     {src_test}
+    :
 fi
 
 # Phase: src_install

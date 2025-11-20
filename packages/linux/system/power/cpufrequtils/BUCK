@@ -28,7 +28,7 @@ configure_make_package(
         make DESTDIR=$OUT prefix=/usr install
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

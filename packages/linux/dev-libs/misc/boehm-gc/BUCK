@@ -20,7 +20,7 @@ configure_make_package(
         "--enable-large-config",
     ],
     deps = [
-        "//packages/linux/dev-libs/misc/libatomic_ops",
+        "//packages/linux/dev-libs/misc/libatomic_ops:libatomic_ops",
     ],
     visibility = ["PUBLIC"],
 )

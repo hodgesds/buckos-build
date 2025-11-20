@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "meson_package")
+load("//defs:package_defs.bzl", "meson_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # mpv - A free, open source, and cross-platform media player
@@ -16,16 +16,11 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 # - jack: JACK audio (default: enabled)
 # - lua: Lua scripting (default: enabled)
 
-download_source(
-    name = "mpv-src",
-    src_uri = "https://github.com/mpv-player/mpv/archive/refs/tags/v0.38.0.tar.gz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
-)
-
 meson_package(
     name = "mpv",
-    source = ":mpv-src",
     version = "0.38.0",
+    src_uri = "https://github.com/mpv-player/mpv/archive/refs/tags/v0.38.0.tar.gz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
     description = "A free, open source, and cross-platform media player",
     homepage = "https://mpv.io/",
     license = "GPL-2.0-or-later LGPL-2.1-or-later",
@@ -74,12 +69,12 @@ meson_package(
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
         "//packages/linux/audio/daemons/pulseaudio:pulseaudio",
         "//packages/linux/audio/daemons/pipewire:pipewire",
-        "//packages/linux/core/libdrm:libdrm",
-        "//packages/linux/core/lua:lua",
+        "//packages/linux/desktop/libdrm:libdrm",
+        "//packages/linux/lang/lua:lua",
         "//packages/linux/core/zlib:zlib",
     ],
-    build_deps = [
-        "//packages/linux/core/pkg-config:pkg-config",
+    bdepend = [
+        "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
     ],
     visibility = ["PUBLIC"],
 )

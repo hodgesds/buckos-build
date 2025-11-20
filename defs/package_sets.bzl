@@ -47,45 +47,39 @@ load("//defs:use_flags.bzl", "USE_PROFILES")
 # System packages with musl (lightweight C library)
 SYSTEM_PACKAGES_MUSL = [
     # Core C library
-    "//packages/linux/core:musl",              # lightweight C library
+    "//packages/linux/core/musl:musl",              # lightweight C library
 
     # Essential system utilities
     "//packages/linux/system/apps:coreutils",  # ls, cp, mv, rm, etc
-    "//packages/linux/core:util-linux",        # mount, fdisk, etc
-    "//packages/linux/core:procps-ng",         # ps, top, etc
+    "//packages/linux/core/util-linux:util-linux",        # mount, fdisk, etc
+    "//packages/linux/core/procps-ng:procps-ng",         # ps, top, etc
     "//packages/linux/system/apps/shadow:shadow",  # user/group management
-    "//packages/linux/core:file",              # file type detection
+    "//packages/linux/core/file:file",              # file type detection
 
     # Shell
-    "//packages/linux/core:bash",              # default shell
-
-    # Init system
-    "//packages/linux/system/init:systemd",    # system and service manager
+    "//packages/linux/core/bash:bash",              # default shell
 
     # Basic libraries needed by most packages
-    "//packages/linux/core:zlib",              # compression library
+    "//packages/linux/core/zlib:zlib",              # compression library
 ]
 
 # System packages with glibc (GNU C library - broader compatibility)
 SYSTEM_PACKAGES_GLIBC = [
     # Core C library
-    "//packages/linux/core:glibc",             # GNU C library (broader compatibility)
+    "//packages/linux/core/glibc:glibc",             # GNU C library (broader compatibility)
 
     # Essential system utilities
     "//packages/linux/system/apps:coreutils",  # ls, cp, mv, rm, etc
-    "//packages/linux/core:util-linux",        # mount, fdisk, etc
-    "//packages/linux/core:procps-ng",         # ps, top, etc
+    "//packages/linux/core/util-linux:util-linux",        # mount, fdisk, etc
+    "//packages/linux/core/procps-ng:procps-ng",         # ps, top, etc
     "//packages/linux/system/apps/shadow:shadow",  # user/group management
-    "//packages/linux/core:file",              # file type detection
+    "//packages/linux/core/file:file",              # file type detection
 
     # Shell
-    "//packages/linux/core:bash",              # default shell
-
-    # Init system
-    "//packages/linux/system/init:systemd",    # system and service manager
+    "//packages/linux/core/bash:bash",              # default shell
 
     # Basic libraries needed by most packages
-    "//packages/linux/core:zlib",              # compression library
+    "//packages/linux/core/zlib:zlib",              # compression library
 ]
 
 # Default to glibc for maximum compatibility
@@ -94,30 +88,30 @@ SYSTEM_PACKAGES = SYSTEM_PACKAGES_GLIBC
 # Base packages that should be in almost every installation
 BASE_PACKAGES = SYSTEM_PACKAGES + [
     # Core libraries
-    "//packages/linux/core:readline",
-    "//packages/linux/core:ncurses",
-    "//packages/linux/core:less",
-    "//packages/linux/core:libffi",
-    "//packages/linux/core:expat",
+    "//packages/linux/core/readline:readline",
+    "//packages/linux/core/ncurses:ncurses",
+    "//packages/linux/core/less:less",
+    "//packages/linux/core/libffi:libffi",
+    "//packages/linux/core/expat:expat",
 
     # Shell and terminal
-    "//packages/linux/core:bash",
+    "//packages/linux/core/bash:bash",
 
     # Compression
-    "//packages/linux/core:bzip2",
-    "//packages/linux/core:xz",
+    "//packages/linux/core/bzip2:bzip2",
+    "//packages/linux/core/xz:xz",
     "//packages/linux/system/libs/compression/gzip:gzip",
     "//packages/linux/system/apps/tar:tar",
 
     # System utilities
     "//packages/linux/system/apps:coreutils",
     "//packages/linux/system/apps:findutils",
-    "//packages/linux/core:procps-ng",
-    "//packages/linux/core:file",
+    "//packages/linux/core/procps-ng:procps-ng",
+    "//packages/linux/core/file:file",
     "//packages/linux/system/apps/shadow:shadow",
 
     # Networking basics
-    "//packages/linux/network:openssl",
+    "//packages/linux/network/openssl:openssl",
     "//packages/linux/network:curl",
     "//packages/linux/network:iproute2",
     "//packages/linux/network:dhcpcd",
@@ -134,8 +128,8 @@ PROFILE_PACKAGE_SETS = {
         "description": "Absolute minimum packages for a bootable system",
         "packages": SYSTEM_PACKAGES + [
             "//packages/linux/shells:bash",
-            "//packages/linux/core:readline",
-            "//packages/linux/core:ncurses",
+            "//packages/linux/core/readline:readline",
+            "//packages/linux/core/ncurses:ncurses",
         ],
         "inherits": [],
         "use_profile": "minimal",
@@ -160,9 +154,6 @@ PROFILE_PACKAGE_SETS = {
             "//packages/linux/system/apps:cronie",
             "//packages/linux/system/apps:lsof",
             "//packages/linux/system/apps:strace",
-
-            # Init system
-            "//packages/linux/system/init:systemd",
 
             # Documentation
             "//packages/linux/system/docs:man-db",
@@ -197,9 +188,6 @@ PROFILE_PACKAGE_SETS = {
             # Terminals
             "//packages/linux/terminals:alacritty",
             "//packages/linux/terminals:foot",
-
-            # Init system
-            "//packages/linux/system/init:systemd",
 
             # Documentation
             "//packages/linux/system/docs:man-db",
@@ -236,9 +224,6 @@ PROFILE_PACKAGE_SETS = {
             "//packages/linux/system/apps:strace",
             "//packages/linux/system/apps:lsof",
 
-            # Init system
-            "//packages/linux/system/init:systemd",
-
             # Documentation
             "//packages/linux/system/docs:man-db",
             "//packages/linux/system/docs:man-pages",
@@ -265,9 +250,6 @@ PROFILE_PACKAGE_SETS = {
             "//packages/linux/system/apps:rsync",
             "//packages/linux/system/apps:logrotate",
 
-            # Init system
-            "//packages/linux/system/init:systemd",
-
             # VPN for secure communications
             "//packages/linux/net-vpn:wireguard-tools",
         ],
@@ -280,7 +262,7 @@ PROFILE_PACKAGE_SETS = {
         "description": "Minimal footprint for embedded and IoT systems",
         "packages": SYSTEM_PACKAGES + [
             "//packages/linux/shells:dash",  # Smaller than bash
-            "//packages/linux/core:readline",
+            "//packages/linux/core/readline:readline",
             "//packages/linux/network:dropbear",  # Smaller SSH
         ],
         "inherits": [],
@@ -292,8 +274,8 @@ PROFILE_PACKAGE_SETS = {
         "description": "Minimal base for container images",
         "packages": SYSTEM_PACKAGES + [
             "//packages/linux/shells:bash",
-            "//packages/linux/core:readline",
-            "//packages/linux/core:ncurses",
+            "//packages/linux/core/readline:readline",
+            "//packages/linux/core/ncurses:ncurses",
             "//packages/linux/network:curl",
         ],
         "inherits": [],
@@ -384,6 +366,79 @@ TASK_PACKAGE_SETS = {
 }
 
 # =============================================================================
+# INIT SYSTEM SETS
+# =============================================================================
+
+INIT_SYSTEM_SETS = {
+    # systemd - Modern init system and service manager
+    "systemd": {
+        "description": "systemd init system and service manager",
+        "packages": [
+            "//packages/linux/system/init:systemd",
+        ],
+        "inherits": [],
+    },
+
+    # OpenRC - Dependency-based init system
+    "openrc": {
+        "description": "OpenRC dependency-based init system",
+        "packages": [
+            "//packages/linux/system/init:openrc",
+        ],
+        "inherits": [],
+    },
+
+    # runit - Simple init system with service supervision
+    "runit": {
+        "description": "runit init system with service supervision",
+        "packages": [
+            "//packages/linux/system/init:runit",
+        ],
+        "inherits": [],
+    },
+
+    # s6 - Small and secure init system
+    "s6": {
+        "description": "s6 init system with supervision suite",
+        "packages": [
+            "//packages/linux/system/init:s6",
+            "//packages/linux/system/init:s6-linux-init",
+            "//packages/linux/system/init:s6-rc",
+            "//packages/linux/system/init:skalibs",
+        ],
+        "inherits": [],
+    },
+
+    # SysVinit - Traditional init system
+    "sysvinit": {
+        "description": "Traditional SysV init system",
+        "packages": [
+            "//packages/linux/system/init:sysvinit",
+        ],
+        "inherits": [],
+    },
+
+    # dinit - Service manager and init system
+    "dinit": {
+        "description": "dinit service manager and init system",
+        "packages": [
+            "//packages/linux/system/init:dinit",
+        ],
+        "inherits": [],
+    },
+
+    # BusyBox init - Minimal init from BusyBox
+    "busybox-init": {
+        "description": "BusyBox built-in init system (minimal)",
+        "packages": [
+            # BusyBox init is part of BusyBox itself, which is in @system
+            # This set is empty but defined for consistency
+        ],
+        "inherits": [],
+    },
+}
+
+# =============================================================================
 # DESKTOP ENVIRONMENT SETS
 # =============================================================================
 
@@ -444,13 +499,110 @@ DESKTOP_ENVIRONMENT_SETS = {
 }
 
 # =============================================================================
+# LANGUAGE DEVELOPMENT SETS
+# =============================================================================
+
+LANGUAGE_DEVELOPMENT_SETS = {
+    # Python development
+    "python-dev": {
+        "description": "Python development environment with tooling",
+        "packages": [
+            "//packages/linux/lang/python:python",
+        ],
+        "inherits": ["developer"],
+    },
+
+    # Node.js development
+    "nodejs-dev": {
+        "description": "Node.js development environment with npm",
+        "packages": [
+            "//packages/linux/lang/nodejs:nodejs",
+        ],
+        "inherits": ["developer"],
+    },
+
+    # Rust development
+    "rust-dev": {
+        "description": "Rust development environment with cargo",
+        "packages": [
+            "//packages/linux/lang/rust:rust",
+        ],
+        "inherits": ["developer"],
+    },
+
+    # Go development
+    "go-dev": {
+        "description": "Go development environment with tooling",
+        "packages": [
+            "//packages/linux/lang/go:go",
+        ],
+        "inherits": ["developer"],
+    },
+
+    # C/C++ development
+    "cpp-dev": {
+        "description": "C/C++ development with GCC/Clang toolchain",
+        "packages": [
+            "//packages/linux/lang/gcc:gcc",
+            "//packages/linux/lang/clang:clang",
+            "//packages/linux/lang/binutils:binutils",
+            "//packages/linux/dev-tools/build-systems/cmake:cmake",
+            "//packages/linux/dev-tools/build-systems/make:make",
+            "//packages/linux/dev-tools/build-systems/autoconf:autoconf",
+            "//packages/linux/dev-tools/build-systems/automake:automake",
+            "//packages/linux/dev-tools/debuggers/gdb:gdb",
+            "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
+        ],
+        "inherits": ["developer"],
+    },
+
+    # Ruby development
+    "ruby-dev": {
+        "description": "Ruby development environment with gems",
+        "packages": [
+            "//packages/linux/lang/ruby:ruby",
+        ],
+        "inherits": ["developer"],
+    },
+
+    # PHP development
+    "php-dev": {
+        "description": "PHP development environment",
+        "packages": [
+            "//packages/linux/lang/php:php",
+        ],
+        "inherits": ["developer"],
+    },
+
+    # Zig development
+    "zig-dev": {
+        "description": "Zig development environment",
+        "packages": [
+            "//packages/linux/lang/zig:zig",
+        ],
+        "inherits": ["developer"],
+    },
+
+    # Julia development
+    "julia-dev": {
+        "description": "Julia development for scientific computing",
+        "packages": [
+            "//packages/linux/lang/julia:julia",
+        ],
+        "inherits": ["developer"],
+    },
+}
+
+# =============================================================================
 # COMBINED REGISTRY
 # =============================================================================
 
 PACKAGE_SETS = {}
 PACKAGE_SETS.update(PROFILE_PACKAGE_SETS)
 PACKAGE_SETS.update(TASK_PACKAGE_SETS)
+PACKAGE_SETS.update(INIT_SYSTEM_SETS)
 PACKAGE_SETS.update(DESKTOP_ENVIRONMENT_SETS)
+PACKAGE_SETS.update(LANGUAGE_DEVELOPMENT_SETS)
 
 # =============================================================================
 # PACKAGE SET OPERATIONS
@@ -535,7 +687,7 @@ def list_sets_by_type(set_type):
     """Get list of package sets by type.
 
     Args:
-        set_type: "profile", "task", or "desktop"
+        set_type: "profile", "task", "init", "desktop", or "language"
 
     Returns:
         List of set names
@@ -544,8 +696,12 @@ def list_sets_by_type(set_type):
         return sorted(PROFILE_PACKAGE_SETS.keys())
     elif set_type == "task":
         return sorted(TASK_PACKAGE_SETS.keys())
+    elif set_type == "init":
+        return sorted(INIT_SYSTEM_SETS.keys())
     elif set_type == "desktop":
         return sorted(DESKTOP_ENVIRONMENT_SETS.keys())
+    elif set_type == "language":
+        return sorted(LANGUAGE_DEVELOPMENT_SETS.keys())
     else:
         return []
 
@@ -884,6 +1040,59 @@ def desktop_set(
         visibility = visibility,
     )
 
+def language_set(
+        name,
+        language,
+        additions = [],
+        removals = [],
+        description = "",
+        visibility = ["PUBLIC"]):
+    """Create a language development package set.
+
+    Args:
+        name: Name of the language set
+        language: Language name (python-dev, nodejs-dev, rust-dev, go-dev, cpp-dev, etc.)
+        additions: Additional packages to include
+        removals: Packages to exclude
+        description: Human-readable description
+        visibility: Buck visibility specification
+
+    Example:
+        language_set(
+            name = "my-python",
+            language = "python-dev",
+            additions = ["//packages/linux/dev-python:pytest"],
+            description = "Python with testing tools",
+        )
+    """
+    if language not in LANGUAGE_DEVELOPMENT_SETS:
+        fail("Unknown language: {}. Available: {}".format(
+            language, ", ".join(LANGUAGE_DEVELOPMENT_SETS.keys())))
+
+    packages = get_set_packages(language)
+
+    # Remove unwanted packages
+    if removals:
+        removal_set = set(removals)
+        packages = [p for p in packages if p not in removal_set]
+
+    # Add additional packages
+    packages.extend(additions)
+
+    # Remove duplicates
+    seen = {}
+    unique_packages = []
+    for pkg in packages:
+        if pkg not in seen:
+            seen[pkg] = True
+            unique_packages.append(pkg)
+
+    native.filegroup(
+        name = name,
+        srcs = unique_packages,
+        visibility = visibility,
+    )
+
 # =============================================================================
 # QUERY HELPERS
 # =============================================================================
@@ -933,7 +1142,9 @@ def set_stats():
         "total_sets": total_sets,
         "profile_sets": len(PROFILE_PACKAGE_SETS),
         "task_sets": len(TASK_PACKAGE_SETS),
+        "init_sets": len(INIT_SYSTEM_SETS),
         "desktop_sets": len(DESKTOP_ENVIRONMENT_SETS),
+        "language_sets": len(LANGUAGE_DEVELOPMENT_SETS),
     }
 
 # =============================================================================

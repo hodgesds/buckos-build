@@ -32,7 +32,7 @@ use_package(
         "ogg": ["//packages/linux/audio/libraries/libogg:libogg"],
     },
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

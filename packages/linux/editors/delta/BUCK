@@ -9,7 +9,7 @@ download_source(
 
 cargo_package(
     name = "delta",
-    source = ":delta-src",
+    srcs = [":delta-src"],
     version = "0.18.2",
     description = "Syntax-highlighting pager for git and diff output",
     homepage = "https://github.com/dandavison/delta",
@@ -18,7 +18,7 @@ cargo_package(
         "--release",
     ],
     deps = [
-        "//packages/linux/core/musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

@@ -180,41 +180,41 @@ rootfs(
         ":init-scripts-gen",
         ":baselayout-gen",
         # Core system
-        "//packages/linux/core/musl",
-        "//packages/linux/core/busybox",
-        "//packages/linux/core/util-linux",
-        "//packages/linux/core/zlib",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/busybox:busybox",
+        "//packages/linux/core/util-linux:util-linux",
+        "//packages/linux/core/zlib:zlib",
         # Shell and terminal
-        "//packages/linux/core/ncurses",
-        "//packages/linux/core/readline",
-        "//packages/linux/core/bash",
-        "//packages/linux/core/less",
+        "//packages/linux/core/ncurses:ncurses",
+        "//packages/linux/core/readline:readline",
+        "//packages/linux/core/bash:bash",
+        "//packages/linux/core/less:less",
         # Compression
-        "//packages/linux/core/bzip2",
-        "//packages/linux/core/xz",
+        "//packages/linux/core/bzip2:bzip2",
+        "//packages/linux/core/xz:xz",
         # System utilities
-        "//packages/linux/core/procps-ng",
-        "//packages/linux/core/file",
+        "//packages/linux/core/procps-ng:procps-ng",
+        "//packages/linux/core/file:file",
         # User management (REQUIRED for installer)
         "//packages/linux/system/apps/shadow:shadow",
         # Networking
-        "//packages/linux/network/openssl",
-        "//packages/linux/network/curl",
-        "//packages/linux/network/openssh",
-        "//packages/linux/network/iproute2",
-        "//packages/linux/network/dhcpcd",
+        "//packages/linux/system/libs/crypto/openssl:openssl",
+        "//packages/linux/system/libs/network/curl:curl",
+        "//packages/linux/system/network/openssh:openssh",
+        "//packages/linux/system/network/iproute2:iproute2",
+        "//packages/linux/system/network/dhcpcd:dhcpcd",
     ],
 # Complete system with kernel
     name = "buckos-complete",
     srcs = [
         ":buckos-rootfs",
-        "//packages/linux/kernel/buckos-kernel",
-        "//packages/linux/boot/grub",
+        "//packages/linux/kernel/buckos-kernel:buckos-kernel",
+        "//packages/linux/boot/grub:grub",
 # Root filesystem with text editors
     name = "buckos-with-editors",
-        "//packages/linux/editors/vim",
-        "//packages/linux/editors/neovim",
-        "//packages/linux/editors/emacs",
+        "//packages/linux/editors/vim:vim",
+        "//packages/linux/editors/neovim:neovim",
+        "//packages/linux/editors/emacs:emacs",
 # Complete system with editors and kernel
     name = "buckos-complete-with-editors",
         ":buckos-with-editors",
@@ -222,9 +222,9 @@ rootfs(
 # Full bootable system with initramfs generation capability
     name = "buckos-bootable",
         # Boot and initramfs essentials
-        "//packages/linux/system/libs/kmod",
-        "//packages/linux/system/init/eudev",
-        "//packages/linux/system/initramfs/dracut",
+        "//packages/linux/system/libs/kmod:kmod",
+        "//packages/linux/system/init/eudev:eudev",
+        "//packages/linux/system/initramfs/dracut:dracut",
 # Complete bootable system
     name = "buckos-bootable-complete",
         ":buckos-bootable",
@@ -232,9 +232,9 @@ rootfs(
     name = "buckos-storage",
         # Boot and initramfs
         # Storage management
-        "//packages/linux/system/filesystem/management/lvm2",
-        "//packages/linux/system/filesystem/management/mdadm",
-        "//packages/linux/system/filesystem/management/cryptsetup",
+        "//packages/linux/system/filesystem/management/lvm2:lvm2",
+        "//packages/linux/system/filesystem/management/mdadm:mdadm",
+        "//packages/linux/system/filesystem/management/cryptsetup:cryptsetup",
     ],
     visibility = ["PUBLIC"],
 )
@@ -277,7 +277,7 @@ initramfs(
 # Basic QEMU boot script for testing
 qemu_boot_script(
     name = "qemu-boot",
-    kernel = "//packages/linux/kernel/buckos-kernel",
+    kernel = "//packages/linux/kernel/buckos-kernel:buckos-kernel",
     initramfs = ":buckos-initramfs",
     arch = "x86_64",
     memory = "512M",
@@ -289,7 +289,7 @@ qemu_boot_script(
 # QEMU boot with more memory for development
 qemu_boot_script(
     name = "qemu-boot-dev",
-    kernel = "//packages/linux/kernel/buckos-kernel",
+    kernel = "//packages/linux/kernel/buckos-kernel:buckos-kernel",
     initramfs = ":buckos-initramfs",
     arch = "x86_64",
     memory = "2G",
@@ -302,7 +302,7 @@ qemu_boot_script(
 # QEMU boot with full bootable system
 qemu_boot_script(
     name = "qemu-boot-full",
-    kernel = "//packages/linux/kernel/buckos-kernel",
+    kernel = "//packages/linux/kernel/buckos-kernel:buckos-kernel",
     initramfs = ":buckos-bootable-initramfs",
     arch = "x86_64",
     memory = "1G",
@@ -314,7 +314,7 @@ qemu_boot_script(
 # QEMU boot with networking
 qemu_boot_script(
     name = "qemu-boot-net",
-    kernel = "//packages/linux/kernel/buckos-kernel",
+    kernel = "//packages/linux/kernel/buckos-kernel:buckos-kernel",
     initramfs = ":buckos-initramfs",
     arch = "x86_64",
     memory = "512M",
@@ -334,7 +334,7 @@ qemu_boot_script(
 # Minimal bootable ISO image
 iso_image(
     name = "buckos-iso",
-    kernel = "//packages/linux/kernel/buckos-kernel",
+    kernel = "//packages/linux/kernel/buckos-kernel:buckos-kernel",
     initramfs = ":buckos-initramfs",
     boot_mode = "hybrid",
     volume_label = "BUCKOS",
@@ -345,7 +345,7 @@ iso_image(
 # ISO with BIOS-only boot (for older systems)
 iso_image(
     name = "buckos-iso-bios",
-    kernel = "//packages/linux/kernel/buckos-kernel",
+    kernel = "//packages/linux/kernel/buckos-kernel:buckos-kernel",
     initramfs = ":buckos-initramfs",
     boot_mode = "bios",
     volume_label = "BUCKOS",
@@ -356,7 +356,7 @@ iso_image(
 # ISO with EFI-only boot (for modern systems)
 iso_image(
     name = "buckos-iso-efi",
-    kernel = "//packages/linux/kernel/buckos-kernel",
+    kernel = "//packages/linux/kernel/buckos-kernel:buckos-kernel",
     initramfs = ":buckos-initramfs",
     boot_mode = "efi",
     volume_label = "BUCKOS",
@@ -367,7 +367,7 @@ iso_image(
 # Live ISO with full rootfs (squashfs compressed)
 iso_image(
     name = "buckos-live-iso",
-    kernel = "//packages/linux/kernel/buckos-kernel",
+    kernel = "//packages/linux/kernel/buckos-kernel:buckos-kernel",
     initramfs = ":buckos-initramfs",
     rootfs = ":buckos-rootfs",
     boot_mode = "hybrid",
@@ -379,7 +379,7 @@ iso_image(
 # Full bootable ISO with dracut initramfs
 iso_image(
     name = "buckos-full-iso",
-    kernel = "//packages/linux/kernel/buckos-kernel",
+    kernel = "//packages/linux/kernel/buckos-kernel:buckos-kernel",
     initramfs = ":buckos-bootable-initramfs",
     rootfs = ":buckos-bootable",
     boot_mode = "hybrid",
@@ -391,7 +391,7 @@ iso_image(
 # Development ISO with verbose boot
 iso_image(
     name = "buckos-iso-dev",
-    kernel = "//packages/linux/kernel/buckos-kernel",
+    kernel = "//packages/linux/kernel/buckos-kernel:buckos-kernel",
     initramfs = ":buckos-initramfs",
     boot_mode = "hybrid",
     volume_label = "BUCKOS_DEV",

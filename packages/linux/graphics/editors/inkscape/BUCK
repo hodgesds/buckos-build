@@ -39,10 +39,10 @@ DESTDIR=$OUT make install
 """,
     deps = [
         "//packages/linux/desktop/gtk:gtkmm",
-        "//packages/linux/core/libxml2:libxml2",
-        "//packages/linux/core/libxslt:libxslt",
+        "//packages/linux/dev-libs/libxml2:libxml2",
+        "//packages/linux/dev-libs/libxslt:libxslt",
         "//packages/linux/graphics/utilities/imagemagick:imagemagick",
-        "//packages/linux/core/boost:boost",
+        "//packages/linux/dev-libs/boost:boost",
     ],
     build_deps = [
         "//packages/linux/lang/python:python",

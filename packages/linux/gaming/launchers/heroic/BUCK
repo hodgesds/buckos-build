@@ -12,7 +12,7 @@ download_source(
 
 binary_package(
     name = "heroic",
-    source = ":heroic-src",
+    srcs = [":heroic-src"],
     version = "2.15.2",
     description = "GOG and Epic Games Launcher for Linux",
     homepage = "https://heroicgameslauncher.com/",

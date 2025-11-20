@@ -21,7 +21,7 @@ configure_make_package(
         "--with-fenced-code",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

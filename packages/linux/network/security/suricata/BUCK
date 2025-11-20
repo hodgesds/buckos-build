@@ -35,7 +35,7 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/network/libpcap:libpcap",
         "//packages/linux/core/pcre:pcre",
     ],

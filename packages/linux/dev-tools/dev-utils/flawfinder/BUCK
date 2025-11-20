@@ -9,7 +9,7 @@ download_source(
 
 python_package(
     name = "flawfinder",
-    source = ":flawfinder-src",
+    srcs = [":flawfinder-src"],
     version = "2.0.19",
     description = "Examines C/C++ source code for security flaws",
     homepage = "https://dwheeler.com/flawfinder/",

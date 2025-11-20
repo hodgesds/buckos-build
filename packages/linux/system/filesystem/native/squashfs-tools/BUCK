@@ -21,10 +21,10 @@ configure_make_package(
         "ZSTD_SUPPORT=1",
     ],
     deps = [
-        "//packages/linux/core:zlib",
-        "//packages/linux/core:xz",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/core/xz:xz",
         "//packages/linux/core:lzo",
-        "//packages/linux/core:zstd",
+        "//packages/linux/system/libs/compression/zstd:zstd",
     ],
     visibility = ["PUBLIC"],
 )

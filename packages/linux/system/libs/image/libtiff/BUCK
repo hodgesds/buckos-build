@@ -19,10 +19,10 @@ configure_make_package(
         "--enable-cxx",
     ],
     deps = [
-        "//packages/linux/linux/core/zlib",
-        "//packages/linux/linux/system/libs/compression/xz",
-        "//packages/linux/linux/system/libs/compression/zstd",
-        "//packages/linux/linux/system/libs/image/libjpeg-turbo",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/system/libs/compression/xz:xz",
+        "//packages/linux/system/libs/compression/zstd:zstd",
+        "//packages/linux/system/libs/image/libjpeg-turbo:libjpeg-turbo",
     ],
     visibility = ["PUBLIC"],
 )

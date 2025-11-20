@@ -23,9 +23,9 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:readline",
-        "//packages/linux/core:ncurses",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/readline:readline",
+        "//packages/linux/core/ncurses:ncurses",
     ],
     visibility = ["PUBLIC"],
 )

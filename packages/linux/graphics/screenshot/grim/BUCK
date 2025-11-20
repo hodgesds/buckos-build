@@ -32,13 +32,13 @@ DESTDIR=$OUT meson install
     deps = [
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/wayland:wayland-protocols",
-        "//packages/linux/core/cairo:cairo",
-        "//packages/linux/core/libjpeg-turbo:libjpeg-turbo",
-        "//packages/linux/core/libpng:libpng",
-        "//packages/linux/core/pixman:pixman",
+        "//packages/linux/system/libs/graphics/cairo:cairo",
+        "//packages/linux/system/libs/graphics/libjpeg-turbo:libjpeg-turbo",
+        "//packages/linux/system/libs/graphics/libpng:libpng",
+        "//packages/linux/system/libs/graphics/pixman:pixman",
     ],
     build_deps = [
-        "//packages/linux/core/scdoc:scdoc",
+        "//packages/linux/system/libs/scdoc:scdoc",
     ],
     visibility = ["PUBLIC"],
 )

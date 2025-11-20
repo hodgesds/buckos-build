@@ -20,7 +20,7 @@ configure_make_package(
         "--bindir=/usr/bin",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

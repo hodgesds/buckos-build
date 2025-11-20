@@ -14,11 +14,7 @@ configure_make_package(
     description = "Library for reading and writing GIF images",
     homepage = "https://giflib.sourceforge.net/",
     license = "MIT",
-    build_in_source = True,
     configure_args = [],
     make_args = [],
-    install_args = [
-        "PREFIX=/usr",
-    ],
     visibility = ["PUBLIC"],
 )

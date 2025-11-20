@@ -24,8 +24,8 @@ configure_make_package(
         "--enable-jit",
     ],
     deps = [
-        "//packages/linux/linux/core/zlib",
-        "//packages/linux/linux/system/libs/compression/bzip2",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/system/libs/compression/bzip2:bzip2",
     ],
     visibility = ["PUBLIC"],
 )

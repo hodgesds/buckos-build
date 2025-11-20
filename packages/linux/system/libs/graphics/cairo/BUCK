@@ -27,11 +27,11 @@ meson setup .. --prefix=/usr \
     -Dglib=enabled
 """,
     deps = [
-        "//packages/linux/linux/system/libs/graphics/pixman:pixman",
-        "//packages/linux/linux/system/libs/image/libpng:libpng",
-        "//packages/linux/linux/system/libs/font/freetype:freetype",
-        "//packages/linux/linux/system/libs/font/fontconfig:fontconfig",
-        "//packages/linux/linux/core/zlib",
+        "//packages/linux/system/libs/graphics/pixman:pixman",
+        "//packages/linux/system/libs/image/libpng:libpng",
+        "//packages/linux/system/libs/font/freetype:freetype",
+        "//packages/linux/system/libs/font/fontconfig:fontconfig",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

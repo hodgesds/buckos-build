@@ -15,12 +15,12 @@ use_package(
     iuse = ["ssl", "zstd", "http2", "ssh", "ipv6", "c-ares", "brotli", "ldap", "idn", "static-libs"],
     use_defaults = ["ssl", "zstd", "http2", "ipv6"],
     use_deps = {
-        "ssl": ["//packages/linux/linux/system/libs/crypto/openssl"],
-        "zstd": ["//packages/linux/linux/system/libs/compression/zstd"],
-        "http2": ["//packages/linux/linux/system/libs/network/nghttp2"],
-        "ssh": ["//packages/linux/linux/system/libs/network/libssh2"],
-        "c-ares": ["//packages/linux/linux/system/libs/network/c-ares"],
-        "brotli": ["//packages/linux/system/libs/compression/brotli"],
+        "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
+        "zstd": ["//packages/linux/system/libs/compression/zstd:zstd"],
+        "http2": ["//packages/linux/system/libs/network/nghttp2:nghttp2"],
+        "ssh": ["//packages/linux/system/libs/network/libssh2:libssh2"],
+        "c-ares": ["//packages/linux/system/libs/network/c-ares:c-ares"],
+        "brotli": ["//packages/linux/system/libs/compression/brotli:brotli"],
     },
     use_configure = {
         "ssl": "--with-openssl",
@@ -49,7 +49,7 @@ use_package(
         "--with-ca-bundle=/etc/ssl/certs/ca-certificates.crt",
     ],
     deps = [
-        "//packages/linux/linux/core/zlib",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

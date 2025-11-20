@@ -26,11 +26,14 @@ configure_make_package(
         "mkdir -p ${DESTDIR}/usr/bin",
         "ln -s /usr/share/neo4j/bin/neo4j ${DESTDIR}/usr/bin/neo4j",
     ],
-    deps = use_dep(
-        {
-            "java": ["//packages/linux/lang/openjdk:openjdk"],
-        },
-        ["java"],
-    ),
+    deps = [
+        # TODO: Add Java dependency when openjdk package is available
+        # use_dep(
+        #     {
+        #         "java": ["//packages/linux/lang/openjdk:openjdk"],
+        #     },
+        #     ["java"],
+        # ),
+    ],
     visibility = ["PUBLIC"],
 )

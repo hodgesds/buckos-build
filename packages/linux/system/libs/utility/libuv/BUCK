@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "libuv",
-    source = ":libuv-src",
+    srcs = [":libuv-src"],
     version = "1.49.1",
     description = "Cross-platform asynchronous I/O library",
     homepage = "https://libuv.org/",

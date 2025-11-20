@@ -210,7 +210,7 @@ ZSH
         "//packages/linux/audio/pulseaudio:pulseaudio",
         "//packages/linux/desktop/at-spi2-core",
         "//packages/linux/desktop/dbus",
-        "//packages/linux/core/expat",
+        "//packages/linux/core/expat:expat",
         "//packages/linux/core/libdrm",
         "//packages/linux/graphics/mesa",
     ],

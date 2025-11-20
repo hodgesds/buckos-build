@@ -14,7 +14,7 @@ download_source(
 
 binary_package(
     name = "intel-ucode",
-    source = ":intel-ucode-src",
+    srcs = [":intel-ucode-src"],
     version = "20240312",
     description = "Microcode update files for Intel processors",
     homepage = "https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files",
@@ -42,7 +42,7 @@ download_source(
 
 binary_package(
     name = "amd-ucode",
-    source = ":amd-ucode-src",
+    srcs = [":amd-ucode-src"],
     version = "20240312",
     description = "Microcode update files for AMD processors",
     homepage = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",

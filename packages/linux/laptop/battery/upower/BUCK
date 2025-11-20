@@ -29,7 +29,7 @@ configure_make_package(
         "-Dintrospection=disabled",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/dbus:dbus",
         "//packages/linux/system/libs/glib:glib",
         "//packages/linux/system/libs/polkit:polkit",

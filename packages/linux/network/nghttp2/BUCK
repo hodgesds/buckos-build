@@ -25,7 +25,7 @@ use_package(
         "-xml": "--without-libxml2",
     },
 
-    deps = ["//packages/linux/core:musl"],
+    deps = ["//packages/linux/core/musl:musl"],
 
     description = "HTTP/2 C library and tools",
     homepage = "https://nghttp2.org/",

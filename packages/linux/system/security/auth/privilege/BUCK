@@ -13,7 +13,7 @@ download_source(
 
 meson_package(
     name = "polkit",
-    source = ":polkit-src",
+    srcs = [":polkit-src"],
     version = "124",
     description = "Application-level authorization toolkit",
     homepage = "https://github.com/polkit-org/polkit",
@@ -34,7 +34,7 @@ meson_package(
         mkdir -p "$OUT/usr/share/polkit-1/rules.d"
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/system/libs/ipc/dbus:glib",
         "//packages/linux/system/security/encryption:linux-pam",
@@ -86,7 +86,7 @@ Cflags: -I${includedir}
 EOF
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

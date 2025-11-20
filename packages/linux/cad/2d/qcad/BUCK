@@ -8,7 +8,7 @@ download_source(
 
 ebuild_package(
     name = "qcad",
-    source = ":qcad-src",
+    srcs = [":qcad-src"],
     version = "3.29.6.0",
     description = "Professional CAD system for 2D drafting and design with DXF/DWG support",
     homepage = "https://qcad.org/",

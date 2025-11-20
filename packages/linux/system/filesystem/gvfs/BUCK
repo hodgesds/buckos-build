@@ -13,7 +13,7 @@ download_source(
 
 meson_package(
     name = "gvfs",
-    source = ":gvfs-src",
+    srcs = [":gvfs-src"],
     version = "1.54.0",
     description = "GNOME Virtual File System for userspace programs",
     homepage = "https://wiki.gnome.org/Projects/gvfs",
@@ -48,12 +48,12 @@ meson_package(
         "-Dman=false",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/system/filesystem/fuse:fuse3",
         "//packages/linux/system/filesystem/management/udisks2:udisks2",
-        "//packages/linux/network:openssl",
+        "//packages/linux/network/openssl:openssl",
         "//packages/linux/dev-libs/libsecret:libsecret",
     ],
     visibility = ["PUBLIC"],

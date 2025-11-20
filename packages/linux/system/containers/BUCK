@@ -17,7 +17,7 @@ download_source(
 
 binary_package(
     name = "runc",
-    source = ":runc-src",
+    srcs = [":runc-src"],
     version = "1.1.12",
     description = "CLI tool for spawning and running containers according to the OCI specification",
     homepage = "https://github.com/opencontainers/runc",
@@ -30,7 +30,7 @@ mkdir -p "$DESTDIR/usr/bin"
 install -m 755 runc "$DESTDIR/usr/bin/runc"
 """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs:libseccomp",
     ],
     build_deps = [
@@ -59,7 +59,7 @@ configure_make_package(
         "--with-python-bindings=no",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs:libseccomp",
         "//packages/linux/system/libs:libcap",
         "//packages/linux/core:yajl",
@@ -76,7 +76,7 @@ download_source(
 
 binary_package(
     name = "conmon",
-    source = ":conmon-src",
+    srcs = [":conmon-src"],
     version = "2.1.10",
     description = "OCI container runtime monitor",
     homepage = "https://github.com/containers/conmon",
@@ -86,7 +86,7 @@ make PREFIX=/usr
 make PREFIX=/usr DESTDIR="$DESTDIR" install
 """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/core:glib",
         "//packages/linux/system/libs:libseccomp",
     ],
@@ -106,7 +106,7 @@ download_source(
 
 binary_package(
     name = "cni-plugins",
-    source = ":cni-plugins-src",
+    srcs = [":cni-plugins-src"],
     version = "1.4.1",
     description = "Standard CNI network plugins for container networking",
     homepage = "https://github.com/containernetworking/plugins",
@@ -118,7 +118,7 @@ mkdir -p "$DESTDIR/usr/lib/cni"
 install -m 755 bin/* "$DESTDIR/usr/lib/cni/"
 """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     build_deps = [
         "//packages/linux/lang/go:go",
@@ -135,7 +135,7 @@ download_source(
 
 binary_package(
     name = "netavark",
-    source = ":netavark-src",
+    srcs = [":netavark-src"],
     version = "1.10.3",
     description = "Container network stack for Podman",
     homepage = "https://github.com/containers/netavark",
@@ -146,7 +146,7 @@ mkdir -p "$DESTDIR/usr/libexec/podman"
 install -m 755 target/release/netavark "$DESTDIR/usr/libexec/podman/"
 """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     build_deps = [
         "//packages/linux/lang/rust:rust",
@@ -163,7 +163,7 @@ download_source(
 
 binary_package(
     name = "aardvark-dns",
-    source = ":aardvark-dns-src",
+    srcs = [":aardvark-dns-src"],
     version = "1.10.0",
     description = "Authoritative DNS server for container records",
     homepage = "https://github.com/containers/aardvark-dns",
@@ -174,7 +174,7 @@ mkdir -p "$DESTDIR/usr/libexec/podman"
 install -m 755 target/release/aardvark-dns "$DESTDIR/usr/libexec/podman/"
 """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     build_deps = [
         "//packages/linux/lang/rust:rust",
@@ -204,7 +204,7 @@ configure_make_package(
         "--prefix=/usr",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs:fuse3",
     ],
     visibility = ["PUBLIC"],
@@ -232,7 +232,7 @@ configure_make_package(
         "--prefix=/usr",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/core:glib",
         "//packages/linux/system/libs:libslirp",
         "//packages/linux/system/libs:libseccomp",
@@ -254,7 +254,7 @@ download_source(
 
 binary_package(
     name = "containers-common",
-    source = ":containers-common-src",
+    srcs = [":containers-common-src"],
     version = "0.58.0",
     description = "Common configuration and documentation for container tools",
     homepage = "https://github.com/containers/common",
@@ -311,7 +311,7 @@ download_source(
 
 binary_package(
     name = "podman",
-    source = ":podman-src",
+    srcs = [":podman-src"],
     version = "5.0.2",
     description = "A tool for managing OCI containers and pods",
     homepage = "https://podman.io",
@@ -332,7 +332,7 @@ mkdir -p "$DESTDIR/usr/share/fish/vendor_completions.d"
 ./bin/podman completion fish > "$DESTDIR/usr/share/fish/vendor_completions.d/podman.fish" || true
 """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs:libseccomp",
         "//packages/linux/core:gpgme",
         "//packages/linux/system/containers:crun",
@@ -359,7 +359,7 @@ download_source(
 
 binary_package(
     name = "buildah",
-    source = ":buildah-src",
+    srcs = [":buildah-src"],
     version = "1.35.3",
     description = "A tool for building OCI container images",
     homepage = "https://buildah.io",
@@ -376,7 +376,7 @@ mkdir -p "$DESTDIR/usr/share/bash-completion/completions"
 ./bin/buildah completion bash > "$DESTDIR/usr/share/bash-completion/completions/buildah" || true
 """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs:libseccomp",
         "//packages/linux/core:gpgme",
         "//packages/linux/system/containers:crun",
@@ -399,7 +399,7 @@ download_source(
 
 binary_package(
     name = "skopeo",
-    source = ":skopeo-src",
+    srcs = [":skopeo-src"],
     version = "1.15.1",
     description = "Command line utility for container image operations",
     homepage = "https://github.com/containers/skopeo",
@@ -417,7 +417,7 @@ mkdir -p "$DESTDIR/usr/share/bash-completion/completions"
 ./bin/skopeo completion bash > "$DESTDIR/usr/share/bash-completion/completions/skopeo" || true
 """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/core:gpgme",
         "//packages/linux/system/containers:containers-common",
     ],
@@ -440,7 +440,7 @@ download_source(
 
 binary_package(
     name = "podman-compose",
-    source = ":podman-compose-src",
+    srcs = [":podman-compose-src"],
     version = "1.0.6",
     description = "Run docker-compose.yml files using Podman",
     homepage = "https://github.com/containers/podman-compose",
@@ -471,7 +471,7 @@ download_source(
 
 binary_package(
     name = "umoci",
-    source = ":umoci-src",
+    srcs = [":umoci-src"],
     version = "0.4.7",
     description = "Modify Open Container images",
     homepage = "https://github.com/opencontainers/umoci",
@@ -482,7 +482,7 @@ mkdir -p "$DESTDIR/usr/bin"
 install -m 755 umoci "$DESTDIR/usr/bin/umoci"
 """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     build_deps = [
         "//packages/linux/lang/go:go",
@@ -499,7 +499,7 @@ download_source(
 
 binary_package(
     name = "dive",
-    source = ":dive-src",
+    srcs = [":dive-src"],
     version = "0.12.0",
     description = "A tool for exploring container image layer contents",
     homepage = "https://github.com/wagoodman/dive",
@@ -511,7 +511,7 @@ mkdir -p "$DESTDIR/usr/bin"
 install -m 755 dive "$DESTDIR/usr/bin/dive"
 """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     build_deps = [
         "//packages/linux/lang/go:go",
@@ -528,7 +528,7 @@ download_source(
 
 binary_package(
     name = "ctop",
-    source = ":ctop-src",
+    srcs = [":ctop-src"],
     version = "0.7.7",
     description = "Top-like interface for container metrics",
     homepage = "https://github.com/bcicen/ctop",
@@ -540,7 +540,7 @@ mkdir -p "$DESTDIR/usr/bin"
 install -m 755 ctop "$DESTDIR/usr/bin/ctop"
 """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     build_deps = [
         "//packages/linux/lang/go:go",
@@ -557,7 +557,7 @@ download_source(
 
 binary_package(
     name = "lazydocker",
-    source = ":lazydocker-src",
+    srcs = [":lazydocker-src"],
     version = "0.23.1",
     description = "Terminal UI for docker and docker-compose",
     homepage = "https://github.com/jesseduffield/lazydocker",
@@ -569,7 +569,7 @@ mkdir -p "$DESTDIR/usr/bin"
 install -m 755 lazydocker "$DESTDIR/usr/bin/lazydocker"
 """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     build_deps = [
         "//packages/linux/lang/go:go",
@@ -586,7 +586,7 @@ download_source(
 
 binary_package(
     name = "trivy",
-    source = ":trivy-src",
+    srcs = [":trivy-src"],
     version = "0.50.1",
     description = "Vulnerability scanner for containers and other artifacts",
     homepage = "https://github.com/aquasecurity/trivy",
@@ -602,7 +602,7 @@ mkdir -p "$DESTDIR/usr/share/bash-completion/completions"
 ./trivy completion bash > "$DESTDIR/usr/share/bash-completion/completions/trivy" || true
 """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     build_deps = [
         "//packages/linux/lang/go:go",
@@ -619,7 +619,7 @@ download_source(
 
 binary_package(
     name = "hadolint",
-    source = ":hadolint-src",
+    srcs = [":hadolint-src"],
     version = "2.12.0",
     description = "Dockerfile linter for best practices",
     homepage = "https://github.com/hadolint/hadolint",
@@ -631,7 +631,7 @@ mkdir -p "$DESTDIR/usr/bin"
 stack build --copy-bins --local-bin-path="$DESTDIR/usr/bin" || true
 """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -645,7 +645,7 @@ download_source(
 
 binary_package(
     name = "docker-credential-helpers",
-    source = ":docker-credential-helpers-src",
+    srcs = [":docker-credential-helpers-src"],
     version = "0.8.1",
     description = "Credential helpers for container registries",
     homepage = "https://github.com/docker/docker-credential-helpers",
@@ -658,7 +658,7 @@ install -m 755 bin/build/docker-credential-pass "$DESTDIR/usr/bin/" || true
 install -m 755 bin/build/docker-credential-secretservice "$DESTDIR/usr/bin/" || true
 """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     build_deps = [
         "//packages/linux/lang/go:go",

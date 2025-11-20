@@ -35,11 +35,11 @@ cd Project/GNU/Library
 DESTDIR=$OUT make install
 """,
     deps = [
-        "//packages/linux/core/curl:curl",
+        "//packages/linux/system/libs/curl:curl",
         "//packages/linux/core/zlib:zlib",
     ],
     build_deps = [
-        "//packages/linux/core/pkg-config:pkg-config",
+        "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
     ],
     visibility = ["PUBLIC"],
 )
@@ -76,7 +76,7 @@ DESTDIR=$OUT make install
         "//packages/linux/core/zlib:zlib",
     ],
     build_deps = [
-        "//packages/linux/core/pkg-config:pkg-config",
+        "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
     ],
     visibility = ["PUBLIC"],
 )
@@ -115,7 +115,7 @@ DESTDIR=$OUT make install
         "//packages/linux/desktop/wxwidgets:wxwidgets",
     ],
     build_deps = [
-        "//packages/linux/core/pkg-config:pkg-config",
+        "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
     ],
     visibility = ["PUBLIC"],
 )

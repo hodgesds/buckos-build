@@ -70,7 +70,7 @@ chmod 600 "$DESTDIR/etc/ferm/ferm.conf"
 
     deps = [
         "//packages/linux/network/firewall/iptables:iptables",
-        "//packages/linux/core:perl",
+        "//packages/linux/lang/perl:perl",
     ],
 
     description = "Tool for maintaining complex firewall rules with ease",

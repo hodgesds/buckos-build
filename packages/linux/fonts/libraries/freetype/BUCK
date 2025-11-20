@@ -26,9 +26,9 @@ configure_make_package(
         "--with-brotli=yes",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:zlib",
-        "//packages/linux/core:bzip2",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/core/bzip2:bzip2",
         "//packages/linux/core:libpng",
         "//packages/linux/core:brotli",
     ],

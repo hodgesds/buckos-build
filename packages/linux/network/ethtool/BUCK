@@ -15,7 +15,7 @@ use_package(
     use_defaults = ["netlink"],
 
     use_deps = {
-        "netlink": ["//packages/linux/core:libnl"],
+        "netlink": ["//packages/linux/core/libnl:libnl"],
     },
 
     use_configure = {
@@ -31,7 +31,7 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "Utility for controlling network drivers and hardware",

@@ -23,7 +23,7 @@ make install PREFIX=/usr DESTDIR="$DESTDIR"
 """,
 
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "nl80211 based CLI configuration utility for wireless devices",

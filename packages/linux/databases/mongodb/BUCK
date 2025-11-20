@@ -30,7 +30,7 @@ configure_make_package(
         {
             "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
             "python": ["//packages/linux/lang/python:python"],
-            "musl": ["//packages/linux/core:musl"],
+            "musl": ["//packages/linux/core/musl:musl"],
         },
         ["ssl", "python", "musl"],
     ),

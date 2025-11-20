@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "simdjson",
-    source = ":simdjson-src",
+    srcs = [":simdjson-src"],
     version = "3.9.1",
     description = "Parsing gigabytes of JSON per second using SIMD instructions",
     homepage = "https://simdjson.org/",

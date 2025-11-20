@@ -135,7 +135,7 @@ configure_make_package(
         ":libksba",
         ":libassuan",
         ":npth",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

@@ -54,7 +54,7 @@ MOZCONFIG
     """,
     deps = use_dep(
         {
-            "zlib": ["//packages/linux/core/zlib"],
+            "zlib": ["//packages/linux/core/zlib:zlib"],
             "gtk": ["//packages/linux/desktop/gtk"],
             "nss": ["//packages/linux/network/nss"],
             "nspr": ["//packages/linux/network/nspr"],

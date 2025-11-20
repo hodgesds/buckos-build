@@ -25,7 +25,7 @@ use_package(
 
     # Conditional dependencies
     use_deps = {
-        "vte": ["//packages/linux/gui/vte:vte"],
+        "vte": ["//packages/linux/desktop/gnome:vte"],
     },
 
     # Conditional configure arguments
@@ -47,8 +47,8 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/desktop/gnome:gtk3",
     ],
     visibility = ["PUBLIC"],
 )

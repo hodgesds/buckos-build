@@ -18,7 +18,7 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/linux/system/libs/ipc/attr",
+        "//packages/linux/system/libs/ipc/attr:attr",
     ],
     visibility = ["PUBLIC"],
 )

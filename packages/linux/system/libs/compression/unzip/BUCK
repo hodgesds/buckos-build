@@ -16,20 +16,14 @@ configure_make_package(
     description = "Info-ZIP extraction utility for .zip archives",
     homepage = "https://infozip.sourceforge.net/UnZip.html",
     license = "Info-ZIP",
-    build_in_source = True,
     configure_args = [],
     make_args = [
         "-f",
         "unix/Makefile",
         "generic",
     ],
-    install_args = [
-        "-f",
-        "unix/Makefile",
-        "prefix=/usr",
-    ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

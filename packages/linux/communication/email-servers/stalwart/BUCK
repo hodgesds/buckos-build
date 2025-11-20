@@ -55,7 +55,7 @@ SERVICE
     """,
     deps = [
         "//packages/linux/lang/rust:rust",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],

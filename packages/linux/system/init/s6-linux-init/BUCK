@@ -32,7 +32,7 @@ configure_make_package(
         "//packages/linux/system/init/skalibs:skalibs",
         "//packages/linux/system/init/execline:execline",
         "//packages/linux/system/init/s6:s6",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     build_deps = [],
     visibility = ["PUBLIC"],

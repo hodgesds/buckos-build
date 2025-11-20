@@ -48,8 +48,8 @@ MOZCONFIG
             "$OUT/usr/share/applications/thunderbird.desktop"
     """,
     deps = [
-        "//packages/linux/core:zlib",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gtk:gtk",
         "//packages/linux/lang/python:python",
         "//packages/linux/lang/rust:rust",

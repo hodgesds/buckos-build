@@ -55,7 +55,7 @@ CONFIG
 touch "$DESTDIR/etc/smtpd/aliases"
 """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],

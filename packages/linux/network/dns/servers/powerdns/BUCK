@@ -12,7 +12,7 @@ use_package(
 
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
-        "sqlite": ["//packages/linux/core:sqlite"],
+        "sqlite": ["//packages/linux/system/libs/database/sqlite:sqlite"],
     },
 
     use_configure = {
@@ -34,8 +34,8 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/zlib:zlib",
     ],
 
     description = "PowerDNS authoritative server",

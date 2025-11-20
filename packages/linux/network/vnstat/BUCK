@@ -26,8 +26,8 @@ use_package(
     },
 
     deps = [
-        "//packages/linux/core:sqlite",
-        "//packages/linux/core:musl",
+        "//packages/linux/system/libs/database/sqlite:sqlite",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "Network traffic monitor and logger",

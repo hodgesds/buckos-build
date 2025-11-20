@@ -15,14 +15,14 @@ use_package(
     use_defaults = ["threads", "zlib", "asm"],
 
     use_deps = {
-        "zlib": ["//packages/linux/core:zlib"],
+        "zlib": ["//packages/linux/core/zlib:zlib"],
     },
 
     use_configure = {},
 
     configure_args = [],
 
-    deps = ["//packages/linux/core:musl"],
+    deps = ["//packages/linux/core/musl:musl"],
 
     pre_configure = """
 # OpenSSL uses its own Configure script

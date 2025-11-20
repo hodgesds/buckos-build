@@ -27,6 +27,6 @@ use_package(
         "--prefix=/usr",
         "--localstatedir=/var/lib/locate",
     ],
-    deps = ["//packages/linux/core:musl"],
+    deps = ["//packages/linux/core/musl:musl"],
     visibility = ["PUBLIC"],
 )

@@ -27,7 +27,7 @@ configure_make_package(
         "--with-ssl",
     ],
     deps = [
-        "//packages/linux/network:openssl",
+        "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],
 )

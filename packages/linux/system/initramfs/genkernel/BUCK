@@ -81,10 +81,10 @@ mkdir -p $OUT/usr/share/genkernel/defaults
 """,
     deps = [
         "//packages/linux/system/libs/kmod:kmod",
-        "//packages/linux/core:bash",
+        "//packages/linux/core/bash:bash",
         "//packages/linux/core:coreutils",
-        "//packages/linux/core:util-linux",
-        "//packages/linux/core:xz",
+        "//packages/linux/core/util-linux:util-linux",
+        "//packages/linux/core/xz:xz",
     ],
     visibility = ["PUBLIC"],
 )
@@ -112,7 +112,7 @@ mkdir -p $OUT/etc/genkernel.d
 """,
     deps = [
         "//packages/linux/system/libs/kmod:kmod",
-        "//packages/linux/core:bash",
+        "//packages/linux/core/bash:bash",
         "//packages/linux/core:coreutils",
     ],
     visibility = ["PUBLIC"],

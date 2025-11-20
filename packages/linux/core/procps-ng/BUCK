@@ -5,7 +5,7 @@ use_package(
     name = "procps-ng",
     version = "4.0.4",
     src_uri = "https://sourceforge.net/projects/procps-ng/files/Production/procps-ng-4.0.4.tar.xz",
-    sha256 = "22870d6befcbb0d30029ef4d9917c88e8dd8cc5e6cdbfa0787c27fce59823e56",
+    sha256 = "22870d6feb2478adb617ce4f09a787addaf2d260c5a8aa7b17d889a962c5e42e",
     description = "Utilities for monitoring your system and its processes",
     homepage = "https://gitlab.com/procps-ng/procps",
     license = "GPL-2.0",
@@ -24,7 +24,7 @@ use_package(
 
     # Conditional dependencies
     use_deps = {
-        "ncurses": ["//packages/linux/core/ncurses"],
+        "ncurses": ["//packages/linux/core/ncurses:ncurses"],
     },
 
     # Conditional configure arguments

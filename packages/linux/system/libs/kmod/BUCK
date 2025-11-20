@@ -39,8 +39,8 @@ for tool in insmod rmmod lsmod modprobe modinfo depmod; do
 done
 """,
     deps = [
-        "//packages/linux/linux/core:zlib",
-        "//packages/linux/linux/core:xz",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/core/xz:xz",
     ],
     visibility = ["PUBLIC"],
 )
@@ -69,8 +69,8 @@ for tool in insmod rmmod lsmod modprobe modinfo depmod; do
 done
 """,
     deps = [
-        "//packages/linux/linux/core:zlib",
-        "//packages/linux/linux/core:xz",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/core/xz:xz",
     ],
     visibility = ["PUBLIC"],
 )

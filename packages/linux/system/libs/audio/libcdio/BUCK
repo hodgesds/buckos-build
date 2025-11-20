@@ -22,7 +22,7 @@ configure_make_package(
         "--enable-cddb",
     ],
     deps = [
-        "//packages/linux/linux/core/ncurses",
+        "//packages/linux/core/ncurses:ncurses",
     ],
     visibility = ["PUBLIC"],
 )
@@ -47,7 +47,7 @@ configure_make_package(
         "--enable-shared",
     ],
     deps = [
-        "//packages/linux/linux/system/libs/audio/libcdio:libcdio",
+        "//packages/linux/system/libs/audio/libcdio:libcdio",
     ],
     visibility = ["PUBLIC"],
 )

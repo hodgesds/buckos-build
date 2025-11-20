@@ -13,7 +13,7 @@ download_source(
 
 meson_package(
     name = "pavucontrol",
-    source = ":pavucontrol-src",
+    srcs = [":pavucontrol-src"],
     version = "5.0",
     description = "PulseAudio volume control GTK application",
     homepage = "https://freedesktop.org/software/pulseaudio/pavucontrol/",
@@ -23,8 +23,8 @@ meson_package(
     ],
     deps = [
         "//packages/linux/audio/daemons/pulseaudio:pulseaudio",
-        "//packages/linux/desktop/gtk:gtk3",
-        "//packages/linux/core:musl",
+        "//packages/linux/desktop/gnome:gtk3",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

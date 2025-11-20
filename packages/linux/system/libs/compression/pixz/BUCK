@@ -19,7 +19,7 @@ configure_make_package(
         "--prefix=/usr",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/core/xz:xz",
         "//packages/linux/system/libs/utility/libarchive:libarchive",
     ],

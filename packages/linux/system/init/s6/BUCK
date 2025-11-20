@@ -31,7 +31,7 @@ configure_make_package(
     deps = [
         "//packages/linux/system/init/skalibs:skalibs",
         "//packages/linux/system/init/execline:execline",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     build_deps = [],
     visibility = ["PUBLIC"],

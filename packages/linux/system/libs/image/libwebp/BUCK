@@ -22,10 +22,10 @@ configure_make_package(
         "--enable-threading",
     ],
     deps = [
-        "//packages/linux/linux/system/libs/image/libpng",
-        "//packages/linux/linux/system/libs/image/libjpeg-turbo",
-        "//packages/linux/linux/system/libs/image/libtiff",
-        "//packages/linux/linux/system/libs/image/giflib",
+        "//packages/linux/system/libs/image/libpng:libpng",
+        "//packages/linux/system/libs/image/libjpeg-turbo:libjpeg-turbo",
+        "//packages/linux/system/libs/image/libtiff:libtiff",
+        "//packages/linux/system/libs/image/giflib:giflib",
     ],
     visibility = ["PUBLIC"],
 )

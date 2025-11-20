@@ -43,7 +43,7 @@ mkdir -p "$DESTDIR/etc/vpnc"
 
     deps = [
         "//packages/linux/core:libxml2",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/zlib:zlib",
     ],
 
     description = "Open client for Cisco AnyConnect, Pulse, GlobalProtect VPNs",

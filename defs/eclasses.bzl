@@ -34,30 +34,28 @@ _CMAKE_ECLASS = {
     "name": "cmake",
     "description": "Support for cmake-based packages",
     "src_configure": '''
-mkdir -p "${BUILD_DIR:-build}"
-cd "${BUILD_DIR:-build}"
+mkdir -p "$S/build"
 cmake \\
+    -S "$S" \\
+    -B "$S/build" \\
     -DCMAKE_INSTALL_PREFIX="${EPREFIX:-/usr}" \\
     -DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE:-Release}" \\
     -DCMAKE_INSTALL_LIBDIR="${LIBDIR:-lib64}" \\
     -DCMAKE_C_FLAGS="${CFLAGS:-}" \\
     -DCMAKE_CXX_FLAGS="${CXXFLAGS:-}" \\
-    ${CMAKE_EXTRA_ARGS:-} \\
-    ..
+    ${CMAKE_EXTRA_ARGS:-}
 ''',
     "src_compile": '''
-cd "${BUILD_DIR:-build}"
-cmake --build . -j${MAKEOPTS:-$(nproc)}
+cmake --build "$S/build" -j${MAKEOPTS:-$(nproc)}
 ''',
     "src_install": '''
-cd "${BUILD_DIR:-build}"
-DESTDIR="$DESTDIR" cmake --install .
+DESTDIR="$DESTDIR" cmake --install "$S/build"
 ''',
     "src_test": '''
-cd "${BUILD_DIR:-build}"
+cd "$S/build"
 ctest --output-on-failure
 ''',
-    "bdepend": ["//packages/dev-util:cmake", "//packages/dev-util:ninja"],
+    "bdepend": ["//packages/linux/dev-tools/build-systems/cmake:cmake", "//packages/linux/dev-tools/build-systems/ninja:ninja"],
     "exports": ["cmake-utils_src_configure", "cmake-utils_src_compile", "cmake-utils_src_install"],
 }
 
@@ -84,7 +82,7 @@ DESTDIR="$DESTDIR" meson install -C "${BUILD_DIR:-build}"
     "src_test": '''
 meson test -C "${BUILD_DIR:-build}" --print-errorlogs
 ''',
-    "bdepend": ["//packages/dev-util:meson", "//packages/dev-util:ninja"],
+    "bdepend": ["//packages/linux/dev-tools/build-systems/meson:meson", "//packages/linux/dev-tools/build-systems/ninja:ninja"],
     "exports": ["meson_src_configure", "meson_src_compile", "meson_src_install"],
 }
 
@@ -130,7 +128,7 @@ elif make -q test 2>/dev/null; then
     make test
 fi
 ''',
-    "bdepend": ["//packages/sys-devel:autoconf", "//packages/sys-devel:automake", "//packages/sys-devel:libtool"],
+    "bdepend": ["//packages/linux/dev-tools/build-systems/autoconf:autoconf", "//packages/linux/dev-tools/build-systems/automake:automake", "//packages/linux/dev-tools/build-systems/libtool:libtool"],
     "exports": ["eautoreconf", "econf", "emake", "einstall"],
 }
 
@@ -231,7 +229,7 @@ find "${BUILD_DIR:-build}" -maxdepth 1 -type f -executable -exec install -m 0755
     "src_test": '''
 go test -v ${GO_TEST_PACKAGES:-./...}
 ''',
-    "bdepend": ["//packages/dev-lang:go"],
+    "bdepend": ["//packages/linux/lang/go:go"],
     "exports": ["go-module_src_compile", "go-module_src_install"],
 }
 
@@ -270,7 +268,7 @@ find target/release -maxdepth 1 -type f -executable ! -name "*.d" -exec install 
     "src_test": '''
 cargo test --release ${CARGO_TEST_FLAGS:-}
 ''',
-    "bdepend": ["//packages/dev-lang:rust"],
+    "bdepend": ["//packages/linux/lang/rust:rust"],
     "exports": ["cargo_src_configure", "cargo_src_compile", "cargo_src_install"],
 }
 

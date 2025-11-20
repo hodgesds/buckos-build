@@ -11,7 +11,7 @@ download_source(
 
 python_package(
     name = "yt-dlp",
-    source = ":yt-dlp-src",
+    srcs = [":yt-dlp-src"],
     version = "2024.08.06",
     description = "A youtube-dl fork with additional features and fixes",
     homepage = "https://github.com/yt-dlp/yt-dlp",

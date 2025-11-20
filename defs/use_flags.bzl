@@ -691,6 +691,7 @@ def use_package(
         description = kwargs.get("description", ""),
         homepage = kwargs.get("homepage", ""),
         license = kwargs.get("license", ""),
+        visibility = kwargs.get("visibility", ["PUBLIC"]),
     )
 
     return effective_use

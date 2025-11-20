@@ -30,6 +30,6 @@ use_package(
         "--with-jobdir=/var/spool/atjobs",
         "--with-atspool=/var/spool/atspool",
     ],
-    deps = ["//packages/linux/core:musl"],
+    deps = ["//packages/linux/core/musl:musl"],
     visibility = ["PUBLIC"],
 )

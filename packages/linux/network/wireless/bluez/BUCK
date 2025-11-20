@@ -11,7 +11,7 @@ use_package(
     use_defaults = ["deprecated", "experimental", "mesh", "midi", "nfc", "sixaxis", "readline"],
 
     use_deps = {
-        "readline": ["//packages/linux/core:readline"],
+        "readline": ["//packages/linux/core/readline:readline"],
         "systemd": ["//packages/linux/system/init/systemd:systemd"],
         "udev": ["//packages/linux/system/hardware/eudev:eudev"],
     },
@@ -46,9 +46,9 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:glib",
-        "//packages/linux/core:ncurses",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/dev-libs/glib:glib",
+        "//packages/linux/core/ncurses:ncurses",
     ],
 
     description = "Official Linux Bluetooth protocol stack",

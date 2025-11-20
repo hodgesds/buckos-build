@@ -12,7 +12,7 @@ download_source(
 
 binary_package(
     name = "auto-cpufreq",
-    source = ":auto-cpufreq-src",
+    srcs = [":auto-cpufreq-src"],
     version = "2.2.0",
     description = "Automatic CPU speed and power optimizer for Linux",
     homepage = "https://github.com/AdnanHodzic/auto-cpufreq",

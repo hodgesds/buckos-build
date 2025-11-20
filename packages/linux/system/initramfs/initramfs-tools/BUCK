@@ -78,9 +78,9 @@ EOF
 """,
     deps = [
         "//packages/linux/system/libs/kmod:kmod",
-        "//packages/linux/core:bash",
+        "//packages/linux/core/bash:bash",
         "//packages/linux/core:coreutils",
-        "//packages/linux/core:util-linux",
+        "//packages/linux/core/util-linux:util-linux",
     ],
     visibility = ["PUBLIC"],
 )

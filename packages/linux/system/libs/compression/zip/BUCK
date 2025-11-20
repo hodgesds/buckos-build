@@ -16,7 +16,6 @@ configure_make_package(
     description = "Info-ZIP compression utility",
     homepage = "https://infozip.sourceforge.net/Zip.html",
     license = "Info-ZIP",
-    build_in_source = True,
     configure_args = [],
     make_args = [
         "-f", "unix/Makefile",
@@ -25,15 +24,9 @@ configure_make_package(
         "CPP=${CC} -E",
         "LOCAL_ZIP=-DLARGE_FILE_SUPPORT",
     ],
-    install_args = [
-        "-f", "unix/Makefile",
-        "prefix=${DESTDIR}/usr",
-        "MANDIR=${DESTDIR}/usr/share/man/man1",
-        "install",
-    ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core/bzip2",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/bzip2:bzip2",
     ],
     visibility = ["PUBLIC"],
 )

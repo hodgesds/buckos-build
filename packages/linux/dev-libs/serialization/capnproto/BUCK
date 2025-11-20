@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "capnproto",
-    source = ":capnproto-src",
+    srcs = [":capnproto-src"],
     version = "1.0.2",
     description = "Fast data interchange format and capability-based RPC system",
     homepage = "https://capnproto.org/",
@@ -18,8 +18,8 @@ cmake_package(
         "-DBUILD_TESTING=OFF",
     ],
     deps = [
-        "//packages/linux/system/libs/crypto/openssl",
-        "//packages/linux/core/zlib",
+        "//packages/linux/system/libs/crypto/openssl:openssl",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

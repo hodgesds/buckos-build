@@ -24,7 +24,7 @@ use_package(
     },
 
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "Fast ping utility for pinging multiple hosts in parallel",

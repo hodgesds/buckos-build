@@ -21,7 +21,7 @@ configure_make_package(
     deps = [
         "//packages/linux/system/filesystem/fuse/fuse3:fuse3",
         "//packages/linux/network/openssl:openssl",
-        "//packages/linux/core:util-linux",
+        "//packages/linux/core/util-linux:util-linux",
     ],
     visibility = ["PUBLIC"],
 )

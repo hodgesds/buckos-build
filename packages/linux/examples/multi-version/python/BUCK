@@ -49,9 +49,9 @@ _python3_common_args = [
 ]
 
 _python_common_deps = [
-    "//packages/linux/core/zlib",
-    "//packages/linux/core/ncurses",
-    "//packages/linux/core/readline",
+    "//packages/linux/core/zlib:zlib",
+    "//packages/linux/core/ncurses:ncurses",
+    "//packages/linux/core/readline:readline",
     # "//packages/linux/dev-libs/expat",
     # "//packages/linux/dev-libs/libffi",
 ]

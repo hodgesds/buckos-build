@@ -13,7 +13,7 @@ download_source(
 
 python_package(
     name = "asciidoc",
-    source = ":asciidoc-src",
+    srcs = [":asciidoc-src"],
     version = "10.2.0",
     description = "Text based document generation",
     homepage = "https://asciidoc.org/",

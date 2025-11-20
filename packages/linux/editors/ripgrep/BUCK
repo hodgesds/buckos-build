@@ -9,7 +9,7 @@ download_source(
 
 cargo_package(
     name = "ripgrep",
-    source = ":ripgrep-src",
+    srcs = [":ripgrep-src"],
     version = "14.1.0",
     description = "Fast regex-based search tool that respects gitignore",
     homepage = "https://github.com/BurntSushi/ripgrep",
@@ -19,7 +19,7 @@ cargo_package(
         "--features=pcre2",
     ],
     deps = [
-        "//packages/linux/core/musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/core/pcre2",
     ],
     visibility = ["PUBLIC"],

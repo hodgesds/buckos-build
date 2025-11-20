@@ -36,10 +36,10 @@ cd build
 DESTDIR=$OUT make install
 """,
     deps = [
-        "//packages/linux/core/ffmpeg:ffmpeg",
+        "//packages/linux/graphics/video/ffmpeg:ffmpeg",
         "//packages/linux/core/jsoncpp:jsoncpp",
         "//packages/linux/core/zeromq:zeromq",
-        "//packages/linux/core/qt:qt5",
+        "//packages/linux/desktop/qt:qt5",
         "//packages/linux/desktop/mesa:mesa",
     ],
     visibility = ["PUBLIC"],

@@ -12,7 +12,7 @@ download_source(
 
 binary_package(
     name = "s-tui",
-    source = ":s-tui-src",
+    srcs = [":s-tui-src"],
     version = "1.1.6",
     description = "Stress Terminal UI for CPU monitoring and stress testing",
     homepage = "https://github.com/amanusk/s-tui",

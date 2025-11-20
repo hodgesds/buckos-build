@@ -13,7 +13,7 @@ download_source(
 
 cmake_package(
     name = "protobuf",
-    source = ":protobuf-src",
+    srcs = [":protobuf-src"],
     version = "26.1",
     description = "Google's language-neutral, platform-neutral protocol buffers",
     homepage = "https://protobuf.dev/",
@@ -24,8 +24,8 @@ cmake_package(
         "-Dprotobuf_ABSL_PROVIDER=package",
     ],
     deps = [
-        "//packages/linux/dev-libs/google/abseil-cpp",
-        "//packages/linux/core/zlib",
+        "//packages/linux/dev-libs/google/abseil-cpp:abseil-cpp",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

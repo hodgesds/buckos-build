@@ -21,7 +21,7 @@ configure_make_package(
         "cp completions/tmux ${DESTDIR}/usr/share/bash-completion/completions/",
     ],
     deps = [
-        "//packages/linux/core:bash",
+        "//packages/linux/core/bash:bash",
         "//packages/linux/terminals/tmux:tmux",
     ],
     visibility = ["PUBLIC"],

@@ -18,7 +18,7 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/linux/system/libs/crypto/openssl",
+        "//packages/linux/system/libs/crypto/openssl:openssl",
     ],
     visibility = ["PUBLIC"],
 )

@@ -19,8 +19,8 @@ configure_make_package(
         "--with-crypto=openssl",
     ],
     deps = [
-        "//packages/linux/linux/system/libs/crypto/openssl",
-        "//packages/linux/linux/core/zlib",
+        "//packages/linux/system/libs/crypto/openssl:openssl",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

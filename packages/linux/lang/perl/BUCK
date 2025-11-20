@@ -56,7 +56,7 @@ configure_make_package(
         "-Dusethreads",
     ],
     deps = [
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

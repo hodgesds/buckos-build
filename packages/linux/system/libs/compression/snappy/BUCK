@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "snappy",
-    source = ":snappy-src",
+    srcs = [":snappy-src"],
     version = "1.2.1",
     description = "Fast compressor/decompressor library",
     homepage = "https://google.github.io/snappy/",

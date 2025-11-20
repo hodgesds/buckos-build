@@ -14,14 +14,8 @@ configure_make_package(
     description = "POSIX capabilities library",
     homepage = "https://sites.google.com/site/fullycapable/",
     license = "BSD-3-Clause",
-    build_in_source = True,
     configure_args = [],
     make_args = [
-        "prefix=/usr",
-        "lib=lib",
-        "RAISE_SETFCAP=no",
-    ],
-    install_args = [
         "prefix=/usr",
         "lib=lib",
         "RAISE_SETFCAP=no",

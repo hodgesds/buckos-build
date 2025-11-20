@@ -9,7 +9,7 @@ download_source(
 
 python_package(
     name = "gcovr",
-    source = ":gcovr-src",
+    srcs = [":gcovr-src"],
     version = "7.2",
     description = "Python script to summarize code coverage results",
     homepage = "https://gcovr.com/",

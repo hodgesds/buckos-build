@@ -37,7 +37,7 @@ configure_make_package(
         "-Dlink-systemctl-shared=false",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/utility/libcap:libcap",
         "//packages/linux/system/libs/ipc/libseccomp:libseccomp",
     ],

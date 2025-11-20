@@ -66,7 +66,7 @@ use_package(
     use_deps = {
         "vaapi": ["//packages/linux/graphics/video/libva:libva"],
         "vdpau": ["//packages/linux/graphics/video/vdpau:vdpau"],
-        "ssl": ["//packages/linux/core/openssl:openssl"],
+        "ssl": ["//packages/linux/system/libs/security/openssl:openssl"],
     },
     make_args = [],
     post_install = """
@@ -85,7 +85,7 @@ DESTDIR=$OUT make install
         "//packages/linux/core/zlib:zlib",
     ],
     build_deps = [
-        "//packages/linux/core/pkg-config:pkg-config",
+        "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
         "//packages/linux/lang/nasm:nasm",
     ],
     visibility = ["PUBLIC"],

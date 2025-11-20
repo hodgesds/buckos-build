@@ -31,10 +31,10 @@ configure_make_package(
         "--with-browser=/usr/bin/lynx",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:less",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/less:less",
         "//packages/linux/dev-libs/gdbm:gdbm",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/zlib:zlib",
         "//packages/linux/dev-tools/dev-utils:groff",
     ],
     visibility = ["PUBLIC"],
@@ -83,7 +83,7 @@ configure_make_package(
         "--without-x",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -107,8 +107,8 @@ configure_make_package(
         "--enable-libgdbm-compat",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:readline",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/readline:readline",
     ],
     visibility = ["PUBLIC"],
 )
@@ -132,8 +132,8 @@ configure_make_package(
         "--disable-nls",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:ncurses",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/ncurses:ncurses",
     ],
     visibility = ["PUBLIC"],
 )

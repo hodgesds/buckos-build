@@ -8,7 +8,7 @@ download_source(
 
 ebuild_package(
     name = "kicad",
-    source = ":kicad-src",
+    srcs = [":kicad-src"],
     version = "8.0.5",
     description = "Electronic Design Automation suite for schematic capture, PCB layout, and manufacturing",
     homepage = "https://www.kicad.org/",

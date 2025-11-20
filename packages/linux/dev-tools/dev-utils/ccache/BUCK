@@ -13,7 +13,7 @@ download_source(
 
 cmake_package(
     name = "ccache",
-    source = ":ccache-src",
+    srcs = [":ccache-src"],
     version = "4.9.1",
     description = "Fast C/C++ compiler cache",
     homepage = "https://ccache.dev/",

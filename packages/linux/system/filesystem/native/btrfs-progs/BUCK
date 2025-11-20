@@ -19,10 +19,10 @@ configure_make_package(
         "--disable-python",
     ],
     deps = [
-        "//packages/linux/core:util-linux",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/util-linux:util-linux",
+        "//packages/linux/core/zlib:zlib",
         "//packages/linux/core:lzo",
-        "//packages/linux/core:zstd",
+        "//packages/linux/system/libs/compression/zstd:zstd",
     ],
     visibility = ["PUBLIC"],
 )

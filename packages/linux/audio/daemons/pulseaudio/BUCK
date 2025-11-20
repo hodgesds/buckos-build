@@ -21,7 +21,7 @@ download_source(
 
 meson_package(
     name = "pulseaudio",
-    source = ":pulseaudio-src",
+    srcs = [":pulseaudio-src"],
     version = "17.0",
     description = "A sound server for POSIX and Win32 systems",
     homepage = "https://www.freedesktop.org/wiki/Software/PulseAudio/",
@@ -59,8 +59,8 @@ meson_package(
     deps = [
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
         "//packages/linux/audio/libraries/libsndfile:libsndfile",
-        "//packages/linux/core:musl",
-        "//packages/linux/core:dbus",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/system/libs/ipc/dbus:dbus",
     ],
     visibility = ["PUBLIC"],
 )

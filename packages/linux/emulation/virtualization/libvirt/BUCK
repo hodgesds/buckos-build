@@ -57,7 +57,7 @@ configure_make_package(
     deps = [
         "//packages/linux/core:glib",
         "//packages/linux/core:libxml2",
-        "//packages/linux/core:libnl",
+        "//packages/linux/core/libnl:libnl",
         "//packages/linux/core:yajl",
         "//packages/linux/core:libtirpc",
         "//packages/linux/network/gnutls:gnutls",

@@ -23,7 +23,7 @@ configure_make_package(
         "-DENABLE_GTK_DOC=OFF",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/fonts/libraries/freetype:freetype",
         "//packages/linux/fonts/libraries/fontconfig:fontconfig",
     ],

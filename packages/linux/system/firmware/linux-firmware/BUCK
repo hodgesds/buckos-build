@@ -21,7 +21,7 @@ download_source(
 
 binary_package(
     name = "linux-firmware",
-    source = ":linux-firmware-src",
+    srcs = [":linux-firmware-src"],
     version = "20241017",
     description = "Firmware files for Linux kernel drivers",
     homepage = "https://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git",

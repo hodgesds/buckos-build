@@ -1,18 +1,13 @@
-load("//defs:package_defs.bzl", "download_source", "python_package")
+load("//defs:package_defs.bzl", "python_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # Kazam - Simple screen recording program
 
-download_source(
-    name = "kazam-src",
-    src_uri = "https://github.com/henrywoo/kazam/archive/refs/tags/v1.4.5.tar.gz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
-)
-
 python_package(
     name = "kazam",
-    source = ":kazam-src",
     version = "1.4.5",
+    src_uri = "https://github.com/henrywoo/kazam/archive/refs/tags/v1.4.5.tar.gz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
     description = "Simple screen recording program",
     homepage = "https://github.com/henrywoo/kazam",
     license = "GPL-3.0-or-later",
@@ -23,6 +18,5 @@ python_package(
         "//packages/linux/lang/python:python",
         "//packages/linux/audio/daemons/pulseaudio:pulseaudio",
     ],
-    build_deps = [],
     visibility = ["PUBLIC"],
 )

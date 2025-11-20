@@ -18,7 +18,7 @@ download_source(
 
 binary_package(
     name = "nvidia-drivers",
-    source = ":nvidia-drivers-src",
+    srcs = [":nvidia-drivers-src"],
     version = "560.35.03",
     description = "NVIDIA proprietary GPU drivers for Linux",
     homepage = "https://www.nvidia.com/",

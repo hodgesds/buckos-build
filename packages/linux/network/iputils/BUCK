@@ -15,7 +15,7 @@ use_package(
     use_defaults = ["caps"],
 
     use_deps = {
-        "caps": ["//packages/linux/core:libcap"],
+        "caps": ["//packages/linux/system/libs/ipc/libcap:libcap"],
     },
 
     use_configure = {
@@ -25,7 +25,7 @@ use_package(
         "-nls": "--disable-nls",
     },
 
-    deps = ["//packages/linux/core:musl"],
+    deps = ["//packages/linux/core/musl:musl"],
 
     pre_configure = """
 # iputils uses meson, we'll use a simplified make approach

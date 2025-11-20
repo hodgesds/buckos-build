@@ -38,8 +38,8 @@ install -m755 squashfs-tools/mksquashfs $OUT/usr/bin/
 install -m755 squashfs-tools/unsquashfs $OUT/usr/bin/
 """,
     deps = [
-        "//packages/linux/linux/core:zlib",
-        "//packages/linux/linux/core:xz",
+        "//packages/linux/core:zlib",
+        "//packages/linux/system/libs/compression/xz:xz",
     ],
     visibility = ["PUBLIC"],
 )

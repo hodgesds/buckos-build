@@ -9,7 +9,7 @@ download_source(
 
 meson_package(
     name = "libpsl",
-    source = ":libpsl-src",
+    srcs = [":libpsl-src"],
     version = "0.21.5",
     description = "Public Suffix List library",
     homepage = "https://github.com/nicro-rocks/libpsl",

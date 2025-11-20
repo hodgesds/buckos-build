@@ -22,7 +22,7 @@ use_package(
 
     # Conditional dependencies
     use_deps = {
-        "ncurses": ["//packages/linux/core/ncurses"],
+        "ncurses": ["//packages/linux/core/ncurses:ncurses"],
         "qt5": ["//packages/linux/gui/qt5:qt5"],
     },
 

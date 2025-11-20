@@ -16,7 +16,7 @@ use_package(
 
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
-        "ncurses": ["//packages/linux/core:ncurses"],
+        "ncurses": ["//packages/linux/core/ncurses:ncurses"],
         "gtk": ["//packages/linux/gui:gtk3"],
     },
 
@@ -33,7 +33,7 @@ use_package(
 
     deps = [
         "//packages/linux/network/libpcap:libpcap",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "Comprehensive suite for man-in-the-middle attacks and network analysis",

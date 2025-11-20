@@ -25,7 +25,7 @@ configure_make_package(
         "-Ddocumentation=disabled",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/libxml2:libxml2",
         "//packages/linux/system/libs/glib:glib",
     ],

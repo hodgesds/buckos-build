@@ -15,9 +15,10 @@ use_package(
     use_defaults = ["caps"],
 
     use_deps = {
-        "caps": ["//packages/linux/core:libcap"],
-        "elf": ["//packages/linux/core:elfutils"],
-        "selinux": ["//packages/linux/core:libselinux"],
+        "caps": ["//packages/linux/system/libs/ipc/libcap:libcap"],
+        "elf": ["//packages/linux/dev-tools/dev-utils/elfutils:elfutils"],
+        # TODO: Add libselinux when available:
+        # "selinux": ["//packages/linux/system/security/selinux/libselinux:libselinux"],
     },
 
     use_configure = {},
@@ -29,7 +30,7 @@ use_package(
         "SBINDIR=/sbin",
     ],
 
-    deps = ["//packages/linux/core:musl"],
+    deps = ["//packages/linux/core/musl:musl"],
 
     pre_configure = """
 # iproute2 uses a different build system

@@ -15,15 +15,16 @@ configure_make_package(
     description = "Lightweight system monitor for X",
     homepage = "https://github.com/brndnmtthws/conky",
     license = "GPL-3+",
-    build_system = "cmake",
-    configure_args = [
-        "-DCMAKE_INSTALL_PREFIX=/usr",
-        "-DCMAKE_BUILD_TYPE=Release",
-        "-DBUILD_X11=ON",
-        "-DBUILD_WAYLAND=ON",
-    ],
+    pre_configure = """
+mkdir -p build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr \\
+    -DCMAKE_BUILD_TYPE=Release \\
+    -DBUILD_X11=ON \\
+    -DBUILD_WAYLAND=ON
+""",
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/network/curl:curl",
     ],
     visibility = ["PUBLIC"],

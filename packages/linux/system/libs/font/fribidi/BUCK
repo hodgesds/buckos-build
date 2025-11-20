@@ -9,7 +9,7 @@ download_source(
 
 meson_package(
     name = "fribidi",
-    source = ":fribidi-src",
+    srcs = [":fribidi-src"],
     version = "1.0.16",
     description = "Unicode Bidirectional Algorithm library",
     homepage = "https://github.com/fribidi/fribidi",

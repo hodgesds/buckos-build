@@ -23,7 +23,7 @@ configure_make_package(
         "--prefix=/usr",
     ],
     deps = [
-        "//packages/linux/core:bash",
+        "//packages/linux/core/bash:bash",
     ],
     visibility = ["PUBLIC"],
 )
@@ -47,22 +47,17 @@ configure_make_package(
         "--sysconfdir=/etc",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
 
 # xdg-desktop-portal - Portal frontend service
-download_source(
-    name = "xdg-desktop-portal-src",
-    src_uri = "https://github.com/flatpak/xdg-desktop-portal/releases/download/1.18.2/xdg-desktop-portal-1.18.2.tar.xz",
-    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
-)
-
 meson_package(
     name = "xdg-desktop-portal",
-    source = ":xdg-desktop-portal-src",
     version = "1.18.2",
+    src_uri = "https://github.com/flatpak/xdg-desktop-portal/releases/download/1.18.2/xdg-desktop-portal-1.18.2.tar.xz",
+    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
     description = "Portal frontend service for flatpak and sandboxed apps",
     homepage = "https://flatpak.github.io/xdg-desktop-portal/",
     license = "LGPL-2.1-or-later",
@@ -73,7 +68,7 @@ meson_package(
         "-Dflatpak-interfaces-dir=/usr/share/dbus-1/interfaces",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/dev-libs/json-glib:json-glib",
@@ -83,16 +78,11 @@ meson_package(
 )
 
 # xdg-desktop-portal-gtk - GTK portal backend
-download_source(
-    name = "xdg-desktop-portal-gtk-src",
-    src_uri = "https://github.com/flatpak/xdg-desktop-portal-gtk/releases/download/1.15.1/xdg-desktop-portal-gtk-1.15.1.tar.xz",
-    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
-)
-
 meson_package(
     name = "xdg-desktop-portal-gtk",
-    source = ":xdg-desktop-portal-gtk-src",
     version = "1.15.1",
+    src_uri = "https://github.com/flatpak/xdg-desktop-portal-gtk/releases/download/1.15.1/xdg-desktop-portal-gtk-1.15.1.tar.xz",
+    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
     description = "GTK+ backend for xdg-desktop-portal",
     homepage = "https://flatpak.github.io/xdg-desktop-portal/",
     license = "LGPL-2.1-or-later",
@@ -101,23 +91,18 @@ meson_package(
     ],
     deps = [
         ":xdg-desktop-portal",
-        "//packages/linux/core:musl",
-        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/desktop/gnome:gtk3",
     ],
     visibility = ["PUBLIC"],
 )
 
 # xdg-desktop-portal-wlr - wlroots portal backend
-download_source(
-    name = "xdg-desktop-portal-wlr-src",
-    src_uri = "https://github.com/emersion/xdg-desktop-portal-wlr/releases/download/v0.7.1/xdg-desktop-portal-wlr-0.7.1.tar.gz",
-    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
-)
-
 meson_package(
     name = "xdg-desktop-portal-wlr",
-    source = ":xdg-desktop-portal-wlr-src",
     version = "0.7.1",
+    src_uri = "https://github.com/emersion/xdg-desktop-portal-wlr/releases/download/v0.7.1/xdg-desktop-portal-wlr-0.7.1.tar.gz",
+    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
     description = "xdg-desktop-portal backend for wlroots",
     homepage = "https://github.com/emersion/xdg-desktop-portal-wlr",
     license = "MIT",
@@ -126,7 +111,7 @@ meson_package(
     ],
     deps = [
         ":xdg-desktop-portal",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/wayland:wayland",
     ],
     visibility = ["PUBLIC"],
@@ -162,7 +147,7 @@ configure_make_package(
     """,
     deps = [
         ":xdg-desktop-portal",
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/kde:kf5",
         "//packages/linux/desktop/qt:qt5",
     ],

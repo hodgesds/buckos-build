@@ -23,7 +23,7 @@ download_source(
 
 meson_package(
     name = "mpd",
-    source = ":mpd-src",
+    srcs = [":mpd-src"],
     version = "0.23.15",
     description = "Music Player Daemon - flexible, powerful, server-side audio player",
     homepage = "https://www.musicpd.org/",
@@ -111,9 +111,9 @@ meson_package(
         "//packages/linux/audio/libraries/libogg:libogg",
         "//packages/linux/audio/libraries/opus:opus",
         "//packages/linux/audio/libraries/libmad:libmad",
-        "//packages/linux/core:musl",
-        "//packages/linux/core:curl",
-        "//packages/linux/core/zlib",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/network/curl:curl",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

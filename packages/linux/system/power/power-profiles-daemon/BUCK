@@ -12,7 +12,7 @@ download_source(
 
 meson_package(
     name = "power-profiles-daemon",
-    source = ":power-profiles-daemon-src",
+    srcs = [":power-profiles-daemon-src"],
     version = "0.21",
     description = "D-Bus daemon for power profile handling",
     homepage = "https://gitlab.freedesktop.org/upower/power-profiles-daemon",
@@ -23,7 +23,7 @@ meson_package(
         "-Dsystemdsystemunitdir=/usr/lib/systemd/system",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/core:glib",
         "//packages/linux/core:dbus",
         "//packages/linux/core/polkit:polkit",

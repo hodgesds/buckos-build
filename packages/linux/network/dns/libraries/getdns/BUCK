@@ -39,7 +39,7 @@ cmake .. \\
     make_args = ["-C", "build"],
 
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "Modern asynchronous DNS API",

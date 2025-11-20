@@ -26,7 +26,7 @@ configure_make_package(
         "--disable-schemas-compile",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/laptop/wireless/bluez:bluez",
         "//packages/linux/lang/python:python",
         "//packages/linux/system/libs/gtk3:gtk3",

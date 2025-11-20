@@ -12,7 +12,7 @@ load("//defs:package_defs.bzl", "kernel_build")
 
 kernel_build(
     name = "linux",
-    source = "//packages/linux/kernel/src:linux-src",
+    srcs = ["//packages/linux/kernel/src:linux-src"],
     version = "6.12.6",
     config = "kernel.config",
     visibility = ["PUBLIC"],

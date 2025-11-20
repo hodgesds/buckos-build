@@ -16,14 +16,9 @@ configure_make_package(
     description = "7-Zip file archiver port for Unix systems",
     homepage = "https://github.com/p7zip-project/p7zip",
     license = "LGPL-2.1-or-later",
-    build_in_source = True,
     configure_args = [],
     make_args = [
         "all3",
-    ],
-    install_args = [
-        "DEST_HOME=/usr",
-        "DEST_DIR=${DESTDIR}",
     ],
     visibility = ["PUBLIC"],
 )

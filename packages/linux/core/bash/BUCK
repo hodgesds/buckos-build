@@ -23,7 +23,7 @@ use_package(
 
     # Conditional dependencies
     use_deps = {
-        "readline": ["//packages/linux/core/readline", "//packages/linux/core/ncurses"],
+        "readline": ["//packages/linux/core/readline:readline", "//packages/linux/core/ncurses:ncurses"],
     },
 
     # Conditional configure arguments

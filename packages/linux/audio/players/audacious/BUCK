@@ -15,7 +15,7 @@ download_source(
 
 meson_package(
     name = "audacious",
-    source = ":audacious-src",
+    srcs = [":audacious-src"],
     version = "4.3.1",
     description = "Lightweight, advanced audio player focused on audio quality",
     homepage = "https://audacious-media-player.org/",
@@ -29,9 +29,9 @@ meson_package(
         "-Dbuildstamp=",
     ],
     deps = [
-        "//packages/linux/desktop/gtk:gtk3",
-        "//packages/linux/core:dbus",
-        "//packages/linux/core:musl",
+        "//packages/linux/desktop/gnome:gtk3",
+        "//packages/linux/system/libs/ipc/dbus:dbus",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

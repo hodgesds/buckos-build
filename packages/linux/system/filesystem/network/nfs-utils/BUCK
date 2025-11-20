@@ -20,7 +20,7 @@ configure_make_package(
         "--without-tcp-wrappers",
     ],
     deps = [
-        "//packages/linux/core:util-linux",
+        "//packages/linux/core/util-linux:util-linux",
     ],
     visibility = ["PUBLIC"],
 )

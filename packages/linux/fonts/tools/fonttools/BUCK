@@ -8,7 +8,7 @@ download_source(
 
 python_package(
     name = "fonttools",
-    source = ":fonttools-src",
+    srcs = [":fonttools-src"],
     version = "4.50.0",
     description = "Library for manipulating fonts in Python",
     homepage = "https://github.com/fonttools/fonttools",
@@ -25,7 +25,7 @@ python_package(
         "ufo",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/core:python",
         "//packages/linux/core:brotli",
     ],

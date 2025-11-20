@@ -21,7 +21,7 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "Network diagnostic tool for tracing packet routes",

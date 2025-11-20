@@ -11,8 +11,8 @@ use_package(
     use_defaults = ["ssl", "ssh"],
 
     use_deps = {
-        "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
-        "ssh": ["//packages/linux/network/libssh:libssh"],
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "ssh": ["//packages/linux/system/libs/network/libssh2:libssh2"],
     },
 
     use_configure = {},
@@ -22,7 +22,7 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "Network logon cracker for authorized security testing",

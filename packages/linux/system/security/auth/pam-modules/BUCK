@@ -27,9 +27,9 @@ configure_make_package(
         mkdir -p "$OUT/etc/security"
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:linux-pam",
-        "//packages/linux/core:util-linux",
+        "//packages/linux/core/util-linux:util-linux",
         "//packages/linux/system/security/cryptsetup:cryptsetup",
     ],
     visibility = ["PUBLIC"],
@@ -57,7 +57,7 @@ configure_make_package(
         "--libdir=/lib/security",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:linux-pam",
     ],
     visibility = ["PUBLIC"],
@@ -82,7 +82,7 @@ configure_make_package(
         "--with-pam-dir=/lib/security",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:linux-pam",
         "//packages/linux/network/openssl:openssl",
     ],
@@ -115,7 +115,7 @@ configure_make_package(
         mkdir -p "$OUT/etc/pam_pkcs11"
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:linux-pam",
         "//packages/linux/network/openssl:openssl",
         "//packages/linux/system/security/encryption:pcsc-lite",
@@ -146,7 +146,7 @@ configure_make_package(
         "--with-pam-lib-dir=/lib/security",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:linux-pam",
     ],
     visibility = ["PUBLIC"],

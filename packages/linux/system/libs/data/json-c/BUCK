@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "json-c",
-    source = ":json-c-src",
+    srcs = [":json-c-src"],
     version = "0.17",
     description = "JSON implementation in C",
     homepage = "https://github.com/json-c/json-c",

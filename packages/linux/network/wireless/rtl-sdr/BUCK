@@ -31,7 +31,7 @@ make install DESTDIR="$DESTDIR"
 """,
 
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/core:libusb",
     ],
 

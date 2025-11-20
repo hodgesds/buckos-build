@@ -33,7 +33,7 @@ DESTDIR=$OUT make install
         "//packages/linux/audio/libraries/libsndfile:libsndfile",
     ],
     build_deps = [
-        "//packages/linux/core/pkg-config:pkg-config",
+        "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
     ],
     visibility = ["PUBLIC"],
 )

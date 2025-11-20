@@ -13,7 +13,7 @@ download_source(
 
 binary_package(
     name = "boost",
-    source = ":boost-src",
+    srcs = [":boost-src"],
     version = "1.84.0",
     description = "Free peer-reviewed portable C++ source libraries",
     homepage = "https://www.boost.org/",
@@ -32,11 +32,11 @@ binary_package(
             -j$(nproc)
     """,
     deps = [
-        "//packages/linux/system/libs/compression/zstd",
-        "//packages/linux/system/libs/compression/bzip2",
-        "//packages/linux/system/libs/compression/xz",
-        "//packages/linux/core/zlib",
-        "//packages/linux/system/libs/utility/icu",
+        "//packages/linux/system/libs/compression/zstd:zstd",
+        "//packages/linux/system/libs/compression/bzip2:bzip2",
+        "//packages/linux/system/libs/compression/xz:xz",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/system/libs/utility/icu:icu",
     ],
     visibility = ["PUBLIC"],
 )

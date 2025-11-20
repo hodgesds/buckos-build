@@ -13,7 +13,7 @@ download_source(
 
 cmake_package(
     name = "uncrustify",
-    source = ":uncrustify-src",
+    srcs = [":uncrustify-src"],
     version = "0.78.1",
     description = "Source code beautifier for C, C++, C#, ObjectiveC, D, Java, Pawn and VALA",
     homepage = "https://uncrustify.sourceforge.net/",

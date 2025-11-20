@@ -16,7 +16,7 @@ use_package(
     use_defaults = ["acl", "attr"],
     use_deps = {
         "acl": ["//packages/linux/system/libs/ipc/acl"],
-        "attr": ["//packages/linux/system/libs/ipc/attr"],
+        "attr": ["//packages/linux/system/libs/ipc/attr:attr"],
         "caps": ["//packages/linux/system/libs/ipc/libcap"],
         "selinux": ["//packages/linux/system/security/selinux"],
     },
@@ -36,6 +36,6 @@ use_package(
         "--prefix=/usr",
         "--enable-no-install-program=kill,uptime",
     ],
-    deps = ["//packages/linux/core:musl"],
+    deps = ["//packages/linux/core/musl:musl"],
     visibility = ["PUBLIC"],
 )

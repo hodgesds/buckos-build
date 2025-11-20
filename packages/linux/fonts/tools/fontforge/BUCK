@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "fontforge",
-    source = ":fontforge-src",
+    srcs = [":fontforge-src"],
     version = "20230101",
     description = "Free and open-source font editor",
     homepage = "https://fontforge.org/",
@@ -31,15 +31,15 @@ cmake_package(
         "-DENABLE_DOCS=OFF",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/core:glib",
         "//packages/linux/core:libxml2",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/zlib:zlib",
         "//packages/linux/core:libpng",
         "//packages/linux/core:libjpeg-turbo",
         "//packages/linux/core:libtiff",
         "//packages/linux/core:giflib",
-        "//packages/linux/core:readline",
+        "//packages/linux/core/readline:readline",
         "//packages/linux/core:python",
         "//packages/linux/fonts/libraries/freetype:freetype",
         "//packages/linux/fonts/libraries/fontconfig:fontconfig",

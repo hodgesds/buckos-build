@@ -22,7 +22,7 @@ download_source(
 
 meson_package(
     name = "pipewire",
-    source = ":pipewire-src",
+    srcs = [":pipewire-src"],
     version = "1.0.7",
     description = "Low-latency audio/video router and processor",
     homepage = "https://pipewire.org/",
@@ -85,8 +85,8 @@ meson_package(
     deps = [
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
         "//packages/linux/audio/libraries/libsndfile:libsndfile",
-        "//packages/linux/core:musl",
-        "//packages/linux/core:dbus",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/system/libs/ipc/dbus:dbus",
     ],
     visibility = ["PUBLIC"],
 )

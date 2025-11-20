@@ -29,7 +29,7 @@ configure_make_package(
         mkdir -p "$OUT/etc/users.oath"
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:linux-pam",
     ],
     visibility = ["PUBLIC"],
@@ -57,7 +57,7 @@ configure_make_package(
         "--libdir=/lib/security",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:linux-pam",
     ],
     visibility = ["PUBLIC"],
@@ -72,7 +72,7 @@ download_source(
 
 cmake_package(
     name = "libfido2",
-    source = ":libfido2-src",
+    srcs = [":libfido2-src"],
     version = "1.14.0",
     description = "Library for FIDO2/WebAuthn operations",
     homepage = "https://developers.yubico.com/libfido2/",
@@ -85,7 +85,7 @@ cmake_package(
         "-DBUILD_STATIC_LIBS=OFF",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/network/openssl:openssl",
         "//packages/linux/system/security/encryption:libusb",
         ":libcbor",
@@ -102,7 +102,7 @@ download_source(
 
 cmake_package(
     name = "libcbor",
-    source = ":libcbor-src",
+    srcs = [":libcbor-src"],
     version = "0.11.0",
     description = "CBOR protocol implementation for C",
     homepage = "https://github.com/PJK/libcbor",
@@ -114,7 +114,7 @@ cmake_package(
         "-DCBOR_PRETTY_PRINTER=ON",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -138,7 +138,7 @@ configure_make_package(
         "--with-pam-dir=/lib/security",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:linux-pam",
         ":libfido2",
     ],
@@ -194,7 +194,7 @@ configure_make_package(
         "--with-pam-dir=/lib/security",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:linux-pam",
         ":ykclient",
         ":ykpers",
@@ -223,7 +223,7 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/network/curl:curl",
     ],
     visibility = ["PUBLIC"],
@@ -250,7 +250,7 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:libusb",
         ":libyubikey",
     ],
@@ -278,7 +278,7 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

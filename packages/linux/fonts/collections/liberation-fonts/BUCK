@@ -8,7 +8,7 @@ download_source(
 
 ebuild_package(
     name = "liberation-fonts",
-    source = ":liberation-fonts-src",
+    srcs = [":liberation-fonts-src"],
     version = "2.1.5",
     description = "Liberation fonts - metrically compatible with Arial, Times New Roman, Courier New",
     homepage = "https://github.com/liberationfonts/liberation-fonts",

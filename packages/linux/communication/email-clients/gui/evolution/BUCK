@@ -30,7 +30,7 @@ configure_make_package(
     ],
     pre_configure = "mkdir build && cd build",
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gtk:gtk",
         "//packages/linux/network/openssl:openssl",
     ],

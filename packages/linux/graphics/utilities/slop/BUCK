@@ -28,11 +28,11 @@ cd build
 DESTDIR=$OUT make install
 """,
     deps = [
-        "//packages/linux/core/glm:glm",
-        "//packages/linux/core/icu:icu",
+        "//packages/linux/system/libs/glm:glm",
+        "//packages/linux/system/libs/icu:icu",
         "//packages/linux/core/libxext:libxext",
         "//packages/linux/desktop/mesa:mesa",
-        "//packages/linux/core/glew:glew",
+        "//packages/linux/dev-libs/glew:glew",
     ],
     build_deps = [],
     visibility = ["PUBLIC"],

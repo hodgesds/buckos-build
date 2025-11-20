@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "include-what-you-use",
-    source = ":iwyu-src",
+    srcs = [":iwyu-src"],
     version = "0.21",
     description = "Tool for analyzing #includes in C and C++ source files",
     homepage = "https://include-what-you-use.org/",

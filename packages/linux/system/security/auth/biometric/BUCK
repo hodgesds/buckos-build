@@ -13,7 +13,7 @@ download_source(
 
 meson_package(
     name = "libfprint",
-    source = ":libfprint-src",
+    srcs = [":libfprint-src"],
     version = "1.94.7",
     description = "Library for fingerprint reader support",
     homepage = "https://fprint.freedesktop.org/",
@@ -25,7 +25,7 @@ meson_package(
         "-Dintrospection=false",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/ipc/dbus:glib",
         "//packages/linux/system/init/systemd:libudev",
         "//packages/linux/system/security/encryption:libusb",
@@ -44,7 +44,7 @@ download_source(
 
 meson_package(
     name = "fprintd",
-    source = ":fprintd-src",
+    srcs = [":fprintd-src"],
     version = "1.94.3",
     description = "Fingerprint authentication daemon",
     homepage = "https://fprint.freedesktop.org/",
@@ -60,7 +60,7 @@ meson_package(
         mkdir -p "$OUT/var/lib/fprint"
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/system/security/encryption:linux-pam",
         ":libfprint",
@@ -102,8 +102,8 @@ configure_make_package(
         cp -L bin/* "$OUT/usr/bin/" || true
     """,
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:sqlite",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/system/libs/database/sqlite:sqlite",
         ":nspr",
     ],
     visibility = ["PUBLIC"],
@@ -133,7 +133,7 @@ configure_make_package(
         "--disable-debug",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -147,7 +147,7 @@ download_source(
 
 meson_package(
     name = "pixman",
-    source = ":pixman-src",
+    srcs = [":pixman-src"],
     version = "0.43.4",
     description = "Pixel manipulation library",
     homepage = "https://www.cairographics.org/",
@@ -157,7 +157,7 @@ meson_package(
         "-Dlibpng=disabled",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

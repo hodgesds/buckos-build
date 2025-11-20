@@ -5,7 +5,7 @@ use_package(
     name = "libnl",
     version = "3.9.0",
     src_uri = "https://github.com/thom311/libnl/releases/download/libnl3_9_0/libnl-3.9.0.tar.gz",
-    sha256 = "aed507004d728a5cf11eab48ca4bf9e6e1f4571a4acfc8a971b4f1f7b89f50ee",
+    sha256 = "aed507004d728a5cf11eab48ca4bf9e6e1874444e33939b9d3dfed25018ee9bb",
     description = "Library for applications dealing with netlink sockets",
     homepage = "https://www.infradead.org/~tgr/libnl/",
     license = "LGPL-2.1",
@@ -20,6 +20,18 @@ use_package(
 
     # Default USE flags
     use_defaults = [],
+
+    # Pre-configure to fix missing time.h include
+    pre_configure = """
+# Patch source files to include time.h where needed
+sed -i '/#include "nl-aux-core\/nl-core.h"/a #include <time.h>' lib/socket.c
+# Patch all xfrm files that use strftime
+for f in lib/xfrm/*.c; do
+    if grep -q 'strftime' "$f"; then
+        sed -i '/#include "nl-aux-xfrm\/nl-xfrm.h"/a #include <time.h>' "$f"
+    fi
+done
+""",
 
     # Conditional configure arguments
     use_configure = {

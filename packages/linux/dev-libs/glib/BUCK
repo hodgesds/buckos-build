@@ -13,7 +13,7 @@ download_source(
 
 meson_package(
     name = "glib",
-    source = ":glib-src",
+    srcs = [":glib-src"],
     version = "2.80.0",
     description = "Low-level core library for GNOME projects",
     homepage = "https://wiki.gnome.org/Projects/GLib",
@@ -26,9 +26,9 @@ meson_package(
         "-Dtests=false",
     ],
     deps = [
-        "//packages/linux/system/libs/utility/libffi",
-        "//packages/linux/core/zlib",
-        "//packages/linux/system/libs/utility/pcre2",
+        "//packages/linux/system/libs/utility/libffi:libffi",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/system/libs/utility/pcre2:pcre2",
     ],
     visibility = ["PUBLIC"],
 )

@@ -9,7 +9,7 @@ download_source(
 
 cargo_package(
     name = "bat",
-    source = ":bat-src",
+    srcs = [":bat-src"],
     version = "0.24.0",
     description = "Cat clone with syntax highlighting and Git integration",
     homepage = "https://github.com/sharkdp/bat",
@@ -18,7 +18,7 @@ cargo_package(
         "--release",
     ],
     deps = [
-        "//packages/linux/core/musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

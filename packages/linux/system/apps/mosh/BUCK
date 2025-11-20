@@ -30,11 +30,11 @@ use_package(
         "--sysconfdir=/etc",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core/ncurses",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/ncurses:ncurses",
         "//packages/linux/system/libs/crypto/openssl:openssl",
         "//packages/linux/dev-libs/serialization/protobuf:protobuf",
-        "//packages/linux/core/zlib",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

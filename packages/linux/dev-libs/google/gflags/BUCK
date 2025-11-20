@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "gflags",
-    source = ":gflags-src",
+    srcs = [":gflags-src"],
     version = "2.2.2",
     description = "C++ library for commandline flags processing",
     homepage = "https://gflags.github.io/gflags/",

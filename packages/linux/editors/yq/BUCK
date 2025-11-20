@@ -9,7 +9,7 @@ download_source(
 
 go_package(
     name = "yq",
-    source = ":yq-src",
+    srcs = [":yq-src"],
     version = "4.44.3",
     description = "Command-line YAML/JSON/XML processor with jq-like syntax",
     homepage = "https://github.com/mikefarah/yq",

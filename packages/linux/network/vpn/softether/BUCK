@@ -12,8 +12,8 @@ use_package(
 
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
-        "readline": ["//packages/linux/core:readline"],
-        "ncurses": ["//packages/linux/core:ncurses"],
+        "readline": ["//packages/linux/core/readline:readline"],
+        "ncurses": ["//packages/linux/core/ncurses:ncurses"],
     },
 
     use_configure = {},
@@ -36,7 +36,7 @@ mkdir -p "$DESTDIR/var/lib/softether"
 """,
 
     deps = [
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/zlib:zlib",
     ],
 
     build_deps = [

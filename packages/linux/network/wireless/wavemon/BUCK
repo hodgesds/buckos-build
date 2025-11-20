@@ -11,7 +11,7 @@ use_package(
     use_defaults = ["ncurses"],
 
     use_deps = {
-        "ncurses": ["//packages/linux/core:ncurses"],
+        "ncurses": ["//packages/linux/core/ncurses:ncurses"],
     },
 
     use_configure = {},
@@ -21,7 +21,7 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "ncurses-based wireless network monitoring application",

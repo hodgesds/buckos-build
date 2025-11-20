@@ -23,7 +23,7 @@ download_source(
 
 ebuild_package(
     name = "source-sans",
-    source = ":source-sans-src",
+    srcs = [":source-sans-src"],
     version = "3.052",
     description = "Adobe Source Sans - sans-serif typeface for user interfaces",
     homepage = "https://github.com/adobe-fonts/source-sans",
@@ -46,7 +46,7 @@ dodoc LICENSE.md README.md 2>/dev/null || true
 
 ebuild_package(
     name = "source-serif",
-    source = ":source-serif-src",
+    srcs = [":source-serif-src"],
     version = "4.005",
     description = "Adobe Source Serif - serif typeface for setting long texts",
     homepage = "https://github.com/adobe-fonts/source-serif",
@@ -69,7 +69,7 @@ dodoc LICENSE.md README.md 2>/dev/null || true
 
 ebuild_package(
     name = "source-code-pro",
-    source = ":source-code-pro-src",
+    srcs = [":source-code-pro-src"],
     version = "2.042",
     description = "Adobe Source Code Pro - monospaced font for coding environments",
     homepage = "https://github.com/adobe-fonts/source-code-pro",

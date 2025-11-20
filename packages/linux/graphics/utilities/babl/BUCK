@@ -30,11 +30,11 @@ cd build
 DESTDIR=$OUT meson install
 """,
     deps = [
-        "//packages/linux/core/glib:glib",
-        "//packages/linux/core/lcms2:lcms2",
+        "//packages/linux/dev-libs/glib:glib",
+        "//packages/linux/system/libs/graphics/lcms2:lcms2",
     ],
     build_deps = [
-        "//packages/linux/core/gobject-introspection:gobject-introspection",
+        "//packages/linux/system/libs/gobject-introspection:gobject-introspection",
         "//packages/linux/core/vala:vala",
     ],
     visibility = ["PUBLIC"],

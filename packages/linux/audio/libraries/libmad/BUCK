@@ -22,7 +22,7 @@ use_package(
         "-debug": "--disable-debugging",
     },
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

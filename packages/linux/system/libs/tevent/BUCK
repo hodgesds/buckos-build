@@ -23,7 +23,7 @@ configure_make_package(
         "--builtin-libraries=replace",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/talloc:talloc",
     ],
     visibility = ["PUBLIC"],

@@ -20,12 +20,12 @@ use_package(
     iuse = ["pcre2", "readline", "ncurses", "jemalloc"],
     use_defaults = ["pcre2", "readline", "ncurses"],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     use_deps = {
         "pcre2": ["//packages/linux/core:pcre2"],
-        "readline": ["//packages/linux/core:readline"],
-        "ncurses": ["//packages/linux/core:ncurses"],
+        "readline": ["//packages/linux/core/readline:readline"],
+        "ncurses": ["//packages/linux/core/ncurses:ncurses"],
         "jemalloc": ["//packages/linux/core:jemalloc"],
     },
     configure_args = [

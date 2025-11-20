@@ -31,16 +31,11 @@ LLVM_USE_DEPS = {
 _global_use = set_use_flags(LLVM_USE_DEFAULTS)
 _effective_use = LLVM_USE_DEFAULTS
 
-download_source(
-    name = "llvm-src",
-    src_uri = "https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/llvm-project-18.1.8.src.tar.xz",
-    sha256 = "f68cf90f369bc7d0158ba70d860b0cb34dbc163d6ff0ebc6cfa5e515b9b2e28d",
-)
-
 cmake_package(
     name = "llvm",
-    source = ":llvm-src",
     version = "18.1.8",
+    src_uri = "https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/llvm-project-18.1.8.src.tar.xz",
+    sha256 = "f68cf90f369bc7d0158ba70d860b0cb34dbc163d6ff0ebc6cfa5e515b9b2e28d",
     description = "Low Level Virtual Machine - compiler infrastructure",
     homepage = "https://llvm.org/",
     license = "Apache-2.0 WITH LLVM-exception",

@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "rapidjson",
-    source = ":rapidjson-src",
+    srcs = [":rapidjson-src"],
     version = "1.1.0",
     description = "Fast JSON parser/generator for C++ with SAX/DOM style API",
     homepage = "https://rapidjson.org/",

@@ -14,12 +14,8 @@ configure_make_package(
     description = "Extremely fast compression algorithm",
     homepage = "https://lz4.github.io/lz4/",
     license = "BSD-2-Clause",
-    build_in_source = True,
     configure_args = [],
     make_args = [
-        "PREFIX=/usr",
-    ],
-    install_args = [
         "PREFIX=/usr",
     ],
     visibility = ["PUBLIC"],

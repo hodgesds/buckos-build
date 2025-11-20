@@ -22,7 +22,7 @@ configure_make_package(
         "--with-doc=no",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/fonts/libraries/freetype:freetype",
         "//packages/linux/fonts/libraries/harfbuzz:harfbuzz",
     ],

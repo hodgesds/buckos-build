@@ -22,7 +22,7 @@ configure_make_package(
         "--mandir=/usr/share/man",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

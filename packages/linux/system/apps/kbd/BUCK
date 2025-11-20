@@ -28,7 +28,7 @@ use_package(
         "--datadir=/usr/share/kbd",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/linux-pam",
     ],
     visibility = ["PUBLIC"],

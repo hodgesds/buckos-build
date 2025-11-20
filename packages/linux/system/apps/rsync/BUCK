@@ -15,9 +15,9 @@ use_package(
     iuse = ["lz4", "xxhash", "zstd", "ssl", "acl", "xattr", "iconv"],
     use_defaults = ["acl", "xattr"],
     use_deps = {
-        "lz4": ["//packages/linux/system/libs/compression/lz4"],
-        "zstd": ["//packages/linux/system/libs/compression/zstd"],
-        "ssl": ["//packages/linux/system/libs/crypto/openssl"],
+        "lz4": ["//packages/linux/system/libs/compression/lz4:lz4"],
+        "zstd": ["//packages/linux/system/libs/compression/zstd:zstd"],
+        "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
         "acl": ["//packages/linux/system/libs/ipc/acl"],
     },
     use_configure = {
@@ -41,8 +41,8 @@ use_package(
         "--sysconfdir=/etc",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

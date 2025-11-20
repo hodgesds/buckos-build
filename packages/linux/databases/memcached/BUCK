@@ -20,12 +20,12 @@ use_package(
     iuse = ["ssl", "seccomp", "sasl", "doc"],
     use_defaults = ["seccomp"],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/system/libs/libevent",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/system/libs/utility/libevent:libevent",
     ],
     use_deps = {
-        "ssl": ["//packages/linux/network/openssl:openssl"],
-        "sasl": ["//packages/linux/network/cyrus-sasl:cyrus-sasl"],
+        "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
+        "sasl": ["//packages/linux/system/security/auth/directory:cyrus-sasl"],
     },
     configure_args = [
         "--prefix=/usr",

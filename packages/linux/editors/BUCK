@@ -3,13 +3,13 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 filegroup(
     name = "all-editors",
     srcs = [
-        "//packages/linux/editors/vim",
-        "//packages/linux/editors/vim-minimal",
-        "//packages/linux/editors/neovim",
-        "//packages/linux/editors/emacs",
-        "//packages/linux/editors/emacs-nox",
-        "//packages/linux/editors/vscodium",
-        "//packages/linux/editors/ed",
+        //packages/linux/editors/vim:vim,
+        //packages/linux/editors/vim:vim-minimal,
+        //packages/linux/editors/neovim:neovim,
+        //packages/linux/editors/emacs:emacs,
+        //packages/linux/editors/emacs:emacs-nox,
+        //packages/linux/editors/vscodium:vscodium,
+        //packages/linux/editors/ed:ed,
     ],
     visibility = ["PUBLIC"],
 )

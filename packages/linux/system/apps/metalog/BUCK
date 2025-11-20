@@ -24,7 +24,7 @@ use_package(
         "--sysconfdir=/etc",
     ],
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
         "//packages/linux/core:pcre2",
     ],
     visibility = ["PUBLIC"],

@@ -5,7 +5,7 @@ use_package(
     name = "file",
     version = "5.45",
     src_uri = "https://astron.com/pub/file/file-5.45.tar.gz",
-    sha256 = "fc97f51029bb0e2c9f4e3bfbd5f4c8f3e2b9e08047e5b70d4e4e4e8d4c5be8c0",
+    sha256 = "fc97f51029bb0e2c9f4e3bffefdaf678f0e039ee872b9de5c002a6d09c784d82",
     description = "File type identification utility",
     homepage = "https://www.darwinsys.com/file/",
     license = "BSD-2-Clause",
@@ -23,9 +23,9 @@ use_package(
 
     # Conditional dependencies
     use_deps = {
-        "zlib": ["//packages/linux/core/zlib"],
-        "bzip2": ["//packages/linux/core/bzip2"],
-        "lzma": ["//packages/linux/core/xz"],
+        "zlib": ["//packages/linux/core/zlib:zlib"],
+        "bzip2": ["//packages/linux/core/bzip2:bzip2"],
+        "lzma": ["//packages/linux/core/xz:xz"],
     },
 
     # Conditional configure arguments

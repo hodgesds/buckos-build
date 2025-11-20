@@ -23,8 +23,8 @@ use_package(
 
     deps = [
         "//packages/linux/network/libpcap:libpcap",
-        "//packages/linux/core:libnet",
-        "//packages/linux/core:musl",
+        "//packages/linux/lang/perl/network:libnet",
+        "//packages/linux/core/musl:musl",
     ],
 
     description = "Send ARP requests to identify hosts on a network",

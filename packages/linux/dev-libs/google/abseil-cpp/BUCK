@@ -13,7 +13,7 @@ download_source(
 
 cmake_package(
     name = "abseil-cpp",
-    source = ":abseil-cpp-src",
+    srcs = [":abseil-cpp-src"],
     version = "20240116.2",
     description = "Abseil C++ Common Libraries",
     homepage = "https://abseil.io/",

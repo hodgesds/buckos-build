@@ -31,7 +31,7 @@ configure_make_package(
         make -C tools/power/x86/turbostat DESTDIR=$OUT prefix=/usr install
     """,
     deps = [
-        "//packages/linux/core:musl",
+        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

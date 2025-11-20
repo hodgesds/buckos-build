@@ -42,6 +42,6 @@ use_package(
         "--with-rundir=/run/sudo",
         "--with-vardir=/var/db/sudo",
     ],
-    deps = ["//packages/linux/core:musl"],
+    deps = ["//packages/linux/core/musl:musl"],
     visibility = ["PUBLIC"],
 )

@@ -12,7 +12,7 @@ use_package(
 
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
-        "readline": ["//packages/linux/core:readline"],
+        "readline": ["//packages/linux/core/readline:readline"],
     },
 
     use_configure = {},
@@ -73,8 +73,8 @@ install -m 644 dbus/dbus-wpa_supplicant.conf "$DESTDIR/etc/dbus-1/system.d/" 2>/
 """,
 
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:ncurses",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/ncurses:ncurses",
     ],
 
     description = "WPA/WPA2/WPA3 supplicant for wireless network authentication",

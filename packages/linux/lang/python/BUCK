@@ -30,10 +30,10 @@ use_package(
 
     # Conditional dependencies
     use_deps = {
-        "sqlite": ["//packages/linux/databases/sqlite:sqlite"],
-        "readline": ["//packages/linux/core/readline"],
-        "ncurses": ["//packages/linux/core/ncurses"],
-        "ssl": ["//packages/linux/network:openssl"],
+        "sqlite": ["//packages/linux/system/libs/database/sqlite:sqlite"],
+        "readline": ["//packages/linux/core/readline:readline"],
+        "ncurses": ["//packages/linux/core/ncurses:ncurses"],
+        "ssl": ["//packages/linux/network/openssl:openssl"],
     },
 
     # Conditional configure arguments
@@ -57,7 +57,7 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

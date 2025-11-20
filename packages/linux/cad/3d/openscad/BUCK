@@ -8,7 +8,7 @@ download_source(
 
 ebuild_package(
     name = "openscad",
-    source = ":openscad-src",
+    srcs = [":openscad-src"],
     version = "2024.12.06",
     description = "The programmers solid 3D CAD modeller using a script-based approach",
     homepage = "https://www.openscad.org/",

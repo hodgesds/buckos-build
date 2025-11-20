@@ -33,10 +33,10 @@ DESTDIR=$OUT make install
     deps = [
         "//packages/linux/desktop/kde:kf5",
         "//packages/linux/desktop/qt:qt5",
-        "//packages/linux/core/mlt:mlt",
-        "//packages/linux/core/ffmpeg:ffmpeg",
+        "//packages/linux/dev-libs/mlt:mlt",
+        "//packages/linux/graphics/video/ffmpeg:ffmpeg",
         "//packages/linux/core/frei0r:frei0r",
-        "//packages/linux/core/libv4l:libv4l",
+        "//packages/linux/graphics/video/v4l-utils:libv4l",
         "//packages/linux/core/rttr:rttr",
     ],
     build_deps = [],

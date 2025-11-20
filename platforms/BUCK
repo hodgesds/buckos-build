@@ -18,8 +18,8 @@ execution_platform(
 platform(
     name = "linux-x86_64",
     constraint_values = [
-        "config//cpu:x86_64",
-        "config//os:linux",
+        "prelude//cpu/constraints:x86_64",
+        "prelude//os/constraints:linux",
     ],
 )
 

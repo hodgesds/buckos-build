@@ -14,13 +14,9 @@ configure_make_package(
     description = "Lightning Memory-Mapped Database",
     homepage = "https://symas.com/lmdb/",
     license = "OLDAP-2.8",
-    build_in_source = True,
     source_dir = "libraries/liblmdb",
     configure_args = [],
     make_args = [
-        "prefix=/usr",
-    ],
-    install_args = [
         "prefix=/usr",
     ],
     post_install = """

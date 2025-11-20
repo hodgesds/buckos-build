@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "leveldb",
-    source = ":leveldb-src",
+    srcs = [":leveldb-src"],
     version = "1.23",
     description = "Fast key-value storage library",
     homepage = "https://github.com/google/leveldb",
@@ -20,7 +20,7 @@ cmake_package(
         "-DLEVELDB_BUILD_BENCHMARKS=OFF",
     ],
     deps = [
-        "//packages/linux/system/libs/compression/snappy",
+        "//packages/linux/system/libs/compression/snappy:snappy",
     ],
     visibility = ["PUBLIC"],
 )

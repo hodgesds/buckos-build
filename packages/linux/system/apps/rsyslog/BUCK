@@ -16,10 +16,10 @@ use_package(
     use_defaults = ["imfile", "imptcp"],
     use_deps = {
         "gnutls": ["//packages/linux/system/libs/crypto/gnutls"],
-        "ssl": ["//packages/linux/system/libs/crypto/openssl"],
-        "gcrypt": ["//packages/linux/system/libs/crypto/libgcrypt"],
-        "mysql": ["//packages/linux/database/mysql"],
-        "postgres": ["//packages/linux/database/postgresql"],
+        "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
+        "gcrypt": ["//packages/linux/system/libs/crypto/libgcrypt:libgcrypt"],
+        "mysql": ["//packages/linux/database/mysql:mysql"],
+        "postgres": ["//packages/linux/database/postgresql:postgresql"],
         "systemd": ["//packages/linux/system/init/systemd"],
     },
     use_configure = {
@@ -47,8 +47,8 @@ use_package(
         "--sysconfdir=/etc",
     ],
     deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/musl:musl",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

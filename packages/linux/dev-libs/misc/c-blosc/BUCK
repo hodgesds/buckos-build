@@ -9,7 +9,7 @@ download_source(
 
 cmake_package(
     name = "c-blosc",
-    source = ":c-blosc-src",
+    srcs = [":c-blosc-src"],
     version = "1.21.5",
     description = "High performance compressor optimized for binary data",
     homepage = "https://www.blosc.org/",
@@ -25,10 +25,10 @@ cmake_package(
         "-DPREFER_EXTERNAL_SNAPPY=ON",
     ],
     deps = [
-        "//packages/linux/core/zlib",
-        "//packages/linux/system/libs/compression/zstd",
-        "//packages/linux/system/libs/compression/lz4",
-        "//packages/linux/system/libs/compression/snappy",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/system/libs/compression/zstd:zstd",
+        "//packages/linux/system/libs/compression/lz4:lz4",
+        "//packages/linux/system/libs/compression/snappy:snappy",
     ],
     visibility = ["PUBLIC"],
 )

@@ -25,7 +25,7 @@ cmake_package(
     name = "whisper-cpp",
     version = "1.7.2",
     src_uri = "https://github.com/ggerganov/whisper.cpp/archive/refs/tags/v1.7.2.tar.gz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    sha256 = "d48e1b5b6ee18b931e98ac791eba838f83eb3b81bb8917db37fe9a79fa5e3ccb",
     description = "Port of OpenAI's Whisper speech recognition model in C/C++",
     homepage = "https://github.com/ggerganov/whisper.cpp",
     license = "MIT",
@@ -38,7 +38,7 @@ cmake_package(
         "-DWHISPER_BUILD_SERVER=ON",
     ],
     deps = [
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

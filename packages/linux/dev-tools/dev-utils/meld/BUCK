@@ -9,7 +9,7 @@ download_source(
 
 meson_package(
     name = "meld",
-    source = ":meld-src",
+    srcs = [":meld-src"],
     version = "3.22.2",
     description = "Visual diff and merge tool",
     homepage = "https://meldmerge.org/",

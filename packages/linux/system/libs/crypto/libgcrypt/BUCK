@@ -18,7 +18,7 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/linux/system/libs/crypto/libgpg-error",
+        "//packages/linux/system/libs/crypto/libgpg-error:libgpg-error",
     ],
     visibility = ["PUBLIC"],
 )

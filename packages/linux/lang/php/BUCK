@@ -37,9 +37,9 @@ configure_make_package(
         "--enable-opcache",
     ],
     deps = [
-        "//packages/linux/core:zlib",
-        "//packages/linux/network:openssl",
-        "//packages/linux/network:curl",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/network/openssl:openssl",
+        "//packages/linux/network/curl:curl",
     ],
     visibility = ["PUBLIC"],
 )

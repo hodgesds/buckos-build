@@ -15,8 +15,8 @@ use_package(
     use_defaults = ["json", "readline"],
 
     use_deps = {
-        "readline": ["//packages/linux/core:readline"],
-        "python": ["//packages/linux/core:python"],
+        "readline": ["//packages/linux/core/readline:readline"],
+        "python": ["//packages/linux/lang/python:python"],
     },
 
     use_configure = {
@@ -73,10 +73,11 @@ chmod 600 "$DESTDIR/etc/nftables/nftables.conf"
 """,
 
     deps = [
-        "//packages/linux/core:libnl",
-        "//packages/linux/core:libmnl",
-        "//packages/linux/core:libnftnl",
-        "//packages/linux/core:gmp",
+        "//packages/linux/core/libnl:libnl",
+        "//packages/linux/system/libs/utility/gmp:gmp",
+        # TODO: Add these libraries when available:
+        # "//packages/linux/system/libs/network/libmnl:libmnl",
+        # "//packages/linux/system/libs/network/libnftnl:libnftnl",
     ],
 
     description = "Modern Linux packet filtering framework replacing iptables",

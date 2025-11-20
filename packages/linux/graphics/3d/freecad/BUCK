@@ -38,15 +38,15 @@ DESTDIR=$OUT make install
     deps = [
         "//packages/linux/lang/python:python",
         "//packages/linux/desktop/qt:qt5",
-        "//packages/linux/core/boost:boost",
-        "//packages/linux/core/xerces-c:xerces-c",
-        "//packages/linux/core/opencascade:opencascade",
-        "//packages/linux/core/coin:coin",
-        "//packages/linux/core/eigen:eigen",
-        "//packages/linux/core/vtk:vtk",
+        "//packages/linux/dev-libs/boost:boost",
+        "//packages/linux/dev-libs/xerces-c:xerces-c",
+        "//packages/linux/dev-libs/opencascade:opencascade",
+        "//packages/linux/dev-libs/coin:coin",
+        "//packages/linux/dev-libs/eigen:eigen",
+        "//packages/linux/dev-libs/vtk:vtk",
     ],
     build_deps = [
-        "//packages/linux/core/swig:swig",
+        "//packages/linux/lang/swig:swig",
     ],
     visibility = ["PUBLIC"],
 )

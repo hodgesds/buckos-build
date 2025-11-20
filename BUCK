@@ -748,3 +748,203 @@ filegroup(
     ],
     visibility = ["PUBLIC"],
 )
+
+# =============================================================================
+# System Profile Sets
+# =============================================================================
+
+load("//defs:package_sets.bzl", "system_set", "combined_set", "task_set", "desktop_set", "package_set")
+
+# Pre-configured system profiles
+system_set(
+    name = "system-minimal",
+    profile = "minimal",
+    description = "Minimal bootable system",
+)
+
+system_set(
+    name = "system-server",
+    profile = "server",
+    description = "Standard server configuration",
+)
+
+system_set(
+    name = "system-desktop",
+    profile = "desktop",
+    description = "Desktop system with GUI support",
+)
+
+system_set(
+    name = "system-developer",
+    profile = "developer",
+    description = "Development workstation",
+)
+
+system_set(
+    name = "system-hardened",
+    profile = "hardened",
+    description = "Security-hardened system",
+)
+
+system_set(
+    name = "system-embedded",
+    profile = "embedded",
+    description = "Embedded/IoT system",
+)
+
+system_set(
+    name = "system-container",
+    profile = "container",
+    description = "Container base image",
+)
+
+# =============================================================================
+# Task-Specific Sets
+# =============================================================================
+
+task_set(
+    name = "task-web-server",
+    task = "web-server",
+    description = "Web server configuration",
+)
+
+task_set(
+    name = "task-database-server",
+    task = "database-server",
+    description = "Database server configuration",
+)
+
+task_set(
+    name = "task-container-host",
+    task = "container-host",
+    description = "Container host system",
+)
+
+task_set(
+    name = "task-virtualization-host",
+    task = "virtualization-host",
+    description = "Virtualization host system",
+)
+
+task_set(
+    name = "task-vpn-server",
+    task = "vpn-server",
+    description = "VPN server configuration",
+)
+
+task_set(
+    name = "task-monitoring",
+    task = "monitoring",
+    description = "System monitoring tools",
+)
+
+task_set(
+    name = "task-benchmarking",
+    task = "benchmarking",
+    description = "Performance benchmarking tools",
+)
+
+# =============================================================================
+# Desktop Environment Sets
+# =============================================================================
+
+desktop_set(
+    name = "desktop-gnome",
+    environment = "gnome-desktop",
+    description = "GNOME desktop environment",
+)
+
+desktop_set(
+    name = "desktop-kde",
+    environment = "kde-desktop",
+    description = "KDE Plasma desktop environment",
+)
+
+desktop_set(
+    name = "desktop-xfce",
+    environment = "xfce-desktop",
+    description = "XFCE desktop environment",
+)
+
+desktop_set(
+    name = "desktop-sway",
+    environment = "sway-desktop",
+    description = "Sway Wayland compositor",
+)
+
+desktop_set(
+    name = "desktop-hyprland",
+    environment = "hyprland-desktop",
+    description = "Hyprland Wayland compositor",
+)
+
+desktop_set(
+    name = "desktop-i3",
+    environment = "i3-desktop",
+    description = "i3 tiling window manager",
+)
+
+# =============================================================================
+# Combined Sets (Example Configurations)
+# =============================================================================
+
+# Full-stack web server with monitoring
+combined_set(
+    name = "full-stack-server",
+    sets = ["@web-server", "@database-server", "@monitoring"],
+    additions = [
+        "//packages/linux/net-vpn:wireguard-tools",
+    ],
+    description = "Complete web application server stack",
+)
+
+# DevOps workstation
+combined_set(
+    name = "devops-workstation",
+    sets = ["@developer", "@container-host", "@monitoring"],
+    description = "DevOps development workstation",
+)
+
+# Secure server with VPN
+system_set(
+    name = "secure-server",
+    profile = "hardened",
+    additions = [
+        "//packages/linux/net-vpn:wireguard-tools",
+        "//packages/linux/net-vpn:openvpn",
+    ],
+    description = "Hardened server with VPN support",
+)
+
+# CI/CD runner
+combined_set(
+    name = "ci-runner",
+    sets = ["@container-host"],
+    additions = [
+        "//packages/linux/editors:vim",
+    ],
+    removals = [
+        "//packages/linux/system/docs:texinfo",
+    ],
+    description = "CI/CD runner with container support",
+)
+
+# Developer desktop with GNOME
+combined_set(
+    name = "developer-gnome",
+    sets = ["@developer", "@gnome-desktop"],
+    description = "GNOME desktop for developers",
+)
+
+# Lightweight server (minimal + SSH)
+system_set(
+    name = "lightweight-server",
+    profile = "minimal",
+    additions = [
+        "//packages/linux/network:openssh",
+        "//packages/linux/editors:vim",
+        "//packages/linux/system/apps:sudo",
+    ],
+    description = "Lightweight server with SSH access",
+)
+

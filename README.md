@@ -266,19 +266,138 @@ The kernel config includes support for:
 
 ### Boot in QEMU
 
-```bash
-# Build the system
-buck2 build //packages/system:buckos-rootfs
-buck2 build //packages/kernel:linux-defconfig
+BuckOs provides automated QEMU boot scripts for easy testing.
 
-# Create a disk image (manual step)
-# Then boot with QEMU:
+#### Quick Start
+
+```bash
+# Build the complete QEMU testing environment
+buck2 build //packages/linux/system:qemu-boot
+
+# Run the generated boot script
+./buck-out/v2/gen/root/<hash>/__qemu-boot__/qemu-boot.sh
+
+# Or build and run in one step (find the output path)
+buck2 build //packages/linux/system:qemu-boot --show-output
+```
+
+#### Available QEMU Targets
+
+| Target | Description |
+|--------|-------------|
+| `//packages/linux/system:qemu-boot` | Basic QEMU boot (512MB RAM, 2 CPUs) |
+| `//packages/linux/system:qemu-boot-dev` | Development mode (2GB RAM, 4 CPUs, KVM) |
+| `//packages/linux/system:qemu-boot-full` | Full bootable system with dracut |
+| `//packages/linux/system:qemu-boot-net` | With network (SSH on port 2222) |
+
+#### Building Individual Components
+
+```bash
+# Build the kernel
+buck2 build //packages/linux/kernel:linux
+
+# Build the root filesystem
+buck2 build //packages/linux/system:buckos-rootfs
+
+# Build the initramfs image
+buck2 build //packages/linux/system:buckos-initramfs
+
+# Build bootable system with more packages
+buck2 build //packages/linux/system:buckos-bootable-initramfs
+```
+
+#### Manual QEMU Boot
+
+If you prefer to run QEMU manually:
+
+```bash
+# Build required components
+buck2 build //packages/linux/kernel:linux
+buck2 build //packages/linux/system:buckos-initramfs
+
+# Find the output paths
+KERNEL=$(buck2 build //packages/linux/kernel:linux --show-output | awk '{print $2}')
+INITRAMFS=$(buck2 build //packages/linux/system:buckos-initramfs --show-output | awk '{print $2}')
+
+# Boot with QEMU
 qemu-system-x86_64 \
-    -kernel buck-out/.../linux/boot/vmlinuz \
-    -initrd initramfs.cpio.gz \
-    -append "console=ttyS0" \
+    -machine q35 \
+    -m 512M \
+    -smp 2 \
+    -kernel "$KERNEL/boot/vmlinuz-6.6.10" \
+    -initrd "$INITRAMFS" \
+    -append "console=ttyS0 init=/sbin/init" \
+    -nographic \
+    -no-reboot
+```
+
+#### QEMU Boot Options
+
+**Basic boot (serial console):**
+```bash
+qemu-system-x86_64 \
+    -kernel $KERNEL/boot/vmlinuz-6.6.10 \
+    -initrd $INITRAMFS \
+    -append "console=ttyS0 init=/sbin/init" \
     -nographic
 ```
+
+**With KVM acceleration (requires /dev/kvm):**
+```bash
+qemu-system-x86_64 \
+    -enable-kvm \
+    -kernel $KERNEL/boot/vmlinuz-6.6.10 \
+    -initrd $INITRAMFS \
+    -append "console=ttyS0 init=/sbin/init" \
+    -nographic
+```
+
+**With networking (SSH access):**
+```bash
+qemu-system-x86_64 \
+    -kernel $KERNEL/boot/vmlinuz-6.6.10 \
+    -initrd $INITRAMFS \
+    -append "console=ttyS0 init=/sbin/init" \
+    -nographic \
+    -netdev user,id=net0,hostfwd=tcp::2222-:22 \
+    -device virtio-net-pci,netdev=net0
+```
+
+**With a virtual disk:**
+```bash
+# Create a disk image
+qemu-img create -f qcow2 disk.qcow2 8G
+
+qemu-system-x86_64 \
+    -kernel $KERNEL/boot/vmlinuz-6.6.10 \
+    -initrd $INITRAMFS \
+    -append "console=ttyS0 init=/sbin/init root=/dev/vda" \
+    -nographic \
+    -drive file=disk.qcow2,if=virtio,format=qcow2
+```
+
+#### Exiting QEMU
+
+- Press `Ctrl-A X` to exit QEMU
+- Or type `poweroff` in the shell
+
+#### Troubleshooting
+
+**Kernel panic - not syncing: No init found:**
+- Ensure the initramfs contains `/sbin/init` or BusyBox
+- Check kernel args include `init=/sbin/init`
+
+**Cannot find kernel image:**
+- Verify the kernel build completed: `buck2 build //packages/linux/kernel:linux`
+- Check the output path with `--show-output`
+
+**Slow boot without KVM:**
+- Enable KVM with `-enable-kvm` if your system supports it
+- Check with: `ls /dev/kvm`
+
+**Network not working:**
+- Ensure kernel has VirtIO network support (included in default config)
+- Verify dhcpcd is included in rootfs for DHCP
 
 ## Comparison to Gentoo
 
@@ -306,8 +425,9 @@ MIT License - See individual packages for their respective licenses.
 ## Roadmap
 
 - [x] Platform targeting support (Linux, BSD, macOS, Windows)
-- [ ] Add more packages (openssl, openssh, networking tools)
-- [ ] Create initramfs generation target
+- [x] Add more packages (openssl, openssh, networking tools)
+- [x] Create initramfs generation target
+- [x] Add QEMU testing infrastructure
 - [ ] Add ISO image generation
 - [ ] Implement USE flag-like configuration
 - [ ] Add package versioning and slots

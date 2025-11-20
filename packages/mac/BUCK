@@ -1,0 +1,55 @@
+# macOS packages collection
+#
+# This directory contains packages commonly found in Homebrew and other
+# macOS package managers. Packages are organized by category similar to
+# the Linux packages structure.
+
+load("//defs:platform_defs.bzl", "PLATFORM_MACOS", "platform_filegroup")
+
+# All macOS packages
+filegroup(
+    name = "all",
+    srcs = [
+        "//packages/mac/core:all-core",
+        "//packages/mac/network:all-network",
+        "//packages/mac/dev-tools:all-dev-tools",
+        "//packages/mac/shells:all-shells",
+        "//packages/mac/system:all-system",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Essential packages for a basic macOS development environment
+filegroup(
+    name = "essentials",
+    srcs = [
+        "//packages/mac/core:compression",
+        "//packages/mac/core:terminal-libs",
+        "//packages/mac/network:ssl",
+        "//packages/mac/network/curl",
+        "//packages/mac/dev-tools/git",
+        "//packages/mac/shells/bash",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# GNU utilities (coreutils, findutils, sed, tar, awk, grep)
+# These are prefixed with 'g' on macOS to avoid conflicts with BSD versions
+filegroup(
+    name = "gnu-utils",
+    srcs = [
+        "//packages/mac/core:gnu-utils",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Development essentials
+filegroup(
+    name = "dev-essentials",
+    srcs = [
+        "//packages/mac/dev-tools:all-dev-tools",
+        "//packages/mac/network/curl",
+        "//packages/mac/core:compression",
+    ],
+    visibility = ["PUBLIC"],
+)

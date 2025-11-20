@@ -1,0 +1,36 @@
+# Development tools for macOS
+
+filegroup(
+    name = "all-dev-tools",
+    srcs = [
+        "//packages/mac/dev-tools/git",
+        "//packages/mac/dev-tools/cmake",
+        "//packages/mac/dev-tools/autoconf",
+        "//packages/mac/dev-tools/automake",
+        "//packages/mac/dev-tools/pkg-config",
+        "//packages/mac/dev-tools/make",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Build systems
+filegroup(
+    name = "build-systems",
+    srcs = [
+        "//packages/mac/dev-tools/cmake",
+        "//packages/mac/dev-tools/autoconf",
+        "//packages/mac/dev-tools/automake",
+        "//packages/mac/dev-tools/pkg-config",
+        "//packages/mac/dev-tools/make",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Version control
+filegroup(
+    name = "vcs",
+    srcs = [
+        "//packages/mac/dev-tools/git",
+    ],
+    visibility = ["PUBLIC"],
+)

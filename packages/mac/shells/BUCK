@@ -1,0 +1,10 @@
+# Shell programs for macOS
+
+filegroup(
+    name = "all-shells",
+    srcs = [
+        "//packages/mac/shells/bash",
+        "//packages/mac/shells/zsh",
+    ],
+    visibility = ["PUBLIC"],
+)

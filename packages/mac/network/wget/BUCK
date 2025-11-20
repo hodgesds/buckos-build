@@ -1,0 +1,57 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
+
+use_package(
+    name = "wget",
+    version = "1.24.5",
+    src_uri = "https://ftp.gnu.org/gnu/wget/wget-1.24.5.tar.gz",
+    sha256 = "fa2dc35bab5184ecbc46a9ef83def2aaaa3f4c9f3c97d4bd19dcb07d4da637de",
+    description = "Internet file retriever",
+    homepage = "https://www.gnu.org/software/wget/",
+    license = "GPL-3.0",
+
+    # USE flags this package supports
+    iuse = [
+        "ssl",
+        "gnutls",
+        "idn",
+        "nls",
+        "ipv6",
+        "pcre",
+        "zlib",
+    ],
+
+    # Default USE flags
+    use_defaults = ["ssl", "nls", "ipv6", "zlib"],
+
+    # Conditional dependencies
+    use_deps = {
+        "ssl": ["//packages/mac/network/openssl:openssl"],
+        "zlib": ["//packages/mac/core/zlib"],
+    },
+
+    # Conditional configure arguments
+    use_configure = {
+        "ssl": "--with-ssl=openssl",
+        "gnutls": "--with-ssl=gnutls",
+        "-ssl": "--without-ssl",
+        "idn": "--with-libidn",
+        "-idn": "--without-libidn",
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+        "ipv6": "--enable-ipv6",
+        "-ipv6": "--disable-ipv6",
+        "pcre": "--enable-pcre",
+        "-pcre": "--disable-pcre",
+        "zlib": "--with-zlib",
+        "-zlib": "--without-zlib",
+    },
+
+    deps = [
+        "//packages/mac/network/ca-certificates:ca-certificates",
+    ],
+
+    maintainers = ["mac-team"],
+    visibility = ["PUBLIC"],
+)

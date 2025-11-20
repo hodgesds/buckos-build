@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "binary_package", "rootfs", "initramfs", "qemu_boot_script")
+load("//defs:package_defs.bzl", "binary_package", "rootfs", "initramfs", "qemu_boot_script", "iso_image")
 
 # =============================================================================
 # Base system files - Essential configuration and scripts
@@ -458,5 +458,77 @@ qemu_boot_script(
         "-netdev user,id=net0,hostfwd=tcp::2222-:22",
         "-device virtio-net-pci,netdev=net0",
     ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# ISO images for distribution
+# =============================================================================
+
+# Minimal bootable ISO image
+iso_image(
+    name = "buckos-iso",
+    kernel = "//packages/linux/kernel/linux",
+    initramfs = ":buckos-initramfs",
+    boot_mode = "hybrid",
+    volume_label = "BUCKOS",
+    kernel_args = "quiet init=/sbin/init",
+    visibility = ["PUBLIC"],
+)
+
+# ISO with BIOS-only boot (for older systems)
+iso_image(
+    name = "buckos-iso-bios",
+    kernel = "//packages/linux/kernel/linux",
+    initramfs = ":buckos-initramfs",
+    boot_mode = "bios",
+    volume_label = "BUCKOS",
+    kernel_args = "quiet init=/sbin/init",
+    visibility = ["PUBLIC"],
+)
+
+# ISO with EFI-only boot (for modern systems)
+iso_image(
+    name = "buckos-iso-efi",
+    kernel = "//packages/linux/kernel/linux",
+    initramfs = ":buckos-initramfs",
+    boot_mode = "efi",
+    volume_label = "BUCKOS",
+    kernel_args = "quiet init=/sbin/init",
+    visibility = ["PUBLIC"],
+)
+
+# Live ISO with full rootfs (squashfs compressed)
+iso_image(
+    name = "buckos-live-iso",
+    kernel = "//packages/linux/kernel/linux",
+    initramfs = ":buckos-initramfs",
+    rootfs = ":buckos-rootfs",
+    boot_mode = "hybrid",
+    volume_label = "BUCKOS_LIVE",
+    kernel_args = "quiet init=/sbin/init",
+    visibility = ["PUBLIC"],
+)
+
+# Full bootable ISO with dracut initramfs
+iso_image(
+    name = "buckos-full-iso",
+    kernel = "//packages/linux/kernel/linux",
+    initramfs = ":buckos-bootable-initramfs",
+    rootfs = ":buckos-bootable",
+    boot_mode = "hybrid",
+    volume_label = "BUCKOS_FULL",
+    kernel_args = "quiet init=/sbin/init",
+    visibility = ["PUBLIC"],
+)
+
+# Development ISO with verbose boot
+iso_image(
+    name = "buckos-iso-dev",
+    kernel = "//packages/linux/kernel/linux",
+    initramfs = ":buckos-initramfs",
+    boot_mode = "hybrid",
+    volume_label = "BUCKOS_DEV",
+    kernel_args = "init=/sbin/init loglevel=7 debug",
     visibility = ["PUBLIC"],
 )

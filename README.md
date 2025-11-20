@@ -552,6 +552,39 @@ buck2 build //packages/linux/system:qemu-boot --show-output
 | `//packages/linux/system:qemu-boot-full` | Full bootable system with dracut |
 | `//packages/linux/system:qemu-boot-net` | With network (SSH on port 2222) |
 
+### ISO Image Generation
+
+Build bootable ISO images for distribution or installation:
+
+```bash
+# Build a hybrid (BIOS+EFI) bootable ISO
+buck2 build //packages/linux/system:buckos-iso
+
+# Find the output ISO file
+buck2 build //packages/linux/system:buckos-iso --show-output
+```
+
+#### Available ISO Targets
+
+| Target | Description |
+|--------|-------------|
+| `//packages/linux/system:buckos-iso` | Minimal hybrid ISO (BIOS+EFI) |
+| `//packages/linux/system:buckos-iso-bios` | BIOS-only boot (for older systems) |
+| `//packages/linux/system:buckos-iso-efi` | EFI-only boot (for modern systems) |
+| `//packages/linux/system:buckos-live-iso` | Live ISO with squashfs rootfs |
+| `//packages/linux/system:buckos-full-iso` | Full system with dracut initramfs |
+| `//packages/linux/system:buckos-iso-dev` | Development ISO with verbose boot |
+
+#### Writing ISO to USB
+
+```bash
+# Find the built ISO
+ISO=$(buck2 build //packages/linux/system:buckos-iso --show-output | awk '{print $2}')
+
+# Write to USB drive (replace /dev/sdX with your device)
+sudo dd if="$ISO" of=/dev/sdX bs=4M status=progress conv=fsync
+```
+
 #### Building Individual Components
 
 ```bash
@@ -699,6 +732,6 @@ MIT License - See individual packages for their respective licenses.
 - [x] Implement system profiles and package sets
 - [x] Create initramfs generation target
 - [x] Add QEMU testing infrastructure
-- [ ] Add ISO image generation
+- [x] Add ISO image generation
 - [ ] Create package manager for installed systems
 - [ ] Add packages for BSD, macOS, and Windows platforms

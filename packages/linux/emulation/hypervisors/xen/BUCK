@@ -1,4 +1,5 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # Xen hypervisor
 download_source(
@@ -6,6 +7,8 @@ download_source(
     src_uri = "https://downloads.xenproject.org/release/xen/4.18.3/xen-4.18.3.tar.gz",
     sha256 = "b21d9c7b0c10dc55d06b2086d7c30bb0f2aee0edbe3e5c0a06f79e7e8a3a5eaa",
 )
+
+# USE flags: See use_flags.bzl for available flags
 
 configure_make_package(
     name = "xen",
@@ -41,6 +44,8 @@ configure_make_package(
 )
 
 # Xen tools only (hypervisor already installed)
+# USE flags: See use_flags.bzl for available flags
+
 configure_make_package(
     name = "xen-tools",
     source = ":xen-src",
@@ -66,6 +71,8 @@ configure_make_package(
 )
 
 # Xen libraries for guest OS
+# USE flags: See use_flags.bzl for available flags
+
 configure_make_package(
     name = "xen-libs",
     source = ":xen-src",

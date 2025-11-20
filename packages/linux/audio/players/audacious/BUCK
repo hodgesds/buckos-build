@@ -1,4 +1,11 @@
 load("//defs:package_defs.bzl", "download_source", "meson_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+# USE flags for audacious (meson build):
+# - gtk: GTK+ interface (default: enabled)
+# - qt5: Qt5 interface (default: disabled)
+# - dbus: D-Bus support (default: enabled)
+# - libarchive: Archive support (default: disabled)
 
 download_source(
     name = "audacious-src",

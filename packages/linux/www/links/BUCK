@@ -1,37 +1,55 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "links-src",
+# links - Text and graphics mode web browser
+#
+# USE flags:
+#   ssl        - Enable SSL/TLS support with OpenSSL
+#   zlib       - Enable zlib compression
+#   bzip2      - Enable bzip2 compression
+#   lzma       - Enable LZMA compression
+#   X          - Enable X11 graphics support
+#   fb         - Enable framebuffer graphics support
+#   javascript - Enable JavaScript support
+
+use_package(
+    name = "links",
+    version = "2.29",
     src_uri = "http://links.twibright.com/download/links-2.29.tar.bz2",
     sha256 = "a7b3c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7",
-)
-
-configure_make_package(
-    name = "links",
-    source = ":links-src",
-    version = "2.29",
     description = "Text and graphics mode web browser with JavaScript support",
     homepage = "http://links.twibright.com/",
     license = "GPL-2.0",
-    configure_args = [
-        "--enable-graphics",
-        "--with-ssl",
-        "--with-zlib",
-        "--with-bzip2",
-        "--with-lzma",
-        "--with-x",
-        "--with-fb",
-        "--without-directfb",
-        "--enable-javascript",
-    ],
+    iuse = ["ssl", "zlib", "bzip2", "lzma", "X", "fb", "javascript"],
+    use_defaults = ["ssl", "zlib", "bzip2", "lzma", "X", "fb", "javascript"],
     deps = [
         "//packages/linux/core/ncurses",
-        "//packages/linux/core/zlib",
-        "//packages/linux/core/bzip2",
-        "//packages/linux/core/xz",
-        "//packages/linux/network/openssl:openssl",
-        "//packages/linux/desktop/libpng",
-        "//packages/linux/desktop/libjpeg-turbo",
     ],
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "zlib": ["//packages/linux/core/zlib"],
+        "bzip2": ["//packages/linux/core/bzip2"],
+        "lzma": ["//packages/linux/core/xz"],
+        "X": ["//packages/linux/desktop/libpng", "//packages/linux/desktop/libjpeg-turbo"],
+    },
+    configure_args = [
+        "--enable-graphics",
+    ],
+    use_configure = {
+        "ssl": "--with-ssl",
+        "-ssl": "--without-ssl",
+        "zlib": "--with-zlib",
+        "-zlib": "--without-zlib",
+        "bzip2": "--with-bzip2",
+        "-bzip2": "--without-bzip2",
+        "lzma": "--with-lzma",
+        "-lzma": "--without-lzma",
+        "X": "--with-x",
+        "-X": "--without-x",
+        "fb": "--with-fb",
+        "-fb": "--without-fb",
+        "javascript": "--enable-javascript",
+        "-javascript": "--disable-javascript",
+    },
     visibility = ["PUBLIC"],
 )

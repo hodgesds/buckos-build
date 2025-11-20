@@ -1,4 +1,12 @@
 load("//defs:package_defs.bzl", "download_source", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+
+# perf - Linux performance analysis tool
+#
+# USE flags:
+#   zlib     - Enable zlib compression
+#   python   - Enable Python scripting
+#   libbpf   - Enable BPF support
 
 download_source(
     name = "perf-src",
@@ -19,8 +27,11 @@ binary_package(
         mkdir -p $OUT/usr/bin
         cp perf $OUT/usr/bin/
     """,
-    deps = [
-        "//packages/linux/core/zlib",
-    ],
+    deps = use_dep(
+        {
+            "zlib": ["//packages/linux/core/zlib"],
+        },
+        ["zlib"],
+    ),
     visibility = ["PUBLIC"],
 )

@@ -1,26 +1,38 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
+# =============================================================================
 # arpwatch - Ethernet/IP address pairing monitor
-download_source(
-    name = "arpwatch-src",
+# =============================================================================
+
+use_package(
+    name = "arpwatch",
+    version = "3.3",
     src_uri = "https://ee.lbl.gov/downloads/arpwatch.tar.gz",
     sha256 = "688b9ed8f8e8f2d9e7e5f5c7f8a0b1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7d4",
-)
 
-configure_make_package(
-    name = "arpwatch",
-    source = ":arpwatch-src",
-    version = "3.3",
-    description = "Ethernet/IP address pairing monitor",
-    homepage = "https://ee.lbl.gov/",
-    license = "BSD-3-Clause",
+    iuse = ["email"],
+    use_defaults = ["email"],
+
+    use_deps = {},
+
+    use_configure = {
+        "email": "--with-sendmail",
+        "-email": "--without-sendmail",
+    },
+
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
     ],
+
     deps = [
         "//packages/linux/core:musl",
-        "//packages/linux/network/libpcap",
+        "//packages/linux/network/libpcap:libpcap",
     ],
+
+    description = "Ethernet/IP address pairing monitor",
+    homepage = "https://ee.lbl.gov/",
+    license = "BSD-3-Clause",
     visibility = ["PUBLIC"],
 )

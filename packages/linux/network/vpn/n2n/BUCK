@@ -1,37 +1,44 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "n2n-src",
+use_package(
+    name = "n2n",
+    version = "3.0",
     src_uri = "https://github.com/ntop/n2n/archive/refs/tags/3.0.tar.gz",
     sha256 = "c3d4e5f6789012345678901234567890abcdef1234567890abcdef1234567890",
-)
 
-configure_make_package(
-    name = "n2n",
-    source = ":n2n-src",
-    version = "3.0",
-    description = "Peer-to-peer VPN daemon",
-    homepage = "https://www.ntop.org/products/n2n/",
-    license = "GPL-3.0",
+    iuse = ["ssl", "zlib"],
+    use_defaults = ["ssl", "zlib"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "zlib": ["//packages/linux/core:zlib"],
+    },
+
+    use_configure = {},
+
     pre_configure = """
 mkdir -p build
 cd build
-cmake .. \
-    -DCMAKE_INSTALL_PREFIX=/usr \
+cmake .. \\
+    -DCMAKE_INSTALL_PREFIX=/usr \\
     -DN2N_OPTION_AES=ON
 """,
+
     make_args = ["-C", "build"],
+
     post_install = """
 cd build
 make DESTDIR=$DESTDIR install
 mkdir -p "$DESTDIR/etc/n2n"
 """,
-    deps = [
-        "//packages/linux/network:openssl",
-        "//packages/linux/core:zlib",
-    ],
+
     build_deps = [
         "//packages/linux/core:cmake",
     ],
+
+    description = "Peer-to-peer VPN daemon",
+    homepage = "https://www.ntop.org/products/n2n/",
+    license = "GPL-3.0",
     visibility = ["PUBLIC"],
 )

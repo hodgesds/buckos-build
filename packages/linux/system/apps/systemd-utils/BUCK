@@ -1,6 +1,9 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # systemd-utils - Standalone systemd utilities
+# USE flags: (meson build system with many options)
+
 download_source(
     name = "systemd-utils-src",
     src_uri = "https://github.com/systemd/systemd/archive/refs/tags/v255.tar.gz",
@@ -14,6 +17,8 @@ configure_make_package(
     description = "Standalone systemd utilities (udevd, tmpfiles, etc.)",
     homepage = "https://systemd.io",
     license = "LGPL-2.1+",
+    # USE flags: caps, seccomp, acl, selinux
+    # This package uses meson build system
     build_system = "meson",
     configure_args = [
         "-Dprefix=/usr",

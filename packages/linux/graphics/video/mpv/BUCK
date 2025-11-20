@@ -1,6 +1,20 @@
 load("//defs:package_defs.bzl", "download_source", "meson_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # mpv - A free, open source, and cross-platform media player
+
+# USE flags for mpv (meson build):
+# - X: X11 support (default: enabled)
+# - wayland: Wayland support (default: enabled)
+# - opengl: OpenGL support (default: enabled)
+# - vulkan: Vulkan support (default: enabled)
+# - vaapi: VA-API hardware acceleration (default: enabled)
+# - vdpau: VDPAU hardware acceleration (default: enabled)
+# - alsa: ALSA audio (default: enabled)
+# - pulseaudio: PulseAudio audio (default: enabled)
+# - pipewire: PipeWire audio (default: enabled)
+# - jack: JACK audio (default: enabled)
+# - lua: Lua scripting (default: enabled)
 
 download_source(
     name = "mpv-src",

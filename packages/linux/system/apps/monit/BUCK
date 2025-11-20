@@ -1,28 +1,36 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # monit - Process supervisor and monitoring tool
-download_source(
-    name = "monit-src",
+# USE flags: ssl, pam
+
+use_package(
+    name = "monit",
+    version = "5.34.3",
     src_uri = "https://mmonit.com/monit/dist/monit-5.34.3.tar.gz",
     sha256 = "669d8b95ddec124d1444ba5264f67fdeae8e90e53b2929719f4750fc5ff3ba60",
-)
-
-configure_make_package(
-    name = "monit",
-    source = ":monit-src",
-    version = "5.34.3",
     description = "Utility for monitoring and managing Unix systems",
     homepage = "https://mmonit.com/monit/",
     license = "GPL-3.0",
+    iuse = ["ssl", "pam"],
+    use_defaults = ["ssl"],
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl"],
+        "pam": ["//packages/linux/system/security/auth/pam"],
+    },
+    use_configure = {
+        "ssl": "--with-ssl-dir=/usr",
+        "-ssl": "--without-ssl",
+        "pam": "--with-pam",
+        "-pam": "--without-pam",
+    },
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc/monit",
         "--bindir=/usr/sbin",
-        "--with-ssl-dir=/usr",
     ],
     deps = [
         "//packages/linux/core:musl",
-        "//packages/linux/network/openssl",
     ],
     visibility = ["PUBLIC"],
 )

@@ -1,22 +1,30 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # doas - Simple sudo alternative from OpenBSD
-download_source(
-    name = "doas-src",
+# USE flags: pam, persist, timestamp-timeout
+
+use_package(
+    name = "doas",
+    version = "6.8.2",
     src_uri = "https://github.com/Duncaen/OpenDoas/releases/download/v6.8.2/opendoas-6.8.2.tar.xz",
     sha256 = "6d6a5a6f0c6e7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3",
-)
-
-configure_make_package(
-    name = "doas",
-    source = ":doas-src",
-    version = "6.8.2",
     description = "Simple sudo alternative from OpenBSD",
     homepage = "https://github.com/Duncaen/OpenDoas",
     license = "ISC",
+    iuse = ["pam", "persist", "static-libs"],
+    use_defaults = [],
+    use_deps = {
+        "pam": ["//packages/linux/system/security/auth/pam"],
+    },
+    use_configure = {
+        "pam": "--with-pam",
+        "-pam": "--without-pam",
+        "persist": "--with-timestamp",
+        "-persist": "--without-timestamp",
+    },
     configure_args = [
         "--prefix=/usr",
-        "--without-pam",
     ],
     deps = ["//packages/linux/core:musl"],
     visibility = ["PUBLIC"],

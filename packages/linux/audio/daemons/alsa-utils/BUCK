@@ -1,29 +1,36 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "alsa-utils-src",
+use_package(
+    name = "alsa-utils",
+    version = "1.2.11",
     src_uri = "https://www.alsa-project.org/files/pub/utils/alsa-utils-1.2.11.tar.bz2",
     sha256 = "9e70386e9e04c19e3e4f2f6c7b8c4fe0b0d55b1e3d3f3a3a8c8e8a5c5e5f5e5a",
-)
-
-configure_make_package(
-    name = "alsa-utils",
-    source = ":alsa-utils-src",
-    version = "1.2.11",
     description = "ALSA utilities including alsamixer, amixer, aplay, arecord",
     homepage = "https://www.alsa-project.org/",
     license = "GPL-2",
+    iuse = ["ncurses", "doc", "nls"],
+    use_defaults = ["ncurses"],
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
         "--disable-alsaconf",
         "--disable-bat",
         "--disable-xmlto",
-        "--with-curses=ncurses",
     ],
+    use_configure = {
+        "ncurses": "--with-curses=ncurses",
+        "-ncurses": "--without-curses",
+        "doc": "--enable-xmlto",
+        "-doc": "--disable-xmlto",
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+    },
+    use_deps = {
+        "ncurses": ["//packages/linux/core:ncurses"],
+    },
     deps = [
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
-        "//packages/linux/core:ncurses",
         "//packages/linux/core:musl",
     ],
     visibility = ["PUBLIC"],

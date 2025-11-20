@@ -1,4 +1,14 @@
 load("//defs:package_defs.bzl", "download_source", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+
+# firefox - Mozilla Firefox web browser
+#
+# USE flags:
+#   alsa        - Enable ALSA audio support
+#   pulseaudio  - Enable PulseAudio support
+#   wayland     - Enable Wayland support
+#   X           - Enable X11 support
+#   debug       - Enable debugging symbols
 
 download_source(
     name = "firefox-src",
@@ -42,15 +52,18 @@ MOZCONFIG
         ./mach build
         DESTDIR="$OUT" ./mach install
     """,
-    deps = [
-        "//packages/linux/core/zlib",
-        "//packages/linux/desktop/gtk",
-        "//packages/linux/network/nss",
-        "//packages/linux/network/nspr",
-        "//packages/linux/lang/python:python",
-        "//packages/linux/lang/rust:rust",
-        "//packages/linux/lang/cbindgen:cbindgen",
-        "//packages/linux/lang/nodejs:nodejs",
-    ],
+    deps = use_dep(
+        {
+            "zlib": ["//packages/linux/core/zlib"],
+            "gtk": ["//packages/linux/desktop/gtk"],
+            "nss": ["//packages/linux/network/nss"],
+            "nspr": ["//packages/linux/network/nspr"],
+            "python": ["//packages/linux/lang/python:python"],
+            "rust": ["//packages/linux/lang/rust:rust"],
+            "cbindgen": ["//packages/linux/lang/cbindgen:cbindgen"],
+            "nodejs": ["//packages/linux/lang/nodejs:nodejs"],
+        },
+        ["zlib", "gtk", "nss", "nspr", "python", "rust", "cbindgen", "nodejs"],
+    ),
     visibility = ["PUBLIC"],
 )

@@ -1,29 +1,45 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # memcached - High-performance distributed memory object caching system
+#
+# USE flags:
+#   ssl      - Enable SSL/TLS support
+#   seccomp  - Enable seccomp sandboxing
+#   sasl     - Enable SASL authentication
+#   doc      - Build documentation
 
-download_source(
-    name = "memcached-src",
+use_package(
+    name = "memcached",
+    version = "1.6.28",
     src_uri = "https://www.memcached.org/files/memcached-1.6.28.tar.gz",
     sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b8",
-)
-
-configure_make_package(
-    name = "memcached",
-    source = ":memcached-src",
-    version = "1.6.28",
     description = "High-performance distributed memory object caching system",
     homepage = "https://memcached.org/",
     license = "BSD-3-Clause",
-    configure_args = [
-        "--prefix=/usr",
-        "--enable-64bit",
-        "--enable-seccomp",
-        "--disable-docs",
-    ],
+    iuse = ["ssl", "seccomp", "sasl", "doc"],
+    use_defaults = ["seccomp"],
     deps = [
         "//packages/linux/core:musl",
         "//packages/linux/system/libs/libevent",
     ],
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "sasl": ["//packages/linux/network/cyrus-sasl:cyrus-sasl"],
+    },
+    configure_args = [
+        "--prefix=/usr",
+        "--enable-64bit",
+    ],
+    use_configure = {
+        "ssl": "--enable-tls",
+        "-ssl": "--disable-tls",
+        "seccomp": "--enable-seccomp",
+        "-seccomp": "--disable-seccomp",
+        "sasl": "--enable-sasl",
+        "-sasl": "--disable-sasl",
+        "doc": "--enable-docs",
+        "-doc": "--disable-docs",
+    },
     visibility = ["PUBLIC"],
 )

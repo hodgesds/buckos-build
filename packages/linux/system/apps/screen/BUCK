@@ -1,24 +1,36 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # screen - Terminal multiplexer with detach capability
-download_source(
-    name = "screen-src",
+# USE flags: pam, multiuser, selinux
+
+use_package(
+    name = "screen",
+    version = "4.9.1",
     src_uri = "https://ftp.gnu.org/gnu/screen/screen-4.9.1.tar.gz",
     sha256 = "26cef3e3c42571c0d484ad6faf110c5c15091fbf872b06fa7aa4766c7405ac69",
-)
-
-configure_make_package(
-    name = "screen",
-    source = ":screen-src",
-    version = "4.9.1",
     description = "GNU screen terminal multiplexer",
     homepage = "https://www.gnu.org/software/screen",
     license = "GPL-3+",
+    iuse = ["pam", "multiuser", "selinux", "debug"],
+    use_defaults = [],
+    use_deps = {
+        "pam": ["//packages/linux/system/security/auth/pam"],
+        "selinux": ["//packages/linux/system/security/selinux"],
+    },
+    use_configure = {
+        "pam": "--enable-pam",
+        "-pam": "--disable-pam",
+        "multiuser": "--enable-socket-dir",
+        "-multiuser": "--disable-socket-dir",
+        "selinux": "--enable-selinux",
+        "-selinux": "--disable-selinux",
+        "debug": "--enable-debug",
+        "-debug": "--disable-debug",
+    },
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
-        "--disable-pam",
-        "--disable-socket-dir",
     ],
     deps = [
         "//packages/linux/core:musl",

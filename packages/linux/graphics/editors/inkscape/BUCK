@@ -1,4 +1,10 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+# USE flags for inkscape (cmake build):
+# - dbus: D-Bus support (default: enabled)
+# - imagemagick: ImageMagick support (default: enabled)
+# - openmp: OpenMP parallel processing (default: enabled)
 
 download_source(
     name = "inkscape-src",

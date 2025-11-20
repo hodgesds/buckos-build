@@ -1,26 +1,23 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # lsb-release - LSB release information utility
+# USE flags: (minimal package)
 
-download_source(
-    name = "lsb-release-src",
+use_package(
+    name = "lsb-release",
+    version = "3.2",
     src_uri = "https://github.com/lsb/lsb-release/archive/refs/tags/v3.2.tar.gz",
     sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
-)
-
-configure_make_package(
-    name = "lsb-release",
-    source = ":lsb-release-src",
-    version = "3.2",
     description = "LSB release information utility",
     homepage = "https://wiki.linuxfoundation.org/lsb/start",
     license = "GPL-2.0-only",
-    build_in_source = True,
+    iuse = [],
+    use_defaults = [],
+    use_deps = {},
+    use_configure = {},
     configure_args = [],
     make_args = [],
-    install_args = [
-        "PREFIX=/usr",
-    ],
     deps = [
         "//packages/linux/core:musl",
     ],

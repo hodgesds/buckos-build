@@ -2,12 +2,15 @@
 # Reduce power consumption through various kernel and hardware settings
 
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 download_source(
     name = "laptop-mode-tools-src",
     src_uri = "https://github.com/rickysarraf/laptop-mode-tools/archive/refs/tags/1.74.tar.gz",
     sha256 = "b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4",
 )
+
+# USE flags: See use_flags.bzl for available flags
 
 configure_make_package(
     name = "laptop-mode-tools",

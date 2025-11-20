@@ -1,18 +1,35 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "nginx-src",
+# nginx - High-performance HTTP server and reverse proxy
+#
+# USE flags:
+#   ssl       - Enable SSL/TLS support with OpenSSL
+#   http2     - Enable HTTP/2 protocol support
+#   stream    - Enable TCP/UDP proxy (stream module)
+#   pcre      - Enable PCRE regular expressions
+#   gzip      - Enable gzip compression
+#   realip    - Enable real IP detection behind proxies
+#   stub_status - Enable server status page
+
+use_package(
+    name = "nginx",
+    version = "1.26.2",
     src_uri = "https://nginx.org/download/nginx-1.26.2.tar.gz",
     sha256 = "d95e811f70a2e9e8a4b1f3c7e8b4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
-)
-
-configure_make_package(
-    name = "nginx",
-    source = ":nginx-src",
-    version = "1.26.2",
     description = "High-performance HTTP server and reverse proxy",
     homepage = "https://nginx.org/",
     license = "BSD-2-Clause",
+    iuse = ["ssl", "http2", "stream", "pcre", "gzip", "realip", "stub_status"],
+    use_defaults = ["ssl", "http2", "pcre", "gzip", "realip", "stub_status"],
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:zlib",
+    ],
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "pcre": ["//packages/linux/core:pcre2"],
+    },
     configure_args = [
         "--prefix=/etc/nginx",
         "--sbin-path=/usr/sbin/nginx",
@@ -27,15 +44,16 @@ configure_make_package(
         "--http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp",
         "--http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp",
         "--http-scgi-temp-path=/var/cache/nginx/scgi_temp",
-        "--with-http_ssl_module",
-        "--with-http_v2_module",
-        "--with-http_realip_module",
-        "--with-http_gzip_static_module",
-        "--with-http_stub_status_module",
-        "--with-pcre",
-        "--with-stream",
-        "--with-stream_ssl_module",
     ],
+    use_configure = {
+        "ssl": "--with-http_ssl_module",
+        "http2": "--with-http_v2_module",
+        "stream": "--with-stream",
+        "pcre": "--with-pcre",
+        "gzip": "--with-http_gzip_static_module",
+        "realip": "--with-http_realip_module",
+        "stub_status": "--with-http_stub_status_module",
+    },
     post_install = """
 mkdir -p "$DESTDIR/var/cache/nginx"
 mkdir -p "$DESTDIR/var/log/nginx"
@@ -43,10 +61,5 @@ mkdir -p "$DESTDIR/etc/nginx/conf.d"
 mkdir -p "$DESTDIR/etc/nginx/sites-available"
 mkdir -p "$DESTDIR/etc/nginx/sites-enabled"
 """,
-    deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:zlib",
-        "//packages/linux/network/openssl:openssl",
-    ],
     visibility = ["PUBLIC"],
 )

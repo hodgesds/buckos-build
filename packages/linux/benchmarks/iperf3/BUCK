@@ -1,23 +1,35 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "iperf3-src",
+# iperf3 - Network bandwidth measurement tool
+#
+# USE flags:
+#   ssl      - Enable SSL/TLS support with OpenSSL
+#   sctp     - Enable SCTP support
+
+use_package(
+    name = "iperf3",
+    version = "3.16",
     src_uri = "https://github.com/esnet/iperf/releases/download/3.16/iperf-3.16.tar.gz",
     sha256 = "cc740c6bbea104f62d4b7c05a8227f56d81dc48e94bcb6297636e844b72cb016",
-)
-
-configure_make_package(
-    name = "iperf3",
-    source = ":iperf3-src",
-    version = "3.16",
     description = "Network bandwidth measurement tool - TCP, UDP, and SCTP",
     homepage = "https://software.es.net/iperf/",
     license = "BSD-3-Clause",
+    iuse = ["ssl", "sctp"],
+    use_defaults = ["ssl"],
+    deps = [],
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl"],
+        "sctp": ["//packages/linux/network/lksctp-tools"],
+    },
     configure_args = [
         "--disable-static",
     ],
-    deps = [
-        "//packages/linux/network/openssl",
-    ],
+    use_configure = {
+        "ssl": "--with-openssl",
+        "-ssl": "--without-openssl",
+        "sctp": "--enable-sctp",
+        "-sctp": "--disable-sctp",
+    },
     visibility = ["PUBLIC"],
 )

@@ -1,26 +1,41 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
+# =============================================================================
 # ethtool - Utility for controlling network drivers and hardware
-download_source(
-    name = "ethtool-src",
+# =============================================================================
+
+use_package(
+    name = "ethtool",
+    version = "6.11",
     src_uri = "https://mirrors.edge.kernel.org/pub/software/network/ethtool/ethtool-6.11.tar.xz",
     sha256 = "8d91f5c72ae3f25b7e88d4781279dcb320f71e30058914370b1c574c96b31202",
-)
 
-configure_make_package(
-    name = "ethtool",
-    source = ":ethtool-src",
-    version = "6.11",
-    description = "Utility for controlling network drivers and hardware",
-    homepage = "https://mirrors.edge.kernel.org/pub/software/network/ethtool/",
-    license = "GPL-2.0",
+    iuse = ["pretty-dump", "netlink"],
+    use_defaults = ["netlink"],
+
+    use_deps = {
+        "netlink": ["//packages/linux/core:libnl"],
+    },
+
+    use_configure = {
+        "pretty-dump": "--enable-pretty-dump",
+        "-pretty-dump": "--disable-pretty-dump",
+        "netlink": "--enable-netlink",
+        "-netlink": "--disable-netlink",
+    },
+
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
-        "--disable-pretty-dump",
     ],
+
     deps = [
         "//packages/linux/core:musl",
     ],
+
+    description = "Utility for controlling network drivers and hardware",
+    homepage = "https://mirrors.edge.kernel.org/pub/software/network/ethtool/",
+    license = "GPL-2.0",
     visibility = ["PUBLIC"],
 )

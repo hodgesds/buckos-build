@@ -1,6 +1,12 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 # couchdb - Document-oriented NoSQL database
+#
+# USE flags:
+#   erlang   - Erlang runtime (always required)
+#   spidermonkey - JavaScript engine version
+
 download_source(
     name = "couchdb-src",
     src_uri = "https://dlcdn.apache.org/couchdb/source/3.3.3/apache-couchdb-3.3.3.tar.gz",
@@ -19,9 +25,12 @@ configure_make_package(
         "--user=couchdb",
         "--spidermonkey-version=91",
     ],
-    deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/lang/erlang:erlang",
-    ],
+    deps = use_dep(
+        {
+            "erlang": ["//packages/linux/lang/erlang:erlang"],
+            "musl": ["//packages/linux/core:musl"],
+        },
+        ["erlang", "musl"],
+    ),
     visibility = ["PUBLIC"],
 )

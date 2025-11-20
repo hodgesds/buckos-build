@@ -1,34 +1,45 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "powerdns-src",
+use_package(
+    name = "powerdns",
+    version = "4.8.4",
     src_uri = "https://downloads.powerdns.com/releases/pdns-4.8.4.tar.bz2",
     sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
-)
 
-configure_make_package(
-    name = "powerdns",
-    source = ":powerdns-src",
-    version = "4.8.4",
-    description = "PowerDNS authoritative server",
-    homepage = "https://www.powerdns.com/",
-    license = "GPL-2.0-only",
+    iuse = ["ssl", "tools", "ixfrdist", "sqlite"],
+    use_defaults = ["ssl", "tools", "ixfrdist", "sqlite"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "sqlite": ["//packages/linux/core:sqlite"],
+    },
+
+    use_configure = {
+        "tools": "--enable-tools",
+        "-tools": "--disable-tools",
+        "ixfrdist": "--enable-ixfrdist",
+        "-ixfrdist": "--disable-ixfrdist",
+        "ssl": "--enable-dns-over-tls",
+        "-ssl": "--disable-dns-over-tls",
+    },
+
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc/powerdns",
         "--localstatedir=/var",
         "--with-modules=bind gsqlite3",
         "--with-dynmodules=",
-        "--enable-tools",
-        "--enable-ixfrdist",
-        "--enable-dns-over-tls",
         "--disable-static",
     ],
+
     deps = [
-        "//packages/linux/network/openssl:openssl",
         "//packages/linux/core:musl",
-        "//packages/linux/core:sqlite",
         "//packages/linux/core:zlib",
     ],
+
+    description = "PowerDNS authoritative server",
+    homepage = "https://www.powerdns.com/",
+    license = "GPL-2.0-only",
     visibility = ["PUBLIC"],
 )

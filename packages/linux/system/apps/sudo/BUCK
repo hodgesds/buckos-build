@@ -1,29 +1,42 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # sudo - Execute commands as another user
-download_source(
-    name = "sudo-src",
+# USE flags: pam, selinux, nls, sssd, ldap
+
+use_package(
+    name = "sudo",
+    version = "1.9.15p5",
     src_uri = "https://www.sudo.ws/dist/sudo-1.9.15p5.tar.gz",
     sha256 = "558d10b9a1991fb3b9fa7fa7b07ec4405b7aefb5b3cb0b0871dbc81e3c88f1e5",
-)
-
-configure_make_package(
-    name = "sudo",
-    source = ":sudo-src",
-    version = "1.9.15p5",
     description = "Execute commands as another user with security policy",
     homepage = "https://www.sudo.ws",
     license = "ISC",
+    iuse = ["pam", "selinux", "nls", "sssd", "ldap", "static-libs"],
+    use_defaults = [],
+    use_deps = {
+        "pam": ["//packages/linux/system/security/auth/pam"],
+        "selinux": ["//packages/linux/system/security/selinux"],
+        "ldap": ["//packages/linux/system/security/auth/directory/openldap"],
+    },
+    use_configure = {
+        "pam": "--with-pam",
+        "-pam": "--disable-pam",
+        "selinux": "--with-selinux",
+        "-selinux": "--without-selinux",
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+        "sssd": "--with-sssd",
+        "-sssd": "--without-sssd",
+        "ldap": "--with-ldap",
+        "-ldap": "--without-ldap",
+    },
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
         "--libexecdir=/usr/lib",
         "--with-rundir=/run/sudo",
         "--with-vardir=/var/db/sudo",
-        "--disable-pam",
-        "--disable-nls",
-        "--without-selinux",
-        "--without-sssd",
     ],
     deps = ["//packages/linux/core:musl"],
     visibility = ["PUBLIC"],

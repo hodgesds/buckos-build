@@ -2,12 +2,15 @@
 # Wireless daemon for Linux optimized for minimal resources
 
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 download_source(
     name = "iwd-src",
     src_uri = "https://kernel.org/pub/linux/network/wireless/iwd-2.13.tar.xz",
     sha256 = "b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8",
 )
+
+# USE flags: See use_flags.bzl for available flags
 
 configure_make_package(
     name = "iwd",

@@ -1,31 +1,39 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "ncmpcpp-src",
+use_package(
+    name = "ncmpcpp",
+    version = "0.9.2",
     src_uri = "https://github.com/ncmpcpp/ncmpcpp/archive/refs/tags/v0.9.2.tar.gz",
     sha256 = "a4b3b4c5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3",
-)
-
-configure_make_package(
-    name = "ncmpcpp",
-    source = ":ncmpcpp-src",
-    version = "0.9.2",
     description = "NCurses Music Player Client Plus Plus - featureful ncurses MPD client",
     homepage = "https://github.com/ncmpcpp/ncmpcpp",
     license = "GPL-2",
+    iuse = ["visualizer", "clock", "outputs", "curl", "taglib", "fftw"],
+    use_defaults = ["visualizer", "clock", "outputs", "curl", "taglib"],
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
-        "--enable-outputs",
-        "--enable-visualizer",
-        "--enable-clock",
-        "--with-curl",
-        "--with-taglib",
-        "--without-fftw",
     ],
+    use_configure = {
+        "visualizer": "--enable-visualizer",
+        "-visualizer": "--disable-visualizer",
+        "clock": "--enable-clock",
+        "-clock": "--disable-clock",
+        "outputs": "--enable-outputs",
+        "-outputs": "--disable-outputs",
+        "curl": "--with-curl",
+        "-curl": "--without-curl",
+        "taglib": "--with-taglib",
+        "-taglib": "--without-taglib",
+        "fftw": "--with-fftw",
+        "-fftw": "--without-fftw",
+    },
+    use_deps = {
+        "curl": ["//packages/linux/core:curl"],
+    },
     deps = [
         "//packages/linux/core:ncurses",
-        "//packages/linux/core:curl",
         "//packages/linux/core:musl",
         "//packages/linux/core:readline",
     ],

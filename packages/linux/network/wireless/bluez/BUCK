@@ -1,18 +1,38 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "bluez-src",
+use_package(
+    name = "bluez",
+    version = "5.72",
     src_uri = "https://www.kernel.org/pub/linux/bluetooth/bluez-5.72.tar.xz",
     sha256 = "499d7fa345a996c1bb650f5c6749e1d929111fa6ece0be0e98687fee6124536e",
-)
 
-configure_make_package(
-    name = "bluez",
-    source = ":bluez-src",
-    version = "5.72",
-    description = "Official Linux Bluetooth protocol stack",
-    homepage = "https://www.bluez.org/",
-    license = "GPL-2.0-or-later",
+    iuse = ["deprecated", "experimental", "mesh", "midi", "nfc", "sixaxis", "systemd", "udev", "readline"],
+    use_defaults = ["deprecated", "experimental", "mesh", "midi", "nfc", "sixaxis", "readline"],
+
+    use_deps = {
+        "readline": ["//packages/linux/core:readline"],
+    },
+
+    use_configure = {
+        "deprecated": "--enable-deprecated",
+        "-deprecated": "--disable-deprecated",
+        "experimental": "--enable-experimental",
+        "-experimental": "--disable-experimental",
+        "mesh": "--enable-mesh",
+        "-mesh": "--disable-mesh",
+        "midi": "--enable-midi",
+        "-midi": "--disable-midi",
+        "nfc": "--enable-nfc",
+        "-nfc": "--disable-nfc",
+        "sixaxis": "--enable-sixaxis",
+        "-sixaxis": "--disable-sixaxis",
+        "systemd": "--enable-systemd",
+        "-systemd": "--disable-systemd",
+        "udev": "--enable-udev",
+        "-udev": "--disable-udev",
+    },
+
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
@@ -20,21 +40,17 @@ configure_make_package(
         "--libexecdir=/usr/lib",
         "--enable-library",
         "--enable-tools",
-        "--enable-deprecated",
-        "--enable-experimental",
-        "--enable-mesh",
-        "--enable-midi",
-        "--enable-nfc",
-        "--enable-sixaxis",
         "--enable-hid2hci",
-        "--disable-systemd",
-        "--disable-udev",
     ],
+
     deps = [
         "//packages/linux/core:musl",
         "//packages/linux/core:glib",
-        "//packages/linux/core:readline",
         "//packages/linux/core:ncurses",
     ],
+
+    description = "Official Linux Bluetooth protocol stack",
+    homepage = "https://www.bluez.org/",
+    license = "GPL-2.0-or-later",
     visibility = ["PUBLIC"],
 )

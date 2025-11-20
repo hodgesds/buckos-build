@@ -1,23 +1,31 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # findutils - GNU find utilities
-download_source(
-    name = "findutils-src",
+# USE flags: nls, selinux
+
+use_package(
+    name = "findutils",
+    version = "4.9.0",
     src_uri = "https://ftp.gnu.org/gnu/findutils/findutils-4.9.0.tar.xz",
     sha256 = "a2bfb8c09d436770edc59f50fa483e785b161a3b7b9d547573cb08065fd462fe",
-)
-
-configure_make_package(
-    name = "findutils",
-    source = ":findutils-src",
-    version = "4.9.0",
     description = "GNU find, xargs, and locate utilities",
     homepage = "https://www.gnu.org/software/findutils",
     license = "GPL-3+",
+    iuse = ["nls", "selinux"],
+    use_defaults = [],
+    use_deps = {
+        "selinux": ["//packages/linux/system/security/selinux"],
+    },
+    use_configure = {
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+        "selinux": "--with-selinux",
+        "-selinux": "--without-selinux",
+    },
     configure_args = [
         "--prefix=/usr",
         "--localstatedir=/var/lib/locate",
-        "--disable-nls",
     ],
     deps = ["//packages/linux/core:musl"],
     visibility = ["PUBLIC"],

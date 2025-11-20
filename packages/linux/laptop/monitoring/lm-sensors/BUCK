@@ -2,12 +2,15 @@
 # Provides tools and drivers for hardware monitoring
 
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 download_source(
     name = "lm-sensors-src",
     src_uri = "https://github.com/lm-sensors/lm-sensors/archive/refs/tags/V3-6-0.tar.gz",
     sha256 = "0591f9fa0339f0d15e75326d0365871c2d4e2ed8aa1ff759b3a55d3b6d7e3e5a",
 )
+
+# USE flags: See use_flags.bzl for available flags
 
 configure_make_package(
     name = "lm-sensors",

@@ -1,26 +1,51 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "ncurses-src",
+use_package(
+    name = "ncurses",
+    version = "6.4",
     src_uri = "https://ftp.gnu.org/gnu/ncurses/ncurses-6.4.tar.gz",
     sha256 = "6931283d9ac87c5073f30b6290c4c75f21632bb4fc3603ac8100812bed248159",
-)
-
-configure_make_package(
-    name = "ncurses",
-    source = ":ncurses-src",
-    version = "6.4",
     description = "Libraries for terminal handling",
     homepage = "https://invisible-island.net/ncurses/",
     license = "MIT",
+
+    # USE flags this package supports
+    iuse = [
+        "debug",
+        "ada",
+        "cxx",
+        "static-libs",
+        "unicode",
+        "threads",
+    ],
+
+    # Default USE flags
+    use_defaults = ["unicode", "cxx"],
+
+    # Conditional configure arguments
+    use_configure = {
+        "debug": "--with-debug",
+        "-debug": "--without-debug",
+        "ada": "--with-ada",
+        "-ada": "--without-ada",
+        "cxx": "--with-cxx",
+        "-cxx": "--without-cxx",
+        "static-libs": "--with-normal",
+        "-static-libs": "--without-normal",
+        "unicode": "--enable-widec",
+        "-unicode": "--disable-widec",
+        "threads": "--with-pthread",
+        "-threads": "--without-pthread",
+    },
+
+    # Base configure arguments (always applied)
     configure_args = [
         "--with-shared",
-        "--without-debug",
-        "--without-ada",
-        "--enable-widec",
         "--enable-pc-files",
         "--with-pkg-config-libdir=/usr/lib/pkgconfig",
     ],
+
     post_install = """
 # Create compatibility symlinks for wide-character libraries
 cd "$DESTDIR/usr/lib"

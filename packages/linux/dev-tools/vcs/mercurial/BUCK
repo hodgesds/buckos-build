@@ -1,18 +1,30 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "mercurial-src",
+use_package(
+    name = "mercurial",
+    version = "6.6",
     src_uri = "https://www.mercurial-scm.org/release/mercurial-6.6.tar.gz",
     sha256 = "a50e253f09ddd94d1512ee3cf820b95b39aa31cbb3b43caac4a44658a61e9449",
-)
-
-configure_make_package(
-    name = "mercurial",
-    source = ":mercurial-src",
-    version = "6.6",
     description = "Scalable distributed SCM tool",
     homepage = "https://www.mercurial-scm.org/",
     license = "GPL-2+",
+
+    # USE flags this package supports
+    iuse = [
+        "doc",
+        "rust",
+    ],
+
+    # Default USE flags
+    use_defaults = [],
+
+    # Conditional configure arguments
+    use_configure = {
+        "rust": "HGWITHRUSTEXT=cpython",
+        "-rust": "",
+    },
+
     make_args = [
         "PREFIX=/usr",
         "PYTHON=/usr/bin/python3",

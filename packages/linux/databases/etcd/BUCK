@@ -1,6 +1,11 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 # etcd - Distributed key-value store
+#
+# USE flags:
+#   go       - Go runtime (always required)
+
 download_source(
     name = "etcd-src",
     src_uri = "https://github.com/etcd-io/etcd/archive/refs/tags/v3.5.12.tar.gz",
@@ -22,8 +27,11 @@ configure_make_package(
         "install -Dm755 bin/etcd ${DESTDIR}/usr/bin/etcd",
         "install -Dm755 bin/etcdctl ${DESTDIR}/usr/bin/etcdctl",
     ],
-    deps = [
-        "//packages/linux/lang/go:go",
-    ],
+    deps = use_dep(
+        {
+            "go": ["//packages/linux/lang/go:go"],
+        },
+        ["go"],
+    ),
     visibility = ["PUBLIC"],
 )

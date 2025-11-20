@@ -1,27 +1,27 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "abcde-src",
+use_package(
+    name = "abcde",
+    version = "2.9.3",
     src_uri = "https://abcde.einval.com/download/abcde-2.9.3.tar.gz",
     sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6c7d8e9f0a1b2",
-)
-
-configure_make_package(
-    name = "abcde",
-    source = ":abcde-src",
-    version = "2.9.3",
     description = "A Better CD Encoder - CD ripper and encoder",
     homepage = "https://abcde.einval.com/",
     license = "GPL-2",
+    iuse = ["flac", "vorbis", "mp3", "opus", "aac"],
+    use_defaults = ["flac", "vorbis", "mp3", "opus"],
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
     ],
+    use_deps = {
+        "flac": ["//packages/linux/audio/libraries/flac:flac"],
+        "vorbis": ["//packages/linux/audio/libraries/libvorbis:libvorbis"],
+        "mp3": ["//packages/linux/audio/libraries/lame:lame"],
+        "opus": ["//packages/linux/audio/libraries/opus:opus"],
+    },
     deps = [
-        "//packages/linux/audio/libraries/flac:flac",
-        "//packages/linux/audio/libraries/libvorbis:libvorbis",
-        "//packages/linux/audio/libraries/lame:lame",
-        "//packages/linux/audio/libraries/opus:opus",
         "//packages/linux/core:musl",
     ],
     visibility = ["PUBLIC"],

@@ -1,27 +1,41 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # =============================================================================
 # libpcap - Packet capture library
 # =============================================================================
 
-download_source(
-    name = "libpcap-src",
+use_package(
+    name = "libpcap",
+    version = "1.10.4",
     src_uri = "https://www.tcpdump.org/release/libpcap-1.10.4.tar.gz",
     sha256 = "ed19a0383fad72e3ad435fd239d7cd80d64916f87ef7b9e79e3a8e97b0e9e789",
-)
 
-configure_make_package(
-    name = "libpcap",
-    source = ":libpcap-src",
-    version = "1.10.4",
+    iuse = ["dbus", "bluetooth", "rdma", "usb", "static-libs"],
+    use_defaults = [],
+
+    use_deps = {
+        "dbus": ["//packages/linux/core:dbus"],
+        "usb": ["//packages/linux/core:libusb"],
+    },
+
+    use_configure = {
+        "dbus": "--enable-dbus",
+        "-dbus": "--disable-dbus",
+        "bluetooth": "--enable-bluetooth",
+        "-bluetooth": "--disable-bluetooth",
+        "rdma": "--enable-rdma",
+        "-rdma": "--disable-rdma",
+        "usb": "--enable-usb",
+        "-usb": "--disable-usb",
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+    },
+
+    deps = ["//packages/linux/core:musl"],
+
     description = "Packet capture library",
     homepage = "https://www.tcpdump.org/",
     license = "BSD-3-Clause",
-    configure_args = [
-        "--disable-dbus",
-        "--disable-rdma",
-        "--disable-bluetooth",
-    ],
-    deps = ["//packages/linux/core:musl"],
     visibility = ["PUBLIC"],
 )

@@ -1,18 +1,24 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "nsd-src",
+use_package(
+    name = "nsd",
+    version = "4.8.0",
     src_uri = "https://nlnetlabs.nl/downloads/nsd/nsd-4.8.0.tar.gz",
     sha256 = "d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
-)
 
-configure_make_package(
-    name = "nsd",
-    source = ":nsd-src",
-    version = "4.8.0",
-    description = "NSD - Name Server Daemon (authoritative-only DNS server)",
-    homepage = "https://nlnetlabs.nl/projects/nsd/",
-    license = "BSD-3-Clause",
+    iuse = ["ssl", "ratelimit"],
+    use_defaults = ["ssl", "ratelimit"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+    },
+
+    use_configure = {
+        "ratelimit": "--enable-ratelimit",
+        "-ratelimit": "--disable-ratelimit",
+    },
+
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
@@ -22,12 +28,15 @@ configure_make_package(
         "--with-pidfile=/run/nsd/nsd.pid",
         "--with-xfrdfile=/var/lib/nsd/xfrd.state",
         "--with-ssl=/usr",
-        "--enable-ratelimit",
         "--enable-packed",
     ],
+
     deps = [
-        "//packages/linux/network/openssl:openssl",
         "//packages/linux/core:musl",
     ],
+
+    description = "NSD - Name Server Daemon (authoritative-only DNS server)",
+    homepage = "https://nlnetlabs.nl/projects/nsd/",
+    license = "BSD-3-Clause",
     visibility = ["PUBLIC"],
 )

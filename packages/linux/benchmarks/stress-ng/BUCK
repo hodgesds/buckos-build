@@ -1,24 +1,35 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "stress-ng-src",
+# stress-ng - Stress test tool for Linux systems
+#
+# USE flags:
+#   static   - Build static binary
+#   zlib     - Enable zlib compression tests
+
+use_package(
+    name = "stress-ng",
+    version = "0.17.08",
     src_uri = "https://github.com/ColinIanKing/stress-ng/archive/refs/tags/V0.17.08.tar.gz",
     sha256 = "a8ce0fba9625b0f1d4e32be6bc65ee3f6b2aedf6aa9156df9b8eb31e3e4f4af8",
-)
-
-configure_make_package(
-    name = "stress-ng",
-    source = ":stress-ng-src",
-    version = "0.17.08",
     description = "Stress test tool for Linux systems - CPU, memory, I/O, and more",
     homepage = "https://github.com/ColinIanKing/stress-ng",
     license = "GPL-2.0",
+    iuse = ["static", "zlib"],
+    use_defaults = ["static"],
+    deps = [],
+    use_deps = {
+        "zlib": ["//packages/linux/core:zlib"],
+    },
     pre_configure = """
 # stress-ng uses make directly without configure
 true
 """,
     configure_args = [],
-    make_args = ["STATIC=1"],
+    make_args = [],
+    use_configure = {
+        "static": "STATIC=1",
+    },
     post_install = """
 mkdir -p "$DESTDIR/usr/bin"
 cp stress-ng "$DESTDIR/usr/bin/" 2>/dev/null || true

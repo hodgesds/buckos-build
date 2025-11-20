@@ -1,30 +1,38 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-# snort - Network intrusion detection system
-download_source(
-    name = "snort-src",
+use_package(
+    name = "snort",
+    version = "2.9.20",
     src_uri = "https://www.snort.org/downloads/snort/snort-2.9.20.tar.gz",
     sha256 = "29c0b7d5c5eb5a8b3f1c2d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a",
-)
 
-configure_make_package(
-    name = "snort",
-    source = ":snort-src",
-    version = "2.9.20",
-    description = "Network intrusion detection and prevention system",
-    homepage = "https://www.snort.org",
-    license = "GPL-2",
+    iuse = ["sourcefire", "threads"],
+    use_defaults = ["sourcefire", "threads"],
+
+    use_deps = {},
+
+    use_configure = {
+        "sourcefire": "--enable-sourcefire",
+        "-sourcefire": "--disable-sourcefire",
+        "threads": "--enable-pthread",
+        "-threads": "--disable-pthread",
+    },
+
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc/snort",
         "--localstatedir=/var",
-        "--enable-sourcefire",
-        "--enable-pthread",
     ],
+
     deps = [
         "//packages/linux/core:musl",
         "//packages/linux/network/libpcap:libpcap",
         "//packages/linux/core/pcre:pcre",
     ],
+
+    description = "Network intrusion detection and prevention system",
+    homepage = "https://www.snort.org",
+    license = "GPL-2",
     visibility = ["PUBLIC"],
 )

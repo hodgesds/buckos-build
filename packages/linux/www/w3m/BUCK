@@ -1,32 +1,49 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "w3m-src",
+# w3m - Text-based web browser with tables and frames support
+#
+# USE flags:
+#   ssl      - Enable SSL/TLS support with OpenSSL
+#   ipv6     - Enable IPv6 support
+#   nls      - Enable native language support
+#   unicode  - Enable Unicode support
+#   image    - Enable framebuffer image support
+#   ncurses  - Use ncurses for terminal handling
+
+use_package(
+    name = "w3m",
+    version = "0.5.3+git20230121",
     src_uri = "https://github.com/tats/w3m/releases/download/v0.5.3+git20230121/w3m-0.5.3+git20230121.tar.gz",
     sha256 = "6c9f3b63a0f5c7f7e8e9d2a5b4c7e1f3a5b7d9e1c3a5b7d9f1a3c5d7e9f1a3b5",
-)
-
-configure_make_package(
-    name = "w3m",
-    source = ":w3m-src",
-    version = "0.5.3+git20230121",
     description = "Text-based web browser with support for tables, frames, and images",
     homepage = "https://w3m.sourceforge.net/",
     license = "MIT",
-    configure_args = [
-        "--enable-image=fb",
-        "--with-ssl",
-        "--with-termlib=ncurses",
-        "--enable-unicode",
-        "--enable-nls",
-        "--enable-ipv6",
-        "--disable-w3mmailer",
-    ],
+    iuse = ["ssl", "ipv6", "nls", "unicode", "image", "ncurses"],
+    use_defaults = ["ssl", "ipv6", "nls", "unicode", "ncurses"],
     deps = [
-        "//packages/linux/core/ncurses",
-        "//packages/linux/core/zlib",
-        "//packages/linux/network/openssl:openssl",
         "//packages/linux/core/gc",
     ],
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "ncurses": ["//packages/linux/core/ncurses"],
+        "zlib": ["//packages/linux/core/zlib"],
+    },
+    configure_args = [
+        "--disable-w3mmailer",
+    ],
+    use_configure = {
+        "ssl": "--with-ssl",
+        "-ssl": "--without-ssl",
+        "ipv6": "--enable-ipv6",
+        "-ipv6": "--disable-ipv6",
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+        "unicode": "--enable-unicode",
+        "-unicode": "--disable-unicode",
+        "image": "--enable-image=fb",
+        "-image": "--disable-image",
+        "ncurses": "--with-termlib=ncurses",
+    },
     visibility = ["PUBLIC"],
 )

@@ -1,25 +1,48 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "fossil-src",
+use_package(
+    name = "fossil",
+    version = "2.23",
     src_uri = "https://fossil-scm.org/home/tarball/version-2.23/fossil-2.23.tar.gz",
     sha256 = "c54e17ab25be1f11cb1d2f8b2d85e9d3a8a3b24e6f5e9a1e3c5a7b8d9e2c3f1a",
-)
-
-configure_make_package(
-    name = "fossil",
-    source = ":fossil-src",
-    version = "2.23",
     description = "Simple, high-reliability, distributed software configuration management",
     homepage = "https://fossil-scm.org/",
     license = "BSD-2-Clause",
+
+    # USE flags this package supports
+    iuse = [
+        "ssl",
+        "json",
+        "tcl",
+    ],
+
+    # Default USE flags
+    use_defaults = ["ssl"],
+
+    # Conditional dependencies
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "tcl": ["//packages/linux/lang/tcl:tcl"],
+    },
+
+    # Conditional configure arguments
+    use_configure = {
+        "ssl": "--with-openssl=/usr",
+        "-ssl": "--without-openssl",
+        "json": "--json",
+        "-json": "--disable-json",
+        "tcl": "--with-tcl",
+        "-tcl": "--without-tcl",
+    },
+
+    # Base configure arguments (always applied)
     configure_args = [
-        "--with-openssl=/usr",
         "--with-zlib=/usr",
     ],
+
     deps = [
         "//packages/linux/core/zlib:zlib",
-        "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],
 )

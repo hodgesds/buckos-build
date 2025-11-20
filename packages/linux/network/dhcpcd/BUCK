@@ -1,24 +1,43 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "dhcpcd-src",
+# =============================================================================
+# dhcpcd - DHCP client daemon
+# =============================================================================
+
+use_package(
+    name = "dhcpcd",
+    version = "10.0.6",
     src_uri = "https://github.com/NetworkConfiguration/dhcpcd/releases/download/v10.0.6/dhcpcd-10.0.6.tar.xz",
     sha256 = "779a99d85b66e5e39cd0e8d5b03b4096d89ae87c01aedf16d3f7b4e790163b87",
-)
 
-configure_make_package(
-    name = "dhcpcd",
-    source = ":dhcpcd-src",
-    version = "10.0.6",
-    description = "DHCP/IPv4LL/IPv6RS/DHCPv6 client",
-    homepage = "https://roy.marples.name/projects/dhcpcd",
-    license = "BSD-2-Clause",
+    iuse = ["udev", "ipv6", "auth", "embedded"],
+    use_defaults = ["ipv6"],
+
+    use_deps = {
+        "udev": ["//packages/linux/core:eudev"],
+    },
+
+    use_configure = {
+        "udev": "--with-udev",
+        "-udev": "--without-udev",
+        "ipv6": "--enable-ipv6",
+        "-ipv6": "--disable-ipv6",
+        "auth": "--enable-auth",
+        "-auth": "--disable-auth",
+        "embedded": "--enable-embedded",
+        "-embedded": "--disable-embedded",
+    },
+
     configure_args = [
         "--prefix=/usr",
         "--sbindir=/sbin",
         "--sysconfdir=/etc",
         "--rundir=/run",
-        "--without-udev",
     ],
+
+    description = "DHCP/IPv4LL/IPv6RS/DHCPv6 client",
+    homepage = "https://roy.marples.name/projects/dhcpcd",
+    license = "BSD-2-Clause",
     visibility = ["PUBLIC"],
 )

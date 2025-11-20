@@ -1,26 +1,30 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "alsa-lib-src",
+use_package(
+    name = "alsa-lib",
+    version = "1.2.11",
     src_uri = "https://www.alsa-project.org/files/pub/lib/alsa-lib-1.2.11.tar.bz2",
     sha256 = "9f3f2f69b995f9ad37a68f424322c1f3e8f0e76f39f9b9c86d52ed8a07dc3c5a",
-)
-
-configure_make_package(
-    name = "alsa-lib",
-    source = ":alsa-lib-src",
-    version = "1.2.11",
     description = "Advanced Linux Sound Architecture library",
     homepage = "https://www.alsa-project.org/",
     license = "LGPL-2.1",
+    iuse = ["static-libs", "debug", "python", "doc"],
+    use_defaults = [],
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
         "--with-configdir=/etc/alsa",
         "--with-plugindir=/usr/lib/alsa-lib",
-        "--disable-python",
-        "--disable-static",
     ],
+    use_configure = {
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+        "debug": "--enable-debug",
+        "-debug": "--disable-debug",
+        "python": "--enable-python",
+        "-python": "--disable-python",
+    },
     deps = [
         "//packages/linux/core:musl",
     ],

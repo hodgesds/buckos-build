@@ -1,4 +1,10 @@
 load("//defs:package_defs.bzl", "download_source", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+
+# caddy - Fast, multi-platform web server with automatic HTTPS
+#
+# USE flags:
+#   This is a pre-built Go binary, minimal USE flag customization available
 
 download_source(
     name = "caddy-src",

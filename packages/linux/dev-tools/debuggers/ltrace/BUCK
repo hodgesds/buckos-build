@@ -1,20 +1,36 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "ltrace-src",
+use_package(
+    name = "ltrace",
+    version = "0.7.3",
     src_uri = "https://www.ltrace.org/ltrace-0.7.3.tar.bz2",
     sha256 = "0e6f8c077471b544c06def7192d983861ad2f8688dd5504beae62f0c5f5b9503",
-)
-
-configure_make_package(
-    name = "ltrace",
-    source = ":ltrace-src",
-    version = "0.7.3",
     description = "Library call tracer",
     homepage = "https://www.ltrace.org/",
     license = "GPL-2+",
+
+    # USE flags this package supports
+    iuse = [
+        "unwind",
+        "debug",
+    ],
+
+    # Default USE flags
+    use_defaults = [],
+
+    # Conditional configure arguments
+    use_configure = {
+        "unwind": "--with-libunwind",
+        "-unwind": "--without-libunwind",
+        "debug": "--enable-debug",
+        "-debug": "--disable-debug",
+    },
+
+    # Base configure arguments (always applied)
     configure_args = [
         "--disable-werror",
     ],
+
     visibility = ["PUBLIC"],
 )

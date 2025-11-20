@@ -1,24 +1,32 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # logrotate - Log file rotation utility
-download_source(
-    name = "logrotate-src",
+# USE flags: selinux, acl
+
+use_package(
+    name = "logrotate",
+    version = "3.21.0",
     src_uri = "https://github.com/logrotate/logrotate/releases/download/3.21.0/logrotate-3.21.0.tar.xz",
     sha256 = "8fa12015e3b8415c121fc9c0ca53aa872f7b0702f543afda7e32b6c54727def2",
-)
-
-configure_make_package(
-    name = "logrotate",
-    source = ":logrotate-src",
-    version = "3.21.0",
     description = "Rotates, compresses, and mails system logs",
     homepage = "https://github.com/logrotate/logrotate",
     license = "GPL-2+",
+    iuse = ["selinux", "acl"],
+    use_defaults = [],
+    use_deps = {
+        "selinux": ["//packages/linux/system/security/selinux"],
+        "acl": ["//packages/linux/system/libs/ipc/acl"],
+    },
+    use_configure = {
+        "selinux": "--with-selinux",
+        "-selinux": "--without-selinux",
+        "acl": "--with-acl",
+        "-acl": "--without-acl",
+    },
     configure_args = [
         "--prefix=/usr",
         "--with-state-file-path=/var/lib/logrotate/status",
-        "--without-selinux",
-        "--without-acl",
     ],
     deps = ["//packages/linux/core:musl"],
     visibility = ["PUBLIC"],

@@ -1,33 +1,61 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-# postgresql - Powerful, open source object-relational database system
+# postgresql - Powerful object-relational database system
+#
+# USE flags:
+#   ssl      - Enable SSL/TLS support with OpenSSL
+#   readline - Enable readline support for psql
+#   zlib     - Enable zlib compression
+#   threads  - Enable multi-threading support
+#   xml      - Enable XML support
+#   uuid     - Enable UUID support
+#   ldap     - Enable LDAP authentication
+#   pam      - Enable PAM authentication
 
-download_source(
-    name = "postgresql-src",
+use_package(
+    name = "postgresql",
+    version = "16.2",
     src_uri = "https://ftp.postgresql.org/pub/source/v16.2/postgresql-16.2.tar.bz2",
     sha256 = "446e88294dbc2c8f8e4f5c2c6d9e6a9b0c8c5c3e0f7d9a5b2e1f3c4d5a6b7c8d",
-)
-
-configure_make_package(
-    name = "postgresql",
-    source = ":postgresql-src",
-    version = "16.2",
     description = "Powerful, open source object-relational database system",
     homepage = "https://www.postgresql.org/",
     license = "PostgreSQL",
+    iuse = ["ssl", "readline", "zlib", "threads", "xml", "uuid", "ldap", "pam"],
+    use_defaults = ["ssl", "readline", "zlib", "threads"],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl"],
+        "readline": ["//packages/linux/core:readline"],
+        "zlib": ["//packages/linux/core:zlib"],
+        "xml": ["//packages/linux/core:libxml2"],
+        "uuid": ["//packages/linux/core:util-linux"],
+        "ldap": ["//packages/linux/network/openldap:openldap"],
+        "pam": ["//packages/linux/system/pam:pam"],
+    },
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
-        "--with-openssl",
-        "--with-readline",
-        "--with-zlib",
-        "--enable-thread-safety",
     ],
-    deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:zlib",
-        "//packages/linux/core:readline",
-        "//packages/linux/network/openssl",
-    ],
+    use_configure = {
+        "ssl": "--with-openssl",
+        "-ssl": "--without-openssl",
+        "readline": "--with-readline",
+        "-readline": "--without-readline",
+        "zlib": "--with-zlib",
+        "-zlib": "--without-zlib",
+        "threads": "--enable-thread-safety",
+        "-threads": "--disable-thread-safety",
+        "xml": "--with-libxml",
+        "-xml": "--without-libxml",
+        "uuid": "--with-uuid=e2fs",
+        "-uuid": "--without-uuid",
+        "ldap": "--with-ldap",
+        "-ldap": "--without-ldap",
+        "pam": "--with-pam",
+        "-pam": "--without-pam",
+    },
     visibility = ["PUBLIC"],
 )

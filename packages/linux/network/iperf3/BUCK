@@ -1,29 +1,42 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # =============================================================================
 # iperf3 - Network bandwidth measurement tool
 # =============================================================================
 
-download_source(
-    name = "iperf3-src",
+use_package(
+    name = "iperf3",
+    version = "3.16",
     src_uri = "https://downloads.es.net/pub/iperf/iperf-3.16.tar.gz",
     sha256 = "dbcf6f1dc00fab2d29a2ab1d2fab8f1ce03e5086f85e40d5e855757ac0e58a8e",
-)
 
-configure_make_package(
-    name = "iperf3",
-    source = ":iperf3-src",
-    version = "3.16",
+    iuse = ["ssl", "static-libs", "sctp"],
+    use_defaults = ["ssl"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+    },
+
+    use_configure = {
+        "ssl": "--with-openssl",
+        "-ssl": "--without-openssl",
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+        "sctp": "--enable-sctp",
+        "-sctp": "--disable-sctp",
+    },
+
+    configure_args = [
+        "--enable-shared",
+    ],
+
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+
     description = "Network bandwidth measurement and testing tool",
     homepage = "https://software.es.net/iperf/",
     license = "BSD-3-Clause",
-    configure_args = [
-        "--enable-shared",
-        "--enable-static",
-    ],
-    deps = [
-        "//packages/linux/network/openssl:openssl",
-        "//packages/linux/core:musl",
-    ],
     visibility = ["PUBLIC"],
 )

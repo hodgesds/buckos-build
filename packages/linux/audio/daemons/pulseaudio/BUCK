@@ -1,4 +1,17 @@
 load("//defs:package_defs.bzl", "download_source", "meson_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+# USE flags for pulseaudio (meson build):
+# - alsa: ALSA support (default: enabled)
+# - bluetooth: Bluetooth/BlueZ5 support (default: disabled)
+# - dbus: D-Bus support (default: enabled)
+# - gstreamer: GStreamer support (default: disabled)
+# - jack: JACK support (default: disabled)
+# - X: X11 support (default: disabled)
+# - gtk: GTK+ support (default: disabled)
+# - ssl: OpenSSL support (default: disabled)
+# - systemd: systemd integration (default: disabled)
+# - doc: Documentation (default: disabled)
 
 download_source(
     name = "pulseaudio-src",

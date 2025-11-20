@@ -1,6 +1,9 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # supervisor - Process control system
+# USE flags: (Python-based package)
+
 download_source(
     name = "supervisor-src",
     src_uri = "https://github.com/Supervisor/supervisor/archive/refs/tags/4.2.5.tar.gz",
@@ -14,6 +17,7 @@ configure_make_package(
     description = "Process control system for Unix",
     homepage = "http://supervisord.org",
     license = "BSD",
+    # USE flags: (Python-based, limited configure options)
     build_system = "python",
     build_commands = [
         "pip install --prefix=${DESTDIR}/usr .",

@@ -1,21 +1,37 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "cvs-src",
+use_package(
+    name = "cvs",
+    version = "1.12.13",
     src_uri = "https://ftp.gnu.org/non-gnu/cvs/source/feature/1.12.13/cvs-1.12.13.tar.bz2",
     sha256 = "78853613b9a6873a30e1cc2417f738c330e75f887afdaf7b3d0800cb19ca515e",
-)
-
-configure_make_package(
-    name = "cvs",
-    source = ":cvs-src",
-    version = "1.12.13",
     description = "Concurrent Versions System - source code revision control tools",
     homepage = "https://cvs.nongnu.org/",
     license = "GPL-2",
+
+    # USE flags this package supports
+    iuse = [
+        "kerberos",
+        "nls",
+    ],
+
+    # Default USE flags
+    use_defaults = [],
+
+    # Conditional configure arguments
+    use_configure = {
+        "kerberos": "--with-gssapi",
+        "-kerberos": "--without-gssapi",
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+    },
+
+    # Base configure arguments (always applied)
     configure_args = [
         "--with-external-zlib",
     ],
+
     deps = [
         "//packages/linux/core/zlib:zlib",
     ],

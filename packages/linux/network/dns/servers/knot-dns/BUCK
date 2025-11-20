@@ -1,32 +1,42 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "knot-dns-src",
+use_package(
+    name = "knot-dns",
+    version = "3.3.5",
     src_uri = "https://secure.nic.cz/files/knot-dns/knot-3.3.5.tar.xz",
     sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
-)
 
-configure_make_package(
-    name = "knot-dns",
-    source = ":knot-dns-src",
-    version = "3.3.5",
-    description = "High-performance authoritative DNS server",
-    homepage = "https://www.knot-dns.cz/",
-    license = "GPL-3.0-or-later",
+    iuse = ["ssl", "idn", "dnstap", "maxminddb"],
+    use_defaults = ["ssl", "idn", "dnstap", "maxminddb"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "idn": ["//packages/linux/network/dns/libraries/libidn2:libidn2"],
+    },
+
+    use_configure = {
+        "dnstap": "--enable-dnstap",
+        "-dnstap": "--disable-dnstap",
+        "maxminddb": "--enable-maxminddb",
+        "-maxminddb": "--disable-maxminddb",
+    },
+
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
         "--localstatedir=/var",
         "--with-rundir=/run/knot",
         "--with-storage=/var/lib/knot",
-        "--enable-dnstap",
-        "--enable-maxminddb",
         "--disable-static",
     ],
+
     deps = [
-        "//packages/linux/network/openssl:openssl",
         "//packages/linux/core:musl",
-        "//packages/linux/network/dns/libraries/libidn2:libidn2",
     ],
+
+    description = "High-performance authoritative DNS server",
+    homepage = "https://www.knot-dns.cz/",
+    license = "GPL-3.0-or-later",
     visibility = ["PUBLIC"],
 )

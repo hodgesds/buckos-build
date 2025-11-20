@@ -1,4 +1,9 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+
+# cppcheck - Static analysis for C/C++ (cmake build)
+# USE flags: qt5, pcre, test
+# Default: pcre
 
 download_source(
     name = "cppcheck-src",

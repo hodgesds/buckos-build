@@ -1,17 +1,21 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "patchelf-src",
+use_package(
+    name = "patchelf",
+    version = "0.18.0",
     src_uri = "https://github.com/NixOS/patchelf/releases/download/0.18.0/patchelf-0.18.0.tar.bz2",
     sha256 = "64de10e4c6b8b8379db7e87f58030f336ea747c0515f381132e810dbf84a86e7",
-)
-
-configure_make_package(
-    name = "patchelf",
-    source = ":patchelf-src",
-    version = "0.18.0",
     description = "Utility to modify the dynamic linker and RPATH of ELF executables",
     homepage = "https://github.com/NixOS/patchelf",
     license = "GPL-3",
+
+    iuse = ["static"],
+    use_defaults = [],
+    use_configure = {
+        "static": "--enable-static",
+        "-static": "--disable-static",
+    },
+
     visibility = ["PUBLIC"],
 )

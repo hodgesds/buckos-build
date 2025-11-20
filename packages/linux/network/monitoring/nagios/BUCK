@@ -1,19 +1,27 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # nagios - Network monitoring system
-download_source(
-    name = "nagios-src",
+
+use_package(
+    name = "nagios",
+    version = "4.5.0",
     src_uri = "https://github.com/NagiosEnterprises/nagioscore/releases/download/nagios-4.5.0/nagios-4.5.0.tar.gz",
     sha256 = "47c42a3e2c736d68d05ae22c42a8ebc0c99c4d31e24daa47a63e07c7e2a40e2f",
-)
 
-configure_make_package(
-    name = "nagios",
-    source = ":nagios-src",
-    version = "4.5.0",
-    description = "Network monitoring and management system",
-    homepage = "https://www.nagios.org",
-    license = "GPL-2",
+    iuse = ["ssl", "perl", "web"],
+    use_defaults = ["ssl", "perl", "web"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "perl": ["//packages/linux/lang/perl:perl"],
+    },
+
+    use_configure = {
+        "web": "--with-httpd-conf=/etc/apache2/conf.d",
+        "-web": "--without-httpd-conf",
+    },
+
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc/nagios",
@@ -23,9 +31,14 @@ configure_make_package(
         "--with-command-user=nagios",
         "--with-command-group=nagios",
     ],
+
     deps = [
         "//packages/linux/core:musl",
         "//packages/linux/dev-libs/glib:glib",
     ],
+
+    description = "Network monitoring and management system",
+    homepage = "https://www.nagios.org",
+    license = "GPL-2",
     visibility = ["PUBLIC"],
 )

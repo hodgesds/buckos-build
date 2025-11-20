@@ -1,4 +1,13 @@
 load("//defs:package_defs.bzl", "download_source", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+# USE flags for ardour (waf build system):
+# - alsa: ALSA backend (default: enabled)
+# - jack: JACK backend (default: enabled)
+# - pulseaudio: PulseAudio backend (default: disabled)
+# - lv2: LV2 plugin support (default: disabled)
+# - vst: VST plugin support (default: disabled)
+# - nls: Native language support (default: disabled)
 
 download_source(
     name = "ardour-src",

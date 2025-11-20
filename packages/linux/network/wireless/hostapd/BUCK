@@ -1,18 +1,21 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "hostapd-src",
+use_package(
+    name = "hostapd",
+    version = "2.10",
     src_uri = "https://w1.fi/releases/hostapd-2.10.tar.gz",
     sha256 = "206e7c799b678572c2e3d12030238571804a073034d1b7d0d15c7e6e803c6787",
-)
 
-configure_make_package(
-    name = "hostapd",
-    source = ":hostapd-src",
-    version = "2.10",
-    description = "IEEE 802.11 AP, IEEE 802.1X/WPA/WPA2/EAP/RADIUS Authenticator",
-    homepage = "https://w1.fi/hostapd/",
-    license = "BSD-3-Clause",
+    iuse = ["ssl", "wps", "ipv6", "acs", "sae", "owe", "dpp", "fils"],
+    use_defaults = ["ssl", "wps", "ipv6", "acs", "sae", "owe", "dpp", "fils"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+    },
+
+    use_configure = {},
+
     pre_configure = """
 cd hostapd
 cat > .config << 'EOF'
@@ -46,11 +49,12 @@ CONFIG_DPP=y
 CONFIG_FILS=y
 EOF
 """,
-    configure_args = [],
+
     make_args = [
         "-C", "hostapd",
         "BINDIR=/usr/sbin",
     ],
+
     post_install = """
 cd hostapd
 install -d "$DESTDIR/usr/sbin"
@@ -61,9 +65,13 @@ install -m 755 hostapd_cli "$DESTDIR/usr/sbin/"
 install -m 644 hostapd.8 "$DESTDIR/usr/share/man/man8/" 2>/dev/null || true
 install -m 644 hostapd_cli.1 "$DESTDIR/usr/share/man/man1/" 2>/dev/null || true
 """,
+
     deps = [
         "//packages/linux/core:musl",
-        "//packages/linux/network/openssl:openssl",
     ],
+
+    description = "IEEE 802.11 AP, IEEE 802.1X/WPA/WPA2/EAP/RADIUS Authenticator",
+    homepage = "https://w1.fi/hostapd/",
+    license = "BSD-3-Clause",
     visibility = ["PUBLIC"],
 )

@@ -2,12 +2,15 @@
 # Generic input driver for the X.Org server based on libinput
 
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 download_source(
     name = "xf86-input-libinput-src",
     src_uri = "https://xorg.freedesktop.org/releases/individual/driver/xf86-input-libinput-1.4.0.tar.xz",
     sha256 = "e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5",
 )
+
+# USE flags: See use_flags.bzl for available flags
 
 configure_make_package(
     name = "xf86-input-libinput",

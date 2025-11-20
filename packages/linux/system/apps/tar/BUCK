@@ -1,22 +1,35 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # tar - GNU tape archiver
-download_source(
-    name = "tar-src",
+# USE flags: nls, acl, xattr, selinux
+
+use_package(
+    name = "tar",
+    version = "1.35",
     src_uri = "https://ftp.gnu.org/gnu/tar/tar-1.35.tar.xz",
     sha256 = "4d62ff37342ec7aed748535323930c7cf94acf71c3591882b26a7ea50f3edc16",
-)
-
-configure_make_package(
-    name = "tar",
-    source = ":tar-src",
-    version = "1.35",
     description = "GNU tape archiver for creating and extracting archives",
     homepage = "https://www.gnu.org/software/tar",
     license = "GPL-3+",
+    iuse = ["nls", "acl", "xattr", "selinux"],
+    use_defaults = ["acl", "xattr"],
+    use_deps = {
+        "acl": ["//packages/linux/system/libs/ipc/acl"],
+        "selinux": ["//packages/linux/system/security/selinux"],
+    },
+    use_configure = {
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+        "acl": "--with-acl",
+        "-acl": "--without-acl",
+        "xattr": "--with-xattrs",
+        "-xattr": "--without-xattrs",
+        "selinux": "--with-selinux",
+        "-selinux": "--without-selinux",
+    },
     configure_args = [
         "--prefix=/usr",
-        "--disable-nls",
     ],
     deps = ["//packages/linux/core:musl"],
     visibility = ["PUBLIC"],

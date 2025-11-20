@@ -1,4 +1,15 @@
 load("//defs:package_defs.bzl", "download_source", "kernel_build")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+# linux - Linux kernel
+#
+# USE flags:
+#   The kernel configuration is primarily controlled by the config file.
+#   USE flags here provide high-level feature toggles.
+#
+#   debug    - Enable kernel debugging features
+#   kvm      - Enable KVM virtualization support
+#   modules  - Enable loadable module support
 
 download_source(
     name = "linux-src",

@@ -1,18 +1,39 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "zsh-src",
+use_package(
+    name = "zsh",
+    version = "5.9",
     src_uri = "https://sourceforge.net/projects/zsh/files/zsh/5.9/zsh-5.9.tar.xz",
     sha256 = "9b8d1ecedd5b5e81fbf1918e876752a7dd948e05c1a0dba10ab863842d45acd5",
-)
-
-configure_make_package(
-    name = "zsh",
-    source = ":zsh-src",
-    version = "5.9",
     description = "A very advanced and programmable command interpreter (shell)",
     homepage = "https://www.zsh.org/",
     license = "MIT",
+
+    # USE flags this package supports
+    iuse = [
+        "pcre",
+        "gdbm",
+        "doc",
+        "static",
+    ],
+
+    # Default USE flags
+    use_defaults = ["pcre"],
+
+    # Conditional configure arguments
+    use_configure = {
+        "pcre": "--enable-pcre",
+        "-pcre": "--disable-pcre",
+        "gdbm": "--enable-gdbm",
+        "-gdbm": "--disable-gdbm",
+        "doc": "--enable-doc",
+        "-doc": "--disable-doc",
+        "static": "--disable-dynamic",
+        "-static": "--enable-dynamic",
+    },
+
+    # Base configure arguments (always applied)
     configure_args = [
         "--enable-etcdir=/etc/zsh",
         "--enable-zshenv=/etc/zsh/zshenv",
@@ -20,7 +41,7 @@ configure_make_package(
         "--enable-zlogout=/etc/zsh/zlogout",
         "--enable-zprofile=/etc/zsh/zprofile",
         "--enable-zshrc=/etc/zsh/zshrc",
-        "--disable-gdbm",
     ],
+
     visibility = ["PUBLIC"],
 )

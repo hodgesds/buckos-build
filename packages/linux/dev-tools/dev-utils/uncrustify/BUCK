@@ -1,9 +1,14 @@
 load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+
+# uncrustify - Code beautifier (cmake build)
+# USE flags: test
+# Default: none
 
 download_source(
     name = "uncrustify-src",
     src_uri = "https://github.com/uncrustify/uncrustify/archive/refs/tags/uncrustify-0.78.1.tar.gz",
-    sha256 = "ecb4b4f3d5876c4fdeeb tried5e0d2e5c6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+    sha256 = "ecb4b4f3d5876c4fdeeb5e0d2e5c6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
 )
 
 cmake_package(

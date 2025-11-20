@@ -1,18 +1,42 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "cmake-src",
+use_package(
+    name = "cmake",
+    version = "3.28.1",
     src_uri = "https://github.com/Kitware/CMake/releases/download/v3.28.1/cmake-3.28.1.tar.gz",
     sha256 = "15e94f83e647f7d620a140a7a5da76349fc47a1bfed66d0f5cdee8e7a3e6f52f",
-)
-
-configure_make_package(
-    name = "cmake",
-    source = ":cmake-src",
-    version = "3.28.1",
     description = "Cross-platform, open-source build system",
     homepage = "https://cmake.org/",
     license = "BSD-3-Clause",
+
+    # USE flags this package supports
+    iuse = [
+        "doc",
+        "qt5",
+        "ncurses",
+    ],
+
+    # Default USE flags
+    use_defaults = ["ncurses"],
+
+    # Conditional dependencies
+    use_deps = {
+        "ncurses": ["//packages/linux/core/ncurses"],
+        "qt5": ["//packages/linux/gui/qt5:qt5"],
+    },
+
+    # Conditional configure arguments
+    use_configure = {
+        "doc": "--sphinx-man",
+        "-doc": "--no-sphinx-man",
+        "qt5": "--qt-gui",
+        "-qt5": "--no-qt-gui",
+        "ncurses": "--system-curl",
+        "-ncurses": "",
+    },
+
+    # Base configure arguments (always applied)
     configure_args = [
         "--prefix=/usr",
         "--system-curl",
@@ -20,6 +44,7 @@ configure_make_package(
         "--system-zlib",
         "--parallel=$(nproc)",
     ],
+
     deps = [
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/network/curl:curl",

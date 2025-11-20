@@ -1,8 +1,35 @@
 load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep", "use_configure_args", "GLOBAL_USE_FLAGS")
 
 # =============================================================================
 # LLVM - Low Level Virtual Machine
 # =============================================================================
+#
+# USE flags this package supports:
+# - zlib: Enable zlib compression support
+# - zstd: Enable zstd compression support
+# - ffi: Enable libffi support
+# - doc: Build documentation
+# - examples: Build examples
+# - test: Build test suite
+# - benchmarks: Build benchmarks
+# - debug: Debug build type
+#
+# Default USE flags: zlib, ffi
+
+# USE flag configuration
+LLVM_IUSE = ["zlib", "zstd", "ffi", "doc", "examples", "test", "benchmarks", "debug"]
+LLVM_USE_DEFAULTS = ["zlib", "ffi"]
+
+# Resolve USE-based dependencies
+LLVM_USE_DEPS = {
+    "zlib": ["//packages/linux/core/zlib:zlib"],
+    "ffi": ["//packages/linux/core/libffi:libffi"],
+}
+
+# Get current global USE flags (can be overridden per-build)
+_global_use = set_use_flags(LLVM_USE_DEFAULTS)
+_effective_use = LLVM_USE_DEFAULTS
 
 download_source(
     name = "llvm-src",
@@ -19,25 +46,31 @@ cmake_package(
     license = "Apache-2.0 WITH LLVM-exception",
     source_dir = "llvm",
     cmake_args = [
+        # Build type - USE flag: debug
         "-DCMAKE_BUILD_TYPE=Release",
         "-DLLVM_ENABLE_PROJECTS=",
         "-DLLVM_ENABLE_RUNTIMES=",
         "-DLLVM_BUILD_LLVM_DYLIB=ON",
         "-DLLVM_LINK_LLVM_DYLIB=ON",
         "-DLLVM_ENABLE_RTTI=ON",
+        # USE flag: ffi
         "-DLLVM_ENABLE_FFI=ON",
+        # USE flag: zlib
         "-DLLVM_ENABLE_ZLIB=ON",
+        # USE flag: zstd
         "-DLLVM_ENABLE_ZSTD=OFF",
+        # USE flag: benchmarks
         "-DLLVM_INCLUDE_BENCHMARKS=OFF",
+        # USE flag: examples
         "-DLLVM_INCLUDE_EXAMPLES=OFF",
+        # USE flag: test
         "-DLLVM_INCLUDE_TESTS=OFF",
+        # USE flag: doc
         "-DLLVM_INCLUDE_DOCS=OFF",
         "-DLLVM_TARGETS_TO_BUILD=X86;AArch64;ARM;WebAssembly",
         "-DLLVM_INSTALL_UTILS=ON",
     ],
-    deps = [
-        "//packages/linux/core/zlib:zlib",
-        "//packages/linux/core/libffi:libffi",
+    deps = use_dep(LLVM_USE_DEPS, _effective_use) + [
         "//packages/linux/core/ncurses:ncurses",
     ],
     visibility = ["PUBLIC"],

@@ -1,30 +1,49 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # zabbix - Enterprise monitoring solution
-download_source(
-    name = "zabbix-src",
+
+use_package(
+    name = "zabbix",
+    version = "7.0.0",
     src_uri = "https://cdn.zabbix.com/zabbix/sources/stable/7.0/zabbix-7.0.0.tar.gz",
     sha256 = "3f04dd40f62a1b3b28d2c3f1c4c456c4ae69b4e7c0ca9f5c8f5f5f5f5f5f5f5f",
-)
 
-configure_make_package(
-    name = "zabbix",
-    source = ":zabbix-src",
-    version = "7.0.0",
-    description = "Enterprise-class monitoring solution",
-    homepage = "https://www.zabbix.com",
-    license = "GPL-2+",
+    iuse = ["ssl", "sqlite", "mysql", "postgresql", "agent", "server", "proxy", "curl", "ipv6"],
+    use_defaults = ["ssl", "sqlite", "agent", "server", "curl", "ipv6"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "sqlite": ["//packages/linux/system/libs/database/sqlite:sqlite"],
+        "curl": ["//packages/linux/network/curl:curl"],
+    },
+
+    use_configure = {
+        "agent": "--enable-agent",
+        "-agent": "--disable-agent",
+        "server": "--enable-server",
+        "-server": "--disable-server",
+        "proxy": "--enable-proxy",
+        "-proxy": "--disable-proxy",
+        "sqlite": "--with-sqlite3",
+        "-sqlite": "--without-sqlite3",
+        "mysql": "--with-mysql",
+        "postgresql": "--with-postgresql",
+        "ipv6": "--enable-ipv6",
+        "-ipv6": "--disable-ipv6",
+    },
+
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc/zabbix",
-        "--enable-agent",
-        "--enable-server",
-        "--with-sqlite3",
     ],
+
     deps = [
         "//packages/linux/core:musl",
-        "//packages/linux/system/libs/database/sqlite:sqlite",
-        "//packages/linux/network/curl:curl",
     ],
+
+    description = "Enterprise-class monitoring solution",
+    homepage = "https://www.zabbix.com",
+    license = "GPL-2+",
     visibility = ["PUBLIC"],
 )

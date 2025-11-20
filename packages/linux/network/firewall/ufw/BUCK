@@ -3,29 +3,35 @@
 # =============================================================================
 
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "ufw-src",
+use_package(
+    name = "ufw",
+    version = "0.36.2",
     src_uri = "https://launchpad.net/ufw/0.36/0.36.2/+download/ufw-0.36.2.tar.gz",
     sha256 = "8b26c8e5c9a43cd34d8b68f64e25e0c1e4e6e0c7f5a9b8c2d3e4f5a6b7c8d9e0",
-)
 
-configure_make_package(
-    name = "ufw",
-    source = ":ufw-src",
-    version = "0.36.2",
-    description = "Uncomplicated Firewall - easy-to-use iptables frontend",
-    homepage = "https://launchpad.net/ufw",
-    license = "GPL-3.0",
+    iuse = ["ipv6"],
+    use_defaults = ["ipv6"],
+
+    use_deps = {},
+
+    use_configure = {
+        "ipv6": "--enable-ipv6",
+        "-ipv6": "--disable-ipv6",
+    },
+
     pre_configure = """
 # ufw uses Python setup.py
 python3 setup.py build
 """,
+
     make_args = [
         "PYTHON=/usr/bin/python3",
         "PREFIX=/usr",
         "SYSCONFDIR=/etc",
     ],
+
     post_install = """
 # Install using setup.py
 python3 setup.py install --root=$DESTDIR --prefix=/usr
@@ -57,9 +63,14 @@ COMMIT
 RULES
 chmod 640 "$DESTDIR/etc/ufw/before.rules"
 """,
+
     deps = [
         "//packages/linux/network/firewall/iptables:iptables",
         "//packages/linux/core:python",
     ],
+
+    description = "Uncomplicated Firewall - easy-to-use iptables frontend",
+    homepage = "https://launchpad.net/ufw",
+    license = "GPL-3.0",
     visibility = ["PUBLIC"],
 )

@@ -1,18 +1,23 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "bzip2-src",
+use_package(
+    name = "bzip2",
+    version = "1.0.8",
     src_uri = "https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
     sha256 = "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269",
-)
-
-configure_make_package(
-    name = "bzip2",
-    source = ":bzip2-src",
-    version = "1.0.8",
     description = "High-quality data compressor",
     homepage = "https://sourceware.org/bzip2/",
     license = "bzip2-1.0.6",
+
+    # USE flags this package supports
+    iuse = [
+        "static-libs",
+    ],
+
+    # Default USE flags
+    use_defaults = [],
+
     pre_configure = """
 # bzip2 doesn't have a configure script, patch the Makefile
 sed -i 's|^CC=.*|CC=cc|' Makefile

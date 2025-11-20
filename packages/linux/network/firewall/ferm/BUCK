@@ -3,25 +3,31 @@
 # =============================================================================
 
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "ferm-src",
+use_package(
+    name = "ferm",
+    version = "2.7",
     src_uri = "https://github.com/MaxKellermann/ferm/releases/download/v2.7/ferm-2.7.tar.xz",
     sha256 = "d7c9d3e8f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7",
-)
 
-configure_make_package(
-    name = "ferm",
-    source = ":ferm-src",
-    version = "2.7",
-    description = "Tool for maintaining complex firewall rules with ease",
-    homepage = "http://ferm.foo-projects.org/",
-    license = "GPL-2.0",
+    iuse = ["ipv6"],
+    use_defaults = ["ipv6"],
+
+    use_deps = {},
+
+    use_configure = {
+        "ipv6": "--enable-ipv6",
+        "-ipv6": "--disable-ipv6",
+    },
+
     pre_configure = "true",  # ferm uses plain Makefile
+
     make_args = [
         "PREFIX=/usr",
         "SYSCONFDIR=/etc",
     ],
+
     post_install = """
 # Install ferm using make
 make PREFIX=/usr SYSCONFDIR=/etc DESTDIR=$DESTDIR install
@@ -61,9 +67,14 @@ table filter {
 FERMCONF
 chmod 600 "$DESTDIR/etc/ferm/ferm.conf"
 """,
+
     deps = [
         "//packages/linux/network/firewall/iptables:iptables",
         "//packages/linux/core:perl",
     ],
+
+    description = "Tool for maintaining complex firewall rules with ease",
+    homepage = "http://ferm.foo-projects.org/",
+    license = "GPL-2.0",
     visibility = ["PUBLIC"],
 )

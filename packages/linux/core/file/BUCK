@@ -1,17 +1,44 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "file-src",
+use_package(
+    name = "file",
+    version = "5.45",
     src_uri = "https://astron.com/pub/file/file-5.45.tar.gz",
     sha256 = "fc97f51029bb0e2c9f4e3bfbd5f4c8f3e2b9e08047e5b70d4e4e4e8d4c5be8c0",
-)
-
-configure_make_package(
-    name = "file",
-    source = ":file-src",
-    version = "5.45",
     description = "File type identification utility",
     homepage = "https://www.darwinsys.com/file/",
     license = "BSD-2-Clause",
+
+    # USE flags this package supports
+    iuse = [
+        "zlib",
+        "bzip2",
+        "lzma",
+        "static-libs",
+    ],
+
+    # Default USE flags
+    use_defaults = ["zlib"],
+
+    # Conditional dependencies
+    use_deps = {
+        "zlib": ["//packages/linux/core/zlib"],
+        "bzip2": ["//packages/linux/core/bzip2"],
+        "lzma": ["//packages/linux/core/xz"],
+    },
+
+    # Conditional configure arguments
+    use_configure = {
+        "zlib": "--enable-zlib",
+        "-zlib": "--disable-zlib",
+        "bzip2": "--enable-bzlib",
+        "-bzip2": "--disable-bzlib",
+        "lzma": "--enable-xzlib",
+        "-lzma": "--disable-xzlib",
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+    },
+
     visibility = ["PUBLIC"],
 )

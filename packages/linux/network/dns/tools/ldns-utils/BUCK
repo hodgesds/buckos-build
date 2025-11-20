@@ -1,18 +1,26 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "ldns-utils-src",
+use_package(
+    name = "ldns-utils",
+    version = "1.8.3",
     src_uri = "https://nlnetlabs.nl/downloads/ldns/ldns-1.8.3.tar.gz",
     sha256 = "c3f72dd1036b2907e3b45f3e4f9c2f2e2d2c1e4b3a5f7d8e9b6a4c3d2e1f5a6b",
-)
 
-configure_make_package(
-    name = "ldns-utils",
-    source = ":ldns-utils-src",
-    version = "1.8.3",
-    description = "DNS utility programs from ldns (drill, ldns-*)",
-    homepage = "https://nlnetlabs.nl/projects/ldns/",
-    license = "BSD-3-Clause",
+    iuse = ["ssl", "dane", "ecdsa"],
+    use_defaults = ["ssl", "dane", "ecdsa"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+    },
+
+    use_configure = {
+        "dane": "--enable-dane",
+        "-dane": "--disable-dane",
+        "ecdsa": "--enable-ecdsa",
+        "-ecdsa": "--disable-ecdsa",
+    },
+
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
@@ -21,6 +29,7 @@ configure_make_package(
         "--with-ssl=/usr",
         "--disable-static",
     ],
+
     post_install = """
 # The examples build various ldns-* utilities
 # Ensure drill is installed
@@ -28,10 +37,14 @@ if [ ! -f "$DESTDIR/usr/bin/drill" ]; then
     echo "Warning: drill not found"
 fi
 """,
+
     deps = [
-        "//packages/linux/network/openssl:openssl",
         "//packages/linux/core:musl",
         "//packages/linux/network/dns/libraries/ldns:ldns",
     ],
+
+    description = "DNS utility programs from ldns (drill, ldns-*)",
+    homepage = "https://nlnetlabs.nl/projects/ldns/",
+    license = "BSD-3-Clause",
     visibility = ["PUBLIC"],
 )

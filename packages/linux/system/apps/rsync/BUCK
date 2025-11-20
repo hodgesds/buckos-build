@@ -1,26 +1,44 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # rsync - Fast incremental file transfer
-download_source(
-    name = "rsync-src",
+# USE flags: lz4, xxhash, zstd, ssl, acl, xattr, iconv
+
+use_package(
+    name = "rsync",
+    version = "3.3.0",
     src_uri = "https://download.samba.org/pub/rsync/src/rsync-3.3.0.tar.gz",
     sha256 = "7399e9a6708c32571aef0b5f2d06c4e1e4a3b3f8e7a8b9c0d1e2f3a4b5c6d7e8",
-)
-
-configure_make_package(
-    name = "rsync",
-    source = ":rsync-src",
-    version = "3.3.0",
     description = "Fast incremental file transfer utility",
     homepage = "https://rsync.samba.org",
     license = "GPL-3+",
+    iuse = ["lz4", "xxhash", "zstd", "ssl", "acl", "xattr", "iconv"],
+    use_defaults = ["acl", "xattr"],
+    use_deps = {
+        "lz4": ["//packages/linux/system/libs/compression/lz4"],
+        "zstd": ["//packages/linux/system/libs/compression/zstd"],
+        "ssl": ["//packages/linux/system/libs/crypto/openssl"],
+        "acl": ["//packages/linux/system/libs/ipc/acl"],
+    },
+    use_configure = {
+        "lz4": "--enable-lz4",
+        "-lz4": "--disable-lz4",
+        "xxhash": "--enable-xxhash",
+        "-xxhash": "--disable-xxhash",
+        "zstd": "--enable-zstd",
+        "-zstd": "--disable-zstd",
+        "ssl": "--enable-openssl",
+        "-ssl": "--disable-openssl",
+        "acl": "--enable-acls",
+        "-acl": "--disable-acls",
+        "xattr": "--enable-xattr-support",
+        "-xattr": "--disable-xattr-support",
+        "iconv": "--enable-iconv",
+        "-iconv": "--disable-iconv",
+    },
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
-        "--disable-lz4",
-        "--disable-xxhash",
-        "--disable-zstd",
-        "--disable-openssl",
     ],
     deps = [
         "//packages/linux/core:musl",

@@ -1,20 +1,31 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "strace-src",
+use_package(
+    name = "strace",
+    version = "6.7",
     src_uri = "https://strace.io/files/6.7/strace-6.7.tar.xz",
     sha256 = "1d1d3d10e6c79c97ff3c5dc3d2a0d7c3e2a2c3c3e3f2d2d3d4e5f6a7b8c9d0e1",
-)
-
-configure_make_package(
-    name = "strace",
-    source = ":strace-src",
-    version = "6.7",
     description = "System call tracer for Linux",
     homepage = "https://strace.io/",
     license = "LGPL-2.1+",
-    configure_args = [
-        "--with-libunwind",
+
+    # USE flags this package supports
+    iuse = [
+        "unwind",
+        "static",
     ],
+
+    # Default USE flags
+    use_defaults = ["unwind"],
+
+    # Conditional configure arguments
+    use_configure = {
+        "unwind": "--with-libunwind",
+        "-unwind": "--without-libunwind",
+        "static": "--enable-static",
+        "-static": "--disable-static",
+    },
+
     visibility = ["PUBLIC"],
 )

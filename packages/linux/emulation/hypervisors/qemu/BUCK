@@ -1,4 +1,5 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # QEMU - Full system emulator and virtualizer
 download_source(
@@ -6,6 +7,8 @@ download_source(
     src_uri = "https://download.qemu.org/qemu-9.1.0.tar.xz",
     sha256 = "816b7022a8ba7c2ac30e2e0cf973e826f6bcc8505339603212c5ede8e94d7834",
 )
+
+# USE flags: See use_flags.bzl for available flags
 
 configure_make_package(
     name = "qemu",
@@ -75,6 +78,8 @@ configure_make_package(
 )
 
 # QEMU guest agent
+# USE flags: See use_flags.bzl for available flags
+
 configure_make_package(
     name = "qemu-guest-agent",
     source = ":qemu-src",
@@ -97,6 +102,8 @@ configure_make_package(
 )
 
 # QEMU user-space emulation only
+# USE flags: See use_flags.bzl for available flags
+
 configure_make_package(
     name = "qemu-user",
     source = ":qemu-src",
@@ -120,6 +127,8 @@ configure_make_package(
 )
 
 # QEMU image utilities
+# USE flags: See use_flags.bzl for available flags
+
 configure_make_package(
     name = "qemu-img",
     source = ":qemu-src",

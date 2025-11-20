@@ -1,25 +1,32 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # sysklogd - System logging daemons
+# USE flags: systemd, logger
 
-download_source(
-    name = "sysklogd-src",
+use_package(
+    name = "sysklogd",
+    version = "2.5.2",
     src_uri = "https://github.com/troglobit/sysklogd/releases/download/v2.5.2/sysklogd-2.5.2.tar.gz",
     sha256 = "d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7",
-)
-
-configure_make_package(
-    name = "sysklogd",
-    source = ":sysklogd-src",
-    version = "2.5.2",
     description = "System logging daemons",
     homepage = "https://github.com/troglobit/sysklogd",
     license = "BSD-3-Clause",
+    iuse = ["systemd", "logger"],
+    use_defaults = [],
+    use_deps = {
+        "systemd": ["//packages/linux/system/init/systemd"],
+    },
+    use_configure = {
+        "systemd": "--with-systemd",
+        "-systemd": "--without-systemd",
+        "logger": "--enable-logger",
+        "-logger": "--disable-logger",
+    },
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
         "--localstatedir=/var",
-        "--without-systemd",
     ],
     deps = [
         "//packages/linux/core:musl",

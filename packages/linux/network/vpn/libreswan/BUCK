@@ -1,19 +1,24 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "libreswan-src",
+use_package(
+    name = "libreswan",
+    version = "4.12",
     src_uri = "https://download.libreswan.org/libreswan-4.12.tar.gz",
     sha256 = "42bab24a69a42aacbc9c0d2e25a4b5c1f6f4b1aeee9f2ab9e6c2c0e4c3c8b9e7",
-)
 
-configure_make_package(
-    name = "libreswan",
-    source = ":libreswan-src",
-    version = "4.12",
-    description = "IPsec implementation with IKEv1 and IKEv2 support",
-    homepage = "https://libreswan.org/",
-    license = "GPL-2.0",
+    iuse = ["ssl", "curl", "systemd", "dnssec", "labeled-ipsec"],
+    use_defaults = ["ssl", "curl", "systemd"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "curl": ["//packages/linux/network/curl:curl"],
+    },
+
+    use_configure = {},
+
     pre_configure = "true",
+
     make_args = [
         "programs",
         "PREFIX=/usr",
@@ -24,15 +29,19 @@ configure_make_package(
         "USE_LIBCURL=true",
         "USE_DNSSEC=false",
     ],
+
     post_install = """
 make DESTDIR=$DESTDIR PREFIX=/usr SYSCONFDIR=/etc LIBEXECDIR=/usr/libexec install
 mkdir -p "$DESTDIR/etc/ipsec.d"
 mkdir -p "$DESTDIR/var/run/pluto"
 """,
+
     deps = [
-        "//packages/linux/network:openssl",
-        "//packages/linux/network:curl",
         "//packages/linux/core:libnl",
     ],
+
+    description = "IPsec implementation with IKEv1 and IKEv2 support",
+    homepage = "https://libreswan.org/",
+    license = "GPL-2.0",
     visibility = ["PUBLIC"],
 )

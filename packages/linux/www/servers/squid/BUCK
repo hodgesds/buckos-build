@@ -1,35 +1,56 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # squid - Caching proxy for the Web
-download_source(
-    name = "squid-src",
+#
+# USE flags:
+#   ssl       - Enable SSL/TLS support with OpenSSL
+#   ipv6      - Enable IPv6 support
+#   caps      - Enable Linux capabilities
+#   ldap      - Enable LDAP authentication
+#   pam       - Enable PAM authentication
+#   kerberos  - Enable Kerberos authentication
+
+use_package(
+    name = "squid",
+    version = "6.12",
     src_uri = "https://www.squid-cache.org/Versions/v6/squid-6.12.tar.gz",
     sha256 = "PLACEHOLDER_HASH",
-)
-
-configure_make_package(
-    name = "squid",
-    source = ":squid-src",
-    version = "6.12",
     description = "Caching proxy for the Web supporting HTTP, HTTPS, FTP",
     homepage = "https://www.squid-cache.org/",
     license = "GPL-2.0",
+    iuse = ["ssl", "ipv6", "caps", "ldap", "pam", "kerberos"],
+    use_defaults = ["ssl", "caps"],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl"],
+        "caps": ["//packages/linux/system/libs/ipc/libcap"],
+        "ldap": ["//packages/linux/network/openldap:openldap"],
+        "pam": ["//packages/linux/system/pam:pam"],
+        "kerberos": ["//packages/linux/network/krb5:krb5"],
+    },
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc/squid",
         "--localstatedir=/var",
         "--datadir=/usr/share/squid",
-        "--with-openssl",
         "--enable-delay-pools",
         "--enable-cache-digests",
         "--enable-removal-policies=lru,heap",
-        "--disable-ipv6",
         "--with-default-user=squid",
     ],
-    deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/network/openssl",
-        "//packages/linux/system/libs/ipc/libcap",
-    ],
+    use_configure = {
+        "ssl": "--with-openssl",
+        "-ssl": "--without-openssl",
+        "ipv6": "--enable-ipv6",
+        "-ipv6": "--disable-ipv6",
+        "caps": "--with-cap",
+        "-caps": "--without-cap",
+        "ldap": "--enable-auth-basic=LDAP",
+        "pam": "--enable-auth-basic=PAM",
+        "kerberos": "--enable-auth-negotiate=kerberos",
+    },
     visibility = ["PUBLIC"],
 )

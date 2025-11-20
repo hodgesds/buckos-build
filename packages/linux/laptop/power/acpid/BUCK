@@ -2,12 +2,15 @@
 # Responds to ACPI events like lid close, power button press
 
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 download_source(
     name = "acpid-src",
     src_uri = "https://downloads.sourceforge.net/acpid2/acpid-2.0.34.tar.xz",
     sha256 = "2d095c8cfcbc847caec746d62cdc8d0bff1ec1bc72ef7c674c721e04da6ab333",
 )
+
+# USE flags: See use_flags.bzl for available flags
 
 configure_make_package(
     name = "acpid",

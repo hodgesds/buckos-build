@@ -1,25 +1,32 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # haveged - HAVEGE entropy daemon
-download_source(
-    name = "haveged-src",
+# USE flags: nistest, systemd
+
+use_package(
+    name = "haveged",
+    version = "1.9.19",
     src_uri = "https://github.com/jirka-h/haveged/archive/refs/tags/v1.9.19.tar.gz",
     sha256 = "acbb05776668657012273be9bb3310e3140b79959aa4538e4cca8d30d40c0b8f",
-)
-
-configure_make_package(
-    name = "haveged",
-    source = ":haveged-src",
-    version = "1.9.19",
     description = "HAVEGE entropy daemon - feeds entropy to /dev/random",
     homepage = "https://github.com/jirka-h/haveged",
     license = "GPL-3.0",
+    iuse = ["nistest", "systemd"],
+    use_defaults = [],
+    use_deps = {
+        "systemd": ["//packages/linux/system/init/systemd"],
+    },
+    use_configure = {
+        "nistest": "--enable-nistest",
+        "-nistest": "--disable-nistest",
+        "systemd": "--enable-init=systemd",
+        "-systemd": "--enable-init=none",
+    },
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
         "--enable-daemon",
-        "--enable-init=none",
-        "--disable-nistest",
     ],
     deps = [
         "//packages/linux/core:musl",

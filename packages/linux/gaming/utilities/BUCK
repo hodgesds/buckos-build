@@ -1,6 +1,7 @@
 # Gaming utilities - Performance monitoring and optimization tools
 
 load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 filegroup(
     name = "utilities",

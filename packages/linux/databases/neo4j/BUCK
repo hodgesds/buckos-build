@@ -1,6 +1,11 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 # neo4j - Graph database
+#
+# USE flags:
+#   java     - Java runtime (always required)
+
 download_source(
     name = "neo4j-src",
     src_uri = "https://dist.neo4j.org/neo4j-community-5.17.0-unix.tar.gz",
@@ -21,8 +26,11 @@ configure_make_package(
         "mkdir -p ${DESTDIR}/usr/bin",
         "ln -s /usr/share/neo4j/bin/neo4j ${DESTDIR}/usr/bin/neo4j",
     ],
-    deps = [
-        "//packages/linux/lang/openjdk:openjdk",
-    ],
+    deps = use_dep(
+        {
+            "java": ["//packages/linux/lang/openjdk:openjdk"],
+        },
+        ["java"],
+    ),
     visibility = ["PUBLIC"],
 )

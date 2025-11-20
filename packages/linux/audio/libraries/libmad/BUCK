@@ -1,24 +1,26 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "libmad-src",
+use_package(
+    name = "libmad",
+    version = "0.15.1b",
     src_uri = "https://downloads.sourceforge.net/mad/libmad-0.15.1b.tar.gz",
     sha256 = "bbfac3ed6bfbc2823d3775ebb931087371e142bb0e9bb1bee51a76a6e0078690",
-)
-
-configure_make_package(
-    name = "libmad",
-    source = ":libmad-src",
-    version = "0.15.1b",
     description = "High-quality MPEG audio decoder library",
     homepage = "https://www.underbit.com/products/mad/",
     license = "GPL-2",
+    iuse = ["static-libs", "debug"],
+    use_defaults = [],
     configure_args = [
         "--prefix=/usr",
-        "--disable-static",
-        "--disable-debugging",
         "--enable-accuracy",
     ],
+    use_configure = {
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+        "debug": "--enable-debugging",
+        "-debug": "--disable-debugging",
+    },
     deps = [
         "//packages/linux/core:musl",
     ],

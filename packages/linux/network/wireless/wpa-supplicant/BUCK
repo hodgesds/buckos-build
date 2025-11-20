@@ -1,18 +1,22 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "wpa-supplicant-src",
+use_package(
+    name = "wpa-supplicant",
+    version = "2.10",
     src_uri = "https://w1.fi/releases/wpa_supplicant-2.10.tar.gz",
     sha256 = "20df7ae5154b3830355f8ab4269123a87affdea59fe74fe9292a91d0d7e17b2f",
-)
 
-configure_make_package(
-    name = "wpa-supplicant",
-    source = ":wpa-supplicant-src",
-    version = "2.10",
-    description = "WPA/WPA2/WPA3 supplicant for wireless network authentication",
-    homepage = "https://w1.fi/wpa_supplicant/",
-    license = "BSD-3-Clause",
+    iuse = ["ssl", "readline", "dbus", "wps", "mesh", "sae", "owe", "dpp", "fils"],
+    use_defaults = ["ssl", "readline", "wps", "mesh", "sae", "owe", "dpp", "fils"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "readline": ["//packages/linux/core:readline"],
+    },
+
+    use_configure = {},
+
     pre_configure = """
 cd wpa_supplicant
 cat > .config << 'EOF'
@@ -45,12 +49,13 @@ CONFIG_DPP=y
 CONFIG_FILS=y
 EOF
 """,
-    configure_args = [],
+
     make_args = [
         "-C", "wpa_supplicant",
         "BINDIR=/sbin",
         "LIBDIR=/lib",
     ],
+
     post_install = """
 cd wpa_supplicant
 install -d "$DESTDIR/sbin"
@@ -66,11 +71,14 @@ install -m 644 doc/docbook/*.8 "$DESTDIR/usr/share/man/man8/" 2>/dev/null || tru
 install -m 644 dbus/fi.w1.wpa_supplicant1.service "$DESTDIR/usr/share/dbus-1/system-services/" 2>/dev/null || true
 install -m 644 dbus/dbus-wpa_supplicant.conf "$DESTDIR/etc/dbus-1/system.d/" 2>/dev/null || true
 """,
+
     deps = [
         "//packages/linux/core:musl",
-        "//packages/linux/network/openssl:openssl",
-        "//packages/linux/core:readline",
         "//packages/linux/core:ncurses",
     ],
+
+    description = "WPA/WPA2/WPA3 supplicant for wireless network authentication",
+    homepage = "https://w1.fi/wpa_supplicant/",
+    license = "BSD-3-Clause",
     visibility = ["PUBLIC"],
 )

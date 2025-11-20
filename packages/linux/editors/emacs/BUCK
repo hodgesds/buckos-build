@@ -1,41 +1,54 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "emacs-src",
+use_package(
+    name = "emacs",
+    version = "29.4",
     src_uri = "https://ftp.gnu.org/gnu/emacs/emacs-29.4.tar.gz",
     sha256 = "cc11d415d9326ccc4e749aed6d2d8f12a28e53d001938f6b4cf2c47a2422dad0",
-)
-
-configure_make_package(
-    name = "emacs",
-    source = ":emacs-src",
-    version = "29.4",
     description = "Extensible, customizable, free/libre text editor and computing environment",
     homepage = "https://www.gnu.org/software/emacs/",
     license = "GPL-3.0",
+
+    # USE flags this package supports
+    iuse = [
+        "X",
+        "gtk",
+        "dbus",
+        "sound",
+        "imagemagick",
+        "gnutls",
+        "json",
+    ],
+
+    # Default USE flags
+    use_defaults = ["gnutls"],
+
+    # Conditional configure arguments
+    use_configure = {
+        "X": "--with-x",
+        "-X": "--without-x --without-ns",
+        "gtk": "--with-x-toolkit=gtk3",
+        "-gtk": "",
+        "dbus": "--with-dbus",
+        "-dbus": "--without-dbus",
+        "sound": "--with-sound",
+        "-sound": "--without-sound",
+        "imagemagick": "--with-imagemagick",
+        "-imagemagick": "--without-imagemagick",
+        "gnutls": "--with-gnutls",
+        "-gnutls": "--without-gnutls",
+        "json": "--with-json",
+        "-json": "--without-json",
+    },
+
+    # Base configure arguments (always applied)
     configure_args = [
-        "--without-x",
-        "--without-ns",
-        "--without-gconf",
-        "--without-gsettings",
-        "--without-dbus",
         "--without-selinux",
-        "--without-sound",
-        "--without-imagemagick",
-        "--without-xpm",
-        "--without-jpeg",
-        "--without-tiff",
-        "--without-gif",
-        "--without-png",
-        "--without-rsvg",
-        "--without-webp",
-        "--without-lcms2",
         "--without-libsystemd",
-        "--without-cairo",
-        "--without-harfbuzz",
-        "--with-gnutls=ifavailable",
         "--disable-build-details",
     ],
+
     deps = [
         "//packages/linux/core/musl",
     ],

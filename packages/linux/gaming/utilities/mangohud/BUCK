@@ -2,12 +2,15 @@
 # Displays FPS, CPU/GPU usage, temperatures, and more
 
 load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 download_source(
     name = "mangohud-src",
     src_uri = "https://github.com/flightlessmango/MangoHud/archive/refs/tags/v0.7.2.tar.gz",
     sha256 = "2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4",
 )
+
+# USE flags: See use_flags.bzl for available flags
 
 configure_make_package(
     name = "mangohud",

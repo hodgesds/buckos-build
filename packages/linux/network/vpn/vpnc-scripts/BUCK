@@ -1,24 +1,26 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "vpnc-scripts-src",
+use_package(
+    name = "vpnc-scripts",
+    version = "20231211",
     src_uri = "https://gitlab.com/openconnect/vpnc-scripts/-/archive/master/vpnc-scripts-master.tar.gz",
     sha256 = "67890abcdef1234567890abcdef1234567890abcdef1234567890abcdef123456",
-)
 
-configure_make_package(
-    name = "vpnc-scripts",
-    source = ":vpnc-scripts-src",
-    version = "20231211",
-    description = "VPN client connection scripts for routing and DNS",
-    homepage = "https://gitlab.com/openconnect/vpnc-scripts",
-    license = "GPL-2.0",
+    iuse = ["resolvconf"],
+    use_defaults = ["resolvconf"],
+
     pre_configure = "true",
     make_args = [],
+
     post_install = """
 mkdir -p "$DESTDIR/etc/vpnc"
 install -m 755 vpnc-script "$DESTDIR/etc/vpnc/vpnc-script"
 install -m 644 vpnc-script-*.sh "$DESTDIR/etc/vpnc/" 2>/dev/null || true
 """,
+
+    description = "VPN client connection scripts for routing and DNS",
+    homepage = "https://gitlab.com/openconnect/vpnc-scripts",
+    license = "GPL-2.0",
     visibility = ["PUBLIC"],
 )

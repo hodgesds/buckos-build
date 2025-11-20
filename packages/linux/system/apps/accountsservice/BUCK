@@ -1,8 +1,10 @@
 load("//defs:package_defs.bzl", "download_source", "meson_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # =============================================================================
 # AccountsService - D-Bus service for accessing user account information
 # =============================================================================
+# USE flags: systemd, elogind, doc, introspection
 
 download_source(
     name = "accountsservice-src",
@@ -17,6 +19,9 @@ meson_package(
     description = "D-Bus interface for user account management",
     homepage = "https://www.freedesktop.org/wiki/Software/AccountsService/",
     license = "GPL-3.0-or-later",
+    # USE flags: systemd, elogind, doc, introspection
+    # use_deps: systemd -> //packages/linux/system/init/systemd
+    #           elogind -> //packages/linux/system/init/elogind
     meson_args = [
         "-Dsystemdsystemunitdir=/usr/lib/systemd/system",
         "-Dadmin_group=wheel",
@@ -35,6 +40,8 @@ meson_package(
 )
 
 # colord - Color management daemon
+# USE flags: systemd, sane, argyllcms, doc, vapi
+
 download_source(
     name = "colord-src",
     src_uri = "https://www.freedesktop.org/software/colord/releases/colord-1.4.7.tar.xz",
@@ -48,6 +55,9 @@ meson_package(
     description = "System daemon for managing color devices",
     homepage = "https://www.freedesktop.org/software/colord/",
     license = "GPL-2.0-or-later",
+    # USE flags: systemd, sane, argyllcms, doc, vapi, test
+    # use_deps: systemd -> //packages/linux/system/init/systemd
+    #           sane -> //packages/linux/system/scanning/sane
     meson_args = [
         "-Dsystemd=false",
         "-Ddaemon_user=colord",
@@ -70,6 +80,8 @@ meson_package(
 )
 
 # colord-gtk - GTK integration for colord
+# USE flags: vapi, doc, gtk3, gtk4
+
 download_source(
     name = "colord-gtk-src",
     src_uri = "https://www.freedesktop.org/software/colord/releases/colord-gtk-0.3.1.tar.xz",
@@ -83,6 +95,7 @@ meson_package(
     description = "GTK integration for colord",
     homepage = "https://www.freedesktop.org/software/colord/",
     license = "LGPL-2.1-or-later",
+    # USE flags: vapi, doc, test
     meson_args = [
         "-Dvapi=false",
         "-Dman=false",

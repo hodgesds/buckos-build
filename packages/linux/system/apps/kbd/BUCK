@@ -1,24 +1,31 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # kbd - Keyboard and console utilities
+# USE flags: pam, nls
 
-download_source(
-    name = "kbd-src",
+use_package(
+    name = "kbd",
+    version = "2.6.4",
     src_uri = "https://www.kernel.org/pub/linux/utils/kbd/kbd-2.6.4.tar.xz",
     sha256 = "e7e755e79c8b8a0d824caca7f0c4c9f3e4a3a6e3a5b8c7d9e0f1a2b3c4d5e6f7",
-)
-
-configure_make_package(
-    name = "kbd",
-    source = ":kbd-src",
-    version = "2.6.4",
     description = "Keyboard and console utilities",
     homepage = "https://kbd-project.org/",
     license = "GPL-2.0-or-later",
+    iuse = ["pam", "nls", "vlock"],
+    use_defaults = [],
+    use_deps = {
+        "pam": ["//packages/linux/system/libs/linux-pam"],
+    },
+    use_configure = {
+        "vlock": "--enable-vlock",
+        "-vlock": "--disable-vlock",
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+    },
     configure_args = [
         "--prefix=/usr",
         "--datadir=/usr/share/kbd",
-        "--disable-vlock",
     ],
     deps = [
         "//packages/linux/core:musl",

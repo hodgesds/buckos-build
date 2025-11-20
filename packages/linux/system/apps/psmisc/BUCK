@@ -1,22 +1,32 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # psmisc - Utilities using /proc filesystem (fuser, killall, pstree)
-download_source(
-    name = "psmisc-src",
+# USE flags: selinux, nls, ipv6
+
+use_package(
+    name = "psmisc",
+    version = "23.7",
     src_uri = "https://gitlab.com/psmisc/psmisc/-/archive/v23.7/psmisc-v23.7.tar.gz",
     sha256 = "a0d7e3fce0e8a7b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5",
-)
-
-configure_make_package(
-    name = "psmisc",
-    source = ":psmisc-src",
-    version = "23.7",
     description = "Miscellaneous utilities using /proc (fuser, killall, pstree)",
     homepage = "https://gitlab.com/psmisc/psmisc",
     license = "GPL-2",
+    iuse = ["selinux", "nls", "ipv6"],
+    use_defaults = ["ipv6"],
+    use_deps = {
+        "selinux": ["//packages/linux/system/security/selinux"],
+    },
+    use_configure = {
+        "selinux": "--enable-selinux",
+        "-selinux": "--disable-selinux",
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+        "ipv6": "--enable-ipv6",
+        "-ipv6": "--disable-ipv6",
+    },
     configure_args = [
         "--prefix=/usr",
-        "--disable-selinux",
     ],
     deps = [
         "//packages/linux/core:musl",

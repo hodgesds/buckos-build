@@ -1,31 +1,39 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "libao-src",
+use_package(
+    name = "libao",
+    version = "1.2.2",
     src_uri = "https://downloads.xiph.org/releases/ao/libao-1.2.2.tar.gz",
     sha256 = "df8a6d0e238feeccb26a783e778716fb41a801536fe7b6fce068e313b0e2bf4d",
-)
-
-configure_make_package(
-    name = "libao",
-    source = ":libao-src",
-    version = "1.2.2",
     description = "Cross-platform audio output library",
     homepage = "https://www.xiph.org/ao/",
     license = "GPL-2",
+    iuse = ["static-libs", "alsa", "pulseaudio", "debug"],
+    use_defaults = ["alsa"],
     configure_args = [
         "--prefix=/usr",
-        "--disable-static",
-        "--enable-alsa",
         "--enable-alsa-mmap",
         "--disable-arts",
         "--disable-esd",
         "--disable-nas",
-        "--disable-pulse",
         "--disable-wmm",
     ],
+    use_configure = {
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+        "alsa": "--enable-alsa",
+        "-alsa": "--disable-alsa",
+        "pulseaudio": "--enable-pulse",
+        "-pulseaudio": "--disable-pulse",
+        "debug": "--enable-debug",
+        "-debug": "--disable-debug",
+    },
+    use_deps = {
+        "alsa": ["//packages/linux/audio/daemons/alsa-lib:alsa-lib"],
+        "pulseaudio": ["//packages/linux/audio/daemons/pulseaudio:pulseaudio"],
+    },
     deps = [
-        "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
         "//packages/linux/core:musl",
     ],
     visibility = ["PUBLIC"],

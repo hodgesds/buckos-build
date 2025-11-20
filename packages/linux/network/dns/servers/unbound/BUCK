@@ -1,34 +1,44 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "unbound-src",
+use_package(
+    name = "unbound",
+    version = "1.19.1",
     src_uri = "https://nlnetlabs.nl/downloads/unbound/unbound-1.19.1.tar.gz",
     sha256 = "bc1d576f3d7c3d07d7c84d78f6f8d5e8b6e3d4d8f2c1e4a5b3d2c1f6e9b8a7d6",
-)
 
-configure_make_package(
-    name = "unbound",
-    source = ":unbound-src",
-    version = "1.19.1",
-    description = "Validating, recursive, and caching DNS resolver",
-    homepage = "https://nlnetlabs.nl/projects/unbound/",
-    license = "BSD-3-Clause",
+    iuse = ["ssl", "threads", "dnscrypt", "tfo"],
+    use_defaults = ["ssl", "threads", "dnscrypt", "tfo"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+    },
+
+    use_configure = {
+        "threads": "--with-pthreads",
+        "-threads": "--without-pthreads",
+        "dnscrypt": "--enable-dnscrypt",
+        "-dnscrypt": "--disable-dnscrypt",
+        "tfo": "--enable-tfo-server --enable-tfo-client",
+        "-tfo": "--disable-tfo-server --disable-tfo-client",
+    },
+
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
         "--localstatedir=/var",
         "--with-ssl=/usr",
         "--with-libevent",
-        "--with-pthreads",
-        "--enable-tfo-server",
-        "--enable-tfo-client",
-        "--enable-dnscrypt",
         "--disable-static",
     ],
+
     deps = [
-        "//packages/linux/network/openssl:openssl",
         "//packages/linux/core:musl",
         "//packages/linux/network/dns/libraries/ldns:ldns",
     ],
+
+    description = "Validating, recursive, and caching DNS resolver",
+    homepage = "https://nlnetlabs.nl/projects/unbound/",
+    license = "BSD-3-Clause",
     visibility = ["PUBLIC"],
 )

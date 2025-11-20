@@ -1,20 +1,31 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "musl-src",
+use_package(
+    name = "musl",
+    version = "1.2.4",
     src_uri = "https://musl.libc.org/releases/musl-1.2.4.tar.gz",
     sha256 = "7a35eae33d5372a7c0da1188de798726f68825513b7ae3ebe97aaaa52114f039",
-)
-
-configure_make_package(
-    name = "musl",
-    source = ":musl-src",
-    version = "1.2.4",
     description = "musl is a lightweight, fast, simple, free C library",
     homepage = "https://musl.libc.org/",
     license = "MIT",
-    configure_args = [
-        "--disable-static",
+
+    # USE flags this package supports
+    iuse = [
+        "static-libs",
+        "debug",
     ],
+
+    # Default USE flags
+    use_defaults = [],
+
+    # Conditional configure arguments
+    use_configure = {
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+        "debug": "--enable-debug",
+        "-debug": "--disable-debug",
+    },
+
     visibility = ["PUBLIC"],
 )

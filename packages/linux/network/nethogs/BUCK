@@ -1,33 +1,35 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
+# =============================================================================
 # nethogs - Per-process network bandwidth monitor
+# =============================================================================
 
-download_source(
-    name = "nethogs-src",
+use_package(
+    name = "nethogs",
+    version = "0.8.7",
     src_uri = "https://github.com/raboof/nethogs/archive/refs/tags/v0.8.7.tar.gz",
     sha256 = "2652305e62a75dfb6322e100dda15c6073f94bef5b3c4e96bad7802e64209038",
-)
 
-configure_make_package(
-    name = "nethogs",
-    source = ":nethogs-src",
-    version = "0.8.7",
-    description = "Per-process network bandwidth monitor",
-    homepage = "https://github.com/raboof/nethogs",
-    license = "GPL-2.0-or-later",
-    build_in_source = True,
-    configure_args = [],
+    iuse = [],
+    use_defaults = [],
+
+    use_deps = {},
+
+    use_configure = {},
+
     make_args = [
         "PREFIX=/usr",
     ],
-    install_args = [
-        "PREFIX=/usr",
-        "DESTDIR=${DESTDIR}",
-    ],
+
     deps = [
-        "//packages/linux/network/libpcap",
+        "//packages/linux/network/libpcap:libpcap",
         "//packages/linux/core:ncurses",
         "//packages/linux/core:musl",
     ],
+
+    description = "Per-process network bandwidth monitor",
+    homepage = "https://github.com/raboof/nethogs",
+    license = "GPL-2.0-or-later",
     visibility = ["PUBLIC"],
 )

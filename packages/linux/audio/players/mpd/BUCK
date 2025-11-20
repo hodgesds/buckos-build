@@ -1,4 +1,19 @@
 load("//defs:package_defs.bzl", "download_source", "meson_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+# USE flags for mpd (meson build):
+# - alsa: ALSA support (default: enabled)
+# - pulseaudio: PulseAudio support (default: enabled)
+# - flac: FLAC support (default: enabled)
+# - vorbis: Vorbis/OGG support (default: enabled)
+# - opus: Opus support (default: enabled)
+# - mp3: MP3 support via libmad (default: enabled)
+# - sndfile: libsndfile support (default: enabled)
+# - ffmpeg: FFmpeg support (default: disabled)
+# - jack: JACK support (default: disabled)
+# - curl: cURL for streaming (default: enabled)
+# - ipv6: IPv6 support (default: enabled)
+# - systemd: systemd integration (default: disabled)
 
 download_source(
     name = "mpd-src",

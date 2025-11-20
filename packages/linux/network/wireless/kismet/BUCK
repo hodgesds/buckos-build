@@ -1,32 +1,41 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "kismet-src",
+use_package(
+    name = "kismet",
+    version = "2023.07.R1",
     src_uri = "https://www.kismetwireless.net/code/kismet-2023-07-R1.tar.xz",
     sha256 = "5e8c0e29d2850c3ed76b46b6ac3d20b2a7a13952e9c9c56c6ec82c5ed0b2ee26",
-)
 
-configure_make_package(
-    name = "kismet",
-    source = ":kismet-src",
-    version = "2023.07.R1",
-    description = "Wireless network and device detector, sniffer, wardriving tool",
-    homepage = "https://www.kismetwireless.net/",
-    license = "GPL-2.0-or-later",
+    iuse = ["ssl", "python", "ncurses", "sqlite"],
+    use_defaults = ["ssl", "ncurses", "sqlite"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "ncurses": ["//packages/linux/core:ncurses"],
+        "sqlite": ["//packages/linux/core:sqlite"],
+    },
+
+    use_configure = {
+        "python": "--enable-python-tools",
+        "-python": "--disable-python-tools",
+    },
+
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
         "--localstatedir=/var",
-        "--disable-python-tools",
         "--with-netlink-version=3",
     ],
+
     deps = [
         "//packages/linux/core:musl",
-        "//packages/linux/network/openssl:openssl",
         "//packages/linux/network/libpcap:libpcap",
-        "//packages/linux/core:sqlite",
         "//packages/linux/core:zlib",
-        "//packages/linux/core:ncurses",
     ],
+
+    description = "Wireless network and device detector, sniffer, wardriving tool",
+    homepage = "https://www.kismetwireless.net/",
+    license = "GPL-2.0-or-later",
     visibility = ["PUBLIC"],
 )

@@ -1,26 +1,34 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "libsndfile-src",
+use_package(
+    name = "libsndfile",
+    version = "1.2.2",
     src_uri = "https://github.com/libsndfile/libsndfile/releases/download/1.2.2/libsndfile-1.2.2.tar.xz",
     sha256 = "3799ca9924d3125038880367bf1468e53a1b7e3686a934f098b7e1d286cdb80e",
-)
-
-configure_make_package(
-    name = "libsndfile",
-    source = ":libsndfile-src",
-    version = "1.2.2",
     description = "C library for reading and writing sound files",
     homepage = "https://github.com/libsndfile/libsndfile",
     license = "LGPL-2.1",
+    iuse = ["static-libs", "alsa", "sqlite", "mpeg", "debug"],
+    use_defaults = [],
     configure_args = [
         "--prefix=/usr",
-        "--disable-static",
-        "--disable-sqlite",
-        "--disable-alsa",
-        "--disable-external-libs",
-        "--disable-mpeg",
     ],
+    use_configure = {
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+        "alsa": "--enable-alsa",
+        "-alsa": "--disable-alsa",
+        "sqlite": "--enable-sqlite",
+        "-sqlite": "--disable-sqlite",
+        "mpeg": "--enable-mpeg",
+        "-mpeg": "--disable-mpeg",
+        "debug": "--enable-debug",
+        "-debug": "--disable-debug",
+    },
+    use_deps = {
+        "alsa": ["//packages/linux/audio/daemons/alsa-lib:alsa-lib"],
+    },
     deps = [
         "//packages/linux/core:musl",
     ],

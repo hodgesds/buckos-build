@@ -1,31 +1,43 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # =============================================================================
 # ettercap - Comprehensive suite for man-in-the-middle attacks
 # =============================================================================
 
-download_source(
-    name = "ettercap-src",
+use_package(
+    name = "ettercap",
+    version = "0.8.3.1",
     src_uri = "https://github.com/Ettercap/ettercap/archive/refs/tags/v0.8.3.1.tar.gz",
     sha256 = "d0e1f2g3h4i5j6k7l8m9n0o1p2q3r4s5t6u7v8w9x0y1z2a3b4c5d6e7f8g9h0i1",
-)
 
-configure_make_package(
-    name = "ettercap",
-    source = ":ettercap-src",
-    version = "0.8.3.1",
+    iuse = ["gtk", "ncurses", "plugins", "ssl", "ipv6"],
+    use_defaults = ["ncurses", "plugins", "ssl"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "ncurses": ["//packages/linux/core:ncurses"],
+        "gtk": ["//packages/linux/gui:gtk3"],
+    },
+
+    use_configure = {
+        "gtk": "--enable-gtk",
+        "-gtk": "--disable-gtk",
+        "ncurses": "--enable-curses",
+        "-ncurses": "--disable-curses",
+        "plugins": "--enable-plugins",
+        "-plugins": "--disable-plugins",
+        "ipv6": "--enable-ipv6",
+        "-ipv6": "--disable-ipv6",
+    },
+
+    deps = [
+        "//packages/linux/network/libpcap:libpcap",
+        "//packages/linux/core:musl",
+    ],
+
     description = "Comprehensive suite for man-in-the-middle attacks and network analysis",
     homepage = "https://www.ettercap-project.org/",
     license = "GPL-2.0-or-later",
-    configure_args = [
-        "--disable-gtk",
-        "--enable-plugins",
-    ],
-    deps = [
-        "//packages/linux/network/libpcap:libpcap",
-        "//packages/linux/network/openssl:openssl",
-        "//packages/linux/core:ncurses",
-        "//packages/linux/core:musl",
-    ],
     visibility = ["PUBLIC"],
 )

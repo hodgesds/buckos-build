@@ -1,19 +1,24 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # metalog - Modern replacement for syslogd and klogd
-download_source(
-    name = "metalog-src",
+# USE flags: unicode
+
+use_package(
+    name = "metalog",
+    version = "20230719",
     src_uri = "https://github.com/hvisage/metalog/archive/metalog-20230719.tar.gz",
     sha256 = "563b41409ee9e396c3709f002b59ccd9aff901b7d7e3adee6344e4b599a02105",
-)
-
-configure_make_package(
-    name = "metalog",
-    source = ":metalog-src",
-    version = "20230719",
     description = "Modern replacement for syslogd and klogd",
     homepage = "https://github.com/hvisage/metalog",
     license = "GPL-2.0",
+    iuse = ["unicode"],
+    use_defaults = [],
+    use_deps = {},
+    use_configure = {
+        "unicode": "--enable-unicode",
+        "-unicode": "--disable-unicode",
+    },
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",

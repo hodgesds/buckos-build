@@ -1,6 +1,10 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
-# heaptrack - Heap memory profiler
+# heaptrack - Heap memory profiler (cmake build)
+# USE flags: gui, test
+# Default: none
+
 download_source(
     name = "heaptrack-src",
     src_uri = "https://download.kde.org/stable/heaptrack/1.5.0/heaptrack-1.5.0.tar.xz",

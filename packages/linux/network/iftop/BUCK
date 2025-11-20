@@ -1,29 +1,38 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # =============================================================================
 # iftop - Display bandwidth usage on an interface
 # =============================================================================
 
-download_source(
-    name = "iftop-src",
+use_package(
+    name = "iftop",
+    version = "1.0pre4",
     src_uri = "http://www.ex-parrot.com/pdw/iftop/download/iftop-1.0pre4.tar.gz",
     sha256 = "f733eeea371a7577f8fe353d86dd88d16f5b2a2e702bd96f5ffb2c197d9b4f97",
-)
 
-configure_make_package(
-    name = "iftop",
-    source = ":iftop-src",
-    version = "1.0pre4",
-    description = "Display bandwidth usage on an interface by host",
-    homepage = "http://www.ex-parrot.com/pdw/iftop/",
-    license = "GPL-2.0-or-later",
+    iuse = ["ipv6"],
+    use_defaults = ["ipv6"],
+
+    use_deps = {},
+
+    use_configure = {
+        "ipv6": "--enable-ipv6",
+        "-ipv6": "--disable-ipv6",
+    },
+
     configure_args = [
         "--with-libpcap",
     ],
+
     deps = [
         "//packages/linux/network/libpcap:libpcap",
         "//packages/linux/core:ncurses",
         "//packages/linux/core:musl",
     ],
+
+    description = "Display bandwidth usage on an interface by host",
+    homepage = "http://www.ex-parrot.com/pdw/iftop/",
+    license = "GPL-2.0-or-later",
     visibility = ["PUBLIC"],
 )

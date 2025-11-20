@@ -1,22 +1,32 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # =============================================================================
 # iputils - Network monitoring tools (ping, tracepath, etc.)
 # =============================================================================
 
-download_source(
-    name = "iputils-src",
+use_package(
+    name = "iputils",
+    version = "20231222",
     src_uri = "https://github.com/iputils/iputils/archive/refs/tags/20231222.tar.gz",
     sha256 = "216c9e2f7f8f9c1e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e",
-)
 
-configure_make_package(
-    name = "iputils",
-    source = ":iputils-src",
-    version = "20231222",
-    description = "Network monitoring tools including ping",
-    homepage = "https://github.com/iputils/iputils",
-    license = "GPL-2.0",
+    iuse = ["caps", "idn", "nls"],
+    use_defaults = ["caps"],
+
+    use_deps = {
+        "caps": ["//packages/linux/core:libcap"],
+    },
+
+    use_configure = {
+        "idn": "--with-idn",
+        "-idn": "--without-idn",
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+    },
+
+    deps = ["//packages/linux/core:musl"],
+
     pre_configure = """
 # iputils uses meson, we'll use a simplified make approach
 cat > Makefile << 'MAKEFILE'
@@ -38,7 +48,9 @@ install: all
 	install -m 755 tracepath $(DESTDIR)$(PREFIX)/bin/
 MAKEFILE
 """,
-    configure_args = [],
-    deps = ["//packages/linux/core:musl"],
+
+    description = "Network monitoring tools including ping",
+    homepage = "https://github.com/iputils/iputils",
+    license = "GPL-2.0",
     visibility = ["PUBLIC"],
 )

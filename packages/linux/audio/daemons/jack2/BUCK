@@ -1,4 +1,14 @@
 load("//defs:package_defs.bzl", "download_source", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+# USE flags for jack2 (waf build system):
+# - alsa: ALSA driver support (default: enabled)
+# - dbus: D-Bus support for jack_control (default: enabled)
+# - readline: Readline support for jack_transport (default: disabled)
+# - portaudio: PortAudio driver support (default: disabled)
+# - iio: Industrial I/O driver support (default: disabled)
+# - samplerate: libsamplerate support (default: disabled)
+# - systemd: systemd integration (default: disabled)
 
 download_source(
     name = "jack2-src",

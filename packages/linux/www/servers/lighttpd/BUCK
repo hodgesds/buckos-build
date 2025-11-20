@@ -1,27 +1,56 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "lighttpd-src",
+# lighttpd - Lightweight, fast web server
+#
+# USE flags:
+#   ssl     - Enable SSL/TLS support with OpenSSL
+#   pcre2   - Enable PCRE2 regular expressions
+#   zlib    - Enable zlib compression
+#   bzip2   - Enable bzip2 compression
+#   mysql   - Enable MySQL authentication
+#   ldap    - Enable LDAP authentication
+
+use_package(
+    name = "lighttpd",
+    version = "1.4.76",
     src_uri = "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.76.tar.xz",
     sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
-)
-
-configure_make_package(
-    name = "lighttpd",
-    source = ":lighttpd-src",
-    version = "1.4.76",
     description = "Lightweight, fast web server optimized for high-performance environments",
     homepage = "https://www.lighttpd.net/",
     license = "BSD-3-Clause",
+    iuse = ["ssl", "pcre2", "zlib", "bzip2", "mysql", "ldap"],
+    use_defaults = ["ssl", "pcre2", "zlib", "bzip2"],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "zlib": ["//packages/linux/core:zlib"],
+        "bzip2": ["//packages/linux/core:bzip2"],
+        "pcre2": ["//packages/linux/core:pcre2"],
+        "mysql": ["//packages/linux/databases/mariadb:mariadb"],
+        "ldap": ["//packages/linux/network/openldap:openldap"],
+    },
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc/lighttpd",
         "--localstatedir=/var",
-        "--with-openssl",
-        "--with-pcre2",
-        "--with-zlib",
-        "--with-bzip2",
     ],
+    use_configure = {
+        "ssl": "--with-openssl",
+        "-ssl": "--without-openssl",
+        "pcre2": "--with-pcre2",
+        "-pcre2": "--without-pcre2",
+        "zlib": "--with-zlib",
+        "-zlib": "--without-zlib",
+        "bzip2": "--with-bzip2",
+        "-bzip2": "--without-bzip2",
+        "mysql": "--with-mysql",
+        "-mysql": "--without-mysql",
+        "ldap": "--with-ldap",
+        "-ldap": "--without-ldap",
+    },
     post_install = """
 mkdir -p "$DESTDIR/var/log/lighttpd"
 mkdir -p "$DESTDIR/var/cache/lighttpd"
@@ -39,10 +68,5 @@ accesslog.filename = "/var/log/lighttpd/access.log"
 index-file.names = ( "index.html", "index.htm" )
 EOF
 """,
-    deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:zlib",
-        "//packages/linux/network/openssl:openssl",
-    ],
     visibility = ["PUBLIC"],
 )

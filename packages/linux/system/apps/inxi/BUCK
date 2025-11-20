@@ -1,27 +1,23 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # inxi - Full featured CLI system information tool
+# USE flags: (script-based package)
 
-download_source(
-    name = "inxi-src",
+use_package(
+    name = "inxi",
+    version = "3.3.31",
     src_uri = "https://github.com/smxi/inxi/archive/refs/tags/3.3.31-1.tar.gz",
     sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
-)
-
-configure_make_package(
-    name = "inxi",
-    source = ":inxi-src",
-    version = "3.3.31",
     description = "Full featured CLI system information tool",
     homepage = "https://github.com/smxi/inxi",
     license = "GPL-3.0-or-later",
-    build_in_source = True,
+    iuse = [],
+    use_defaults = [],
+    use_deps = {},
+    use_configure = {},
     configure_args = [],
     make_args = [],
-    install_args = [
-        "PREFIX=/usr",
-        "DESTDIR=$(location)",
-    ],
     deps = [
         "//packages/linux/shells/bash:bash",
     ],

@@ -1,34 +1,47 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # =============================================================================
 # iproute2 - Network configuration utilities
 # =============================================================================
 
-download_source(
-    name = "iproute2-src",
+use_package(
+    name = "iproute2",
+    version = "6.6.0",
     src_uri = "https://mirrors.edge.kernel.org/pub/linux/utils/net/iproute2/iproute2-6.6.0.tar.xz",
     sha256 = "8738c82bfd5eb5c4f8ad91194d2a7e509ae3fcef8e19d6e1b3a6e2f6b9e3f8a1",
-)
 
-configure_make_package(
-    name = "iproute2",
-    source = ":iproute2-src",
-    version = "6.6.0",
-    description = "Network configuration utilities (ip, ss, bridge, etc.)",
-    homepage = "https://wiki.linuxfoundation.org/networking/iproute2",
-    license = "GPL-2.0",
-    pre_configure = """
-# iproute2 uses a different build system
-./configure
-""",
+    iuse = ["caps", "elf", "selinux", "atm", "iptables"],
+    use_defaults = ["caps"],
+
+    use_deps = {
+        "caps": ["//packages/linux/core:libcap"],
+        "elf": ["//packages/linux/core:elfutils"],
+        "selinux": ["//packages/linux/core:libselinux"],
+    },
+
+    use_configure = {},
+
     configure_args = [],
+
     make_args = [
         "PREFIX=/usr",
         "SBINDIR=/sbin",
     ],
+
+    deps = ["//packages/linux/core:musl"],
+
+    pre_configure = """
+# iproute2 uses a different build system
+./configure
+""",
+
     post_install = """
 make install PREFIX=/usr SBINDIR=/sbin DESTDIR="$DESTDIR"
 """,
-    deps = ["//packages/linux/core:musl"],
+
+    description = "Network configuration utilities (ip, ss, bridge, etc.)",
+    homepage = "https://wiki.linuxfoundation.org/networking/iproute2",
+    license = "GPL-2.0",
     visibility = ["PUBLIC"],
 )

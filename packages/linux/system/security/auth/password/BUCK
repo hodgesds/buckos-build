@@ -2,6 +2,7 @@
 # Password strength checking libraries and tools
 
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # libpwquality - Password quality checking library
 download_source(

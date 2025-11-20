@@ -1,30 +1,49 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # shadow - User and group management utilities
-download_source(
-    name = "shadow-src",
+# USE flags: pam, selinux, audit, acl, attr, nls, tcb, nscd
+
+use_package(
+    name = "shadow",
+    version = "4.14.8",
     src_uri = "https://github.com/shadow-maint/shadow/releases/download/4.14.8/shadow-4.14.8.tar.xz",
     sha256 = "fc188a1eb5ce6bf26d5dd8f2667a82b4f61bc6ad40d7c8cc6b77549b6e9f0bce",
-)
-
-configure_make_package(
-    name = "shadow",
-    source = ":shadow-src",
-    version = "4.14.8",
     description = "User and group management utilities (passwd, useradd, etc.)",
     homepage = "https://github.com/shadow-maint/shadow",
     license = "BSD",
+    iuse = ["pam", "selinux", "audit", "acl", "attr", "nls", "tcb", "nscd", "doc"],
+    use_defaults = ["pam"],
+    use_deps = {
+        "pam": ["//packages/linux/system/security/auth/pam"],
+        "selinux": ["//packages/linux/system/security/selinux"],
+        "audit": ["//packages/linux/system/security/audit"],
+        "acl": ["//packages/linux/system/libs/ipc/acl"],
+        "attr": ["//packages/linux/system/libs/ipc/attr"],
+    },
+    use_configure = {
+        "pam": "--with-libpam",
+        "-pam": "--without-libpam",
+        "selinux": "--with-selinux",
+        "-selinux": "--without-selinux",
+        "audit": "--with-audit",
+        "-audit": "--without-audit",
+        "acl": "--with-acl",
+        "-acl": "--without-acl",
+        "attr": "--with-attr",
+        "-attr": "--without-attr",
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+        "tcb": "--with-tcb",
+        "-tcb": "--without-tcb",
+        "nscd": "--with-nscd",
+        "-nscd": "--without-nscd",
+        "doc": "--enable-man",
+        "-doc": "--disable-man",
+    },
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
-        "--disable-nls",
-        "--without-selinux",
-        "--without-audit",
-        "--without-acl",
-        "--without-attr",
-        "--without-tcb",
-        "--without-nscd",
-        "--disable-man",
     ],
     deps = [
         "//packages/linux/core:musl",

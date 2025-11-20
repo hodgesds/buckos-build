@@ -1,36 +1,53 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "openconnect-src",
+use_package(
+    name = "openconnect",
+    version = "9.12",
     src_uri = "https://www.infradead.org/openconnect/download/openconnect-9.12.tar.gz",
     sha256 = "a2bedce3aa4dfe75e36e407e48e8e8bc91d46def5335ac9564fbf91bd4b2413e",
-)
 
-configure_make_package(
-    name = "openconnect",
-    source = ":openconnect-src",
-    version = "9.12",
-    description = "Open client for Cisco AnyConnect, Pulse, GlobalProtect VPNs",
-    homepage = "https://www.infradead.org/openconnect/",
-    license = "LGPL-2.1",
+    iuse = ["ssl", "gnutls", "lz4", "stoken", "libpcsclite"],
+    use_defaults = ["ssl", "lz4"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "gnutls": ["//packages/linux/network/gnutls:gnutls"],
+        "lz4": ["//packages/linux/core:lz4"],
+    },
+
+    use_configure = {
+        "ssl": "--with-openssl",
+        "-ssl": "--without-openssl",
+        "gnutls": "--with-gnutls",
+        "-gnutls": "--without-gnutls",
+        "lz4": "--with-lz4",
+        "-lz4": "--without-lz4",
+        "stoken": "--with-stoken",
+        "-stoken": "--without-stoken",
+        "libpcsclite": "--with-libpcsclite",
+        "-libpcsclite": "--without-libpcsclite",
+    },
+
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
         "--with-vpnc-script=/etc/vpnc/vpnc-script",
-        "--without-gnutls",
-        "--with-openssl",
         "--with-libxml2-prefix=/usr",
-        "--with-lz4",
     ],
+
     post_install = """
 # Create vpnc-script directory
 mkdir -p "$DESTDIR/etc/vpnc"
 """,
+
     deps = [
-        "//packages/linux/network:openssl",
         "//packages/linux/core:libxml2",
-        "//packages/linux/core:lz4",
         "//packages/linux/core:zlib",
     ],
+
+    description = "Open client for Cisco AnyConnect, Pulse, GlobalProtect VPNs",
+    homepage = "https://www.infradead.org/openconnect/",
+    license = "LGPL-2.1",
     visibility = ["PUBLIC"],
 )

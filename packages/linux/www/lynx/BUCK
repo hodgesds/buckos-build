@@ -1,31 +1,47 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "lynx-src",
+# lynx - Text-based web browser
+#
+# USE flags:
+#   ssl      - Enable SSL/TLS support with OpenSSL
+#   zlib     - Enable zlib compression
+#   ipv6     - Enable IPv6 support
+#   nls      - Enable native language support
+#   unicode  - Enable wide character (Unicode) support
+#   ncurses  - Use ncurses for terminal handling
+
+use_package(
+    name = "lynx",
+    version = "2.9.0",
     src_uri = "https://invisible-mirror.net/archives/lynx/tarballs/lynx2.9.0.tar.bz2",
     sha256 = "3c8c61d4c7d9a2c2f8c1c3e5a7b9d4f6e8a0c2d4e6f8a0b2c4d6e8f0a2b4c6d8",
-)
-
-configure_make_package(
-    name = "lynx",
-    source = ":lynx-src",
-    version = "2.9.0",
     description = "Text-based web browser with SSL support",
     homepage = "https://lynx.invisible-island.net/",
     license = "GPL-2.0",
+    iuse = ["ssl", "zlib", "ipv6", "nls", "unicode", "ncurses"],
+    use_defaults = ["ssl", "zlib", "ipv6", "nls", "unicode", "ncurses"],
+    deps = [],
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "zlib": ["//packages/linux/core:zlib"],
+        "ncurses": ["//packages/linux/core/ncurses"],
+    },
     configure_args = [
-        "--with-ssl",
-        "--with-zlib",
         "--enable-default-colors",
-        "--enable-widec",
-        "--enable-ipv6",
-        "--enable-nls",
-        "--with-screen=ncursesw",
     ],
-    deps = [
-        "//packages/linux/core/ncurses",
-        "//packages/linux/core/zlib",
-        "//packages/linux/network/openssl:openssl",
-    ],
+    use_configure = {
+        "ssl": "--with-ssl",
+        "-ssl": "--without-ssl",
+        "zlib": "--with-zlib",
+        "-zlib": "--without-zlib",
+        "ipv6": "--enable-ipv6",
+        "-ipv6": "--disable-ipv6",
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+        "unicode": "--enable-widec",
+        "-unicode": "--disable-widec",
+        "ncurses": "--with-screen=ncursesw",
+    },
     visibility = ["PUBLIC"],
 )

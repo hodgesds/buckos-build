@@ -1,18 +1,22 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "rt-tests-src",
+# hackbench - Scheduler benchmark and stress test
+#
+# USE flags: (minimal flags for this benchmark)
+
+use_package(
+    name = "hackbench",
+    version = "2.6",
     src_uri = "https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git/snapshot/rt-tests-2.6.tar.gz",
     sha256 = "b19e2d1e9fdf11d27a1aadf5d3e3a2e3e5a9b9f9c6be1aa0c1eb8ab8b8e5b7e1",
-)
-
-configure_make_package(
-    name = "hackbench",
-    source = ":rt-tests-src",
-    version = "2.6",
     description = "Scheduler benchmark and stress test - measures process scheduling",
     homepage = "https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git",
     license = "GPL-2.0",
+    iuse = [],
+    use_defaults = [],
+    deps = [],
+    use_deps = {},
     pre_configure = """
 # rt-tests uses make directly
 true

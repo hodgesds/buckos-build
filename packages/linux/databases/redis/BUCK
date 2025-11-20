@@ -1,30 +1,47 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # redis - Advanced key-value store
-download_source(
-    name = "redis-src",
+#
+# USE flags:
+#   ssl      - Enable SSL/TLS support with OpenSSL
+#   systemd  - Enable systemd integration
+#   jemalloc - Use jemalloc memory allocator
+#   lua      - Enable Lua scripting support
+
+use_package(
+    name = "redis",
+    version = "7.4.2",
     src_uri = "https://download.redis.io/releases/redis-7.4.2.tar.gz",
     sha256 = "4ddebbf09061cbb589011786febdb34f29767dd7f89dbe712d2b68e808af6a1f",
-)
-
-configure_make_package(
-    name = "redis",
-    source = ":redis-src",
-    version = "7.4.2",
     description = "Advanced key-value store with support for data structures",
     homepage = "https://redis.io/",
     license = "RSALv2",
+    iuse = ["ssl", "systemd", "jemalloc", "lua"],
+    use_defaults = ["jemalloc"],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "systemd": ["//packages/linux/system/systemd:systemd"],
+        "jemalloc": ["//packages/linux/core:jemalloc"],
+    },
     build_in_source = True,
     configure_args = [],
     make_args = [
         "PREFIX=/usr",
-        "USE_SYSTEMD=no",
     ],
+    use_configure = {
+        "ssl": "BUILD_TLS=yes",
+        "-ssl": "BUILD_TLS=no",
+        "systemd": "USE_SYSTEMD=yes",
+        "-systemd": "USE_SYSTEMD=no",
+        "jemalloc": "MALLOC=jemalloc",
+        "-jemalloc": "MALLOC=libc",
+    },
     install_args = [
         "PREFIX=/usr",
-    ],
-    deps = [
-        "//packages/linux/core:musl",
     ],
     visibility = ["PUBLIC"],
 )

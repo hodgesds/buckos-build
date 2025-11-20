@@ -1,18 +1,22 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "dbench-src",
+# dbench - Database-style benchmark for filesystems
+#
+# USE flags: (minimal flags for this benchmark)
+
+use_package(
+    name = "dbench",
+    version = "4.0",
     src_uri = "https://samba.org/ftp/tridge/dbench/dbench-4.0.tar.gz",
     sha256 = "6a0c3f2e5c4d3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a",
-)
-
-configure_make_package(
-    name = "dbench",
-    source = ":dbench-src",
-    version = "4.0",
     description = "Database-style benchmark for filesystems",
     homepage = "https://samba.org/ftp/tridge/dbench/",
     license = "GPL-3.0",
+    iuse = [],
+    use_defaults = [],
+    deps = [],
+    use_deps = {},
     configure_args = [],
     visibility = ["PUBLIC"],
 )

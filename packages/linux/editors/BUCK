@@ -1,4 +1,5 @@
 # Filegroup for all editors
+load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 filegroup(
     name = "all-editors",
     srcs = [

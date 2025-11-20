@@ -1,28 +1,37 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "libidn-src",
+use_package(
+    name = "libidn",
+    version = "1.42",
     src_uri = "https://ftp.gnu.org/gnu/libidn/libidn-1.42.tar.gz",
     sha256 = "d6c199dcd806e4fe279360cb4b08349a0d39560ed548ffd1ccadda8cdecb4723",
-)
 
-configure_make_package(
-    name = "libidn",
-    source = ":libidn-src",
-    version = "1.42",
-    description = "Implementation of Internationalized Domain Names (IDN)",
-    homepage = "https://www.gnu.org/software/libidn/",
-    license = "LGPL-2.1-or-later",
+    iuse = ["static-libs", "doc"],
+    use_defaults = [],
+
+    use_deps = {},
+
+    use_configure = {
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+        "doc": "--enable-doc",
+        "-doc": "--disable-doc",
+    },
+
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
-        "--disable-static",
         "--disable-csharp",
         "--disable-java",
-        "--disable-doc",
     ],
+
     deps = [
         "//packages/linux/core:musl",
     ],
+
+    description = "Implementation of Internationalized Domain Names (IDN)",
+    homepage = "https://www.gnu.org/software/libidn/",
+    license = "LGPL-2.1-or-later",
     visibility = ["PUBLIC"],
 )

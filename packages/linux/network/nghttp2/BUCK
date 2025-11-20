@@ -1,26 +1,34 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # =============================================================================
 # nghttp2 - HTTP/2 C library
 # =============================================================================
 
-download_source(
-    name = "nghttp2-src",
+use_package(
+    name = "nghttp2",
+    version = "1.59.0",
     src_uri = "https://github.com/nghttp2/nghttp2/releases/download/v1.59.0/nghttp2-1.59.0.tar.xz",
     sha256 = "90fd27685120404544e963e96e1db98b9d0be66f2124f5dd4c2f6e0bdd5dda65",
-)
 
-configure_make_package(
-    name = "nghttp2",
-    source = ":nghttp2-src",
-    version = "1.59.0",
+    iuse = ["static-libs", "tools", "xml"],
+    use_defaults = [],
+
+    use_deps = {},
+
+    use_configure = {
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+        "tools": "--enable-app",
+        "-tools": "--enable-lib-only",
+        "xml": "--with-libxml2",
+        "-xml": "--without-libxml2",
+    },
+
+    deps = ["//packages/linux/core:musl"],
+
     description = "HTTP/2 C library and tools",
     homepage = "https://nghttp2.org/",
     license = "MIT",
-    configure_args = [
-        "--enable-lib-only",
-        "--disable-static",
-    ],
-    deps = ["//packages/linux/core:musl"],
     visibility = ["PUBLIC"],
 )

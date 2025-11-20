@@ -1,34 +1,49 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # =============================================================================
 # nmap - Network exploration tool and security scanner
 # =============================================================================
 
-download_source(
-    name = "nmap-src",
+use_package(
+    name = "nmap",
+    version = "7.94",
     src_uri = "https://nmap.org/dist/nmap-7.94.tar.bz2",
     sha256 = "d71be189eec43d7e099bac8571509d316c4577d03f4c8f62e4b1bf3a6e6c1e85",
-)
 
-configure_make_package(
-    name = "nmap",
-    source = ":nmap-src",
-    version = "7.94",
-    description = "Network exploration tool and security/port scanner",
-    homepage = "https://nmap.org/",
-    license = "NPSL",
+    iuse = ["ssl", "ipv6", "ncat", "ndiff", "nping", "zenmap", "lua"],
+    use_defaults = ["ssl", "ipv6"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+    },
+
+    use_configure = {
+        "ssl": "--with-openssl",
+        "-ssl": "--without-openssl",
+        "zenmap": "--with-zenmap",
+        "-zenmap": "--without-zenmap",
+        "ncat": "--with-ncat",
+        "-ncat": "--without-ncat",
+        "ndiff": "--with-ndiff",
+        "-ndiff": "--without-ndiff",
+        "nping": "--with-nping",
+        "-nping": "--without-nping",
+        "lua": "--with-liblua",
+        "-lua": "--without-liblua",
+    },
+
     configure_args = [
-        "--without-zenmap",
-        "--without-ncat",
-        "--without-ndiff",
-        "--without-nping",
-        "--with-openssl",
         "--with-libpcap",
     ],
+
     deps = [
-        "//packages/linux/network/openssl:openssl",
         "//packages/linux/network/libpcap:libpcap",
         "//packages/linux/core:musl",
     ],
+
+    description = "Network exploration tool and security/port scanner",
+    homepage = "https://nmap.org/",
+    license = "NPSL",
     visibility = ["PUBLIC"],
 )

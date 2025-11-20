@@ -2,6 +2,7 @@
 # Dynamic system tuning based on usage patterns
 
 load("//defs:package_defs.bzl", "download_source", "python_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 download_source(
     name = "tuned-src",

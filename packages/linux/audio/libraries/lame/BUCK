@@ -1,26 +1,30 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "lame-src",
+use_package(
+    name = "lame",
+    version = "3.100",
     src_uri = "https://downloads.sourceforge.net/lame/lame-3.100.tar.gz",
     sha256 = "ddfe36cab873794038ae2c1210557ad34857a4b6bdc515785d1da9e175b1da1e",
-)
-
-configure_make_package(
-    name = "lame",
-    source = ":lame-src",
-    version = "3.100",
     description = "High quality MP3 encoder",
     homepage = "https://lame.sourceforge.io/",
     license = "LGPL-2.1",
+    iuse = ["static-libs", "debug", "frontend", "nasm"],
+    use_defaults = ["nasm"],
     configure_args = [
         "--prefix=/usr",
-        "--disable-static",
-        "--disable-frontend",
-        "--disable-gtktest",
-        "--enable-nasm",
         "--with-fileio=lame",
     ],
+    use_configure = {
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+        "debug": "--enable-debug",
+        "-debug": "--disable-debug",
+        "frontend": "--enable-frontend",
+        "-frontend": "--disable-frontend",
+        "nasm": "--enable-nasm",
+        "-nasm": "--disable-nasm",
+    },
     deps = [
         "//packages/linux/core:musl",
     ],

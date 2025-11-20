@@ -1,26 +1,46 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "binutils-src",
+use_package(
+    name = "binutils",
+    version = "2.41",
     src_uri = "https://ftp.gnu.org/gnu/binutils/binutils-2.41.tar.xz",
     sha256 = "ae9a5789e23459e59606e6714723f2d3ffc31c03174191ef0d015bdf06007450",
-)
-
-configure_make_package(
-    name = "binutils",
-    source = ":binutils-src",
-    version = "2.41",
     description = "GNU Binary Utilities (objdump, nm, readelf, strings, etc.)",
     homepage = "https://www.gnu.org/software/binutils/",
     license = "GPL-3+",
+
+    # USE flags this package supports
+    iuse = [
+        "gold",
+        "plugins",
+        "nls",
+        "static-libs",
+    ],
+
+    # Default USE flags
+    use_defaults = ["gold", "plugins"],
+
+    # Conditional configure arguments
+    use_configure = {
+        "gold": "--enable-gold",
+        "-gold": "--disable-gold",
+        "plugins": "--enable-plugins",
+        "-plugins": "--disable-plugins",
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+    },
+
+    # Base configure arguments (always applied)
     configure_args = [
-        "--enable-gold",
         "--enable-ld=default",
-        "--enable-plugins",
         "--enable-shared",
         "--disable-werror",
         "--with-system-zlib",
     ],
+
     deps = [
         "//packages/linux/core/zlib:zlib",
     ],

@@ -1,4 +1,5 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # VirtualBox - Desktop virtualization
 download_source(
@@ -6,6 +7,8 @@ download_source(
     src_uri = "https://download.virtualbox.org/virtualbox/7.1.4/VirtualBox-7.1.4.tar.bz2",
     sha256 = "f7f9b5d8e4c3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b7",
 )
+
+# USE flags: See use_flags.bzl for available flags
 
 configure_make_package(
     name = "virtualbox",
@@ -63,6 +66,8 @@ VBOXCFG
 )
 
 # VirtualBox Guest Additions (for running inside VMs)
+# USE flags: See use_flags.bzl for available flags
+
 configure_make_package(
     name = "virtualbox-guest-additions",
     source = ":virtualbox-src",
@@ -107,6 +112,8 @@ EOF
 )
 
 # VirtualBox kernel modules
+# USE flags: See use_flags.bzl for available flags
+
 configure_make_package(
     name = "virtualbox-modules",
     source = ":virtualbox-src",

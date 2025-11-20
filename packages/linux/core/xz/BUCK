@@ -1,21 +1,37 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "xz-src",
+use_package(
+    name = "xz",
+    version = "5.4.5",
     src_uri = "https://github.com/tukaani-project/xz/releases/download/v5.4.5/xz-5.4.5.tar.xz",
     sha256 = "8ccf5fff868c006f29522e386fb4c6a1b66463fbca65a4cfc3c4bd596e895e79",
-)
-
-configure_make_package(
-    name = "xz",
-    source = ":xz-src",
-    version = "5.4.5",
     description = "XZ Utils - Lossless data compression",
     homepage = "https://tukaani.org/xz/",
     license = "public-domain",
-    configure_args = [
-        "--disable-doc",
-        "--disable-nls",
+
+    # USE flags this package supports
+    iuse = [
+        "doc",
+        "nls",
+        "static-libs",
+        "threads",
     ],
+
+    # Default USE flags
+    use_defaults = ["threads"],
+
+    # Conditional configure arguments
+    use_configure = {
+        "doc": "--enable-doc",
+        "-doc": "--disable-doc",
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+        "threads": "--enable-threads=yes",
+        "-threads": "--enable-threads=no",
+    },
+
     visibility = ["PUBLIC"],
 )

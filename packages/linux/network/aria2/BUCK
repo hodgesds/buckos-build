@@ -1,33 +1,52 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # =============================================================================
 # aria2 - Lightweight multi-protocol download utility
 # =============================================================================
 
-download_source(
-    name = "aria2-src",
+use_package(
+    name = "aria2",
+    version = "1.37.0",
     src_uri = "https://github.com/aria2/aria2/releases/download/release-1.37.0/aria2-1.37.0.tar.xz",
     sha256 = "60a420ad7085eb616cb6e2bdf0a7206d68ff3514063e2b97a6be2b2f0c5b2c7e",
-)
 
-configure_make_package(
-    name = "aria2",
-    source = ":aria2-src",
-    version = "1.37.0",
-    description = "Lightweight multi-protocol multi-source download utility",
-    homepage = "https://aria2.github.io/",
-    license = "GPL-2.0",
+    iuse = ["ssl", "gnutls", "bittorrent", "metalink", "nls", "xml"],
+    use_defaults = ["ssl", "bittorrent", "metalink"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "gnutls": ["//packages/linux/network/gnutls:gnutls"],
+        "xml": ["//packages/linux/core:libxml2"],
+    },
+
+    use_configure = {
+        "ssl": "--with-openssl",
+        "-ssl": "--without-openssl",
+        "gnutls": "--with-gnutls",
+        "-gnutls": "--without-gnutls",
+        "bittorrent": "--enable-bittorrent",
+        "-bittorrent": "--disable-bittorrent",
+        "metalink": "--enable-metalink",
+        "-metalink": "--disable-metalink",
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+        "xml": "--with-libxml2",
+        "-xml": "--without-libxml2",
+    },
+
     configure_args = [
-        "--with-openssl",
-        "--without-gnutls",
-        "--disable-nls",
         "--with-ca-bundle=/etc/ssl/certs/ca-certificates.crt",
     ],
+
     deps = [
-        "//packages/linux/network/openssl:openssl",
         "//packages/linux/network/ca-certificates:ca-certificates",
         "//packages/linux/core:zlib",
         "//packages/linux/core:musl",
     ],
+
+    description = "Lightweight multi-protocol multi-source download utility",
+    homepage = "https://aria2.github.io/",
+    license = "GPL-2.0",
     visibility = ["PUBLIC"],
 )

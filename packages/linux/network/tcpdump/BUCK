@@ -1,27 +1,42 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # =============================================================================
 # tcpdump - Command-line packet analyzer
 # =============================================================================
 
-download_source(
-    name = "tcpdump-src",
+use_package(
+    name = "tcpdump",
+    version = "4.99.4",
     src_uri = "https://www.tcpdump.org/release/tcpdump-4.99.4.tar.gz",
     sha256 = "0232231bb2f29d6bf2426e70a08a7e0c63a0d59a9b44863b7f5e2357a6e49f7b",
-)
 
-configure_make_package(
-    name = "tcpdump",
-    source = ":tcpdump-src",
-    version = "4.99.4",
+    iuse = ["ssl", "ipv6", "smi", "caps"],
+    use_defaults = ["ssl", "ipv6"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "caps": ["//packages/linux/core:libcap"],
+    },
+
+    use_configure = {
+        "ssl": "--with-crypto",
+        "-ssl": "--without-crypto",
+        "ipv6": "--enable-ipv6",
+        "-ipv6": "--disable-ipv6",
+        "smi": "--with-smi",
+        "-smi": "--without-smi",
+        "caps": "--with-cap-ng",
+        "-caps": "--without-cap-ng",
+    },
+
+    deps = [
+        "//packages/linux/network/libpcap:libpcap",
+        "//packages/linux/core:musl",
+    ],
+
     description = "Command-line packet analyzer",
     homepage = "https://www.tcpdump.org/",
     license = "BSD-3-Clause",
-    configure_args = [],
-    deps = [
-        "//packages/linux/network/libpcap:libpcap",
-        "//packages/linux/network/openssl:openssl",
-        "//packages/linux/core:musl",
-    ],
     visibility = ["PUBLIC"],
 )

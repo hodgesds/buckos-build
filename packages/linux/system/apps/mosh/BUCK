@@ -1,23 +1,33 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # mosh - Mobile shell with roaming and intelligent local echo
-download_source(
-    name = "mosh-src",
+# USE flags: hardening, ufw, utempter
+
+use_package(
+    name = "mosh",
+    version = "1.4.0",
     src_uri = "https://github.com/mobile-shell/mosh/releases/download/mosh-1.4.0/mosh-1.4.0.tar.gz",
     sha256 = "872e4b134e5df29c8933dff12f401c3a8f94d3f71ec8c3d27e52e58986e2e1a3",
-)
-
-configure_make_package(
-    name = "mosh",
-    source = ":mosh-src",
-    version = "1.4.0",
     description = "Mobile shell with roaming and intelligent local echo",
     homepage = "https://mosh.org",
     license = "GPL-3+",
+    iuse = ["hardening", "ufw", "utempter", "debug"],
+    use_defaults = [],
+    use_deps = {},
+    use_configure = {
+        "hardening": "--enable-hardening",
+        "-hardening": "--disable-hardening",
+        "ufw": "--enable-ufw",
+        "-ufw": "--disable-ufw",
+        "utempter": "--enable-utempter",
+        "-utempter": "--disable-utempter",
+        "debug": "--enable-debug",
+        "-debug": "--disable-debug",
+    },
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
-        "--disable-hardening",
     ],
     deps = [
         "//packages/linux/core:musl",

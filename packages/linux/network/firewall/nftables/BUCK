@@ -3,29 +3,43 @@
 # =============================================================================
 
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "nftables-src",
+use_package(
+    name = "nftables",
+    version = "1.0.9",
     src_uri = "https://www.netfilter.org/projects/nftables/files/nftables-1.0.9.tar.xz",
     sha256 = "a3c304cd9ba061239ee0474f9afb938a9bb99d89b960246f66f0c3a0a85e14cd",
-)
 
-configure_make_package(
-    name = "nftables",
-    source = ":nftables-src",
-    version = "1.0.9",
-    description = "Modern Linux packet filtering framework replacing iptables",
-    homepage = "https://netfilter.org/projects/nftables/",
-    license = "GPL-2.0",
+    iuse = ["json", "python", "readline", "debug", "doc"],
+    use_defaults = ["json", "readline"],
+
+    use_deps = {
+        "readline": ["//packages/linux/core:readline"],
+        "python": ["//packages/linux/core:python"],
+    },
+
+    use_configure = {
+        "json": "--with-json",
+        "-json": "--without-json",
+        "python": "--enable-python",
+        "-python": "--disable-python",
+        "readline": "--with-readline",
+        "-readline": "--without-readline",
+        "debug": "--enable-debug",
+        "-debug": "--disable-debug",
+        "doc": "--enable-man-doc",
+        "-doc": "--disable-man-doc",
+    },
+
     configure_args = [
         "--prefix=/usr",
         "--sbindir=/sbin",
         "--sysconfdir=/etc",
         "--localstatedir=/var",
-        "--with-json",
         "--with-python-bin=/usr/bin/python3",
-        "--disable-man-doc",
     ],
+
     post_install = """
 # Create nftables configuration directories
 mkdir -p "$DESTDIR/etc/nftables"
@@ -57,12 +71,16 @@ table inet filter {
 NFTCONF
 chmod 600 "$DESTDIR/etc/nftables/nftables.conf"
 """,
+
     deps = [
         "//packages/linux/core:libnl",
         "//packages/linux/core:libmnl",
         "//packages/linux/core:libnftnl",
-        "//packages/linux/core:readline",
         "//packages/linux/core:gmp",
     ],
+
+    description = "Modern Linux packet filtering framework replacing iptables",
+    homepage = "https://netfilter.org/projects/nftables/",
+    license = "GPL-2.0",
     visibility = ["PUBLIC"],
 )

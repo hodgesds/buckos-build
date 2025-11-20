@@ -2,6 +2,7 @@
 # ACPI table compiler and debugging tools
 
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 download_source(
     name = "acpica-tools-src",

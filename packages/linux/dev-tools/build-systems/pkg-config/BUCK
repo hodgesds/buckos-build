@@ -1,21 +1,31 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "pkg-config-src",
+use_package(
+    name = "pkg-config",
+    version = "0.29.2",
     src_uri = "https://pkgconfig.freedesktop.org/releases/pkg-config-0.29.2.tar.gz",
     sha256 = "6fc69c01688c9458a57eb9a1664c9aba372ccda420a02bf4429fe610e7e7d591",
-)
-
-configure_make_package(
-    name = "pkg-config",
-    source = ":pkg-config-src",
-    version = "0.29.2",
     description = "Helper tool used when compiling applications and libraries",
     homepage = "https://www.freedesktop.org/wiki/Software/pkg-config/",
     license = "GPL-2+",
-    configure_args = [
-        "--with-internal-glib",
-        "--disable-host-tool",
+
+    # USE flags this package supports
+    iuse = [
+        "internal-glib",
+        "host-tool",
     ],
+
+    # Default USE flags
+    use_defaults = ["internal-glib"],
+
+    # Conditional configure arguments
+    use_configure = {
+        "internal-glib": "--with-internal-glib",
+        "-internal-glib": "--without-internal-glib",
+        "host-tool": "--enable-host-tool",
+        "-host-tool": "--disable-host-tool",
+    },
+
     visibility = ["PUBLIC"],
 )

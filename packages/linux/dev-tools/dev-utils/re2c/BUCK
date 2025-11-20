@@ -1,17 +1,21 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "re2c-src",
+use_package(
+    name = "re2c",
+    version = "3.1",
     src_uri = "https://github.com/skvadrik/re2c/releases/download/3.1/re2c-3.1.tar.xz",
     sha256 = "0ac299ad359e3f512b06a99397d025cfff81d3a35a5d4e9f8e9e5c2c5f8e3b1c",
-)
-
-configure_make_package(
-    name = "re2c",
-    source = ":re2c-src",
-    version = "3.1",
     description = "Lexer generator for C/C++ and Go",
     homepage = "https://re2c.org/",
     license = "public-domain",
+
+    iuse = ["doc"],
+    use_defaults = [],
+    use_configure = {
+        "doc": "--enable-docs",
+        "-doc": "--disable-docs",
+    },
+
     visibility = ["PUBLIC"],
 )

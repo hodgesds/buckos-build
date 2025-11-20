@@ -1,4 +1,5 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # Docker CLI
 download_source(
@@ -6,6 +7,8 @@ download_source(
     src_uri = "https://github.com/docker/cli/archive/refs/tags/v27.3.1.tar.gz",
     sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
 )
+
+# USE flags: See use_flags.bzl for available flags
 
 configure_make_package(
     name = "docker-cli",
@@ -54,6 +57,8 @@ download_source(
     src_uri = "https://github.com/moby/moby/archive/refs/tags/v27.3.1.tar.gz",
     sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
 )
+
+# USE flags: See use_flags.bzl for available flags
 
 configure_make_package(
     name = "docker-engine",
@@ -148,6 +153,8 @@ download_source(
     sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
 )
 
+# USE flags: See use_flags.bzl for available flags
+
 configure_make_package(
     name = "docker-compose",
     source = ":docker-compose-src",
@@ -186,6 +193,8 @@ download_source(
     src_uri = "https://github.com/docker/buildx/archive/refs/tags/v0.18.0.tar.gz",
     sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
 )
+
+# USE flags: See use_flags.bzl for available flags
 
 configure_make_package(
     name = "docker-buildx",

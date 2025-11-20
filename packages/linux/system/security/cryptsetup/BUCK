@@ -1,45 +1,57 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "cryptsetup-src",
-    src_uri = "https://www.kernel.org/pub/linux/utils/cryptsetup/v2.6/cryptsetup-2.6.1.tar.xz",
-    sha256 = "j5k6l7m8n9o0p1q2r3s4t5u6v7w8x9y0z1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6",
-)
+# cryptsetup - Disk encryption setup utility
+# USE flags: openssl, gcrypt, nettle, nls, argon2, ssh-token, fips
 
-download_source(
-    name = "lvm2-src",
-    src_uri = "https://sourceware.org/ftp/lvm2/LVM2.2.03.23.tgz",
-    sha256 = "k6l7m8n9o0p1q2r3s4t5u6v7w8x9y0z1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7",
-)
-
-download_source(
-    name = "popt-src",
+use_package(
+    name = "popt",
+    version = "1.19",
     src_uri = "http://ftp.rpm.org/popt/releases/popt-1.x/popt-1.19.tar.gz",
     sha256 = "l7m8n9o0p1q2r3s4t5u6v7w8x9y0z1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8",
-)
-
-configure_make_package(
-    name = "popt",
-    source = ":popt-src",
-    version = "1.19",
     description = "Command line option parsing library",
     homepage = "http://ftp.rpm.org/popt/",
     license = "MIT",
+    iuse = ["nls", "static-libs"],
+    use_defaults = [],
+    use_deps = {},
+    use_configure = {
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+    },
     configure_args = [
         "--prefix=/usr",
         "--enable-shared",
-        "--disable-static",
     ],
     visibility = ["PUBLIC"],
 )
 
-configure_make_package(
+use_package(
     name = "lvm2",
-    source = ":lvm2-src",
     version = "2.03.23",
+    src_uri = "https://sourceware.org/ftp/lvm2/LVM2.2.03.23.tgz",
+    sha256 = "k6l7m8n9o0p1q2r3s4t5u6v7w8x9y0z1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7",
     description = "Logical Volume Manager 2 utilities",
     homepage = "https://sourceware.org/lvm2/",
     license = "GPL-2.0",
+    iuse = ["udev", "readline", "thin", "cache"],
+    use_defaults = ["udev"],
+    use_deps = {
+        "udev": ["//packages/linux/system/init/eudev"],
+        "readline": ["//packages/linux/core:readline"],
+    },
+    use_configure = {
+        "udev": "--enable-udev_rules --enable-udev_sync",
+        "-udev": "--disable-udev_rules --disable-udev_sync",
+        "readline": "--enable-readline",
+        "-readline": "--disable-readline",
+        "thin": "--enable-thin_check_needs_check",
+        "-thin": "--disable-thin_check_needs_check",
+        "cache": "--enable-cache_check_needs_check",
+        "-cache": "--disable-cache_check_needs_check",
+    },
     configure_args = [
         "--prefix=/usr",
         "--sbindir=/sbin",
@@ -47,27 +59,45 @@ configure_make_package(
         "--localstatedir=/var",
         "--enable-cmdlib",
         "--enable-pkgconfig",
-        "--enable-udev_rules",
-        "--enable-udev_sync",
     ],
     visibility = ["PUBLIC"],
 )
 
-configure_make_package(
+use_package(
     name = "cryptsetup",
-    source = ":cryptsetup-src",
     version = "2.6.1",
+    src_uri = "https://www.kernel.org/pub/linux/utils/cryptsetup/v2.6/cryptsetup-2.6.1.tar.xz",
+    sha256 = "j5k6l7m8n9o0p1q2r3s4t5u6v7w8x9y0z1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6",
     description = "Disk encryption setup utility using dm-crypt and LUKS",
     homepage = "https://gitlab.com/cryptsetup/cryptsetup",
     license = "GPL-2.0+",
+    iuse = ["openssl", "gcrypt", "nettle", "nls", "argon2", "ssh-token", "fips", "reencrypt"],
+    use_defaults = ["openssl", "argon2", "reencrypt"],
+    use_deps = {
+        "openssl": ["//packages/linux/network/openssl:openssl"],
+        "gcrypt": ["//packages/linux/system/libs/crypto/libgcrypt"],
+        "nettle": ["//packages/linux/system/libs/crypto/nettle"],
+    },
+    use_configure = {
+        "openssl": "--with-crypto_backend=openssl",
+        "gcrypt": "--with-crypto_backend=gcrypt",
+        "nettle": "--with-crypto_backend=nettle",
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+        "argon2": "--enable-libargon2",
+        "-argon2": "--disable-libargon2",
+        "ssh-token": "--enable-ssh-token",
+        "-ssh-token": "--disable-ssh-token",
+        "fips": "--enable-fips",
+        "-fips": "--disable-fips",
+        "reencrypt": "--enable-cryptsetup-reencrypt",
+        "-reencrypt": "--disable-cryptsetup-reencrypt",
+    },
     configure_args = [
         "--prefix=/usr",
         "--sbindir=/sbin",
         "--sysconfdir=/etc",
         "--localstatedir=/var",
-        "--enable-libargon2",
-        "--enable-cryptsetup-reencrypt",
-        "--with-crypto_backend=openssl",
     ],
     post_install = """
         mkdir -p $OUT/etc/crypttab.d
@@ -75,7 +105,6 @@ configure_make_package(
     deps = [
         ":popt",
         ":lvm2",
-        "//packages/linux/network/openssl:openssl",
         "//packages/linux/core:util-linux",
     ],
     visibility = ["PUBLIC"],

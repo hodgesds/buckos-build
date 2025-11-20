@@ -19,6 +19,7 @@
 # =============================================================================
 
 load("//defs:package_defs.bzl", "cmake_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 cmake_package(
     name = "llama-cpp",

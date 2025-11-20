@@ -1,38 +1,47 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # =============================================================================
 # OpenSSL - Cryptography and SSL/TLS toolkit
 # =============================================================================
 
-download_source(
-    name = "openssl-src",
+use_package(
+    name = "openssl",
+    version = "3.2.0",
     src_uri = "https://www.openssl.org/source/openssl-3.2.0.tar.gz",
     sha256 = "14c826f07c7e433706fb5c69fa9e25dab95684844b4c962a2cf1bf183eb4690e",
-)
 
-configure_make_package(
-    name = "openssl",
-    source = ":openssl-src",
-    version = "3.2.0",
-    description = "TLS/SSL and crypto library",
-    homepage = "https://www.openssl.org/",
-    license = "Apache-2.0",
+    iuse = ["static-libs", "threads", "zlib", "asm"],
+    use_defaults = ["threads", "zlib", "asm"],
+
+    use_deps = {
+        "zlib": ["//packages/linux/core:zlib"],
+    },
+
+    use_configure = {},
+
+    configure_args = [],
+
+    deps = ["//packages/linux/core:musl"],
+
     pre_configure = """
 # OpenSSL uses its own Configure script
-./Configure linux-x86_64 \
-    --prefix=/usr \
-    --openssldir=/etc/ssl \
-    shared \
-    no-ssl3 \
+./Configure linux-x86_64 \\
+    --prefix=/usr \\
+    --openssldir=/etc/ssl \\
+    shared \\
+    no-ssl3 \\
     no-weak-ssl-ciphers
 """,
-    configure_args = [],
-    make_args = [],
+
     post_install = """
 # Create symlinks for compatibility
 ln -sf /usr/lib/libssl.so.3 "$DESTDIR/usr/lib/libssl.so" || true
 ln -sf /usr/lib/libcrypto.so.3 "$DESTDIR/usr/lib/libcrypto.so" || true
 """,
-    deps = ["//packages/linux/core:musl"],
+
+    description = "TLS/SSL and crypto library",
+    homepage = "https://www.openssl.org/",
+    license = "Apache-2.0",
     visibility = ["PUBLIC"],
 )

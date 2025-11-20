@@ -1,4 +1,12 @@
 load("//defs:package_defs.bzl", "download_source", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+
+# ladybird - Independent web browser built from scratch
+#
+# USE flags:
+#   qt6      - Enable Qt6 GUI support
+#   wayland  - Enable Wayland support
+#   X        - Enable X11 support
 
 download_source(
     name = "ladybird-src",
@@ -29,11 +37,14 @@ binary_package(
         # Install
         DESTDIR="$OUT" ninja -C Build/lagom install
     """,
-    deps = [
-        "//packages/linux/core/zlib",
-        "//packages/linux/desktop/qt6-base",
-        "//packages/linux/lang/clang:clang",
-        "//packages/linux/network/curl",
-    ],
+    deps = use_dep(
+        {
+            "zlib": ["//packages/linux/core/zlib"],
+            "qt6": ["//packages/linux/desktop/qt6-base"],
+            "clang": ["//packages/linux/lang/clang:clang"],
+            "curl": ["//packages/linux/network/curl"],
+        },
+        ["zlib", "qt6", "clang", "curl"],
+    ),
     visibility = ["PUBLIC"],
 )

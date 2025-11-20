@@ -1,23 +1,24 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "cscope-src",
+use_package(
+    name = "cscope",
+    version = "15.9",
     src_uri = "https://downloads.sourceforge.net/cscope/cscope-15.9.tar.gz",
     sha256 = "c5505ae075a871a9cd8d9801859b0ff1c09782075df281c72c23e72115d9f159",
-)
-
-configure_make_package(
-    name = "cscope",
-    source = ":cscope-src",
-    version = "15.9",
     description = "Tool for browsing source code",
     homepage = "http://cscope.sourceforge.net/",
     license = "BSD-3-Clause",
-    configure_args = [
-        "--with-ncurses",
-    ],
-    deps = [
-        "//packages/linux/core/ncurses:ncurses",
-    ],
+
+    iuse = ["ncurses"],
+    use_defaults = ["ncurses"],
+    use_deps = {
+        "ncurses": ["//packages/linux/core/ncurses:ncurses"],
+    },
+    use_configure = {
+        "ncurses": "--with-ncurses",
+        "-ncurses": "--without-ncurses",
+    },
+
     visibility = ["PUBLIC"],
 )

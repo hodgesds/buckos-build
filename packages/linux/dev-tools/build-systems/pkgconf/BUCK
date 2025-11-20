@@ -1,20 +1,32 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # pkgconf - Package compiler and linker metadata toolkit
 
-download_source(
-    name = "pkgconf-src",
+use_package(
+    name = "pkgconf",
+    version = "2.1.0",
     src_uri = "https://distfiles.ariadne.space/pkgconf/pkgconf-2.1.0.tar.xz",
     sha256 = "d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e5",
-)
-
-configure_make_package(
-    name = "pkgconf",
-    source = ":pkgconf-src",
-    version = "2.1.0",
     description = "Package compiler and linker metadata toolkit",
     homepage = "https://pkgconf.org/",
     license = "ISC",
+
+    # USE flags this package supports
+    iuse = [
+        "static-libs",
+    ],
+
+    # Default USE flags
+    use_defaults = [],
+
+    # Conditional configure arguments
+    use_configure = {
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+    },
+
+    # Base configure arguments (always applied)
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
@@ -22,6 +34,7 @@ configure_make_package(
         "--with-system-libdir=/usr/lib",
         "--with-system-includedir=/usr/include",
     ],
+
     deps = [
         "//packages/linux/core:musl",
     ],

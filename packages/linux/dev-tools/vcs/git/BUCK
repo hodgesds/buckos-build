@@ -1,26 +1,55 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "git-src",
+use_package(
+    name = "git",
+    version = "2.43.0",
     src_uri = "https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.43.0.tar.xz",
     sha256 = "5446603e73d911781571f97c95543389c41b62a5c46678e49b77c9a86a1b8787",
-)
-
-configure_make_package(
-    name = "git",
-    source = ":git-src",
-    version = "2.43.0",
     description = "Fast, scalable, distributed revision control system",
     homepage = "https://git-scm.com/",
     license = "GPL-2",
+
+    # USE flags this package supports
+    iuse = [
+        "curl",
+        "perl",
+        "python",
+        "pcre2",
+        "nls",
+    ],
+
+    # Default USE flags
+    use_defaults = ["curl", "perl", "python", "pcre2"],
+
+    # Conditional dependencies
+    use_deps = {
+        "curl": ["//packages/linux/network/curl:curl"],
+        "perl": ["//packages/linux/lang/perl:perl"],
+        "python": ["//packages/linux/lang/python:python"],
+    },
+
+    # Conditional configure arguments
+    use_configure = {
+        "curl": "--with-curl",
+        "-curl": "--without-curl",
+        "perl": "--with-perl=/usr/bin/perl",
+        "-perl": "--without-perl",
+        "python": "--with-python=/usr/bin/python3",
+        "-python": "--without-python",
+        "pcre2": "--with-libpcre2",
+        "-pcre2": "--without-libpcre2",
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+    },
+
+    # Base configure arguments (always applied)
     configure_args = [
-        "--with-curl",
         "--with-expat",
         "--with-openssl",
-        "--with-perl=/usr/bin/perl",
-        "--with-python=/usr/bin/python3",
         "--with-zlib",
     ],
+
     make_args = [
         "prefix=/usr",
         "gitexecdir=/usr/libexec/git-core",
@@ -30,7 +59,6 @@ configure_make_package(
     install_target = "install",
     deps = [
         "//packages/linux/core/zlib:zlib",
-        "//packages/linux/network/curl:curl",
         "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],

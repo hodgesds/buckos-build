@@ -1,33 +1,63 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # =============================================================================
 # Python - General-purpose programming language
 # =============================================================================
 
-download_source(
-    name = "python-src",
+use_package(
+    name = "python",
+    version = "3.12.1",
     src_uri = "https://www.python.org/ftp/python/3.12.1/Python-3.12.1.tar.xz",
     sha256 = "8dfb8f426fcd226657f9e2bd5f1e96e53264965176f745d2102c2f5c3b8e7da3",
-)
-
-configure_make_package(
-    name = "python",
-    source = ":python-src",
-    version = "3.12.1",
     description = "Python is a powerful, easy to learn programming language",
     homepage = "https://www.python.org/",
     license = "PSF-2.0",
+
+    # USE flags this package supports
+    iuse = [
+        "sqlite",
+        "readline",
+        "ncurses",
+        "ssl",
+        "lto",
+        "pgo",
+        "test",
+    ],
+
+    # Default USE flags
+    use_defaults = ["sqlite", "readline", "ncurses", "ssl", "pgo"],
+
+    # Conditional dependencies
+    use_deps = {
+        "sqlite": ["//packages/linux/databases/sqlite:sqlite"],
+        "readline": ["//packages/linux/core/readline"],
+        "ncurses": ["//packages/linux/core/ncurses"],
+        "ssl": ["//packages/linux/network:openssl"],
+    },
+
+    # Conditional configure arguments
+    use_configure = {
+        "sqlite": "--enable-loadable-sqlite-extensions",
+        "-sqlite": "--disable-loadable-sqlite-extensions",
+        "lto": "--enable-optimizations --with-lto",
+        "-lto": "",
+        "pgo": "--enable-optimizations",
+        "-pgo": "",
+        "readline": "--with-readline",
+        "-readline": "--without-readline",
+    },
+
+    # Base configure arguments (always applied)
     configure_args = [
         "--enable-shared",
-        "--enable-optimizations",
         "--with-system-expat",
         "--with-system-ffi",
         "--with-ensurepip=install",
-        "--enable-loadable-sqlite-extensions",
     ],
+
     deps = [
         "//packages/linux/core:zlib",
-        "//packages/linux/network:openssl",
     ],
     visibility = ["PUBLIC"],
 )

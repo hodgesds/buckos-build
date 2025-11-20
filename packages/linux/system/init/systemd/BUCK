@@ -1,8 +1,11 @@
 load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # -----------------------------------------------------------------------------
 # systemd - System and Service Manager
 # -----------------------------------------------------------------------------
+# USE flags: pam, selinux, apparmor, audit, acl, gcrypt, gnutls, openssl,
+#            tpm2, curl, idn, polkit, dbus, qrencode, microhttpd, man
 
 download_source(
     name = "systemd-src",
@@ -17,6 +20,19 @@ configure_make_package(
     description = "System and Service Manager",
     homepage = "https://systemd.io/",
     license = "LGPL-2.1-or-later",
+    # USE flags: pam, selinux, apparmor, audit, acl, gcrypt, gnutls, openssl,
+    #            curl, idn, polkit, dbus, qrencode, microhttpd, man, tpm2
+    # use_deps: pam -> //packages/linux/system/security/auth/pam
+    #           selinux -> //packages/linux/system/security/selinux
+    #           apparmor -> //packages/linux/system/security/apparmor
+    #           audit -> //packages/linux/system/security/audit
+    #           acl -> //packages/linux/system/libs/ipc/acl
+    #           gcrypt -> //packages/linux/system/libs/crypto/libgcrypt
+    #           gnutls -> //packages/linux/system/libs/crypto/gnutls
+    #           openssl -> //packages/linux/system/libs/crypto/openssl
+    #           curl -> //packages/linux/system/libs/network/curl
+    #           polkit -> //packages/linux/system/security/auth/privilege/polkit
+    #           dbus -> //packages/linux/system/libs/ipc/dbus
     pre_configure = """
 # systemd uses meson build system
 mkdir -p build

@@ -1,30 +1,45 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # varnish - High-performance HTTP accelerator
+#
+# USE flags:
+#   pcre2     - Enable PCRE2 regular expressions
+#   readline  - Enable readline support for varnishadm
+#   ncurses   - Enable ncurses for terminal handling
+#   jemalloc  - Use jemalloc memory allocator
 
-download_source(
-    name = "varnish-src",
+use_package(
+    name = "varnish",
+    version = "7.5.0",
     src_uri = "https://varnish-cache.org/_downloads/varnish-7.5.0.tgz",
     sha256 = "b5e8a3c2d4f5e6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1",
-)
-
-configure_make_package(
-    name = "varnish",
-    source = ":varnish-src",
-    version = "7.5.0",
     description = "High-performance HTTP accelerator",
     homepage = "https://varnish-cache.org/",
     license = "BSD-2-Clause",
+    iuse = ["pcre2", "readline", "ncurses", "jemalloc"],
+    use_defaults = ["pcre2", "readline", "ncurses"],
+    deps = [
+        "//packages/linux/core:musl",
+    ],
+    use_deps = {
+        "pcre2": ["//packages/linux/core:pcre2"],
+        "readline": ["//packages/linux/core:readline"],
+        "ncurses": ["//packages/linux/core:ncurses"],
+        "jemalloc": ["//packages/linux/core:jemalloc"],
+    },
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
         "--localstatedir=/var",
     ],
-    deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/core:ncurses",
-        "//packages/linux/core:readline",
-        "//packages/linux/core:pcre2",
-    ],
+    use_configure = {
+        "pcre2": "--with-pcre2",
+        "-pcre2": "--without-pcre2",
+        "readline": "--with-readline",
+        "-readline": "--without-readline",
+        "jemalloc": "--with-jemalloc",
+        "-jemalloc": "--without-jemalloc",
+    },
     visibility = ["PUBLIC"],
 )

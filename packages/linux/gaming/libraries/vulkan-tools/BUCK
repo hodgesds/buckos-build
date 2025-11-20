@@ -2,12 +2,15 @@
 # Essential libraries and tools for Vulkan graphics API
 
 load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 download_source(
     name = "vulkan-headers-src",
     src_uri = "https://github.com/KhronosGroup/Vulkan-Headers/archive/refs/tags/v1.3.296.tar.gz",
     sha256 = "5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7",
 )
+
+# USE flags: See use_flags.bzl for available flags
 
 configure_make_package(
     name = "vulkan-headers",
@@ -41,6 +44,8 @@ download_source(
     src_uri = "https://github.com/KhronosGroup/Vulkan-Loader/archive/refs/tags/v1.3.296.tar.gz",
     sha256 = "6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8",
 )
+
+# USE flags: See use_flags.bzl for available flags
 
 configure_make_package(
     name = "vulkan-loader",
@@ -81,6 +86,8 @@ download_source(
     src_uri = "https://github.com/KhronosGroup/Vulkan-Tools/archive/refs/tags/v1.3.296.tar.gz",
     sha256 = "7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9",
 )
+
+# USE flags: See use_flags.bzl for available flags
 
 configure_make_package(
     name = "vulkan-tools",
@@ -126,6 +133,8 @@ download_source(
     src_uri = "https://github.com/KhronosGroup/Vulkan-ValidationLayers/archive/refs/tags/v1.3.296.tar.gz",
     sha256 = "8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0",
 )
+
+# USE flags: See use_flags.bzl for available flags
 
 configure_make_package(
     name = "vulkan-validation-layers",

@@ -1,26 +1,33 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "pptp-linux-src",
+use_package(
+    name = "pptp-linux",
+    version = "1.10.0",
     src_uri = "https://sourceforge.net/projects/pptpclient/files/pptp/pptp-1.10.0/pptp-1.10.0.tar.gz",
     sha256 = "d4e5f6789012345678901234567890abcdef1234567890abcdef12345678901234",
-)
 
-configure_make_package(
-    name = "pptp-linux",
-    source = ":pptp-linux-src",
-    version = "1.10.0",
-    description = "PPTP client for Linux (legacy VPN protocol)",
-    homepage = "https://pptpclient.sourceforge.net/",
-    license = "GPL-2.0",
+    iuse = [],
+    use_defaults = [],
+
+    use_deps = {},
+
+    use_configure = {},
+
     pre_configure = "true",
+
     make_args = [
         "PPPD=/usr/sbin/pppd",
         "IP=/sbin/ip",
     ],
+
     post_install = """
 make DESTDIR=$DESTDIR install
 mkdir -p "$DESTDIR/etc/ppp/peers"
 """,
+
+    description = "PPTP client for Linux (legacy VPN protocol)",
+    homepage = "https://pptpclient.sourceforge.net/",
+    license = "GPL-2.0",
     visibility = ["PUBLIC"],
 )

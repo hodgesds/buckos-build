@@ -2,12 +2,15 @@
 # Transforms all multitouch events to the slotted type B protocol
 
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 download_source(
     name = "mtdev-src",
     src_uri = "https://bitmath.org/code/mtdev/mtdev-1.1.6.tar.bz2",
     sha256 = "15d7b28da8ac71d8bc8c9287c2045fd174267bc740bec10cfda332dc1204e0e0",
 )
+
+# USE flags: See use_flags.bzl for available flags
 
 configure_make_package(
     name = "mtdev",

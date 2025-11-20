@@ -1,18 +1,35 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "openssh-src",
+# =============================================================================
+# OpenSSH - Secure Shell connectivity tools
+# =============================================================================
+
+use_package(
+    name = "openssh",
+    version = "9.6p1",
     src_uri = "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.6p1.tar.gz",
     sha256 = "910211c07255a8c5ad654391f0c9c50e9871a0d2cb67c1e4c032acf18dc4144f",
-)
 
-configure_make_package(
-    name = "openssh",
-    source = ":openssh-src",
-    version = "9.6p1",
-    description = "OpenSSH SSH connectivity tools",
-    homepage = "https://www.openssh.com/",
-    license = "BSD",
+    iuse = ["ssl", "pam", "kerberos", "ldap", "libedit"],
+    use_defaults = ["ssl"],
+
+    use_deps = {
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "pam": ["//packages/linux/core:linux-pam"],
+    },
+
+    use_configure = {
+        "pam": "--with-pam",
+        "-pam": "--without-pam",
+        "kerberos": "--with-kerberos5",
+        "-kerberos": "--without-kerberos5",
+        "ldap": "--with-ldap",
+        "-ldap": "--without-ldap",
+        "libedit": "--with-libedit",
+        "-libedit": "--without-libedit",
+    },
+
     configure_args = [
         "--sysconfdir=/etc/ssh",
         "--with-ssl-dir=/usr",
@@ -21,6 +38,9 @@ configure_make_package(
         "--with-privsep-user=nobody",
         "--with-privsep-path=/var/empty",
     ],
+
+    deps = ["//packages/linux/core:zlib"],
+
     post_install = """
 # Create privilege separation directory
 mkdir -p "$DESTDIR/var/empty"
@@ -28,6 +48,9 @@ chmod 755 "$DESTDIR/var/empty"
 # Create ssh config directory
 mkdir -p "$DESTDIR/etc/ssh"
 """,
-    deps = ["//packages/linux/network/openssl:openssl", "//packages/linux/core:zlib"],
+
+    description = "OpenSSH SSH connectivity tools",
+    homepage = "https://www.openssh.com/",
+    license = "BSD",
     visibility = ["PUBLIC"],
 )

@@ -2,6 +2,7 @@
 # This directory contains various encryption and cryptographic utilities
 
 load("//defs:package_defs.bzl", "download_source", "configure_make_package", "cargo_package", "go_package", "cmake_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # =============================================================================
 # AGE - Simple, modern, secure file encryption

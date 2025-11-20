@@ -2,6 +2,7 @@
 # Mount, script, SSH, PKCS#11, and blacklist modules
 
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # pam_mount - Mount volumes on login
 download_source(

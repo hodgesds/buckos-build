@@ -3,20 +3,30 @@
 # =============================================================================
 
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "iptables-src",
+use_package(
+    name = "iptables",
+    version = "1.8.10",
     src_uri = "https://www.netfilter.org/projects/iptables/files/iptables-1.8.10.tar.xz",
     sha256 = "5cc255c189356e317d070755ce9371eb63a1b783c34498fb8c30264f3cc59c9c",
-)
 
-configure_make_package(
-    name = "iptables",
-    source = ":iptables-src",
-    version = "1.8.10",
-    description = "Linux kernel packet filtering administration tools",
-    homepage = "https://netfilter.org/projects/iptables/",
-    license = "GPL-2.0",
+    iuse = ["ipv6", "bpf", "nfsynproxy", "connlabel", "static-libs"],
+    use_defaults = ["ipv6", "bpf", "nfsynproxy"],
+
+    use_deps = {},
+
+    use_configure = {
+        "bpf": "--enable-bpf-compiler",
+        "-bpf": "--disable-bpf-compiler",
+        "nfsynproxy": "--enable-nfsynproxy",
+        "-nfsynproxy": "--disable-nfsynproxy",
+        "connlabel": "--enable-connlabel",
+        "-connlabel": "--disable-connlabel",
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+    },
+
     configure_args = [
         "--prefix=/usr",
         "--sbindir=/sbin",
@@ -24,10 +34,9 @@ configure_make_package(
         "--localstatedir=/var",
         "--libexecdir=/lib",
         "--enable-libipq",
-        "--enable-bpf-compiler",
-        "--enable-nfsynproxy",
         "--with-xtlibdir=/lib/xtables",
     ],
+
     post_install = """
 # Create iptables configuration directories
 mkdir -p "$DESTDIR/etc/iptables"
@@ -45,11 +54,16 @@ touch "$DESTDIR/etc/iptables/rules.v6"
 chmod 600 "$DESTDIR/etc/iptables/rules.v4"
 chmod 600 "$DESTDIR/etc/iptables/rules.v6"
 """,
+
     deps = [
         "//packages/linux/core:libnl",
         "//packages/linux/core:libmnl",
         "//packages/linux/core:libnftnl",
         "//packages/linux/core:libpcap",
     ],
+
+    description = "Linux kernel packet filtering administration tools",
+    homepage = "https://netfilter.org/projects/iptables/",
+    license = "GPL-2.0",
     visibility = ["PUBLIC"],
 )

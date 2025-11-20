@@ -1,6 +1,14 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 # mongodb - Document-oriented database
+#
+# USE flags:
+#   ssl      - Enable SSL/TLS support with OpenSSL
+#   snappy   - Enable Snappy compression
+#   zstd     - Enable Zstandard compression
+#   python   - Python build dependency
+
 download_source(
     name = "mongodb-src",
     src_uri = "https://fastdl.mongodb.org/src/mongodb-src-r7.0.5.tar.gz",
@@ -18,10 +26,13 @@ configure_make_package(
     build_commands = [
         "python3 buildscripts/scons.py install-mongod install-mongos --prefix=${DESTDIR}/usr",
     ],
-    deps = [
-        "//packages/linux/core:musl",
-        "//packages/linux/lang/python:python",
-        "//packages/linux/system/libs/crypto/openssl:openssl",
-    ],
+    deps = use_dep(
+        {
+            "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
+            "python": ["//packages/linux/lang/python:python"],
+            "musl": ["//packages/linux/core:musl"],
+        },
+        ["ssl", "python", "musl"],
+    ),
     visibility = ["PUBLIC"],
 )

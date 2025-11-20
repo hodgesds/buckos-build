@@ -1,4 +1,5 @@
 load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 download_source(
     name = "cjson-src",

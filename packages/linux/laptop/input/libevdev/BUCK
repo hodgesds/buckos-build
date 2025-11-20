@@ -2,12 +2,15 @@
 # Wrapper library for evdev devices providing a proper abstraction
 
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 download_source(
     name = "libevdev-src",
     src_uri = "https://www.freedesktop.org/software/libevdev/libevdev-1.13.1.tar.xz",
     sha256 = "06a77bf2ac5c993305882bc1641017f5bec1592d6d1b64787bad492ab34f2f36",
 )
+
+# USE flags: See use_flags.bzl for available flags
 
 configure_make_package(
     name = "libevdev",

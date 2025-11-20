@@ -1764,7 +1764,7 @@ Version:     1.24.0
 Slot:        0
 Homepage:    https://nginx.org
 License:     BSD-2-Clause
-Maintainer:  web-team <web@buckos.dev>
+Maintainer:  web-team <web@buckos.org>
 
 Description:
     High performance HTTP and reverse proxy server

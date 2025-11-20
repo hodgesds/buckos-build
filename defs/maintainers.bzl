@@ -17,13 +17,13 @@ This module provides:
 MAINTAINERS = {
     "core-team": {
         "name": "BuckOs Core Team",
-        "email": "core@buckos.dev",
+        "email": "core@buckos.org",
         "github": "buckos",
         "description": "Core system packages and infrastructure",
     },
     "security-team": {
         "name": "BuckOs Security Team",
-        "email": "security@buckos.dev",
+        "email": "security@buckos.org",
         "github": "buckos-security",
         "description": "Security-related packages and updates",
     },
@@ -62,7 +62,7 @@ def get_maintainer_info(maintainer_id: str) -> dict:
 
     Example:
         info = get_maintainer_info("core-team")
-        # Returns: {"name": "BuckOs Core Team", "email": "core@buckos.dev", ...}
+        # Returns: {"name": "BuckOs Core Team", "email": "core@buckos.org", ...}
     """
     return MAINTAINERS.get(maintainer_id, {})
 
@@ -78,7 +78,7 @@ def get_maintainer_email(maintainer_id: str) -> str:
 
     Example:
         email = get_maintainer_email("core-team")
-        # Returns: "core@buckos.dev"
+        # Returns: "core@buckos.org"
     """
     info = MAINTAINERS.get(maintainer_id, {})
     return info.get("email", "")
@@ -148,7 +148,7 @@ def get_maintainer_contact_string(maintainer_id: str) -> str:
 
     Example:
         contact = get_maintainer_contact_string("core-team")
-        # Returns: "BuckOs Core Team <core@buckos.dev>"
+        # Returns: "BuckOs Core Team <core@buckos.org>"
     """
     info = MAINTAINERS.get(maintainer_id, {})
     name = info.get("name", maintainer_id)
@@ -169,7 +169,7 @@ def format_maintainers_list(maintainer_ids: list[str]) -> str:
 
     Example:
         formatted = format_maintainers_list(["core-team", "security-team"])
-        # Returns: "BuckOs Core Team <core@buckos.dev>, BuckOs Security Team <security@buckos.dev>"
+        # Returns: "BuckOs Core Team <core@buckos.org>, BuckOs Security Team <security@buckos.org>"
     """
     contacts = [get_maintainer_contact_string(m) for m in maintainer_ids]
     return ", ".join(contacts)
@@ -317,7 +317,7 @@ def register_maintainer(
         register_maintainer(
             maintainer_id = "network-team",
             name = "Network Team",
-            email = "network@buckos.dev",
+            email = "network@buckos.org",
             github = "buckos-network",
             description = "Network stack and related packages",
         )
@@ -389,7 +389,7 @@ def generate_package_maintainer_matrix() -> dict[str, list[str]]:
 
     Example:
         matrix = generate_package_maintainer_matrix()
-        # Returns: {"bash": ["BuckOs Core Team <core@buckos.dev>"], ...}
+        # Returns: {"bash": ["BuckOs Core Team <core@buckos.org>"], ...}
     """
     matrix = {}
     for pkg_name, maintainer_ids in PACKAGE_MAINTAINERS.items():

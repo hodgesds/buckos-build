@@ -721,6 +721,303 @@ qemu_boot_script = rule(
     },
 )
 
+def _iso_image_impl(ctx: AnalysisContext) -> list[Provider]:
+    """Create a bootable ISO image from kernel, initramfs, and optional rootfs."""
+    iso_file = ctx.actions.declare_output(ctx.attrs.name + ".iso")
+
+    # Get kernel and initramfs
+    kernel_dir = ctx.attrs.kernel[DefaultInfo].default_outputs[0]
+    initramfs_file = ctx.attrs.initramfs[DefaultInfo].default_outputs[0]
+
+    # Optional rootfs for live system
+    rootfs_dir = None
+    if ctx.attrs.rootfs:
+        rootfs_dir = ctx.attrs.rootfs[DefaultInfo].default_outputs[0]
+
+    # Boot mode configuration
+    boot_mode = ctx.attrs.boot_mode
+    volume_label = ctx.attrs.volume_label
+    kernel_args = ctx.attrs.kernel_args if ctx.attrs.kernel_args else "quiet"
+
+    # GRUB configuration for EFI boot
+    grub_cfg = """
+# GRUB configuration for BuckOs ISO
+set timeout=5
+set default=0
+
+menuentry "BuckOs Linux" {{
+    linux /boot/vmlinuz {kernel_args}
+    initrd /boot/initramfs.img
+}}
+
+menuentry "BuckOs Linux (recovery mode)" {{
+    linux /boot/vmlinuz {kernel_args} single
+    initrd /boot/initramfs.img
+}}
+""".format(kernel_args = kernel_args)
+
+    # Isolinux configuration for BIOS boot
+    isolinux_cfg = """
+DEFAULT buckos
+TIMEOUT 50
+PROMPT 1
+
+LABEL buckos
+    MENU LABEL BuckOs Linux
+    LINUX /boot/vmlinuz
+    INITRD /boot/initramfs.img
+    APPEND {kernel_args}
+
+LABEL recovery
+    MENU LABEL BuckOs Linux (recovery mode)
+    LINUX /boot/vmlinuz
+    INITRD /boot/initramfs.img
+    APPEND {kernel_args} single
+""".format(kernel_args = kernel_args)
+
+    # Determine if we should include squashfs rootfs
+    include_rootfs = "yes" if rootfs_dir else ""
+
+    script = ctx.actions.write(
+        "create_iso.sh",
+        """#!/bin/bash
+set -e
+
+ISO_OUT="$1"
+KERNEL_DIR="$2"
+INITRAMFS="$3"
+ROOTFS_DIR="$4"
+BOOT_MODE="{boot_mode}"
+VOLUME_LABEL="{volume_label}"
+
+# Create ISO working directory
+WORK=$(mktemp -d)
+trap "rm -rf $WORK" EXIT
+
+mkdir -p "$WORK/boot"
+mkdir -p "$WORK/boot/grub"
+mkdir -p "$WORK/isolinux"
+mkdir -p "$WORK/EFI/BOOT"
+
+# Find and copy kernel
+KERNEL=""
+for k in "$KERNEL_DIR/boot/vmlinuz"* "$KERNEL_DIR/boot/bzImage" "$KERNEL_DIR/vmlinuz"*; do
+    if [ -f "$k" ]; then
+        KERNEL="$k"
+        break
+    fi
+done
+
+if [ -z "$KERNEL" ]; then
+    echo "Error: Cannot find kernel image in $KERNEL_DIR"
+    exit 1
+fi
+
+cp "$KERNEL" "$WORK/boot/vmlinuz"
+cp "$INITRAMFS" "$WORK/boot/initramfs.img"
+
+# Create GRUB configuration
+cat > "$WORK/boot/grub/grub.cfg" << 'GRUBCFG'
+{grub_cfg}
+GRUBCFG
+
+# Create isolinux configuration
+cat > "$WORK/isolinux/isolinux.cfg" << 'ISOCFG'
+{isolinux_cfg}
+ISOCFG
+
+# Include rootfs as squashfs if provided
+if [ -n "{include_rootfs}" ] && [ -d "$ROOTFS_DIR" ]; then
+    echo "Creating squashfs from rootfs..."
+    mkdir -p "$WORK/live"
+    if command -v mksquashfs >/dev/null 2>&1; then
+        mksquashfs "$ROOTFS_DIR" "$WORK/live/filesystem.squashfs" -comp xz -no-progress
+    else
+        echo "Warning: mksquashfs not found, skipping rootfs inclusion"
+    fi
+fi
+
+# Create the ISO image based on boot mode
+echo "Creating ISO image with boot mode: $BOOT_MODE"
+
+if [ "$BOOT_MODE" = "bios" ] || [ "$BOOT_MODE" = "hybrid" ]; then
+    # Check for isolinux/syslinux
+    ISOLINUX_BIN=""
+    for path in /usr/lib/syslinux/bios/isolinux.bin /usr/share/syslinux/isolinux.bin /usr/lib/ISOLINUX/isolinux.bin; do
+        if [ -f "$path" ]; then
+            ISOLINUX_BIN="$path"
+            break
+        fi
+    done
+
+    if [ -n "$ISOLINUX_BIN" ]; then
+        cp "$ISOLINUX_BIN" "$WORK/isolinux/"
+
+        # Copy ldlinux.c32 if available
+        LDLINUX=""
+        for path in /usr/lib/syslinux/bios/ldlinux.c32 /usr/share/syslinux/ldlinux.c32 /usr/lib/syslinux/ldlinux.c32; do
+            if [ -f "$path" ]; then
+                LDLINUX="$path"
+                break
+            fi
+        done
+        [ -n "$LDLINUX" ] && cp "$LDLINUX" "$WORK/isolinux/"
+    fi
+fi
+
+# Create ISO using xorriso (preferred) or genisoimage
+if command -v xorriso >/dev/null 2>&1; then
+    case "$BOOT_MODE" in
+        bios)
+            xorriso -as mkisofs \\
+                -o "$ISO_OUT" \\
+                -isohybrid-mbr /usr/lib/syslinux/bios/isohdpfx.bin 2>/dev/null || true \\
+                -c isolinux/boot.cat \\
+                -b isolinux/isolinux.bin \\
+                -no-emul-boot \\
+                -boot-load-size 4 \\
+                -boot-info-table \\
+                -V "$VOLUME_LABEL" \\
+                "$WORK"
+            ;;
+        efi)
+            # Create EFI boot image
+            mkdir -p "$WORK/EFI/BOOT"
+            if command -v grub-mkimage >/dev/null 2>&1; then
+                grub-mkimage -o "$WORK/EFI/BOOT/BOOTX64.EFI" -O x86_64-efi -p /boot/grub \\
+                    part_gpt part_msdos fat iso9660 normal boot linux configfile loopback chain \\
+                    efifwsetup efi_gop efi_uga ls search search_label search_fs_uuid search_fs_file \\
+                    gfxterm gfxterm_background gfxterm_menu test all_video loadenv exfat ext2 ntfs \\
+                    2>/dev/null || echo "Warning: grub-mkimage failed"
+            fi
+
+            # Create EFI boot image file
+            dd if=/dev/zero of="$WORK/boot/efi.img" bs=1M count=10
+            mkfs.vfat "$WORK/boot/efi.img"
+            mmd -i "$WORK/boot/efi.img" ::/EFI ::/EFI/BOOT
+            mcopy -i "$WORK/boot/efi.img" "$WORK/EFI/BOOT/BOOTX64.EFI" ::/EFI/BOOT/ 2>/dev/null || true
+
+            xorriso -as mkisofs \\
+                -o "$ISO_OUT" \\
+                -e boot/efi.img \\
+                -no-emul-boot \\
+                -V "$VOLUME_LABEL" \\
+                "$WORK"
+            ;;
+        hybrid|*)
+            # Hybrid BIOS+EFI boot
+            # Create EFI boot image
+            mkdir -p "$WORK/EFI/BOOT"
+            if command -v grub-mkimage >/dev/null 2>&1; then
+                grub-mkimage -o "$WORK/EFI/BOOT/BOOTX64.EFI" -O x86_64-efi -p /boot/grub \\
+                    part_gpt part_msdos fat iso9660 normal boot linux configfile loopback chain \\
+                    efifwsetup efi_gop efi_uga ls search search_label search_fs_uuid search_fs_file \\
+                    gfxterm gfxterm_background gfxterm_menu test all_video loadenv exfat ext2 ntfs \\
+                    2>/dev/null || echo "Warning: grub-mkimage failed"
+            fi
+
+            # Create EFI boot image file
+            dd if=/dev/zero of="$WORK/boot/efi.img" bs=1M count=10
+            mkfs.vfat "$WORK/boot/efi.img" 2>/dev/null || true
+            if command -v mmd >/dev/null 2>&1; then
+                mmd -i "$WORK/boot/efi.img" ::/EFI ::/EFI/BOOT
+                mcopy -i "$WORK/boot/efi.img" "$WORK/EFI/BOOT/BOOTX64.EFI" ::/EFI/BOOT/ 2>/dev/null || true
+            fi
+
+            # Build ISO with both BIOS and EFI support
+            xorriso -as mkisofs \\
+                -o "$ISO_OUT" \\
+                -isohybrid-mbr /usr/lib/syslinux/bios/isohdpfx.bin 2>/dev/null || true \\
+                -c isolinux/boot.cat \\
+                -b isolinux/isolinux.bin \\
+                -no-emul-boot \\
+                -boot-load-size 4 \\
+                -boot-info-table \\
+                -eltorito-alt-boot \\
+                -e boot/efi.img \\
+                -no-emul-boot \\
+                -isohybrid-gpt-basdat \\
+                -V "$VOLUME_LABEL" \\
+                "$WORK" || \\
+            # Fallback to simpler ISO if hybrid fails
+            xorriso -as mkisofs \\
+                -o "$ISO_OUT" \\
+                -c isolinux/boot.cat \\
+                -b isolinux/isolinux.bin \\
+                -no-emul-boot \\
+                -boot-load-size 4 \\
+                -boot-info-table \\
+                -V "$VOLUME_LABEL" \\
+                "$WORK"
+            ;;
+    esac
+elif command -v genisoimage >/dev/null 2>&1; then
+    genisoimage \\
+        -o "$ISO_OUT" \\
+        -b isolinux/isolinux.bin \\
+        -c isolinux/boot.cat \\
+        -no-emul-boot \\
+        -boot-load-size 4 \\
+        -boot-info-table \\
+        -V "$VOLUME_LABEL" \\
+        -J -R \\
+        "$WORK"
+elif command -v mkisofs >/dev/null 2>&1; then
+    mkisofs \\
+        -o "$ISO_OUT" \\
+        -b isolinux/isolinux.bin \\
+        -c isolinux/boot.cat \\
+        -no-emul-boot \\
+        -boot-load-size 4 \\
+        -boot-info-table \\
+        -V "$VOLUME_LABEL" \\
+        -J -R \\
+        "$WORK"
+else
+    echo "Error: No ISO creation tool found (xorriso, genisoimage, or mkisofs required)"
+    exit 1
+fi
+
+echo "Created ISO image: $ISO_OUT"
+ls -lh "$ISO_OUT"
+""".format(
+            boot_mode = boot_mode,
+            volume_label = volume_label,
+            grub_cfg = grub_cfg,
+            isolinux_cfg = isolinux_cfg,
+            include_rootfs = include_rootfs,
+        ),
+    )
+
+    rootfs_arg = rootfs_dir if rootfs_dir else ""
+
+    ctx.actions.run(
+        cmd_args([
+            "bash",
+            script,
+            iso_file.as_output(),
+            kernel_dir,
+            initramfs_file,
+            rootfs_arg,
+        ]),
+        category = "iso",
+        identifier = ctx.attrs.name,
+    )
+
+    return [DefaultInfo(default_output = iso_file)]
+
+iso_image = rule(
+    impl = _iso_image_impl,
+    attrs = {
+        "kernel": attrs.dep(),
+        "initramfs": attrs.dep(),
+        "rootfs": attrs.option(attrs.dep(), default = None),
+        "boot_mode": attrs.string(default = "hybrid"),  # bios, efi, or hybrid
+        "volume_label": attrs.string(default = "BUCKOS"),
+        "kernel_args": attrs.string(default = "quiet"),
+    },
+)
+
 # =============================================================================
 # EBUILD-STYLE HELPER FUNCTIONS
 # =============================================================================

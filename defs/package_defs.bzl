@@ -167,13 +167,87 @@ configure_make_package = rule(
     },
 )
 
+def _kernel_config_impl(ctx: AnalysisContext) -> list[Provider]:
+    """Merge kernel configuration fragments into a single .config file."""
+    output = ctx.actions.declare_output(ctx.attrs.name + ".config")
+
+    # Collect all config fragments
+    config_files = []
+    for frag in ctx.attrs.fragments:
+        config_files.append(frag)
+
+    script = ctx.actions.write(
+        "merge_config.sh",
+        """#!/bin/bash
+set -e
+OUTPUT="$1"
+shift
+
+# Start with empty config
+> "$OUTPUT"
+
+# Merge all config fragments
+# Later fragments override earlier ones
+for config in "$@"; do
+    if [ -f "$config" ]; then
+        # Read each line from the fragment
+        while IFS= read -r line || [ -n "$line" ]; do
+            # Skip empty lines and comments for processing
+            if [[ -z "$line" ]] || [[ "$line" =~ ^# ]]; then
+                echo "$line" >> "$OUTPUT"
+                continue
+            fi
+
+            # Extract config option name
+            if [[ "$line" =~ ^(CONFIG_[A-Za-z0-9_]+)= ]]; then
+                opt="${BASH_REMATCH[1]}"
+                # Remove any existing setting for this option
+                sed -i "/^$opt=/d" "$OUTPUT"
+                sed -i "/^# $opt is not set/d" "$OUTPUT"
+            elif [[ "$line" =~ ^#[[:space:]]*(CONFIG_[A-Za-z0-9_]+)[[:space:]]is[[:space:]]not[[:space:]]set ]]; then
+                opt="${BASH_REMATCH[1]}"
+                # Remove any existing setting for this option
+                sed -i "/^$opt=/d" "$OUTPUT"
+                sed -i "/^# $opt is not set/d" "$OUTPUT"
+            fi
+
+            echo "$line" >> "$OUTPUT"
+        done < "$config"
+    fi
+done
+""",
+    )
+
+    ctx.actions.run(
+        cmd_args([
+            "bash",
+            script,
+            output.as_output(),
+        ] + config_files),
+        category = "kernel_config",
+        identifier = ctx.attrs.name,
+    )
+
+    return [DefaultInfo(default_output = output)]
+
+kernel_config = rule(
+    impl = _kernel_config_impl,
+    attrs = {
+        "fragments": attrs.list(attrs.source()),
+    },
+)
+
 def _kernel_build_impl(ctx: AnalysisContext) -> list[Provider]:
     """Build Linux kernel with custom configuration."""
     install_dir = ctx.actions.declare_output(ctx.attrs.name, dir = True)
     src_dir = ctx.attrs.source[DefaultInfo].default_outputs[0]
 
-    # Kernel config
-    config_file = ctx.attrs.config if ctx.attrs.config else None
+    # Kernel config - can be a source file or output from kernel_config
+    config_file = None
+    if ctx.attrs.config:
+        config_file = ctx.attrs.config
+    elif ctx.attrs.config_dep:
+        config_file = ctx.attrs.config_dep[DefaultInfo].default_outputs[0]
 
     script = ctx.actions.write(
         "build_kernel.sh",
@@ -187,6 +261,8 @@ cd "$2"
 # Apply config
 if [ -n "$3" ]; then
     cp "$3" .config
+    # Ensure config is complete with olddefconfig
+    make olddefconfig
 else
     make defconfig
 fi
@@ -222,6 +298,7 @@ kernel_build = rule(
         "source": attrs.dep(),
         "version": attrs.string(),
         "config": attrs.option(attrs.source(), default = None),
+        "config_dep": attrs.option(attrs.dep(), default = None),
     },
 )
 

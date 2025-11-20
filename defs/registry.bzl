@@ -46,6 +46,14 @@ CORE_PACKAGES = {
             "1.2.2": {"slot": "0", "status": "deprecated"},
         },
     },
+    "core/glibc": {
+        "default": "2.39",
+        "versions": {
+            "2.39": {"slot": "2.39", "status": "stable"},
+            "2.38": {"slot": "2.38", "status": "stable"},
+            "2.37": {"slot": "2.37", "status": "deprecated"},
+        },
+    },
     "core/zlib": {
         "default": "1.3.1",
         "versions": {

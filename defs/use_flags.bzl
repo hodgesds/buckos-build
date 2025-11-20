@@ -489,7 +489,12 @@ def use_required_deps(deps_map, enabled_flags):
 
     for dep, required_flags in deps_map.items():
         # Check if all required flags are enabled
-        if all(f in enabled_set for f in required_flags):
+        all_present = True
+        for f in required_flags:
+            if f not in enabled_set:
+                all_present = False
+                break
+        if all_present:
             result.append(dep)
 
     return result
@@ -841,7 +846,12 @@ def required_use_check(required_use, enabled_flags):
         start = required_use.find("|| (") + 4
         end = required_use.find(")", start)
         flags = required_use[start:end].split()
-        if not any(f in enabled_set for f in flags):
+        found_any = False
+        for f in flags:
+            if f in enabled_set:
+                found_any = True
+                break
+        if not found_any:
             return "At least one of {} must be enabled".format(flags)
 
     # Check "exactly one" - ^^ ( flag1 flag2 )
@@ -849,7 +859,10 @@ def required_use_check(required_use, enabled_flags):
         start = required_use.find("^^ (") + 4
         end = required_use.find(")", start)
         flags = required_use[start:end].split()
-        count = sum(1 for f in flags if f in enabled_set)
+        count = 0
+        for f in flags:
+            if f in enabled_set:
+                count += 1
         if count != 1:
             return "Exactly one of {} must be enabled".format(flags)
 
@@ -858,7 +871,10 @@ def required_use_check(required_use, enabled_flags):
         start = required_use.find("?? (") + 4
         end = required_use.find(")", start)
         flags = required_use[start:end].split()
-        count = sum(1 for f in flags if f in enabled_set)
+        count = 0
+        for f in flags:
+            if f in enabled_set:
+                count += 1
         if count > 1:
             return "At most one of {} can be enabled".format(flags)
 

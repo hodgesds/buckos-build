@@ -42,12 +42,54 @@ load("//defs:use_flags.bzl", "USE_PROFILES")
 # =============================================================================
 
 # Absolute minimum for a bootable system
-SYSTEM_PACKAGES = [
-    "//packages/linux/core:musl",
-    "//packages/linux/core:busybox",
-    "//packages/linux/core:util-linux",
-    "//packages/linux/core:zlib",
+# These are the essential @system packages required for a functioning Linux system
+
+# System packages with musl (lightweight C library)
+SYSTEM_PACKAGES_MUSL = [
+    # Core C library
+    "//packages/linux/core:musl",              # lightweight C library
+
+    # Essential system utilities
+    "//packages/linux/system/apps:coreutils",  # ls, cp, mv, rm, etc
+    "//packages/linux/core:util-linux",        # mount, fdisk, etc
+    "//packages/linux/core:procps-ng",         # ps, top, etc
+    "//packages/linux/system/apps/shadow:shadow",  # user/group management
+    "//packages/linux/core:file",              # file type detection
+
+    # Shell
+    "//packages/linux/core:bash",              # default shell
+
+    # Init system
+    "//packages/linux/system/init:systemd",    # system and service manager
+
+    # Basic libraries needed by most packages
+    "//packages/linux/core:zlib",              # compression library
 ]
+
+# System packages with glibc (GNU C library - broader compatibility)
+SYSTEM_PACKAGES_GLIBC = [
+    # Core C library
+    "//packages/linux/core:glibc",             # GNU C library (broader compatibility)
+
+    # Essential system utilities
+    "//packages/linux/system/apps:coreutils",  # ls, cp, mv, rm, etc
+    "//packages/linux/core:util-linux",        # mount, fdisk, etc
+    "//packages/linux/core:procps-ng",         # ps, top, etc
+    "//packages/linux/system/apps/shadow:shadow",  # user/group management
+    "//packages/linux/core:file",              # file type detection
+
+    # Shell
+    "//packages/linux/core:bash",              # default shell
+
+    # Init system
+    "//packages/linux/system/init:systemd",    # system and service manager
+
+    # Basic libraries needed by most packages
+    "//packages/linux/core:zlib",              # compression library
+]
+
+# Default to glibc for maximum compatibility
+SYSTEM_PACKAGES = SYSTEM_PACKAGES_GLIBC
 
 # Base packages that should be in almost every installation
 BASE_PACKAGES = SYSTEM_PACKAGES + [

@@ -1,26 +1,19 @@
-load("//defs:package_defs.bzl", "download_source", "kernel_build")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "kernel_build")
 
-# linux - Linux kernel
+# DEPRECATED: Use //packages/linux/kernel/buckos-kernel instead
 #
-# USE flags:
-#   The kernel configuration is primarily controlled by the config file.
-#   USE flags here provide high-level feature toggles.
+# This package is maintained for backward compatibility.
+# The buckos-kernel package provides better hardware support
+# and uses the latest LTS kernel (6.12).
 #
-#   debug    - Enable kernel debugging features
-#   kvm      - Enable KVM virtualization support
-#   modules  - Enable loadable module support
-
-download_source(
-    name = "linux-src",
-    src_uri = "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.6.10.tar.xz",
-    sha256 = "b372f8ab8c25b5c6d93e9a7c0ed8e5a3e5e8b2a4f0a8d5e9c6b3a7f2e1d4c5b6",
-)
+# To migrate:
+#   Old: //packages/linux/kernel/linux
+#   New: //packages/linux/kernel/buckos-kernel
 
 kernel_build(
     name = "linux",
-    source = ":linux-src",
-    version = "6.6.10",
+    source = "//packages/linux/kernel/src:linux-src",
+    version = "6.12.6",
     config = "kernel.config",
     visibility = ["PUBLIC"],
 )

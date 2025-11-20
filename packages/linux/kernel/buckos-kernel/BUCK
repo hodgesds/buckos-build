@@ -1,0 +1,64 @@
+load("//defs:package_defs.bzl", "kernel_build")
+
+# BuckOS Default Kernel
+#
+# This is the official BuckOS kernel package, built with a comprehensive
+# configuration that supports most common hardware and use cases.
+#
+# Features:
+# - Linux 6.12 LTS kernel
+# - Broad hardware support (x86_64)
+# - Multiple filesystems (ext4, XFS, Btrfs, NTFS, etc.)
+# - Full networking stack with modern features (BBR, nftables)
+# - Virtualization support (KVM host and VirtIO guest)
+# - Container support (cgroups v2, namespaces)
+# - Security features (AppArmor, SELinux, TPM)
+#
+# For custom kernel configurations, see the examples or create your own
+# kernel_config with specific fragments.
+
+kernel_build(
+    name = "buckos-kernel",
+    source = "//packages/linux/kernel/src:linux-src",
+    version = "6.12.6",
+    config_dep = "//packages/linux/kernel/configs:buckos-default",
+    visibility = ["PUBLIC"],
+)
+
+# Minimal kernel variant
+# Smaller footprint, fewer drivers, faster boot
+kernel_build(
+    name = "buckos-kernel-minimal",
+    source = "//packages/linux/kernel/src:linux-src",
+    version = "6.12.6",
+    config_dep = "//packages/linux/kernel/configs:buckos-minimal",
+    visibility = ["PUBLIC"],
+)
+
+# Server kernel variant
+# Optimized for server workloads
+kernel_build(
+    name = "buckos-kernel-server",
+    source = "//packages/linux/kernel/src:linux-src",
+    version = "6.12.6",
+    config_dep = "//packages/linux/kernel/configs:buckos-server",
+    visibility = ["PUBLIC"],
+)
+
+# VM Guest kernel
+# Optimized for running inside virtual machines
+kernel_build(
+    name = "buckos-kernel-vm",
+    source = "//packages/linux/kernel/src:linux-src",
+    version = "6.12.6",
+    config_dep = "//packages/linux/kernel/configs:buckos-vm-guest",
+    visibility = ["PUBLIC"],
+)
+
+# Defconfig kernel (for development/testing)
+kernel_build(
+    name = "buckos-kernel-defconfig",
+    source = "//packages/linux/kernel/src:linux-src",
+    version = "6.12.6",
+    visibility = ["PUBLIC"],
+)

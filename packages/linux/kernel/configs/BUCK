@@ -1,0 +1,95 @@
+load("//defs:package_defs.bzl", "kernel_config")
+
+# Export individual config fragments
+export_file(
+    name = "base",
+    src = "base.config",
+    visibility = ["//packages/linux/kernel/..."],
+)
+
+export_file(
+    name = "filesystem",
+    src = "filesystem.config",
+    visibility = ["//packages/linux/kernel/..."],
+)
+
+export_file(
+    name = "network",
+    src = "network.config",
+    visibility = ["//packages/linux/kernel/..."],
+)
+
+export_file(
+    name = "hardware",
+    src = "hardware.config",
+    visibility = ["//packages/linux/kernel/..."],
+)
+
+export_file(
+    name = "virtualization",
+    src = "virtualization.config",
+    visibility = ["//packages/linux/kernel/..."],
+)
+
+export_file(
+    name = "security",
+    src = "security.config",
+    visibility = ["//packages/linux/kernel/..."],
+)
+
+# Pre-built merged configs for common use cases
+
+# Full BuckOS default configuration
+# Includes all fragments for maximum hardware compatibility
+kernel_config(
+    name = "buckos-default",
+    fragments = [
+        "base.config",
+        "filesystem.config",
+        "network.config",
+        "hardware.config",
+        "virtualization.config",
+        "security.config",
+    ],
+    visibility = ["//packages/linux/kernel/..."],
+)
+
+# Minimal configuration
+# Only base + filesystem + essential hardware
+kernel_config(
+    name = "buckos-minimal",
+    fragments = [
+        "base.config",
+        "filesystem.config",
+        "hardware.config",
+    ],
+    visibility = ["//packages/linux/kernel/..."],
+)
+
+# Server configuration
+# Full config without desktop graphics
+kernel_config(
+    name = "buckos-server",
+    fragments = [
+        "base.config",
+        "filesystem.config",
+        "network.config",
+        "hardware.config",
+        "virtualization.config",
+        "security.config",
+    ],
+    visibility = ["//packages/linux/kernel/..."],
+)
+
+# Virtual machine guest configuration
+kernel_config(
+    name = "buckos-vm-guest",
+    fragments = [
+        "base.config",
+        "filesystem.config",
+        "network.config",
+        "virtualization.config",
+        "security.config",
+    ],
+    visibility = ["//packages/linux/kernel/..."],
+)

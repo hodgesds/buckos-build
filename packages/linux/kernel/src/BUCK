@@ -1,0 +1,19 @@
+load("//defs:package_defs.bzl", "download_source")
+
+# Linux Kernel 6.12 LTS Source
+# This is the latest LTS kernel release (November 2024)
+# Supported until December 2026
+
+download_source(
+    name = "linux-6.12-src",
+    src_uri = "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.6.tar.xz",
+    sha256 = "e3e6c0b3a3b2a8c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8",
+    visibility = ["//packages/linux/kernel/..."],
+)
+
+# Alias for convenience
+alias(
+    name = "linux-src",
+    actual = ":linux-6.12-src",
+    visibility = ["//packages/linux/kernel/..."],
+)

@@ -1,9 +1,49 @@
-# Linux kernel packages
+# Linux Kernel Packages for BuckOS
+#
+# The BuckOS kernel system provides:
+# - Modular configuration fragments for easy customization
+# - Pre-built kernel variants for different use cases
+# - Easy extension for custom kernels
+#
+# Main packages:
+#   buckos-kernel         - Default kernel with broad hardware support
+#   buckos-kernel-minimal - Smaller footprint, essential drivers only
+#   buckos-kernel-server  - Server-optimized configuration
+#   buckos-kernel-vm      - Optimized for VM guests
+#
+# Build commands:
+#   buck2 build //packages/linux/kernel/buckos-kernel
+#   buck2 build //packages/linux/kernel/configs:buckos-default
+
 filegroup(
     name = "all-kernels",
     srcs = [
+        "//packages/linux/kernel/buckos-kernel",
+        "//packages/linux/kernel/buckos-kernel:buckos-kernel-minimal",
+        "//packages/linux/kernel/buckos-kernel:buckos-kernel-server",
+        "//packages/linux/kernel/buckos-kernel:buckos-kernel-vm",
+        # Legacy targets (deprecated, use buckos-kernel instead)
         "//packages/linux/kernel/linux",
         "//packages/linux/kernel/linux-defconfig",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Convenience alias for the default BuckOS kernel
+alias(
+    name = "default",
+    actual = "//packages/linux/kernel/buckos-kernel",
+    visibility = ["PUBLIC"],
+)
+
+# All configuration fragments
+filegroup(
+    name = "all-configs",
+    srcs = [
+        "//packages/linux/kernel/configs:buckos-default",
+        "//packages/linux/kernel/configs:buckos-minimal",
+        "//packages/linux/kernel/configs:buckos-server",
+        "//packages/linux/kernel/configs:buckos-vm-guest",
     ],
     visibility = ["PUBLIC"],
 )

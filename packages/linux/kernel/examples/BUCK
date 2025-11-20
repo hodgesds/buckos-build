@@ -1,0 +1,77 @@
+load("//defs:package_defs.bzl", "kernel_build", "kernel_config")
+
+# Example: Custom Kernel Configurations
+#
+# This file demonstrates how to create custom kernel builds with
+# specific configuration requirements.
+
+# Example 1: Custom config by merging fragments
+# Create a config that includes base, filesystem, network, but adds
+# a custom fragment for specific hardware or features
+kernel_config(
+    name = "custom-workstation-config",
+    fragments = [
+        "//packages/linux/kernel/configs:base.config",
+        "//packages/linux/kernel/configs:filesystem.config",
+        "//packages/linux/kernel/configs:network.config",
+        "//packages/linux/kernel/configs:hardware.config",
+        "//packages/linux/kernel/configs:security.config",
+        # Add your custom fragment last to override defaults
+        "custom-workstation.config",
+    ],
+)
+
+kernel_build(
+    name = "custom-workstation",
+    source = "//packages/linux/kernel/src:linux-src",
+    version = "6.12.6",
+    config_dep = ":custom-workstation-config",
+    visibility = ["PUBLIC"],
+)
+
+# Example 2: Completely custom config file
+# Use when you have a complete kernel config from another source
+kernel_build(
+    name = "custom-full-config",
+    source = "//packages/linux/kernel/src:linux-src",
+    version = "6.12.6",
+    config = "my-complete-config.config",
+    visibility = ["PUBLIC"],
+)
+
+# Example 3: Raspberry Pi kernel (ARM64)
+# Shows how you might structure a different architecture build
+kernel_config(
+    name = "rpi4-config",
+    fragments = [
+        "//packages/linux/kernel/configs:base.config",
+        "//packages/linux/kernel/configs:filesystem.config",
+        "//packages/linux/kernel/configs:network.config",
+        "rpi4-hardware.config",  # Custom fragment for RPi4 hardware
+    ],
+)
+
+# Example 4: Development kernel with debug features
+export_file(
+    name = "debug-fragment",
+    src = "debug.config",
+)
+
+kernel_config(
+    name = "debug-kernel-config",
+    fragments = [
+        "//packages/linux/kernel/configs:base.config",
+        "//packages/linux/kernel/configs:filesystem.config",
+        "//packages/linux/kernel/configs:network.config",
+        "//packages/linux/kernel/configs:hardware.config",
+        "debug.config",
+    ],
+)
+
+kernel_build(
+    name = "debug-kernel",
+    source = "//packages/linux/kernel/src:linux-src",
+    version = "6.12.6",
+    config_dep = ":debug-kernel-config",
+    visibility = ["PUBLIC"],
+)

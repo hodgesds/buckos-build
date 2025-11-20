@@ -1,0 +1,37 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "bpftool-src",
+    src_uri = "https://github.com/libbpf/bpftool/releases/download/v7.5.0/bpftool-libbpf-v7.5.0-sources.tar.gz",
+    sha256 = "e925612e8a2c35e67a5b6ceb5a13b6edaa73ae89858d2dc6cc109d1b0e24a9d7",
+)
+
+binary_package(
+    name = "bpftool",
+    srcs = [":bpftool-src"],
+    version = "7.5.0",
+    description = "Tool for inspection and manipulation of BPF programs and maps",
+    homepage = "https://github.com/libbpf/bpftool",
+    license = "GPL-2.0",
+    install_script = """
+        cd $SRCS/bpftool-*/src
+
+        # Build bpftool with static linking
+        make -j$(nproc) EXTRA_CFLAGS="-I$DEPS/usr/include" EXTRA_LDFLAGS="-L$DEPS/usr/lib -static"
+
+        # Install
+        mkdir -p $OUT/usr/sbin $OUT/usr/share/bash-completion/completions
+
+        cp bpftool $OUT/usr/sbin/
+        if [ -f bash-completion/bpftool ]; then
+            cp bash-completion/bpftool $OUT/usr/share/bash-completion/completions/
+        fi
+    """,
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:zlib",
+        "//packages/linux/dev-tools/dev-utils/elfutils:elfutils",
+        "//packages/linux/system/libs/bpf/libbpf:libbpf",
+    ],
+    visibility = ["PUBLIC"],
+)

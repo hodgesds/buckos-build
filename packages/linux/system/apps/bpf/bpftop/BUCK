@@ -1,0 +1,36 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+
+download_source(
+    name = "bpftop-src",
+    src_uri = "https://github.com/Netflix/bpftop/archive/refs/tags/v0.5.1.tar.gz",
+    sha256 = "7a9f3b5d0f8b9c1e2d3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6",
+)
+
+binary_package(
+    name = "bpftop",
+    srcs = [":bpftop-src"],
+    version = "0.5.1",
+    description = "Top-like tool for monitoring BPF programs in real-time",
+    homepage = "https://github.com/Netflix/bpftop",
+    license = "Apache-2.0",
+    install_script = """
+        cd $SRCS/bpftop-*
+
+        # Build with Cargo (Rust)
+        export CARGO_HOME=$PWD/.cargo
+        export RUSTFLAGS="-C target-feature=-crt-static"
+
+        cargo build --release
+
+        # Install
+        mkdir -p $OUT/usr/bin
+        cp target/release/bpftop $OUT/usr/bin/
+    """,
+    deps = [
+        "//packages/linux/core:musl",
+        "//packages/linux/core:zlib",
+        "//packages/linux/dev-tools/dev-utils/elfutils:elfutils",
+        "//packages/linux/system/libs/bpf/libbpf:libbpf",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -4,6 +4,7 @@ Multi-version package management system for BuckOs Linux.
 Inspired by Gentoo's slot system, this provides:
 - Multiple concurrent versions of packages
 - Slot-based version grouping
+- Subslot support for ABI compatibility tracking
 - Default stable version selection
 - Version constraint resolution
 - Scalable version registry
@@ -14,9 +15,9 @@ Example usage:
         name = "openssl",
         category = "dev-libs",
         versions = {
-            "3.2.0": {"slot": "3", "keywords": ["stable"]},
-            "3.1.4": {"slot": "3", "keywords": ["stable"]},
-            "1.1.1w": {"slot": "1.1", "keywords": ["stable"]},
+            "3.2.0": {"slot": "3", "subslot": "3.2", "keywords": ["stable"]},
+            "3.1.4": {"slot": "3", "subslot": "3.1", "keywords": ["stable"]},
+            "1.1.1w": {"slot": "1.1", "subslot": "1.1", "keywords": ["stable"]},
         },
         default_version = "3.2.0",
     )
@@ -25,6 +26,8 @@ Example usage:
     deps = [
         version_dep("//packages/linux/dev-libs/openssl", ">=1.1.0"),
         slot_dep("//packages/linux/lang/python", "3"),
+        # Subslot-aware dependency (rebuild when subslot changes)
+        subslot_dep("//packages/linux/dev-libs/openssl", "3"),
     ]
 """
 
@@ -182,6 +185,70 @@ def _get_slot_from_version(version):
         return parts[0] + "." + parts[1]
     return parts[0] if parts else "0"
 
+def _get_subslot_from_version(version):
+    """Extract default subslot from version number.
+
+    Default behavior: use major.minor.patch for subslot
+    This tracks ABI compatibility - when subslot changes, dependents rebuild.
+    Examples: 3.2.0 -> "3.2.0", 1.1.1w -> "1.1.1"
+    """
+    parts = version.split(".")
+    if len(parts) >= 3:
+        # Remove any suffix letters from patch version
+        patch = ""
+        for c in parts[2]:
+            if c.isdigit():
+                patch += c
+            else:
+                break
+        return parts[0] + "." + parts[1] + "." + (patch if patch else "0")
+    elif len(parts) >= 2:
+        return parts[0] + "." + parts[1] + ".0"
+    return parts[0] + ".0.0" if parts else "0.0.0"
+
+def parse_slot_subslot(slot_str):
+    """Parse a SLOT/SUBSLOT string into components.
+
+    Gentoo format: "SLOT/SUBSLOT" (e.g., "3/3.2")
+    If no subslot specified, subslot equals slot.
+
+    Args:
+        slot_str: Slot string like "3" or "3/3.2"
+
+    Returns:
+        Tuple of (slot, subslot)
+    """
+    if "/" in slot_str:
+        parts = slot_str.split("/", 1)
+        return (parts[0], parts[1])
+    return (slot_str, slot_str)
+
+def format_slot_subslot(slot, subslot = None):
+    """Format slot and subslot into a string.
+
+    Args:
+        slot: Slot identifier
+        subslot: Subslot identifier (defaults to slot)
+
+    Returns:
+        String in format "SLOT/SUBSLOT" or just "SLOT" if same
+    """
+    if subslot and subslot != slot:
+        return "{}/{}".format(slot, subslot)
+    return slot
+
+def subslot_changed(old_subslot, new_subslot):
+    """Check if a subslot change requires rebuild of dependents.
+
+    Args:
+        old_subslot: Previous subslot value
+        new_subslot: New subslot value
+
+    Returns:
+        True if dependents should be rebuilt
+    """
+    return old_subslot != new_subslot
+
 def register_package_versions(
     name,
     category,
@@ -217,15 +284,19 @@ def register_package_versions(
 
     for ver, meta in versions.items():
         slot = meta.get("slot", _get_slot_from_version(ver))
+        subslot = meta.get("subslot", _get_subslot_from_version(ver))
         keywords = meta.get("keywords", ["testing"])
 
         version_info = {
             "version": ver,
             "slot": slot,
+            "subslot": subslot,
+            "slot_subslot": format_slot_subslot(slot, subslot),
             "keywords": keywords,
             "src_uri": meta.get("src_uri", ""),
             "sha256": meta.get("sha256", ""),
             "deps": meta.get("deps", []),
+            "soname": meta.get("soname", ""),  # Library soname for ABI tracking
         }
 
         version_list.append(version_info)
@@ -469,6 +540,99 @@ def slot_dep(package_path, slot):
         ]
     """
     return "{}:{}".format(package_path, slot)
+
+def subslot_dep(package_path, slot, operator = "="):
+    """Create a subslot-aware dependency that triggers rebuild on ABI changes.
+
+    This is similar to Gentoo's := operator for slot dependencies.
+    When the package's subslot changes, dependents will be rebuilt.
+
+    Args:
+        package_path: Full package path
+        slot: Slot identifier
+        operator: Dependency operator:
+            "=" - rebuild when subslot changes (like := in Gentoo)
+            "*" - don't rebuild on subslot changes (like :* in Gentoo)
+
+    Returns:
+        Target string for the subslot-aware dependency
+
+    Example:
+        deps = [
+            # Rebuild when openssl's ABI changes
+            subslot_dep("//packages/linux/dev-libs/openssl", "3", "="),
+
+            # Don't rebuild on ABI changes (build-time only)
+            subslot_dep("//packages/linux/dev-util/cmake", "3", "*"),
+        ]
+    """
+    if operator == "=":
+        # Subslot-aware: rebuild when subslot changes
+        return "{}:{}=".format(package_path, slot)
+    elif operator == "*":
+        # Subslot-unaware: don't rebuild on subslot changes
+        return "{}:{}*".format(package_path, slot)
+    else:
+        return "{}:{}".format(package_path, slot)
+
+def get_subslot_deps(deps):
+    """Filter dependencies to only subslot-aware ones.
+
+    Args:
+        deps: List of dependency targets
+
+    Returns:
+        List of subslot-aware dependency targets
+    """
+    return [d for d in deps if d.endswith("=")]
+
+def check_abi_compatibility(old_version_info, new_version_info):
+    """Check if upgrading between versions maintains ABI compatibility.
+
+    Args:
+        old_version_info: Version info dict for old version
+        new_version_info: Version info dict for new version
+
+    Returns:
+        Dictionary with:
+        - compatible: Boolean indicating if ABI is compatible
+        - reason: Explanation if not compatible
+        - rebuild_required: List of packages that need rebuilding
+    """
+    result = {
+        "compatible": True,
+        "reason": "",
+        "rebuild_required": [],
+    }
+
+    # Check slot change
+    if old_version_info["slot"] != new_version_info["slot"]:
+        result["compatible"] = False
+        result["reason"] = "Slot changed from {} to {}".format(
+            old_version_info["slot"], new_version_info["slot"])
+        return result
+
+    # Check subslot change
+    if old_version_info.get("subslot") != new_version_info.get("subslot"):
+        result["compatible"] = False
+        result["reason"] = "Subslot changed from {} to {} (ABI change)".format(
+            old_version_info.get("subslot", "unknown"),
+            new_version_info.get("subslot", "unknown"))
+        # Dependents with := dependencies need rebuilding
+        result["rebuild_required"].append("packages with := dependencies")
+        return result
+
+    # Check soname change (library ABI)
+    old_soname = old_version_info.get("soname", "")
+    new_soname = new_version_info.get("soname", "")
+    if old_soname and new_soname and old_soname != new_soname:
+        result["compatible"] = False
+        result["reason"] = "Library soname changed from {} to {}".format(
+            old_soname, new_soname)
+        result["rebuild_required"].append("all dependent packages")
+        return result
+
+    return result
 
 def any_of(*packages):
     """Specify alternative dependencies (virtual packages).

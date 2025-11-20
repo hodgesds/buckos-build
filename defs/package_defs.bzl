@@ -81,8 +81,13 @@ def _configure_make_package_impl(ctx: AnalysisContext) -> list[Provider]:
         "build.sh",
         """#!/bin/bash
 set -e
-export DESTDIR="$1"
+# Convert DESTDIR to absolute path before cd
+export DESTDIR="$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
 export PREFIX="${{PREFIX:-/usr}}"
+
+# Ensure output directory exists
+mkdir -p "$DESTDIR"
+
 cd "$2"
 
 # Set environment

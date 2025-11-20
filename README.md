@@ -14,7 +14,15 @@ buckos-build/
 ├── BUCK                  # Root build targets
 ├── defs/
 │   ├── package_defs.bzl  # Package build rules (like eclass)
-│   └── platform_defs.bzl # Platform targeting helpers
+│   ├── platform_defs.bzl # Platform targeting helpers
+│   ├── use_flags.bzl     # USE flag system
+│   ├── package_sets.bzl  # Package set definitions (like profiles)
+│   ├── registry.bzl      # Package version registry
+│   └── versions.bzl      # Multi-version support
+├── docs/
+│   ├── USE_FLAGS.md      # USE flag documentation
+│   ├── PACKAGE_SETS.md   # Package set documentation
+│   └── VERSIONING.md     # Version management docs
 ├── platforms/
 │   └── BUCK              # Platform definitions and constraints
 ├── toolchains/
@@ -149,6 +157,165 @@ configure_make_package(
 )
 ```
 
+## Multi-Version Package Support
+
+BuckOs supports maintaining multiple versions of the same package simultaneously, similar to Gentoo's SLOT system. This enables legacy compatibility, gradual migrations, and supporting different dependency requirements.
+
+### Key Concepts
+
+- **Slots**: Logical groupings of package versions (e.g., `openssl:3` vs `openssl:1.1`)
+- **Default Version**: The version used when no specific version is requested
+- **Version Status**: `stable`, `testing`, `deprecated`, or `masked`
+
+### Defining Multi-Version Packages
+
+Use `multi_version_package()` for packages with multiple versions:
+
+```python
+load("//defs:versions.bzl", "multi_version_package")
+
+multi_version_package(
+    name = "openssl",
+    versions = {
+        "3.2.0": {
+            "slot": "3",
+            "keywords": ["stable"],
+            "src_uri": "https://www.openssl.org/source/openssl-3.2.0.tar.gz",
+            "sha256": "...",
+            "configure_args": ["--prefix=/usr"],
+        },
+        "1.1.1w": {
+            "slot": "1.1",
+            "keywords": ["stable"],
+            "src_uri": "https://www.openssl.org/source/openssl-1.1.1w.tar.gz",
+            "sha256": "...",
+            "configure_args": ["--prefix=/usr/lib/openssl-1.1"],
+        },
+    },
+    default_version = "3.2.0",  # Main tagged target
+)
+```
+
+This automatically creates:
+- Versioned targets: `openssl-3.2.0`, `openssl-1.1.1w`
+- Slot aliases: `openssl:3`, `openssl:1.1`
+- Default alias: `openssl` → `openssl-3.2.0`
+
+### Main Tagged Target (Default Version)
+
+When a package has multiple versions, the `default_version` specifies which version is used when building without an explicit version:
+
+```bash
+# Build default version (3.2.0)
+buck2 build //packages/linux/dev-libs:openssl
+
+# Build specific version
+buck2 build //packages/linux/dev-libs:openssl-1.1.1w
+
+# Build by slot
+buck2 build //packages/linux/dev-libs:openssl:1.1
+```
+
+If `default_version` is not specified, the system selects the newest stable version automatically.
+
+### Specifying Version Dependencies
+
+Packages can depend on specific versions using several methods:
+
+#### Method 1: Slot Dependencies (Recommended)
+
+Reference a slot to depend on any version within that slot:
+
+```python
+configure_make_package(
+    name = "nginx",
+    deps = [
+        "//packages/linux/dev-libs/openssl:3",      # Any OpenSSL 3.x
+        "//packages/linux/lang/python:3.11",        # Python 3.11.x
+    ],
+)
+```
+
+#### Method 2: Version Constraints
+
+Use `version_dep()` for flexible version requirements:
+
+```python
+load("//defs:versions.bzl", "version_dep")
+
+configure_make_package(
+    name = "myapp",
+    deps = [
+        version_dep("//packages/linux/dev-libs/openssl", ">=3.0"),
+        version_dep("//packages/linux/core/zlib", "~>1.2"),
+        version_dep("//packages/linux/lang/python", ">=3.10 <4.0"),
+    ],
+)
+```
+
+Supported constraint operators:
+
+| Operator | Example | Meaning |
+|----------|---------|---------|
+| (none) | `1.2.3` | Exact match |
+| `>=` | `>=1.2.3` | Greater than or equal |
+| `>` | `>1.2.3` | Greater than |
+| `<=` | `<=1.2.3` | Less than or equal |
+| `<` | `<1.2.3` | Less than |
+| `~>` | `~>1.2` | Pessimistic (>=1.2.0, <2.0.0) |
+| `*` | `1.2.*` | Wildcard match |
+
+#### Method 3: Exact Version
+
+For pinned dependencies:
+
+```python
+configure_make_package(
+    name = "legacy-app",
+    deps = [
+        "//packages/linux/dev-libs/openssl:openssl-1.1.1w",
+    ],
+)
+```
+
+### Version Registry
+
+For large codebases, use the central registry to manage versions:
+
+```python
+load("//defs:registry.bzl", "get_default_version", "get_stable_versions")
+
+# Get default version for a package
+default = get_default_version("core/openssl")  # Returns "3.2.0"
+
+# Get all stable versions
+stable = get_stable_versions("lang/python")  # Returns ["3.12.1", "3.11.7", ...]
+```
+
+### Best Practices
+
+1. **Use slots for major versions**: Group compatible versions (e.g., `python:3.11`, `python:3.12`)
+
+2. **Prefer slot dependencies**: Use `//pkg:slot` over exact versions for flexibility
+
+3. **Set explicit defaults**: Always specify `default_version` to ensure predictable builds
+
+4. **Mark legacy versions**: Use `masked` status for security-deprecated versions:
+   ```python
+   "1.0.2u": {
+       "slot": "1.0",
+       "keywords": ["masked"],  # Prevents accidental use
+   },
+   ```
+
+5. **Use different install prefixes**: Allow co-installation of multiple versions:
+   ```python
+   "3.2.0": {"configure_args": ["--prefix=/usr"]},
+   "1.1.1w": {"configure_args": ["--prefix=/usr/lib/openssl-1.1"]},
+   ```
+
+See [docs/VERSIONING.md](docs/VERSIONING.md) for complete documentation including version comparison algorithms, migration guides, and advanced registry functions.
+
 ## Platform Targeting
 
 BuckOs supports tagging packages by their target platform, enabling future support for BSD, macOS, and Windows alongside Linux.
@@ -236,6 +403,101 @@ The following constants are available in `platform_defs.bzl`:
 | `UNIX_PLATFORMS` | List | Linux, BSD, macOS |
 | `POSIX_PLATFORMS` | List | Linux, BSD, macOS |
 
+## Package Sets
+
+Package sets allow you to build complete systems by selecting predefined collections of packages, similar to Gentoo's system profiles.
+
+### Available Profiles
+
+| Profile | Description |
+|---------|-------------|
+| `minimal` | Bare essentials for bootable system |
+| `server` | Headless server configuration |
+| `desktop` | Full desktop with multimedia |
+| `developer` | Development tools and languages |
+| `hardened` | Security-focused configuration |
+| `embedded` | Minimal footprint for IoT |
+| `container` | Container base image |
+
+### Using Package Sets
+
+```python
+load("//defs:package_sets.bzl", "system_set")
+
+# Create a customized server
+system_set(
+    name = "my-server",
+    profile = "server",
+    additions = [
+        "//packages/linux/net-vpn:wireguard-tools",
+        "//packages/linux/www-servers:nginx",
+    ],
+    removals = [
+        "//packages/linux/editors:emacs",
+    ],
+)
+```
+
+### Task-Specific Sets
+
+Pre-configured sets for common use cases:
+
+- `web-server` - Web server packages
+- `database-server` - Database packages
+- `container-host` - Container runtime and tools
+- `virtualization-host` - VM hypervisor setup
+- `vpn-server` - VPN server packages
+- `monitoring` - System monitoring tools
+
+### Desktop Environments
+
+- `gnome-desktop` - GNOME
+- `kde-desktop` - KDE Plasma
+- `xfce-desktop` - XFCE
+- `sway-desktop` - Sway (Wayland)
+- `i3-desktop` - i3 (X11)
+
+### Combining Sets
+
+```python
+load("//defs:package_sets.bzl", "combined_set")
+
+combined_set(
+    name = "full-stack-server",
+    sets = ["@web-server", "@database-server", "@monitoring"],
+)
+```
+
+See [docs/PACKAGE_SETS.md](docs/PACKAGE_SETS.md) for complete documentation.
+
+## USE Flags
+
+BuckOs includes a USE flag system similar to Gentoo for conditional package features:
+
+```python
+load("//defs:use_flags.bzl", "use_package")
+
+use_package(
+    name = "curl",
+    version = "8.5.0",
+    src_uri = "https://curl.se/download/curl-8.5.0.tar.xz",
+    sha256 = "...",
+    iuse = ["ssl", "http2", "zstd", "ipv6"],
+    use_defaults = ["ssl", "ipv6"],
+    use_deps = {
+        "ssl": ["//packages/linux/dev-libs/openssl"],
+        "http2": ["//packages/linux/net-libs/nghttp2"],
+    },
+    use_configure = {
+        "ssl": "--with-ssl",
+        "-ssl": "--without-ssl",
+        "http2": "--with-nghttp2",
+    },
+)
+```
+
+See [docs/USE_FLAGS.md](docs/USE_FLAGS.md) for complete documentation.
+
 ## Core Packages
 
 ### Currently Included
@@ -266,19 +528,171 @@ The kernel config includes support for:
 
 ### Boot in QEMU
 
-```bash
-# Build the system
-buck2 build //packages/system:buckos-rootfs
-buck2 build //packages/kernel:linux-defconfig
+BuckOs provides automated QEMU boot scripts for easy testing.
 
-# Create a disk image (manual step)
-# Then boot with QEMU:
+#### Quick Start
+
+```bash
+# Build the complete QEMU testing environment
+buck2 build //packages/linux/system:qemu-boot
+
+# Run the generated boot script
+./buck-out/v2/gen/root/<hash>/__qemu-boot__/qemu-boot.sh
+
+# Or build and run in one step (find the output path)
+buck2 build //packages/linux/system:qemu-boot --show-output
+```
+
+#### Available QEMU Targets
+
+| Target | Description |
+|--------|-------------|
+| `//packages/linux/system:qemu-boot` | Basic QEMU boot (512MB RAM, 2 CPUs) |
+| `//packages/linux/system:qemu-boot-dev` | Development mode (2GB RAM, 4 CPUs, KVM) |
+| `//packages/linux/system:qemu-boot-full` | Full bootable system with dracut |
+| `//packages/linux/system:qemu-boot-net` | With network (SSH on port 2222) |
+
+### ISO Image Generation
+
+Build bootable ISO images for distribution or installation:
+
+```bash
+# Build a hybrid (BIOS+EFI) bootable ISO
+buck2 build //packages/linux/system:buckos-iso
+
+# Find the output ISO file
+buck2 build //packages/linux/system:buckos-iso --show-output
+```
+
+#### Available ISO Targets
+
+| Target | Description |
+|--------|-------------|
+| `//packages/linux/system:buckos-iso` | Minimal hybrid ISO (BIOS+EFI) |
+| `//packages/linux/system:buckos-iso-bios` | BIOS-only boot (for older systems) |
+| `//packages/linux/system:buckos-iso-efi` | EFI-only boot (for modern systems) |
+| `//packages/linux/system:buckos-live-iso` | Live ISO with squashfs rootfs |
+| `//packages/linux/system:buckos-full-iso` | Full system with dracut initramfs |
+| `//packages/linux/system:buckos-iso-dev` | Development ISO with verbose boot |
+
+#### Writing ISO to USB
+
+```bash
+# Find the built ISO
+ISO=$(buck2 build //packages/linux/system:buckos-iso --show-output | awk '{print $2}')
+
+# Write to USB drive (replace /dev/sdX with your device)
+sudo dd if="$ISO" of=/dev/sdX bs=4M status=progress conv=fsync
+```
+
+#### Building Individual Components
+
+```bash
+# Build the kernel
+buck2 build //packages/linux/kernel:linux
+
+# Build the root filesystem
+buck2 build //packages/linux/system:buckos-rootfs
+
+# Build the initramfs image
+buck2 build //packages/linux/system:buckos-initramfs
+
+# Build bootable system with more packages
+buck2 build //packages/linux/system:buckos-bootable-initramfs
+```
+
+#### Manual QEMU Boot
+
+If you prefer to run QEMU manually:
+
+```bash
+# Build required components
+buck2 build //packages/linux/kernel:linux
+buck2 build //packages/linux/system:buckos-initramfs
+
+# Find the output paths
+KERNEL=$(buck2 build //packages/linux/kernel:linux --show-output | awk '{print $2}')
+INITRAMFS=$(buck2 build //packages/linux/system:buckos-initramfs --show-output | awk '{print $2}')
+
+# Boot with QEMU
 qemu-system-x86_64 \
-    -kernel buck-out/.../linux/boot/vmlinuz \
-    -initrd initramfs.cpio.gz \
-    -append "console=ttyS0" \
+    -machine q35 \
+    -m 512M \
+    -smp 2 \
+    -kernel "$KERNEL/boot/vmlinuz-6.6.10" \
+    -initrd "$INITRAMFS" \
+    -append "console=ttyS0 init=/sbin/init" \
+    -nographic \
+    -no-reboot
+```
+
+#### QEMU Boot Options
+
+**Basic boot (serial console):**
+```bash
+qemu-system-x86_64 \
+    -kernel $KERNEL/boot/vmlinuz-6.6.10 \
+    -initrd $INITRAMFS \
+    -append "console=ttyS0 init=/sbin/init" \
     -nographic
 ```
+
+**With KVM acceleration (requires /dev/kvm):**
+```bash
+qemu-system-x86_64 \
+    -enable-kvm \
+    -kernel $KERNEL/boot/vmlinuz-6.6.10 \
+    -initrd $INITRAMFS \
+    -append "console=ttyS0 init=/sbin/init" \
+    -nographic
+```
+
+**With networking (SSH access):**
+```bash
+qemu-system-x86_64 \
+    -kernel $KERNEL/boot/vmlinuz-6.6.10 \
+    -initrd $INITRAMFS \
+    -append "console=ttyS0 init=/sbin/init" \
+    -nographic \
+    -netdev user,id=net0,hostfwd=tcp::2222-:22 \
+    -device virtio-net-pci,netdev=net0
+```
+
+**With a virtual disk:**
+```bash
+# Create a disk image
+qemu-img create -f qcow2 disk.qcow2 8G
+
+qemu-system-x86_64 \
+    -kernel $KERNEL/boot/vmlinuz-6.6.10 \
+    -initrd $INITRAMFS \
+    -append "console=ttyS0 init=/sbin/init root=/dev/vda" \
+    -nographic \
+    -drive file=disk.qcow2,if=virtio,format=qcow2
+```
+
+#### Exiting QEMU
+
+- Press `Ctrl-A X` to exit QEMU
+- Or type `poweroff` in the shell
+
+#### Troubleshooting
+
+**Kernel panic - not syncing: No init found:**
+- Ensure the initramfs contains `/sbin/init` or BusyBox
+- Check kernel args include `init=/sbin/init`
+
+**Cannot find kernel image:**
+- Verify the kernel build completed: `buck2 build //packages/linux/kernel:linux`
+- Check the output path with `--show-output`
+
+**Slow boot without KVM:**
+- Enable KVM with `-enable-kvm` if your system supports it
+- Check with: `ls /dev/kvm`
+
+**Network not working:**
+- Ensure kernel has VirtIO network support (included in default config)
+- Verify dhcpcd is included in rootfs for DHCP
 
 ## Comparison to Gentoo
 
@@ -288,9 +702,15 @@ qemu-system-x86_64 \
 | eclass | package_defs.bzl |
 | emerge | buck2 build |
 | PORTDIR | packages/ |
-| USE flags | Buck select() |
+| USE flags | use_flags.bzl |
 | DEPEND | deps |
 | BDEPEND | build_deps |
+| make.profile | package_sets.bzl profiles |
+| @system | SYSTEM_PACKAGES |
+| @world | custom package_set() |
+| /etc/portage/package.use | package_use() |
+| SLOT | versions.bzl slots |
+| package.mask | registry status: masked |
 
 ## License
 
@@ -306,10 +726,12 @@ MIT License - See individual packages for their respective licenses.
 ## Roadmap
 
 - [x] Platform targeting support (Linux, BSD, macOS, Windows)
-- [ ] Add more packages (openssl, openssh, networking tools)
-- [ ] Create initramfs generation target
-- [ ] Add ISO image generation
-- [ ] Implement USE flag-like configuration
-- [ ] Add package versioning and slots
+- [x] Add more packages (openssl, openssh, networking tools)
+- [x] Implement USE flag-like configuration
+- [x] Add package versioning and slots
+- [x] Implement system profiles and package sets
+- [x] Create initramfs generation target
+- [x] Add QEMU testing infrastructure
+- [x] Add ISO image generation
 - [ ] Create package manager for installed systems
 - [ ] Add packages for BSD, macOS, and Windows platforms

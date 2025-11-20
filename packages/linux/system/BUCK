@@ -1,5 +1,6 @@
 load("//defs:package_defs.bzl", "binary_package", "rootfs")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "binary_package", "rootfs", "initramfs", "qemu_boot_script", "iso_image")
 
 # =============================================================================
 # Base system files - Essential configuration and scripts
@@ -232,3 +233,166 @@ rootfs(
         "//packages/linux/system/filesystem/management/lvm2",
         "//packages/linux/system/filesystem/management/mdadm",
         "//packages/linux/system/filesystem/management/cryptsetup",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Initramfs images for QEMU testing
+# =============================================================================
+
+# Minimal initramfs for QEMU testing
+initramfs(
+    name = "buckos-initramfs",
+    rootfs = ":buckos-rootfs",
+    compression = "gz",
+    init = "/sbin/init",
+    visibility = ["PUBLIC"],
+)
+
+# Initramfs with xz compression (smaller but slower)
+initramfs(
+    name = "buckos-initramfs-xz",
+    rootfs = ":buckos-rootfs",
+    compression = "xz",
+    init = "/sbin/init",
+    visibility = ["PUBLIC"],
+)
+
+# Bootable initramfs with full system
+initramfs(
+    name = "buckos-bootable-initramfs",
+    rootfs = ":buckos-bootable",
+    compression = "gz",
+    init = "/sbin/init",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# QEMU boot scripts for testing
+# =============================================================================
+
+# Basic QEMU boot script for testing
+qemu_boot_script(
+    name = "qemu-boot",
+    kernel = "//packages/linux/kernel/linux",
+    initramfs = ":buckos-initramfs",
+    arch = "x86_64",
+    memory = "512M",
+    cpus = "2",
+    kernel_args = "console=ttyS0 init=/sbin/init",
+    visibility = ["PUBLIC"],
+)
+
+# QEMU boot with more memory for development
+qemu_boot_script(
+    name = "qemu-boot-dev",
+    kernel = "//packages/linux/kernel/linux",
+    initramfs = ":buckos-initramfs",
+    arch = "x86_64",
+    memory = "2G",
+    cpus = "4",
+    kernel_args = "console=ttyS0 init=/sbin/init loglevel=7",
+    extra_args = ["-enable-kvm"],
+    visibility = ["PUBLIC"],
+)
+
+# QEMU boot with full bootable system
+qemu_boot_script(
+    name = "qemu-boot-full",
+    kernel = "//packages/linux/kernel/linux",
+    initramfs = ":buckos-bootable-initramfs",
+    arch = "x86_64",
+    memory = "1G",
+    cpus = "2",
+    kernel_args = "console=ttyS0 init=/sbin/init",
+    visibility = ["PUBLIC"],
+)
+
+# QEMU boot with networking
+qemu_boot_script(
+    name = "qemu-boot-net",
+    kernel = "//packages/linux/kernel/linux",
+    initramfs = ":buckos-initramfs",
+    arch = "x86_64",
+    memory = "512M",
+    cpus = "2",
+    kernel_args = "console=ttyS0 init=/sbin/init",
+    extra_args = [
+        "-netdev user,id=net0,hostfwd=tcp::2222-:22",
+        "-device virtio-net-pci,netdev=net0",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# ISO images for distribution
+# =============================================================================
+
+# Minimal bootable ISO image
+iso_image(
+    name = "buckos-iso",
+    kernel = "//packages/linux/kernel/linux",
+    initramfs = ":buckos-initramfs",
+    boot_mode = "hybrid",
+    volume_label = "BUCKOS",
+    kernel_args = "quiet init=/sbin/init",
+    visibility = ["PUBLIC"],
+)
+
+# ISO with BIOS-only boot (for older systems)
+iso_image(
+    name = "buckos-iso-bios",
+    kernel = "//packages/linux/kernel/linux",
+    initramfs = ":buckos-initramfs",
+    boot_mode = "bios",
+    volume_label = "BUCKOS",
+    kernel_args = "quiet init=/sbin/init",
+    visibility = ["PUBLIC"],
+)
+
+# ISO with EFI-only boot (for modern systems)
+iso_image(
+    name = "buckos-iso-efi",
+    kernel = "//packages/linux/kernel/linux",
+    initramfs = ":buckos-initramfs",
+    boot_mode = "efi",
+    volume_label = "BUCKOS",
+    kernel_args = "quiet init=/sbin/init",
+    visibility = ["PUBLIC"],
+)
+
+# Live ISO with full rootfs (squashfs compressed)
+iso_image(
+    name = "buckos-live-iso",
+    kernel = "//packages/linux/kernel/linux",
+    initramfs = ":buckos-initramfs",
+    rootfs = ":buckos-rootfs",
+    boot_mode = "hybrid",
+    volume_label = "BUCKOS_LIVE",
+    kernel_args = "quiet init=/sbin/init",
+    visibility = ["PUBLIC"],
+)
+
+# Full bootable ISO with dracut initramfs
+iso_image(
+    name = "buckos-full-iso",
+    kernel = "//packages/linux/kernel/linux",
+    initramfs = ":buckos-bootable-initramfs",
+    rootfs = ":buckos-bootable",
+    boot_mode = "hybrid",
+    volume_label = "BUCKOS_FULL",
+    kernel_args = "quiet init=/sbin/init",
+    visibility = ["PUBLIC"],
+)
+
+# Development ISO with verbose boot
+iso_image(
+    name = "buckos-iso-dev",
+    kernel = "//packages/linux/kernel/linux",
+    initramfs = ":buckos-initramfs",
+    boot_mode = "hybrid",
+    volume_label = "BUCKOS_DEV",
+    kernel_args = "init=/sbin/init loglevel=7 debug",
+    visibility = ["PUBLIC"],
+)

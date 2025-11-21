@@ -42,7 +42,7 @@ mkdir -p "$DESTDIR/etc/claws-mail"
 """,
     deps = [
         "//packages/linux/core/musl:musl",
-        "//packages/linux/desktop/gtk:gtk",
+        "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],

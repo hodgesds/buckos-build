@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "precompiled_package")
+load("//defs:package_defs.bzl", "download_source", "binary_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 download_source(
@@ -7,18 +7,19 @@ download_source(
     sha256 = "c6e4b6b0e3e9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3",
 )
 
-precompiled_package(
+binary_package(
     name = "diff-so-fancy",
-    source = ":diff-so-fancy-src",
+    srcs = [":diff-so-fancy-src"],
     version = "1.4.4",
     description = "Good-lookin' diffs with diff-highlight and more",
     homepage = "https://github.com/so-fancy/diff-so-fancy",
     license = "MIT",
     install_script = """
-        mkdir -p "$PREFIX/bin" "$PREFIX/lib/diff-so-fancy"
-        cp -r lib/* "$PREFIX/lib/diff-so-fancy/"
-        cp diff-so-fancy "$PREFIX/bin/"
-        chmod +x "$PREFIX/bin/diff-so-fancy"
+        cd $SRCS/diff-so-fancy-* || cd $SRCS
+        mkdir -p "$OUT/usr/bin" "$OUT/usr/lib/diff-so-fancy"
+        cp -r lib/* "$OUT/usr/lib/diff-so-fancy/"
+        cp diff-so-fancy "$OUT/usr/bin/"
+        chmod +x "$OUT/usr/bin/diff-so-fancy"
     """,
     visibility = ["PUBLIC"],
 )

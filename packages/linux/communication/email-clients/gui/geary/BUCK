@@ -29,7 +29,7 @@ binary_package(
     """,
     deps = [
         "//packages/linux/core/musl:musl",
-        "//packages/linux/desktop/gtk:gtk",
+        "//packages/linux/desktop/gnome:gtk4",
         "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],

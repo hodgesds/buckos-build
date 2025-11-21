@@ -16,7 +16,7 @@ configure_make_package(
     homepage = "https://www.iana.org/time-zones",
     license = "public-domain",
     configure_args = [],
-    build_args = [
+    make_args = [
         "TOPDIR=/usr",
         "TZDIR=/usr/share/zoneinfo",
     ],

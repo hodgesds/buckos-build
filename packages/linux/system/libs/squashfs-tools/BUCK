@@ -26,16 +26,15 @@ cd squashfs-tools
 """,
     configure_args = [],
     make_args = [
-        "-C", "squashfs-tools",
         "XZ_SUPPORT=1",
         "LZO_SUPPORT=1",
         "LZ4_SUPPORT=1",
         "ZSTD_SUPPORT=1",
     ],
     post_install = """
-mkdir -p $OUT/usr/bin
-install -m755 squashfs-tools/mksquashfs $OUT/usr/bin/
-install -m755 squashfs-tools/unsquashfs $OUT/usr/bin/
+mkdir -p $DESTDIR/usr/bin
+install -m755 mksquashfs $DESTDIR/usr/bin/
+install -m755 unsquashfs $DESTDIR/usr/bin/
 """,
     deps = [
         "//packages/linux/core:zlib",

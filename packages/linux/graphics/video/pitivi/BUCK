@@ -1,18 +1,13 @@
-load("//defs:package_defs.bzl", "download_source", "meson_package")
+load("//defs:package_defs.bzl", "meson_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # Pitivi - Free video editor with a beautiful and intuitive interface
 
-download_source(
-    name = "pitivi-src",
-    src_uri = "https://gitlab.gnome.org/GNOME/pitivi/-/archive/2023.03/pitivi-2023.03.tar.bz2",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
-)
-
 meson_package(
     name = "pitivi",
-    srcs = [":pitivi-src"],
     version = "2023.03",
+    src_uri = "https://gitlab.gnome.org/GNOME/pitivi/-/archive/2023.03/pitivi-2023.03.tar.bz2",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
     description = "Free video editor with a beautiful and intuitive interface",
     homepage = "https://pitivi.org/",
     license = "LGPL-2.1-or-later",
@@ -26,8 +21,6 @@ meson_package(
         "//packages/linux/lang/python:python",
         "//packages/linux/dev-libs/glib:glib",
     ],
-    bdepend = [
-        "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
-    ],
+    maintainers = [],
     visibility = ["PUBLIC"],
 )

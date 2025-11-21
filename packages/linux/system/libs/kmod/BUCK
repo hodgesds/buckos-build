@@ -28,14 +28,14 @@ configure_make_package(
     ],
     post_install = """
 # Create compatibility symlinks for traditional module tools
-mkdir -p $OUT/sbin
+mkdir -p $DESTDIR/sbin
 for tool in insmod rmmod lsmod modprobe modinfo depmod; do
-    ln -sf ../usr/bin/kmod $OUT/sbin/$tool
+    ln -sf ../usr/bin/kmod $DESTDIR/sbin/$tool
 done
 # Also create symlinks in /usr/sbin for compatibility
-mkdir -p $OUT/usr/sbin
+mkdir -p $DESTDIR/usr/sbin
 for tool in insmod rmmod lsmod modprobe modinfo depmod; do
-    ln -sf ../bin/kmod $OUT/usr/sbin/$tool
+    ln -sf ../bin/kmod $DESTDIR/usr/sbin/$tool
 done
 """,
     deps = [
@@ -63,9 +63,9 @@ configure_make_package(
     make_args = ["LDFLAGS=-static"],
     post_install = """
 # Create compatibility symlinks
-mkdir -p $OUT/sbin
+mkdir -p $DESTDIR/sbin
 for tool in insmod rmmod lsmod modprobe modinfo depmod; do
-    ln -sf ../usr/bin/kmod $OUT/sbin/$tool
+    ln -sf ../usr/bin/kmod $DESTDIR/sbin/$tool
 done
 """,
     deps = [

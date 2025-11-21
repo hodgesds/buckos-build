@@ -16,7 +16,7 @@ configure_make_package(
     homepage = "https://github.com/rhboot/efivar",
     license = "LGPL-2.1",
     configure_args = [],
-    build_args = [
+    make_args = [
         "LIBDIR=/usr/lib",
         "PREFIX=/usr",
     ],

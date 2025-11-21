@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "precompiled_package")
+load("//defs:package_defs.bzl", "download_source", "binary_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 download_source(
@@ -7,12 +7,17 @@ download_source(
     sha256 = "a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8",
 )
 
-precompiled_package(
+binary_package(
     name = "asciidoctor",
-    source = ":asciidoctor-src",
+    srcs = [":asciidoctor-src"],
     version = "2.0.23",
     description = "Converter for transforming AsciiDoc content to various formats",
     homepage = "https://asciidoctor.org/",
     license = "MIT",
+    install_script = """
+        cd $SRCS/asciidoctor-* || cd $SRCS
+        gem build asciidoctor.gemspec
+        gem install --install-dir "$OUT/usr/lib/ruby/gems" --bindir "$OUT/usr/bin" asciidoctor-*.gem
+    """,
     visibility = ["PUBLIC"],
 )

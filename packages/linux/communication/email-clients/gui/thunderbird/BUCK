@@ -50,7 +50,7 @@ MOZCONFIG
     deps = [
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/core/musl:musl",
-        "//packages/linux/desktop/gtk:gtk",
+        "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/lang/python:python",
         "//packages/linux/lang/rust:rust",
         "//packages/linux/network/openssl:openssl",

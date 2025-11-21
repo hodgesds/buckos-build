@@ -1,22 +1,17 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:package_defs.bzl", "meson_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 # zathura - Document viewer with vim-like interface
-download_source(
-    name = "zathura-src",
+
+meson_package(
+    name = "zathura",
+    version = "0.5.4",
     src_uri = "https://pwmt.org/projects/zathura/download/zathura-0.5.4.tar.xz",
     sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
-)
-
-configure_make_package(
-    name = "zathura",
-    source = ":zathura-src",
-    version = "0.5.4",
     description = "Document viewer with vim-like interface",
     homepage = "https://pwmt.org/projects/zathura",
     license = "Zlib",
-    build_system = "meson",
-    configure_args = [
+    meson_args = [
         "-Dprefix=/usr",
     ],
     deps = [

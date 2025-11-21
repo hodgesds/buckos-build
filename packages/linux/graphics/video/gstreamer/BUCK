@@ -1,18 +1,13 @@
-load("//defs:package_defs.bzl", "download_source", "meson_package")
+load("//defs:package_defs.bzl", "meson_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # GStreamer - Open source multimedia framework
 
-download_source(
-    name = "gstreamer-src",
-    src_uri = "https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.24.6.tar.xz",
-    sha256 = "64342060d7c6f9e36a35e3be38a4f5ac3b41ed93b0853619be45141ef3cc1b9d",
-)
-
 meson_package(
     name = "gstreamer",
-    srcs = [":gstreamer-src"],
     version = "1.24.6",
+    src_uri = "https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.24.6.tar.xz",
+    sha256 = "64342060d7c6f9e36a35e3be38a4f5ac3b41ed93b0853619be45141ef3cc1b9d",
     description = "Open source multimedia framework",
     homepage = "https://gstreamer.freedesktop.org/",
     license = "LGPL-2.0-or-later",
@@ -31,23 +26,16 @@ meson_package(
         "//packages/linux/core/libffi:libffi",
         "//packages/linux/core/zlib:zlib",
     ],
-    bdepend = [
-        "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
-    ],
+    maintainers = [],
     visibility = ["PUBLIC"],
 )
 
 # GStreamer plugins - base set
-download_source(
-    name = "gst-plugins-base-src",
-    src_uri = "https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.24.6.tar.xz",
-    sha256 = "64342060d7c6f9e36a35e3be38a4f5ac3b41ed93b0853619be45141ef3cc1b9d",
-)
-
 meson_package(
     name = "gst-plugins-base",
-    srcs = [":gst-plugins-base-src"],
     version = "1.24.6",
+    src_uri = "https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.24.6.tar.xz",
+    sha256 = "64342060d7c6f9e36a35e3be38a4f5ac3b41ed93b0853619be45141ef3cc1b9d",
     description = "GStreamer base plugins",
     homepage = "https://gstreamer.freedesktop.org/",
     license = "LGPL-2.0-or-later",
@@ -63,23 +51,16 @@ meson_package(
         "//packages/linux/audio/libraries/libvorbis:libvorbis",
         "//packages/linux/core/zlib:zlib",
     ],
-    bdepend = [
-        "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
-    ],
+    maintainers = [],
     visibility = ["PUBLIC"],
 )
 
 # GStreamer plugins - good set
-download_source(
-    name = "gst-plugins-good-src",
-    src_uri = "https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.24.6.tar.xz",
-    sha256 = "64342060d7c6f9e36a35e3be38a4f5ac3b41ed93b0853619be45141ef3cc1b9d",
-)
-
 meson_package(
     name = "gst-plugins-good",
-    srcs = [":gst-plugins-good-src"],
     version = "1.24.6",
+    src_uri = "https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.24.6.tar.xz",
+    sha256 = "64342060d7c6f9e36a35e3be38a4f5ac3b41ed93b0853619be45141ef3cc1b9d",
     description = "GStreamer good plugins",
     homepage = "https://gstreamer.freedesktop.org/",
     license = "LGPL-2.0-or-later",
@@ -93,23 +74,16 @@ meson_package(
         ":gst-plugins-base",
         "//packages/linux/graphics/video/libvpx:libvpx",
     ],
-    bdepend = [
-        "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
-    ],
+    maintainers = [],
     visibility = ["PUBLIC"],
 )
 
 # GStreamer plugins - bad set
-download_source(
-    name = "gst-plugins-bad-src",
-    src_uri = "https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.24.6.tar.xz",
-    sha256 = "64342060d7c6f9e36a35e3be38a4f5ac3b41ed93b0853619be45141ef3cc1b9d",
-)
-
 meson_package(
     name = "gst-plugins-bad",
-    srcs = [":gst-plugins-bad-src"],
     version = "1.24.6",
+    src_uri = "https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.24.6.tar.xz",
+    sha256 = "64342060d7c6f9e36a35e3be38a4f5ac3b41ed93b0853619be45141ef3cc1b9d",
     description = "GStreamer bad plugins (less tested)",
     homepage = "https://gstreamer.freedesktop.org/",
     license = "LGPL-2.0-or-later",
@@ -126,23 +100,16 @@ meson_package(
         "//packages/linux/graphics/video/x265:x265",
         "//packages/linux/graphics/video/aom:aom",
     ],
-    bdepend = [
-        "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
-    ],
+    maintainers = [],
     visibility = ["PUBLIC"],
 )
 
 # GStreamer plugins - ugly set (may have licensing issues)
-download_source(
-    name = "gst-plugins-ugly-src",
-    src_uri = "https://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.24.6.tar.xz",
-    sha256 = "64342060d7c6f9e36a35e3be38a4f5ac3b41ed93b0853619be45141ef3cc1b9d",
-)
-
 meson_package(
     name = "gst-plugins-ugly",
-    srcs = [":gst-plugins-ugly-src"],
     version = "1.24.6",
+    src_uri = "https://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.24.6.tar.xz",
+    sha256 = "64342060d7c6f9e36a35e3be38a4f5ac3b41ed93b0853619be45141ef3cc1b9d",
     description = "GStreamer ugly plugins (may have licensing issues)",
     homepage = "https://gstreamer.freedesktop.org/",
     license = "LGPL-2.0-or-later",
@@ -157,23 +124,16 @@ meson_package(
         ":gst-plugins-base",
         "//packages/linux/graphics/video/x264:x264",
     ],
-    bdepend = [
-        "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
-    ],
+    maintainers = [],
     visibility = ["PUBLIC"],
 )
 
 # GStreamer libav - FFmpeg plugin
-download_source(
-    name = "gst-libav-src",
-    src_uri = "https://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.24.6.tar.xz",
-    sha256 = "64342060d7c6f9e36a35e3be38a4f5ac3b41ed93b0853619be45141ef3cc1b9d",
-)
-
 meson_package(
     name = "gst-libav",
-    srcs = [":gst-libav-src"],
     version = "1.24.6",
+    src_uri = "https://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.24.6.tar.xz",
+    sha256 = "64342060d7c6f9e36a35e3be38a4f5ac3b41ed93b0853619be45141ef3cc1b9d",
     description = "GStreamer FFmpeg plugin",
     homepage = "https://gstreamer.freedesktop.org/",
     license = "LGPL-2.0-or-later",
@@ -185,8 +145,6 @@ meson_package(
         ":gst-plugins-base",
         "//packages/linux/graphics/video/ffmpeg:ffmpeg",
     ],
-    bdepend = [
-        "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
-    ],
+    maintainers = [],
     visibility = ["PUBLIC"],
 )

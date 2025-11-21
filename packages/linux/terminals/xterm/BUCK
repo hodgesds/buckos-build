@@ -5,7 +5,7 @@ use_package(
     name = "xterm",
     version = "390",
     src_uri = "https://invisible-mirror.net/archives/xterm/xterm-390.tgz",
-    sha256 = "75117c3d8d71e0a6b3c38f745c4aae2c0bb9e5d4e0e7a3d8f9c0b1a2c3d4e5f6",
+    sha256 = "75117c3cc5174a09c425ef106e69404d72f5ef05e03a5da00aaf15792d6f9c0f",
     description = "Terminal emulator for the X Window System",
     homepage = "https://invisible-island.net/xterm/",
     license = "MIT",

@@ -48,7 +48,7 @@ meson_package(
     name = "intel-media-driver",
     version = "24.2.5",
     src_uri = "https://github.com/intel/media-driver/archive/refs/tags/intel-media-24.2.5.tar.gz",
-    sha256 = "c1d2e3f4a5b6c7d8e9f0a1b2c3d4d5e6f7a8b9c0d1e2f3a4b5c6c7d8e9f0a1b2",
+    sha256 = "dec2210c1f824a721e4ea6f66f5899e300801b3e7fae232d3f8a94db38c2edd1",
     description = "Intel Media Driver for VAAPI (Gen8+ graphics)",
     homepage = "https://github.com/intel/media-driver",
     license = "MIT BSD-3-Clause",

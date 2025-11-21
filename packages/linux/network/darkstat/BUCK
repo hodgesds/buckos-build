@@ -9,7 +9,7 @@ use_package(
     name = "darkstat",
     version = "3.0.721",
     src_uri = "https://unix4lyfe.org/darkstat/darkstat-3.0.721.tar.bz2",
-    sha256 = "e1f2g3h4i5j6k7l8m9n0o1p2q3r4s5t6u7v8w9x0y1z2a3b4c5d6e7f8g9h0i1j2",
+    sha256 = "55f7d9e99b8e2d4e0e193b2f0275501e6d9c1ebd29cadbea6a0da48a8587e3e0",
 
     iuse = ["ipv6", "debug"],
     use_defaults = ["ipv6"],

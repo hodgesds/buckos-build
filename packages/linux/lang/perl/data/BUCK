@@ -53,7 +53,7 @@ configure_make_package(
 download_source(
     name = "json-maybexs-src",
     src_uri = "https://cpan.metacpan.org/authors/id/E/ET/ETHER/JSON-MaybeXS-1.004005.tar.gz",
-    sha256 = "3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4",
+    sha256 = "f5b6bc19f579e66b7299f8748b8ac3e171936dc4e7fcb72a8a257a9bd482a331",
 )
 
 configure_make_package(

@@ -38,7 +38,7 @@ configure_make_package(
 download_source(
     name = "pam-script-src",
     src_uri = "https://github.com/jeroennijhof/pam_script/archive/refs/tags/1.1.9.tar.gz",
-    sha256 = "b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9",
+    sha256 = "0aab103d318e3048ccc6f8285950f99284c814f996d2dcbcae8f10d3b8bd8cfe",
 )
 
 configure_make_package(
@@ -65,7 +65,7 @@ configure_make_package(
 download_source(
     name = "pam-ssh-src",
     src_uri = "https://github.com/OpenSC/pam_ssh/archive/refs/tags/pam_ssh-2.3.tar.gz",
-    sha256 = "c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0",
+    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
 )
 
 configure_make_package(
@@ -90,7 +90,7 @@ configure_make_package(
 download_source(
     name = "pam-pkcs11-src",
     src_uri = "https://github.com/OpenSC/pam_pkcs11/archive/refs/tags/pam_pkcs11-0.6.12.tar.gz",
-    sha256 = "d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1",
+    sha256 = "c29cfd021fd3793263f1784b039f166f0e751996bada656a0f9470005eb0c093",
 )
 
 configure_make_package(
@@ -123,7 +123,7 @@ configure_make_package(
 download_source(
     name = "pam-abl-src",
     src_uri = "https://github.com/deksai/pam_abl/archive/refs/tags/v0.6.0.tar.gz",
-    sha256 = "e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+    sha256 = "164d1d5fe042d85f653e61ab8823257a2b377d0c43f391d35d11143b72802ad3",
 )
 
 configure_make_package(

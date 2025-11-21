@@ -25,40 +25,56 @@ use_package(
     configure_args = [],
     make_args = [],
     post_install = """
-# bzip2 has no standard configure/install, build manually
+# bzip2 has no standard configure/install, build manually (following Gentoo approach)
 cd "$SRCDIR"
 
-# Patch Makefile
-sed -i 's|^CC=.*|CC=cc|' Makefile
-sed -i 's|^CFLAGS=.*|CFLAGS=-O2 -fPIC|' Makefile
+# Clean any stale object files first
+rm -f *.o *.so* *.a bzip2 bzip2recover
 
-# Build shared library
-make -f Makefile-libbz2_so
+# Step 1: Build shared library FIRST (like Gentoo)
+# Make sure we have -fPIC for shared library build
+make -f Makefile-libbz2_so all \
+  CC=cc \
+  CFLAGS="-fpic -fPIC -Wall -Winline -O2 -fno-stack-protector"
 
-# Install shared library
+# Step 2: Create symlink (like Gentoo does to avoid linking against static lib)
+ln -sf libbz2.so.1.0.8 libbz2.so
+
+# Step 3: Build static library and binaries with -fPIC to avoid conflicts
+make -f Makefile all \
+  CC=cc \
+  CFLAGS="-Wall -Winline -O2 -fPIC -fno-stack-protector"
+
+# Install shared libraries
 mkdir -p "$DESTDIR/usr/lib"
-cp -a libbz2.so* "$DESTDIR/usr/lib/"
+cp -a libbz2.so.1.0.8 "$DESTDIR/usr/lib/"
 
-# Build static library and binaries
-make clean
-make
-
-# Manual install
-mkdir -p "$DESTDIR/usr/bin" "$DESTDIR/usr/lib" "$DESTDIR/usr/include" "$DESTDIR/usr/share/man/man1"
+# Install binaries
+mkdir -p "$DESTDIR/usr/bin"
 cp -f bzip2 "$DESTDIR/usr/bin/"
 ln -sf bzip2 "$DESTDIR/usr/bin/bunzip2"
 ln -sf bzip2 "$DESTDIR/usr/bin/bzcat"
 cp -f bzip2recover "$DESTDIR/usr/bin/"
+
+# Install static library
+mkdir -p "$DESTDIR/usr/lib"
 cp -f libbz2.a "$DESTDIR/usr/lib/"
+
+# Install headers
+mkdir -p "$DESTDIR/usr/include"
 cp -f bzlib.h "$DESTDIR/usr/include/"
+
+# Install man pages
+mkdir -p "$DESTDIR/usr/share/man/man1"
 cp -f bzip2.1 "$DESTDIR/usr/share/man/man1/"
 ln -sf bzip2.1 "$DESTDIR/usr/share/man/man1/bunzip2.1"
 ln -sf bzip2.1 "$DESTDIR/usr/share/man/man1/bzcat.1"
 
-# Fix symlinks
+# Fix shared library symlinks (like Gentoo)
 cd "$DESTDIR/usr/lib"
 ln -sf libbz2.so.1.0.8 libbz2.so.1.0
-ln -sf libbz2.so.1.0 libbz2.so
+ln -sf libbz2.so.1.0.8 libbz2.so.1
+ln -sf libbz2.so.1.0.8 libbz2.so
 """,
     visibility = ["PUBLIC"],
 )

@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "minigbm-src",
     src_uri = "https://chromium.googlesource.com/chromiumos/platform/minigbm/+archive/refs/heads/main.tar.gz",
-    sha256 = "30c0b14eec9505d2051616bb4563166dce4e1a274d4b07645f04b601d1ce52c9",
+    sha256 = "7b3fab34532ab487547aec23eb59c6d88ca41817ec03564807f1843ee19d9d56",
 )
 
 configure_make_package(

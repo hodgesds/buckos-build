@@ -7,7 +7,7 @@ use_package(
     name = "ntopng",
     version = "6.0",
     src_uri = "https://github.com/ntop/ntopng/archive/refs/tags/6.0.tar.gz",
-    sha256 = "b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g",
+    sha256 = "937e3dea081f68cb8d85e0a925f5277f6a358d65ba45e90e215f0fc36d2401ac",
 
     iuse = ["ssl", "redis", "mysql", "geoip"],
     use_defaults = ["ssl", "redis"],

@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "dbi-src",
     src_uri = "https://cpan.metacpan.org/authors/id/H/HM/HMBRAND/DBI-1.643.tar.gz",
-    sha256 = "c9d5e4f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+    sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
 )
 
 configure_make_package(
@@ -29,7 +29,7 @@ configure_make_package(
 download_source(
     name = "dbd-sqlite-src",
     src_uri = "https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/DBD-SQLite-1.74.tar.gz",
-    sha256 = "d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1",
+    sha256 = "8994997d84b9feb4547795f78746c661fb72e3cb6a25dbdd789b731f5688a4dd",
 )
 
 configure_make_package(
@@ -54,7 +54,7 @@ configure_make_package(
 download_source(
     name = "dbd-pg-src",
     src_uri = "https://cpan.metacpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.18.0.tar.gz",
-    sha256 = "e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+    sha256 = "92bbe8a363040f8ce6a3f1963f128132e245861a9b4dc5a84178b42d625a7807",
 )
 
 configure_make_package(
@@ -79,7 +79,7 @@ configure_make_package(
 download_source(
     name = "dbd-mysql-src",
     src_uri = "https://cpan.metacpan.org/authors/id/D/DV/DVEEDEN/DBD-mysql-5.004.tar.gz",
-    sha256 = "f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3",
+    sha256 = "33a6bf1b685cc50c46eb1187a3eb259ae240917bc189d26b81418790aa6da5df",
 )
 
 configure_make_package(
@@ -104,7 +104,7 @@ configure_make_package(
 download_source(
     name = "dbix-class-src",
     src_uri = "https://cpan.metacpan.org/authors/id/R/RI/RIBASUSHI/DBIx-Class-0.082843.tar.gz",
-    sha256 = "a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4",
+    sha256 = "341e0b6ecb29d8c49174a6c09d7c6dbf38729ba4015ee7fd70360a4ffee1f251",
 )
 
 configure_make_package(
@@ -132,7 +132,7 @@ configure_make_package(
 download_source(
     name = "sql-abstract-src",
     src_uri = "https://cpan.metacpan.org/authors/id/M/MS/MSTROUT/SQL-Abstract-2.000001.tar.gz",
-    sha256 = "b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5",
+    sha256 = "35a642662c349420d44be6e0ef7d8765ea743eb12ad14399aa3a232bb94e6e9a",
 )
 
 configure_make_package(
@@ -157,7 +157,7 @@ configure_make_package(
 download_source(
     name = "rose-db-src",
     src_uri = "https://cpan.metacpan.org/authors/id/J/JS/JSIRACUSA/Rose-DB-0.778.tar.gz",
-    sha256 = "c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+    sha256 = "a45e2fddf2cc452092d14456b4b3f749339b901e0837015a76185314e0487e66",
 )
 
 configure_make_package(
@@ -182,7 +182,7 @@ configure_make_package(
 download_source(
     name = "mojo-pg-src",
     src_uri = "https://cpan.metacpan.org/authors/id/S/SR/SRI/Mojo-Pg-4.27.tar.gz",
-    sha256 = "d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7",
+    sha256 = "a322c8df00e3e5655fdf4d0b7ab9d799289320e29f64fe99ac7af124484ef9d8",
 )
 
 configure_make_package(
@@ -208,7 +208,7 @@ configure_make_package(
 download_source(
     name = "mojo-sqlite-src",
     src_uri = "https://cpan.metacpan.org/authors/id/D/DB/DBOOK/Mojo-SQLite-3.009.tar.gz",
-    sha256 = "e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8",
+    sha256 = "5739a9af3fc0fc162b38032df610a070035263bfbe0bec16aec52f0dddd7b647",
 )
 
 configure_make_package(
@@ -234,7 +234,7 @@ configure_make_package(
 download_source(
     name = "redis-src",
     src_uri = "https://cpan.metacpan.org/authors/id/D/DA/DAMS/Redis-2.000.tar.gz",
-    sha256 = "f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+    sha256 = "14cb899797212615b4e93f916dcbdafb48d01c5eaab2038fe6cb179bf95c6feb",
 )
 
 configure_make_package(
@@ -259,7 +259,7 @@ configure_make_package(
 download_source(
     name = "mongodb-src",
     src_uri = "https://cpan.metacpan.org/authors/id/M/MO/MONGODB/MongoDB-v2.2.2.tar.gz",
-    sha256 = "a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
+    sha256 = "201935f92dac94f39c35de73661e8b252439e496f228657db85ff93257c3268f",
 )
 
 configure_make_package(
@@ -285,7 +285,7 @@ configure_make_package(
 download_source(
     name = "cache-memcached-fast-src",
     src_uri = "https://cpan.metacpan.org/authors/id/K/KR/KROKI/Cache-Memcached-Fast-0.28.tar.gz",
-    sha256 = "b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1",
+    sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
 )
 
 configure_make_package(

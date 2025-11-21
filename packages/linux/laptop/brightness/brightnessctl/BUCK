@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "brightnessctl-src",
     src_uri = "https://github.com/Hummer12007/brightnessctl/archive/refs/tags/0.5.1.tar.gz",
-    sha256 = "6b7f0a465e2bf55dad13a855bcca63c1a3e71e0a7a9a0b8c3d4e5f6a7b8c9d0e1",
+    sha256 = "a68869e23f56ac4f2e28f1783002810ddbf10f95e1af9b48b2912fb169f46994",
 )
 
 # USE flags: See use_flags.bzl for available flags

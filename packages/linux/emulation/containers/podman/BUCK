@@ -84,7 +84,7 @@ EOF
 download_source(
     name = "buildah-src",
     src_uri = "https://github.com/containers/buildah/archive/refs/tags/v1.38.0.tar.gz",
-    sha256 = "f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
+    sha256 = "e8ddd23e344c45afae27bf6158304300c77cd738063d99221f7534c37f195f0c",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -127,7 +127,7 @@ install -m 0644 contrib/completions/bash/buildah "$DESTDIR/usr/share/bash-comple
 download_source(
     name = "skopeo-src",
     src_uri = "https://github.com/containers/skopeo/archive/refs/tags/v1.16.1.tar.gz",
-    sha256 = "a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8",
+    sha256 = "9402e71f3fba979d0c0509240b963847bfeda2eac60be83eb5a628fd67d098e6",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -167,7 +167,7 @@ install -m 0644 completions/bash/skopeo "$DESTDIR/usr/share/bash-completion/comp
 download_source(
     name = "conmon-src",
     src_uri = "https://github.com/containers/conmon/archive/refs/tags/v2.1.12.tar.gz",
-    sha256 = "b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9",
+    sha256 = "842f0b5614281f7e35eec2a4e35f9f7b9834819aa58ecdad8d0ff6a84f6796a6",
 )
 
 # USE flags: See use_flags.bzl for available flags

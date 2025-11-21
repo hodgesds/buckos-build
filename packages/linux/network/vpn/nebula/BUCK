@@ -33,7 +33,7 @@ chmod 755 "$DESTDIR/usr/bin/nebula-cert"
 """,
 
     build_deps = [
-        "//packages/linux/lang:go",
+        "//packages/linux/lang/go:go",
     ],
 
     description = "Scalable overlay networking tool with mesh support",

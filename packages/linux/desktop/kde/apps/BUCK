@@ -50,7 +50,7 @@ DESTDIR=$OUT make install
 download_source(
     name = "dolphin-src",
     src_uri = "https://download.kde.org/stable/release-service/24.02.0/src/dolphin-24.02.0.tar.xz",
-    sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+    sha256 = "10ef284597e28f933d8b4ead75d02759a15df4bcc928ed10b54f8065b7431257",
 )
 
 configure_make_package(
@@ -89,7 +89,7 @@ DESTDIR=$OUT make install
 download_source(
     name = "kate-src",
     src_uri = "https://download.kde.org/stable/release-service/24.02.0/src/kate-24.02.0.tar.xz",
-    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+    sha256 = "9b1efcccf4e36efcdbc2eada6399cd8128ce187a19182400313062f75ee35f48",
 )
 
 configure_make_package(
@@ -128,7 +128,7 @@ DESTDIR=$OUT make install
 download_source(
     name = "okular-src",
     src_uri = "https://download.kde.org/stable/release-service/24.02.0/src/okular-24.02.0.tar.xz",
-    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+    sha256 = "fc265548f859562c54cd40587ff3c6a1c2d0f7926617951b06e6145d1f42938c",
 )
 
 configure_make_package(
@@ -169,7 +169,7 @@ DESTDIR=$OUT make install
 download_source(
     name = "gwenview-src",
     src_uri = "https://download.kde.org/stable/release-service/24.02.0/src/gwenview-24.02.0.tar.xz",
-    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+    sha256 = "03606d3cba1520f04556ac92b2aa449f85e7daca36a637162d33c05ec42bb0b4",
 )
 
 configure_make_package(
@@ -211,7 +211,7 @@ DESTDIR=$OUT make install
 download_source(
     name = "ark-src",
     src_uri = "https://download.kde.org/stable/release-service/24.02.0/src/ark-24.02.0.tar.xz",
-    sha256 = "f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
+    sha256 = "ff11fe9352d8aa80207a21f3e024e18b4035cbbe689abaad20a91fe36c455469",
 )
 
 configure_make_package(
@@ -252,7 +252,7 @@ DESTDIR=$OUT make install
 download_source(
     name = "spectacle-src",
     src_uri = "https://download.kde.org/stable/release-service/24.02.0/src/spectacle-24.02.0.tar.xz",
-    sha256 = "a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8",
+    sha256 = "614b10c990b5c1e2af539c6f60da5cab8d1975b6c17a2c2458a81b95d2e4c3d1",
 )
 
 configure_make_package(
@@ -292,7 +292,7 @@ DESTDIR=$OUT make install
 download_source(
     name = "kcalc-src",
     src_uri = "https://download.kde.org/stable/release-service/24.02.0/src/kcalc-24.02.0.tar.xz",
-    sha256 = "b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9",
+    sha256 = "c19b639d632bee1edf3e9f832e7981f5671a12b464b4678ba52dbb1fff2fc7c5",
 )
 
 configure_make_package(
@@ -333,7 +333,7 @@ DESTDIR=$OUT make install
 download_source(
     name = "elisa-src",
     src_uri = "https://download.kde.org/stable/release-service/24.02.0/src/elisa-24.02.0.tar.xz",
-    sha256 = "c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0",
+    sha256 = "ecb670005aa3bb1dd0f407c2ac0331c703194cfb2b1346492ffc3361b840b8b4",
 )
 
 configure_make_package(
@@ -373,7 +373,7 @@ DESTDIR=$OUT make install
 download_source(
     name = "kdeconnect-kde-src",
     src_uri = "https://download.kde.org/stable/release-service/24.02.0/src/kdeconnect-kde-24.02.0.tar.xz",
-    sha256 = "d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1",
+    sha256 = "d95c5b3693d14b954fb09a22d2fc1712815aa424740cbf5872c40a59ed424e0d",
 )
 
 configure_make_package(
@@ -415,7 +415,7 @@ DESTDIR=$OUT make install
 download_source(
     name = "yakuake-src",
     src_uri = "https://download.kde.org/stable/release-service/24.02.0/src/yakuake-24.02.0.tar.xz",
-    sha256 = "e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+    sha256 = "8f0b9b8f25798d0a58ae207e13c8ac55c87e2205fa6c8651b9af3f97c002f6a4",
 )
 
 configure_make_package(
@@ -455,7 +455,7 @@ DESTDIR=$OUT make install
 download_source(
     name = "konversation-src",
     src_uri = "https://download.kde.org/stable/konversation/23.10.0/src/konversation-23.10.0.tar.xz",
-    sha256 = "f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3",
+    sha256 = "e0efff427b2155b09784851fa1645511ffb93629e557e887ec5dacff2fe223a0",
 )
 
 configure_make_package(
@@ -494,7 +494,7 @@ DESTDIR=$OUT make install
 download_source(
     name = "filelight-src",
     src_uri = "https://download.kde.org/stable/release-service/24.02.0/src/filelight-24.02.0.tar.xz",
-    sha256 = "a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4",
+    sha256 = "07f907ebfc5edb3918a3e039a6c11ec5cfc69d0f16859da2c813c998a4c20796",
 )
 
 configure_make_package(
@@ -533,7 +533,7 @@ DESTDIR=$OUT make install
 download_source(
     name = "ksystemstats-src",
     src_uri = "https://download.kde.org/stable/plasma/6.0.1/ksystemstats-6.0.1.tar.xz",
-    sha256 = "b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5",
+    sha256 = "071afe664c38ec6ab7b292b90e6b55cc2d2beb20be3f8aa53b131682893a5c49",
 )
 
 configure_make_package(
@@ -573,7 +573,7 @@ DESTDIR=$OUT make install
 download_source(
     name = "plasma-systemmonitor-src",
     src_uri = "https://download.kde.org/stable/plasma/6.0.1/plasma-systemmonitor-6.0.1.tar.xz",
-    sha256 = "c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+    sha256 = "2f8979978b348d6b71ac078f989dd21ff4e9b6b0d25b5e59a371be500fc99d51",
 )
 
 configure_make_package(
@@ -614,7 +614,7 @@ DESTDIR=$OUT make install
 # download_source(
 #     name = "partitionmanager-src",
 #     src_uri = "https://download.kde.org/stable/release-service/24.02.0/src/partitionmanager-24.02.0.tar.xz",
-#     sha256 = "d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7",
+#     sha256 = "b2ec49165805bca5b806f66b4ec53dd4a98dd46633aed54e69f040a1df15a4ac",
 # )
 #
 # configure_make_package(
@@ -655,7 +655,7 @@ DESTDIR=$OUT make install
 download_source(
     name = "ktorrent-src",
     src_uri = "https://download.kde.org/stable/release-service/24.02.0/src/ktorrent-24.02.0.tar.xz",
-    sha256 = "e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8",
+    sha256 = "03845a7efe778d4dc7ed396f284f09d6707d506d6b3a64039ec64baca589305a",
 )
 
 configure_make_package(
@@ -696,7 +696,7 @@ DESTDIR=$OUT make install
 download_source(
     name = "krusader-src",
     src_uri = "https://download.kde.org/stable/krusader/2.8.1/krusader-2.8.1.tar.xz",
-    sha256 = "f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+    sha256 = "37bf204519d0ab1ba40964af02741bc228f11e97f28c4c518ca05d358df18283",
 )
 
 configure_make_package(

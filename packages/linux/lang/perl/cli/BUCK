@@ -128,7 +128,7 @@ configure_make_package(
 download_source(
     name = "app-cmd-src",
     src_uri = "https://cpan.metacpan.org/authors/id/R/RJ/RJBS/App-Cmd-0.336.tar.gz",
-    sha256 = "2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3",
+    sha256 = "df966b57d59abb196e00304885e5bf117ca958182ae3f4eedf17218ea2838e81",
 )
 
 configure_make_package(

@@ -39,7 +39,7 @@ configure_make_package(
 download_source(
     name = "cracklib-src",
     src_uri = "https://github.com/cracklib/cracklib/releases/download/v2.9.11/cracklib-2.9.11.tar.xz",
-    sha256 = "f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1",
+    sha256 = "2c83a91dd21d035eab98bded764eb4579b73fd837b683e1a447b11ef604ee130",
 )
 
 configure_make_package(
@@ -71,7 +71,7 @@ configure_make_package(
 download_source(
     name = "passwdqc-src",
     src_uri = "https://www.openwall.com/passwdqc/passwdqc-2.0.3.tar.gz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    sha256 = "53b0f4bc49369f06195e9e13abb6cff352d5acb79e861004ec95973896488cf4",
 )
 
 configure_make_package(

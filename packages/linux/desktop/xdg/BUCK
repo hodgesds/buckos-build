@@ -32,7 +32,7 @@ configure_make_package(
 download_source(
     name = "xdg-user-dirs-src",
     src_uri = "https://user-dirs.freedesktop.org/releases/xdg-user-dirs-0.18.tar.gz",
-    sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+    sha256 = "ec6f06d7495cdba37a732039f9b5e1578bcb296576fde0da40edb2f52220df3c",
 )
 
 configure_make_package(
@@ -56,7 +56,7 @@ meson_package(
     name = "xdg-desktop-portal",
     version = "1.18.2",
     src_uri = "https://github.com/flatpak/xdg-desktop-portal/releases/download/1.18.2/xdg-desktop-portal-1.18.2.tar.xz",
-    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+    sha256 = "dfac239c5476aafd117a9a10131a2f0b142f72106c52fc03859938e00545f440",
     description = "Portal frontend service for flatpak and sandboxed apps",
     homepage = "https://flatpak.github.io/xdg-desktop-portal/",
     license = "LGPL-2.1-or-later",
@@ -80,7 +80,7 @@ meson_package(
     name = "xdg-desktop-portal-gtk",
     version = "1.15.1",
     src_uri = "https://github.com/flatpak/xdg-desktop-portal-gtk/releases/download/1.15.1/xdg-desktop-portal-gtk-1.15.1.tar.xz",
-    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+    sha256 = "425551ca5f36451d386d53599d95a3a05b94020f1a4927c5111a2c3ba3a0fe4c",
     description = "GTK+ backend for xdg-desktop-portal",
     homepage = "https://flatpak.github.io/xdg-desktop-portal/",
     license = "LGPL-2.1-or-later",
@@ -99,7 +99,7 @@ meson_package(
     name = "xdg-desktop-portal-wlr",
     version = "0.7.1",
     src_uri = "https://github.com/emersion/xdg-desktop-portal-wlr/releases/download/v0.7.1/xdg-desktop-portal-wlr-0.7.1.tar.gz",
-    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+    sha256 = "eec6e4be808e1a445e677dba1e20e5acb2f091825f5ff4c6ac49d5843b2185f9",
     description = "xdg-desktop-portal backend for wlroots",
     homepage = "https://github.com/emersion/xdg-desktop-portal-wlr",
     license = "MIT",
@@ -117,7 +117,7 @@ meson_package(
 download_source(
     name = "xdg-desktop-portal-kde-src",
     src_uri = "https://download.kde.org/stable/plasma/6.0.1/xdg-desktop-portal-kde-6.0.1.tar.xz",
-    sha256 = "f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
+    sha256 = "da4a0b864ca176e8ce19f6e15d27c8f919323a51a0724ec82378179c3158d999",
 )
 
 configure_make_package(

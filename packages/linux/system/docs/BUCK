@@ -43,7 +43,7 @@ configure_make_package(
 download_source(
     name = "man-pages-src",
     src_uri = "https://mirrors.edge.kernel.org/pub/linux/docs/man-pages/man-pages-6.06.tar.xz",
-    sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+    sha256 = "bd6f89cf26d2262567dac41d2640fc3667f240cb658079530141e372c8581928",
 )
 
 configure_make_package(
@@ -67,7 +67,7 @@ configure_make_package(
 download_source(
     name = "groff-src",
     src_uri = "https://ftp.gnu.org/gnu/groff/groff-1.23.0.tar.gz",
-    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+    sha256 = "6b9757f592b7518b4902eb6af7e54570bdccba37a871fddb2d30ae3863511c13",
 )
 
 configure_make_package(
@@ -90,7 +90,7 @@ configure_make_package(
 download_source(
     name = "gdbm-src",
     src_uri = "https://ftp.gnu.org/gnu/gdbm/gdbm-1.23.tar.gz",
-    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+    sha256 = "74b1081d21fff13ae4bd7c16e5d6e504a4c26f7cde1dca0d963a484174bbcacd",
 )
 
 configure_make_package(

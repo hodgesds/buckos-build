@@ -12,7 +12,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "ardour-src",
     src_uri = "https://community.ardour.org/src/Ardour-8.6.0.tar.bz2",
-    sha256 = "d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
+    sha256 = "125217b1f8af65032a746d11f2d42e6f01538423684be76a40644f615a88e339",
 )
 
 # Ardour uses waf build system

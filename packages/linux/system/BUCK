@@ -241,14 +241,14 @@ initramfs(
     visibility = ["PUBLIC"],
 )
 
-# Bootable initramfs with full system
-initramfs(
-    name = "buckos-bootable-initramfs",
-    rootfs = ":buckos-bootable",
-    compression = "gz",
-    init = "/sbin/init",
-    visibility = ["PUBLIC"],
-)
+# Bootable initramfs with full system - commented out until buckos-bootable is defined
+# initramfs(
+#     name = "buckos-bootable-initramfs",
+#     rootfs = ":buckos-bootable",
+#     compression = "gz",
+#     init = "/sbin/init",
+#     visibility = ["PUBLIC"],
+# )
 
 # =============================================================================
 # QEMU boot scripts for testing
@@ -279,17 +279,17 @@ qemu_boot_script(
     visibility = ["PUBLIC"],
 )
 
-# QEMU boot with full bootable system
-qemu_boot_script(
-    name = "qemu-boot-full",
-    kernel = "//packages/linux/kernel/buckos-kernel:buckos-kernel",
-    initramfs = ":buckos-bootable-initramfs",
-    arch = "x86_64",
-    memory = "1G",
-    cpus = "2",
-    kernel_args = "console=ttyS0 init=/sbin/init",
-    visibility = ["PUBLIC"],
-)
+# QEMU boot with full bootable system - commented out until buckos-bootable is defined
+# qemu_boot_script(
+#     name = "qemu-boot-full",
+#     kernel = "//packages/linux/kernel/buckos-kernel:buckos-kernel",
+#     initramfs = ":buckos-bootable-initramfs",
+#     arch = "x86_64",
+#     memory = "1G",
+#     cpus = "2",
+#     kernel_args = "console=ttyS0 init=/sbin/init",
+#     visibility = ["PUBLIC"],
+# )
 
 # QEMU boot with networking
 qemu_boot_script(
@@ -356,17 +356,17 @@ iso_image(
     visibility = ["PUBLIC"],
 )
 
-# Full bootable ISO with dracut initramfs
-iso_image(
-    name = "buckos-full-iso",
-    kernel = "//packages/linux/kernel/buckos-kernel:buckos-kernel",
-    initramfs = ":buckos-bootable-initramfs",
-    rootfs = ":buckos-bootable",
-    boot_mode = "hybrid",
-    volume_label = "BUCKOS_FULL",
-    kernel_args = "quiet init=/sbin/init",
-    visibility = ["PUBLIC"],
-)
+# Full bootable ISO with dracut initramfs - commented out until buckos-bootable is defined
+# iso_image(
+#     name = "buckos-full-iso",
+#     kernel = "//packages/linux/kernel/buckos-kernel:buckos-kernel",
+#     initramfs = ":buckos-bootable-initramfs",
+#     rootfs = ":buckos-bootable",
+#     boot_mode = "hybrid",
+#     volume_label = "BUCKOS_FULL",
+#     kernel_args = "quiet init=/sbin/init",
+#     visibility = ["PUBLIC"],
+# )
 
 # Development ISO with verbose boot
 iso_image(

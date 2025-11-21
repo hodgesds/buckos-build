@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "virt-manager-src",
     src_uri = "https://releases.pagure.org/virt-manager/virt-manager-4.1.0.tar.gz",
-    sha256 = "950e5b33c3b3e3ea4b8f6f8a0c0f3e5d7c9e2b4a6f8d0c2e4b6a8c0d2e4f6a8b0",
+    sha256 = "950681d7b32dc61669278ad94ef31da33109bf6fcf0426ed82dfd7379aa590a2",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -64,7 +64,7 @@ configure_make_package(
 download_source(
     name = "virt-viewer-src",
     src_uri = "https://releases.pagure.org/virt-viewer/virt-viewer-11.0.tar.xz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    sha256 = "a43fa2325c4c1c77a5c8c98065ac30ef0511a21ac98e590f22340869bad9abd0",
 )
 
 # USE flags: See use_flags.bzl for available flags

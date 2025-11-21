@@ -34,7 +34,7 @@ meson_package(
     name = "fprintd",
     version = "1.94.3",
     src_uri = "https://gitlab.freedesktop.org/libfprint/fprintd/-/archive/v1.94.3/fprintd-v1.94.3.tar.gz",
-    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+    sha256 = "2413ec9c0be24f6852afde31baa275a2d7fe3a9ee03973af9362ddb97231aedd",
     description = "Fingerprint authentication daemon",
     homepage = "https://fprint.freedesktop.org/",
     license = "GPL-2.0+",
@@ -58,7 +58,7 @@ meson_package(
 download_source(
     name = "nss-src",
     src_uri = "https://ftp.mozilla.org/pub/security/nss/releases/NSS_3_98_RTM/src/nss-3.98.tar.gz",
-    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+    sha256 = "f549cc33d35c0601674bfacf7c6ad683c187595eb4125b423238d3e9aa4209ce",
 )
 
 configure_make_package(
@@ -97,7 +97,7 @@ configure_make_package(
 download_source(
     name = "nspr-src",
     src_uri = "https://ftp.mozilla.org/pub/nspr/releases/v4.35/src/nspr-4.35.tar.gz",
-    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+    sha256 = "7ea3297ea5969b5d25a5dd8d47f2443cda88e9ee746301f6e1e1426f8a6abc8f",
 )
 
 configure_make_package(
@@ -126,7 +126,7 @@ meson_package(
     name = "pixman",
     version = "0.43.4",
     src_uri = "https://www.cairographics.org/releases/pixman-0.43.4.tar.gz",
-    sha256 = "f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
+    sha256 = "a0624db90180c7ddb79fc7a9151093dc37c646d8c38d3f232f767cf64b85a226",
     description = "Pixel manipulation library",
     homepage = "https://www.cairographics.org/",
     license = "MIT",

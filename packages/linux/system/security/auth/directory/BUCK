@@ -53,7 +53,7 @@ configure_make_package(
 download_source(
     name = "e2fsprogs-libs-src",
     src_uri = "https://mirrors.edge.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.47.0/e2fsprogs-libs-1.47.0.tar.xz",
-    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+    sha256 = "38bef8cb64da496d6b9f6fc74514c4f785015a7fbd235468f5dde039a77a2fbd",
 )
 
 configure_make_package(
@@ -81,7 +81,7 @@ configure_make_package(
 download_source(
     name = "openldap-src",
     src_uri = "https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.6.7.tgz",
-    sha256 = "f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
+    sha256 = "cd775f625c944ed78a3da18a03b03b08eea73c8aabc97b41bb336e9a10954930",
 )
 
 configure_make_package(
@@ -123,7 +123,7 @@ configure_make_package(
 download_source(
     name = "cyrus-sasl-src",
     src_uri = "https://github.com/cyrusimap/cyrus-sasl/releases/download/cyrus-sasl-2.1.28/cyrus-sasl-2.1.28.tar.gz",
-    sha256 = "a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8",
+    sha256 = "7ccfc6abd01ed67c1a0924b353e526f1b766b21f42d4562ee635a8ebfc5bb38c",
 )
 
 configure_make_package(
@@ -170,7 +170,7 @@ configure_make_package(
 download_source(
     name = "lmdb-src",
     src_uri = "https://github.com/LMDB/lmdb/archive/refs/tags/LMDB_0.9.32.tar.gz",
-    sha256 = "b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9",
+    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
 )
 
 configure_make_package(
@@ -196,7 +196,7 @@ configure_make_package(
 download_source(
     name = "sssd-src",
     src_uri = "https://github.com/SSSD/sssd/releases/download/2.9.4/sssd-2.9.4.tar.gz",
-    sha256 = "c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0",
+    sha256 = "82b5ef80be47c96d518de26cfb440000f1bc6b9e3441a8393a007d21af316b18",
 )
 
 configure_make_package(
@@ -251,7 +251,7 @@ configure_make_package(
 download_source(
     name = "talloc-src",
     src_uri = "https://www.samba.org/ftp/talloc/talloc-2.4.2.tar.gz",
-    sha256 = "d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1",
+    sha256 = "85ecf9e465e20f98f9950a52e9a411e14320bc555fa257d87697b7e7a9b1d8a6",
 )
 
 configure_make_package(
@@ -273,7 +273,7 @@ configure_make_package(
 download_source(
     name = "tdb-src",
     src_uri = "https://www.samba.org/ftp/tdb/tdb-1.4.10.tar.gz",
-    sha256 = "e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+    sha256 = "02338e33c16c21c9e29571cef523e76b2b708636254f6f30c6cf195d48c62daf",
 )
 
 configure_make_package(
@@ -295,7 +295,7 @@ configure_make_package(
 download_source(
     name = "tevent-src",
     src_uri = "https://www.samba.org/ftp/tevent/tevent-0.16.1.tar.gz",
-    sha256 = "f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3",
+    sha256 = "362971e0f32dc1905f6fe4736319c4b8348c22dc85aa6c3f690a28efe548029e",
 )
 
 configure_make_package(
@@ -318,7 +318,7 @@ configure_make_package(
 download_source(
     name = "ldb-src",
     src_uri = "https://www.samba.org/ftp/ldb/ldb-2.8.1.tar.gz",
-    sha256 = "a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4",
+    sha256 = "b68ce6eb0ccd2870fa3c8c334f2028b5d16606fd41308696c17b71959f7bf59f",
 )
 
 configure_make_package(
@@ -345,7 +345,7 @@ configure_make_package(
 download_source(
     name = "ding-libs-src",
     src_uri = "https://github.com/SSSD/ding-libs/releases/download/0.6.2/ding-libs-0.6.2.tar.gz",
-    sha256 = "b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5",
+    sha256 = "e5f07f34f5921bcb5ccccfe3751c28497879a6451cd7b395e99e24d9b5728e8d",
 )
 
 configure_make_package(
@@ -370,7 +370,7 @@ configure_make_package(
 download_source(
     name = "libunistring-src",
     src_uri = "https://ftp.gnu.org/gnu/libunistring/libunistring-1.2.tar.xz",
-    sha256 = "c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+    sha256 = "632bd65ed74a881ca8a0309a1001c428bd1cbd5cd7ddbf8cedcd2e65f4dcdc44",
 )
 
 configure_make_package(
@@ -395,7 +395,7 @@ configure_make_package(
 download_source(
     name = "nss-pam-ldapd-src",
     src_uri = "https://arthurdejong.org/nss-pam-ldapd/nss-pam-ldapd-0.9.12.tar.gz",
-    sha256 = "d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7",
+    sha256 = "c6d661e74693cbf531a790631ca93b73f291fb23cc39465b09deb8da2bfb0e14",
 )
 
 configure_make_package(

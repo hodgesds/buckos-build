@@ -29,7 +29,7 @@ configure_make_package(
 download_source(
     name = "dancer2-src",
     src_uri = "https://cpan.metacpan.org/authors/id/C/CR/CROMEDOME/Dancer2-1.1.0.tar.gz",
-    sha256 = "c8f7a5b6d9e3f2a1b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
+    sha256 = "d67c3fad08ab23699eafc62555927e849da428a042c9b8d1a52a9f1b41b9cb65",
 )
 
 configure_make_package(
@@ -57,7 +57,7 @@ configure_make_package(
 download_source(
     name = "catalyst-runtime-src",
     src_uri = "https://cpan.metacpan.org/authors/id/J/JJ/JJNAPIORK/Catalyst-Runtime-5.90131.tar.gz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    sha256 = "9d641efacf0f9935e6ecb98f5a3b476c961b1f819bd2f8f23a647d1d867e1849",
 )
 
 configure_make_package(
@@ -111,7 +111,7 @@ configure_make_package(
 download_source(
     name = "cgi-src",
     src_uri = "https://cpan.metacpan.org/authors/id/L/LE/LEEJO/CGI-4.64.tar.gz",
-    sha256 = "5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+    sha256 = "39bd8e40ce00cdab39e0a2bc71abd2bbe451d1d97bc7e54e41a2e199eb6226e7",
 )
 
 configure_make_package(
@@ -209,7 +209,7 @@ configure_make_package(
 download_source(
     name = "template-toolkit-src",
     src_uri = "https://cpan.metacpan.org/authors/id/A/AT/ATOOMIC/Template-Toolkit-3.101.tar.gz",
-    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+    sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
 )
 
 configure_make_package(
@@ -233,7 +233,7 @@ configure_make_package(
 download_source(
     name = "web-scraper-src",
     src_uri = "https://cpan.metacpan.org/authors/id/M/MI/MIYAGAWA/Web-Scraper-0.38.tar.gz",
-    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+    sha256 = "f95b6e5f8d7feebe116d05bf59a2b7cf1a51ed9d30bca80123430ec4567543bf",
 )
 
 configure_make_package(
@@ -260,7 +260,7 @@ configure_make_package(
 download_source(
     name = "starman-src",
     src_uri = "https://cpan.metacpan.org/authors/id/M/MI/MIYAGAWA/Starman-0.4017.tar.gz",
-    sha256 = "f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
+    sha256 = "6ffab915f323f60089e3ebf852b9b9707d6917266df8afd7370fac04bfdfee4e",
 )
 
 configure_make_package(
@@ -285,7 +285,7 @@ configure_make_package(
 download_source(
     name = "twiggy-src",
     src_uri = "https://cpan.metacpan.org/authors/id/M/MI/MIYAGAWA/Twiggy-0.1026.tar.gz",
-    sha256 = "a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8",
+    sha256 = "4d91ea6ed9ae9a8ef4314dc2a7cf52eb026b365be68386b35ea6864dfac57f9e",
 )
 
 configure_make_package(
@@ -311,7 +311,7 @@ configure_make_package(
 download_source(
     name = "cookie-baker-src",
     src_uri = "https://cpan.metacpan.org/authors/id/K/KA/KAZEBURO/Cookie-Baker-0.11.tar.gz",
-    sha256 = "b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9",
+    sha256 = "59275f474e07c0aa3611e3e684b894e7db913333d8214420be63f12ec18cd7ab",
 )
 
 configure_make_package(

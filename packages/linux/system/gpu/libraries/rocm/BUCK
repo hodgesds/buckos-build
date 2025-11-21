@@ -13,13 +13,13 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "rocm-src",
     src_uri = "https://repo.radeon.com/rocm/apt/6.2.2/pool/main/r/rocm-core/rocm-core_6.2.2.60202-64~24.04_amd64.deb",
-    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+    sha256 = "4e21d4ae5f8c9393937aaf76f55c06dae9a05e9c9bd9580fbe75967ce10c678c",
 )
 
 download_source(
     name = "hip-runtime-src",
     src_uri = "https://repo.radeon.com/rocm/apt/6.2.2/pool/main/h/hip-runtime-amd/hip-runtime-amd_6.2.41133.60202-64~24.04_amd64.deb",
-    sha256 = "f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
+    sha256 = "4e21d4ae5f8c9393937aaf76f55c06dae9a05e9c9bd9580fbe75967ce10c678c",
 )
 
 binary_package(

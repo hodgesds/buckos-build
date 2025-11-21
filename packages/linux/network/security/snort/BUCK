@@ -5,7 +5,7 @@ use_package(
     name = "snort",
     version = "2.9.20",
     src_uri = "https://www.snort.org/downloads/snort/snort-2.9.20.tar.gz",
-    sha256 = "29c0b7d5c5eb5a8b3f1c2d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a",
+    sha256 = "29400e13f53b1831e0b8b10ec1224a1cbaa6dc1533a5322a20dd80bb84b4981c",
 
     iuse = ["sourcefire", "threads"],
     use_defaults = ["sourcefire", "threads"],

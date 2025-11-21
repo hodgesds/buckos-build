@@ -9,7 +9,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "stream-src",
     src_uri = "https://www.cs.virginia.edu/stream/FTP/Code/stream.c",
-    sha256 = "d8b7c4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+    sha256 = "a52bae5e175bea3f7832112af9c085adab47117f7d2ce219165379849231692b",
 )
 
 binary_package(

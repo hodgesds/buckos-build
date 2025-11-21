@@ -5,7 +5,7 @@ use_package(
     name = "softether",
     version = "5.02.5181",
     src_uri = "https://github.com/SoftEtherVPN/SoftEtherVPN/releases/download/5.02.5181/SoftEtherVPN-5.02.5181.tar.xz",
-    sha256 = "1a2b3c4d5e6f7890abcdef1234567890abcdef1234567890abcdef1234567890",
+    sha256 = "2222ef48b3f9102265ef7d27e496ad40a1bd1eaba8093bc5e696b48402c52441",
 
     iuse = ["ssl", "readline", "ncurses"],
     use_defaults = ["ssl", "readline", "ncurses"],

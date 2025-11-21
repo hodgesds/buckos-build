@@ -7,7 +7,7 @@ meson_package(
     name = "vdpau",
     version = "1.5",
     src_uri = "https://gitlab.freedesktop.org/vdpau/libvdpau/-/archive/1.5/libvdpau-1.5.tar.bz2",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    sha256 = "a5d50a42b8c288febc07151ab643ac8de06a18446965c7241f89b4e810821913",
     description = "Video Decode and Presentation API for Unix",
     homepage = "https://www.freedesktop.org/wiki/Software/VDPAU/",
     license = "MIT",

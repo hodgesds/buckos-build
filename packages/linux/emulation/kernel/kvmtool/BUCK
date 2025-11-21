@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "kvmtool-src",
     src_uri = "https://git.kernel.org/pub/scm/linux/kernel/git/will/kvmtool.git/snapshot/kvmtool-master.tar.gz",
-    sha256 = "a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4",
+    sha256 = "9296eb605e0b63a9997fab68750f4d21daaaa7d641382bc981e2a3f3cd5f23ee",
 )
 
 # USE flags: See use_flags.bzl for available flags

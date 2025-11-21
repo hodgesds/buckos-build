@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "mupdf-src",
     src_uri = "https://mupdf.com/downloads/archive/mupdf-1.23.11-source.tar.gz",
-    sha256 = "f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1",
+    sha256 = "478f2a167feae2a291c8b8bc5205f2ce2f09f09b574a6eb0525bfad95a3cfe66",
 )
 
 configure_make_package(

@@ -3,7 +3,7 @@ load("//defs:package_defs.bzl", "download_source", "binary_package")
 download_source(
     name = "signal-desktop-src",
     src_uri = "https://updates.signal.org/desktop/apt/pool/s/signal-desktop/signal-desktop_7.36.0_amd64.deb",
-    sha256 = "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456",
+    sha256 = "7b14d1c7d47e9bea92a5cc3d536d1ab805cb4d22e2acf6896b5ae8be84b04047",
 )
 
 binary_package(

@@ -3,7 +3,7 @@ load("//defs:package_defs.bzl", "download_source", "binary_package")
 download_source(
     name = "dog-src",
     src_uri = "https://github.com/ogham/dog/releases/download/v0.1.0/dog-v0.1.0-x86_64-unknown-linux-gnu.zip",
-    sha256 = "c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2",
+    sha256 = "6093525fccf5de5b7ed66f920c9b6d2d16221adde8a44589dc3e4c47245039a0",
 )
 
 binary_package(

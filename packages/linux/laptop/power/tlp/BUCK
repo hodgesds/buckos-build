@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "tlp-src",
     src_uri = "https://github.com/linrunner/TLP/archive/refs/tags/1.6.1.tar.gz",
-    sha256 = "f2a7c8e7cac6ab3e3c3e4c2a5b7f8a9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b",
+    sha256 = "f7d013691a92ffcf42ef1648565dbc24a33202046d3c8138dad1963a3169a0f5",
 )
 
 # USE flags: See use_flags.bzl for available flags

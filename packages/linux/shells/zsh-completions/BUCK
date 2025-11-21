@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "zsh-completions-src",
     src_uri = "https://github.com/zsh-users/zsh-completions/archive/refs/tags/0.35.0.tar.gz",
-    sha256 = "a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6",
+    sha256 = "811bb4213622720872e08d6e0857f1dd7bc12ff7aa2099a170b76301a53f4fbe",
 )
 
 ebuild_package(

@@ -9,7 +9,7 @@ use_package(
     name = "ipset",
     version = "7.21",
     src_uri = "https://ipset.netfilter.org/ipset-7.21.tar.bz2",
-    sha256 = "e2c6b3a9d7d8c4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9",
+    sha256 = "e2c6ce4fcf3acb3893ca5d35c86935f80ad76fc5ccae601185842df760e0bc69",
 
     iuse = ["static-libs"],
     use_defaults = [],

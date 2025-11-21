@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "discount-src",
     src_uri = "https://github.com/Orc/discount/archive/refs/tags/v3.0.0d.tar.gz",
-    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+    sha256 = "0ed8cc27ac5d46dc6a8beedd5e5673ac8b466a6474bdb7d35f37c815f670385f",
 )
 
 configure_make_package(

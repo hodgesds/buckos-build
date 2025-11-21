@@ -7,7 +7,7 @@ cmake_package(
     name = "okular",
     version = "23.08.5",
     src_uri = "https://download.kde.org/stable/release-service/23.08.5/src/okular-23.08.5.tar.xz",
-    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+    sha256 = "d5d51f69b176a250907ee70e8f97143fc9d705cee3ef7ff448626c8a529ce364",
     description = "KDE document viewer for PDF, Postscript, DjVu, and more",
     homepage = "https://okular.kde.org",
     license = "GPL-2+",

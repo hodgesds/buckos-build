@@ -6,7 +6,7 @@ python_package(
     name = "thefuck",
     version = "3.32",
     src_uri = "https://github.com/nvbn/thefuck/archive/refs/tags/3.32.tar.gz",
-    sha256 = "688b9ed8f8e8f2d9e7e5f5c7f8a0b1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7c6",
+    sha256 = "76cbb014473672d1c384922857f8fbc1f6f7774f74f784149ad88751854ecfdf",
     description = "Magnificent app that corrects your previous console command",
     homepage = "https://github.com/nvbn/thefuck",
     license = "MIT",

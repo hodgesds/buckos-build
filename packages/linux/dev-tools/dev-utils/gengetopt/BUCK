@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "gengetopt-src",
     src_uri = "https://ftp.gnu.org/gnu/gengetopt/gengetopt-2.23.tar.xz",
-    sha256 = "688b9ed8f8e8f2d9e7e5f5c7f8a0b1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7d2",
+    sha256 = "b941aec9011864978dd7fdeb052b1943535824169d2aa2b0e7eae9ab807584ac",
 )
 
 configure_make_package(

@@ -5,7 +5,7 @@ use_package(
     name = "vpnc-scripts",
     version = "20231211",
     src_uri = "https://gitlab.com/openconnect/vpnc-scripts/-/archive/master/vpnc-scripts-master.tar.gz",
-    sha256 = "67890abcdef1234567890abcdef1234567890abcdef1234567890abcdef123456",
+    sha256 = "ea62d561bae690a14023b440b7bb61873af66d074c8432164780b915884a87d7",
 
     iuse = ["resolvconf"],
     use_defaults = ["resolvconf"],

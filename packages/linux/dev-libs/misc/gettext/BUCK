@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "gettext-src",
     src_uri = "https://ftp.gnu.org/gnu/gettext/gettext-0.26.tar.xz",
-    sha256 = "c5d80c8f0d7426e2e9b5e5c7a66e5a5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2",
+    sha256 = "d1fb86e260cfe7da6031f94d2e44c0da55903dbae0a2fa0fae78c91ae1b56f00",
 )
 
 configure_make_package(

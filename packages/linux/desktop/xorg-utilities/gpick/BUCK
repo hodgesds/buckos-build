@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "gpick-src",
     src_uri = "https://github.com/thezbyg/gpick/archive/v0.3.tar.gz",
-    sha256 = "fe46d7b8e3f5c9f8d0b1a2e3f4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b3a8",
+    sha256 = "29347e13dee19c4c81c9e125da6782b476c19ac8311fc7b9e53aebe23a5a34f8",
 )
 
 configure_make_package(

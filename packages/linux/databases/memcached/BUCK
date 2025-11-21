@@ -13,7 +13,7 @@ use_package(
     name = "memcached",
     version = "1.6.28",
     src_uri = "https://www.memcached.org/files/memcached-1.6.28.tar.gz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b8",
+    sha256 = "b1d02d7e9887d80f4885a024931c8bbe9c16d333200d2dcadde8597892c54855",
     description = "High-performance distributed memory object caching system",
     homepage = "https://memcached.org/",
     license = "BSD-3-Clause",

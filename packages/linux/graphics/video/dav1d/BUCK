@@ -7,7 +7,7 @@ meson_package(
     name = "dav1d",
     version = "1.4.3",
     src_uri = "https://code.videolan.org/videolan/dav1d/-/archive/1.4.3/dav1d-1.4.3.tar.bz2",
-    sha256 = "e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7e8f9a0b1c2",
+    sha256 = "2a7e68a17b22d1c060d31a7af84c8e033a145fca1d63ef36d57f0f39eb4dd0df",
     description = "Fast AV1 decoder from VideoLAN",
     homepage = "https://code.videolan.org/videolan/dav1d",
     license = "BSD-2-Clause",

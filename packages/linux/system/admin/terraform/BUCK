@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "terraform-src",
     src_uri = "https://github.com/hashicorp/terraform/archive/refs/tags/v1.7.3.tar.gz",
-    sha256 = "d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7",
+    sha256 = "e99efa7e1e4e7fd37e7aaac5f6bd864260aa95b38a461899d0ec23069d614f19",
 )
 
 ebuild_package(

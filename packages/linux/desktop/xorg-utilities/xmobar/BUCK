@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "xmobar-src",
     src_uri = "https://hackage.haskell.org/package/xmobar-0.48.1/xmobar-0.48.1.tar.gz",
-    sha256 = "de46d7b8e3f5c9f8d0b1a2e3f4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b3a6",
+    sha256 = "146eb569fefefbc3428c6ec5ea1998cd7af274945cfa453e5100d0b37564cec6",
 )
 
 configure_make_package(

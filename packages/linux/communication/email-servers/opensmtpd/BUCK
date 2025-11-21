@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "opensmtpd-src",
     src_uri = "https://www.opensmtpd.org/archives/opensmtpd-7.5.0p0.tar.gz",
-    sha256 = "e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+    sha256 = "84f5c1393c0c1becc72ceea971e0abd7075b2ca7e4e1f8909b83edfd8de0c39c",
 )
 
 # USE flags: See use_flags.bzl for available flags

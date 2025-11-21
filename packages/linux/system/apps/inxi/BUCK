@@ -8,7 +8,7 @@ use_package(
     name = "inxi",
     version = "3.3.31",
     src_uri = "https://github.com/smxi/inxi/archive/refs/tags/3.3.31-1.tar.gz",
-    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+    sha256 = "5e2cce705a1dc865e8d90e63d4668f7a946b1349bf8bad141ddb69718fd46b60",
     description = "Full featured CLI system information tool",
     homepage = "https://github.com/smxi/inxi",
     license = "GPL-3.0-or-later",

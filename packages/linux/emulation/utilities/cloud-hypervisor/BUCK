@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "cloud-hypervisor-src",
     src_uri = "https://github.com/cloud-hypervisor/cloud-hypervisor/archive/refs/tags/v41.0.tar.gz",
-    sha256 = "a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8",
+    sha256 = "6b25fea566f8deba48000292423bb6fab32c0bed7f6a37e6456e9a1fab0c0c00",
 )
 
 # USE flags: See use_flags.bzl for available flags

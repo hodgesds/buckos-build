@@ -9,7 +9,7 @@ meson_package(
     name = "gvfs",
     version = "1.54.0",
     src_uri = "https://download.gnome.org/sources/gvfs/1.54/gvfs-1.54.0.tar.xz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    sha256 = "f53d81df86c2e86cdd25182c2d8a669a22371e83623ded1b9d5416dcfc6de366",
     description = "GNOME Virtual File System for userspace programs",
     homepage = "https://wiki.gnome.org/Projects/gvfs",
     license = "LGPL-2.0-or-later",

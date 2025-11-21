@@ -6,7 +6,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "tcsh-src",
     src_uri = "https://astron.com/pub/tcsh/tcsh-6.24.13.tar.gz",
-    sha256 = "f1e2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f7",
+    sha256 = "1e927d52e9c85d162bf985f24d13c6ccede9beb880d86fec492ed15480a5c71a",
 )
 
 configure_make_package(

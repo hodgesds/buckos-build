@@ -8,7 +8,7 @@ use_package(
     name = "tree",
     version = "2.1.1",
     src_uri = "https://gitlab.com/OldManProgrammer/unix-tree/-/archive/2.1.1/unix-tree-2.1.1.tar.gz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    sha256 = "bcd2a0327ad40592a9c43e09a4d2ef834e6f17aa9a59012a5fb1007950b5eced",
     description = "List directory contents in tree format",
     homepage = "https://gitlab.com/OldManProgrammer/unix-tree",
     license = "GPL-2+",

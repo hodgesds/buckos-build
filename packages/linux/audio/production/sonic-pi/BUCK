@@ -15,7 +15,7 @@ cmake_package(
     name = "sonic-pi",
     version = "4.5.1",
     src_uri = "https://github.com/sonic-pi-net/sonic-pi/archive/refs/tags/v4.5.1.tar.gz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    sha256 = "77c5e859f9b6fdf2a00bc88a087062484458d6d98b45c29c9e5fad36dbf55cbf",
     description = "Live coding music synthesizer for everyone",
     homepage = "https://sonic-pi.net/",
     license = "MIT",

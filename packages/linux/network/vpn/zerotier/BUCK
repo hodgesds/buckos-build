@@ -5,7 +5,7 @@ use_package(
     name = "zerotier",
     version = "1.14.0",
     src_uri = "https://github.com/zerotier/ZeroTierOne/archive/refs/tags/1.14.0.tar.gz",
-    sha256 = "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456",
+    sha256 = "7191623a81b0d1b552b9431e8864dd3420783ee518394ac1376cee6aaf033291",
 
     iuse = ["ssl", "sso"],
     use_defaults = ["ssl"],

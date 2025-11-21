@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "thermald-src",
     src_uri = "https://github.com/intel/thermal_daemon/archive/refs/tags/v2.5.7.tar.gz",
-    sha256 = "c5e5a7e5b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+    sha256 = "b7df06bbd813bf039893a533d1e30073102a2494f6fdd432ae7c05f376c7cc15",
 )
 
 # USE flags: See use_flags.bzl for available flags

@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "libmypaint-src",
     src_uri = "https://github.com/mypaint/libmypaint/releases/download/v1.6.1/libmypaint-1.6.1.tar.xz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    sha256 = "741754f293f6b7668f941506da07cd7725629a793108bb31633fb6c3eae5315f",
 )
 
 configure_make_package(

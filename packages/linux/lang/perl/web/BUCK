@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "mojolicious-src",
     src_uri = "https://cpan.metacpan.org/authors/id/S/SR/SRI/Mojolicious-9.37.tar.gz",
-    sha256 = "e6c8e7fb5e0e2c5e8a5f8d6b3c9a7f4e1d2b3a6c8d9e5f6a7b8c9d0e1f2a3b4",
+    sha256 = "4fb8a0882ed17f864f7de96b94fab61706f967f919c572dcccede68e588e9810",
 )
 
 configure_make_package(

@@ -7,7 +7,7 @@ use_package(
     name = "ffmpeg",
     version = "7.0",
     src_uri = "https://ffmpeg.org/releases/ffmpeg-7.0.tar.xz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    sha256 = "4426a94dd2c814945456600c8adfc402bee65ec14a70e8c531ec9a2cd651da7b",
     description = "Complete solution for recording, converting and streaming audio and video",
     homepage = "https://ffmpeg.org/",
     license = "LGPL-2.1-or-later GPL-2.0-or-later",

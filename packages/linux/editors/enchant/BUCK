@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "enchant-src",
     src_uri = "https://github.com/AbiWord/enchant/releases/download/v2.8.2/enchant-2.8.2.tar.gz",
-    sha256 = "688b9ed8f8e8f2d9e7e5f5c7f8a0b1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7d1",
+    sha256 = "8f19535adb5577b83b00e02f330fe9b9eb40dd21f19e2899636fc4d3a7696375",
 )
 
 configure_make_package(

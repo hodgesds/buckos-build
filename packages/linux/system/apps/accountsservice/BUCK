@@ -10,7 +10,7 @@ meson_package(
     name = "accountsservice",
     version = "23.13.9",
     src_uri = "https://www.freedesktop.org/software/accountsservice/accountsservice-23.13.9.tar.xz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    sha256 = "adda4cdeae24fa0992e7df3ffff9effa7090be3ac233a3edfdf69d5a9c9b924f",
     description = "D-Bus interface for user account management",
     homepage = "https://www.freedesktop.org/wiki/Software/AccountsService/",
     license = "GPL-3.0-or-later",

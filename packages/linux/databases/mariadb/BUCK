@@ -15,7 +15,7 @@ use_package(
     name = "mariadb",
     version = "11.3.2",
     src_uri = "https://downloads.mariadb.org/rest-api/mariadb/11.3.2/mariadb-11.3.2.tar.gz",
-    sha256 = "a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8",
+    sha256 = "5570778f0a2c27af726c751cda1a943f3f8de96d11d107791be5b44a0ce3fb5c",
     description = "MySQL-compatible relational database server",
     homepage = "https://mariadb.org",
     license = "GPL-2",

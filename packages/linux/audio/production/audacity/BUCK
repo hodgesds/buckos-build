@@ -16,7 +16,7 @@ cmake_package(
     name = "audacity",
     version = "3.5.1",
     src_uri = "https://github.com/audacity/audacity/archive/refs/tags/Audacity-3.5.1.tar.gz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    sha256 = "71dd1e1a8d58f4345abb3664d2446d3ba09c95d9c81b9e2a58d1a818ba793a23",
     description = "Multi-track audio editor and recorder",
     homepage = "https://www.audacityteam.org/",
     license = "GPL-3",

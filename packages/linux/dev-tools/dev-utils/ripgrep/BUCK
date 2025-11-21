@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "ripgrep-src",
     src_uri = "https://github.com/BurntSushi/ripgrep/releases/download/14.1.0/ripgrep-14.1.0-x86_64-unknown-linux-musl.tar.gz",
-    sha256 = "5c111a25a3b7f4a56b2e3f1f8be4fdde9e4e8cbf5e6b7a8c9d0e1f2a3b4c5d6e",
+    sha256 = "f84757b07f425fe5cf11d87df6644691c644a5cd2348a2c670894272999d3ba7",
 )
 
 binary_package(

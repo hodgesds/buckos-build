@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "xxd-src",
     src_uri = "https://github.com/vim/vim/archive/refs/tags/v9.1.0.tar.gz",
-    sha256 = "f6b5a7e8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+    sha256 = "ddb435f6e386c53799a3025bdc5a3533beac735a0ee596cb27ada97366a1c725",
 )
 
 configure_make_package(

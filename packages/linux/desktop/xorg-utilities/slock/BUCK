@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "slock-src",
     src_uri = "https://dl.suckless.org/tools/slock-1.5.tar.gz",
-    sha256 = "6e46d7b8e3f5c9f8d0b1a2e3f4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c9",
+    sha256 = "aee1e3fbf6a277fb625a3838073b979b6483e7baca4ce82f56de1ff192db0e4d",
 )
 
 configure_make_package(

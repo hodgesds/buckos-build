@@ -5,7 +5,7 @@ use_package(
     name = "hexedit",
     version = "1.6",
     src_uri = "https://github.com/pixel/hexedit/archive/refs/tags/1.6.tar.gz",
-    sha256 = "e5b4f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+    sha256 = "598906131934f88003a6a937fab10542686ce5f661134bc336053e978c4baae3",
     description = "View and edit files in hexadecimal or ASCII",
     homepage = "https://github.com/pixel/hexedit",
     license = "GPL-2+",

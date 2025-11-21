@@ -28,7 +28,7 @@ use_package(
         "ssl": ["//packages/linux/network/openssl:openssl"],
         "zlib": ["//packages/linux/core/zlib:zlib"],
         "bzip2": ["//packages/linux/core/bzip2:bzip2"],
-        "pcre2": ["//packages/linux/core:pcre2"],
+        "pcre2": ["//packages/linux/system/libs/utility/pcre2:pcre2"],
         "mysql": ["//packages/linux/databases/mariadb:mariadb"],
         "ldap": ["//packages/linux/network/openldap:openldap"],
     },

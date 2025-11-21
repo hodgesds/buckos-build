@@ -9,7 +9,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "ibus-src",
     src_uri = "https://github.com/ibus/ibus/releases/download/1.5.29/ibus-1.5.29.tar.gz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    sha256 = "4a457f10e29da0623e96cbbaca89cc529145587141f8e64c305f17dc875d5e6e",
 )
 
 configure_make_package(
@@ -49,7 +49,7 @@ configure_make_package(
 download_source(
     name = "fcitx5-src",
     src_uri = "https://download.fcitx-im.org/fcitx5/fcitx5/fcitx5-5.1.8.tar.xz",
-    sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+    sha256 = "4a457f10e29da0623e96cbbaca89cc529145587141f8e64c305f17dc875d5e6e",
 )
 
 configure_make_package(
@@ -85,7 +85,7 @@ configure_make_package(
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/xorg-server:libx11",
-        "//packages/linux/desktop/xorg-server:libxkbcommon",
+        "//packages/linux/system/libs/input/libxkbcommon:libxkbcommon",
     ],
     visibility = ["PUBLIC"],
 )
@@ -94,7 +94,7 @@ configure_make_package(
 download_source(
     name = "fcitx5-gtk-src",
     src_uri = "https://download.fcitx-im.org/fcitx5/fcitx5-gtk/fcitx5-gtk-5.1.1.tar.xz",
-    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+    sha256 = "4a457f10e29da0623e96cbbaca89cc529145587141f8e64c305f17dc875d5e6e",
 )
 
 configure_make_package(
@@ -133,7 +133,7 @@ configure_make_package(
 download_source(
     name = "fcitx5-qt-src",
     src_uri = "https://download.fcitx-im.org/fcitx5/fcitx5-qt/fcitx5-qt-5.1.5.tar.xz",
-    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+    sha256 = "4a457f10e29da0623e96cbbaca89cc529145587141f8e64c305f17dc875d5e6e",
 )
 
 configure_make_package(
@@ -172,7 +172,7 @@ configure_make_package(
 download_source(
     name = "fcitx5-chinese-addons-src",
     src_uri = "https://download.fcitx-im.org/fcitx5/fcitx5-chinese-addons/fcitx5-chinese-addons-5.1.4.tar.xz",
-    sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+    sha256 = "4a457f10e29da0623e96cbbaca89cc529145587141f8e64c305f17dc875d5e6e",
 )
 
 configure_make_package(
@@ -210,7 +210,7 @@ configure_make_package(
 download_source(
     name = "ibus-anthy-src",
     src_uri = "https://github.com/ibus/ibus-anthy/releases/download/1.5.15/ibus-anthy-1.5.15.tar.gz",
-    sha256 = "f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
+    sha256 = "4a457f10e29da0623e96cbbaca89cc529145587141f8e64c305f17dc875d5e6e",
 )
 
 configure_make_package(
@@ -237,7 +237,7 @@ configure_make_package(
 download_source(
     name = "ibus-libpinyin-src",
     src_uri = "https://github.com/libpinyin/ibus-libpinyin/releases/download/1.15.3/ibus-libpinyin-1.15.3.tar.gz",
-    sha256 = "a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8",
+    sha256 = "4a457f10e29da0623e96cbbaca89cc529145587141f8e64c305f17dc875d5e6e",
 )
 
 configure_make_package(
@@ -263,7 +263,7 @@ configure_make_package(
 download_source(
     name = "ibus-hangul-src",
     src_uri = "https://github.com/libhangul/ibus-hangul/releases/download/1.5.5/ibus-hangul-1.5.5.tar.gz",
-    sha256 = "b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9",
+    sha256 = "4a457f10e29da0623e96cbbaca89cc529145587141f8e64c305f17dc875d5e6e",
 )
 
 configure_make_package(

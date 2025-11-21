@@ -12,7 +12,7 @@ go_package(
     name = "age",
     version = "1.2.0",
     src_uri = "https://github.com/FiloSottile/age/archive/refs/tags/v1.2.0.tar.gz",
-    sha256 = "a8a9e2e22ae8e0c9f3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
     description = "Simple, modern, secure file encryption tool with small explicit keys",
     homepage = "https://age-encryption.org/",
     license = "BSD-3-Clause",
@@ -32,7 +32,7 @@ cargo_package(
     name = "rage",
     version = "0.10.0",
     src_uri = "https://github.com/str4d/rage/archive/refs/tags/v0.10.0.tar.gz",
-    sha256 = "b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
     description = "Rust implementation of the age encryption tool",
     homepage = "https://github.com/str4d/rage",
     license = "Apache-2.0 OR MIT",
@@ -59,7 +59,7 @@ cmake_package(
     name = "minisign",
     version = "0.11",
     src_uri = "https://github.com/jedisct1/minisign/archive/refs/tags/0.11.tar.gz",
-    sha256 = "c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
     description = "Dead simple tool to sign files and verify signatures",
     homepage = "https://jedisct1.github.io/minisign/",
     license = "ISC",
@@ -81,7 +81,7 @@ cmake_package(
 download_source(
     name = "libsodium-src",
     src_uri = "https://download.libsodium.org/libsodium/releases/libsodium-1.0.19.tar.gz",
-    sha256 = "d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -111,7 +111,7 @@ configure_make_package(
 download_source(
     name = "signify-src",
     src_uri = "https://github.com/aperezdc/signify/archive/refs/tags/v31.tar.gz",
-    sha256 = "e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -144,7 +144,7 @@ configure_make_package(
 download_source(
     name = "libbsd-src",
     src_uri = "https://libbsd.freedesktop.org/releases/libbsd-0.12.2.tar.xz",
-    sha256 = "f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -174,7 +174,7 @@ configure_make_package(
 download_source(
     name = "libmd-src",
     src_uri = "https://archive.hadrons.org/software/libmd/libmd-1.1.0.tar.xz",
-    sha256 = "a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -203,7 +203,7 @@ configure_make_package(
 download_source(
     name = "ccrypt-src",
     src_uri = "https://ccrypt.sourceforge.net/download/1.11/ccrypt-1.11.tar.gz",
-    sha256 = "b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -237,7 +237,7 @@ configure_make_package(
 download_source(
     name = "pass-src",
     src_uri = "https://git.zx2c4.com/password-store/snapshot/password-store-1.7.4.tar.xz",
-    sha256 = "c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -272,7 +272,7 @@ configure_make_package(
 download_source(
     name = "tomb-src",
     src_uri = "https://files.dyne.org/tomb/Tomb-2.10.tar.gz",
-    sha256 = "d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -307,7 +307,7 @@ go_package(
     name = "gocryptfs",
     version = "2.4.0",
     src_uri = "https://github.com/rfjakob/gocryptfs/archive/refs/tags/v2.4.0.tar.gz",
-    sha256 = "e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
     description = "Encrypted overlay filesystem written in Go",
     homepage = "https://nuetzlich.net/gocryptfs/",
     license = "MIT",
@@ -328,7 +328,7 @@ go_package(
     name = "fscrypt",
     version = "0.3.5",
     src_uri = "https://github.com/google/fscrypt/archive/refs/tags/v0.3.5.tar.gz",
-    sha256 = "f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
     description = "Tool for managing Linux native filesystem encryption",
     homepage = "https://github.com/google/fscrypt",
     license = "Apache-2.0",
@@ -348,7 +348,7 @@ go_package(
 download_source(
     name = "linux-pam-src",
     src_uri = "https://github.com/linux-pam/linux-pam/releases/download/v1.6.1/Linux-PAM-1.6.1.tar.xz",
-    sha256 = "a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -386,7 +386,7 @@ configure_make_package(
 download_source(
     name = "ecryptfs-utils-src",
     src_uri = "https://launchpad.net/ecryptfs/trunk/111/+download/ecryptfs-utils-111.tar.gz",
-    sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -421,7 +421,7 @@ configure_make_package(
 download_source(
     name = "keyutils-src",
     src_uri = "https://people.redhat.com/~dhowells/keyutils/keyutils-1.6.3.tar.bz2",
-    sha256 = "c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -460,7 +460,7 @@ go_package(
     name = "sops",
     version = "3.8.1",
     src_uri = "https://github.com/getsops/sops/archive/refs/tags/v3.8.1.tar.gz",
-    sha256 = "d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
     description = "Simple and flexible tool for managing secrets",
     homepage = "https://github.com/getsops/sops",
     license = "MPL-2.0",
@@ -479,7 +479,7 @@ go_package(
 download_source(
     name = "veracrypt-src",
     src_uri = "https://launchpad.net/veracrypt/trunk/1.26.7/+download/VeraCrypt_1.26.7_Source.tar.bz2",
-    sha256 = "e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -514,7 +514,7 @@ configure_make_package(
 download_source(
     name = "fuse3-src",
     src_uri = "https://github.com/libfuse/libfuse/releases/download/fuse-3.16.2/fuse-3.16.2.tar.gz",
-    sha256 = "f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -547,7 +547,7 @@ cargo_package(
     name = "age-plugin-yubikey",
     version = "0.5.0",
     src_uri = "https://github.com/str4d/age-plugin-yubikey/archive/refs/tags/v0.5.0.tar.gz",
-    sha256 = "a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
     description = "YubiKey plugin for age",
     homepage = "https://github.com/str4d/age-plugin-yubikey",
     license = "Apache-2.0 OR MIT",
@@ -571,7 +571,7 @@ cargo_package(
 download_source(
     name = "pcsc-lite-src",
     src_uri = "https://pcsclite.apdu.fr/files/pcsc-lite-2.0.3.tar.bz2",
-    sha256 = "b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -607,7 +607,7 @@ configure_make_package(
 download_source(
     name = "libusb-src",
     src_uri = "https://github.com/libusb/libusb/releases/download/v1.0.27/libusb-1.0.27.tar.bz2",
-    sha256 = "c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -639,7 +639,7 @@ cargo_package(
     name = "sequoia-sq",
     version = "0.35.0",
     src_uri = "https://gitlab.com/sequoia-pgp/sequoia-sq/-/archive/v0.35.0/sequoia-sq-v0.35.0.tar.gz",
-    sha256 = "d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
     description = "Command-line frontend for Sequoia, a modern OpenPGP implementation",
     homepage = "https://sequoia-pgp.org/",
     license = "GPL-2.0+",
@@ -664,7 +664,7 @@ cargo_package(
 download_source(
     name = "nettle-src",
     src_uri = "https://ftp.gnu.org/gnu/nettle/nettle-3.9.1.tar.gz",
-    sha256 = "e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -694,7 +694,7 @@ configure_make_package(
 download_source(
     name = "opensc-src",
     src_uri = "https://github.com/OpenSC/OpenSC/releases/download/0.25.1/opensc-0.25.1.tar.gz",
-    sha256 = "f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -730,7 +730,7 @@ configure_make_package(
 download_source(
     name = "argon2-src",
     src_uri = "https://github.com/P-H-C/phc-winner-argon2/archive/refs/tags/20190702.tar.gz",
-    sha256 = "a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -763,7 +763,7 @@ configure_make_package(
 download_source(
     name = "libressl-src",
     src_uri = "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.9.2.tar.gz",
-    sha256 = "b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -793,7 +793,7 @@ configure_make_package(
 download_source(
     name = "botan-src",
     src_uri = "https://botan.randombit.net/releases/Botan-3.4.0.tar.xz",
-    sha256 = "c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -826,7 +826,7 @@ configure_make_package(
 download_source(
     name = "hashcat-src",
     src_uri = "https://hashcat.net/files/hashcat-6.2.6.tar.gz",
-    sha256 = "d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -859,7 +859,7 @@ configure_make_package(
 download_source(
     name = "john-src",
     src_uri = "https://www.openwall.com/john/k/john-1.9.0.tar.xz",
-    sha256 = "e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -899,7 +899,7 @@ configure_make_package(
 download_source(
     name = "bcrypt-src",
     src_uri = "https://bcrypt.sourceforge.net/bcrypt-1.1.tar.gz",
-    sha256 = "f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -934,7 +934,7 @@ configure_make_package(
 download_source(
     name = "libp11-src",
     src_uri = "https://github.com/OpenSC/libp11/releases/download/libp11-0.4.12/libp11-0.4.12.tar.gz",
-    sha256 = "a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -965,7 +965,7 @@ configure_make_package(
 download_source(
     name = "clevis-src",
     src_uri = "https://github.com/latchset/clevis/archive/refs/tags/v21.tar.gz",
-    sha256 = "b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -998,7 +998,7 @@ configure_make_package(
 download_source(
     name = "jose-src",
     src_uri = "https://github.com/latchset/jose/archive/refs/tags/v14.tar.gz",
-    sha256 = "c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(
@@ -1032,7 +1032,7 @@ configure_make_package(
 download_source(
     name = "jansson-src",
     src_uri = "https://github.com/akheron/jansson/releases/download/v2.14/jansson-2.14.tar.gz",
-    sha256 = "d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
+    sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
 )
 
 configure_make_package(

@@ -27,7 +27,7 @@ use_package(
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
         "zlib": ["//packages/linux/core/zlib:zlib"],
-        "pcre2": ["//packages/linux/core:pcre2"],
+        "pcre2": ["//packages/linux/system/libs/utility/pcre2:pcre2"],
         "systemd": ["//packages/linux/system/systemd:systemd"],
     },
     pre_configure = """

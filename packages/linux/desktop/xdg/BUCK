@@ -8,8 +8,8 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 # xdg-utils - Desktop integration utilities
 download_source(
     name = "xdg-utils-src",
-    src_uri = "https://portland.freedesktop.org/download/xdg-utils-1.2.1.tar.gz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    src_uri = "https://gitlab.freedesktop.org/xdg/xdg-utils/-/archive/v1.2.1/xdg-utils-v1.2.1.tar.gz",
+    sha256 = "f6b648c064464c2636884c05746e80428110a576f8daacf46ef2e554dcfdae75",
 )
 
 configure_make_package(

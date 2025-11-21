@@ -5,6 +5,34 @@
 # This file provides convenient filegroups for organizing packages by category.
 
 # =============================================================================
+# Package aliases - Map subdirectory targets to this package
+# =============================================================================
+
+alias(
+    name = "openssh",
+    actual = "//packages/linux/network/openssh:openssh",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "openssl",
+    actual = "//packages/linux/network/openssl:openssl",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "curl",
+    actual = "//packages/linux/network/curl:curl",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "iproute2",
+    actual = "//packages/linux/network/iproute2:iproute2",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
 # Crypto Libraries - SSL/TLS and cryptography
 # =============================================================================
 

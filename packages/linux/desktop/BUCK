@@ -204,8 +204,8 @@ filegroup(
 filegroup(
     name = "statusbar-utilities",
     srcs = [
-        "//packages/linux/desktop/xorg-utilities:bars",
-        "//packages/linux/desktop/wayland-utilities:bars",
+        "//packages/linux/desktop/xorg-utilities:xorg-bars",
+        "//packages/linux/desktop/wayland-utilities:wayland-bars",
     ],
     visibility = ["PUBLIC"],
 )

@@ -67,7 +67,7 @@ make DESTDIR=$OUT install
         "//packages/linux/dev-libs/openexr:openexr",
         "//packages/linux/dev-libs/openjpeg:openjpeg",
         "//packages/linux/system/libs/graphics/lcms2:lcms2",
-        "//packages/linux/system/libs/text/fontconfig:fontconfig",
+        "//packages/linux/system/libs/font/fontconfig:fontconfig",
         "//packages/linux/fonts/libraries/freetype:freetype",
         "//packages/linux/system/libs/graphics/pango:pango",
         "//packages/linux/core/librsvg:librsvg",

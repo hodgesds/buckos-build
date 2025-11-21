@@ -25,7 +25,7 @@ use_package(
     ],
     deps = [
         "//packages/linux/core/musl:musl",
-        "//packages/linux/core:pcre2",
+        "//packages/linux/system/libs/utility/pcre2:pcre2",
     ],
     visibility = ["PUBLIC"],
 )

@@ -1,176 +1,325 @@
-# Filegroup for all editors
+# Editor package aliases
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+
+# =============================================================================
+# Editor aliases - Map subdirectory targets to this package
+# =============================================================================
+
+alias(
+    name = "vim",
+    actual = "//packages/linux/editors/vim:vim",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "vim-minimal",
+    actual = "//packages/linux/editors/vim:vim-minimal",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "neovim",
+    actual = "//packages/linux/editors/neovim:neovim",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "emacs",
+    actual = "//packages/linux/editors/emacs:emacs",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "emacs-nox",
+    actual = "//packages/linux/editors/emacs:emacs-nox",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "vscodium",
+    actual = "//packages/linux/editors/vscodium:vscodium",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "ed",
+    actual = "//packages/linux/editors/ed:ed",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Text utility aliases
+# =============================================================================
+
+alias(
+    name = "sed",
+    actual = "//packages/linux/editors/sed:sed",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "gawk",
+    actual = "//packages/linux/editors/gawk:gawk",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "grep",
+    actual = "//packages/linux/editors/grep:grep",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "diffutils",
+    actual = "//packages/linux/editors/diffutils:diffutils",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "patch",
+    actual = "//packages/linux/editors/patch:patch",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "jq",
+    actual = "//packages/linux/editors/jq:jq",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "yq",
+    actual = "//packages/linux/editors/yq:yq",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "xmlstarlet",
+    actual = "//packages/linux/editors/xmlstarlet:xmlstarlet",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "ripgrep",
+    actual = "//packages/linux/editors/ripgrep:ripgrep",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "bat",
+    actual = "//packages/linux/editors/bat:bat",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "fzf",
+    actual = "//packages/linux/editors/fzf:fzf",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "pandoc",
+    actual = "//packages/linux/editors/pandoc:pandoc",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "entr",
+    actual = "//packages/linux/editors/entr:entr",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "delta",
+    actual = "//packages/linux/editors/delta:delta",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "sd",
+    actual = "//packages/linux/editors/sd:sd",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "hunspell",
+    actual = "//packages/linux/editors/hunspell:hunspell",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "aspell",
+    actual = "//packages/linux/editors/aspell:aspell",
+    visibility = ["PUBLIC"],
+)
+
+alias(
+    name = "enchant",
+    actual = "//packages/linux/editors/enchant:enchant",
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Editor filegroups
+# =============================================================================
+
 filegroup(
     name = "all-editors",
     srcs = [
-        //packages/linux/editors/vim:vim,
-        //packages/linux/editors/vim:vim-minimal,
-        //packages/linux/editors/neovim:neovim,
-        //packages/linux/editors/emacs:emacs,
-        //packages/linux/editors/emacs:emacs-nox,
-        //packages/linux/editors/vscodium:vscodium,
-        //packages/linux/editors/ed:ed,
+        ":vim",
+        ":vim-minimal",
+        ":neovim",
+        ":emacs",
+        ":emacs-nox",
+        ":vscodium",
+        ":ed",
     ],
     visibility = ["PUBLIC"],
 )
 
-# Filegroup for GUI editors
 filegroup(
     name = "gui-editors",
     srcs = [
-        //packages/linux/editors/emacs:emacs,
-        //packages/linux/editors/vscodium:vscodium,
+        ":emacs",
+        ":vscodium",
     ],
     visibility = ["PUBLIC"],
 )
 
-# Filegroup for vim variants
 filegroup(
     name = "vim-editors",
     srcs = [
-        //packages/linux/editors/vim:vim,
-        //packages/linux/editors/vim:vim-minimal,
-        //packages/linux/editors/neovim:neovim,
+        ":vim",
+        ":vim-minimal",
+        ":neovim",
     ],
     visibility = ["PUBLIC"],
 )
 
-# Filegroup for minimal editors
 filegroup(
     name = "minimal-editors",
     srcs = [
-        //packages/linux/editors/vim:vim-minimal,
-        //packages/linux/editors/emacs:emacs-nox,
+        ":vim-minimal",
+        ":emacs-nox",
     ],
     visibility = ["PUBLIC"],
 )
 
 # =============================================================================
-# Text Editing Utilities
+# Text utility filegroups
 # =============================================================================
 
-# Filegroup for all text utilities
 filegroup(
     name = "all-text-utils",
     srcs = [
-        //packages/linux/editors/sed:sed,
-        //packages/linux/editors/gawk:gawk,
-        //packages/linux/editors/grep:grep,
-        //packages/linux/editors/diffutils:diffutils,
-        //packages/linux/editors/patch:patch,
-        //packages/linux/editors/jq:jq,
-        //packages/linux/editors/yq:yq,
-        //packages/linux/editors/xmlstarlet:xmlstarlet,
-        //packages/linux/editors/ripgrep:ripgrep,
-        //packages/linux/editors/bat:bat,
-        //packages/linux/editors/fzf:fzf,
-        //packages/linux/editors/pandoc:pandoc,
-        //packages/linux/editors/entr:entr,
-        //packages/linux/editors/delta:delta,
-        //packages/linux/editors/sd:sd,
+        ":sed",
+        ":gawk",
+        ":grep",
+        ":diffutils",
+        ":patch",
+        ":jq",
+        ":yq",
+        ":xmlstarlet",
+        ":ripgrep",
+        ":bat",
+        ":fzf",
+        ":pandoc",
+        ":entr",
+        ":delta",
+        ":sd",
     ],
     visibility = ["PUBLIC"],
 )
 
-# Filegroup for GNU text processing utilities
 filegroup(
     name = "gnu-text-utils",
     srcs = [
-        //packages/linux/editors/sed:sed,
-        //packages/linux/editors/gawk:gawk,
-        //packages/linux/editors/grep:grep,
-        //packages/linux/editors/diffutils:diffutils,
-        //packages/linux/editors/patch:patch,
+        ":sed",
+        ":gawk",
+        ":grep",
+        ":diffutils",
+        ":patch",
     ],
     visibility = ["PUBLIC"],
 )
 
-# Filegroup for structured data processors (JSON, YAML, XML)
 filegroup(
     name = "data-processors",
     srcs = [
-        //packages/linux/editors/jq:jq,
-        //packages/linux/editors/yq:yq,
-        //packages/linux/editors/xmlstarlet:xmlstarlet,
+        ":jq",
+        ":yq",
+        ":xmlstarlet",
     ],
     visibility = ["PUBLIC"],
 )
 
-# Filegroup for modern Rust-based text tools
 filegroup(
     name = "modern-text-utils",
     srcs = [
-        //packages/linux/editors/ripgrep:ripgrep,
-        //packages/linux/editors/bat:bat,
-        //packages/linux/editors/delta:delta,
-        //packages/linux/editors/sd:sd,
+        ":ripgrep",
+        ":bat",
+        ":delta",
+        ":sd",
     ],
     visibility = ["PUBLIC"],
 )
 
-# Filegroup for search and filter tools
 filegroup(
     name = "search-tools",
     srcs = [
-        //packages/linux/editors/grep:grep,
-        //packages/linux/editors/ripgrep:ripgrep,
-        //packages/linux/editors/fzf:fzf,
+        ":grep",
+        ":ripgrep",
+        ":fzf",
     ],
     visibility = ["PUBLIC"],
 )
 
-# Filegroup for diff and patch tools
 filegroup(
     name = "diff-tools",
     srcs = [
-        //packages/linux/editors/diffutils:diffutils,
-        //packages/linux/editors/patch:patch,
-        //packages/linux/editors/delta:delta,
+        ":diffutils",
+        ":patch",
+        ":delta",
     ],
     visibility = ["PUBLIC"],
 )
 
-# Filegroup for stream editors and find-replace tools
 filegroup(
     name = "stream-editors",
     srcs = [
-        //packages/linux/editors/sed:sed,
-        //packages/linux/editors/gawk:gawk,
-        //packages/linux/editors/sd:sd,
+        ":sed",
+        ":gawk",
+        ":sd",
     ],
     visibility = ["PUBLIC"],
 )
 
-# Filegroup for document conversion tools
 filegroup(
     name = "document-converters",
     srcs = [
-        //packages/linux/editors/pandoc:pandoc,
+        ":pandoc",
     ],
     visibility = ["PUBLIC"],
 )
 
-# Filegroup for file watching utilities
 filegroup(
     name = "file-watchers",
     srcs = [
-        //packages/linux/editors/entr:entr,
+        ":entr",
     ],
     visibility = ["PUBLIC"],
 )
 
-# Spell checking libraries
 filegroup(
     name = "spell-check",
     srcs = [
-        //packages/linux/editors/hunspell:hunspell,
-        //packages/linux/editors/aspell:aspell,
-        //packages/linux/editors/enchant:enchant,
+        ":hunspell",
+        ":aspell",
+        ":enchant",
     ],
     visibility = ["PUBLIC"],
 )
 
-# Combined filegroup for all editors and text utilities
 filegroup(
     name = "all-editors-and-utils",
     srcs = [

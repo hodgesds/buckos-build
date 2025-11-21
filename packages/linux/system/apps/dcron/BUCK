@@ -8,7 +8,7 @@ use_package(
     name = "dcron",
     version = "4.5",
     src_uri = "http://www.jimpryor.net/linux/releases/dcron-4.5.tar.gz",
-    sha256 = "9e50eadb38fb7d904bfb4e1c7c91bf9e152cf9b2ecf5c5f4b7c8c1f1d8f8e9a0",
+    sha256 = "9e50edb6f5bd8153b16bad05087d985e5153ce45cc01ae77e7f842213fb4a824",
     description = "Dillon's lightweight cron daemon",
     homepage = "http://www.jimpryor.net/linux/dcron.html",
     license = "GPL-2",

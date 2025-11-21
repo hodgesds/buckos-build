@@ -140,7 +140,7 @@ filegroup(
 
 # Status bars
 filegroup(
-    name = "bars",
+    name = "wayland-bars",
     srcs = [
         "//packages/linux/desktop/wayland-utilities/waybar:waybar",
         "//packages/linux/desktop/wayland-utilities/yambar:yambar",

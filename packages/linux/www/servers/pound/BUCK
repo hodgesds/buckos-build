@@ -22,7 +22,7 @@ use_package(
     ],
     use_deps = {
         "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
-        "pcre": ["//packages/linux/core:pcre2"],
+        "pcre": ["//packages/linux/system/libs/utility/pcre2:pcre2"],
     },
     configure_args = [
         "--prefix=/usr",

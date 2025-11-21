@@ -32,7 +32,7 @@ make INSTALL_ROOT=$OUT install
         "//packages/linux/dev-libs/glew:glew",
         "//packages/linux/dev-libs/opencsg:opencsg",
         "//packages/linux/dev-libs/double-conversion:double-conversion",
-        "//packages/linux/system/libs/text/fontconfig:fontconfig",
+        "//packages/linux/system/libs/font/fontconfig:fontconfig",
         "//packages/linux/system/libs/text/harfbuzz:harfbuzz",
     ],
     build_deps = [],

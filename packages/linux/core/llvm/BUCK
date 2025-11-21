@@ -39,7 +39,9 @@ cmake_package(
     description = "Low Level Virtual Machine - compiler infrastructure",
     homepage = "https://llvm.org/",
     license = "Apache-2.0 WITH LLVM-exception",
-    source_dir = "llvm",
+    pre_configure = """
+cd llvm
+""",
     cmake_args = [
         # Build type - USE flag: debug
         "-DCMAKE_BUILD_TYPE=Release",

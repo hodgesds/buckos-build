@@ -19,7 +19,7 @@ use_package(
     homepage = "https://github.com/axboe/fio",
     license = "GPL-2.0",
     iuse = ["zlib", "libaio", "numa", "http", "rdma"],
-    use_defaults = ["zlib", "libaio"],
+    use_defaults = ["zlib"],
     deps = [],
     use_deps = {
         "zlib": ["//packages/linux/core/zlib:zlib"],

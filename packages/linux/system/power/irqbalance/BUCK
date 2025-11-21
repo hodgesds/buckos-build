@@ -29,7 +29,6 @@ configure_make_package(
         "//packages/linux/core/musl:musl",
         "//packages/linux/core:glib",
         "//packages/linux/system/libs/libnl:libnl",
-        "//packages/linux/system/libs/numactl:numactl",
     ],
     visibility = ["PUBLIC"],
 )

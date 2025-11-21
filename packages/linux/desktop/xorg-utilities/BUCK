@@ -165,7 +165,7 @@ filegroup(
 
 # Status bars
 filegroup(
-    name = "bars",
+    name = "xorg-bars",
     srcs = [
         "//packages/linux/desktop/xorg-utilities/polybar:polybar",
         "//packages/linux/desktop/xorg-utilities/xmobar:xmobar",

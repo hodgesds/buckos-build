@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "alpine-src",
     src_uri = "https://alpineapp.email/alpine/release/src/alpine-2.26.tar.xz",
-    sha256 = "c0561f4d4d3d13caf4e17d57bce6b3a6b6b6e3c5b5a5e5f5a5b5c5d5e5f5a5b5",
+    sha256 = "c0779c2be6c47d30554854a3e14ef5e36539502b331068851329275898a9baba",
 )
 
 # USE flags: See use_flags.bzl for available flags

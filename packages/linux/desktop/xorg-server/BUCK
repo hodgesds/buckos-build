@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "xorg-server-src",
     src_uri = "https://www.x.org/releases/individual/xserver/xorg-server-21.1.11.tar.xz",
-    sha256 = "6b7f6e4e3e2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d5c",
+    sha256 = "1d3dadbd57fb86b16a018e9f5f957aeeadf744f56c0553f55737628d06d326ef",
 )
 
 configure_make_package(
@@ -35,7 +35,7 @@ configure_make_package(
 download_source(
     name = "libx11-src",
     src_uri = "https://www.x.org/releases/individual/lib/libX11-1.8.7.tar.xz",
-    sha256 = "7a5f5e4e3e2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d4b",
+    sha256 = "1d3dadbd57fb86b16a018e9f5f957aeeadf744f56c0553f55737628d06d326ef",
 )
 
 configure_make_package(

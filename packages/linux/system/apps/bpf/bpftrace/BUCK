@@ -3,7 +3,7 @@ load("//defs:package_defs.bzl", "download_source", "binary_package")
 download_source(
     name = "bpftrace-src",
     src_uri = "https://github.com/bpftrace/bpftrace/archive/refs/tags/v0.21.2.tar.gz",
-    sha256 = "a60adf7e6ac7ceb5d0c19c8cfe5e5a22c8af69dbec6e29c3e4adf38c95b68c0b",
+    sha256 = "7c2cb089da6e6074574edc164cf9242e06843e66c493304a9d2739258e6a1459",
 )
 
 binary_package(

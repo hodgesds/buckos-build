@@ -40,7 +40,9 @@ cmake_package(
     homepage = "https://llvm.org/",
     license = "Apache-2.0 WITH LLVM-exception",
     pre_configure = """
-cd llvm
+# LLVM project structure has sources in llvm/ subdirectory
+export S="$S/llvm"
+cd "$S"
 """,
     cmake_args = [
         # Build type - USE flag: debug

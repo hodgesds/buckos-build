@@ -54,8 +54,8 @@ VBOXCFG
     deps = [
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/core/zlib:zlib",
-        "//packages/linux/core:libxml2",
-        "//packages/linux/core:libxslt",
+        "//packages/linux/system/libs/data/libxml2:libxml2",
+        "//packages/linux/system/libs/data/libxslt:libxslt",
         "//packages/linux/system/libs/libcap:libcap",
         "//packages/linux/system/libs/pam:pam",
         "//packages/linux/network/curl:curl",

@@ -1,0 +1,29 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+download_source(
+    name = "gpgme-src",
+    src_uri = "https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-1.23.2.tar.bz2",
+    sha256 = "9499e8b1f33cccb6815527a1bc16049d35a6198a6c5fae0185f2bd561bce5224",
+)
+
+configure_make_package(
+    name = "gpgme",
+    source = ":gpgme-src",
+    version = "1.23.2",
+    description = "GnuPG Made Easy - library for accessing GnuPG",
+    homepage = "https://www.gnupg.org/related_software/gpgme/",
+    license = "LGPL-2.1",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-static",
+        "--disable-gpg-test",
+        "--disable-gpgsm-test",
+        "--disable-gpgconf-test",
+        "--disable-g13-test",
+    ],
+    deps = [
+        "//packages/linux/system/apps/gnupg:gnupg",
+    ],
+    visibility = ["PUBLIC"],
+)

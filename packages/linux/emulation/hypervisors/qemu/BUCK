@@ -64,11 +64,11 @@ configure_make_package(
     ],
     deps = [
         "//packages/linux/dev-libs/glib:glib",
-        "//packages/linux/core:pixman",
+        "//packages/linux/system/libs/graphics/pixman:pixman",
         "//packages/linux/core/zlib:zlib",
-        "//packages/linux/core:zstd",
-        "//packages/linux/core:lzo",
-        "//packages/linux/core:snappy",
+        "//packages/linux/system/libs/compression/zstd:zstd",
+        "//packages/linux/system/libs/compression/lzo:lzo",
+        "//packages/linux/system/libs/compression/snappy:snappy",
         "//packages/linux/core/bzip2:bzip2",
         "//packages/linux/network/gnutls:gnutls",
         "//packages/linux/network/nettle:nettle",
@@ -146,7 +146,7 @@ configure_make_package(
     deps = [
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/core/zlib:zlib",
-        "//packages/linux/core:zstd",
+        "//packages/linux/system/libs/compression/zstd:zstd",
     ],
     visibility = ["PUBLIC"],
 )

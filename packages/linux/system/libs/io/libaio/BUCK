@@ -1,0 +1,22 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+download_source(
+    name = "libaio-src",
+    src_uri = "https://pagure.io/libaio/archive/libaio-0.3.113/libaio-libaio-0.3.113.tar.gz",
+    sha256 = "2c44d1c5fd0d43752287c9ae1eb9c023f04ef848ea8d4aafa46e9aedb678200b",
+)
+
+configure_make_package(
+    name = "libaio",
+    source = ":libaio-src",
+    version = "0.3.113",
+    description = "Linux kernel AIO access library",
+    homepage = "https://pagure.io/libaio",
+    license = "LGPL-2.1",
+    configure_args = [],
+    make_args = [
+        "prefix=/usr",
+    ],
+    visibility = ["PUBLIC"],
+)

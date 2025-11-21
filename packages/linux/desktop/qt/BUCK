@@ -1,0 +1,43 @@
+load("//defs:package_defs.bzl", "download_source", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+# Qt5 - Cross-platform application framework
+download_source(
+    name = "qt5-src",
+    src_uri = "https://download.qt.io/archive/qt/5.15/5.15.12/single/qt-everywhere-opensource-src-5.15.12.tar.xz",
+    sha256 = "3fb1cd4f763f5d50d491508b7b99fb56f3b364179cf27d5cfd4cf83f6a4e8d8d",
+)
+
+binary_package(
+    name = "qt5",
+    srcs = [":qt5-src"],
+    version = "5.15.12",
+    description = "Cross-platform application framework",
+    homepage = "https://www.qt.io/",
+    license = "LGPL-3.0-or-later OR GPL-3.0-or-later",
+    install_script = """
+        cd qt-everywhere-src-5.15.12
+        ./configure \
+            -prefix $PREFIX \
+            -opensource \
+            -confirm-license \
+            -release \
+            -shared \
+            -nomake examples \
+            -nomake tests \
+            -no-separate-debug-info \
+            -no-pch \
+            -no-use-gold-linker
+        make -j$(nproc)
+        make install
+    """,
+    deps = [
+        "//packages/linux/desktop/libdrm:libdrm",
+        "//packages/linux/fonts/libraries/fontconfig:fontconfig",
+        "//packages/linux/fonts/libraries/freetype:freetype",
+        "//packages/linux/system/libs/font/harfbuzz:harfbuzz",
+        "//packages/linux/dev-libs/glib:glib",
+        "//packages/linux/dev-libs/double-conversion:double-conversion",
+    ],
+    visibility = ["PUBLIC"],
+)

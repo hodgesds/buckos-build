@@ -134,9 +134,14 @@ ISSUE
 filegroup(
     name = "init-scripts",
     srcs = [":init-scripts-gen"],
+    visibility = ["PUBLIC"],
+)
+
 # Baselayout - Core filesystem layout
+genrule(
     name = "baselayout-gen",
     out = "baselayout",
+    cmd = """
 mkdir -p $OUT
 # Create FHS directory structure
 mkdir -p $OUT/bin
@@ -171,8 +176,16 @@ mkdir -p $OUT/boot
 chmod 1777 $OUT/tmp
 chmod 1777 $OUT/var/tmp
 chmod 700 $OUT/root
+""",
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
     name = "baselayout",
     srcs = [":baselayout-gen"],
+    visibility = ["PUBLIC"],
+)
+
 # Root filesystem assembly
 rootfs(
     name = "buckos-rootfs",
@@ -203,38 +216,6 @@ rootfs(
         "//packages/linux/system/network/openssh:openssh",
         "//packages/linux/system/network/iproute2:iproute2",
         "//packages/linux/system/network/dhcpcd:dhcpcd",
-    ],
-# Complete system with kernel
-    name = "buckos-complete",
-    srcs = [
-        ":buckos-rootfs",
-        "//packages/linux/kernel/buckos-kernel:buckos-kernel",
-        "//packages/linux/boot/grub:grub",
-# Root filesystem with text editors
-    name = "buckos-with-editors",
-        "//packages/linux/editors/vim:vim",
-        "//packages/linux/editors/neovim:neovim",
-        "//packages/linux/editors/emacs:emacs",
-# Complete system with editors and kernel
-    name = "buckos-complete-with-editors",
-        ":buckos-with-editors",
-# Bootable system with initramfs support
-# Full bootable system with initramfs generation capability
-    name = "buckos-bootable",
-        # Boot and initramfs essentials
-        "//packages/linux/system/libs/kmod:kmod",
-        "//packages/linux/system/init/eudev:eudev",
-        "//packages/linux/system/initramfs/dracut:dracut",
-# Complete bootable system
-    name = "buckos-bootable-complete",
-        ":buckos-bootable",
-# System with full storage support (LVM, RAID, encryption)
-    name = "buckos-storage",
-        # Boot and initramfs
-        # Storage management
-        "//packages/linux/system/filesystem/management/lvm2:lvm2",
-        "//packages/linux/system/filesystem/management/mdadm:mdadm",
-        "//packages/linux/system/filesystem/management/cryptsetup:cryptsetup",
     ],
     visibility = ["PUBLIC"],
 )

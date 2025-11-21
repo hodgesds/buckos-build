@@ -1,0 +1,28 @@
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+# gmp - GNU Multiple Precision Arithmetic Library
+download_source(
+    name = "gmp-src",
+    src_uri = "https://gmplib.org/download/gmp/gmp-6.3.0.tar.xz",
+    sha256 = "a3c2b80201b89e68616f4ad30bc66aee4927c3ce50e33929ca819d5c43538898",
+)
+
+ebuild_package(
+    name = "gmp",
+    source = ":gmp-src",
+    version = "6.3.0",
+    description = "GNU Multiple Precision Arithmetic Library",
+    homepage = "https://gmplib.org/",
+    license = "LGPL-3.0-or-later OR GPL-2.0-or-later",
+    src_configure = """
+./configure --prefix=/usr --enable-cxx --enable-shared
+""",
+    src_compile = """
+make
+""",
+    src_install = """
+make install DESTDIR="$DESTDIR"
+""",
+    visibility = ["PUBLIC"],
+)

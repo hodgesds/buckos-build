@@ -33,11 +33,11 @@ configure_make_package(
     deps = [
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/core/zlib:zlib",
-        "//packages/linux/core:libaio",
+        "//packages/linux/system/libs/io/libaio:libaio",
         "//packages/linux/lang/python:python",
         "//packages/linux/system/libs/ncurses:ncurses",
         "//packages/linux/system/libs/libuuid:libuuid",
-        "//packages/linux/system/libs/yajl:yajl",
+        "//packages/linux/system/libs/data/yajl:yajl",
         "//packages/linux/emulation/hypervisors/qemu:qemu",
     ],
     visibility = ["PUBLIC"],

@@ -52,8 +52,8 @@ EOF
     """,
     deps = [
         "//packages/linux/lang/rust:rust",
-        "//packages/linux/core:libcap-ng",
-        "//packages/linux/core:libseccomp",
+        "//packages/linux/system/libs/ipc/libcap-ng:libcap-ng",
+        "//packages/linux/system/libs/ipc/libseccomp:libseccomp",
     ],
     visibility = ["PUBLIC"],
 )

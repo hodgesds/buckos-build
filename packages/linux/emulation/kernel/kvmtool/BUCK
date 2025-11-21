@@ -34,7 +34,7 @@ install -m 0644 Documentation/lkvm.1 "$DESTDIR/usr/share/man/man1/" 2>/dev/null 
     """,
     deps = [
         "//packages/linux/core/zlib:zlib",
-        "//packages/linux/core:libaio",
+        "//packages/linux/system/libs/io/libaio:libaio",
     ],
     visibility = ["PUBLIC"],
 )

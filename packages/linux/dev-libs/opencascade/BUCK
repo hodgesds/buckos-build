@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "cmake_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+# opencascade - Open CASCADE Technology - 3D modeling & numerical simulation
+cmake_package(
+    name = "opencascade",
+    version = "7.7.2",
+    src_uri = "https://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=V7_7_2;sf=tgz",
+    sha256 = "1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+    description = "Open CASCADE Technology - development platform for 3D CAD/CAM/CAE",
+    homepage = "https://dev.opencascade.org/",
+    license = "LGPL-2.1-or-later",
+    cmake_args = [
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DBUILD_MODULE_Draw=OFF",
+        "-DBUILD_DOC_Overview=OFF",
+        "-DINSTALL_TEST_CASES=OFF",
+    ],
+    deps = [],
+    visibility = ["PUBLIC"],
+)

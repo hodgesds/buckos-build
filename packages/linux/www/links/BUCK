@@ -30,7 +30,7 @@ use_package(
         "zlib": ["//packages/linux/core/zlib:zlib"],
         "bzip2": ["//packages/linux/core/bzip2:bzip2"],
         "lzma": ["//packages/linux/core/xz:xz"],
-        "X": ["//packages/linux/desktop/libpng", "//packages/linux/desktop/libjpeg-turbo"],
+        "X": ["//packages/linux/system/libs/image/libpng:libpng", "//packages/linux/system/libs/image/libjpeg-turbo:libjpeg-turbo"],
     },
     configure_args = [
         "--enable-graphics",

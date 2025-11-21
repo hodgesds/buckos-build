@@ -45,10 +45,10 @@ mkdir -p "$DESTDIR/usr/share/crosvm/seccomp/x86_64"
     """,
     deps = [
         "//packages/linux/lang/rust:rust",
-        "//packages/linux/core:minigbm",
+        "//packages/linux/system/libs/graphics/minigbm:minigbm",
         "//packages/linux/desktop/mesa:virglrenderer",
         "//packages/linux/system/libs/libcap:libcap",
-        "//packages/linux/core:libdrm",
+        "//packages/linux/desktop/libdrm:libdrm",
         "//packages/linux/audio/daemons/pulseaudio:pulseaudio",
     ],
     visibility = ["PUBLIC"],

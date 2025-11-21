@@ -1,0 +1,19 @@
+load("//defs:package_defs.bzl", "cmake_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+# xerces-c - Validating XML parser written in C++
+cmake_package(
+    name = "xerces-c",
+    version = "3.2.5",
+    src_uri = "https://archive.apache.org/dist/xerces/c/3/sources/xerces-c-3.2.5.tar.gz",
+    sha256 = "545cfcce6c4e755207bd1f27e319241e50e37c0c27250f11cda116018e1ef0f5",
+    description = "Validating XML parser written in portable C++",
+    homepage = "https://xerces.apache.org/xerces-c/",
+    license = "Apache-2.0",
+    cmake_args = [
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DCMAKE_INSTALL_LIBDIR=lib",
+    ],
+    deps = [],
+    visibility = ["PUBLIC"],
+)

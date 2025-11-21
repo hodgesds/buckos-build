@@ -24,8 +24,8 @@ configure_make_package(
     ],
     deps = [
         "//packages/linux/dev-libs/glib:glib",
-        "//packages/linux/core:libcap",
-        "//packages/linux/core:yajl",
+        "//packages/linux/system/libs/ipc/libcap:libcap",
+        "//packages/linux/system/libs/data/yajl:yajl",
         "//packages/linux/system/libs/libseccomp:libseccomp",
         "//packages/linux/system/init/systemd:libsystemd",
         "//packages/linux/lang/python:python",

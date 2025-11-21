@@ -1,0 +1,18 @@
+load("//defs:package_defs.bzl", "cmake_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+# eigen - C++ template library for linear algebra
+cmake_package(
+    name = "eigen",
+    version = "3.4.0",
+    src_uri = "https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz",
+    sha256 = "8586084f71f9bde545ee7fa6d00288b264a2b7ac3607b974e54d13e7162c1c72",
+    description = "C++ template library for linear algebra",
+    homepage = "https://eigen.tuxfamily.org/",
+    license = "MPL-2.0",
+    cmake_args = [
+        "-DBUILD_TESTING=OFF",
+    ],
+    deps = [],
+    visibility = ["PUBLIC"],
+)

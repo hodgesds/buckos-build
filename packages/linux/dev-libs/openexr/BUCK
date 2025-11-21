@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "cmake_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+# openexr - High dynamic-range (HDR) image file format
+cmake_package(
+    name = "openexr",
+    version = "3.2.4",
+    src_uri = "https://github.com/AcademySoftwareFoundation/openexr/archive/v3.2.4.tar.gz",
+    sha256 = "81e6518f2c4656fdeaf18a018f135e96a96e7f66dbe1c1f05860dd94772176cc",
+    description = "High dynamic-range (HDR) image file format",
+    homepage = "https://www.openexr.com/",
+    license = "BSD-3-Clause",
+    cmake_args = [
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DBUILD_TESTING=OFF",
+        "-DOPENEXR_INSTALL_EXAMPLES=OFF",
+    ],
+    deps = [],
+    visibility = ["PUBLIC"],
+)

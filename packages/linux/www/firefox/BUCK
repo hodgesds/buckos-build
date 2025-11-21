@@ -55,15 +55,16 @@ MOZCONFIG
     deps = use_dep(
         {
             "zlib": ["//packages/linux/core/zlib:zlib"],
-            "gtk": ["//packages/linux/desktop/gtk"],
-            "nss": ["//packages/linux/network/nss"],
-            "nspr": ["//packages/linux/network/nspr"],
+            "gtk": ["//packages/linux/desktop/gtk:gtk3"],
+            # TODO: nss, nspr, and cbindgen packages need to be created
+            # "nss": ["//packages/linux/network/nss"],
+            # "nspr": ["//packages/linux/network/nspr"],
             "python": ["//packages/linux/lang/python:python"],
             "rust": ["//packages/linux/lang/rust:rust"],
-            "cbindgen": ["//packages/linux/lang/cbindgen:cbindgen"],
+            # "cbindgen": ["//packages/linux/lang/cbindgen:cbindgen"],
             "nodejs": ["//packages/linux/lang/nodejs:nodejs"],
         },
-        ["zlib", "gtk", "nss", "nspr", "python", "rust", "cbindgen", "nodejs"],
+        ["zlib", "gtk", "python", "rust", "nodejs"],
     ),
     visibility = ["PUBLIC"],
 )

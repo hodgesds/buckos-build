@@ -25,8 +25,8 @@ use_package(
         "//packages/linux/core/musl:musl",
     ],
     use_deps = {
-        "ssl": ["//packages/linux/network/openssl"],
-        "caps": ["//packages/linux/system/libs/ipc/libcap"],
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "caps": ["//packages/linux/system/libs/ipc/libcap:libcap"],
         "ldap": ["//packages/linux/network/openldap:openldap"],
         "pam": ["//packages/linux/system/pam:pam"],
         "kerberos": ["//packages/linux/network/krb5:krb5"],

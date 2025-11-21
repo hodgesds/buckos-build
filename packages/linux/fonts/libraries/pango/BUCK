@@ -17,11 +17,11 @@ meson_package(
     deps = [
         "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
-        "//packages/linux/core:fribidi",
+        "//packages/linux/system/libs/font/fribidi:fribidi",
         "//packages/linux/fonts/libraries/freetype:freetype",
         "//packages/linux/fonts/libraries/fontconfig:fontconfig",
         "//packages/linux/fonts/libraries/harfbuzz:harfbuzz",
-        "//packages/linux/graphics/utilities/cairo:cairo",
+        "//packages/linux/desktop/cairo:cairo",
     ],
     visibility = ["PUBLIC"],
 )

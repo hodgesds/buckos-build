@@ -56,10 +56,10 @@ configure_make_package(
     ],
     deps = [
         "//packages/linux/dev-libs/glib:glib",
-        "//packages/linux/core:libxml2",
+        "//packages/linux/system/libs/data/libxml2:libxml2",
         "//packages/linux/core/libnl:libnl",
-        "//packages/linux/core:yajl",
-        "//packages/linux/core:libtirpc",
+        "//packages/linux/system/libs/data/yajl:yajl",
+        "//packages/linux/system/libs/ipc/libtirpc:libtirpc",
         "//packages/linux/network/gnutls:gnutls",
         "//packages/linux/network/curl:curl",
         "//packages/linux/system/libs/libudev:libudev",
@@ -88,7 +88,7 @@ configure_make_package(
     ],
     deps = [
         "//packages/linux/dev-libs/glib:glib",
-        "//packages/linux/core:libxml2",
+        "//packages/linux/system/libs/data/libxml2:libxml2",
         "//packages/linux/network/gnutls:gnutls",
     ],
     visibility = ["PUBLIC"],

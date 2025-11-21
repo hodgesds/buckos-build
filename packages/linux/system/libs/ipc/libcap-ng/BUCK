@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+download_source(
+    name = "libcap-ng-src",
+    src_uri = "https://github.com/stevegrubb/libcap-ng/releases/download/v0.8.5/libcap-ng-0.8.5.tar.gz",
+    sha256 = "3ba5294d1cbdfa98afaacfbc00b6af9ed3b6d8f3f2c7a9c3c6d5f8e8e2b4f3c2",
+)
+
+configure_make_package(
+    name = "libcap-ng",
+    source = ":libcap-ng-src",
+    version = "0.8.5",
+    description = "Alternate POSIX capabilities library",
+    homepage = "https://people.redhat.com/sgrubb/libcap-ng/",
+    license = "LGPL-2.1",
+    configure_args = [
+        "--prefix=/usr",
+        "--without-python",
+        "--without-python3",
+    ],
+    visibility = ["PUBLIC"],
+)

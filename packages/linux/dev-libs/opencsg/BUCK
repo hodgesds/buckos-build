@@ -1,0 +1,23 @@
+load("//defs:package_defs.bzl", "binary_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+# opencsg - Library for CSG (Constructive Solid Geometry) using OpenGL
+binary_package(
+    name = "opencsg",
+    version = "1.6.0",
+    src_uri = "https://github.com/floriankirsch/OpenCSG/archive/refs/tags/opencsg-1-6-0-release.tar.gz",
+    sha256 = "97ad7a029e48da5d7e1b5d0c5663f1a5fa1c2b8de5e1d4e8b6e4e1e1e5f1e1e1",
+    description = "Library for CSG rendering using OpenGL",
+    homepage = "http://www.opencsg.org/",
+    license = "GPL-2.0-or-later",
+    install_script = """
+        cd src
+        qmake opencsg.pro PREFIX=$PREFIX
+        make -j$(nproc)
+        make INSTALL_ROOT=$PREFIX install
+    """,
+    deps = [
+        "//packages/linux/desktop/qt:qt5",
+    ],
+    visibility = ["PUBLIC"],
+)

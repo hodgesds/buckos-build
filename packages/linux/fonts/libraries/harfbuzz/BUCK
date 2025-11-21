@@ -25,7 +25,7 @@ meson_package(
         "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/fonts/libraries/freetype:freetype",
-        "//packages/linux/graphics/utilities/cairo:cairo",
+        "//packages/linux/desktop/cairo:cairo",
     ],
     visibility = ["PUBLIC"],
 )

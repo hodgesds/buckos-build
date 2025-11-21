@@ -1,18 +1,12 @@
-load("//defs:package_defs.bzl", "download_source", "cargo_package")
+load("//defs:package_defs.bzl", "cargo_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 # zoxide - Smarter cd command that learns your habits
-
-download_source(
-    name = "zoxide-src",
-    src_uri = "https://github.com/ajeetdsouza/zoxide/archive/refs/tags/v0.9.6.tar.gz",
-    sha256 = "e9f0d1e0c0d4a7f0f8b5e0d3c5a7f0e9d8c0b5a7f0e9d8c0b5a7f0e9d8c0b5a8",
-)
-
 cargo_package(
     name = "zoxide",
-    srcs = [":zoxide-src"],
     version = "0.9.6",
+    src_uri = "https://github.com/ajeetdsouza/zoxide/archive/refs/tags/v0.9.6.tar.gz",
+    sha256 = "e9f0d1e0c0d4a7f0f8b5e0d3c5a7f0e9d8c0b5a7f0e9d8c0b5a7f0e9d8c0b5a8",
     description = "Smarter cd command that learns your habits",
     homepage = "https://github.com/ajeetdsouza/zoxide",
     license = "MIT",

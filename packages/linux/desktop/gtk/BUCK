@@ -19,7 +19,7 @@ meson_package(
     deps = [
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/fonts/libraries/freetype:freetype",
-        "//packages/linux/desktop/pango:pango",
+        "//packages/linux/fonts/libraries/pango:pango",
         "//packages/linux/desktop/cairo:cairo",
         "//packages/linux/desktop/gdk-pixbuf:gdk-pixbuf",
         "//packages/linux/desktop/at-spi2-core:at-spi2-core",
@@ -46,7 +46,7 @@ meson_package(
     deps = [
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/fonts/libraries/freetype:freetype",
-        "//packages/linux/desktop/pango:pango",
+        "//packages/linux/fonts/libraries/pango:pango",
         "//packages/linux/desktop/cairo:cairo",
         "//packages/linux/desktop/gdk-pixbuf:gdk-pixbuf",
     ],

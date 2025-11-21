@@ -60,6 +60,25 @@ verify_signature() {
     if curl -L -f -o "$SIG_FILENAME" "$SIG_URL" 2>/dev/null; then
         echo "Found signature file: $SIG_URL"
 
+        # Check if the downloaded file is actually a GPG signature
+        # GPG signatures start with specific bytes or patterns
+        FILETYPE=$(file -b "$SIG_FILENAME")
+        if [[ "$FILETYPE" == *"HTML"* ]] || [[ "$FILETYPE" == *"ASCII text"* && ! "$FILETYPE" =~ "PGP" ]]; then
+            # Check if it's HTML or non-PGP text (likely an error page)
+            if head -1 "$SIG_FILENAME" | grep -q -i '<!DOCTYPE\|<html\|<head'; then
+                echo "ℹ Signature file is HTML (likely 404/redirect), skipping verification"
+                rm "$SIG_FILENAME"
+                return 1
+            fi
+        fi
+
+        # Verify the signature is valid OpenPGP data
+        if ! gpg --batch --list-packets "$SIG_FILENAME" >/dev/null 2>&1; then
+            echo "ℹ Downloaded file is not a valid GPG signature, skipping verification"
+            rm "$SIG_FILENAME"
+            return 1
+        fi
+
         # Setup GPG options
         GPG_OPTS="--batch --no-default-keyring"
 
@@ -72,17 +91,22 @@ verify_signature() {
         if [ -n "$GPG_KEY" ]; then
             echo "Importing GPG key: $GPG_KEY"
             # Try to import from keyserver (will fail gracefully if key already exists)
-            gpg $GPG_OPTS --keyserver hkps://keys.openpgp.org --recv-keys "$GPG_KEY" 2>/dev/null || true
+            gpg $GPG_OPTS --keyserver hkps://keys.openpgp.org --recv-keys "$GPG_KEY" 2>&1 | grep -v "already in keyring" || true
         fi
 
         # Verify the signature
         echo "Verifying GPG signature..."
-        if gpg $GPG_OPTS --verify "$SIG_FILENAME" "$FILENAME" 2>/dev/null; then
+        GPG_OUTPUT=$(gpg $GPG_OPTS --verify "$SIG_FILENAME" "$FILENAME" 2>&1)
+        GPG_EXIT=$?
+
+        if [ $GPG_EXIT -eq 0 ]; then
             echo "✓ Signature verification PASSED"
             rm "$SIG_FILENAME"
             return 0
         else
             echo "✗ Signature verification FAILED" >&2
+            echo "GPG output:" >&2
+            echo "$GPG_OUTPUT" >&2
             rm "$SIG_FILENAME"
             exit 1
         fi

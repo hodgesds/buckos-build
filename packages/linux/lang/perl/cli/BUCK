@@ -55,7 +55,7 @@ configure_make_package(
 download_source(
     name = "term-readline-gnu-src",
     src_uri = "https://cpan.metacpan.org/authors/id/H/HA/HAYASHI/Term-ReadLine-Gnu-1.46.tar.gz",
-    sha256 = "9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0",
+    sha256 = "b13832132e50366c34feac12ce82837c0a9db34ca530ae5d27db97cf9c964c7b",
 )
 
 configure_make_package(
@@ -79,7 +79,7 @@ configure_make_package(
 download_source(
     name = "term-progressbar-src",
     src_uri = "https://cpan.metacpan.org/authors/id/M/MA/MANWAR/Term-ProgressBar-2.23.tar.gz",
-    sha256 = "0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1",
+    sha256 = "defc03fb9f4ac1c9df1359d312bff3c0865ddefbf3aba64cd42a69a86215d49d",
 )
 
 configure_make_package(
@@ -104,7 +104,7 @@ configure_make_package(
 download_source(
     name = "term-table-src",
     src_uri = "https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Term-Table-0.018.tar.gz",
-    sha256 = "1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+    sha256 = "9159b9131ee6b3f3956b74f45422985553574babbfaeba60be5c17bc114ac011",
 )
 
 configure_make_package(
@@ -154,7 +154,7 @@ configure_make_package(
 download_source(
     name = "log-log4perl-src",
     src_uri = "https://cpan.metacpan.org/authors/id/E/ET/ETJ/Log-Log4perl-1.57.tar.gz",
-    sha256 = "3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4",
+    sha256 = "0f8fcb7638a8f3db4c797df94fdbc56013749142f2f94cbc95b43c9fca096a13",
 )
 
 configure_make_package(
@@ -178,7 +178,7 @@ configure_make_package(
 download_source(
     name = "log-any-src",
     src_uri = "https://cpan.metacpan.org/authors/id/P/PR/PREACTION/Log-Any-1.717.tar.gz",
-    sha256 = "4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5",
+    sha256 = "56649da0f3900230c9e3d29252cb0a74806fb2ddebd22805acd7368959a65bca",
 )
 
 configure_make_package(
@@ -202,7 +202,7 @@ configure_make_package(
 download_source(
     name = "log-dispatch-src",
     src_uri = "https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/Log-Dispatch-2.71.tar.gz",
-    sha256 = "5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6",
+    sha256 = "9d60d9648c35ce2754731eb4deb7f05809ece1bd633b74d74795aed9ec732570",
 )
 
 configure_make_package(

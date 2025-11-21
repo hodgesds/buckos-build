@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "getopt-long-descriptive-src",
     src_uri = "https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Getopt-Long-Descriptive-0.114.tar.gz",
-    sha256 = "7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8",
+    sha256 = "410e842114a9cbfd3fd3a5fd248a96703c07c5d879b2aa5f9db0333f23276016",
 )
 
 configure_make_package(
@@ -31,7 +31,7 @@ configure_make_package(
 download_source(
     name = "term-ansicolor-src",
     src_uri = "https://cpan.metacpan.org/authors/id/R/RR/RRA/Term-ANSIColor-5.01.tar.gz",
-    sha256 = "8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9",
+    sha256 = "6281bd87cced7a885c38aa104498e3cd4b5f4c276087442cf68c67379318f27d",
 )
 
 configure_make_package(

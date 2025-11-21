@@ -2272,6 +2272,9 @@ def cargo_package(
         if dep not in bdepend:
             bdepend.append(dep)
 
+    # Filter out rdepend from kwargs since we pass it explicitly as deps
+    kwargs.pop("rdepend", None)
+
     # Use custom install if bins specified, otherwise use eclass default
     src_install = cargo_src_install(bins) if bins else eclass_config["src_install"]
 

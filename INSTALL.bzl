@@ -11,7 +11,6 @@ rootfs(
         "//packages/linux/core/bash:bash",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/core/glibc:glibc",
-        "//packages/linux/system/init:systemd",
         "//packages/linux/network:openssl",
         "//packages/linux/network:curl",
         "//packages/linux/network:iproute2",

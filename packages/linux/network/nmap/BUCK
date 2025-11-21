@@ -42,7 +42,6 @@ use_package(
 
     deps = [
         "//packages/linux/network/libpcap:libpcap",
-        "//packages/linux/core/musl:musl",
     ],
 
     description = "Network exploration tool and security/port scanner",

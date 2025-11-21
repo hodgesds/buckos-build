@@ -22,7 +22,6 @@ configure_make_package(
         "--without-emacs",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/ncurses:ncurses",
     ],
     visibility = ["PUBLIC"],

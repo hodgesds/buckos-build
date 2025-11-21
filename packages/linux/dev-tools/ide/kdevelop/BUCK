@@ -17,7 +17,6 @@ cmake_package(
         "-DCMAKE_BUILD_TYPE=Release",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/kde:kde-plasma",
     ],
     visibility = ["PUBLIC"],

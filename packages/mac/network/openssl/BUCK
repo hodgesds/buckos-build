@@ -22,7 +22,7 @@ use_package(
 
     # Conditional dependencies
     use_deps = {
-        "zlib": ["//packages/mac/core/zlib"],
+        "zlib": ["//packages/mac/core/zlib:zlib"],
     },
 
     # Conditional configure arguments

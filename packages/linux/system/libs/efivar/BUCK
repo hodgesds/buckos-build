@@ -21,7 +21,6 @@ configure_make_package(
         "PREFIX=/usr",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

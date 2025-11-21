@@ -24,7 +24,6 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

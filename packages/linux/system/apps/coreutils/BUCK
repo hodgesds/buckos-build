@@ -36,6 +36,6 @@ use_package(
         "--prefix=/usr",
         "--enable-no-install-program=kill,uptime",
     ],
-    deps = ["//packages/linux/core/musl:musl"],
+    deps = [],
     visibility = ["PUBLIC"],
 )

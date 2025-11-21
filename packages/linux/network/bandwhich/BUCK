@@ -16,7 +16,6 @@ cargo_package(
         "--release",
     ],
     rdepend = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

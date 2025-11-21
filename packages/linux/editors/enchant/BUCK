@@ -20,7 +20,6 @@ configure_make_package(
         "--enable-relocatable",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
     ],
     visibility = ["PUBLIC"],

@@ -48,7 +48,6 @@ binary_package(
     """,
     deps = [
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/lang/python:python",
     ],

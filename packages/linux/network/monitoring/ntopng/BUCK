@@ -30,7 +30,6 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/network/curl:curl",
     ],
 

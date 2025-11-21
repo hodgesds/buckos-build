@@ -48,7 +48,7 @@ use_package(
     ],
 
     deps = [
-        "//packages/mac/core/ncurses",
+        "//packages/mac/core/ncurses:ncurses",
     ],
 
     maintainers = ["mac-team"],

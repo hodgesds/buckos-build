@@ -26,7 +26,6 @@ use_package(
         "-python": "--disable-python",
     },
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

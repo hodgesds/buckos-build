@@ -46,7 +46,6 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/core/ncurses:ncurses",
     ],

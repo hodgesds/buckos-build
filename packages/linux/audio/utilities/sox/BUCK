@@ -56,7 +56,6 @@ use_package(
         "sndfile": ["//packages/linux/audio/libraries/libsndfile:libsndfile"],
     },
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

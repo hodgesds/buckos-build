@@ -15,7 +15,7 @@ use_package(
     iuse = ["selinux", "nls", "ipv6"],
     use_defaults = ["ipv6"],
     use_deps = {
-        "selinux": ["//packages/linux/system/security/selinux"],
+        "selinux": ["//packages/linux/system/security/selinux:selinux"],
     },
     use_configure = {
         "selinux": "--enable-selinux",
@@ -29,7 +29,6 @@ use_package(
         "--prefix=/usr",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/ncurses:ncurses",
     ],
     visibility = ["PUBLIC"],

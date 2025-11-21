@@ -33,7 +33,6 @@ configure_make_package(
         "confdir=/etc",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

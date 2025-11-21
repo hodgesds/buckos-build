@@ -1,5 +1,4 @@
 load("//defs:package_defs.bzl", "download_source", "ebuild_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # pass - Standard Unix password manager
 download_source(
@@ -19,7 +18,7 @@ ebuild_package(
 make
 """,
     src_install = """
-make install DESTDIR="$DESTDIR"
+make install DESTDIR="$DESTDIR" PREFIX=/usr
 """,
     rdepend = [
         "//packages/linux/core/bash:bash",

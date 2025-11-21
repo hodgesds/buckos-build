@@ -36,7 +36,6 @@ use_package(
 
     deps = [
         "//packages/linux/network/ca-certificates:ca-certificates",
-        "//packages/linux/core/musl:musl",
     ],
 
     description = "Network utility to retrieve files from the web",

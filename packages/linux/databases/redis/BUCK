@@ -20,7 +20,6 @@ use_package(
     iuse = ["ssl", "systemd", "jemalloc", "lua"],
     use_defaults = ["jemalloc"],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     use_deps = {
         "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],

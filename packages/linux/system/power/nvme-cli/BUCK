@@ -18,7 +18,6 @@ meson_package(
         "-Dhtmldir=/usr/share/doc/nvme",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/libnvme:libnvme",
         "//packages/linux/system/libs/json-c:json-c",
     ],

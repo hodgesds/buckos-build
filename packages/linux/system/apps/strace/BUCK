@@ -15,8 +15,8 @@ use_package(
     iuse = ["unwind", "selinux", "static-libs", "mpers"],
     use_defaults = [],
     use_deps = {
-        "unwind": ["//packages/linux/system/libs/libunwind"],
-        "selinux": ["//packages/linux/system/security/selinux"],
+        "unwind": ["//packages/linux/system/libs/libunwind:libunwind"],
+        "selinux": ["//packages/linux/system/security/selinux:selinux"],
     },
     use_configure = {
         "unwind": "--with-libunwind",
@@ -29,6 +29,6 @@ use_package(
     configure_args = [
         "--prefix=/usr",
     ],
-    deps = ["//packages/linux/core/musl:musl"],
+    deps = [],
     visibility = ["PUBLIC"],
 )

@@ -28,9 +28,8 @@ configure_make_package(
     deps = use_dep(
         {
             "erlang": ["//packages/linux/lang/erlang:erlang"],
-            "musl": ["//packages/linux/core/musl:musl"],
         },
-        ["erlang", "musl"],
+        ["erlang"],
     ),
     visibility = ["PUBLIC"],
 )

@@ -47,7 +47,6 @@ configure_make_package(
         "--sysconfdir=/etc",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -68,7 +67,6 @@ meson_package(
         "-Dflatpak-interfaces-dir=/usr/share/dbus-1/interfaces",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/dev-libs/json-glib:json-glib",
@@ -91,7 +89,6 @@ meson_package(
     ],
     deps = [
         ":xdg-desktop-portal",
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gnome:gtk3",
     ],
     visibility = ["PUBLIC"],
@@ -111,7 +108,6 @@ meson_package(
     ],
     deps = [
         ":xdg-desktop-portal",
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/wayland:wayland",
     ],
     visibility = ["PUBLIC"],
@@ -147,7 +143,6 @@ configure_make_package(
     """,
     deps = [
         ":xdg-desktop-portal",
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/kde:kf5",
         "//packages/linux/desktop/qt:qt5",
     ],

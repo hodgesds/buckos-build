@@ -23,7 +23,6 @@ configure_make_package(
         "generic",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

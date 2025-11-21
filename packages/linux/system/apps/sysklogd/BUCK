@@ -15,7 +15,7 @@ use_package(
     iuse = ["systemd", "logger"],
     use_defaults = [],
     use_deps = {
-        "systemd": ["//packages/linux/system/init/systemd"],
+        "systemd": ["//packages/linux/system/init/systemd:systemd"],
     },
     use_configure = {
         "systemd": "--with-systemd",
@@ -29,7 +29,6 @@ use_package(
         "--localstatedir=/var",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

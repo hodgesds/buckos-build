@@ -15,7 +15,7 @@ use_package(
     iuse = ["selinux"],
     use_defaults = [],
     use_deps = {
-        "selinux": ["//packages/linux/system/security/selinux"],
+        "selinux": ["//packages/linux/system/security/selinux:selinux"],
     },
     use_configure = {
         "selinux": "--with-selinux",
@@ -24,6 +24,6 @@ use_package(
     configure_args = [
         "--prefix=/usr",
     ],
-    deps = ["//packages/linux/core/musl:musl"],
+    deps = [],
     visibility = ["PUBLIC"],
 )

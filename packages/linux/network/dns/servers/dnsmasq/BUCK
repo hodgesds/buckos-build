@@ -47,7 +47,6 @@ install -Dm644 trust-anchors.conf "$DESTDIR/usr/share/dnsmasq/trust-anchors.conf
 """,
 
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
 
     description = "Lightweight DNS forwarder and DHCP server",

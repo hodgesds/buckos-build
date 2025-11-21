@@ -15,9 +15,9 @@ use_package(
     iuse = ["pam", "selinux", "nls", "sssd", "ldap", "static-libs"],
     use_defaults = [],
     use_deps = {
-        "pam": ["//packages/linux/system/security/auth/pam"],
-        "selinux": ["//packages/linux/system/security/selinux"],
-        "ldap": ["//packages/linux/system/security/auth/directory/openldap"],
+        "pam": ["//packages/linux/system/security/auth/pam:pam"],
+        "selinux": ["//packages/linux/system/security/selinux:selinux"],
+        "ldap": ["//packages/linux/system/security/auth/directory/openldap:openldap"],
         "nls": ["//packages/linux/system/libs/i18n:gettext"],
         "sssd": ["//packages/linux/system/security/auth/sssd:sssd"],
     },
@@ -42,6 +42,6 @@ use_package(
         "--with-rundir=/run/sudo",
         "--with-vardir=/var/db/sudo",
     ],
-    deps = ["//packages/linux/core/musl:musl"],
+    deps = [],
     visibility = ["PUBLIC"],
 )

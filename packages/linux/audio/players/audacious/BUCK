@@ -27,7 +27,6 @@ meson_package(
     deps = [
         "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/system/libs/ipc/dbus:dbus",
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

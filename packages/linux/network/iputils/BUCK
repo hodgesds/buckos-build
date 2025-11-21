@@ -25,7 +25,7 @@ use_package(
         "-nls": "--disable-nls",
     },
 
-    deps = ["//packages/linux/core/musl:musl"],
+    deps = [],
 
     pre_configure = """
 # iputils uses meson, we'll use a simplified make approach

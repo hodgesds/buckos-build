@@ -22,7 +22,6 @@ meson_package(
         "-Dbenchmark=disabled",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/fonts/libraries/freetype:freetype",
         "//packages/linux/desktop/cairo:cairo",

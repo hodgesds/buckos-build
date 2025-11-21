@@ -22,7 +22,6 @@ use_package(
     iuse = ["ssl", "ipv6", "caps", "ldap", "pam", "kerberos"],
     use_defaults = ["ssl", "caps"],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],

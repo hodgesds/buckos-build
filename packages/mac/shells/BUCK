@@ -3,8 +3,8 @@
 filegroup(
     name = "all-shells",
     srcs = [
-        "//packages/mac/shells/bash",
-        "//packages/mac/shells/zsh",
+        "//packages/mac/shells/bash:bash",
+        "//packages/mac/shells/zsh:zsh",
     ],
     visibility = ["PUBLIC"],
 )

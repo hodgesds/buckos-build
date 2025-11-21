@@ -24,7 +24,6 @@ use_ebuild_package(
         python3 buildscripts/scons.py install-mongod install-mongos --prefix="${DESTDIR}/usr"
     """,
     rdepend = [
-        "//packages/linux/core/musl:musl",
     ],
     use_deps = {
         "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],

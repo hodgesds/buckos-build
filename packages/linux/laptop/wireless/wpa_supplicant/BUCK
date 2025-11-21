@@ -33,7 +33,6 @@ configure_make_package(
         "LIBDIR=/usr/lib",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/openssl:openssl",
         "//packages/linux/system/libs/dbus:dbus",
         "//packages/linux/system/libs/readline:readline",

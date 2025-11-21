@@ -19,7 +19,6 @@ meson_package(
     deps = [
         "//packages/linux/audio/daemons/pulseaudio:pulseaudio",
         "//packages/linux/desktop/gnome:gtk3",
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

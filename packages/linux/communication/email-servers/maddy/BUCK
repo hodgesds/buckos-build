@@ -59,7 +59,6 @@ SERVICE
     """,
     deps = [
         "//packages/linux/lang/go:go",
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

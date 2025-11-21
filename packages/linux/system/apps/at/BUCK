@@ -15,8 +15,8 @@ use_package(
     iuse = ["selinux", "pam"],
     use_defaults = [],
     use_deps = {
-        "selinux": ["//packages/linux/system/security/selinux"],
-        "pam": ["//packages/linux/system/security/auth/pam"],
+        "selinux": ["//packages/linux/system/security/selinux:selinux"],
+        "pam": ["//packages/linux/system/security/auth/pam:pam"],
     },
     use_configure = {
         "selinux": "--with-selinux",
@@ -30,6 +30,6 @@ use_package(
         "--with-jobdir=/var/spool/atjobs",
         "--with-atspool=/var/spool/atspool",
     ],
-    deps = ["//packages/linux/core/musl:musl"],
+    deps = [],
     visibility = ["PUBLIC"],
 )

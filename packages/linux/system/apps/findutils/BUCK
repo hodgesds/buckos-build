@@ -15,7 +15,7 @@ use_package(
     iuse = ["nls", "selinux"],
     use_defaults = [],
     use_deps = {
-        "selinux": ["//packages/linux/system/security/selinux"],
+        "selinux": ["//packages/linux/system/security/selinux:selinux"],
     },
     use_configure = {
         "nls": "--enable-nls",
@@ -27,6 +27,6 @@ use_package(
         "--prefix=/usr",
         "--localstatedir=/var/lib/locate",
     ],
-    deps = ["//packages/linux/core/musl:musl"],
+    deps = [],
     visibility = ["PUBLIC"],
 )

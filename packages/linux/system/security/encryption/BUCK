@@ -68,7 +68,6 @@ cmake_package(
         "-DCMAKE_INSTALL_PREFIX=/usr",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         ":libsodium",
     ],
     visibility = ["PUBLIC"],
@@ -99,7 +98,6 @@ configure_make_package(
         "--enable-opt",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -131,7 +129,6 @@ configure_make_package(
         "MANDIR=/usr/share/man",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         ":libbsd",
     ],
     visibility = ["PUBLIC"],
@@ -161,7 +158,6 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         ":libmd",
     ],
     visibility = ["PUBLIC"],
@@ -191,7 +187,6 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -225,7 +220,6 @@ configure_make_package(
         ln -sf ccrypt "$OUT/usr/bin/ccat"
     """,
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -374,7 +368,6 @@ configure_make_package(
         chmod 4755 "$OUT/sbin/unix_chkpwd" || true
     """,
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -406,7 +399,6 @@ configure_make_package(
         "--with-pamdir=/lib/security",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         ":keyutils",
         "//packages/linux/system/security/gnupg:libgcrypt",
         "//packages/linux/network/openssl:openssl",
@@ -447,7 +439,6 @@ configure_make_package(
         "INCLUDEDIR=/usr/include",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -499,7 +490,6 @@ configure_make_package(
         "TC_NO_GUI=1",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/cryptsetup:lvm2",
         "//packages/linux/system/security/cryptsetup:cryptsetup",
         ":fuse3",
@@ -534,7 +524,6 @@ configure_make_package(
         "-C", "build",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -594,7 +583,6 @@ configure_make_package(
         mkdir -p "$OUT/var/run/pcscd"
     """,
     deps = [
-        "//packages/linux/core/musl:musl",
         ":libusb",
     ],
     visibility = ["PUBLIC"],
@@ -625,7 +613,6 @@ configure_make_package(
         "--enable-udev",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/init/systemd:systemd",
     ],
     visibility = ["PUBLIC"],
@@ -682,7 +669,6 @@ configure_make_package(
         "--enable-mini-gmp",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -716,7 +702,6 @@ configure_make_package(
         mkdir -p "$OUT/etc/opensc"
     """,
     deps = [
-        "//packages/linux/core/musl:musl",
         ":pcsc-lite",
         "//packages/linux/network/openssl:openssl",
     ],
@@ -751,7 +736,6 @@ configure_make_package(
         "OPTTEST=1",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -781,7 +765,6 @@ configure_make_package(
         "--with-openssldir=/etc/ssl",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -812,7 +795,6 @@ configure_make_package(
     """,
     configure_args = [],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/core/bzip2:bzip2",
     ],
@@ -846,7 +828,6 @@ configure_make_package(
         "SHARED=1",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],
@@ -886,7 +867,6 @@ configure_make_package(
         ln -sf john "$OUT/usr/bin/unique"
     """,
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],
@@ -921,7 +901,6 @@ configure_make_package(
         cp bcrypt.1 "$OUT/usr/share/man/man1/"
     """,
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
@@ -952,7 +931,6 @@ configure_make_package(
         "--with-enginesdir=/usr/lib/engines-3",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],
@@ -984,7 +962,6 @@ configure_make_package(
         "-C", "build",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         ":jose",
         "//packages/linux/system/security/cryptsetup:cryptsetup",
     ],
@@ -1017,7 +994,6 @@ configure_make_package(
         "-C", "build",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/network/openssl:openssl",
         ":jansson",
@@ -1049,7 +1025,6 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

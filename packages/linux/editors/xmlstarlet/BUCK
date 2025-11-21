@@ -19,7 +19,6 @@ configure_make_package(
         "--with-libxslt-prefix=/usr",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/data/libxml2:libxml2",
         "//packages/linux/system/libs/data/libxslt:libxslt",
     ],

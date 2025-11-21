@@ -61,6 +61,6 @@ use_package(
         "--enable-blkid",
     ],
 
-    deps = ["//packages/linux/core/musl:musl"],
+    deps = [],
     visibility = ["PUBLIC"],
 )

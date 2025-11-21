@@ -32,7 +32,6 @@ true
 make ROOT=$OUT install
 """,
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     build_deps = [],
     visibility = ["PUBLIC"],

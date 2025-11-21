@@ -26,7 +26,6 @@ configure_make_package(
         "--with-systemd",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/libnl:libnl",
     ],

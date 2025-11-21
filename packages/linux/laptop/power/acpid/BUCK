@@ -25,7 +25,6 @@ configure_make_package(
         "--localstatedir=/var",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

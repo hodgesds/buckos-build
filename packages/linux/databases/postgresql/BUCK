@@ -24,7 +24,6 @@ use_package(
     iuse = ["ssl", "readline", "zlib", "threads", "xml", "uuid", "ldap", "pam"],
     use_defaults = ["ssl", "readline", "zlib", "threads"],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     use_deps = {
         "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],

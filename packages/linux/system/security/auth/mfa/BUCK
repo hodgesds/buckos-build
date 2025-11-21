@@ -29,7 +29,6 @@ configure_make_package(
         mkdir -p "$OUT/etc/users.oath"
     """,
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:linux-pam",
     ],
     visibility = ["PUBLIC"],
@@ -57,7 +56,6 @@ configure_make_package(
         "--libdir=/lib/security",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:linux-pam",
     ],
     visibility = ["PUBLIC"],
@@ -124,7 +122,6 @@ configure_make_package(
         "--with-pam-dir=/lib/security",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:linux-pam",
         ":libfido2",
     ],
@@ -180,7 +177,6 @@ configure_make_package(
         "--with-pam-dir=/lib/security",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:linux-pam",
         ":ykclient",
         ":ykpers",
@@ -209,7 +205,6 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/network/curl:curl",
     ],
     visibility = ["PUBLIC"],
@@ -236,7 +231,6 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:libusb",
         ":libyubikey",
     ],
@@ -264,7 +258,6 @@ configure_make_package(
         "--disable-static",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

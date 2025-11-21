@@ -21,7 +21,6 @@ configure_make_package(
         "--enable-minidebuginfo",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/xz:xz",
     ],
     visibility = ["PUBLIC"],

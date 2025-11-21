@@ -3,9 +3,9 @@
 filegroup(
     name = "all-system",
     srcs = [
-        "//packages/mac/system/htop",
-        "//packages/mac/system/tree",
-        "//packages/mac/system/jq",
+        "//packages/mac/system/htop:htop",
+        "//packages/mac/system/tree:tree",
+        "//packages/mac/system/jq:jq",
     ],
     visibility = ["PUBLIC"],
 )

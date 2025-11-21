@@ -24,7 +24,6 @@ cmake .. -DCMAKE_INSTALL_PREFIX=/usr \\
     -DBUILD_WAYLAND=ON
 """,
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/network/curl:curl",
     ],
     visibility = ["PUBLIC"],

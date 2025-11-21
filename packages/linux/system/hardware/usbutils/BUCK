@@ -23,7 +23,6 @@ configure_make_package(
     ],
     make_args = [],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/libusb:libusb",
         "//packages/linux/system/init/systemd:systemd",
     ],

@@ -53,7 +53,6 @@ binary_package(
         "//packages/linux/audio/libraries/libvorbis:libvorbis",
         "//packages/linux/audio/libraries/libogg:libogg",
         "//packages/linux/desktop/gnome:gtk3",
-        "//packages/linux/core/musl:musl",
         "//packages/linux/lang/python:python",
     ],
     visibility = ["PUBLIC"],

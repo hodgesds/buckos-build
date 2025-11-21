@@ -26,7 +26,6 @@ use_package(
         "-custom-modes": "--disable-custom-modes",
     },
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

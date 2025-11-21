@@ -22,7 +22,6 @@ use_package(
     iuse = ["ssl", "http2", "proxy", "rewrite", "ldap", "lua"],
     use_defaults = ["ssl", "http2", "proxy", "rewrite"],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/zlib:zlib",
     ],
     use_deps = {

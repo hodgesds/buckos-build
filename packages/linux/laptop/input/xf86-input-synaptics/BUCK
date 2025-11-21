@@ -25,7 +25,6 @@ configure_make_package(
         "--localstatedir=/var",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/laptop/input/libevdev:libevdev",
     ],
     visibility = ["PUBLIC"],

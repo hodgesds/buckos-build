@@ -66,7 +66,6 @@ cmake_package(
         "//packages/linux/audio/libraries/lame:lame",
         "//packages/linux/audio/libraries/libmad:libmad",
         "//packages/linux/desktop/gnome:gtk3",
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

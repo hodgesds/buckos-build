@@ -26,7 +26,6 @@ meson_package(
         "-Dintrospection=false",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/system/security/auth/privilege:polkit",
@@ -60,7 +59,6 @@ meson_package(
         "-Dargyllcms_sensor=false",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/system/security/auth/privilege:polkit",
@@ -89,7 +87,6 @@ meson_package(
     ],
     deps = [
         ":colord",
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gtk:gtk3",
         "//packages/linux/desktop/gtk:gtk4",
     ],

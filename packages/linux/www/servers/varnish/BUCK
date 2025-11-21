@@ -20,7 +20,6 @@ use_package(
     iuse = ["pcre2", "readline", "ncurses", "jemalloc"],
     use_defaults = ["pcre2", "readline", "ncurses"],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     use_deps = {
         "pcre2": ["//packages/linux/system/libs/utility/pcre2:pcre2"],

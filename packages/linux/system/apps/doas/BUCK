@@ -15,7 +15,7 @@ use_package(
     iuse = ["pam", "persist", "static-libs"],
     use_defaults = [],
     use_deps = {
-        "pam": ["//packages/linux/system/security/auth/pam"],
+        "pam": ["//packages/linux/system/security/auth/pam:pam"],
     },
     use_configure = {
         "pam": "--with-pam",
@@ -26,6 +26,6 @@ use_package(
     configure_args = [
         "--prefix=/usr",
     ],
-    deps = ["//packages/linux/core/musl:musl"],
+    deps = [],
     visibility = ["PUBLIC"],
 )

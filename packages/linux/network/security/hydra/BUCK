@@ -22,7 +22,6 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
 
     description = "Network logon cracker for authorized security testing",

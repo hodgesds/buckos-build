@@ -39,7 +39,6 @@ fi
 """,
 
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/network/dns/libraries/ldns:ldns",
     ],
 

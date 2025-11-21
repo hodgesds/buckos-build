@@ -22,7 +22,7 @@ use_package(
 
     configure_args = [],
 
-    deps = ["//packages/linux/core/musl:musl"],
+    deps = [],
 
     pre_configure = """
 # OpenSSL uses its own Configure script

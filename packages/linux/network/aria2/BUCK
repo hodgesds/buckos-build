@@ -42,7 +42,6 @@ use_package(
     deps = [
         "//packages/linux/network/ca-certificates:ca-certificates",
         "//packages/linux/core/zlib:zlib",
-        "//packages/linux/core/musl:musl",
     ],
 
     description = "Lightweight multi-protocol multi-source download utility",

@@ -17,7 +17,6 @@ meson_package(
         "-Dgtk_doc=false",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gtk:gtk3",
         "//packages/linux/editors/poppler:poppler",
     ],

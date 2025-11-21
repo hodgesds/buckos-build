@@ -45,7 +45,6 @@ DESTDIR=$OUT meson install
 """,
     deps = [
         "//packages/linux/core/util-linux:util-linux",
-        "//packages/linux/core/musl:musl",
     ],
     build_deps = [],
     visibility = ["PUBLIC"],

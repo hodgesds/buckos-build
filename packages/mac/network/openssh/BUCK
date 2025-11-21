@@ -42,7 +42,7 @@ use_package(
 
     deps = [
         "//packages/mac/network/openssl:openssl",
-        "//packages/mac/core/zlib",
+        "//packages/mac/core/zlib:zlib",
     ],
 
     maintainers = ["mac-team"],

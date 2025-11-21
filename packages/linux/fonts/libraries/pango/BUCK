@@ -15,7 +15,6 @@ meson_package(
         "-Dbuild-examples=false",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/font/fribidi:fribidi",
         "//packages/linux/fonts/libraries/freetype:freetype",

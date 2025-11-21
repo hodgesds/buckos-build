@@ -73,7 +73,6 @@ install -m 644 dbus/dbus-wpa_supplicant.conf "$DESTDIR/etc/dbus-1/system.d/" 2>/
 """,
 
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/ncurses:ncurses",
     ],
 

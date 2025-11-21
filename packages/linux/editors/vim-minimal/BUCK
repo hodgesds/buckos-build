@@ -25,7 +25,6 @@ cd src
         "--disable-xim",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

@@ -2,9 +2,8 @@
 filegroup(
     name = "all-bootloaders",
     srcs = [
-        "//packages/linux/boot/grub",
-        "//packages/linux/boot/grub:grub-bios",
-        "//packages/linux/boot/syslinux",
+        "//packages/linux/boot/grub:grub",
+        "//packages/linux/boot/syslinux:syslinux",
     ],
     visibility = ["PUBLIC"],
 )
@@ -13,7 +12,7 @@ filegroup(
 filegroup(
     name = "efi-bootloaders",
     srcs = [
-        "//packages/linux/boot/grub",
+        "//packages/linux/boot/grub:grub",
     ],
     visibility = ["PUBLIC"],
 )
@@ -22,8 +21,8 @@ filegroup(
 filegroup(
     name = "bios-bootloaders",
     srcs = [
-        "//packages/linux/boot/grub:grub-bios",
-        "//packages/linux/boot/syslinux",
+        "//packages/linux/boot/grub:grub",
+        "//packages/linux/boot/syslinux:syslinux",
     ],
     visibility = ["PUBLIC"],
 )

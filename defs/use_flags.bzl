@@ -589,6 +589,10 @@ def use_package(
         deps = [],
         build_deps = [],
         maintainers = [],
+        signature_uri = None,
+        gpg_key = None,
+        gpg_keyring = None,
+        auto_detect_signature = True,
         **kwargs):
     """Create a package with USE flag support.
 
@@ -612,6 +616,10 @@ def use_package(
         deps: Base dependencies (always applied)
         build_deps: Build dependencies
         maintainers: Package maintainers
+        signature_uri: Optional URL to GPG signature file (.asc or .sig)
+        gpg_key: Optional GPG key ID or fingerprint to import and verify against
+        gpg_keyring: Optional path to GPG keyring file with trusted keys
+        auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
         **kwargs: Additional arguments passed to underlying rule
 
     Example:
@@ -643,6 +651,10 @@ def use_package(
         name = src_name,
         src_uri = src_uri,
         sha256 = sha256,
+        signature_uri = signature_uri,
+        gpg_key = gpg_key,
+        gpg_keyring = gpg_keyring,
+        auto_detect_signature = auto_detect_signature,
     )
 
     # Calculate effective USE flags

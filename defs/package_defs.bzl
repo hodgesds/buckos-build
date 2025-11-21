@@ -23,6 +23,12 @@ def _download_source_impl(ctx: AnalysisContext) -> list[Provider]:
     """Download and extract source tarball."""
     out_dir = ctx.actions.declare_output(ctx.attrs.name + "-src", dir = True)
 
+    # Build signature verification parameters
+    sig_uri = ctx.attrs.signature_uri if ctx.attrs.signature_uri else ""
+    gpg_key = ctx.attrs.gpg_key if ctx.attrs.gpg_key else ""
+    gpg_keyring = ctx.attrs.gpg_keyring if ctx.attrs.gpg_keyring else ""
+    auto_detect = "1" if ctx.attrs.auto_detect_signature else ""
+
     # Script to download and extract
     script = ctx.actions.write(
         "download.sh",
@@ -38,6 +44,70 @@ curl -L -o "$FILENAME" "$URL"
 
 # Verify checksum
 echo "$3  $FILENAME" | sha256sum -c -
+
+# Verify GPG signature if provided
+SIGNATURE_URI="$4"
+GPG_KEY="$5"
+GPG_KEYRING="$6"
+AUTO_DETECT="$7"
+
+# Function to try signature verification
+verify_signature() {
+    local SIG_URL="$1"
+    local SIG_FILENAME="${SIG_URL##*/}"
+
+    # Try to download signature file
+    if curl -L -f -o "$SIG_FILENAME" "$SIG_URL" 2>/dev/null; then
+        echo "Found signature file: $SIG_URL"
+
+        # Setup GPG options
+        GPG_OPTS="--batch --no-default-keyring"
+
+        if [ -n "$GPG_KEYRING" ]; then
+            echo "Using keyring: $GPG_KEYRING"
+            GPG_OPTS="$GPG_OPTS --keyring $GPG_KEYRING"
+        fi
+
+        # Import key if specified
+        if [ -n "$GPG_KEY" ]; then
+            echo "Importing GPG key: $GPG_KEY"
+            # Try to import from keyserver (will fail gracefully if key already exists)
+            gpg $GPG_OPTS --keyserver hkps://keys.openpgp.org --recv-keys "$GPG_KEY" 2>/dev/null || true
+        fi
+
+        # Verify the signature
+        echo "Verifying GPG signature..."
+        if gpg $GPG_OPTS --verify "$SIG_FILENAME" "$FILENAME" 2>/dev/null; then
+            echo "✓ Signature verification PASSED"
+            rm "$SIG_FILENAME"
+            return 0
+        else
+            echo "✗ Signature verification FAILED" >&2
+            rm "$SIG_FILENAME"
+            exit 1
+        fi
+    fi
+    return 1
+}
+
+# Try signature verification
+if [ -n "$SIGNATURE_URI" ]; then
+    # Explicit signature URI provided
+    verify_signature "$SIGNATURE_URI" || exit 1
+elif [ -n "$AUTO_DETECT" ]; then
+    # Auto-detect: try common signature file extensions
+    echo "Auto-detecting signature file..."
+    TRIED=0
+    for ext in .asc .sig .sign; do
+        if verify_signature "${URL}${ext}"; then
+            TRIED=1
+            break
+        fi
+    done
+    if [ $TRIED -eq 0 ]; then
+        echo "ℹ No signature file found (tried .asc, .sig, .sign extensions)"
+    fi
+fi
 
 # Detect actual file type (not just extension)
 FILETYPE=$(file -b "$FILENAME")
@@ -106,6 +176,10 @@ rm "$FILENAME"
             out_dir.as_output(),
             ctx.attrs.src_uri,
             ctx.attrs.sha256,
+            sig_uri,
+            gpg_key,
+            gpg_keyring,
+            auto_detect,
         ]),
         category = "download",
         identifier = ctx.attrs.name,
@@ -118,6 +192,10 @@ download_source = rule(
     attrs = {
         "src_uri": attrs.string(),
         "sha256": attrs.string(),
+        "signature_uri": attrs.option(attrs.string(), default = None),
+        "gpg_key": attrs.option(attrs.string(), default = None),
+        "gpg_keyring": attrs.option(attrs.string(), default = None),
+        "auto_detect_signature": attrs.bool(default = True),
     },
 )
 
@@ -2141,10 +2219,20 @@ def simple_package(
         make_args: list[str] = [],
         deps: list[str] = [],
         maintainers: list[str] = [],
+        signature_uri: str | None = None,
+        gpg_key: str | None = None,
+        gpg_keyring: str | None = None,
+        auto_detect_signature: bool = True,
         **kwargs):
     """
     Convenience macro for standard autotools packages.
     Creates both source download and build rules.
+
+    Args:
+        signature_uri: Optional URL to GPG signature file (.asc or .sig)
+        gpg_key: Optional GPG key ID or fingerprint to import and verify against
+        gpg_keyring: Optional path to GPG keyring file with trusted keys
+        auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
     """
     src_name = name + "-src"
 
@@ -2152,6 +2240,10 @@ def simple_package(
         name = src_name,
         src_uri = src_uri,
         sha256 = sha256,
+        signature_uri = signature_uri,
+        gpg_key = gpg_key,
+        gpg_keyring = gpg_keyring,
+        auto_detect_signature = auto_detect_signature,
     )
 
     configure_make_package(
@@ -2174,10 +2266,20 @@ def cmake_package(
         pre_configure: str = "",
         deps: list[str] = [],
         maintainers: list[str] = [],
+        signature_uri: str | None = None,
+        gpg_key: str | None = None,
+        gpg_keyring: str | None = None,
+        auto_detect_signature: bool = True,
         **kwargs):
     """
     Convenience macro for CMake packages.
     Uses the cmake eclass for standardized build phases.
+
+    Args:
+        signature_uri: Optional URL to GPG signature file (.asc or .sig)
+        gpg_key: Optional GPG key ID or fingerprint to import and verify against
+        gpg_keyring: Optional path to GPG keyring file with trusted keys
+        auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
     """
     src_name = name + "-src"
 
@@ -2185,6 +2287,10 @@ def cmake_package(
         name = src_name,
         src_uri = src_uri,
         sha256 = sha256,
+        signature_uri = signature_uri,
+        gpg_key = gpg_key,
+        gpg_keyring = gpg_keyring,
+        auto_detect_signature = auto_detect_signature,
     )
 
     # Use eclass inheritance for cmake
@@ -2224,10 +2330,20 @@ def meson_package(
         meson_args: list[str] = [],
         deps: list[str] = [],
         maintainers: list[str] = [],
+        signature_uri: str | None = None,
+        gpg_key: str | None = None,
+        gpg_keyring: str | None = None,
+        auto_detect_signature: bool = True,
         **kwargs):
     """
     Convenience macro for Meson packages.
     Uses the meson eclass for standardized build phases.
+
+    Args:
+        signature_uri: Optional URL to GPG signature file (.asc or .sig)
+        gpg_key: Optional GPG key ID or fingerprint to import and verify against
+        gpg_keyring: Optional path to GPG keyring file with trusted keys
+        auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
     """
     src_name = name + "-src"
 
@@ -2235,6 +2351,10 @@ def meson_package(
         name = src_name,
         src_uri = src_uri,
         sha256 = sha256,
+        signature_uri = signature_uri,
+        gpg_key = gpg_key,
+        gpg_keyring = gpg_keyring,
+        auto_detect_signature = auto_detect_signature,
     )
 
     # Use eclass inheritance for meson
@@ -2274,10 +2394,20 @@ def cargo_package(
         cargo_args: list[str] = [],
         deps: list[str] = [],
         maintainers: list[str] = [],
+        signature_uri: str | None = None,
+        gpg_key: str | None = None,
+        gpg_keyring: str | None = None,
+        auto_detect_signature: bool = True,
         **kwargs):
     """
     Convenience macro for Rust/Cargo packages.
     Uses the cargo eclass for standardized build phases.
+
+    Args:
+        signature_uri: Optional URL to GPG signature file (.asc or .sig)
+        gpg_key: Optional GPG key ID or fingerprint to import and verify against
+        gpg_keyring: Optional path to GPG keyring file with trusted keys
+        auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
     """
     src_name = name + "-src"
 
@@ -2285,6 +2415,10 @@ def cargo_package(
         name = src_name,
         src_uri = src_uri,
         sha256 = sha256,
+        signature_uri = signature_uri,
+        gpg_key = gpg_key,
+        gpg_keyring = gpg_keyring,
+        auto_detect_signature = auto_detect_signature,
     )
 
     # Use eclass inheritance for cargo
@@ -2330,10 +2464,20 @@ def go_package(
         packages: list[str] = ["."],
         deps: list[str] = [],
         maintainers: list[str] = [],
+        signature_uri: str | None = None,
+        gpg_key: str | None = None,
+        gpg_keyring: str | None = None,
+        auto_detect_signature: bool = True,
         **kwargs):
     """
     Convenience macro for Go packages.
     Uses the go-module eclass for standardized build phases.
+
+    Args:
+        signature_uri: Optional URL to GPG signature file (.asc or .sig)
+        gpg_key: Optional GPG key ID or fingerprint to import and verify against
+        gpg_keyring: Optional path to GPG keyring file with trusted keys
+        auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
     """
     src_name = name + "-src"
 
@@ -2341,6 +2485,10 @@ def go_package(
         name = src_name,
         src_uri = src_uri,
         sha256 = sha256,
+        signature_uri = signature_uri,
+        gpg_key = gpg_key,
+        gpg_keyring = gpg_keyring,
+        auto_detect_signature = auto_detect_signature,
     )
 
     # Use eclass inheritance for go-module
@@ -2387,10 +2535,20 @@ def python_package(
         python: str = "python3",
         deps: list[str] = [],
         maintainers: list[str] = [],
+        signature_uri: str | None = None,
+        gpg_key: str | None = None,
+        gpg_keyring: str | None = None,
+        auto_detect_signature: bool = True,
         **kwargs):
     """
     Convenience macro for Python packages.
     Uses the python-single-r1 eclass for standardized build phases.
+
+    Args:
+        signature_uri: Optional URL to GPG signature file (.asc or .sig)
+        gpg_key: Optional GPG key ID or fingerprint to import and verify against
+        gpg_keyring: Optional path to GPG keyring file with trusted keys
+        auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
     """
     src_name = name + "-src"
 
@@ -2398,6 +2556,10 @@ def python_package(
         name = src_name,
         src_uri = src_uri,
         sha256 = sha256,
+        signature_uri = signature_uri,
+        gpg_key = gpg_key,
+        gpg_keyring = gpg_keyring,
+        auto_detect_signature = auto_detect_signature,
     )
 
     # Use eclass inheritance for python-single-r1

@@ -8,7 +8,7 @@ download_source(
 
 ebuild_package(
     name = "freecad",
-    srcs = [":freecad-src"],
+    source = ":freecad-src",
     version = "1.0.0",
     description = "Free and open-source 3D parametric modeler for CAD, MCAD, CAx, CAE and PLM",
     homepage = "https://www.freecad.org/",
@@ -36,7 +36,7 @@ cmake_src_compile
     src_install = """
 cmake_src_install
 """,
-    deps = [
+    bdepend = [
         "//packages/linux/core/boost:boost",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/network/openssl:openssl",

@@ -8,7 +8,7 @@ download_source(
 
 ebuild_package(
     name = "kicad",
-    srcs = [":kicad-src"],
+    source = ":kicad-src",
     version = "8.0.5",
     description = "Electronic Design Automation suite for schematic capture, PCB layout, and manufacturing",
     homepage = "https://www.kicad.org/",
@@ -28,7 +28,7 @@ cmake_src_compile
     src_install = """
 cmake_src_install
 """,
-    deps = [
+    bdepend = [
         "//packages/linux/core/boost:boost",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/network/openssl:openssl",

@@ -8,7 +8,7 @@ download_source(
 
 ebuild_package(
     name = "qcad",
-    srcs = [":qcad-src"],
+    source = ":qcad-src",
     version = "3.29.6.0",
     description = "Professional CAD system for 2D drafting and design with DXF/DWG support",
     homepage = "https://qcad.org/",
@@ -24,7 +24,7 @@ emake
     src_install = """
 emake INSTALL_ROOT="${DESTDIR}" install
 """,
-    deps = [
+    bdepend = [
         "//packages/linux/core/boost:boost",
     ],
     visibility = ["PUBLIC"],

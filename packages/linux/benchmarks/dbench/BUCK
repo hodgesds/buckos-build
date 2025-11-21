@@ -16,7 +16,6 @@ use_package(
     iuse = [],
     use_defaults = [],
     deps = [],
-    use_deps = {},
     configure_args = [],
     visibility = ["PUBLIC"],
 )

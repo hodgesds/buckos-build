@@ -18,7 +18,6 @@ use_package(
     iuse = ["histogram", "demo"],
     use_defaults = ["histogram", "demo"],
     deps = [],
-    use_deps = {},
     configure_args = [],
     use_configure = {
         "histogram": "--enable-histogram",

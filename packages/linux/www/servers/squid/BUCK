@@ -48,8 +48,11 @@ use_package(
         "caps": "--with-cap",
         "-caps": "--without-cap",
         "ldap": "--enable-auth-basic=LDAP",
+        "-ldap": "--disable-auth-basic",
         "pam": "--enable-auth-basic=PAM",
+        "-pam": "--disable-auth-basic",
         "kerberos": "--enable-auth-negotiate=kerberos",
+        "-kerberos": "--disable-auth-negotiate",
     },
     visibility = ["PUBLIC"],
 )

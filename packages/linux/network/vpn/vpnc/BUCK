@@ -10,7 +10,6 @@ use_package(
     iuse = ["hybrid"],
     use_defaults = [],
 
-    use_deps = {},
 
     use_configure = {
         "hybrid": "--enable-hybrid",

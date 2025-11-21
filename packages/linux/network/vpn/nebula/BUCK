@@ -10,7 +10,6 @@ use_package(
     iuse = [],
     use_defaults = [],
 
-    use_deps = {},
 
     use_configure = {},
 

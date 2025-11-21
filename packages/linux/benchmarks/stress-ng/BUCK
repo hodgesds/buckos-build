@@ -29,6 +29,7 @@ true
     make_args = [],
     use_configure = {
         "static": "STATIC=1",
+        "-static": "",
     },
     post_install = """
 mkdir -p "$DESTDIR/usr/bin"

@@ -10,10 +10,10 @@ use_package(
     iuse = ["ipv6"],
     use_defaults = ["ipv6"],
 
-    use_deps = {},
 
     use_configure = {
         "ipv6": "CFLAGS=-DENABLE_IPV6",
+        "-ipv6": "",
     },
 
     make_args = [

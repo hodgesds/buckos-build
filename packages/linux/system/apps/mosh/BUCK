@@ -14,7 +14,6 @@ use_package(
     license = "GPL-3+",
     iuse = ["hardening", "ufw", "utempter", "debug"],
     use_defaults = [],
-    use_deps = {},
     use_configure = {
         "hardening": "--enable-hardening",
         "-hardening": "--disable-hardening",

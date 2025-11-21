@@ -14,8 +14,6 @@ use_package(
     iuse = ["static-libs", "tools", "xml"],
     use_defaults = [],
 
-    use_deps = {},
-
     use_configure = {
         "static-libs": "--enable-static",
         "-static-libs": "--disable-static",

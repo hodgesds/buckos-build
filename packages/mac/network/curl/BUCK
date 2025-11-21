@@ -21,6 +21,7 @@ use_package(
         "ssl": "--with-openssl",
         "-ssl": "--without-ssl",
         "libressl": "--with-openssl",
+        "-libressl": "--without-ssl",
         "http2": "--with-nghttp2",
         "-http2": "--without-nghttp2",
         "ipv6": "--enable-ipv6",

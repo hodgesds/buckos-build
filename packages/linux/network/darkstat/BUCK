@@ -14,7 +14,6 @@ use_package(
     iuse = ["ipv6", "debug"],
     use_defaults = ["ipv6"],
 
-    use_deps = {},
 
     use_configure = {
         "ipv6": "--enable-ipv6",

@@ -20,6 +20,7 @@ use_package(
         "ssl": "--enable-dns-over-tls",
         "-ssl": "--disable-dns-over-tls",
         "lua": "--with-lua=luajit",
+        "-lua": "--without-lua",
         "sodium": "--with-libsodium",
         "-sodium": "--without-libsodium",
     },

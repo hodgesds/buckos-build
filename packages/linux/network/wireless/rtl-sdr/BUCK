@@ -10,7 +10,6 @@ use_package(
     iuse = ["udev"],
     use_defaults = [],
 
-    use_deps = {},
 
     use_configure = {
         "udev": "-DINSTALL_UDEV_RULES=ON",

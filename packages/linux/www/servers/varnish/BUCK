@@ -37,6 +37,8 @@ use_package(
         "-pcre2": "--without-pcre2",
         "readline": "--with-readline",
         "-readline": "--without-readline",
+        "ncurses": "--with-ncurses",
+        "-ncurses": "--without-ncurses",
         "jemalloc": "--with-jemalloc",
         "-jemalloc": "--without-jemalloc",
     },

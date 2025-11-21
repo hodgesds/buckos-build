@@ -33,6 +33,8 @@ use_package(
         "-systemd": "--disable-systemd",
         "udev": "--enable-udev",
         "-udev": "--disable-udev",
+        "readline": "--enable-client",
+        "-readline": "--disable-client",
     },
 
     configure_args = [

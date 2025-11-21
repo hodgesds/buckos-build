@@ -10,7 +10,6 @@ use_package(
     iuse = ["static-libs"],
     use_defaults = [],
 
-    use_deps = {},
 
     use_configure = {
         "static-libs": "--enable-static",

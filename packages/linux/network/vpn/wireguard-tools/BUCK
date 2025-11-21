@@ -10,7 +10,6 @@ use_package(
     iuse = ["bash-completion", "systemd"],
     use_defaults = ["bash-completion", "systemd"],
 
-    use_deps = {},
 
     use_configure = {},
 

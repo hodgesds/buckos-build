@@ -1,16 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
-
-download_source(
-    name = "rocksdb-src",
-    src_uri = "https://github.com/facebook/rocksdb/archive/refs/tags/v9.1.1.tar.gz",
-    sha256 = "54ca90dd0b0d8ccd8c24e3e8e2f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8",
-)
 
 cmake_package(
     name = "rocksdb",
-    srcs = [":rocksdb-src"],
     version = "9.1.1",
+    src_uri = "https://github.com/facebook/rocksdb/archive/refs/tags/v9.1.1.tar.gz",
+    sha256 = "54ca90dd0b0d8ccd8c24e3e8e2f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8",
     description = "Persistent key-value store for fast storage environments",
     homepage = "https://rocksdb.org/",
     license = "GPL-2.0 OR Apache-2.0",

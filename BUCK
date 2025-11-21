@@ -30,7 +30,7 @@ alias(
 
 alias(
     name = "bootloader",
-    actual = "//packages/linux/boot:grub",
+    actual = "//packages/linux/boot/grub:grub",
     visibility = ["PUBLIC"],
 )
 
@@ -476,7 +476,7 @@ alias(
 
 alias(
     name = "awesome",
-    actual = "//packages/linux/desktop:awesome-desktop",
+    actual = "//packages/linux/desktop/awesome:awesome-desktop",
     visibility = ["PUBLIC"],
 )
 

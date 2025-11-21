@@ -1,0 +1,21 @@
+load("//defs:package_defs.bzl", "cmake_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+# libzip - C library for reading, creating, and modifying zip archives
+cmake_package(
+    name = "libzip",
+    version = "1.10.1",
+    src_uri = "https://libzip.org/download/libzip-1.10.1.tar.xz",
+    sha256 = "dc3c8d5b4c8bbd09626864f6bcf93de701540f1f76f08ca8e01c2c0c4df59e12",
+    description = "C library for reading, creating, and modifying zip archives",
+    homepage = "https://libzip.org/",
+    license = "BSD-3-Clause",
+    cmake_args = [
+        "-DBUILD_SHARED_LIBS=ON",
+    ],
+    deps = [
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/core/bzip2:bzip2",
+    ],
+    visibility = ["PUBLIC"],
+)

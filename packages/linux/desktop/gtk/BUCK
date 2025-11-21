@@ -1,0 +1,54 @@
+load("//defs:package_defs.bzl", "meson_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+# GTK3 - GIMP Toolkit version 3
+meson_package(
+    name = "gtk3",
+    version = "3.24.41",
+    src_uri = "https://download.gnome.org/sources/gtk+/3.24/gtk+-3.24.41.tar.xz",
+    sha256 = "47b1992fd4de581a5436906af6e4c47ff8833d6d34c7b11d2cdbb55cdb63fc3b",
+    description = "Multi-platform toolkit for creating graphical user interfaces",
+    homepage = "https://www.gtk.org/",
+    license = "LGPL-2.1+",
+    meson_args = [
+        "-Dintrospection=false",
+        "-Ddemos=false",
+        "-Dexamples=false",
+        "-Dtests=false",
+    ],
+    deps = [
+        "//packages/linux/dev-libs/glib:glib",
+        "//packages/linux/fonts/libraries/freetype:freetype",
+        "//packages/linux/desktop/pango:pango",
+        "//packages/linux/desktop/cairo:cairo",
+        "//packages/linux/desktop/gdk-pixbuf:gdk-pixbuf",
+        "//packages/linux/desktop/at-spi2-core:at-spi2-core",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# GTK4 - GIMP Toolkit version 4
+meson_package(
+    name = "gtk4",
+    version = "4.14.1",
+    src_uri = "https://download.gnome.org/sources/gtk/4.14/gtk-4.14.1.tar.xz",
+    sha256 = "8038ac97b5e90d4c2bc1f6f8a7f0a0f3f8bd4c8e0d5bf8e0b7c5fc3d78e3f2c3",
+    description = "Multi-platform toolkit for creating graphical user interfaces (GTK4)",
+    homepage = "https://www.gtk.org/",
+    license = "LGPL-2.1+",
+    meson_args = [
+        "-Dintrospection=disabled",
+        "-Dbuild-demos=false",
+        "-Dbuild-examples=false",
+        "-Dbuild-tests=false",
+        "-Dmedia-gstreamer=disabled",
+    ],
+    deps = [
+        "//packages/linux/dev-libs/glib:glib",
+        "//packages/linux/fonts/libraries/freetype:freetype",
+        "//packages/linux/desktop/pango:pango",
+        "//packages/linux/desktop/cairo:cairo",
+        "//packages/linux/desktop/gdk-pixbuf:gdk-pixbuf",
+    ],
+    visibility = ["PUBLIC"],
+)

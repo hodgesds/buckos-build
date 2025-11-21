@@ -23,7 +23,7 @@ kernel_config(
 
 kernel_build(
     name = "custom-workstation",
-    srcs = ["//packages/linux/kernel/src:linux-src"],
+    source = "//packages/linux/kernel/src:linux-src",
     version = "6.12.6",
     config_dep = ":custom-workstation-config",
     visibility = ["PUBLIC"],
@@ -33,7 +33,7 @@ kernel_build(
 # Use when you have a complete kernel config from another source
 kernel_build(
     name = "custom-full-config",
-    srcs = ["//packages/linux/kernel/src:linux-src"],
+    source = "//packages/linux/kernel/src:linux-src",
     version = "6.12.6",
     config = "my-complete-config.config",
     visibility = ["PUBLIC"],
@@ -70,7 +70,7 @@ kernel_config(
 
 kernel_build(
     name = "debug-kernel",
-    srcs = ["//packages/linux/kernel/src:linux-src"],
+    source = "//packages/linux/kernel/src:linux-src",
     version = "6.12.6",
     config_dep = ":debug-kernel-config",
     visibility = ["PUBLIC"],

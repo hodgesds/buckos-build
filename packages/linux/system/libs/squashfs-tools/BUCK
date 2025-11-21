@@ -37,7 +37,7 @@ install -m755 mksquashfs $DESTDIR/usr/bin/
 install -m755 unsquashfs $DESTDIR/usr/bin/
 """,
     deps = [
-        "//packages/linux/core:zlib",
+        "//packages/linux/core/zlib:zlib",
         "//packages/linux/system/libs/compression/xz:xz",
     ],
     visibility = ["PUBLIC"],

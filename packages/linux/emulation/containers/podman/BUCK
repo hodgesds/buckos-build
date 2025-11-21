@@ -190,7 +190,7 @@ mkdir -p "$DESTDIR/usr/bin"
 install -m 0755 bin/conmon "$DESTDIR/usr/bin/"
     """,
     deps = [
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/libseccomp:libseccomp",
         "//packages/linux/system/init/systemd:libsystemd",
     ],

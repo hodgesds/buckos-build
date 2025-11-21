@@ -23,7 +23,7 @@ meson_package(
     ],
     deps = [
         "//packages/linux/core/musl:musl",
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/fonts/libraries/freetype:freetype",
         "//packages/linux/graphics/utilities/cairo:cairo",
     ],

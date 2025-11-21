@@ -55,7 +55,7 @@ configure_make_package(
         "--with-init-script=systemd",
     ],
     deps = [
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/core:libxml2",
         "//packages/linux/core/libnl:libnl",
         "//packages/linux/core:yajl",
@@ -87,7 +87,7 @@ configure_make_package(
         "--with-driver-modules=no",
     ],
     deps = [
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/core:libxml2",
         "//packages/linux/network/gnutls:gnutls",
     ],

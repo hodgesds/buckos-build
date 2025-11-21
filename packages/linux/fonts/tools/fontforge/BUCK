@@ -27,10 +27,10 @@ cmake_package(
     ],
     deps = [
         "//packages/linux/core/musl:musl",
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/core:libxml2",
         "//packages/linux/core/zlib:zlib",
-        "//packages/linux/core:libpng",
+        "//packages/linux/system/libs/image/libpng:libpng",
         "//packages/linux/core:libjpeg-turbo",
         "//packages/linux/core:libtiff",
         "//packages/linux/core:giflib",

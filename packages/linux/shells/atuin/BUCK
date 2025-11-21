@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 # atuin - Magical shell history (Rust-based)
@@ -8,22 +8,20 @@ download_source(
     sha256 = "de6d2bcf10de4d757916c7e92a70f15929fc1dea75abc4df09b0baedf26a53b2",
 )
 
-configure_make_package(
+ebuild_package(
     name = "atuin",
     source = ":atuin-src",
     version = "18.4.0",
     description = "Magical shell history - sync, search and backup",
     homepage = "https://atuin.sh/",
     license = "MIT",
-    build_in_source = True,
-    configure_args = [],
-    make_args = [
-        "release",
-    ],
-    install_args = [
-        "PREFIX=/usr",
-    ],
-    deps = [
+    src_compile = """
+make release
+""",
+    src_install = """
+make install PREFIX=/usr DESTDIR="$DESTDIR"
+""",
+    rdepend = [
         "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],

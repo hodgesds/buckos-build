@@ -20,7 +20,7 @@ configure_make_package(
         "UDEVDIR=/lib/udev",
     ],
     deps = [
-        "//packages/linux/system/init:eudev",
+        "//packages/linux/system/init/eudev:eudev",
     ],
     visibility = ["PUBLIC"],
 )

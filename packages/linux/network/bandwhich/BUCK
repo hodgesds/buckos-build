@@ -1,26 +1,21 @@
-load("//defs:package_defs.bzl", "download_source", "cargo_package", "binary_package")
+load("//defs:package_defs.bzl", "cargo_package", "binary_package")
 
 # =============================================================================
 # bandwhich - Terminal bandwidth utilization tool
 # =============================================================================
 
-download_source(
-    name = "bandwhich-src",
-    src_uri = "https://github.com/imsnif/bandwhich/archive/refs/tags/v0.22.2.tar.gz",
-    sha256 = "f1g2h3i4j5k6l7m8n9o0p1q2r3s4t5u6v7w8x9y0z1a2b3c4d5e6f7g8h9i0j1k2",
-)
-
 cargo_package(
     name = "bandwhich",
-    srcs = [":bandwhich-src"],
     version = "0.22.2",
+    src_uri = "https://github.com/imsnif/bandwhich/archive/refs/tags/v0.22.2.tar.gz",
+    sha256 = "f1g2h3i4j5k6l7m8n9o0p1q2r3s4t5u6v7w8x9y0z1a2b3c4d5e6f7g8h9i0j1k2",
     description = "Terminal bandwidth utilization tool showing per-process usage",
     homepage = "https://github.com/imsnif/bandwhich",
     license = "MIT",
     cargo_args = [
         "--release",
     ],
-    deps = [
+    rdepend = [
         "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],

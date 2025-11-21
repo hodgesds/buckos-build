@@ -15,10 +15,10 @@ use_package(
     iuse = ["pam", "selinux", "audit", "acl", "attr", "nls", "tcb", "nscd", "doc"],
     use_defaults = ["pam"],
     use_deps = {
-        "pam": ["//packages/linux/system/security/auth/pam"],
-        "selinux": ["//packages/linux/system/security/selinux"],
-        "audit": ["//packages/linux/system/security/audit"],
-        "acl": ["//packages/linux/system/libs/ipc/acl"],
+        "pam": ["//packages/linux/system/security/auth/pam:pam"],
+        "selinux": ["//packages/linux/system/security/selinux:selinux"],
+        "audit": ["//packages/linux/system/security/audit:audit"],
+        "acl": ["//packages/linux/system/libs/ipc/acl:acl"],
         "attr": ["//packages/linux/system/libs/ipc/attr:attr"],
     },
     use_configure = {

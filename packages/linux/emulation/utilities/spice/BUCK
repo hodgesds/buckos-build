@@ -49,7 +49,7 @@ configure_make_package(
     ],
     deps = [
         ":spice-protocol",
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/core:pixman",
         "//packages/linux/core:openssl",
         "//packages/linux/core:opus",
@@ -90,7 +90,7 @@ configure_make_package(
     deps = [
         ":spice-protocol",
         "//packages/linux/desktop/gtk:gtk3",
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/core:pixman",
         "//packages/linux/core:lz4",
         "//packages/linux/audio/daemons/pulseaudio:pulseaudio",
@@ -134,7 +134,7 @@ mkdir -p "$DESTDIR/usr/lib/udev/rules.d"
 install -m 0644 data/70-spice-vdagentd.rules "$DESTDIR/usr/lib/udev/rules.d/" 2>/dev/null || true
     """,
     deps = [
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/desktop/xorg:libx11",
         "//packages/linux/desktop/xorg:libxfixes",
         "//packages/linux/desktop/xorg:libxrandr",

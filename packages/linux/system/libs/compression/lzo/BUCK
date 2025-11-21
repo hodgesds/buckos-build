@@ -1,0 +1,24 @@
+load("//defs:package_defs.bzl", "configure_make_package", "download_source")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+# LZO - Lossless data compression library
+download_source(
+    name = "lzo-src",
+    src_uri = "https://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz",
+    sha256 = "c0f892943208266f9b6543b3ae308fab6284c5c90e627931446fb49b4221a072",
+)
+
+configure_make_package(
+    name = "lzo",
+    source = ":lzo-src",
+    version = "2.10",
+    description = "LZO is a portable lossless data compression library",
+    homepage = "https://www.oberhumer.com/opensource/lzo/",
+    license = "GPL-2.0",
+    configure_args = [
+        "--enable-shared",
+        "--disable-static",
+    ],
+    deps = [],
+    visibility = ["PUBLIC"],
+)

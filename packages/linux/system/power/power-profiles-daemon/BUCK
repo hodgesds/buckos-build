@@ -19,7 +19,7 @@ meson_package(
     ],
     deps = [
         "//packages/linux/core/musl:musl",
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/core:dbus",
         "//packages/linux/core/polkit:polkit",
         "//packages/linux/laptop/battery/upower:upower",

@@ -15,10 +15,10 @@ use_package(
     iuse = ["nls", "acl", "attr", "caps", "selinux", "xattr", "static-libs"],
     use_defaults = ["acl", "attr"],
     use_deps = {
-        "acl": ["//packages/linux/system/libs/ipc/acl"],
+        "acl": ["//packages/linux/system/libs/ipc/acl:acl"],
         "attr": ["//packages/linux/system/libs/ipc/attr:attr"],
-        "caps": ["//packages/linux/system/libs/ipc/libcap"],
-        "selinux": ["//packages/linux/system/security/selinux"],
+        "caps": ["//packages/linux/system/libs/ipc/libcap:libcap"],
+        "selinux": ["//packages/linux/system/security/selinux:selinux"],
     },
     use_configure = {
         "nls": "--enable-nls",

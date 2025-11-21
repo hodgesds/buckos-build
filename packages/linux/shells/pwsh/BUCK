@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 # pwsh - PowerShell for Linux
@@ -8,21 +8,20 @@ download_source(
     sha256 = "d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3",
 )
 
-configure_make_package(
+ebuild_package(
     name = "pwsh",
     source = ":pwsh-src",
     version = "7.4.1",
     description = "Cross-platform PowerShell",
     homepage = "https://github.com/PowerShell/PowerShell",
     license = "MIT",
-    build_system = "none",
-    install_commands = [
-        "mkdir -p ${DESTDIR}/usr/lib/powershell",
-        "cp -r * ${DESTDIR}/usr/lib/powershell/",
-        "mkdir -p ${DESTDIR}/usr/bin",
-        "ln -s /usr/lib/powershell/pwsh ${DESTDIR}/usr/bin/pwsh",
-    ],
-    deps = [
+    src_install = """
+mkdir -p "$DESTDIR/usr/lib/powershell"
+cp -r * "$DESTDIR/usr/lib/powershell/"
+mkdir -p "$DESTDIR/usr/bin"
+ln -s /usr/lib/powershell/pwsh "$DESTDIR/usr/bin/pwsh"
+""",
+    rdepend = [
         "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],

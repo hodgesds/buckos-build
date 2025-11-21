@@ -52,7 +52,7 @@ VBOX_VDE=1
 VBOXCFG
     """,
     deps = [
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/core:libxml2",
         "//packages/linux/core:libxslt",
@@ -106,7 +106,7 @@ WantedBy=multi-user.target
 EOF
     """,
     deps = [
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
     ],
     visibility = ["PUBLIC"],
 )

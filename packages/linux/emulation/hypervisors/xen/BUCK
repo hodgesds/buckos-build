@@ -31,7 +31,7 @@ configure_make_package(
         "XEN_VENDORVERSION=-buckos",
     ],
     deps = [
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/core:libaio",
         "//packages/linux/lang/python:python",
@@ -63,7 +63,7 @@ configure_make_package(
         "--enable-tools",
     ],
     deps = [
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/lang/python:python",
     ],
@@ -87,7 +87,7 @@ configure_make_package(
         "--disable-tools",
     ],
     deps = [
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
     ],
     visibility = ["PUBLIC"],
 )

@@ -87,7 +87,7 @@ make PREFIX=/usr DESTDIR="$DESTDIR" install
 """,
     deps = [
         "//packages/linux/core/musl:musl",
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs:libseccomp",
     ],
     visibility = ["PUBLIC"],
@@ -233,7 +233,7 @@ configure_make_package(
     ],
     deps = [
         "//packages/linux/core/musl:musl",
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs:libslirp",
         "//packages/linux/system/libs:libseccomp",
         "//packages/linux/system/libs:libcap",

@@ -37,15 +37,15 @@ PREFIX ?= /usr
 all: ping tracepath
 
 ping: ping/ping.c ping/ping_common.c ping/ping6_common.c
-	$(CC) $(CFLAGS) -o ping ping/ping.c ping/ping_common.c -lm -lcap
+    $(CC) $(CFLAGS) -o ping ping/ping.c ping/ping_common.c -lm -lcap
 
 tracepath: tracepath.c
-	$(CC) $(CFLAGS) -o tracepath tracepath.c
+    $(CC) $(CFLAGS) -o tracepath tracepath.c
 
 install: all
-	install -d $(DESTDIR)$(PREFIX)/bin
-	install -m 4755 ping $(DESTDIR)$(PREFIX)/bin/
-	install -m 755 tracepath $(DESTDIR)$(PREFIX)/bin/
+    install -d $(DESTDIR)$(PREFIX)/bin
+    install -m 4755 ping $(DESTDIR)$(PREFIX)/bin/
+    install -m 755 tracepath $(DESTDIR)$(PREFIX)/bin/
 MAKEFILE
 """,
 

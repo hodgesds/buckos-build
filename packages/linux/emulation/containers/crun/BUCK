@@ -23,7 +23,7 @@ configure_make_package(
         "--with-python-bindings",
     ],
     deps = [
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/core:libcap",
         "//packages/linux/core:yajl",
         "//packages/linux/system/libs/libseccomp:libseccomp",

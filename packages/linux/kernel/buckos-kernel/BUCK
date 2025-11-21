@@ -19,7 +19,7 @@ load("//defs:package_defs.bzl", "kernel_build")
 
 kernel_build(
     name = "buckos-kernel",
-    srcs = ["//packages/linux/kernel/src:linux-src"],
+    source = "//packages/linux/kernel/src:linux-src",
     version = "6.12.6",
     config_dep = "//packages/linux/kernel/configs:buckos-default",
     visibility = ["PUBLIC"],
@@ -29,7 +29,7 @@ kernel_build(
 # Smaller footprint, fewer drivers, faster boot
 kernel_build(
     name = "buckos-kernel-minimal",
-    srcs = ["//packages/linux/kernel/src:linux-src"],
+    source = "//packages/linux/kernel/src:linux-src",
     version = "6.12.6",
     config_dep = "//packages/linux/kernel/configs:buckos-minimal",
     visibility = ["PUBLIC"],
@@ -39,7 +39,7 @@ kernel_build(
 # Optimized for server workloads
 kernel_build(
     name = "buckos-kernel-server",
-    srcs = ["//packages/linux/kernel/src:linux-src"],
+    source = "//packages/linux/kernel/src:linux-src",
     version = "6.12.6",
     config_dep = "//packages/linux/kernel/configs:buckos-server",
     visibility = ["PUBLIC"],
@@ -49,7 +49,7 @@ kernel_build(
 # Optimized for running inside virtual machines
 kernel_build(
     name = "buckos-kernel-vm",
-    srcs = ["//packages/linux/kernel/src:linux-src"],
+    source = "//packages/linux/kernel/src:linux-src",
     version = "6.12.6",
     config_dep = "//packages/linux/kernel/configs:buckos-vm-guest",
     visibility = ["PUBLIC"],
@@ -58,7 +58,7 @@ kernel_build(
 # Defconfig kernel (for development/testing)
 kernel_build(
     name = "buckos-kernel-defconfig",
-    srcs = ["//packages/linux/kernel/src:linux-src"],
+    source = "//packages/linux/kernel/src:linux-src",
     version = "6.12.6",
     visibility = ["PUBLIC"],
 )

@@ -17,7 +17,7 @@ configure_make_package(
     configure_args = [],
     deps = [
         "//packages/linux/system/filesystem/management/lvm2:lvm2",
-        "//packages/linux/system/init:eudev",
+        "//packages/linux/system/init/eudev:eudev",
     ],
     visibility = ["PUBLIC"],
 )

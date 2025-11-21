@@ -40,11 +40,11 @@ binary_package(
     deps = use_dep(
         {
             "zlib": ["//packages/linux/core/zlib:zlib"],
-            "qt6": ["//packages/linux/desktop/qt6-base"],
+            # "qt6": ["//packages/linux/desktop/qt6-base:qt6-base"],
             "clang": ["//packages/linux/lang/clang:clang"],
-            "curl": ["//packages/linux/network/curl"],
+            "curl": ["//packages/linux/network/curl:curl"],
         },
-        ["zlib", "qt6", "clang", "curl"],
+        ["zlib", "clang", "curl"],
     ),
     visibility = ["PUBLIC"],
 )

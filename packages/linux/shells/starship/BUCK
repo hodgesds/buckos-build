@@ -1,18 +1,12 @@
-load("//defs:package_defs.bzl", "download_source", "cargo_package")
+load("//defs:package_defs.bzl", "cargo_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 # starship - Cross-shell prompt with customizable features
-
-download_source(
-    name = "starship-src",
-    src_uri = "https://github.com/starship/starship/archive/refs/tags/v1.21.1.tar.gz",
-    sha256 = "e9f1d1e0c0d4a7f0f8b5e0d3c5a7f0e9d8c0b5a7f0e9d8c0b5a7f0e9d8c0b5a7",
-)
-
 cargo_package(
     name = "starship",
-    srcs = [":starship-src"],
     version = "1.21.1",
+    src_uri = "https://github.com/starship/starship/archive/refs/tags/v1.21.1.tar.gz",
+    sha256 = "e9f1d1e0c0d4a7f0f8b5e0d3c5a7f0e9d8c0b5a7f0e9d8c0b5a7f0e9d8c0b5a7",
     description = "Cross-shell prompt with customizable features",
     homepage = "https://starship.rs/",
     license = "ISC",
@@ -21,7 +15,7 @@ cargo_package(
     ],
     deps = [
         "//packages/linux/core/musl:musl",
-        "//packages/linux/network/openssl",
+        "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],
 )

@@ -1,34 +1,7 @@
-# Filegroup for all shells
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
-filegroup(
-    name = "all-shells",
-    srcs = [
-        "//packages/linux/core/bash:bash",
-        "//packages/linux/shells/zsh",
-        "//packages/linux/shells/dash",
-        "//packages/linux/shells/fish",
-        "//packages/linux/shells/mksh",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# Shell enhancement tools
-filegroup(
-    name = "shell-enhancements",
-    srcs = [
-        "//packages/linux/shells/atuin",
-        "//packages/linux/shells/starship",
-        "//packages/linux/shells/zoxide",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# Filegroup for POSIX-compliant shells
-filegroup(
-    name = "posix-shells",
-    srcs = [
-        "//packages/linux/core/bash:bash",
-        "//packages/linux/shells/dash",
-    ],
-    visibility = ["PUBLIC"],
-)
+# Shell packages are defined in subdirectories
+# To build shells, use:
+#   buck2 build //packages/linux/core/bash:bash
+#   buck2 build //packages/linux/shells/zsh:zsh
+#   buck2 build //packages/linux/shells/dash:dash
+#   buck2 build //packages/linux/shells/fish:fish
+#   buck2 build //packages/linux/shells/mksh:mksh

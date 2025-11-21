@@ -151,15 +151,6 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
-# Clipboard utilities (both X11 and Wayland)
-filegroup(
-    name = "clipboard-utilities",
-    srcs = [
-        "//packages/linux/desktop/xorg-utilities:clipboard",
-        "//packages/linux/desktop/wayland-utilities:clipboard",
-    ],
-    visibility = ["PUBLIC"],
-)
 
 
 # Notification utilities (both X11 and Wayland)
@@ -174,15 +165,6 @@ filegroup(
 #     visibility = ["PUBLIC"],
 # )
 
-# Screenshot utilities (both X11 and Wayland)
-filegroup(
-    name = "screenshot-utilities",
-    srcs = [
-        "//packages/linux/desktop/xorg-utilities:screenshot",
-        "//packages/linux/desktop/wayland-utilities:screenshot",
-    ],
-    visibility = ["PUBLIC"],
-)
 
 # Status bar utilities (both X11 and Wayland)
 filegroup(

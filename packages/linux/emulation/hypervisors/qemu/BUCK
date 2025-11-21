@@ -63,7 +63,7 @@ configure_make_package(
         "--target-list=x86_64-softmmu,x86_64-linux-user,i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,arm-softmmu,arm-linux-user,riscv64-softmmu,riscv64-linux-user,riscv32-softmmu,riscv32-linux-user,ppc64-softmmu,ppc64-linux-user,s390x-softmmu,s390x-linux-user,mips64el-softmmu,mips64el-linux-user",
     ],
     deps = [
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/core:pixman",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/core:zstd",
@@ -96,7 +96,7 @@ configure_make_package(
         "--enable-guest-agent",
     ],
     deps = [
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
     ],
     visibility = ["PUBLIC"],
 )
@@ -120,7 +120,7 @@ configure_make_package(
         "--target-list=x86_64-linux-user,i386-linux-user,aarch64-linux-user,arm-linux-user,riscv64-linux-user,riscv32-linux-user,ppc64-linux-user,s390x-linux-user,mips64el-linux-user",
     ],
     deps = [
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
@@ -144,7 +144,7 @@ configure_make_package(
         "--enable-tools",
     ],
     deps = [
-        "//packages/linux/core:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/core:zstd",
     ],

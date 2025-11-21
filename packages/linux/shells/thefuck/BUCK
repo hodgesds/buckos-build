@@ -11,7 +11,7 @@ python_package(
     homepage = "https://github.com/nvbn/thefuck",
     license = "MIT",
     deps = [
-        "//packages/linux/lang/python",
+        "//packages/linux/lang/python:python",
     ],
     visibility = ["PUBLIC"],
 )

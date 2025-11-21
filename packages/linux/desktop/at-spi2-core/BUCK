@@ -1,0 +1,22 @@
+load("//defs:package_defs.bzl", "meson_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+# AT-SPI2 Core - Assistive Technology Service Provider Interface
+meson_package(
+    name = "at-spi2-core",
+    version = "2.52.0",
+    src_uri = "https://download.gnome.org/sources/at-spi2-core/2.52/at-spi2-core-2.52.0.tar.xz",
+    sha256 = "0ac3fc8320c8d01fa147c272ba7fa03806389c6b03d3c406d0823e30e35ff5ab",
+    description = "Protocol definitions and daemon for D-Bus at-spi",
+    homepage = "https://www.freedesktop.org/wiki/Accessibility/",
+    license = "LGPL-2.1+",
+    meson_args = [
+        "-Dintrospection=disabled",
+        "-Ddocs=false",
+    ],
+    deps = [
+        "//packages/linux/dev-libs/glib:glib",
+        "//packages/linux/system/libs/ipc/dbus:dbus",
+    ],
+    visibility = ["PUBLIC"],
+)

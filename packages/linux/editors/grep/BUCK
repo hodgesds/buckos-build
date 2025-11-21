@@ -19,7 +19,7 @@ configure_make_package(
     ],
     deps = [
         "//packages/linux/core/musl:musl",
-        "//packages/linux/core/pcre2",
+        "//packages/linux/core/pcre2:pcre2",
     ],
     visibility = ["PUBLIC"],
 )

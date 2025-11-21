@@ -18,10 +18,10 @@ binary_package(
     homepage = "https://ninja-build.org/",
     license = "Apache-2.0",
     install_script = """
-        cd ninja-* || cd .
+        cd $SRCS/ninja-* || cd $SRCS
         python3 configure.py --bootstrap
-        mkdir -p "$DESTDIR/usr/bin"
-        cp ninja "$DESTDIR/usr/bin/"
+        mkdir -p "$OUT/usr/bin"
+        cp ninja "$OUT/usr/bin/"
     """,
     visibility = ["PUBLIC"],
 )

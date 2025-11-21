@@ -9,7 +9,7 @@ download_source(
 
 precompiled_package(
     name = "shellcheck",
-    srcs = [":shellcheck-src"],
+    source = ":shellcheck-src",
     version = "0.10.0",
     description = "Shell script static analysis tool",
     homepage = "https://www.shellcheck.net/",

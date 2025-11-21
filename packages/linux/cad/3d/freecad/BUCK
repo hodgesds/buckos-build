@@ -36,7 +36,7 @@ cmake_src_compile
     src_install = """
 cmake_src_install
 """,
-    bdepend = [
+    deps = [
         "//packages/linux/dev-libs/boost:boost",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/network/openssl:openssl",

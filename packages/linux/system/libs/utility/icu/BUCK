@@ -14,7 +14,9 @@ configure_make_package(
     description = "International Components for Unicode library",
     homepage = "https://icu.unicode.org/",
     license = "Unicode-3.0",
-    source_dir = "source",
+    pre_configure = """
+        cd source
+    """,
     configure_args = [
         "--disable-samples",
         "--disable-tests",

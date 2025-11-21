@@ -15,12 +15,8 @@ configure_make_package(
     description = "Count blank lines, comment lines, and physical lines of source code",
     homepage = "https://github.com/AlDanial/cloc",
     license = "GPL-2.0",
-    build_in_source = True,
     configure_args = [],
     make_args = [
-        "prefix=/usr",
-    ],
-    install_args = [
         "prefix=/usr",
     ],
     deps = [

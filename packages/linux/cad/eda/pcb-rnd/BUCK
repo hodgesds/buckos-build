@@ -20,7 +20,7 @@ configure_make_package(
         "--all=buildin",
     ],
     deps = [
-        "//packages/linux/core/glib:glib",
+        "//packages/linux/dev-libs/glib:glib",
     ],
     visibility = ["PUBLIC"],
 )

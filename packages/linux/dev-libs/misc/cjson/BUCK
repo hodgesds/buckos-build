@@ -13,6 +13,7 @@ cmake_package(
         "-DENABLE_CJSON_TEST=OFF",
         "-DBUILD_SHARED_LIBS=ON",
         "-DBUILD_SHARED_AND_STATIC_LIBS=OFF",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
     ],
     visibility = ["PUBLIC"],
 )

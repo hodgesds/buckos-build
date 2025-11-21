@@ -26,10 +26,10 @@ cmake_src_compile
     src_install = """
 cmake_src_install
 """,
-    bdepend = [
+    deps = [
         "//packages/linux/dev-libs/boost:boost",
-        "//packages/linux/core/gmp:gmp",
-        "//packages/linux/core/mpfr:mpfr",
+        "//packages/linux/system/libs/utility/gmp:gmp",
+        "//packages/linux/system/libs/utility/mpfr:mpfr",
     ],
     visibility = ["PUBLIC"],
 )

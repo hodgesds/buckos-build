@@ -13,7 +13,7 @@ alias(
 
 alias(
     name = "vim-minimal",
-    actual = "//packages/linux/editors/vim:vim-minimal",
+    actual = "//packages/linux/editors/vim-minimal:vim-minimal",
     visibility = ["PUBLIC"],
 )
 
@@ -31,7 +31,7 @@ alias(
 
 alias(
     name = "emacs-nox",
-    actual = "//packages/linux/editors/emacs:emacs-nox",
+    actual = "//packages/linux/editors/emacs-nox:emacs-nox",
     visibility = ["PUBLIC"],
 )
 

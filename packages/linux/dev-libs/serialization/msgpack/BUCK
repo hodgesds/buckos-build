@@ -12,6 +12,7 @@ cmake_package(
     cmake_args = [
         "-DMSGPACK_BUILD_TESTS=OFF",
         "-DMSGPACK_BUILD_EXAMPLES=OFF",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
     ],
     visibility = ["PUBLIC"],
 )

@@ -1,37 +1,15 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "go_package")
 
 # influxdb - Time series database
-#
-# USE flags:
-#   go       - Go runtime (always required)
 
-download_source(
-    name = "influxdb-src",
+go_package(
+    name = "influxdb",
+    version = "2.7.5",
     src_uri = "https://github.com/influxdata/influxdb/archive/refs/tags/v2.7.5.tar.gz",
     sha256 = "c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0",
-)
-
-configure_make_package(
-    name = "influxdb",
-    source = ":influxdb-src",
-    version = "2.7.5",
+    bins = ["influxd", "influx"],
     description = "Time series database for metrics and events",
     homepage = "https://www.influxdata.com",
     license = "MIT",
-    build_system = "go",
-    build_commands = [
-        "make build",
-    ],
-    install_commands = [
-        "install -Dm755 bin/influxd ${DESTDIR}/usr/bin/influxd",
-        "install -Dm755 bin/influx ${DESTDIR}/usr/bin/influx",
-    ],
-    deps = use_dep(
-        {
-            "go": ["//packages/linux/lang/go:go"],
-        },
-        ["go"],
-    ),
     visibility = ["PUBLIC"],
 )

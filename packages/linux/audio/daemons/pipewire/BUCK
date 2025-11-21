@@ -14,16 +14,11 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 # - doc: Documentation (default: disabled)
 # - systemd: systemd integration (default: disabled)
 
-download_source(
-    name = "pipewire-src",
-    src_uri = "https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/1.0.7/pipewire-1.0.7.tar.gz",
-    sha256 = "c9f8d65fe5e6e47fa tried4c8a0b8b8c8e8a5c5e5f5e5a9e70386e9e04c19e3e4f2f6c7",
-)
-
 meson_package(
     name = "pipewire",
-    srcs = [":pipewire-src"],
     version = "1.0.7",
+    src_uri = "https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/1.0.7/pipewire-1.0.7.tar.gz",
+    sha256 = "c9f8d65fe5e6e47fa tried4c8a0b8b8c8e8a5c5e5f5e5a9e70386e9e04c19e3e4f2f6c7",
     description = "Low-latency audio/video router and processor",
     homepage = "https://pipewire.org/",
     license = "MIT",

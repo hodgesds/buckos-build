@@ -15,16 +15,11 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 # - ipv6: IPv6 support (default: enabled)
 # - systemd: systemd integration (default: disabled)
 
-download_source(
-    name = "mpd-src",
-    src_uri = "https://www.musicpd.org/download/mpd/0.23/mpd-0.23.15.tar.xz",
-    sha256 = "d2865e98f5c5e118bc3c5bab1d44ab6c6a741e3c7e32cdb0c0a3e3a6a6c7e8f9",
-)
-
 meson_package(
     name = "mpd",
-    srcs = [":mpd-src"],
     version = "0.23.15",
+    src_uri = "https://www.musicpd.org/download/mpd/0.23/mpd-0.23.15.tar.xz",
+    sha256 = "d2865e98f5c5e118bc3c5bab1d44ab6c6a741e3c7e32cdb0c0a3e3a6a6c7e8f9",
     description = "Music Player Daemon - flexible, powerful, server-side audio player",
     homepage = "https://www.musicpd.org/",
     license = "GPL-2",

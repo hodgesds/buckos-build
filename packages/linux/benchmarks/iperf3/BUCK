@@ -19,8 +19,8 @@ use_package(
     use_defaults = ["ssl"],
     deps = [],
     use_deps = {
-        "ssl": ["//packages/linux/network/openssl"],
-        "sctp": ["//packages/linux/network/lksctp-tools"],
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "sctp": ["//packages/linux/network/lksctp-tools:lksctp-tools"],
     },
     configure_args = [
         "--disable-static",

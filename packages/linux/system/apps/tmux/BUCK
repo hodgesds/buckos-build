@@ -22,6 +22,8 @@ use_package(
         "-utf8proc": "--disable-utf8proc",
         "systemd": "--enable-systemd",
         "-systemd": "--disable-systemd",
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
         "debug": "--enable-debug",
         "-debug": "--disable-debug",
     },

@@ -10,7 +10,6 @@ use_package(
     iuse = ["sourcefire", "threads"],
     use_defaults = ["sourcefire", "threads"],
 
-    use_deps = {},
 
     use_configure = {
         "sourcefire": "--enable-sourcefire",

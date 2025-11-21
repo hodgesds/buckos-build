@@ -14,8 +14,6 @@ use_package(
     license = "GPL-2+",
     iuse = [],
     use_defaults = [],
-    use_deps = {},
-    use_configure = {},
     pre_configure = "true",
     make_args = [
         "PREFIX=/usr",

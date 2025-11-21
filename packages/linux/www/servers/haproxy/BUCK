@@ -38,11 +38,17 @@ use_package(
     ],
     use_configure = {
         "ssl": "USE_OPENSSL=1",
+        "-ssl": "",
         "zlib": "USE_ZLIB=1",
+        "-zlib": "",
         "pcre2": "USE_PCRE2=1",
+        "-pcre2": "",
         "prometheus": "USE_PROMEX=1",
+        "-prometheus": "",
         "threads": "USE_THREAD=1",
+        "-threads": "",
         "systemd": "USE_SYSTEMD=1",
+        "-systemd": "",
     },
     install_args = [
         "PREFIX=/usr",

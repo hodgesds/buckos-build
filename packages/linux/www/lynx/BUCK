@@ -42,6 +42,7 @@ use_package(
         "unicode": "--enable-widec",
         "-unicode": "--disable-widec",
         "ncurses": "--with-screen=ncursesw",
+        "-ncurses": "--with-screen=curses",
     },
     visibility = ["PUBLIC"],
 )

@@ -16,7 +16,6 @@ use_package(
     iuse = [],
     use_defaults = [],
     deps = [],
-    use_deps = {},
     pre_configure = """
 # rt-tests uses make directly
 true

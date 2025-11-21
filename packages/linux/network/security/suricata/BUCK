@@ -22,6 +22,8 @@ use_package(
         "-lua": "--disable-lua",
         "geoip": "--enable-geoip",
         "-geoip": "--disable-geoip",
+        "ssl": "--with-libssl",
+        "-ssl": "--without-libssl",
         "nfqueue": "--enable-nfqueue",
         "-nfqueue": "--disable-nfqueue",
         "redis": "--enable-hiredis",

@@ -30,7 +30,9 @@ use_package(
         "ncurses": "--with-ncurses",
         "-ncurses": "--without-ncurses",
         "pcre": "--with-regex=pcre",
+        "-pcre": "--with-regex=posix",
         "pcre2": "--with-regex=pcre2",
+        "-pcre2": "--with-regex=posix",
     },
 
     visibility = ["PUBLIC"],

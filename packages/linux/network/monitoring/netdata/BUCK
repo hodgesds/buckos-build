@@ -16,8 +16,12 @@ use_package(
     },
 
     use_configure = {
+        "ssl": "--enable-https",
+        "-ssl": "--disable-https",
         "zlib": "--with-zlib",
         "-zlib": "--without-zlib",
+        "curl": "--enable-plugin-apps --enable-plugin-cgroups",
+        "-curl": "--disable-plugin-apps --disable-plugin-cgroups",
     },
 
     configure_args = [

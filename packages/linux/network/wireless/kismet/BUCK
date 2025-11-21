@@ -17,8 +17,14 @@ use_package(
     },
 
     use_configure = {
+        "ssl": "--enable-libwebsockets",
+        "-ssl": "--disable-libwebsockets",
         "python": "--enable-python-tools",
         "-python": "--disable-python-tools",
+        "ncurses": "--enable-panel",
+        "-ncurses": "--disable-panel",
+        "sqlite": "--enable-sqlite",
+        "-sqlite": "--disable-sqlite",
     },
 
     configure_args = [

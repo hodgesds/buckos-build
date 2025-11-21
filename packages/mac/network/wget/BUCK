@@ -35,6 +35,7 @@ use_package(
     use_configure = {
         "ssl": "--with-ssl=openssl",
         "gnutls": "--with-ssl=gnutls",
+        "-gnutls": "--without-ssl",
         "-ssl": "--without-ssl",
         "idn": "--with-libidn",
         "-idn": "--without-libidn",

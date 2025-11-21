@@ -46,12 +46,19 @@ use_package(
     ],
     use_configure = {
         "ssl": "--with-http_ssl_module",
+        "-ssl": "--without-http_ssl_module",
         "http2": "--with-http_v2_module",
+        "-http2": "--without-http_v2_module",
         "stream": "--with-stream",
+        "-stream": "--without-stream",
         "pcre": "--with-pcre",
+        "-pcre": "--without-pcre",
         "gzip": "--with-http_gzip_static_module",
+        "-gzip": "--without-http_gzip_static_module",
         "realip": "--with-http_realip_module",
+        "-realip": "--without-http_realip_module",
         "stub_status": "--with-http_stub_status_module",
+        "-stub_status": "--without-http_stub_status_module",
     },
     post_install = """
 mkdir -p "$DESTDIR/var/cache/nginx"

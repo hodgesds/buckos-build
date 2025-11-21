@@ -19,7 +19,9 @@ use_package(
     use_configure = {
         # dnsmasq uses COPTS for feature configuration
         "dnssec": "COPTS+=-DHAVE_DNSSEC",
+        "-dnssec": "",
         "dbus": "COPTS+=-DHAVE_DBUS",
+        "-dbus": "",
         "idn": "COPTS+=-DHAVE_LIBIDN2",
         "-idn": "COPTS+=-DNO_ICONV",
         "ipv6": "COPTS+=-DHAVE_IPV6",

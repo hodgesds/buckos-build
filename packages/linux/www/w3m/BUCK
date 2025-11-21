@@ -45,6 +45,7 @@ use_package(
         "image": "--enable-image=fb",
         "-image": "--disable-image",
         "ncurses": "--with-termlib=ncurses",
+        "-ncurses": "--with-termlib=termcap",
     },
     visibility = ["PUBLIC"],
 )

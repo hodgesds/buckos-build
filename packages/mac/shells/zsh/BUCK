@@ -30,6 +30,7 @@ use_package(
     # Conditional configure arguments
     use_configure = {
         "doc": "--enable-etcdir=/usr/local/etc",
+        "-doc": "",
         "gdbm": "--enable-gdbm",
         "-gdbm": "--disable-gdbm",
         "pcre": "--enable-pcre",

@@ -18,6 +18,10 @@ use_package(
     },
 
     use_configure = {
+        "ssl": "--with-ssl=/usr",
+        "-ssl": "--without-ssl",
+        "perl": "--enable-embedded-perl",
+        "-perl": "--disable-embedded-perl",
         "web": "--with-httpd-conf=/etc/apache2/conf.d",
         "-web": "--without-httpd-conf",
     },

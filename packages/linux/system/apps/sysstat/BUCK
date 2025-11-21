@@ -14,7 +14,6 @@ use_package(
     license = "GPL-2.0-or-later",
     iuse = ["nls", "sensors", "debug"],
     use_defaults = [],
-    use_deps = {},
     use_configure = {
         "nls": "--enable-nls",
         "-nls": "--disable-nls",

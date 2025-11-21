@@ -24,6 +24,7 @@ use_package(
         "ssl": "--with-ssl=openssl --with-openssl",
         "-ssl": "--without-ssl",
         "gnutls": "--with-ssl=gnutls",
+        "-gnutls": "--without-ssl",
         "ipv6": "--enable-ipv6",
         "-ipv6": "--disable-ipv6",
         "idn": "--with-libidn",

@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "crosvm-src",
     src_uri = "https://chromium.googlesource.com/crosvm/crosvm/+archive/refs/tags/v130.0.tar.gz",
-    sha256 = "5e2a3d0c93174ec1f02f7048d89c447dc884d95372933e68a0698d7f9cf3f9f4",
+    sha256 = "7506c4b0d5f21f70f2ef367258c86e27387dad7a05b0e28e66b14c31b783015b",
 )
 
 # USE flags: See use_flags.bzl for available flags

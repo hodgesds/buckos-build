@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "firecracker-src",
     src_uri = "https://github.com/firecracker-microvm/firecracker/archive/refs/tags/v1.9.1.tar.gz",
-    sha256 = "5710bb97fb113cd8a901ec5ba5918ce32d8cf43115a184ec62dafb94009246c8",
+    sha256 = "5bad7b003b080b50ea5e9fa5e4bed4b17792b3f6c9e2fefb4f9a4c4b86b3c11c",
 )
 
 # USE flags: See use_flags.bzl for available flags

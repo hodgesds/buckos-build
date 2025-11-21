@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "vulkan-headers-src",
     src_uri = "https://github.com/KhronosGroup/Vulkan-Headers/archive/refs/tags/v1.3.296.tar.gz",
-    sha256 = "682d5323cf31308402c888599b375ebf15810f95d6d1a08ad2f525766becf99b",
+    sha256 = "e204e0b3c19f622d197df945737f5db913d6621830999b8578d34e80a7c90585",
 )
 
 # USE flags: See use_flags.bzl for available flags

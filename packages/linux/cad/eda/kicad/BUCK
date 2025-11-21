@@ -3,7 +3,7 @@ load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 download_source(
     name = "kicad-src",
     src_uri = "https://gitlab.com/kicad/code/kicad/-/archive/8.0.5/kicad-8.0.5.tar.gz",
-    sha256 = "c688d0565197ed1d8719f3e37b690313a5f140c9c7c5cf19e7b1524d5421590d",
+    sha256 = "4223da87b678f7754c726e5f0b5bb5ed9310ee9ef5ff3dd21dbfbf4c35f5fc07",
 )
 
 ebuild_package(

@@ -7,7 +7,7 @@ load("//defs:package_defs.bzl", "download_source", "configure_make_package", "bi
 download_source(
     name = "ca-certificates-src",
     src_uri = "https://curl.se/ca/cacert-2024-01-09.pem",
-    sha256 = "1cdf5217b991c34e58e11bb03932392e0a9d3b8a1e8ff3f5d70c9b8e9b5e5a1f",
+    sha256 = "3519f760fbce62277d4150ab8b2d75156fa760ec019a3b3743b4c5e13e7336fb",
 )
 
 binary_package(

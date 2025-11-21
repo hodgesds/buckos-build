@@ -52,14 +52,14 @@ configure_make_package(
 # Cpanel::JSON::XS - Fast JSON serialization (core dependency)
 download_source(
     name = "cpanel-json-xs-src",
-    src_uri = "https://cpan.metacpan.org/authors/id/R/RU/RURBAN/Cpanel-JSON-XS-4.37.tar.gz",
-    sha256 = "c241eddfc8e84e4f4c1c2f47b0e4d7e694f0a96a30e2540460ccf8f6a57d87da",
+    src_uri = "https://cpan.metacpan.org/authors/id/R/RU/RURBAN/Cpanel-JSON-XS-4.40.tar.gz",
+    sha256 = "785473f07673b197e1c29964e9445ed969ee0b4b2adf51d7bebec6887cd3514c",
 )
 
 configure_make_package(
     name = "cpanel-json-xs",
     source = ":cpanel-json-xs-src",
-    version = "4.37",
+    version = "4.40",
     description = "Fast and correct JSON encoding/decoding",
     homepage = "https://metacpan.org/pod/Cpanel::JSON::XS",
     license = "Artistic-1.0-Perl OR GPL-1.0-or-later",

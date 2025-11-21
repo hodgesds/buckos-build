@@ -7,8 +7,8 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 use_package(
     name = "doas",
     version = "6.8.2",
-    src_uri = "https://github.com/Duncaen/OpenDoas/releases/download/v6.8.2/opendoas-6.8.2.tar.xz",
-    sha256 = "6d6a5a6f0c6e7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3",
+    src_uri = "https://github.com/Duncaen/OpenDoas/archive/v6.8.2.tar.gz",
+    sha256 = "6da058a0e70b7543bc60624389b0b00b686189ec933828c522bf8b2600495a67",
     description = "Simple sudo alternative from OpenBSD",
     homepage = "https://github.com/Duncaen/OpenDoas",
     license = "ISC",

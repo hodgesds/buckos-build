@@ -7,8 +7,8 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 use_package(
     name = "lsb-release",
     version = "3.2",
-    src_uri = "https://github.com/lsb/lsb-release/archive/refs/tags/v3.2.tar.gz",
-    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+    src_uri = "https://github.com/thkukuk/lsb-release_os-release/archive/refs/tags/v3.2.tar.gz",
+    sha256 = "a75b345df96d75a4c2059099dec0589e323f2d77472e92942d6546f2bc38f57b",
     description = "LSB release information utility",
     homepage = "https://wiki.linuxfoundation.org/lsb/start",
     license = "GPL-2.0-only",

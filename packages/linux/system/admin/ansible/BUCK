@@ -5,8 +5,8 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 python_package(
     name = "ansible",
     version = "9.2.0",
-    src_uri = "https://releases.ansible.com/ansible/ansible-9.2.0.tar.gz",
-    sha256 = "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880",
+    src_uri = "https://files.pythonhosted.org/packages/source/a/ansible/ansible-9.2.0.tar.gz",
+    sha256 = "a207a4a00a45e5cd178a7f94ca42afe26f23c9d27be49901ea8c45d18a07b7c6",
     description = "IT automation platform for configuration management",
     homepage = "https://www.ansible.com",
     license = "GPL-3+",

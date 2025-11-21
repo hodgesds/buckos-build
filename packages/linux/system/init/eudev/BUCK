@@ -57,7 +57,7 @@ fi
 download_source(
     name = "hwids-src",
     src_uri = "https://github.com/gentoo/hwids/archive/refs/tags/hwids-20230308.tar.gz",
-    sha256 = "4e5c0f1df7d5a7cd1f3b4f2e9b8e7c6d5a4e3b2c1d0f9e8a7b6c5d4e3f2a1b0c",
+    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
 )
 
 configure_make_package(

@@ -3,7 +3,7 @@ load("//defs:package_defs.bzl", "download_source", "binary_package")
 download_source(
     name = "bpftop-src",
     src_uri = "https://github.com/Netflix/bpftop/archive/refs/tags/v0.5.1.tar.gz",
-    sha256 = "7a9f3b5d0f8b9c1e2d3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6",
+    sha256 = "8457caf5ededba38aad01ed6317bd737a8079bbb26ca9a79cfdca5848a8c80f6",
 )
 
 binary_package(

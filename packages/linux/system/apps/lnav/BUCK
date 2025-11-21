@@ -8,7 +8,7 @@ use_package(
     name = "lnav",
     version = "0.12.3",
     src_uri = "https://github.com/tstack/lnav/releases/download/v0.12.3/lnav-0.12.3.tar.gz",
-    sha256 = "2c6b5b5a1e5b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    sha256 = "db5eee92aa00ce0b0614186c918a11db2fe6c06104fb615ad82cbea295ea6dac",
     description = "Advanced log file viewer with query support",
     homepage = "https://lnav.org/",
     license = "BSD-2-Clause",

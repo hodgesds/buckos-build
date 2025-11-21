@@ -1,16 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
-
-download_source(
-    name = "leveldb-src",
-    src_uri = "https://github.com/google/leveldb/archive/refs/tags/1.23.tar.gz",
-    sha256 = "9a37f8a6174f09bd622bc723b55881dc541cd50747cbd08831c2a82d620f6d76",
-)
 
 cmake_package(
     name = "leveldb",
-    srcs = [":leveldb-src"],
     version = "1.23",
+    src_uri = "https://github.com/google/leveldb/archive/refs/tags/1.23.tar.gz",
+    sha256 = "9a37f8a6174f09bd622bc723b55881dc541cd50747cbd08831c2a82d620f6d76",
     description = "Fast key-value storage library",
     homepage = "https://github.com/google/leveldb",
     license = "BSD-3-Clause",

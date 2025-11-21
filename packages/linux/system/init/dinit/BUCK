@@ -39,7 +39,6 @@ mkdir -p $OUT/sbin
 ln -sf ../usr/sbin/dinit $OUT/sbin/init
 """,
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     build_deps = [],
     visibility = ["PUBLIC"],

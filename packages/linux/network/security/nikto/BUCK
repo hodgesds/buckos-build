@@ -1,35 +1,31 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 
 # nikto - Web server scanner for security testing
 
-use_package(
-    name = "nikto",
-    version = "2.5.0",
+download_source(
+    name = "nikto-src",
     src_uri = "https://github.com/sullo/nikto/archive/refs/tags/2.5.0.tar.gz",
     sha256 = "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6",
+)
 
-    iuse = ["ssl"],
-    use_defaults = ["ssl"],
-
-    use_deps = {
-        "ssl": ["//packages/linux/network/openssl:openssl"],
-    },
-
-    build_system = "none",
-    install_commands = [
-        "mkdir -p ${DESTDIR}/usr/share/nikto",
-        "cp -r program/* ${DESTDIR}/usr/share/nikto/",
-        "mkdir -p ${DESTDIR}/usr/bin",
-        "ln -s /usr/share/nikto/nikto.pl ${DESTDIR}/usr/bin/nikto",
-    ],
-
-    deps = [
-        "//packages/linux/lang/perl:perl",
-    ],
-
+ebuild_package(
+    name = "nikto",
+    source = ":nikto-src",
+    version = "2.5.0",
     description = "Web server vulnerability scanner for security testing",
     homepage = "https://cirt.net/Nikto2",
     license = "GPL-2",
+    src_compile = """
+# No compilation needed
+""",
+    src_install = """
+mkdir -p "$DESTDIR/usr/share/nikto"
+cp -r program/* "$DESTDIR/usr/share/nikto/"
+mkdir -p "$DESTDIR/usr/bin"
+ln -s /usr/share/nikto/nikto.pl "$DESTDIR/usr/bin/nikto"
+""",
+    rdepend = [
+        "//packages/linux/lang/perl:perl",
+    ],
     visibility = ["PUBLIC"],
 )

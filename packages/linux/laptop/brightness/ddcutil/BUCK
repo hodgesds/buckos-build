@@ -26,7 +26,6 @@ configure_make_package(
         "--enable-drm",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/libusb:libusb",
         "//packages/linux/desktop/libdrm:libdrm",
     ],

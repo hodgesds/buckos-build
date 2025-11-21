@@ -28,7 +28,6 @@ configure_make_package(
         "--enable-oniguruma",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/network/openssl:openssl",
     ],

@@ -34,7 +34,6 @@ autoreconf -fiv
     ],
 
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/network/libpcap:libpcap",
     ],

@@ -62,7 +62,6 @@ cd src
 """,
 
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

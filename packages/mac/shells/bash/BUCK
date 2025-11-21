@@ -24,7 +24,7 @@ use_package(
 
     # Conditional dependencies
     use_deps = {
-        "readline": ["//packages/mac/core/readline", "//packages/mac/core/ncurses"],
+        "readline": ["//packages/mac/core/readline:readline", "//packages/mac/core/ncurses:ncurses"],
     },
 
     # Conditional configure arguments

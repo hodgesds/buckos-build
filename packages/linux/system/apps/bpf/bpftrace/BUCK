@@ -40,7 +40,6 @@ binary_package(
         cp ../man/man8/*.8 $OUT/usr/share/man/man8/ 2>/dev/null || true
     """,
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/dev-tools/dev-utils/elfutils:elfutils",
         "//packages/linux/system/libs/bpf/libbpf:libbpf",

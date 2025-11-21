@@ -31,7 +31,6 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
 
     description = "DNS programming library with support for DNSSEC",

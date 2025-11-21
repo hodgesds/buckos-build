@@ -30,7 +30,6 @@ use_package(
         "alsa": ["//packages/linux/audio/daemons/alsa-lib:alsa-lib"],
     },
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

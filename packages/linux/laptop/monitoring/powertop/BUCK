@@ -25,7 +25,6 @@ configure_make_package(
         "--localstatedir=/var",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/ncurses:ncurses",
         "//packages/linux/system/libs/pciutils:pciutils",
         "//packages/linux/system/libs/libnl:libnl",

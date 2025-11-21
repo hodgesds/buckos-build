@@ -48,7 +48,6 @@ EOF
 mkdir -p "$DESTDIR/var/www/html"
 """,
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

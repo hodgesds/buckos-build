@@ -15,7 +15,6 @@ configure_make_package(
     homepage = "https://www.gnu.org/software/patch/",
     license = "GPL-3.0",
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

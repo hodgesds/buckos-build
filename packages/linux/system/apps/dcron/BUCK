@@ -21,6 +21,6 @@ use_package(
         "PREFIX=/usr",
         "CRONTAB_GROUP=root",
     ],
-    deps = ["//packages/linux/core/musl:musl"],
+    deps = [],
     visibility = ["PUBLIC"],
 )

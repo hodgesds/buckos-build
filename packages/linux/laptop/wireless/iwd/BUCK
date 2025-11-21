@@ -29,7 +29,6 @@ configure_make_package(
         "--enable-ofono",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/dbus:dbus",
         "//packages/linux/system/libs/readline:readline",
     ],

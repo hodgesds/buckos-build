@@ -23,7 +23,6 @@ configure_make_package(
         "USRLIBDIR=/usr/lib",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

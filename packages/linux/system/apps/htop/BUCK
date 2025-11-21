@@ -15,8 +15,8 @@ use_package(
     iuse = ["unicode", "hwloc", "sensors", "caps", "debug"],
     use_defaults = ["unicode"],
     use_deps = {
-        "hwloc": ["//packages/linux/system/hardware/hwloc"],
-        "caps": ["//packages/linux/system/libs/ipc/libcap"],
+        "hwloc": ["//packages/linux/system/hardware/hwloc:hwloc"],
+        "caps": ["//packages/linux/system/libs/ipc/libcap:libcap"],
     },
     use_configure = {
         "unicode": "--enable-unicode",
@@ -35,7 +35,6 @@ use_package(
         "--sysconfdir=/etc",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/ncurses:ncurses",
     ],
     visibility = ["PUBLIC"],

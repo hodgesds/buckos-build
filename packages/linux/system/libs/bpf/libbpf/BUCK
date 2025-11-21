@@ -26,7 +26,6 @@ binary_package(
         make BUILD_STATIC_ONLY=1 PREFIX=/usr LIBDIR=/usr/lib DESTDIR=$OUT install
     """,
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/dev-tools/dev-utils/elfutils:elfutils",
     ],

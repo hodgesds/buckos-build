@@ -15,8 +15,8 @@ use_package(
     iuse = ["pam", "multiuser", "selinux", "debug"],
     use_defaults = [],
     use_deps = {
-        "pam": ["//packages/linux/system/security/auth/pam"],
-        "selinux": ["//packages/linux/system/security/selinux"],
+        "pam": ["//packages/linux/system/security/auth/pam:pam"],
+        "selinux": ["//packages/linux/system/security/selinux:selinux"],
     },
     use_configure = {
         "pam": "--enable-pam",
@@ -33,7 +33,6 @@ use_package(
         "--sysconfdir=/etc",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/ncurses:ncurses",
     ],
     visibility = ["PUBLIC"],

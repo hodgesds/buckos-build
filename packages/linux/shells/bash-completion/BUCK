@@ -20,7 +20,6 @@ configure_make_package(
         "--sysconfdir=/etc",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

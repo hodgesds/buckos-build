@@ -33,7 +33,6 @@ configure_make_package(
         mkdir -p "$OUT/var/lock/sane"
     """,
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/hardware/usbutils:libusb",
         "//packages/linux/graphics/imagemagick:libtiff",
         "//packages/linux/graphics/imagemagick:libjpeg-turbo",
@@ -68,7 +67,6 @@ configure_make_package(
     """,
     deps = [
         ":sane-backends",
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gtk:gtk4",
         "//packages/linux/dev-libs/glib:glib",
     ],
@@ -105,7 +103,6 @@ configure_make_package(
     """,
     deps = [
         ":sane-backends",
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/kde:kf5",
         "//packages/linux/desktop/qt:qt5",
     ],

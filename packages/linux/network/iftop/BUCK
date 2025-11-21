@@ -28,7 +28,6 @@ use_package(
     deps = [
         "//packages/linux/network/libpcap:libpcap",
         "//packages/linux/core/ncurses:ncurses",
-        "//packages/linux/core/musl:musl",
     ],
 
     description = "Display bandwidth usage on an interface by host",

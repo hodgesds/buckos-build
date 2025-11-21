@@ -34,7 +34,6 @@ binary_package(
         DESTDIR="$OUT" ninja -C build install
     """,
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/network/openssl:openssl",
     ],

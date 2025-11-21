@@ -21,7 +21,6 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
 
     description = "ncurses-based wireless network monitoring application",

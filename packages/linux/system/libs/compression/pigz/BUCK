@@ -20,7 +20,6 @@ configure_make_package(
     make_args = [],
     deps = [
         "//packages/linux/core/zlib:zlib",
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

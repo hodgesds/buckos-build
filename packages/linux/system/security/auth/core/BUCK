@@ -55,7 +55,6 @@ configure_make_package(
         chmod 4755 "$OUT/usr/sbin/usermod" || true
     """,
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:linux-pam",
     ],
     visibility = ["PUBLIC"],

@@ -31,7 +31,6 @@ use_package(
 
     deps = [
         "//packages/linux/network/libpcap:libpcap",
-        "//packages/linux/core/musl:musl",
     ],
 
     description = "Network packet analyzer with grep-like functionality",

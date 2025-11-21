@@ -31,7 +31,6 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
 
     description = "Utility for controlling network drivers and hardware",

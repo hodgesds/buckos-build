@@ -22,7 +22,6 @@ mkdir -p "$DESTDIR/usr/bin"
 ln -s /usr/lib/powershell/pwsh "$DESTDIR/usr/bin/pwsh"
 """,
     rdepend = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

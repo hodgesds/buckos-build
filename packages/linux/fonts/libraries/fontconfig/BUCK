@@ -14,7 +14,6 @@ meson_package(
         "-Dcache-build=disabled",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/expat:expat",
         "//packages/linux/fonts/libraries/freetype:freetype",
     ],

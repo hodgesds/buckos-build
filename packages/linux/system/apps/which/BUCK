@@ -19,6 +19,6 @@ use_package(
     configure_args = [
         "--prefix=/usr",
     ],
-    deps = ["//packages/linux/core/musl:musl"],
+    deps = [],
     visibility = ["PUBLIC"],
 )

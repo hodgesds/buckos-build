@@ -23,7 +23,7 @@ use_package(
     use_defaults = ["ssl", "ipv6", "nls", "unicode", "ncurses"],
     # TODO: gc (Boehm garbage collector) package needs to be created
     deps = [
-        # "//packages/linux/core/gc",
+        # "//packages/linux/core/gc:gc",
     ],
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],

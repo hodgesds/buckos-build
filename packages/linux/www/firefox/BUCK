@@ -57,8 +57,8 @@ MOZCONFIG
             "zlib": ["//packages/linux/core/zlib:zlib"],
             "gtk": ["//packages/linux/desktop/gtk:gtk3"],
             # TODO: nss, nspr, and cbindgen packages need to be created
-            # "nss": ["//packages/linux/network/nss"],
-            # "nspr": ["//packages/linux/network/nspr"],
+            # "nss": ["//packages/linux/network/nss:nss"],
+            # "nspr": ["//packages/linux/network/nspr:nspr"],
             "python": ["//packages/linux/lang/python:python"],
             "rust": ["//packages/linux/lang/rust:rust"],
             # "cbindgen": ["//packages/linux/lang/cbindgen:cbindgen"],

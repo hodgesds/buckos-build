@@ -13,7 +13,6 @@ python_package(
     homepage = "https://github.com/redhat-performance/tuned",
     license = "GPL-2.0",
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/python:python",
         "//packages/linux/core:dbus",
     ],

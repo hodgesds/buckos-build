@@ -52,8 +52,8 @@ _python_common_deps = [
     "//packages/linux/core/zlib:zlib",
     "//packages/linux/core/ncurses:ncurses",
     "//packages/linux/core/readline:readline",
-    # "//packages/linux/dev-libs/expat",
-    # "//packages/linux/dev-libs/libffi",
+    # "//packages/linux/dev-libs/expat:expat",
+    # "//packages/linux/dev-libs/libffi:libffi",
 ]
 
 # ============================================================================

@@ -28,7 +28,6 @@ meson_package(
         "-Dqt=false",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/security/auth/privilege:polkit",
@@ -58,7 +57,6 @@ meson_package(
     ],
     deps = [
         ":networkmanager",
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gtk:gtk3",
     ],
     visibility = ["PUBLIC"],

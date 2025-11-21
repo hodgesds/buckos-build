@@ -27,7 +27,6 @@ configure_make_package(
         "-Ddocumentation=false",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/laptop/input/libevdev:libevdev",
         "//packages/linux/laptop/input/mtdev:mtdev",
         "//packages/linux/system/init/systemd:systemd",

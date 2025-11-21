@@ -19,7 +19,6 @@ configure_make_package(
 ./configure
 """,
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

@@ -30,7 +30,6 @@ use_package(
         "conf_dir=/etc/sysstat",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

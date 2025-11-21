@@ -27,7 +27,6 @@ configure_make_package(
         "ETCDIR=/etc",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

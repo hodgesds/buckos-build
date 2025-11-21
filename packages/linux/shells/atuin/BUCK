@@ -22,7 +22,6 @@ make release
 make install PREFIX=/usr DESTDIR="$DESTDIR"
 """,
     rdepend = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

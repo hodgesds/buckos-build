@@ -46,7 +46,6 @@ use_package(
         "--sysconfdir=/etc",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
 
     post_install = """

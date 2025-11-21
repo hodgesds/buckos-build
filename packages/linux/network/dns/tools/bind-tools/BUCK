@@ -45,7 +45,6 @@ done
 """,
 
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
 
     description = "DNS utilities from BIND (dig, host, nslookup, nsupdate)",

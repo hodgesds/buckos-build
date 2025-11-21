@@ -28,7 +28,6 @@ binary_package(
         DESTDIR="$OUT" cmake --install build
     """,
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],

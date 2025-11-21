@@ -20,7 +20,6 @@ use_package(
     iuse = ["ssl", "seccomp", "sasl", "doc"],
     use_defaults = ["seccomp"],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/utility/libevent:libevent",
     ],
     use_deps = {

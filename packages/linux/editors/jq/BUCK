@@ -19,7 +19,6 @@ configure_make_package(
         "--with-oniguruma=builtin",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

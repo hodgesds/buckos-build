@@ -32,7 +32,7 @@ use_package(
         "-static-libs": "--disable-static",
     },
 
-    deps = ["//packages/linux/core/musl:musl"],
+    deps = [],
 
     description = "Packet capture library",
     homepage = "https://www.tcpdump.org/",

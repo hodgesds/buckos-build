@@ -20,7 +20,6 @@ meson_package(
         "-Dextensions=true",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gnome:gtk4",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/filesystem/gvfs:gvfs",
@@ -53,7 +52,6 @@ configure_make_package(
         "--enable-pcre2",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/filesystem/gvfs:gvfs",
@@ -81,7 +79,6 @@ configure_make_package(
         "--sysconfdir=/etc",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gnome:gtk3",
         ":libfm",
     ],
@@ -108,7 +105,6 @@ configure_make_package(
         "--disable-gtk-doc",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/dev-libs/glib:glib",
     ],
@@ -129,7 +125,6 @@ meson_package(
         "-Dselinux=false",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/filesystem/gvfs:gvfs",
@@ -157,7 +152,6 @@ configure_make_package(
         "--disable-update-mimedb",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/filesystem/gvfs:gvfs",
@@ -186,7 +180,6 @@ configure_make_package(
         python setup.py install --prefix=/usr --root="$OUT"
     """,
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/lang/python:python",
     ],
     visibility = ["PUBLIC"],

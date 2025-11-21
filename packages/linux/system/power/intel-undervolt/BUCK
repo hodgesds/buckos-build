@@ -18,7 +18,6 @@ cmake_package(
         "-DENABLE_SYSTEMD=ON",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

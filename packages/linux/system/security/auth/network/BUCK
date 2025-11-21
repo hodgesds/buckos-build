@@ -32,7 +32,6 @@ configure_make_package(
         cp pam_radius_auth.conf "$OUT/etc/raddb/"
     """,
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:linux-pam",
     ],
     visibility = ["PUBLIC"],
@@ -60,7 +59,6 @@ configure_make_package(
         "--with-pam-module-dir=/lib/security",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/security/encryption:linux-pam",
     ],
     visibility = ["PUBLIC"],

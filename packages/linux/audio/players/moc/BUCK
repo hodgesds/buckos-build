@@ -55,7 +55,6 @@ use_package(
     },
     deps = [
         "//packages/linux/core/ncurses:ncurses",
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

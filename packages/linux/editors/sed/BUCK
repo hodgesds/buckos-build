@@ -18,7 +18,6 @@ configure_make_package(
         "--without-selinux",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

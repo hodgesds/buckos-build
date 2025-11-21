@@ -29,7 +29,6 @@ configure_make_package(
 mkdir -p "$DESTDIR/etc/alpine"
 """,
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/ncurses:ncurses",
         "//packages/linux/network/openssl:openssl",
     ],

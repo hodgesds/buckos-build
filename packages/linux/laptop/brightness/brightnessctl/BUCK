@@ -26,7 +26,6 @@ configure_make_package(
         "UDEVDIR=/usr/lib/udev/rules.d",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/init/systemd:systemd",
     ],
     visibility = ["PUBLIC"],

@@ -21,16 +21,13 @@ use_package(
     license = "GPL-2",
     iuse = ["ssl", "zlib", "readline", "embedded", "profiling", "systemd"],
     use_defaults = ["ssl", "zlib", "readline"],
-    deps = [
-        "//packages/linux/core/musl:musl",
-    ],
+    deps = [],
     use_deps = {
         "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
         "zlib": ["//packages/linux/core/zlib:zlib"],
         "readline": ["//packages/linux/core/ncurses:ncurses"],
         "systemd": ["//packages/linux/system/core/systemd:systemd"],
     },
-    build_system = "cmake",
     configure_args = [
         "-DCMAKE_INSTALL_PREFIX=/usr",
         "-DMYSQL_DATADIR=/var/lib/mysql",

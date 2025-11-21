@@ -30,7 +30,7 @@ use_package(
         "SBINDIR=/sbin",
     ],
 
-    deps = ["//packages/linux/core/musl:musl"],
+    deps = [],
 
     pre_configure = """
 # iproute2 uses a different build system

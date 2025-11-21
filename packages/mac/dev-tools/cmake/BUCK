@@ -23,7 +23,7 @@ use_package(
 
     # Conditional dependencies
     use_deps = {
-        "ncurses": ["//packages/mac/core/ncurses"],
+        "ncurses": ["//packages/mac/core/ncurses:ncurses"],
     },
 
     # Bootstrap uses different configure
@@ -37,9 +37,9 @@ use_package(
     ],
 
     deps = [
-        "//packages/mac/network/curl",
-        "//packages/mac/core/zlib",
-        "//packages/mac/core/bzip2",
+        "//packages/mac/network/curl:curl",
+        "//packages/mac/core/zlib:zlib",
+        "//packages/mac/core/bzip2:bzip2",
     ],
 
     maintainers = ["mac-team"],

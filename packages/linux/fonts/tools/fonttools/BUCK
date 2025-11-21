@@ -20,7 +20,6 @@ python_package(
         "ufo",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/lang/python:python",
         "//packages/linux/system/libs/compression/brotli:brotli",
     ],

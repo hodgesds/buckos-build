@@ -52,7 +52,6 @@ use_package(
     deps = [
         "//packages/linux/network/libpcap:libpcap",
         "//packages/linux/dev-libs/glib:glib",
-        "//packages/linux/core/musl:musl",
     ],
 
     description = "Command-line network protocol analyzer",

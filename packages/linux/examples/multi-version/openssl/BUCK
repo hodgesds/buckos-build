@@ -197,7 +197,7 @@ alias(
 #         # Use slot dependency for OpenSSL 1.1
 #         ":openssl:1.1",
 #         # Or use version constraint
-#         # version_dep("//packages/linux/examples/multi-version/openssl", ">=1.1.0 <3.0"),
+#         # version_dep("//packages/linux/examples/multi-version/openssl:openssl", ">=1.1.0 <3.0"),
 #     ],
 # )
 

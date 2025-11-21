@@ -34,7 +34,6 @@ use_package(
 
     deps = [
         "//packages/linux/core/zlib:zlib",
-        "//packages/linux/core/musl:musl",
     ],
 
     description = "Sophisticated file transfer program with HTTP, FTP, and more",

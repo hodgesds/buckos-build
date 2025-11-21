@@ -193,7 +193,6 @@ rootfs(
         ":init-scripts-gen",
         ":baselayout-gen",
         # Core system
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/busybox:busybox",
         "//packages/linux/core/util-linux:util-linux",
         "//packages/linux/core/zlib:zlib",

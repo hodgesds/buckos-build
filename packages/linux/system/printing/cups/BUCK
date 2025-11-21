@@ -42,7 +42,6 @@ configure_make_package(
         mkdir -p "$OUT/var/cache/cups"
     """,
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/network/openssl:openssl",
@@ -75,7 +74,6 @@ configure_make_package(
     ],
     deps = [
         ":cups",
-        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/graphics/imagemagick:ghostscript",
     ],
@@ -101,7 +99,6 @@ configure_make_package(
         "--sysconfdir=/etc",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

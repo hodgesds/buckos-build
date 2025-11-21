@@ -20,7 +20,6 @@ configure_make_package(
         "--disable-python",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/lang/ocaml:ocaml",
     ],
     visibility = ["PUBLIC"],

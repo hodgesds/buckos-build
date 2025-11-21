@@ -15,8 +15,8 @@ use_package(
     iuse = ["pam", "selinux", "inotify", "anacron"],
     use_defaults = ["inotify"],
     use_deps = {
-        "pam": ["//packages/linux/system/security/auth/pam"],
-        "selinux": ["//packages/linux/system/security/selinux"],
+        "pam": ["//packages/linux/system/security/auth/pam:pam"],
+        "selinux": ["//packages/linux/system/security/selinux:selinux"],
     },
     use_configure = {
         "pam": "--with-pam",
@@ -33,6 +33,6 @@ use_package(
         "--sysconfdir=/etc",
         "--localstatedir=/var",
     ],
-    deps = ["//packages/linux/core/musl:musl"],
+    deps = [],
     visibility = ["PUBLIC"],
 )

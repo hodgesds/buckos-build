@@ -22,7 +22,6 @@ use_package(
     iuse = ["ssl", "pcre2", "zlib", "bzip2", "mysql", "ldap"],
     use_defaults = ["ssl", "pcre2", "zlib", "bzip2"],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],

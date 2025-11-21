@@ -29,7 +29,6 @@ configure_make_package(
         make DESTDIR=$OUT PREFIX=/usr SBINDIR=/usr/sbin install
     """,
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

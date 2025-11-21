@@ -29,7 +29,6 @@ use_package(
     },
 
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
 
     description = "Network diagnostic tool combining ping and traceroute",

@@ -16,7 +16,7 @@ use_package(
     use_defaults = ["ssl"],
     use_deps = {
         "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
-        "pam": ["//packages/linux/system/security/auth/pam"],
+        "pam": ["//packages/linux/system/security/auth/pam:pam"],
     },
     use_configure = {
         "ssl": "--with-ssl-dir=/usr",
@@ -30,7 +30,6 @@ use_package(
         "--bindir=/usr/sbin",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

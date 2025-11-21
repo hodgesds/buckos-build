@@ -18,7 +18,6 @@ meson_package(
         "-Dsystemdsystemunitdir=/usr/lib/systemd/system",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/core:dbus",
         "//packages/linux/core/polkit:polkit",

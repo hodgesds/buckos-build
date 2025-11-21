@@ -42,7 +42,6 @@ mkdir -p "$DESTDIR/var/run/dovecot"
 cp -r doc/example-config/* "$DESTDIR/etc/dovecot/"
 """,
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/network/openssl:openssl",
     ],

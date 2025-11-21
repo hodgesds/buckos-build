@@ -25,8 +25,8 @@ use_package(
         "zlib": ["//packages/linux/core/zlib:zlib"],
         "libaio": ["//packages/linux/core:libaio"],
         "numa": ["//packages/linux/core:numactl"],
-        "http": ["//packages/linux/network/curl"],
-        "rdma": ["//packages/linux/network/rdma-core"],
+        "http": ["//packages/linux/network/curl:curl"],
+        "rdma": ["//packages/linux/network/rdma-core:rdma-core"],
     },
     configure_args = [
         "--disable-native",

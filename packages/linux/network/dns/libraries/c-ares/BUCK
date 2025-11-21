@@ -25,7 +25,6 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
 
     description = "C library for asynchronous DNS requests",

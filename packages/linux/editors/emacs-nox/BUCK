@@ -21,7 +21,6 @@ configure_make_package(
         "--with-gnutls=no",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

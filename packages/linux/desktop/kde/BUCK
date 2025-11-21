@@ -20,7 +20,6 @@ cmake_package(
         "-DKDE_INSTALL_USE_QT_SYS_PATHS=ON",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/desktop/cairo:cairo",
         "//packages/linux/fonts/libraries/freetype:freetype",

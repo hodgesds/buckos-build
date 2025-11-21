@@ -26,7 +26,6 @@ use_package(
     },
     deps = [
         "//packages/linux/audio/libraries/libogg:libogg",
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

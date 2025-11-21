@@ -55,7 +55,6 @@ meson_package(
     deps = [
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
         "//packages/linux/audio/libraries/libsndfile:libsndfile",
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/ipc/dbus:dbus",
     ],
     visibility = ["PUBLIC"],

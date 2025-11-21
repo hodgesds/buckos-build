@@ -46,7 +46,7 @@ use_package(
 
     deps = [
         "//packages/mac/network/ca-certificates:ca-certificates",
-        "//packages/mac/core/zlib",
+        "//packages/mac/core/zlib:zlib",
     ],
 
     description = "Command line tool and library for transferring data with URLs",

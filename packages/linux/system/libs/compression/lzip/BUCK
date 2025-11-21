@@ -22,7 +22,6 @@ configure_make_package(
         "CXX=g++",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

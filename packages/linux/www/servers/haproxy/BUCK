@@ -22,7 +22,6 @@ use_package(
     iuse = ["ssl", "zlib", "pcre2", "prometheus", "threads", "systemd"],
     use_defaults = ["ssl", "zlib", "pcre2", "prometheus", "threads"],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],

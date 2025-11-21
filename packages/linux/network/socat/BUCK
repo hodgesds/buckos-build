@@ -32,7 +32,6 @@ use_package(
     },
 
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
 
     description = "Multipurpose relay for bidirectional data transfer",

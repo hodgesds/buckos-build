@@ -15,7 +15,6 @@ cmake_package(
         "-DCMAKE_BUILD_TYPE=Release",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-tools/dev-utils/elfutils:elfutils",
         "//packages/linux/network/curl:curl",
     ],

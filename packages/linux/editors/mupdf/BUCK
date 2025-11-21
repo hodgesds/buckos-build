@@ -21,7 +21,6 @@ configure_make_package(
         "USE_SYSTEM_LIBS=yes",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/fonts/libraries/freetype:freetype",
     ],
     visibility = ["PUBLIC"],

@@ -45,7 +45,6 @@ done
 ln -sf ../usr/bin/runit-init $OUT/sbin/init || true
 """,
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     build_deps = [],
     visibility = ["PUBLIC"],

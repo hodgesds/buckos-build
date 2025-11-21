@@ -23,7 +23,7 @@ use_package(
         "-ipv6": "--disable-ipv6",
     },
 
-    deps = ["//packages/linux/core/musl:musl"],
+    deps = [],
 
     pre_configure = """
 # net-tools uses a custom config system

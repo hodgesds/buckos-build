@@ -15,7 +15,7 @@ use_package(
     iuse = ["utf8proc", "systemd", "static-libs", "debug"],
     use_defaults = [],
     use_deps = {
-        "systemd": ["//packages/linux/system/init/systemd"],
+        "systemd": ["//packages/linux/system/init/systemd:systemd"],
     },
     use_configure = {
         "utf8proc": "--enable-utf8proc",
@@ -30,7 +30,6 @@ use_package(
         "--sysconfdir=/etc",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/ncurses:ncurses",
         "//packages/linux/core:libevent",
     ],

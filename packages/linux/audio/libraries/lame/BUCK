@@ -26,7 +26,6 @@ use_package(
         "-nasm": "--disable-nasm",
     },
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

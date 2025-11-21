@@ -22,7 +22,6 @@ meson_package(
         "-Dx11=enabled",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/desktop/xorg-server:libx11",
@@ -44,7 +43,6 @@ meson_package(
     ],
     deps = [
         ":at-spi2-core",
-        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
     ],
     visibility = ["PUBLIC"],
@@ -62,7 +60,6 @@ meson_package(
     meson_args = [],
     deps = [
         ":at-spi2-core",
-        "//packages/linux/core/musl:musl",
         "//packages/linux/lang/python:python",
         "//packages/linux/desktop/gnome:gtk3",
         ":speech-dispatcher",
@@ -96,7 +93,6 @@ configure_make_package(
         "--without-voxin",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/audio/libraries/libao:libao",
         ":espeak-ng",
@@ -130,7 +126,6 @@ configure_make_package(
         "--with-mbrola=no",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
@@ -157,7 +152,6 @@ configure_make_package(
     ],
     deps = [
         ":at-spi2-core",
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/lang/python:python",
@@ -190,7 +184,6 @@ configure_make_package(
         "--disable-lynx",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/audio/daemons/pulseaudio:pulseaudio",
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",

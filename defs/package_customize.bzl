@@ -66,6 +66,7 @@ load("//defs:use_flags.bzl",
      "use_configure_args",
      "use_dep",
 )
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 
 # =============================================================================
 # CUSTOMIZATION CONFIGURATION
@@ -338,9 +339,6 @@ def customized_package(
     Returns:
         Effective USE flags that were applied
     """
-    # Load package_defs for the actual build rules
-    load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-
     # Apply customizations
     customized = apply_customizations(
         name = name,

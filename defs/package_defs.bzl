@@ -2319,6 +2319,11 @@ def go_package(
     if packages != ["."]:
         env["GO_PACKAGES"] = " ".join(packages)
 
+    # Handle go_build_args - pop it from kwargs since ebuild_package doesn't accept it
+    go_build_args = kwargs.pop("go_build_args", [])
+    if go_build_args:
+        env["GO_BUILD_FLAGS"] = " ".join(go_build_args)
+
     # Merge eclass bdepend with any existing bdepend
     bdepend = list(kwargs.pop("bdepend", []))
     for dep in eclass_config["bdepend"]:
@@ -2383,6 +2388,12 @@ def python_package(
         if dep not in rdepend:
             rdepend.append(dep)
 
+    # Filter out python-specific parameters that ebuild_package doesn't accept
+    filtered_kwargs = dict(kwargs)
+    filtered_kwargs.pop("python_deps", None)
+    filtered_kwargs.pop("extras", None)
+    filtered_kwargs.pop("build_deps", None)
+
     ebuild_package(
         name = name,
         source = ":" + src_name,
@@ -2394,7 +2405,7 @@ def python_package(
         bdepend = bdepend,
         env = env,
         maintainers = maintainers,
-        **kwargs
+        **filtered_kwargs
     )
 
 # -----------------------------------------------------------------------------

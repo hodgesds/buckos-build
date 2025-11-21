@@ -59,8 +59,10 @@ def _parse_version(version_str):
             version = parts[0]
             if len(parts) > 1 and parts[1]:
                 # Extract suffix number
+                # In Starlark, we can't iterate over strings directly
                 num_str = ""
-                for c in parts[1]:
+                for i in range(len(parts[1])):
+                    c = parts[1][i]
                     if c.isdigit():
                         num_str += c
                     else:
@@ -70,9 +72,11 @@ def _parse_version(version_str):
             break
 
     # Parse main version components
+    # In Starlark, we can't iterate over strings directly, so use range(len())
     components = []
     current = ""
-    for c in version:
+    for i in range(len(version)):
+        c = version[i]
         if c.isdigit():
             current += c
         elif c in "._-":
@@ -195,8 +199,11 @@ def _get_subslot_from_version(version):
     parts = version.split(".")
     if len(parts) >= 3:
         # Remove any suffix letters from patch version
+        # In Starlark, we can't iterate over strings, so use a different approach
+        patch_part = parts[2]
         patch = ""
-        for c in parts[2]:
+        for i in range(len(patch_part)):
+            c = patch_part[i]
             if c.isdigit():
                 patch += c
             else:
@@ -307,8 +314,11 @@ def register_package_versions(
         slots[slot].append(ver)
 
     # Sort versions in each slot (newest first)
-    for slot in slots:
-        slots[slot] = sorted(slots[slot], key=lambda v: _parse_version(v), reverse=True)
+    # Create new dict to avoid mutating while iterating
+    sorted_slots = {}
+    for slot in slots.keys():
+        sorted_slots[slot] = sorted(slots[slot], key=lambda v: _parse_version(v), reverse=True)
+    slots = sorted_slots
 
     # Determine default version
     if not default_version:
@@ -351,6 +361,7 @@ def versioned_package(
     source = None,
     src_uri = None,
     sha256 = None,
+    create_slot_alias = True,
     **kwargs):
     """Define a versioned package with slot support.
 
@@ -387,20 +398,27 @@ def versioned_package(
         )
         source = ":" + versioned_name + "-src"
 
+    # Filter out parameters that configure_make_package doesn't support
+    filtered_kwargs = dict(kwargs)
+    # Remove configure_command if present - it's not supported by configure_make_package
+    filtered_kwargs.pop("configure_command", None)
+
     # Create the versioned package
     configure_make_package(
         name = versioned_name,
         source = source,
         version = version,
-        **kwargs
+        **filtered_kwargs
     )
 
-    # Create slot alias
-    native.alias(
-        name = "{}:{}".format(name, slot),
-        actual = ":" + versioned_name,
-        visibility = ["PUBLIC"],
-    )
+    # Create slot alias (if requested)
+    # Note: Buck target names can't contain ':', so we use '-slot-' as separator
+    if create_slot_alias:
+        native.alias(
+            name = "{}-slot-{}".format(name, slot.replace(".", "_")),
+            actual = ":" + versioned_name,
+            visibility = ["PUBLIC"],
+        )
 
     return versioned_name
 
@@ -466,6 +484,7 @@ def multi_version_package(
             keywords = meta.get("keywords", ["testing"]),
             src_uri = meta.get("src_uri"),
             sha256 = meta.get("sha256"),
+            create_slot_alias = False,  # multi_version_package will create slot aliases
             **merged_args
         )
 
@@ -489,9 +508,12 @@ def multi_version_package(
         sorted_versions = sorted(versions_in_slot, key=lambda x: _parse_version(x[0]), reverse=True)
         newest = sorted_versions[0][1]
 
-        # Only create if not already created by versioned_package
-        # The alias is created there, but we might want to update it
-        pass
+        # Create slot alias
+        native.alias(
+            name = "{}-slot-{}".format(name, slot.replace(".", "_")),
+            actual = ":" + newest,
+            visibility = ["PUBLIC"],
+        )
 
     return created_targets
 

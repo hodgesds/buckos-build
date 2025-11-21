@@ -157,8 +157,8 @@ $PYTHON setup.py install \\
     "src_test": '''
 $PYTHON -m pytest -v
 ''',
-    "bdepend": ["//packages/dev-python:setuptools"],
-    "rdepend": ["//packages/dev-lang:python"],
+    "bdepend": [],
+    "rdepend": ["//packages/linux/lang/python:python"],
     "exports": ["python_get_sitedir", "python_domodule", "python_newscript"],
 }
 
@@ -192,8 +192,8 @@ for impl in ${PYTHON_COMPAT:-python3}; do
         --skip-build
 done
 ''',
-    "bdepend": ["//packages/dev-python:setuptools"],
-    "rdepend": ["//packages/dev-lang:python"],
+    "bdepend": [],
+    "rdepend": ["//packages/linux/lang/python:python"],
     "exports": ["python_foreach_impl", "python_setup"],
 }
 

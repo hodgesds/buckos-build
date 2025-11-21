@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # terraform - Infrastructure as code tool
@@ -8,21 +8,20 @@ download_source(
     sha256 = "d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7",
 )
 
-configure_make_package(
+ebuild_package(
     name = "terraform",
     source = ":terraform-src",
     version = "1.7.3",
     description = "Infrastructure as code software tool",
     homepage = "https://www.terraform.io",
     license = "BUSL-1.1",
-    build_system = "go",
-    build_commands = [
-        "go build -o terraform",
-    ],
-    install_commands = [
-        "install -Dm755 terraform ${DESTDIR}/usr/bin/terraform",
-    ],
-    deps = [
+    src_compile = """
+go build -o terraform
+""",
+    src_install = """
+install -Dm755 terraform "$DESTDIR/usr/bin/terraform"
+""",
+    bdepend = [
         "//packages/linux/lang/go:go",
     ],
     visibility = ["PUBLIC"],

@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # unrar - RAR archive extractor
@@ -8,19 +8,18 @@ download_source(
     sha256 = "a008b5f949bca9bb4ffa1bebbfc8b3c14b89df10a10354f56b0fc35a51b5d1a6",
 )
 
-configure_make_package(
+ebuild_package(
     name = "unrar",
     source = ":unrar-src",
     version = "6.2.12",
     description = "RAR archive extractor",
     homepage = "https://www.rarlab.com/rar_add.htm",
     license = "unRAR",
-    build_system = "make",
-    make_args = [
-        "-f", "makefile",
-    ],
-    deps = [
-        "//packages/linux/core/musl:musl",
-    ],
+    src_compile = """
+make -f makefile
+""",
+    src_install = """
+make -f makefile install DESTDIR="$DESTDIR"
+""",
     visibility = ["PUBLIC"],
 )

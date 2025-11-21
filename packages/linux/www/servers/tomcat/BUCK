@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:package_defs.bzl", "download_source", "binary_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 # tomcat - Java servlet container
@@ -13,20 +13,20 @@ download_source(
     sha256 = "a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4",
 )
 
-configure_make_package(
+binary_package(
     name = "tomcat",
-    source = ":tomcat-src",
+    srcs = [":tomcat-src"],
     version = "10.1.19",
     description = "Java servlet and JSP container",
     homepage = "https://tomcat.apache.org",
     license = "Apache-2.0",
-    build_system = "none",
-    install_commands = [
-        "mkdir -p ${DESTDIR}/usr/share/tomcat",
-        "cp -r * ${DESTDIR}/usr/share/tomcat/",
-        "mkdir -p ${DESTDIR}/usr/bin",
-        "ln -s /usr/share/tomcat/bin/catalina.sh ${DESTDIR}/usr/bin/catalina",
-    ],
+    install_script = """
+        cd $SRCS/apache-tomcat-*
+        mkdir -p "$OUT/usr/share/tomcat"
+        cp -r * "$OUT/usr/share/tomcat/"
+        mkdir -p "$OUT/usr/bin"
+        ln -s /usr/share/tomcat/bin/catalina.sh "$OUT/usr/bin/catalina"
+    """,
     deps = use_dep(
         {
             "java": ["//packages/linux/lang/openjdk:openjdk"],

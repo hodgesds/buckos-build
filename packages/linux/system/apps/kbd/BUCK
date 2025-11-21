@@ -15,7 +15,7 @@ use_package(
     iuse = ["pam", "nls", "vlock"],
     use_defaults = [],
     use_deps = {
-        "pam": ["//packages/linux/system/libs/linux-pam"],
+        "pam": ["//packages/linux/system/libs/linux-pam:linux-pam"],
     },
     use_configure = {
         "vlock": "--enable-vlock",
@@ -28,8 +28,7 @@ use_package(
         "--datadir=/usr/share/kbd",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
-        "//packages/linux/system/libs/linux-pam",
+        "//packages/linux/system/libs/linux-pam:linux-pam",
     ],
     visibility = ["PUBLIC"],
 )

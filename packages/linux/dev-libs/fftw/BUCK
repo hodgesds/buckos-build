@@ -1,20 +1,28 @@
-load("//defs:package_defs.bzl", "configure_make_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # fftw - Fast Fourier Transform library
-configure_make_package(
-    name = "fftw",
-    version = "3.3.10",
+download_source(
+    name = "fftw-src",
     src_uri = "http://www.fftw.org/fftw-3.3.10.tar.gz",
     sha256 = "56c932549852cddcfafdab3820b0200c7742675be92179e59e6215b340e26467",
+)
+
+ebuild_package(
+    name = "fftw",
+    source = ":fftw-src",
+    version = "3.3.10",
     description = "Fast Fourier Transform library",
     homepage = "http://www.fftw.org/",
     license = "GPL-2.0-or-later",
-    configure_args = [
-        "--enable-shared",
-        "--enable-threads",
-        "--enable-sse2",
-    ],
-    deps = [],
+    src_configure = """
+./configure --prefix=/usr --enable-shared --enable-threads --enable-sse2
+""",
+    src_compile = """
+make
+""",
+    src_install = """
+make install DESTDIR="$DESTDIR"
+""",
     visibility = ["PUBLIC"],
 )

@@ -1,7 +1,7 @@
 # Privilege escalation packages
 # PolicyKit and related authorization tools
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "meson_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package", "meson_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # PolicyKit - Authorization framework
@@ -24,12 +24,7 @@ meson_package(
         "-Dgtk_doc=false",
         "-Dintrospection=false",
     ],
-    post_install = """
-        mkdir -p "$OUT/etc/polkit-1/rules.d"
-        mkdir -p "$OUT/usr/share/polkit-1/rules.d"
-    """,
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/system/libs/ipc/dbus:glib",
         "//packages/linux/system/security/encryption:linux-pam",
@@ -46,29 +41,23 @@ download_source(
     sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
 )
 
-configure_make_package(
+ebuild_package(
     name = "duktape",
     source = ":duktape-src",
     version = "2.7.0",
     description = "Embeddable JavaScript engine",
     homepage = "https://duktape.org/",
     license = "MIT",
-    pre_configure = """
-        # duktape uses a simple Makefile
-        true
-    """,
-    configure_args = [],
-    make_args = [
-        "-f", "Makefile.sharedlibrary",
-        "INSTALL_PREFIX=/usr",
-    ],
-    post_install = """
-        mkdir -p "$OUT/usr/lib" "$OUT/usr/include"
-        cp libduktape.so* "$OUT/usr/lib/"
-        cp src/duktape.h src/duk_config.h "$OUT/usr/include/"
-        # Create pkg-config file
-        mkdir -p "$OUT/usr/lib/pkgconfig"
-        cat > "$OUT/usr/lib/pkgconfig/duktape.pc" << 'EOF'
+    src_compile = """
+make -f Makefile.sharedlibrary INSTALL_PREFIX=/usr
+""",
+    src_install = """
+mkdir -p "$DESTDIR/usr/lib" "$DESTDIR/usr/include"
+cp libduktape.so* "$DESTDIR/usr/lib/"
+cp src/duktape.h src/duk_config.h "$DESTDIR/usr/include/"
+# Create pkg-config file
+mkdir -p "$DESTDIR/usr/lib/pkgconfig"
+cat > "$DESTDIR/usr/lib/pkgconfig/duktape.pc" << 'EOF'
 prefix=/usr
 libdir=${prefix}/lib
 includedir=${prefix}/include
@@ -79,9 +68,6 @@ Version: 2.7.0
 Libs: -L${libdir} -lduktape
 Cflags: -I${includedir}
 EOF
-    """,
-    deps = [
-        "//packages/linux/core/musl:musl",
-    ],
+""",
     visibility = ["PUBLIC"],
 )

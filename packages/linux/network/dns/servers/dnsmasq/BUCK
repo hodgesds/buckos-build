@@ -13,7 +13,7 @@ use_package(
     use_deps = {
         "idn": ["//packages/linux/network/dns/libraries/libidn2:libidn2"],
         "dbus": ["//packages/linux/system/libs/ipc/dbus:dbus"],
-        "dnssec": ["//packages/linux/system/libs/crypto:nettle"],
+        "dnssec": ["//packages/linux/system/libs/crypto/nettle:nettle"],
     },
 
     use_configure = {

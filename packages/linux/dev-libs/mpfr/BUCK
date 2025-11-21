@@ -1,19 +1,30 @@
-load("//defs:package_defs.bzl", "configure_make_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # mpfr - Multiple Precision Floating-Point Reliable Library
-configure_make_package(
-    name = "mpfr",
-    version = "4.2.1",
+download_source(
+    name = "mpfr-src",
     src_uri = "https://www.mpfr.org/mpfr-current/mpfr-4.2.1.tar.xz",
     sha256 = "277807353a6726978996945af13e52829e3abd7a9a5b7fb2793894e18f1fcbb2",
+)
+
+ebuild_package(
+    name = "mpfr",
+    source = ":mpfr-src",
+    version = "4.2.1",
     description = "Multiple-precision floating-point computations library",
     homepage = "https://www.mpfr.org/",
     license = "LGPL-3.0-or-later",
-    configure_args = [
-        "--enable-shared",
-    ],
-    deps = [
+    src_configure = """
+./configure --prefix=/usr --enable-shared
+""",
+    src_compile = """
+make
+""",
+    src_install = """
+make install DESTDIR="$DESTDIR"
+""",
+    rdepend = [
         "//packages/linux/dev-libs/gmp:gmp",
     ],
     visibility = ["PUBLIC"],

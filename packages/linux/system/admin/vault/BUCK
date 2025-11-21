@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # vault - Secrets management tool
@@ -8,21 +8,20 @@ download_source(
     sha256 = "f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
 )
 
-configure_make_package(
+ebuild_package(
     name = "vault",
     source = ":vault-src",
     version = "1.15.5",
     description = "Secrets management and data protection tool",
     homepage = "https://www.vaultproject.io",
     license = "BUSL-1.1",
-    build_system = "go",
-    build_commands = [
-        "make dev",
-    ],
-    install_commands = [
-        "install -Dm755 bin/vault ${DESTDIR}/usr/bin/vault",
-    ],
-    deps = [
+    src_compile = """
+make dev
+""",
+    src_install = """
+install -Dm755 bin/vault "$DESTDIR/usr/bin/vault"
+""",
+    bdepend = [
         "//packages/linux/lang/go:go",
     ],
     visibility = ["PUBLIC"],

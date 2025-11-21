@@ -47,3 +47,25 @@ configure_make_package(
     license = "MIT",
     visibility = ["PUBLIC"],
 )
+
+# libxcb - X protocol C-language Binding
+download_source(
+    name = "libxcb-src",
+    src_uri = "https://xcb.freedesktop.org/dist/libxcb-1.16.tar.xz",
+    sha256 = "a55ed6db98d43469801262d81dc2572ed124edc3db31059d4e9916eb9f844c34",
+)
+
+configure_make_package(
+    name = "libxcb",
+    source = ":libxcb-src",
+    version = "1.16",
+    description = "X protocol C-language Binding",
+    homepage = "https://xcb.freedesktop.org/",
+    license = "MIT",
+    configure_args = [
+        "--disable-static",
+        "--enable-xinput",
+        "--enable-xkb",
+    ],
+    visibility = ["PUBLIC"],
+)

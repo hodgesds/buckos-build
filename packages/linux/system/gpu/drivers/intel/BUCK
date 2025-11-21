@@ -7,14 +7,8 @@
 #
 # =============================================================================
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package", "meson_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
-
-download_source(
-    name = "intel-gpu-tools-src",
-    src_uri = "https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/archive/v1.28/igt-gpu-tools-v1.28.tar.gz",
-    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
-)
 
 download_source(
     name = "intel-firmware-src",
@@ -23,43 +17,39 @@ download_source(
 )
 
 # Intel GPU firmware
-binary_package(
+ebuild_package(
     name = "intel-firmware",
-    srcs = [":intel-firmware-src"],
+    source = ":intel-firmware-src",
     version = "20241017",
     description = "Intel GPU firmware files",
     homepage = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
     license = "Intel",
-    install_script = """
-# Extract firmware
-tar xf linux-firmware-*.tar.gz
-
+    src_install = """
 # Install Intel GPU firmware
 mkdir -p "$DESTDIR/usr/lib/firmware/i915"
-cp -r linux-firmware-*/i915/* "$DESTDIR/usr/lib/firmware/i915/"
+cp -r i915/* "$DESTDIR/usr/lib/firmware/i915/"
 
 # Install Intel DMC firmware
 mkdir -p "$DESTDIR/usr/lib/firmware/intel"
-cp -r linux-firmware-*/intel/* "$DESTDIR/usr/lib/firmware/intel/" 2>/dev/null || true
+cp -r intel/* "$DESTDIR/usr/lib/firmware/intel/" 2>/dev/null || true
 """,
     visibility = ["PUBLIC"],
 )
 
-configure_make_package(
+# Intel GPU tools
+meson_package(
     name = "intel-gpu-tools",
-    source = ":intel-gpu-tools-src",
     version = "1.28",
+    src_uri = "https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/archive/v1.28/igt-gpu-tools-v1.28.tar.gz",
+    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
     description = "Intel GPU debugging and testing tools",
     homepage = "https://gitlab.freedesktop.org/drm/igt-gpu-tools",
     license = "MIT",
-    configure_args = [
-        "--prefix=/usr",
-        "--libdir=/usr/lib64",
+    meson_args = [
         "-Ddocs=disabled",
         "-Dtests=disabled",
         "-Drunner=disabled",
     ],
-    build_system = "meson",
     env = {
         "CFLAGS": "-O2 -march=x86-64 -pipe",
         "LDFLAGS": "-Wl,-O1,--as-needed",
@@ -76,6 +66,3 @@ filegroup(
     ],
     visibility = ["PUBLIC"],
 )
-
-load("//defs:package_defs.bzl", "binary_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")

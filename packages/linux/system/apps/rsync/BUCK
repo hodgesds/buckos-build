@@ -18,7 +18,7 @@ use_package(
         "lz4": ["//packages/linux/system/libs/compression/lz4:lz4"],
         "zstd": ["//packages/linux/system/libs/compression/zstd:zstd"],
         "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
-        "acl": ["//packages/linux/system/libs/ipc/acl"],
+        "acl": ["//packages/linux/system/libs/ipc/acl:acl"],
     },
     use_configure = {
         "lz4": "--enable-lz4",
@@ -41,7 +41,6 @@ use_package(
         "--sysconfdir=/etc",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],

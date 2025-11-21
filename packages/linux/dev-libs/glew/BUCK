@@ -1,19 +1,25 @@
-load("//defs:package_defs.bzl", "binary_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # glew - OpenGL Extension Wrangler Library
-binary_package(
-    name = "glew",
-    version = "2.2.0",
+download_source(
+    name = "glew-src",
     src_uri = "https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0.tgz",
     sha256 = "d4fc82893cfb00109578d0a1a2337fb8ca335b3ceccf97b97e5cc7f08e4353e1",
+)
+
+ebuild_package(
+    name = "glew",
+    source = ":glew-src",
+    version = "2.2.0",
     description = "OpenGL Extension Wrangler Library",
     homepage = "http://glew.sourceforge.net/",
     license = "BSD-3-Clause",
-    install_script = """
-        make -j$(nproc) GLEW_DEST=$PREFIX
-        make install GLEW_DEST=$PREFIX
-    """,
-    deps = [],
+    src_compile = """
+make -j$(nproc) GLEW_DEST=/usr
+""",
+    src_install = """
+make install GLEW_DEST=/usr DESTDIR="$DESTDIR"
+""",
     visibility = ["PUBLIC"],
 )

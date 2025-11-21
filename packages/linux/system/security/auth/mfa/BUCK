@@ -64,16 +64,11 @@ configure_make_package(
 )
 
 # libfido2 - FIDO2/WebAuthn library
-download_source(
-    name = "libfido2-src",
-    src_uri = "https://developers.yubico.com/libfido2/Releases/libfido2-1.14.0.tar.gz",
-    sha256 = "a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
-)
-
 cmake_package(
     name = "libfido2",
-    srcs = [":libfido2-src"],
     version = "1.14.0",
+    src_uri = "https://developers.yubico.com/libfido2/Releases/libfido2-1.14.0.tar.gz",
+    sha256 = "a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
     description = "Library for FIDO2/WebAuthn operations",
     homepage = "https://developers.yubico.com/libfido2/",
     license = "BSD-2-Clause",
@@ -85,25 +80,19 @@ cmake_package(
         "-DBUILD_STATIC_LIBS=OFF",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
-        "//packages/linux/network/openssl:openssl",
-        "//packages/linux/system/security/encryption:libusb",
+        "//packages/linux/system/libs/crypto/openssl:openssl",
+        "//packages/linux/system/libs/hardware/libusb:libusb",
         ":libcbor",
     ],
     visibility = ["PUBLIC"],
 )
 
 # libcbor - CBOR encoding/decoding library
-download_source(
-    name = "libcbor-src",
-    src_uri = "https://github.com/PJK/libcbor/archive/refs/tags/v0.11.0.tar.gz",
-    sha256 = "b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1",
-)
-
 cmake_package(
     name = "libcbor",
-    srcs = [":libcbor-src"],
     version = "0.11.0",
+    src_uri = "https://github.com/PJK/libcbor/archive/refs/tags/v0.11.0.tar.gz",
+    sha256 = "b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1",
     description = "CBOR protocol implementation for C",
     homepage = "https://github.com/PJK/libcbor",
     license = "MIT",
@@ -112,9 +101,6 @@ cmake_package(
         "-DCMAKE_INSTALL_PREFIX=/usr",
         "-DBUILD_SHARED_LIBS=ON",
         "-DCBOR_PRETTY_PRINTER=ON",
-    ],
-    deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

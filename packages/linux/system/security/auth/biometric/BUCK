@@ -20,7 +20,6 @@ meson_package(
         "-Dintrospection=false",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/ipc/dbus:glib",
         "//packages/linux/system/init/systemd:libudev",
         "//packages/linux/system/security/encryption:libusb",
@@ -46,13 +45,9 @@ meson_package(
         "-Dman=false",
         "-Dpam=true",
     ],
-    post_install = """
-        mkdir -p "$OUT/var/lib/fprint"
-    """,
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/ipc/dbus:dbus",
-        "//packages/linux/system/security/encryption:linux-pam",
+        "//packages/linux/system/security/linux-pam:linux-pam",
         ":libfprint",
         "//packages/linux/system/security/auth/privilege:polkit",
     ],
@@ -92,7 +87,6 @@ configure_make_package(
         cp -L bin/* "$OUT/usr/bin/" || true
     """,
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/database/sqlite:sqlite",
         ":nspr",
     ],
@@ -123,31 +117,22 @@ configure_make_package(
         "--disable-debug",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )
 
 # pixman - Pixel manipulation library
-download_source(
-    name = "pixman-src",
-    src_uri = "https://www.cairographics.org/releases/pixman-0.43.4.tar.gz",
-    sha256 = "f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
-)
-
 meson_package(
     name = "pixman",
-    srcs = [":pixman-src"],
     version = "0.43.4",
+    src_uri = "https://www.cairographics.org/releases/pixman-0.43.4.tar.gz",
+    sha256 = "f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7",
     description = "Pixel manipulation library",
     homepage = "https://www.cairographics.org/",
     license = "MIT",
     meson_args = [
         "-Dgtk=disabled",
         "-Dlibpng=disabled",
-    ],
-    deps = [
-        "//packages/linux/core/musl:musl",
     ],
     visibility = ["PUBLIC"],
 )

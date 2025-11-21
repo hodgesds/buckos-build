@@ -19,7 +19,7 @@ use_package(
         "pam": ["//packages/linux/core:linux-pam"],
         "kerberos": ["//packages/linux/system/libs/auth:krb5"],
         "ldap": ["//packages/linux/system/libs/directory:openldap"],
-        "libedit": ["//packages/linux/system/libs/utility:libedit"],
+        "libedit": ["//packages/linux/dev-libs/misc/libedit:libedit"],
     },
 
     use_configure = {

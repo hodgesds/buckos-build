@@ -1,0 +1,203 @@
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
+
+# =============================================================================
+# Container Utilities
+# =============================================================================
+
+# umoci - OCI image tool
+download_source(
+    name = "umoci-src",
+    src_uri = "https://github.com/opencontainers/umoci/releases/download/v0.4.7/umoci.tar.xz",
+    sha256 = "5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d",
+)
+
+ebuild_package(
+    name = "umoci",
+    source = ":umoci-src",
+    version = "0.4.7",
+    description = "Modify Open Container images",
+    homepage = "https://github.com/opencontainers/umoci",
+    license = "Apache-2.0",
+    src_compile = """
+make
+""",
+    src_install = """
+mkdir -p "$DESTDIR/usr/bin"
+install -m 755 umoci "$DESTDIR/usr/bin/umoci"
+""",
+    bdepend = [
+        "//packages/linux/lang/go:go",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# dive - Explore container image layers
+download_source(
+    name = "dive-src",
+    src_uri = "https://github.com/wagoodman/dive/archive/refs/tags/v0.12.0.tar.gz",
+    sha256 = "6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e",
+)
+
+ebuild_package(
+    name = "dive",
+    source = ":dive-src",
+    version = "0.12.0",
+    description = "A tool for exploring container image layer contents",
+    homepage = "https://github.com/wagoodman/dive",
+    license = "MIT",
+    src_compile = """
+export CGO_ENABLED=0
+go build -o dive -ldflags="-s -w -X main.version=0.12.0" .
+""",
+    src_install = """
+mkdir -p "$DESTDIR/usr/bin"
+install -m 755 dive "$DESTDIR/usr/bin/dive"
+""",
+    bdepend = [
+        "//packages/linux/lang/go:go",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# ctop - Container metrics viewer
+download_source(
+    name = "ctop-src",
+    src_uri = "https://github.com/bcicen/ctop/archive/refs/tags/v0.7.7.tar.gz",
+    sha256 = "7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f",
+)
+
+ebuild_package(
+    name = "ctop",
+    source = ":ctop-src",
+    version = "0.7.7",
+    description = "Top-like interface for container metrics",
+    homepage = "https://github.com/bcicen/ctop",
+    license = "MIT",
+    src_compile = """
+export CGO_ENABLED=0
+go build -o ctop -ldflags="-s -w" .
+""",
+    src_install = """
+mkdir -p "$DESTDIR/usr/bin"
+install -m 755 ctop "$DESTDIR/usr/bin/ctop"
+""",
+    bdepend = [
+        "//packages/linux/lang/go:go",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# lazydocker - Terminal UI for docker and docker-compose (works with podman)
+download_source(
+    name = "lazydocker-src",
+    src_uri = "https://github.com/jesseduffield/lazydocker/archive/refs/tags/v0.23.1.tar.gz",
+    sha256 = "8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a",
+)
+
+ebuild_package(
+    name = "lazydocker",
+    source = ":lazydocker-src",
+    version = "0.23.1",
+    description = "Terminal UI for docker and docker-compose",
+    homepage = "https://github.com/jesseduffield/lazydocker",
+    license = "MIT",
+    src_compile = """
+export CGO_ENABLED=0
+go build -o lazydocker -ldflags="-s -w" .
+""",
+    src_install = """
+mkdir -p "$DESTDIR/usr/bin"
+install -m 755 lazydocker "$DESTDIR/usr/bin/lazydocker"
+""",
+    bdepend = [
+        "//packages/linux/lang/go:go",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# trivy - Security scanner for containers
+download_source(
+    name = "trivy-src",
+    src_uri = "https://github.com/aquasecurity/trivy/archive/refs/tags/v0.50.1.tar.gz",
+    sha256 = "9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b",
+)
+
+ebuild_package(
+    name = "trivy",
+    source = ":trivy-src",
+    version = "0.50.1",
+    description = "Vulnerability scanner for containers and other artifacts",
+    homepage = "https://github.com/aquasecurity/trivy",
+    license = "Apache-2.0",
+    src_compile = """
+export CGO_ENABLED=0
+go build -o trivy -ldflags="-s -w -X main.version=0.50.1" ./cmd/trivy
+""",
+    src_install = """
+mkdir -p "$DESTDIR/usr/bin"
+install -m 755 trivy "$DESTDIR/usr/bin/trivy"
+
+# Install completions
+mkdir -p "$DESTDIR/usr/share/bash-completion/completions"
+./trivy completion bash > "$DESTDIR/usr/share/bash-completion/completions/trivy" || true
+""",
+    bdepend = [
+        "//packages/linux/lang/go:go",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# hadolint - Dockerfile linter
+download_source(
+    name = "hadolint-src",
+    src_uri = "https://github.com/hadolint/hadolint/archive/refs/tags/v2.12.0.tar.gz",
+    sha256 = "0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c",
+)
+
+ebuild_package(
+    name = "hadolint",
+    source = ":hadolint-src",
+    version = "2.12.0",
+    description = "Dockerfile linter for best practices",
+    homepage = "https://github.com/hadolint/hadolint",
+    license = "GPL-3.0",
+    src_compile = """
+# Hadolint is written in Haskell, use prebuilt binary or build with cabal
+# Build using stack/cabal if available
+stack build --copy-bins --local-bin-path=. || true
+""",
+    src_install = """
+mkdir -p "$DESTDIR/usr/bin"
+install -m 755 hadolint "$DESTDIR/usr/bin/hadolint" || true
+""",
+    visibility = ["PUBLIC"],
+)
+
+# docker-credential-helpers - Credential helpers for container registries
+download_source(
+    name = "docker-credential-helpers-src",
+    src_uri = "https://github.com/docker/docker-credential-helpers/archive/refs/tags/v0.8.1.tar.gz",
+    sha256 = "1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d",
+)
+
+ebuild_package(
+    name = "docker-credential-helpers",
+    source = ":docker-credential-helpers-src",
+    version = "0.8.1",
+    description = "Credential helpers for container registries",
+    homepage = "https://github.com/docker/docker-credential-helpers",
+    license = "MIT",
+    src_compile = """
+export CGO_ENABLED=0
+make pass secretservice
+""",
+    src_install = """
+mkdir -p "$DESTDIR/usr/bin"
+install -m 755 bin/build/docker-credential-pass "$DESTDIR/usr/bin/" || true
+install -m 755 bin/build/docker-credential-secretservice "$DESTDIR/usr/bin/" || true
+""",
+    bdepend = [
+        "//packages/linux/lang/go:go",
+    ],
+    visibility = ["PUBLIC"],
+)

@@ -7,30 +7,25 @@
 #
 # =============================================================================
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:package_defs.bzl", "download_source", "cmake_package", "ebuild_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "nvtop-src",
+# nvtop - GPU process monitoring
+cmake_package(
+    name = "nvtop",
+    version = "3.1.0",
     src_uri = "https://github.com/Syllo/nvtop/archive/refs/tags/3.1.0.tar.gz",
     sha256 = "c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0",
-)
-
-configure_make_package(
-    name = "nvtop",
-    source = ":nvtop-src",
-    version = "3.1.0",
     description = "GPU process monitoring tool (htop-like for GPUs)",
     homepage = "https://github.com/Syllo/nvtop",
     license = "GPL-3.0",
-    configure_args = [
+    cmake_args = [
         "-DCMAKE_INSTALL_PREFIX=/usr",
         "-DCMAKE_BUILD_TYPE=Release",
         "-DNVIDIA_SUPPORT=ON",
         "-DAMDGPU_SUPPORT=ON",
         "-DINTEL_SUPPORT=ON",
     ],
-    build_system = "cmake",
     env = {
         "CFLAGS": "-O2 -march=x86-64 -pipe",
         "LDFLAGS": "-Wl,-O1,--as-needed",
@@ -38,21 +33,26 @@ configure_make_package(
     visibility = ["PUBLIC"],
 )
 
+# gpu-burn - GPU stress testing
 download_source(
     name = "gpu-burn-src",
     src_uri = "https://github.com/wilicc/gpu-burn/archive/refs/tags/1.1.tar.gz",
     sha256 = "d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1",
 )
 
-configure_make_package(
+ebuild_package(
     name = "gpu-burn",
     source = ":gpu-burn-src",
     version = "1.1",
     description = "GPU stress testing and burn-in tool",
     homepage = "https://github.com/wilicc/gpu-burn",
     license = "BSD-2-Clause",
-    configure_args = [],
-    build_system = "make",
+    src_compile = """
+make
+""",
+    src_install = """
+make install DESTDIR="$DESTDIR"
+""",
     env = {
         "CFLAGS": "-O2 -march=x86-64 -pipe",
         "CUDA_PATH": "/usr/local/cuda",

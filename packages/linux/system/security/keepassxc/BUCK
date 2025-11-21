@@ -1,29 +1,22 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # keepassxc - Cross-platform password manager
-download_source(
-    name = "keepassxc-src",
+cmake_package(
+    name = "keepassxc",
+    version = "2.7.7",
     src_uri = "https://github.com/keepassxreboot/keepassxc/releases/download/2.7.7/keepassxc-2.7.7-src.tar.xz",
     sha256 = "a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
-)
-
-configure_make_package(
-    name = "keepassxc",
-    source = ":keepassxc-src",
-    version = "2.7.7",
     description = "Cross-platform community-driven port of KeePass",
     homepage = "https://keepassxc.org",
     license = "GPL-3+",
-    build_system = "cmake",
-    configure_args = [
+    cmake_args = [
         "-DCMAKE_INSTALL_PREFIX=/usr",
         "-DCMAKE_BUILD_TYPE=Release",
         "-DWITH_XC_BROWSER=ON",
         "-DWITH_XC_SSHAGENT=ON",
     ],
     deps = [
-        "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/qt:qt5",
     ],
     visibility = ["PUBLIC"],

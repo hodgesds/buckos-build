@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # puppet - Configuration management tool
@@ -8,19 +8,20 @@ download_source(
     sha256 = "b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5",
 )
 
-configure_make_package(
+ebuild_package(
     name = "puppet",
     source = ":puppet-src",
     version = "8.4.0",
     description = "Configuration management and automation tool",
     homepage = "https://puppet.com",
     license = "Apache-2.0",
-    build_system = "ruby",
-    build_commands = [
-        "gem build puppet.gemspec",
-        "gem install --install-dir ${DESTDIR}/usr/lib/ruby/gems puppet-*.gem",
-    ],
-    deps = [
+    src_compile = """
+gem build puppet.gemspec
+""",
+    src_install = """
+gem install --install-dir "$DESTDIR/usr/lib/ruby/gems" puppet-*.gem
+""",
+    rdepend = [
         "//packages/linux/lang/ruby:ruby",
     ],
     visibility = ["PUBLIC"],

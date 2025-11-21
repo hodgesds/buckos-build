@@ -1948,6 +1948,7 @@ def _ebuild_package_impl(ctx: AnalysisContext) -> list[Provider]:
     # Build phases
     src_unpack = ctx.attrs.src_unpack if ctx.attrs.src_unpack else ""
     src_prepare = ctx.attrs.src_prepare if ctx.attrs.src_prepare else ""
+    pre_configure = ctx.attrs.pre_configure if ctx.attrs.pre_configure else ""
     src_configure = ctx.attrs.src_configure if ctx.attrs.src_configure else ""
     src_compile = ctx.attrs.src_compile if ctx.attrs.src_compile else "make -j$(nproc)"
     src_test = ctx.attrs.src_test if ctx.attrs.src_test else ""
@@ -2008,6 +2009,9 @@ cd "$S"
 # Phase: src_prepare
 {src_prepare}
 
+# Phase: pre_configure
+{pre_configure}
+
 # Phase: src_configure
 {src_configure}
 
@@ -2031,6 +2035,7 @@ fi
             env = env_str,
             src_unpack = src_unpack,
             src_prepare = src_prepare,
+            pre_configure = pre_configure,
             src_configure = src_configure,
             src_compile = src_compile,
             src_test = src_test,
@@ -2079,6 +2084,7 @@ ebuild_package = rule(
         "use_flags": attrs.list(attrs.string(), default = []),
         "src_unpack": attrs.string(default = ""),
         "src_prepare": attrs.string(default = ""),
+        "pre_configure": attrs.string(default = ""),
         "src_configure": attrs.string(default = ""),
         "src_compile": attrs.string(default = ""),
         "src_test": attrs.string(default = ""),
@@ -2136,6 +2142,7 @@ def cmake_package(
         src_uri: str,
         sha256: str,
         cmake_args: list[str] = [],
+        pre_configure: str = "",
         deps: list[str] = [],
         maintainers: list[str] = [],
         **kwargs):
@@ -2169,6 +2176,7 @@ def cmake_package(
         name = name,
         source = ":" + src_name,
         version = version,
+        pre_configure = pre_configure,
         src_configure = eclass_config["src_configure"],
         src_compile = eclass_config["src_compile"],
         src_install = eclass_config["src_install"],

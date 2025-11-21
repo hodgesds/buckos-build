@@ -3,11 +3,11 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 use_package(
     name = "ltrace",
-    version = "0.7.3",
-    src_uri = "https://gitlab.com/cespedes/ltrace/-/archive/ltrace-0.7.3/ltrace-ltrace-0.7.3.tar.gz",
-    sha256 = "6b70dd2f6c347d448c2d6140fdb70429d17135e6713ea6c095df1b34e4010e6a",
+    version = "0.7.91_pre20221216",
+    src_uri = "https://gitlab.com/cespedes/ltrace/-/archive/5cffc0d2134f697fbac8627ec5b5f0085cd47c8a.tar.bz2",
+    sha256 = "52200d6262a8de40e494301f6af015da2b34fe69d85b55f6223464c03a999800",
     description = "Library call tracer",
-    homepage = "https://www.ltrace.org/",
+    homepage = "https://gitlab.com/cespedes/ltrace",
     license = "GPL-2+",
 
     # USE flags this package supports

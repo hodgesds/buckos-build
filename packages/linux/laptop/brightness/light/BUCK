@@ -4,10 +4,12 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
+# NOTE: 'light' has been replaced by acpilight - a Python-based backlight controller
+# The original 'light' project is archived. Use acpilight instead.
 download_source(
     name = "light-src",
-    src_uri = "https://github.com/haikarainen/light/archive/refs/tags/v1.2.2.tar.gz",
-    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+    src_uri = "https://gitlab.com/wavexx/acpilight/-/archive/v1.2/acpilight-v1.2.tar.bz2",
+    sha256 = "0b80cbe7edaf48307fc26dbb34c260ec9ed0c19c56743291e5a7cc23044ff9ae",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -15,9 +17,9 @@ download_source(
 configure_make_package(
     name = "light",
     source = ":light-src",
-    version = "1.2.2",
-    description = "Backlight controller application for GNU/Linux",
-    homepage = "https://github.com/haikarainen/light",
+    version = "1.2",
+    description = "Replacement for xbacklight that uses the ACPI interface (acpilight)",
+    homepage = "https://gitlab.com/wavexx/acpilight/",
     license = "GPL-3.0",
     configure_args = [
         "--prefix=/usr",

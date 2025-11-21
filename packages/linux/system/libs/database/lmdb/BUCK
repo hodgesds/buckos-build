@@ -3,8 +3,8 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 download_source(
     name = "lmdb-src",
-    src_uri = "https://github.com/LMDB/lmdb/archive/refs/tags/LMDB_0.9.33.tar.gz",
-    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
+    src_uri = "https://git.openldap.org/openldap/openldap/-/archive/LMDB_0.9.33/openldap-LMDB_0.9.33.tar.gz",
+    sha256 = "476801f5239c88c7de61c3390502a5d13965ecedef80105b5fb0fcb8373d1e53",
 )
 
 configure_make_package(

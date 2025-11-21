@@ -4,14 +4,14 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 # hwdata - Hardware identification databases
 download_source(
     name = "hwdata-src",
-    src_uri = "https://github.com/vcrhonek/hwdata/archive/refs/tags/v0.379.tar.gz",
-    sha256 = "b98ef646d530d5fd3afa3180efbf7c8e22d3da0088f5836f41ee25380d87b092",
+    src_uri = "https://github.com/vcrhonek/hwdata/archive/refs/tags/v0.391.tar.gz",
+    sha256 = "620fe1c22922a3d1bd1062424e9cc6b954acea2f83b72ff0cb45144981cb1975",
 )
 
 configure_make_package(
     name = "hwdata",
     source = ":hwdata-src",
-    version = "0.379",
+    version = "0.391",
     description = "Hardware identification and configuration data",
     homepage = "https://github.com/vcrhonek/hwdata",
     license = "GPL-2+",

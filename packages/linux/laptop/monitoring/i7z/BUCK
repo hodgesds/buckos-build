@@ -6,8 +6,8 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 download_source(
     name = "i7z-src",
-    src_uri = "https://github.com/ajaiantilal/i7z/archive/refs/tags/v0.27.4.tar.gz",
-    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
+    src_uri = "https://github.com/ajaiantilal/i7z/archive/5023138d7c35c4667c938b853e5ea89737334e92.tar.gz",
+    sha256 = "e127bddf850e7febd39cef2d2b13dca5fe19cc2a1bb1099d72b683be5d8bd1c0",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -15,7 +15,7 @@ download_source(
 configure_make_package(
     name = "i7z",
     source = ":i7z-src",
-    version = "0.27.4",
+    version = "93_p20131012",
     description = "Real-time reporting of Intel Core CPU frequency and C-states",
     homepage = "https://github.com/ajaiantilal/i7z",
     license = "GPL-2.0",

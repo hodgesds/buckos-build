@@ -8,7 +8,7 @@ filegroup(
         "//packages/linux/benchmarks/iperf3:iperf3",
         "//packages/linux/benchmarks/hackbench:hackbench",
         "//packages/linux/benchmarks/cyclictest:cyclictest",
-        "//packages/linux/benchmarks/memtester:memtest",
+        "//packages/linux/benchmarks/memtester:memtester",
         "//packages/linux/benchmarks/lmbench:lmbench",
         "//packages/linux/benchmarks/bonnie:bonnie",
         "//packages/linux/benchmarks/iozone:iozone",

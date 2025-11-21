@@ -181,14 +181,16 @@ filegroup(
 )
 
 # Notification utilities (both X11 and Wayland)
-filegroup(
-    name = "notification-utilities",
-    srcs = [
-        "//packages/linux/desktop/xorg-utilities:notification",
-        "//packages/linux/desktop/wayland-utilities:notification",
-    ],
-    visibility = ["PUBLIC"],
-)
+# Note: Commented out due to duplicate artifact names in Buck2
+# Use xorg-utilities:notification or wayland-utilities:notification directly instead
+# filegroup(
+#     name = "notification-utilities",
+#     srcs = [
+#         "//packages/linux/desktop/xorg-utilities:notification",
+#         "//packages/linux/desktop/wayland-utilities:notification",
+#     ],
+#     visibility = ["PUBLIC"],
+# )
 
 # Screenshot utilities (both X11 and Wayland)
 filegroup(

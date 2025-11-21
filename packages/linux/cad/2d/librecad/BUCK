@@ -26,7 +26,7 @@ emake
 emake INSTALL_ROOT="${DESTDIR}" install
 """,
     bdepend = [
-        "//packages/linux/core/boost:boost",
+        "//packages/linux/dev-libs/boost:boost",
     ],
     visibility = ["PUBLIC"],
 )

@@ -9,7 +9,7 @@ download_source(
 
 precompiled_package(
     name = "sccache",
-    srcs = [":sccache-src"],
+    source = ":sccache-src",
     version = "0.8.1",
     description = "Shared compilation cache with cloud storage support",
     homepage = "https://github.com/mozilla/sccache",

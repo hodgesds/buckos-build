@@ -1,16 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
-
-download_source(
-    name = "libjpeg-turbo-src",
-    src_uri = "https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/3.0.4/libjpeg-turbo-3.0.4.tar.gz",
-    sha256 = "99130559e7d62e8d695f2c0eaeef912c5828d5b84a0537dcb24c9678c9d5b76b",
-)
 
 cmake_package(
     name = "libjpeg-turbo",
-    srcs = [":libjpeg-turbo-src"],
     version = "3.0.4",
+    src_uri = "https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/3.0.4/libjpeg-turbo-3.0.4.tar.gz",
+    sha256 = "99130559e7d62e8d695f2c0eaeef912c5828d5b84a0537dcb24c9678c9d5b76b",
     description = "JPEG image codec with SIMD acceleration",
     homepage = "https://libjpeg-turbo.org/",
     license = "IJG",

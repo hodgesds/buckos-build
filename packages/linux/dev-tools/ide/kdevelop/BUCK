@@ -1,14 +1,19 @@
-load("//defs:package_defs.bzl", "cmake_package")
+load("//defs:package_defs.bzl", "download_source", "cmake_package")
 
 # kdevelop - KDE integrated development environment (cmake build)
 # USE flags: plasma, git, subversion, test
 # Default: plasma, git
 
-cmake_package(
-    name = "kdevelop",
-    version = "5.12.230801",
+download_source(
+    name = "kdevelop-src",
     src_uri = "https://download.kde.org/stable/kdevelop/5.12.230801/src/kdevelop-5.12.230801.tar.xz",
     sha256 = "b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9",
+)
+
+cmake_package(
+    name = "kdevelop",
+    srcs = [":kdevelop-src"],
+    version = "5.12.230801",
     description = "KDE integrated development environment",
     homepage = "https://www.kdevelop.org",
     license = "GPL-2+",

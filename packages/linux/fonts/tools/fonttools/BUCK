@@ -1,15 +1,10 @@
-load("//defs:package_defs.bzl", "download_source", "python_package")
-
-download_source(
-    name = "fonttools-src",
-    src_uri = "https://github.com/fonttools/fonttools/releases/download/4.50.0/fonttools-4.50.0.tar.gz",
-    sha256 = "fa5cf61c8a3ec4bcd5b6e5e8f8b5b5e5d6b6b5e5a8a5e5b5c5d5e5f5a5b5c5d5e",
-)
+load("//defs:package_defs.bzl", "python_package")
 
 python_package(
     name = "fonttools",
-    srcs = [":fonttools-src"],
     version = "4.50.0",
+    src_uri = "https://github.com/fonttools/fonttools/releases/download/4.50.0/fonttools-4.50.0.tar.gz",
+    sha256 = "fa5cf61c8a3ec4bcd5b6e5e8f8b5b5e5d6b6b5e5a8a5e5b5c5d5e5f5a5b5c5d5e",
     description = "Library for manipulating fonts in Python",
     homepage = "https://github.com/fonttools/fonttools",
     license = "MIT",

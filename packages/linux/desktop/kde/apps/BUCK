@@ -625,43 +625,44 @@ DESTDIR=$OUT make install
 # -----------------------------------------------------------------------------
 # Partition Manager
 # -----------------------------------------------------------------------------
-download_source(
-    name = "partitionmanager-src",
-    src_uri = "https://download.kde.org/stable/release-service/24.02.0/src/partitionmanager-24.02.0.tar.xz",
-    sha256 = "d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7",
-)
-
-configure_make_package(
-    name = "partitionmanager",
-    source = ":partitionmanager-src",
-    version = "24.02.0",
-    description = "KDE's partition manager for managing disk partitions",
-    homepage = "https://apps.kde.org/partitionmanager/",
-    license = "GPL-3.0-or-later",
-    pre_configure = """
-mkdir -p build
-cd build
-cmake .. \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DBUILD_TESTING=OFF \
-    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON
-""",
-    configure_args = [],
-    make_args = ["-C", "build"],
-    post_install = """
-cd build
-DESTDIR=$OUT make install
-""",
-    deps = [
-        "//packages/linux/desktop/kde:kf5",
-        "//packages/linux/desktop/qt:qt5",
-        "//packages/linux/core/musl:musl",
-        "//packages/linux/core:kpmcore",
-    ],
-    build_deps = [],
-    visibility = ["PUBLIC"],
-)
+# Commented out: missing dependency //packages/linux/core:kpmcore
+# download_source(
+#     name = "partitionmanager-src",
+#     src_uri = "https://download.kde.org/stable/release-service/24.02.0/src/partitionmanager-24.02.0.tar.xz",
+#     sha256 = "d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7",
+# )
+#
+# configure_make_package(
+#     name = "partitionmanager",
+#     source = ":partitionmanager-src",
+#     version = "24.02.0",
+#     description = "KDE's partition manager for managing disk partitions",
+#     homepage = "https://apps.kde.org/partitionmanager/",
+#     license = "GPL-3.0-or-later",
+#     pre_configure = """
+# mkdir -p build
+# cd build
+# cmake .. \
+#     -DCMAKE_INSTALL_PREFIX=/usr \
+#     -DCMAKE_BUILD_TYPE=Release \
+#     -DBUILD_TESTING=OFF \
+#     -DKDE_INSTALL_USE_QT_SYS_PATHS=ON
+# """,
+#     configure_args = [],
+#     make_args = ["-C", "build"],
+#     post_install = """
+# cd build
+# DESTDIR=$OUT make install
+# """,
+#     deps = [
+#         "//packages/linux/desktop/kde:kf5",
+#         "//packages/linux/desktop/qt:qt5",
+#         "//packages/linux/core/musl:musl",
+#         "//packages/linux/core:kpmcore",
+#     ],
+#     build_deps = [],
+#     visibility = ["PUBLIC"],
+# )
 
 # -----------------------------------------------------------------------------
 # KTorrent - BitTorrent Client
@@ -775,7 +776,7 @@ filegroup(
         ":konversation",
         ":filelight",
         ":plasma-systemmonitor",
-        ":partitionmanager",
+        # ":partitionmanager",  # Commented out: missing dependency
         ":ktorrent",
         ":krusader",
     ],

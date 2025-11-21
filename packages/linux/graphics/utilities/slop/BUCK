@@ -32,7 +32,7 @@ DESTDIR=$OUT make install
         "//packages/linux/system/libs/icu:icu",
         "//packages/linux/core/libxext:libxext",
         "//packages/linux/desktop/mesa:mesa",
-        "//packages/linux/dev-libs/glew:glew",
+        # "//packages/linux/dev-libs/glew:glew",  # TODO: glew package doesn't exist yet
     ],
     build_deps = [],
     visibility = ["PUBLIC"],

@@ -1,16 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
-
-download_source(
-    name = "re2-src",
-    src_uri = "https://github.com/google/re2/releases/download/2024-04-01/re2-2024-04-01.tar.gz",
-    sha256 = "3f4ada312a15e3b6e1c4b7e8d4b5e9d8a2f8e9e3f8f8f8f8f8f8f8f8f8f8f8f8",
-)
 
 cmake_package(
     name = "re2",
-    srcs = [":re2-src"],
     version = "2024.04.01",
+    src_uri = "https://github.com/google/re2/releases/download/2024-04-01/re2-2024-04-01.tar.gz",
+    sha256 = "3f4ada312a15e3b6e1c4b7e8d4b5e9d8a2f8e9e3f8f8f8f8f8f8f8f8f8f8f8f8",
     description = "Fast, safe, thread-friendly regular expression library",
     homepage = "https://github.com/google/re2",
     license = "BSD-3-Clause",

@@ -29,7 +29,7 @@ make INSTALL_ROOT=$OUT install
         "//packages/linux/dev-libs/eigen:eigen",
         "//packages/linux/dev-libs/mpfr:mpfr",
         "//packages/linux/dev-libs/gmp:gmp",
-        "//packages/linux/dev-libs/glew:glew",
+        # "//packages/linux/dev-libs/glew:glew",  # TODO: glew package doesn't exist yet
         "//packages/linux/dev-libs/opencsg:opencsg",
         "//packages/linux/dev-libs/double-conversion:double-conversion",
         "//packages/linux/system/libs/font/fontconfig:fontconfig",

@@ -5,16 +5,11 @@ load("//defs:package_defs.bzl", "download_source", "configure_make_package", "me
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # libfprint - Fingerprint reader library
-download_source(
-    name = "libfprint-src",
-    src_uri = "https://gitlab.freedesktop.org/libfprint/libfprint/-/archive/v1.94.7/libfprint-v1.94.7.tar.gz",
-    sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
-)
-
 meson_package(
     name = "libfprint",
-    srcs = [":libfprint-src"],
     version = "1.94.7",
+    src_uri = "https://gitlab.freedesktop.org/libfprint/libfprint/-/archive/v1.94.7/libfprint-v1.94.7.tar.gz",
+    sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
     description = "Library for fingerprint reader support",
     homepage = "https://fprint.freedesktop.org/",
     license = "LGPL-2.1+",
@@ -36,16 +31,11 @@ meson_package(
 )
 
 # fprintd - Fingerprint authentication daemon
-download_source(
-    name = "fprintd-src",
-    src_uri = "https://gitlab.freedesktop.org/libfprint/fprintd/-/archive/v1.94.3/fprintd-v1.94.3.tar.gz",
-    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
-)
-
 meson_package(
     name = "fprintd",
-    srcs = [":fprintd-src"],
     version = "1.94.3",
+    src_uri = "https://gitlab.freedesktop.org/libfprint/fprintd/-/archive/v1.94.3/fprintd-v1.94.3.tar.gz",
+    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
     description = "Fingerprint authentication daemon",
     homepage = "https://fprint.freedesktop.org/",
     license = "GPL-2.0+",

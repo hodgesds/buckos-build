@@ -21,8 +21,8 @@ configure_make_package(
     make_args = [
         "-C", "src/xxd",
     ],
-    install_args = [
-        "install", "-Dm755", "src/xxd/xxd", "${PREFIX}/bin/xxd",
-    ],
+    post_install = """
+        install -Dm755 src/xxd/xxd "$DESTDIR/usr/bin/xxd"
+    """,
     visibility = ["PUBLIC"],
 )

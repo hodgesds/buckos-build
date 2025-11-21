@@ -1,13 +1,18 @@
-load("//defs:package_defs.bzl", "cmake_package")
+load("//defs:package_defs.bzl", "download_source", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # Avidemux - Free video editor designed for simple cutting, filtering and encoding tasks
 
-cmake_package(
-    name = "avidemux",
-    version = "2.8.1",
+download_source(
+    name = "avidemux-src",
     src_uri = "https://github.com/mean00/avidemux2/releases/download/2.8.1/avidemux_2.8.1.tar.gz",
     sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+cmake_package(
+    name = "avidemux",
+    srcs = [":avidemux-src"],
+    version = "2.8.1",
     description = "Free video editor for simple cutting, filtering and encoding",
     homepage = "http://avidemux.sourceforge.net/",
     license = "GPL-2.0-or-later",

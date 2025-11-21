@@ -9,16 +9,10 @@ download_source(
 
 precompiled_package(
     name = "asciidoctor",
-    srcs = [":asciidoctor-src"],
+    source = ":asciidoctor-src",
     version = "2.0.23",
     description = "Converter for transforming AsciiDoc content to various formats",
     homepage = "https://asciidoctor.org/",
     license = "MIT",
-    install_script = """
-        mkdir -p "$PREFIX/bin" "$PREFIX/lib/asciidoctor"
-        cp -r lib/* "$PREFIX/lib/asciidoctor/"
-        cp bin/asciidoctor "$PREFIX/bin/"
-        chmod +x "$PREFIX/bin/asciidoctor"
-    """,
     visibility = ["PUBLIC"],
 )

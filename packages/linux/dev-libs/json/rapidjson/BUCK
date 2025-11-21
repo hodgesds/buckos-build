@@ -1,16 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
-
-download_source(
-    name = "rapidjson-src",
-    src_uri = "https://github.com/Tencent/rapidjson/archive/refs/tags/v1.1.0.tar.gz",
-    sha256 = "bf7ced29704a1e696fbccf2a2b4ea068e7774fa37f6d7dd4039d0787f8bed98e",
-)
 
 cmake_package(
     name = "rapidjson",
-    srcs = [":rapidjson-src"],
     version = "1.1.0",
+    src_uri = "https://github.com/Tencent/rapidjson/archive/refs/tags/v1.1.0.tar.gz",
+    sha256 = "bf7ced29704a1e696fbccf2a2b4ea068e7774fa37f6d7dd4039d0787f8bed98e",
     description = "Fast JSON parser/generator for C++ with SAX/DOM style API",
     homepage = "https://rapidjson.org/",
     license = "MIT",
@@ -18,6 +13,7 @@ cmake_package(
         "-DRAPIDJSON_BUILD_DOC=OFF",
         "-DRAPIDJSON_BUILD_EXAMPLES=OFF",
         "-DRAPIDJSON_BUILD_TESTS=OFF",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
     ],
     visibility = ["PUBLIC"],
 )

@@ -1,16 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
-
-download_source(
-    name = "c-blosc-src",
-    src_uri = "https://github.com/Blosc/c-blosc/archive/refs/tags/v1.21.5.tar.gz",
-    sha256 = "32e61961bbf81ffea6ff30e9d70fca36c86178afd3e3e65c45d3dd0e2141ca08",
-)
 
 cmake_package(
     name = "c-blosc",
-    srcs = [":c-blosc-src"],
     version = "1.21.5",
+    src_uri = "https://github.com/Blosc/c-blosc/archive/refs/tags/v1.21.5.tar.gz",
+    sha256 = "32e61961bbf81ffea6ff30e9d70fca36c86178afd3e3e65c45d3dd0e2141ca08",
     description = "High performance compressor optimized for binary data",
     homepage = "https://www.blosc.org/",
     license = "BSD-3-Clause",

@@ -1,16 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
-
-download_source(
-    name = "simdjson-src",
-    src_uri = "https://github.com/simdjson/simdjson/archive/refs/tags/v3.9.1.tar.gz",
-    sha256 = "79fbd31e2c89c691de5f1cf9d3bd7c82b6901c8d8a68f9f7a8c4f5e5e5e5e5e5",
-)
 
 cmake_package(
     name = "simdjson",
-    srcs = [":simdjson-src"],
     version = "3.9.1",
+    src_uri = "https://github.com/simdjson/simdjson/archive/refs/tags/v3.9.1.tar.gz",
+    sha256 = "a4b6e7cd83176e0ccb107ce38521da40a8df41c2d3c90566f2a0af05b0cd05c4",
     description = "Parsing gigabytes of JSON per second using SIMD instructions",
     homepage = "https://simdjson.org/",
     license = "Apache-2.0",

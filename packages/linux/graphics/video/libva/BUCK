@@ -1,13 +1,18 @@
-load("//defs:package_defs.bzl", "meson_package")
+load("//defs:package_defs.bzl", "download_source", "meson_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # libva - Video Acceleration API
 
-meson_package(
-    name = "libva",
-    version = "2.21.0",
+download_source(
+    name = "libva-src",
     src_uri = "https://github.com/intel/libva/archive/refs/tags/2.21.0.tar.gz",
     sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+)
+
+meson_package(
+    name = "libva",
+    srcs = [":libva-src"],
+    version = "2.21.0",
     description = "Video Acceleration API for Linux",
     homepage = "https://github.com/intel/libva",
     license = "MIT",
@@ -27,11 +32,16 @@ meson_package(
 )
 
 # libva-utils - VA-API utilities
-meson_package(
-    name = "libva-utils",
-    version = "2.21.0",
+download_source(
+    name = "libva-utils-src",
     src_uri = "https://github.com/intel/libva-utils/archive/refs/tags/2.21.0.tar.gz",
     sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4a5b6c7d8e9f0a1b2",
+)
+
+meson_package(
+    name = "libva-utils",
+    srcs = [":libva-utils-src"],
+    version = "2.21.0",
     description = "VA-API utilities and examples",
     homepage = "https://github.com/intel/libva-utils",
     license = "MIT",
@@ -48,11 +58,16 @@ meson_package(
 )
 
 # Intel Media Driver for VAAPI
-meson_package(
-    name = "intel-media-driver",
-    version = "24.2.5",
+download_source(
+    name = "intel-media-driver-src",
     src_uri = "https://github.com/intel/media-driver/archive/refs/tags/intel-media-24.2.5.tar.gz",
     sha256 = "c1d2e3f4a5b6c7d8e9f0a1b2c3d4d5e6f7a8b9c0d1e2f3a4b5c6c7d8e9f0a1b2",
+)
+
+meson_package(
+    name = "intel-media-driver",
+    srcs = [":intel-media-driver-src"],
+    version = "24.2.5",
     description = "Intel Media Driver for VAAPI (Gen8+ graphics)",
     homepage = "https://github.com/intel/media-driver",
     license = "MIT BSD-3-Clause",

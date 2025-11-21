@@ -1,20 +1,15 @@
-load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 # protobuf - Protocol Buffers (cmake build)
 # USE flags: static-libs, test, zlib
 # Default: zlib
 
-download_source(
-    name = "protobuf-src",
-    src_uri = "https://github.com/protocolbuffers/protobuf/releases/download/v26.1/protobuf-26.1.tar.gz",
-    sha256 = "4fc5ff1b2c339fb86cd3a25f0b5311a1c8e5e2a195c0a25e96cbeabe8968fa1e",
-)
-
 cmake_package(
     name = "protobuf",
-    srcs = [":protobuf-src"],
     version = "26.1",
+    src_uri = "https://github.com/protocolbuffers/protobuf/releases/download/v26.1/protobuf-26.1.tar.gz",
+    sha256 = "4fc5ff1b2c339fb86cd3a25f0b5311a1c8e5e2a195c0a25e96cbeabe8968fa1e",
     description = "Google's language-neutral, platform-neutral protocol buffers",
     homepage = "https://protobuf.dev/",
     license = "BSD-3-Clause",

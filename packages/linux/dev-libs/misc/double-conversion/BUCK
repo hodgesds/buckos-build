@@ -1,16 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
-
-download_source(
-    name = "double-conversion-src",
-    src_uri = "https://github.com/google/double-conversion/archive/refs/tags/v3.3.0.tar.gz",
-    sha256 = "04ec44461850abbf33824da84978043b22554896b552c5fd11a9c5ae4b4d296e",
-)
 
 cmake_package(
     name = "double-conversion",
-    srcs = [":double-conversion-src"],
     version = "3.3.0",
+    src_uri = "https://github.com/google/double-conversion/archive/refs/tags/v3.3.0.tar.gz",
+    sha256 = "04ec44461850abbf33824da84978043b22554896b552c5fd11a9c5ae4b4d296e",
     description = "Binary-decimal and decimal-binary conversion routines for IEEE doubles",
     homepage = "https://github.com/google/double-conversion",
     license = "BSD-3-Clause",

@@ -1,20 +1,15 @@
-load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 # abseil-cpp - Google C++ Common Libraries (cmake build)
 # USE flags: static-libs, test
 # Default: none
 
-download_source(
-    name = "abseil-cpp-src",
-    src_uri = "https://github.com/abseil/abseil-cpp/releases/download/20240116.2/abseil-cpp-20240116.2.tar.gz",
-    sha256 = "733726b8c3a6d39a4120d7e45ea8b41a434cdacde401cba500f14236c49b39dc",
-)
-
 cmake_package(
     name = "abseil-cpp",
-    srcs = [":abseil-cpp-src"],
     version = "20240116.2",
+    src_uri = "https://github.com/abseil/abseil-cpp/releases/download/20240116.2/abseil-cpp-20240116.2.tar.gz",
+    sha256 = "733726b8c3a6d39a4120d7e45ea8b41a434cdacde401cba500f14236c49b39dc",
     description = "Abseil C++ Common Libraries",
     homepage = "https://abseil.io/",
     license = "Apache-2.0",

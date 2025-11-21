@@ -1,20 +1,15 @@
-load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 # ccache - Compiler cache (cmake build)
 # USE flags: redis, doc, test
 # Default: none
 
-download_source(
-    name = "ccache-src",
-    src_uri = "https://github.com/ccache/ccache/releases/download/v4.9.1/ccache-4.9.1.tar.xz",
-    sha256 = "4c03bc840699127d16c3f0e6112e3f40ce6a230d5873daa78c60a59c7ef59d25",
-)
-
 cmake_package(
     name = "ccache",
-    srcs = [":ccache-src"],
     version = "4.9.1",
+    src_uri = "https://github.com/ccache/ccache/releases/download/v4.9.1/ccache-4.9.1.tar.xz",
+    sha256 = "4c03bc840699127d16c3f0e6112e3f40ce6a230d5873daa78c60a59c7ef59d25",
     description = "Fast C/C++ compiler cache",
     homepage = "https://ccache.dev/",
     license = "GPL-3+",

@@ -1,16 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
-
-download_source(
-    name = "woff2-src",
-    src_uri = "https://github.com/google/woff2/archive/refs/tags/v1.0.2.tar.gz",
-    sha256 = "add534f2dd4a8c37df2e6d8b3b7e9c8c9c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c",
-)
 
 cmake_package(
     name = "woff2",
-    srcs = [":woff2-src"],
     version = "1.0.2",
+    src_uri = "https://github.com/google/woff2/archive/refs/tags/v1.0.2.tar.gz",
+    sha256 = "add534f2dd4a8c37df2e6d8b3b7e9c8c9c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c",
     description = "Reference implementation of the WOFF 2.0 webfont compression format",
     homepage = "https://github.com/google/woff2",
     license = "MIT",

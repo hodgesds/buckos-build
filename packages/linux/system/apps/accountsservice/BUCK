@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "meson_package")
+load("//defs:package_defs.bzl", "meson_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # =============================================================================
@@ -6,16 +6,11 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 # =============================================================================
 # USE flags: systemd, elogind, doc, introspection
 
-download_source(
-    name = "accountsservice-src",
-    src_uri = "https://www.freedesktop.org/software/accountsservice/accountsservice-23.13.9.tar.xz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
-)
-
 meson_package(
     name = "accountsservice",
-    srcs = [":accountsservice-src"],
     version = "23.13.9",
+    src_uri = "https://www.freedesktop.org/software/accountsservice/accountsservice-23.13.9.tar.xz",
+    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
     description = "D-Bus interface for user account management",
     homepage = "https://www.freedesktop.org/wiki/Software/AccountsService/",
     license = "GPL-3.0-or-later",
@@ -42,16 +37,11 @@ meson_package(
 # colord - Color management daemon
 # USE flags: systemd, sane, argyllcms, doc, vapi
 
-download_source(
-    name = "colord-src",
-    src_uri = "https://www.freedesktop.org/software/colord/releases/colord-1.4.7.tar.xz",
-    sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
-)
-
 meson_package(
     name = "colord",
-    srcs = [":colord-src"],
     version = "1.4.7",
+    src_uri = "https://www.freedesktop.org/software/colord/releases/colord-1.4.7.tar.xz",
+    sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
     description = "System daemon for managing color devices",
     homepage = "https://www.freedesktop.org/software/colord/",
     license = "GPL-2.0-or-later",
@@ -82,16 +72,11 @@ meson_package(
 # colord-gtk - GTK integration for colord
 # USE flags: vapi, doc, gtk3, gtk4
 
-download_source(
-    name = "colord-gtk-src",
-    src_uri = "https://www.freedesktop.org/software/colord/releases/colord-gtk-0.3.1.tar.xz",
-    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
-)
-
 meson_package(
     name = "colord-gtk",
-    srcs = [":colord-gtk-src"],
     version = "0.3.1",
+    src_uri = "https://www.freedesktop.org/software/colord/releases/colord-gtk-0.3.1.tar.xz",
+    sha256 = "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
     description = "GTK integration for colord",
     homepage = "https://www.freedesktop.org/software/colord/",
     license = "LGPL-2.1-or-later",

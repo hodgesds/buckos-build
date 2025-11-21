@@ -1,16 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
-
-download_source(
-    name = "flatbuffers-src",
-    src_uri = "https://github.com/google/flatbuffers/archive/refs/tags/v24.3.25.tar.gz",
-    sha256 = "4157c5cacdb59737c5d627e47ac26b140e9f605e7cd01c035715f5de089d4f40",
-)
 
 cmake_package(
     name = "flatbuffers",
-    srcs = [":flatbuffers-src"],
     version = "24.3.25",
+    src_uri = "https://github.com/google/flatbuffers/archive/refs/tags/v24.3.25.tar.gz",
+    sha256 = "4157c5cacdb59737c5d627e47ac26b140e9f605e7cd01c035715f5de089d4f40",
     description = "Memory efficient serialization library",
     homepage = "https://google.github.io/flatbuffers/",
     license = "Apache-2.0",

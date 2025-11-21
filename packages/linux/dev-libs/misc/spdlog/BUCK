@@ -1,16 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
-
-download_source(
-    name = "spdlog-src",
-    src_uri = "https://github.com/gabime/spdlog/archive/refs/tags/v1.13.0.tar.gz",
-    sha256 = "534f2ee1a4dcb8712c921a94f1841410b3f8f33d2a3b7134a0097bc8838d6a1f",
-)
 
 cmake_package(
     name = "spdlog",
-    srcs = [":spdlog-src"],
     version = "1.13.0",
+    src_uri = "https://github.com/gabime/spdlog/archive/refs/tags/v1.13.0.tar.gz",
+    sha256 = "534f2ee1a4dcb8712c921a94f1841410b3f8f33d2a3b7134a0097bc8838d6a1f",
     description = "Fast C++ logging library",
     homepage = "https://github.com/gabime/spdlog",
     license = "MIT",

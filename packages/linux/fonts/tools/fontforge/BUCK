@@ -1,16 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
-
-download_source(
-    name = "fontforge-src",
-    src_uri = "https://github.com/fontforge/fontforge/releases/download/20230101/fontforge-20230101.tar.xz",
-    sha256 = "ca82ec4c060c4dda70ace5478a41b5e7b95eb035fe1c4cf85c48f996d35c60f8",
-)
 
 cmake_package(
     name = "fontforge",
-    srcs = [":fontforge-src"],
     version = "20230101",
+    src_uri = "https://github.com/fontforge/fontforge/releases/download/20230101/fontforge-20230101.tar.xz",
+    sha256 = "ca82ec4c060c4dda70ace5478a41b5e7b95eb035fe1c4cf85c48f996d35c60f8",
     description = "Free and open-source font editor",
     homepage = "https://fontforge.org/",
     license = "GPL-3.0-or-later",

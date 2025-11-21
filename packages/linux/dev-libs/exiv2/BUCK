@@ -6,7 +6,7 @@ cmake_package(
     name = "exiv2",
     version = "0.28.2",
     src_uri = "https://github.com/Exiv2/exiv2/releases/download/v0.28.2/exiv2-0.28.2-Source.tar.gz",
-    sha256 = "543bead934135f20f438e0b6d8858c55c5fcb7ff80f5d1d55489965f1aad58b9",
+    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
     description = "Image metadata library and tools",
     homepage = "https://www.exiv2.org/",
     license = "GPL-2.0-or-later",

@@ -187,38 +187,38 @@ ln -sf ../lib/python2.7/bin/python2 "$DESTDIR/usr/bin/python2"
 # ============================================================================
 
 alias(
-    name = "python:3.12",
+    name = "python-slot-3.12",
     actual = ":python-3.12.1",
     visibility = ["PUBLIC"],
 )
 
 alias(
-    name = "python:3.11",
+    name = "python-slot-3.11",
     actual = ":python-3.11.7",
     visibility = ["PUBLIC"],
 )
 
 alias(
-    name = "python:3.10",
+    name = "python-slot-3.10",
     actual = ":python-3.10.13",
     visibility = ["PUBLIC"],
 )
 
 alias(
-    name = "python:2.7",
+    name = "python-slot-2.7",
     actual = ":python-2.7.18",
     visibility = ["PUBLIC"],
 )
 
 # Major version aliases
 alias(
-    name = "python:3",
+    name = "python-slot-3",
     actual = ":python-3.12.1",
     visibility = ["PUBLIC"],
 )
 
 alias(
-    name = "python:2",
+    name = "python-slot-2",
     actual = ":python-2.7.18",
     visibility = ["PUBLIC"],
 )

@@ -15,11 +15,9 @@ configure_make_package(
     description = "Command-line Markdown presentation tool",
     homepage = "https://github.com/visit1985/mdp",
     license = "GPL-3+",
-    build_system = "make",
-    install_args = [
+    configure_args = [],
+    make_args = [
         "PREFIX=/usr",
-        "DESTDIR=${DESTDIR}",
-        "install",
     ],
     deps = [
         "//packages/linux/core/musl:musl",

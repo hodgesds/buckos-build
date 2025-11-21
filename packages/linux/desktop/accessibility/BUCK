@@ -26,8 +26,6 @@ meson_package(
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/desktop/xorg-server:libx11",
-        "//packages/linux/desktop/xorg-server:libxi",
-        "//packages/linux/desktop/xorg-server:libxtst",
     ],
     visibility = ["PUBLIC"],
 )
@@ -100,7 +98,7 @@ configure_make_package(
     deps = [
         "//packages/linux/core/musl:musl",
         "//packages/linux/dev-libs/glib:glib",
-        "//packages/linux/audio/libraries:libao",
+        "//packages/linux/audio/libraries/libao:libao",
         ":espeak-ng",
     ],
     visibility = ["PUBLIC"],
@@ -194,7 +192,7 @@ configure_make_package(
     deps = [
         "//packages/linux/core/musl:musl",
         "//packages/linux/desktop/gnome:gtk3",
-        "//packages/linux/audio/daemons:pulseaudio",
+        "//packages/linux/audio/daemons/pulseaudio:pulseaudio",
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
     ],
     visibility = ["PUBLIC"],

@@ -132,15 +132,6 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
-# Combined utilities (both X11 and Wayland)
-filegroup(
-    name = "all-utilities",
-    srcs = [
-        "//packages/linux/desktop/xorg-utilities:all",
-        "//packages/linux/desktop/wayland-utilities:all",
-    ],
-    visibility = ["PUBLIC"],
-)
 
 # Essential X11 utilities
 filegroup(
@@ -170,15 +161,6 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
-# Application launchers (both X11 and Wayland)
-filegroup(
-    name = "launcher-utilities",
-    srcs = [
-        "//packages/linux/desktop/xorg-utilities:launchers",
-        "//packages/linux/desktop/wayland-utilities:launchers",
-    ],
-    visibility = ["PUBLIC"],
-)
 
 # Notification utilities (both X11 and Wayland)
 # Note: Commented out due to duplicate artifact names in Buck2

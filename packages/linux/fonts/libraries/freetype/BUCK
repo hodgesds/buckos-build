@@ -30,7 +30,7 @@ configure_make_package(
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/core/bzip2:bzip2",
         "//packages/linux/core:libpng",
-        "//packages/linux/core:brotli",
+        "//packages/linux/system/libs/compression/brotli:brotli",
     ],
     visibility = ["PUBLIC"],
 )

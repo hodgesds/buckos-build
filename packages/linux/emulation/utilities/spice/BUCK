@@ -138,7 +138,7 @@ install -m 0644 data/70-spice-vdagentd.rules "$DESTDIR/usr/lib/udev/rules.d/" 2>
         "//packages/linux/desktop/xorg:libx11",
         "//packages/linux/desktop/xorg:libxfixes",
         "//packages/linux/desktop/xorg:libxrandr",
-        "//packages/linux/system/libs/systemd:libsystemd",
+        "//packages/linux/system/init/systemd:libsystemd",
     ],
     visibility = ["PUBLIC"],
 )

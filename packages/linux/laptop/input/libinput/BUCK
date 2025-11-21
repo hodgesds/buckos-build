@@ -30,7 +30,7 @@ configure_make_package(
         "//packages/linux/core/musl:musl",
         "//packages/linux/laptop/input/libevdev:libevdev",
         "//packages/linux/laptop/input/mtdev:mtdev",
-        "//packages/linux/system/libs/systemd:systemd",
+        "//packages/linux/system/init/systemd:systemd",
     ],
     visibility = ["PUBLIC"],
 )

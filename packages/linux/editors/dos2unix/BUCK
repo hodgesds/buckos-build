@@ -16,14 +16,9 @@ configure_make_package(
     description = "Text file format converter between DOS and Unix",
     homepage = "https://waterlan.home.xs4all.nl/dos2unix.html",
     license = "BSD-2-Clause",
-    build_in_source = True,
     configure_args = [],
     make_args = [
         "prefix=/usr",
-    ],
-    install_args = [
-        "prefix=/usr",
-        "DESTDIR=${DESTDIR}",
     ],
     deps = [
         "//packages/linux/core/musl:musl",

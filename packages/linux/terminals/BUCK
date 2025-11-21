@@ -3,8 +3,8 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 filegroup(
     name = "lightweight-terminals",
     srcs = [
-        "//packages/linux/terminals/st",
-        "//packages/linux/terminals/foot",
+        "//packages/linux/terminals/st:st",
+        "//packages/linux/terminals/foot:foot",
     ],
     visibility = ["PUBLIC"],
 )
@@ -13,12 +13,12 @@ filegroup(
 filegroup(
     name = "all-terminals",
     srcs = [
-        "//packages/linux/terminals/alacritty",
-        "//packages/linux/terminals/st",
-        "//packages/linux/terminals/foot",
-        "//packages/linux/terminals/kitty",
-        "//packages/linux/terminals/xterm",
-        "//packages/linux/terminals/rxvt-unicode",
+        "//packages/linux/terminals/alacritty:alacritty",
+        "//packages/linux/terminals/st:st",
+        "//packages/linux/terminals/foot:foot",
+        "//packages/linux/terminals/kitty:kitty",
+        "//packages/linux/terminals/xterm:xterm",
+        "//packages/linux/terminals/rxvt-unicode:rxvt-unicode",
     ],
     visibility = ["PUBLIC"],
 )

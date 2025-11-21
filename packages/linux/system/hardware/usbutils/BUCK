@@ -25,7 +25,7 @@ configure_make_package(
     deps = [
         "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/libusb:libusb",
-        "//packages/linux/system/libs/systemd:systemd",
+        "//packages/linux/system/init/systemd:systemd",
     ],
     visibility = ["PUBLIC"],
 )

@@ -35,7 +35,7 @@ configure_make_package(
     ],
     deps = [
         "//packages/linux/core/musl:musl",
-        "//packages/linux/shells/bash:bash",
+        "//packages/linux/core/bash:bash",
     ],
     visibility = ["PUBLIC"],
 )

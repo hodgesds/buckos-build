@@ -128,7 +128,6 @@ configure_make_package(
         "shared",
         "zlib-dynamic",
     ],
-    configure_command = "./config",
     deps = [
         "//packages/linux/core/zlib:zlib",
     ],
@@ -156,7 +155,6 @@ configure_make_package(
         "shared",
         "zlib-dynamic",
     ],
-    configure_command = "./config",
     deps = [
         "//packages/linux/core/zlib:zlib",
     ],
@@ -169,13 +167,13 @@ configure_make_package(
 
 # Create slot aliases for easy referencing
 alias(
-    name = "openssl:3",
+    name = "openssl-slot-3",
     actual = ":openssl-3.2.0",
     visibility = ["PUBLIC"],
 )
 
 alias(
-    name = "openssl:1.1",
+    name = "openssl-slot-1_1",
     actual = ":openssl-1.1.1w",
     visibility = ["PUBLIC"],
 )

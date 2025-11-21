@@ -1,16 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "go_package")
+load("//defs:package_defs.bzl", "go_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
-
-download_source(
-    name = "yq-src",
-    src_uri = "https://github.com/mikefarah/yq/archive/refs/tags/v4.44.3.tar.gz",
-    sha256 = "a2c097180dd884a8d50c956ee16a9cec070f30a7947cf4ebf87d5f36213e9ed7",
-)
 
 go_package(
     name = "yq",
-    srcs = [":yq-src"],
     version = "4.44.3",
+    src_uri = "https://github.com/mikefarah/yq/archive/refs/tags/v4.44.3.tar.gz",
+    sha256 = "a2c097180dd884a8d50c956ee16a9cec070f30a7947cf4ebf87d5f36213e9ed7",
     description = "Command-line YAML/JSON/XML processor with jq-like syntax",
     homepage = "https://github.com/mikefarah/yq",
     license = "MIT",

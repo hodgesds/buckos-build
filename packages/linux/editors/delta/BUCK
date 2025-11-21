@@ -1,16 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "cargo_package")
+load("//defs:package_defs.bzl", "cargo_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
-
-download_source(
-    name = "delta-src",
-    src_uri = "https://github.com/dandavison/delta/archive/refs/tags/0.18.2.tar.gz",
-    sha256 = "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456",
-)
 
 cargo_package(
     name = "delta",
-    srcs = [":delta-src"],
     version = "0.18.2",
+    src_uri = "https://github.com/dandavison/delta/archive/refs/tags/0.18.2.tar.gz",
+    sha256 = "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456",
     description = "Syntax-highlighting pager for git and diff output",
     homepage = "https://github.com/dandavison/delta",
     license = "MIT",

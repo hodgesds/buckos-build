@@ -15,7 +15,7 @@ cmake_package(
     ],
     deps = [
         "//packages/linux/core/musl:musl",
-        "//packages/linux/core:brotli",
+        "//packages/linux/system/libs/compression/brotli:brotli",
     ],
     visibility = ["PUBLIC"],
 )

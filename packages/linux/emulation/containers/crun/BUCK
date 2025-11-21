@@ -27,7 +27,7 @@ configure_make_package(
         "//packages/linux/core:libcap",
         "//packages/linux/core:yajl",
         "//packages/linux/system/libs/libseccomp:libseccomp",
-        "//packages/linux/system/libs/systemd:libsystemd",
+        "//packages/linux/system/init/systemd:libsystemd",
         "//packages/linux/lang/python:python",
     ],
     visibility = ["PUBLIC"],

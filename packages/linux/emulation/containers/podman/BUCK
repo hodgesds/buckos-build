@@ -75,7 +75,7 @@ EOF
         "//packages/linux/emulation/containers/crun:crun",
         "//packages/linux/emulation/containers/conmon:conmon",
         "//packages/linux/system/libs/libseccomp:libseccomp",
-        "//packages/linux/system/libs/systemd:libsystemd",
+        "//packages/linux/system/init/systemd:libsystemd",
     ],
     visibility = ["PUBLIC"],
 )
@@ -192,7 +192,7 @@ install -m 0755 bin/conmon "$DESTDIR/usr/bin/"
     deps = [
         "//packages/linux/core:glib",
         "//packages/linux/system/libs/libseccomp:libseccomp",
-        "//packages/linux/system/libs/systemd:libsystemd",
+        "//packages/linux/system/init/systemd:libsystemd",
     ],
     visibility = ["PUBLIC"],
 )

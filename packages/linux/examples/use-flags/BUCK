@@ -65,11 +65,11 @@ use_package(
 
     # Conditional dependencies based on USE flags
     use_deps = {
-        "ssl": ["//packages/linux/dev-libs/openssl"],
-        "gnutls": ["//packages/linux/net-libs/gnutls"],
-        "http2": ["//packages/linux/net-libs/nghttp2"],
-        "zstd": ["//packages/linux/app-arch/zstd"],
-        "brotli": ["//packages/linux/app-arch/brotli"],
+        "ssl": ["//packages/linux/dev-libs/openssl:openssl"],
+        "gnutls": ["//packages/linux/net-libs/gnutls:gnutls"],
+        "http2": ["//packages/linux/net-libs/nghttp2:nghttp2"],
+        "zstd": ["//packages/linux/app-arch/zstd:zstd"],
+        "brotli": ["//packages/linux/app-arch/brotli:brotli"],
     },
 
     # Conditional configure arguments
@@ -127,10 +127,10 @@ use_package(
     iuse = ["ssl", "gnutls", "http2", "ipv6", "zstd", "brotli", "ldap", "debug"],
     use_defaults = ["ssl", "ipv6"],
     use_deps = {
-        "ssl": ["//packages/linux/dev-libs/openssl"],
-        "gnutls": ["//packages/linux/net-libs/gnutls"],
-        "http2": ["//packages/linux/net-libs/nghttp2"],
-        "brotli": ["//packages/linux/app-arch/brotli"],
+        "ssl": ["//packages/linux/dev-libs/openssl:openssl"],
+        "gnutls": ["//packages/linux/net-libs/gnutls:gnutls"],
+        "http2": ["//packages/linux/net-libs/nghttp2:nghttp2"],
+        "brotli": ["//packages/linux/app-arch/brotli:brotli"],
     },
     use_configure = {
         "ssl": "--with-ssl=/usr",
@@ -176,11 +176,11 @@ profile_package(
 
     # Conditional dependencies
     use_deps = {
-        "ssl": ["//packages/linux/dev-libs/openssl"],
-        "pcre": ["//packages/linux/dev-libs/pcre"],
-        "pcre2": ["//packages/linux/dev-libs/pcre2"],
-        "zlib": ["//packages/linux/sys-libs/zlib"],
-        "geoip": ["//packages/linux/dev-libs/geoip"],
+        "ssl": ["//packages/linux/dev-libs/openssl:openssl"],
+        "pcre": ["//packages/linux/dev-libs/pcre:pcre"],
+        "pcre2": ["//packages/linux/dev-libs/pcre2:pcre2"],
+        "zlib": ["//packages/linux/sys-libs/zlib:zlib"],
+        "geoip": ["//packages/linux/dev-libs/geoip:geoip"],
     },
 
     # Conditional configure arguments
@@ -278,10 +278,10 @@ use_ebuild_package(
 
     # Conditional dependencies
     use_deps = {
-        "icu": ["//packages/linux/dev-libs/icu"],
-        "lzma": ["//packages/linux/app-arch/xz-utils"],
-        "python": ["//packages/linux/lang/python"],
-        "readline": ["//packages/linux/sys-libs/readline"],
+        "icu": ["//packages/linux/dev-libs/icu:icu"],
+        "lzma": ["//packages/linux/app-arch/xz-utils:xz-utils"],
+        "python": ["//packages/linux/lang/python:python"],
+        "readline": ["//packages/linux/sys-libs/readline:readline"],
     },
 
     # Custom configure phase using USE flags

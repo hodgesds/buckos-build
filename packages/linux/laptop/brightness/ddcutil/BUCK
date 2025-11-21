@@ -28,7 +28,7 @@ configure_make_package(
     deps = [
         "//packages/linux/core/musl:musl",
         "//packages/linux/system/libs/libusb:libusb",
-        "//packages/linux/system/libs/libdrm:libdrm",
+        "//packages/linux/desktop/libdrm:libdrm",
     ],
     visibility = ["PUBLIC"],
 )

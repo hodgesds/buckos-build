@@ -15,15 +15,10 @@ configure_make_package(
     description = "Lightweight PDF and XPS viewer",
     homepage = "https://mupdf.com",
     license = "AGPL-3+",
-    build_system = "make",
+    configure_args = [],
     make_args = [
         "prefix=/usr",
         "USE_SYSTEM_LIBS=yes",
-    ],
-    install_args = [
-        "prefix=/usr",
-        "DESTDIR=${DESTDIR}",
-        "install",
     ],
     deps = [
         "//packages/linux/core/musl:musl",

@@ -15,7 +15,6 @@ configure_make_package(
     description = "GTK+ documentation generator",
     homepage = "https://wiki.gnome.org/DocumentationProject/GtkDoc",
     license = "GPL-2+",
-    build_system = "meson",
     configure_args = [
         "-Dprefix=/usr",
         "-Dtests=false",

@@ -19,7 +19,7 @@ use_package(
     configure_args = [],
     make_args = [],
     deps = [
-        "//packages/linux/shells/bash:bash",
+        "//packages/linux/core/bash:bash",
     ],
     visibility = ["PUBLIC"],
 )

@@ -8,7 +8,7 @@ download_source(
 
 ebuild_package(
     name = "liberation-fonts",
-    srcs = [":liberation-fonts-src"],
+    source = ":liberation-fonts-src",
     version = "2.1.5",
     description = "Liberation fonts - metrically compatible with Arial, Times New Roman, Courier New",
     homepage = "https://github.com/liberationfonts/liberation-fonts",
@@ -28,7 +28,7 @@ done
 # Install documentation
 dodoc AUTHORS ChangeLog LICENSE README.md 2>/dev/null || true
 """,
-    deps = [
+    rdepend = [
         "//packages/linux/fonts/libraries/fontconfig:fontconfig",
     ],
     visibility = ["PUBLIC"],

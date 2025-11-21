@@ -83,26 +83,6 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
-# Recommended communication tools
-filegroup(
-    name = "recommended",
-    srcs = [
-        "//packages/linux/communication/email-clients:recommended",
-        "//packages/linux/communication/email-servers:recommended",
-    ],
-    visibility = ["PUBLIC"],
-)
-
-# Lightweight communication suite
-filegroup(
-    name = "lightweight",
-    srcs = [
-        "//packages/linux/communication/email-clients:lightweight",
-        "//packages/linux/communication/email-servers:lightweight",
-    ],
-    visibility = ["PUBLIC"],
-)
-
 # Complete email infrastructure (clients + servers)
 filegroup(
     name = "complete-email",

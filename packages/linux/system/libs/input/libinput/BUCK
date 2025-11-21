@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "libinput-src",
     src_uri = "https://gitlab.freedesktop.org/libinput/libinput/-/archive/1.26.2/libinput-1.26.2.tar.gz",
-    sha256 = "3c7a5b6cfe23e8ac8e90f3cfb09e8c5e5b0f3c2d1e4a5b6c7d8e9f0a1b2c3d4e",
+    sha256 = "5c1c4150f217fea1db2d1fd88e2607b2f1928cfde65c34da65a9f24dcfd69464",
 )
 
 configure_make_package(

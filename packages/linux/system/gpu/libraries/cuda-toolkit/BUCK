@@ -13,7 +13,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "cuda-toolkit-src",
     src_uri = "https://developer.download.nvidia.com/compute/cuda/12.6.2/local_installers/cuda_12.6.2_560.35.03_linux.run",
-    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+    sha256 = "3729a89cb58f7ca6a46719cff110d6292aec7577585a8d71340f0dbac54fb237",
 )
 
 binary_package(

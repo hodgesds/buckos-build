@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "krb5-src",
     src_uri = "https://kerberos.org/dist/krb5/1.21/krb5-1.21.2.tar.gz",
-    sha256 = "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5",
+    sha256 = "9560941a9d843c0243a71b17a7ac6fe31c7cebb5bce3983db79e52ae7e850491",
 )
 
 configure_make_package(

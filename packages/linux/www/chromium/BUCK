@@ -13,7 +13,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "chromium-src",
     src_uri = "https://commondatastorage.googleapis.com/chromium-browser-official/chromium-126.0.6478.126.tar.xz",
-    sha256 = "2b7c8f4a3e8d2f1a6b9c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9",
+    sha256 = "5d5206637e659f03e006cd8b6b269c49c0c2c697d10517e14dbcea851831e143",
 )
 
 binary_package(

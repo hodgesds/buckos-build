@@ -11,7 +11,7 @@ use_package(
     name = "pound",
     version = "4.12",
     src_uri = "https://github.com/graygnuorg/pound/releases/download/v4.12/pound-4.12.tar.gz",
-    sha256 = "c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+    sha256 = "3276463b3faacfa5c7f16daac2c3d7f9d5946b4505c12923c32e017b7229a1f2",
     description = "Reverse proxy, load balancer and HTTPS front-end",
     homepage = "https://github.com/graygnuorg/pound",
     license = "GPL-3+",

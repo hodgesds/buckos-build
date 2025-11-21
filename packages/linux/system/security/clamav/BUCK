@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "clamav-src",
     src_uri = "https://www.clamav.net/downloads/production/clamav-1.2.1.tar.gz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+    sha256 = "9a14fe870cbb8f5f79f668b789dca0f25cc6be22abe32f4f7d3677e4ee3935b0",
 )
 
 configure_make_package(

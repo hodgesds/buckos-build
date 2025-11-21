@@ -6,7 +6,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "lzip-src",
     src_uri = "https://download.savannah.gnu.org/releases/lzip/lzip-1.24.tar.gz",
-    sha256 = "a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4",
+    sha256 = "d42659229b10e066eeb6e81eb673cdd893b672e512d26719c2d95975556ca56c",
 )
 
 configure_make_package(

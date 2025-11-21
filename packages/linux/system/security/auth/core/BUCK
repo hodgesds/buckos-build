@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "shadow-src",
     src_uri = "https://github.com/shadow-maint/shadow/releases/download/4.15.1/shadow-4.15.1.tar.xz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    sha256 = "bb5f70639a0581f9d626f227ce45b31ac137daa7c451c0f672ce14f2731a96ee",
 )
 
 configure_make_package(

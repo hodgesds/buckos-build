@@ -15,7 +15,7 @@ use_package(
     name = "apache",
     version = "2.4.62",
     src_uri = "https://archive.apache.org/dist/httpd/httpd-2.4.62.tar.bz2",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    sha256 = "674188e7bf44ced82da8db522da946849e22080d73d16c93f7f4df89e25729ec",
     description = "Apache HTTP Server - the world's most popular web server",
     homepage = "https://httpd.apache.org/",
     license = "Apache-2.0",

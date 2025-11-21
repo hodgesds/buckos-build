@@ -15,7 +15,7 @@ use_package(
     name = "haproxy",
     version = "3.0.5",
     src_uri = "https://www.haproxy.org/download/3.0/src/haproxy-3.0.5.tar.gz",
-    sha256 = "c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2",
+    sha256 = "ae38221e85aeba038a725efbef5bfe5e76671ba7959e5eb74c39fd079e5d002e",
     description = "High-performance TCP/HTTP load balancer and proxy server",
     homepage = "https://www.haproxy.org/",
     license = "GPL-2.0",

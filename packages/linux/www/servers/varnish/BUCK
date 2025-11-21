@@ -13,7 +13,7 @@ use_package(
     name = "varnish",
     version = "7.5.0",
     src_uri = "https://varnish-cache.org/_downloads/varnish-7.5.0.tgz",
-    sha256 = "b5e8a3c2d4f5e6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1",
+    sha256 = "fca61b983139e1aac61c4546d12a1a3ab9807dbb1d8314571e3148c93ff72b5d",
     description = "High-performance HTTP accelerator",
     homepage = "https://varnish-cache.org/",
     license = "BSD-2-Clause",

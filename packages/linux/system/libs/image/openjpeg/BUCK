@@ -5,7 +5,7 @@ cmake_package(
     name = "openjpeg",
     version = "2.5.2",
     src_uri = "https://github.com/uclouvain/openjpeg/archive/refs/tags/v2.5.2.tar.gz",
-    sha256 = "90e3896fed910c376a9f1c87f6f58b7f2c4e4e4e95e0e6ecc7d5a4d35e80a9e1",
+    sha256 = "90e3896fed910c376aaf79cdd98bdfdaf98c6472efd8e1debf0a854938cbda6a",
     description = "JPEG 2000 codec library",
     homepage = "https://www.openjpeg.org/",
     license = "BSD-2-Clause",

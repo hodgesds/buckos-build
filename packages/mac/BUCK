@@ -26,9 +26,9 @@ filegroup(
         "//packages/mac/core:compression",
         "//packages/mac/core:terminal-libs",
         "//packages/mac/network:ssl",
-        "//packages/mac/network/curl",
-        "//packages/mac/dev-tools/git",
-        "//packages/mac/shells/bash",
+        "//packages/mac/network/curl:curl",
+        "//packages/mac/dev-tools/git:git",
+        "//packages/mac/shells/bash:bash",
     ],
     visibility = ["PUBLIC"],
 )
@@ -48,7 +48,7 @@ filegroup(
     name = "dev-essentials",
     srcs = [
         "//packages/mac/dev-tools:all-dev-tools",
-        "//packages/mac/network/curl",
+        "//packages/mac/network/curl:curl",
         "//packages/mac/core:compression",
     ],
     visibility = ["PUBLIC"],

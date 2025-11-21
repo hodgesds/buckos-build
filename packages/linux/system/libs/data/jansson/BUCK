@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "jansson-src",
     src_uri = "https://github.com/akheron/jansson/releases/download/v2.14/jansson-2.14.tar.bz2",
-    sha256 = "c739578bf85b9f35cd5c9325f5d3f1d9c2f1e779dfaa490c7edc57f09b4eb549",
+    sha256 = "fba956f27c6ae56ce6dfd52fbf9d20254aad42821f74fa52f83957625294afb9",
 )
 
 configure_make_package(

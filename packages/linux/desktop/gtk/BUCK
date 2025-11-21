@@ -32,7 +32,7 @@ meson_package(
     name = "gtk4",
     version = "4.14.1",
     src_uri = "https://download.gnome.org/sources/gtk/4.14/gtk-4.14.1.tar.xz",
-    sha256 = "8038ac97b5e90d4c2bc1f6f8a7f0a0f3f8bd4c8e0d5bf8e0b7c5fc3d78e3f2c3",
+    sha256 = "fcefb3f132f8cc4711a9efa5b353c9ae9bb5eeff0246fa74dbc2f2f839b9e308",
     description = "Multi-platform toolkit for creating graphical user interfaces (GTK4)",
     homepage = "https://www.gtk.org/",
     license = "LGPL-2.1+",

@@ -3,18 +3,18 @@
 filegroup(
     name = "all-core",
     srcs = [
-        "//packages/mac/core/zlib",
-        "//packages/mac/core/bzip2",
-        "//packages/mac/core/xz",
-        "//packages/mac/core/ncurses",
-        "//packages/mac/core/readline",
-        "//packages/mac/core/libffi",
-        "//packages/mac/core/coreutils",
-        "//packages/mac/core/findutils",
-        "//packages/mac/core/gnu-sed",
-        "//packages/mac/core/gnu-tar",
-        "//packages/mac/core/gawk",
-        "//packages/mac/core/grep",
+        "//packages/mac/core/zlib:zlib",
+        "//packages/mac/core/bzip2:bzip2",
+        "//packages/mac/core/xz:xz",
+        "//packages/mac/core/ncurses:ncurses",
+        "//packages/mac/core/readline:readline",
+        "//packages/mac/core/libffi:libffi",
+        "//packages/mac/core/coreutils:coreutils",
+        "//packages/mac/core/findutils:findutils",
+        "//packages/mac/core/gnu-sed:gnu-sed",
+        "//packages/mac/core/gnu-tar:gnu-tar",
+        "//packages/mac/core/gawk:gawk",
+        "//packages/mac/core/grep:grep",
     ],
     visibility = ["PUBLIC"],
 )
@@ -23,9 +23,9 @@ filegroup(
 filegroup(
     name = "compression",
     srcs = [
-        "//packages/mac/core/zlib",
-        "//packages/mac/core/bzip2",
-        "//packages/mac/core/xz",
+        "//packages/mac/core/zlib:zlib",
+        "//packages/mac/core/bzip2:bzip2",
+        "//packages/mac/core/xz:xz",
     ],
     visibility = ["PUBLIC"],
 )
@@ -34,8 +34,8 @@ filegroup(
 filegroup(
     name = "terminal-libs",
     srcs = [
-        "//packages/mac/core/ncurses",
-        "//packages/mac/core/readline",
+        "//packages/mac/core/ncurses:ncurses",
+        "//packages/mac/core/readline:readline",
     ],
     visibility = ["PUBLIC"],
 )
@@ -44,12 +44,12 @@ filegroup(
 filegroup(
     name = "gnu-utils",
     srcs = [
-        "//packages/mac/core/coreutils",
-        "//packages/mac/core/findutils",
-        "//packages/mac/core/gnu-sed",
-        "//packages/mac/core/gnu-tar",
-        "//packages/mac/core/gawk",
-        "//packages/mac/core/grep",
+        "//packages/mac/core/coreutils:coreutils",
+        "//packages/mac/core/findutils:findutils",
+        "//packages/mac/core/gnu-sed:gnu-sed",
+        "//packages/mac/core/gnu-tar:gnu-tar",
+        "//packages/mac/core/gawk:gawk",
+        "//packages/mac/core/grep:grep",
     ],
     visibility = ["PUBLIC"],
 )

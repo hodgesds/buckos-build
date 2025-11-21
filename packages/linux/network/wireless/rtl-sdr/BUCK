@@ -32,7 +32,7 @@ make install DESTDIR="$DESTDIR"
 
     deps = [
         "//packages/linux/core/musl:musl",
-        "//packages/linux/core:libusb",
+        "//packages/linux/system/libs/libusb:libusb",
     ],
 
     description = "RTL-SDR library and tools for DVB-T dongles based on Realtek RTL2832U",

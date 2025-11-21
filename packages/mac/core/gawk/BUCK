@@ -23,7 +23,7 @@ use_package(
 
     # Conditional dependencies
     use_deps = {
-        "readline": ["//packages/mac/core/readline"],
+        "readline": ["//packages/mac/core/readline:readline"],
     },
 
     # Conditional configure arguments

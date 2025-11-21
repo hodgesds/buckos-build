@@ -1,0 +1,20 @@
+load("//defs:package_defs.bzl", "cmake_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+cmake_package(
+    name = "libusb",
+    version = "1.0.27",
+    src_uri = "https://github.com/libusb/libusb/releases/download/v1.0.27/libusb-1.0.27.tar.bz2",
+    sha256 = "ffaa41d741a8a3bee244ac8e54a72ea05bf2879663c098c82fc5757853441575",
+    description = "Library for userspace USB device access",
+    homepage = "https://libusb.info/",
+    license = "LGPL-2.1",
+    cmake_args = [
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DBUILD_TESTING=OFF",
+    ],
+    deps = [
+        "//packages/linux/core/musl:musl",
+    ],
+    visibility = ["PUBLIC"],
+)

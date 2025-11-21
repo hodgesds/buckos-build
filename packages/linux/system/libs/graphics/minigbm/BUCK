@@ -1,10 +1,13 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
+# NOTE: The minigbm source URL points to a live Git branch (main) which means
+# the archive content and SHA256 checksum change frequently as new commits are pushed.
+# This checksum will need to be updated regularly or the source should be pinned to a specific commit.
 download_source(
     name = "minigbm-src",
     src_uri = "https://chromium.googlesource.com/chromiumos/platform/minigbm/+archive/refs/heads/main.tar.gz",
-    sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+    sha256 = "30c0b14eec9505d2051616bb4563166dce4e1a274d4b07645f04b601d1ce52c9",
 )
 
 configure_make_package(

@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # pass - Standard Unix password manager
@@ -8,15 +8,20 @@ download_source(
     sha256 = "cfa9faf659f2ed6b38e7a7c3fb43e177d00edbacc6265e6e32215ff40e3793c0",
 )
 
-configure_make_package(
+ebuild_package(
     name = "pass",
     source = ":pass-src",
     version = "1.7.4",
     description = "Standard Unix password manager",
     homepage = "https://www.passwordstore.org",
     license = "GPL-2+",
-    build_system = "make",
-    deps = [
+    src_compile = """
+make
+""",
+    src_install = """
+make install DESTDIR="$DESTDIR"
+""",
+    rdepend = [
         "//packages/linux/core/bash:bash",
         "//packages/linux/dev-tools/vcs/git:git",
         "//packages/linux/system/security/gnupg:gnupg",

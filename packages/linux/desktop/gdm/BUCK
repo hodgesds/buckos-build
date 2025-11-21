@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "gdm-src",
     src_uri = "https://download.gnome.org/sources/gdm/45/gdm-45.0.1.tar.xz",
-    sha256 = "8a9b8c7d6e5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8",
+    sha256 = "6572578c05e3c6569d6ed269f7de2aaf3a035657654586d8243907bb7a6ffa85",
 )
 
 configure_make_package(

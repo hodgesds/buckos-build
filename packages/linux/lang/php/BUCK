@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "php-src",
     src_uri = "https://www.php.net/distributions/php-8.3.2.tar.xz",
-    sha256 = "4ffa3e44afc9c590e28dc0d2d31f1cccb51cdcc81f19d6c0e6abf6f3c0e3e5d5",
+    sha256 = "841910e1bb78a3a21a0dd48ed2f7e7f3ce7b2b9b91ff54ce6cb96dd6d4572b59",
 )
 
 configure_make_package(

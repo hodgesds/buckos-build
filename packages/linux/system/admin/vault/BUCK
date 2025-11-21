@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "vault-src",
     src_uri = "https://github.com/hashicorp/vault/archive/refs/tags/v1.15.5.tar.gz",
-    sha256 = "af94206c1d50dea04d606dc39485c94075fa2df3104e9507e9fcd5b3b62f8790",
+    sha256 = "1182eb0500dc666555868513fe364bdd1fc9bfce5b4c63c576941925d868587e",
 )
 
 ebuild_package(

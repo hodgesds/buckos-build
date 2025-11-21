@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "wl-clipboard-src",
     src_uri = "https://github.com/bugaevc/wl-clipboard/archive/v2.2.1.tar.gz",
-    sha256 = "6eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6be",
+    sha256 = "6eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41aa1143783eb",
 )
 
 configure_make_package(

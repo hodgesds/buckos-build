@@ -5,7 +5,7 @@ load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
 use_package(
     name = "gnu-sed",
     version = "4.9",
-    src_uri = "https://ftp.gnu.org/gnu/sed/sed-4.9.tar.xz",
+    src_uri = "https://mirrors.kernel.org/gnu/sed/sed-4.9.tar.xz",
     sha256 = "6e226b732e1cd739464ad6862bd1a1aba42d7982922da7a53519631d24975181",
     description = "GNU stream editor (macOS)",
     homepage = "https://www.gnu.org/software/sed/",

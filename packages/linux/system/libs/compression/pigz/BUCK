@@ -6,7 +6,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "pigz-src",
     src_uri = "https://zlib.net/pigz/pigz-2.8.tar.gz",
-    sha256 = "eb872b4f0e1f0b4c2d3f0e0c5c8c0c0b0b2a0a0e0d0c0b0a0e0d0c0b0a0e0d0c",
+    sha256 = "eb872b4f0e1f0ebe59c9f7bd8c506c4204893ba6a8492de31df416f0d5170fd0",
 )
 
 configure_make_package(

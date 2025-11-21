@@ -5,7 +5,7 @@ use_package(
     name = "kismet",
     version = "2023.07.R1",
     src_uri = "https://www.kismetwireless.net/code/kismet-2023-07-R1.tar.xz",
-    sha256 = "5e8c0e29d2850c3ed76b46b6ac3d20b2a7a13952e9c9c56c6ec82c5ed0b2ee26",
+    sha256 = "f08548e26ca65fa1e567b1debbea1ca4d0e7206bddb96a4f639c90171873e8f7",
 
     iuse = ["ssl", "python", "ncurses", "sqlite"],
     use_defaults = ["ssl", "ncurses", "sqlite"],

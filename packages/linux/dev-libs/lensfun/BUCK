@@ -13,6 +13,7 @@ cmake_package(
     cmake_args = [
         "-DBUILD_SHARED_LIBS=ON",
         "-DBUILD_TESTS=OFF",
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
     ],
     deps = [
         "//packages/linux/dev-libs/glib:glib",

@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "bubblewrap-src",
     src_uri = "https://github.com/containers/bubblewrap/releases/download/v0.8.0/bubblewrap-0.8.0.tar.xz",
-    sha256 = "m8n9o0p1q2r3s4t5u6v7w8x9y0z1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9",
+    sha256 = "957ad1149db9033db88e988b12bcebe349a445e1efc8a9b59ad2939a113d333a",
 )
 
 configure_make_package(

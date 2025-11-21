@@ -10,7 +10,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "initramfs-tools-src",
     src_uri = "https://salsa.debian.org/kernel-team/initramfs-tools/-/archive/v0.142/initramfs-tools-v0.142.tar.gz",
-    sha256 = "d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4",
+    sha256 = "27a78cc25acc3ca3d9c78deca165bf001b09b260ce25a3f3756e47a0e7bc0554",
 )
 
 configure_make_package(
@@ -79,7 +79,7 @@ EOF
     deps = [
         "//packages/linux/system/libs/kmod:kmod",
         "//packages/linux/core/bash:bash",
-        "//packages/linux/core:coreutils",
+        "//packages/linux/system/apps/coreutils:coreutils",
         "//packages/linux/core/util-linux:util-linux",
     ],
     visibility = ["PUBLIC"],

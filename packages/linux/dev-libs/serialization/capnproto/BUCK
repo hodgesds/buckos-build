@@ -5,7 +5,7 @@ cmake_package(
     name = "capnproto",
     version = "1.0.2",
     src_uri = "https://capnproto.org/capnproto-c++-1.0.2.tar.gz",
-    sha256 = "3f45330ab25c tried6d1e8e1df6d1e7df8ebb9fc2d3f4ee2f83f05e4f8f8e3f9f",
+    sha256 = "9057dbc0223366b74bbeca33a05de164a229b0377927f1b7ef3828cdd8cb1d7e",
     description = "Fast data interchange format and capability-based RPC system",
     homepage = "https://capnproto.org/",
     license = "MIT",

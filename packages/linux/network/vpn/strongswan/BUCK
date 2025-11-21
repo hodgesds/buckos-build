@@ -5,7 +5,7 @@ use_package(
     name = "strongswan",
     version = "5.9.13",
     src_uri = "https://download.strongswan.org/strongswan-5.9.13.tar.bz2",
-    sha256 = "4709c20a39f5c0c2e9c324b85b4a2d01b93dd78a502d5b5c5f3a75ca022f58e6",
+    sha256 = "56e30effb578fd9426d8457e3b76c8c3728cd8a5589594b55649b2719308ba55",
 
     iuse = ["ssl", "curl", "eap", "dhcp", "systemd", "vici", "swanctl"],
     use_defaults = ["ssl", "curl", "eap", "dhcp", "systemd", "vici", "swanctl"],

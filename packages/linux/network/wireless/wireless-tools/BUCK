@@ -5,7 +5,7 @@ use_package(
     name = "wireless-tools",
     version = "29",
     src_uri = "https://hewlettpackard.github.io/wireless-tools/wireless_tools.29.tar.gz",
-    sha256 = "5d05a7c5f8bae0dd0f40a80e67e0bce3b75b25a691c92c8f9ca11f0630c2eb72",
+    sha256 = "6fb80935fe208538131ce2c4178221bab1078a1656306bce8909c19887e2e5a1",
 
     iuse = [],
     use_defaults = [],

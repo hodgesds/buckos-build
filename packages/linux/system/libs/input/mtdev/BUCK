@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "mtdev-src",
     src_uri = "https://bitmath.org/code/mtdev/mtdev-1.1.7.tar.bz2",
-    sha256 = "a107adfc4dc986b3b36e7d2644a3b9299a18adb01ed1c0e3a3b73b9f8dfe68b2",
+    sha256 = "a107adad2101fecac54ac7f9f0e0a0dd155d954193da55c2340c97f2ff1d814e",
 )
 
 configure_make_package(

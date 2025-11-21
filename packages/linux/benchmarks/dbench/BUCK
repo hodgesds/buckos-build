@@ -9,7 +9,7 @@ use_package(
     name = "dbench",
     version = "4.0",
     src_uri = "https://samba.org/ftp/tridge/dbench/dbench-4.0.tar.gz",
-    sha256 = "6a0c3f2e5c4d3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a",
+    sha256 = "6001893f34e68a3cfeb5d424e1f2bfef005df96a22d86f35dc770c5bccf3aa8a",
     description = "Database-style benchmark for filesystems",
     homepage = "https://samba.org/ftp/tridge/dbench/",
     license = "GPL-3.0",

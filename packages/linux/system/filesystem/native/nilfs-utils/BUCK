@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "nilfs-utils-src",
     src_uri = "https://github.com/nilfs-dev/nilfs-utils/archive/refs/tags/v2.2.9.tar.gz",
-    sha256 = "2a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+    sha256 = "c92bae9a48fc45e5053f15f4977f489df988fd0b9c1a8bfff21d83185609822e",
 )
 
 configure_make_package(

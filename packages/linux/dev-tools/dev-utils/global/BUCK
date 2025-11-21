@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 use_package(
     name = "global",
     version = "6.6.12",
-    src_uri = "https://ftp.gnu.org/gnu/global/global-6.6.12.tar.gz",
+    src_uri = "https://mirrors.kernel.org/gnu/global/global-6.6.12.tar.gz",
     sha256 = "542a5b06840e14eca548b4bb60b44c0adcf01024e68eb362f8bf716007885901",
     description = "GNU GLOBAL source code tagging system",
     homepage = "https://www.gnu.org/software/global/",

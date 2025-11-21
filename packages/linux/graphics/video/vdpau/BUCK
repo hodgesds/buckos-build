@@ -26,7 +26,7 @@ meson_package(
     name = "libvdpau-va-gl",
     version = "0.4.0",
     src_uri = "https://github.com/nickel-oern/libvdpau-va-gl/archive/refs/tags/v0.4.0.tar.gz",
-    sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4a5b6c7d8e9f0a1b2",
+    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
     description = "VDPAU driver using OpenGL/VAAPI as backend",
     homepage = "https://github.com/nickel-oern/libvdpau-va-gl",
     license = "MIT",

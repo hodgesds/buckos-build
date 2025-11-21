@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "wshowkeys-src",
     src_uri = "https://git.sr.ht/~sircmpwn/wshowkeys/refs/download/1.0/wshowkeys-1.0.tar.gz",
-    sha256 = "9eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6e1",
+    sha256 = "4861ff114b8f2132940ec60547c6be54a55562918a8fa907a3c405c10c749f21",
 )
 
 configure_make_package(

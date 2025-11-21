@@ -5,7 +5,7 @@ use_package(
     name = "cmake",
     version = "3.28.1",
     src_uri = "https://github.com/Kitware/CMake/releases/download/v3.28.1/cmake-3.28.1.tar.gz",
-    sha256 = "15e94f83e647f7d620a140a7a5da76349fc47a1bfed66d0f5cdee8e7a3e6f52f",
+    sha256 = "15e94f83e647f7d620a140a7a5da76349fc47a1bfed66d0f5cdee8e7344079ad",
     description = "Cross-platform, open-source build system",
     homepage = "https://cmake.org/",
     license = "BSD-3-Clause",

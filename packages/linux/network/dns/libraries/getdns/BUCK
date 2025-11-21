@@ -5,7 +5,7 @@ use_package(
     name = "getdns",
     version = "1.7.3",
     src_uri = "https://getdnsapi.net/releases/getdns-1-7-3/getdns-1.7.3.tar.gz",
-    sha256 = "f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2",
+    sha256 = "f1404ca250f02e37a118aa00cf0ec2cbe11896e060c6d369c6761baea7d55a2c",
 
     iuse = ["ssl", "idn", "stubby"],
     use_defaults = ["ssl", "idn"],

@@ -13,7 +13,7 @@ use_package(
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
         "zlib": ["//packages/linux/core/zlib:zlib"],
-        "lzo": ["//packages/linux/core:lzo"],
+        "lzo": ["//packages/linux/system/libs/compression/lzo:lzo"],
     },
 
     use_configure = {

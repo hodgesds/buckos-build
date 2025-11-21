@@ -5,7 +5,7 @@ use_package(
     name = "powerdns",
     version = "4.8.4",
     src_uri = "https://downloads.powerdns.com/releases/pdns-4.8.4.tar.bz2",
-    sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+    sha256 = "7f40c8cbc4650d06fe49abba79902ebabb384363dabbd5cef271964a07c3645c",
 
     iuse = ["ssl", "tools", "ixfrdist", "sqlite"],
     use_defaults = ["ssl", "tools", "ixfrdist", "sqlite"],

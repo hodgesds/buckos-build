@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "bemenu-src",
     src_uri = "https://github.com/Cloudef/bemenu/releases/download/0.6.18/bemenu-0.6.18.tar.gz",
-    sha256 = "ceb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6d4",
+    sha256 = "66e0fafc198937ffbff47513bf79742126f1f674c74c0a95a878582a2f2cb0de",
 )
 
 configure_make_package(

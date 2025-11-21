@@ -5,7 +5,7 @@ load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
 use_package(
     name = "bash",
     version = "5.2.32",
-    src_uri = "https://ftp.gnu.org/gnu/bash/bash-5.2.32.tar.gz",
+    src_uri = "https://mirrors.kernel.org/gnu/bash/bash-5.2.32.tar.gz",
     sha256 = "d3ef80d2b67d8cbbe4d3265c63a72c0f5a4f8d4c2c5e5e5e5e5e5e5e5e5e5e5e",
     description = "The GNU Bourne Again SHell",
     homepage = "https://www.gnu.org/software/bash/",

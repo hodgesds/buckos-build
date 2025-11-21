@@ -5,15 +5,15 @@ use_package(
     name = "openvpn",
     version = "2.6.8",
     src_uri = "https://swupdate.openvpn.org/community/releases/openvpn-2.6.8.tar.gz",
-    sha256 = "5ede1565c8bd4a2f8e6e6c6689f867db8e4ae3a5ae7f4881109a49797e544c3c",
+    sha256 = "5ede1565c8a6d880100f7f235317a7ee9eea83d5052db5547f13a9e76af7805d",
 
     iuse = ["ssl", "lzo", "lz4", "plugins", "systemd", "iproute2", "debug"],
     use_defaults = ["ssl", "lzo", "lz4", "plugins", "systemd", "iproute2"],
 
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
-        "lzo": ["//packages/linux/core:lzo"],
-        "lz4": ["//packages/linux/core:lz4"],
+        "lzo": ["//packages/linux/system/libs/compression/lzo:lzo"],
+        "lz4": ["//packages/linux/system/libs/compression/lz4:lz4"],
         "systemd": ["//packages/linux/system/init/systemd:systemd"],
     },
 

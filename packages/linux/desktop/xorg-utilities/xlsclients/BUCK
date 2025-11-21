@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "xlsclients-src",
     src_uri = "https://xorg.freedesktop.org/releases/individual/app/xlsclients-1.1.5.tar.xz",
-    sha256 = "ca2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a82",
+    sha256 = "68baee57e70250ac4a7759fb78221831f97d88bc8e51dcc2e64eb3f8ca56bae3",
 )
 
 configure_make_package(

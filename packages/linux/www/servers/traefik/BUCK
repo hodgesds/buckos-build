@@ -9,7 +9,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "traefik-src",
     src_uri = "https://github.com/traefik/traefik/releases/download/v3.1.6/traefik_v3.1.6_linux_amd64.tar.gz",
-    sha256 = "d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
+    sha256 = "b1f405ab5985121fa54ece00a951781e368bbb8c7e8d3211f66fe4f347a506b7",
 )
 
 binary_package(

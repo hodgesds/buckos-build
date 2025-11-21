@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "dbus-src",
     src_uri = "https://dbus.freedesktop.org/releases/dbus/dbus-1.14.10.tar.xz",
-    sha256 = "ba1f21d2bd9d339da2d4aa8780c09df32fea87571c9d1bd5d9e2f8a8bdde2a3e",
+    sha256 = "ba1f21d2bd9d339da2d4aa8780c09df32fea87998b73da24f49ab9df1e36a50f",
 )
 
 configure_make_package(

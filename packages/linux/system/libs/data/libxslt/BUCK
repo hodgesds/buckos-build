@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "libxslt-src",
     src_uri = "https://download.gnome.org/sources/libxslt/1.1/libxslt-1.1.42.tar.xz",
-    sha256 = "85ca62cac0d41fc77d3f6033da9b6d21f6a8ea51b271b48996d6d6450d2ab760",
+    sha256 = "85ca62cac0d41fc77d3f6033da9df6fd73d20ea2fc18b0a3609ffb4110e1baeb",
 )
 
 configure_make_package(

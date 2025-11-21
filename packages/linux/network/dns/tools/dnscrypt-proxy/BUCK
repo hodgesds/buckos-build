@@ -3,7 +3,7 @@ load("//defs:package_defs.bzl", "download_source", "binary_package")
 download_source(
     name = "dnscrypt-proxy-src",
     src_uri = "https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.1.5/dnscrypt-proxy-linux_x86_64-2.1.5.tar.gz",
-    sha256 = "f1e2d3c4b5a6f7e8d9c0b1a2f3e4d5c6b7a8f9e0d1c2b3a4f5e6d7c8b9a0f1e2",
+    sha256 = "eeb5e78e8930cd5ef8e332a4ee2730d02a19bb5097221a56d15ae4b582f4abd2",
 )
 
 binary_package(

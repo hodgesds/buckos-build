@@ -7,7 +7,7 @@ use_package(
     name = "nagios",
     version = "4.5.0",
     src_uri = "https://github.com/NagiosEnterprises/nagioscore/releases/download/nagios-4.5.0/nagios-4.5.0.tar.gz",
-    sha256 = "47c42a3e2c736d68d05ae22c42a8ebc0c99c4d31e24daa47a63e07c7e2a40e2f",
+    sha256 = "e9a7d5838964d9eca46f935e2b2663a707897f863cbf79c69603c945322e79de",
 
     iuse = ["ssl", "perl", "web"],
     use_defaults = ["ssl", "perl", "web"],

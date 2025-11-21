@@ -10,7 +10,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "systemd-src",
     src_uri = "https://github.com/systemd/systemd/archive/refs/tags/v255.tar.gz",
-    sha256 = "28854ffb2cb5f9e07fcbdbf1e16e1e4a73cfbe7449dae12392a5477c5b89bc5c",
+    sha256 = "28854ffb2cb5f9e07fcbdbaf1e03a80b3462a12edeef84893ca2f37b22e4491e",
 )
 
 configure_make_package(

@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "jfsutils-src",
     src_uri = "https://jfs.sourceforge.net/project/pub/jfsutils-1.1.15.tar.gz",
-    sha256 = "8a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+    sha256 = "244a15f64015ce3ea17e49bdf6e1a0fb4f9af92b82fa9e05aa64cb30b5f07a4d",
 )
 
 configure_make_package(

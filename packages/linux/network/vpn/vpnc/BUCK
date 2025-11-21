@@ -5,7 +5,7 @@ use_package(
     name = "vpnc",
     version = "0.5.3r550-2",
     src_uri = "https://github.com/streambinder/vpnc/archive/refs/tags/0.5.3r550-2.tar.gz",
-    sha256 = "d1ac0e70a6cc60a5a4f7d5d5c5c8c21c6f4c5c7e3c4d5e6f7a8b9c0d1e2f3a4b",
+    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
 
     iuse = ["hybrid"],
     use_defaults = [],
@@ -29,7 +29,7 @@ mkdir -p "$DESTDIR/etc/vpnc"
 """,
 
     deps = [
-        "//packages/linux/core:libgcrypt",
+        "//packages/linux/system/libs/crypto/libgcrypt:libgcrypt",
     ],
 
     description = "Cisco VPN client compatible with vpnc",

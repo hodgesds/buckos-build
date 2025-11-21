@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "steam-src",
     src_uri = "https://repo.steampowered.com/steam/archive/stable/steam_1.0.0.79.tar.gz",
-    sha256 = "5e3e8e0c4d1b8c1c1c5c9c6c7c8c9c0c1c2c3c4c5c6c7c8c9c0c1c2c3c4c5c6c7",
+    sha256 = "3a0012daf5889311c2e1dcf33a587b409019b66d893a52192df6947e18f1ec46",
 )
 
 binary_package(

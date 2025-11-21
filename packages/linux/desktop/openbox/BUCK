@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "openbox-src",
     src_uri = "http://openbox.org/dist/openbox/openbox-3.6.1.tar.xz",
-    sha256 = "5a4b3c2d1e0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1e0d9c8b7a6f5e4d3",
+    sha256 = "abe75855cc5616554ffd47134ad15291fe37ebbebf1a80b69cbde9d670f0e26d",
 )
 
 configure_make_package(

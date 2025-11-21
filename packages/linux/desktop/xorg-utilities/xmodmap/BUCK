@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "xmodmap-src",
     src_uri = "https://xorg.freedesktop.org/releases/individual/app/xmodmap-1.0.11.tar.xz",
-    sha256 = "7a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a3d",
+    sha256 = "9a2f8168f7b0bc382828847403902cb6bf175e17658b36189eac87edda877e81",
 )
 
 configure_make_package(

@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "extutils-makemaker-src",
     src_uri = "https://cpan.metacpan.org/authors/id/B/BI/BINGOS/ExtUtils-MakeMaker-7.70.tar.gz",
-    sha256 = "f108bd46420d2f00d242825f865b0f68851084924924f92c4d50c3d0fdbd5c8c",
+    sha256 = "f108bd46420d2f00d242825f865b0f68851084924924f92261d684c49e3e7a74",
 )
 
 configure_make_package(
@@ -77,7 +77,7 @@ configure_make_package(
 download_source(
     name = "try-tiny-src",
     src_uri = "https://cpan.metacpan.org/authors/id/E/ET/ETHER/Try-Tiny-0.31.tar.gz",
-    sha256 = "3300d31d8a4075b26d8f46ce864a1c7a2e2571e799c2f2d8b5e07c79e2e73f20",
+    sha256 = "3300d31d8a4075b26d8f46ce864a1d913e0e8467ceeba6655d5d2b2e206c11be",
 )
 
 configure_make_package(
@@ -101,7 +101,7 @@ configure_make_package(
 download_source(
     name = "sub-exporter-src",
     src_uri = "https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Sub-Exporter-0.991.tar.gz",
-    sha256 = "7880df7677462e19e28afccab44d30aa4ca3ae17c3da4f6b64eb6cd38e6eb600",
+    sha256 = "2a95695d35c5d0d5373a7e145c96b9b016113b74e94116835ac05450cae4d445",
 )
 
 configure_make_package(
@@ -125,7 +125,7 @@ configure_make_package(
 download_source(
     name = "class-accessor-src",
     src_uri = "https://cpan.metacpan.org/authors/id/K/KA/KASEI/Class-Accessor-0.51.tar.gz",
-    sha256 = "bf8f54c9cb1b773c4d034b3bbf9e7d4f6f44dba1f9e4c7b1e48a9d76ac42c8e9",
+    sha256 = "bf12a3e5de5a2c6e8a447b364f4f5a050bf74624c56e315022ae7992ff2f411c",
 )
 
 configure_make_package(
@@ -149,7 +149,7 @@ configure_make_package(
 download_source(
     name = "namespace-clean-src",
     src_uri = "https://cpan.metacpan.org/authors/id/R/RI/RIBASUSHI/namespace-clean-0.27.tar.gz",
-    sha256 = "8a10a83c3e183dc78f7c09d8e8ae1e8d426ba4e9f26463276a024a1fbc89c288",
+    sha256 = "8a10a83c3e183dc78f9e7b7aa4d09b47c11fb4e7d3a33b9a12912fd22e31af9d",
 )
 
 configure_make_package(
@@ -173,7 +173,7 @@ configure_make_package(
 download_source(
     name = "package-stash-src",
     src_uri = "https://cpan.metacpan.org/authors/id/E/ET/ETHER/Package-Stash-0.40.tar.gz",
-    sha256 = "5a9722c6d9cb29ee133e5f7b08a5d1e12ddc68a0a8c7720d1dac0225a9ce7a37",
+    sha256 = "5a9722c6d9cb29ee133e5f7b08a5362762a0b5633ff5170642a5b0686e95e066",
 )
 
 configure_make_package(
@@ -197,7 +197,7 @@ configure_make_package(
 download_source(
     name = "sub-install-src",
     src_uri = "https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Sub-Install-0.929.tar.gz",
-    sha256 = "80df8fff1870d6a95a3f54a0e1c5d42a29fcff7ec41d13d9e3f0eb91e4d8fba5",
+    sha256 = "80b1e281d8cd3b2b31dac711f5c8a1657a87cd80bbe69af3924bcbeb4e5db077",
 )
 
 configure_make_package(
@@ -221,7 +221,7 @@ configure_make_package(
 download_source(
     name = "data-optlist-src",
     src_uri = "https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Data-OptList-0.114.tar.gz",
-    sha256 = "39f0d15f2f9e4f53bf2e0b9b3c25e51cac1b2b055897c5d87d06a0f595c7d062",
+    sha256 = "9fd1093b917a21fb79ae1607db53d113b4e0ad8fe0ae776cb077a7e50044fdf3",
 )
 
 configure_make_package(
@@ -245,7 +245,7 @@ configure_make_package(
 download_source(
     name = "params-util-src",
     src_uri = "https://cpan.metacpan.org/authors/id/R/RE/REHSACK/Params-Util-1.102.tar.gz",
-    sha256 = "499bb1b482db24fda277a51525596ad092c2bd2e05e1afe0dd2e4f6907e89dc7",
+    sha256 = "499bb1b482db24fda277a51525596ad092c2bd51dd508fa8fec2e9f849097402",
 )
 
 configure_make_package(
@@ -269,7 +269,7 @@ configure_make_package(
 download_source(
     name = "module-runtime-src",
     src_uri = "https://cpan.metacpan.org/authors/id/Z/ZE/ZEFRAM/Module-Runtime-0.016.tar.gz",
-    sha256 = "68302ec646833547d410be28e09676db75006f4aa58a11f3bdb44ebb99571f9c",
+    sha256 = "68302ec646833547d410be28e09676db75006f4aa58a11f3bdb44ffe99f0f024",
 )
 
 configure_make_package(
@@ -318,7 +318,7 @@ configure_make_package(
 download_source(
     name = "exporter-tiny-src",
     src_uri = "https://cpan.metacpan.org/authors/id/T/TO/TOBYINK/Exporter-Tiny-1.006002.tar.gz",
-    sha256 = "8f1622c5ebbfbcd519ead600c4e34e4c84b62c0b5b46d1d0704fc51796c3c4ad",
+    sha256 = "6f295e2cbffb1dbc15bdb9dadc341671c1e0cd2bdf2d312b17526273c322638d",
 )
 
 configure_make_package(
@@ -342,7 +342,7 @@ configure_make_package(
 download_source(
     name = "list-moreutils-src",
     src_uri = "https://cpan.metacpan.org/authors/id/R/RE/REHSACK/List-MoreUtils-0.430.tar.gz",
-    sha256 = "26eae6d788ae0a16e5de9d0d99faf23d5f0c2043f7e8b8c2c10a19d0b0dee6b3",
+    sha256 = "63b1f7842cd42d9b538d1e34e0330de5ff1559e4c2737342506418276f646527",
 )
 
 configure_make_package(
@@ -367,7 +367,7 @@ configure_make_package(
 download_source(
     name = "scalar-util-numeric-src",
     src_uri = "https://cpan.metacpan.org/authors/id/C/CH/CHOCOLATE/Scalar-Util-Numeric-0.40.tar.gz",
-    sha256 = "d7501b6d410c0960c6d13ff5bc6f1b8fb2d05506f6e0c455d2bb7a7a6d09e807",
+    sha256 = "d7501b6d410703db5b1c1942fbfc41af8964a35525d7f766058acf5ca2cc4440",
 )
 
 configure_make_package(

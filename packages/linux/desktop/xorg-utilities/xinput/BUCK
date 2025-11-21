@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "xinput-src",
     src_uri = "https://xorg.freedesktop.org/releases/individual/app/xinput-1.6.4.tar.xz",
-    sha256 = "5a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b",
+    sha256 = "ad04d00d656884d133110eeddc34e9c69e626ebebbbab04dc95791c2907057c8",
 )
 
 configure_make_package(

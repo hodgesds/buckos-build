@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 use_package(
     name = "libidn",
     version = "1.42",
-    src_uri = "https://ftp.gnu.org/gnu/libidn/libidn-1.42.tar.gz",
+    src_uri = "https://mirrors.kernel.org/gnu/libidn/libidn-1.42.tar.gz",
     sha256 = "d6c199dcd806e4fe279360cb4b08349a0d39560ed548ffd1ccadda8cdecb4723",
 
     iuse = ["static-libs", "doc"],

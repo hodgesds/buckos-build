@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "dia-src",
     src_uri = "https://gitlab.gnome.org/GNOME/dia/-/archive/0.97.3/dia-0.97.3.tar.gz",
-    sha256 = "d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
+    sha256 = "6b70dd2f6c347d448c2d6140fdb70429d17135e6713ea6c095df1b34e4010e6a",
 )
 
 configure_make_package(

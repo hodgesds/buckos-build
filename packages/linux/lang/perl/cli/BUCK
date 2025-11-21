@@ -227,7 +227,7 @@ configure_make_package(
 download_source(
     name = "config-tiny-src",
     src_uri = "https://cpan.metacpan.org/authors/id/R/RS/RSAVAGE/Config-Tiny-2.30.tar.gz",
-    sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
 )
 
 configure_make_package(
@@ -251,7 +251,7 @@ configure_make_package(
 download_source(
     name = "config-general-src",
     src_uri = "https://cpan.metacpan.org/authors/id/T/TL/TLINDEN/Config-General-2.65.tar.gz",
-    sha256 = "7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8",
+    sha256 = "4d6d5754be3a9f30906836f0cc10e554c8832e14e7a1341efb15b05d706fc58f",
 )
 
 configure_make_package(

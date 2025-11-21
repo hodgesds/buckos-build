@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "postfix-src",
     src_uri = "https://de.postfix.org/ftpmirror/official/postfix-3.9.0.tar.gz",
-    sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+    sha256 = "56f5e420e7c25455a4e96c19b672f80f9a0a35fb5becc9247c9e3d5dcc617f34",
 )
 
 # USE flags: See use_flags.bzl for available flags

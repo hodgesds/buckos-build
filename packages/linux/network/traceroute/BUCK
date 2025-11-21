@@ -5,7 +5,7 @@ use_package(
     name = "traceroute",
     version = "2.1.3",
     src_uri = "https://downloads.sourceforge.net/traceroute/traceroute-2.1.3.tar.gz",
-    sha256 = "05ebc7aba28a9100f9bbae54ceecbf75c82ccf8c5ec67d5a4a5c9df2a5e5c6e1",
+    sha256 = "05ebc7aba28a9100f9bbae54ceecbf75c82ccf46bdfce8b5d64806459a7e0412",
 
     iuse = ["ipv6"],
     use_defaults = ["ipv6"],

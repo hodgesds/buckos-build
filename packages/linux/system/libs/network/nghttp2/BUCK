@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "nghttp2-src",
     src_uri = "https://github.com/nghttp2/nghttp2/releases/download/v1.63.0/nghttp2-1.63.0.tar.xz",
-    sha256 = "4879ce9890aae2c5d36f33e0e47fc0ef6f06a5a71e8e4e8c0c3c5a61f7a4d1e8",
+    sha256 = "4879c75dd32a74421b9857924449460b8341796c0613ba114ab2188e4622354b",
 )
 
 configure_make_package(

@@ -3,7 +3,7 @@ load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 download_source(
     name = "brlcad-src",
     src_uri = "https://github.com/BRL-CAD/brlcad/archive/refs/tags/rel-7-38-2.tar.gz",
-    sha256 = "88ba0bba0d3a5b5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b",
+    sha256 = "c7b82f1f0843be23f1affee6433ac5de7d61859e3e90910068245fb9f7a2ca82",
 )
 
 ebuild_package(

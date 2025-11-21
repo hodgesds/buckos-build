@@ -8,7 +8,7 @@ use_package(
     name = "lsof",
     version = "4.99.3",
     src_uri = "https://github.com/lsof-org/lsof/releases/download/4.99.3/lsof-4.99.3.tar.gz",
-    sha256 = "b9c56468b927e6e0e1c5e9db0c4e7be97a9c65b1f2c8e7b0c5a8c1f2e3d4a5b6",
+    sha256 = "86428a8881b0d1147a52058e853c775b83d794f0da685d549b2bfd07063ed1cd",
     description = "List open files utility",
     homepage = "https://github.com/lsof-org/lsof",
     license = "lsof",

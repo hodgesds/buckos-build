@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "iozone-src",
     src_uri = "https://www.iozone.org/src/current/iozone3_506.tar",
-    sha256 = "6f55e9f01c2e5c39e8d3d9e8f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0",
+    sha256 = "114ce5c071873b9a2c7ba6e73d05d5ef7e66564392acbfcdc0b3261db10fcbe7",
 )
 
 binary_package(

@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "s6-linux-init-src",
     src_uri = "https://skarnet.org/software/s6-linux-init/s6-linux-init-1.1.2.0.tar.gz",
-    sha256 = "c1e7e72f1e95f1a5b4de91fdbb4e41e00cf6adb40c623d9e14a6aafe4e5b0e10",
+    sha256 = "11ae08d0a66210b5e56b6baee0f6b9b1b69fbedb05fda1285b115a31ca46c77f",
 )
 
 configure_make_package(

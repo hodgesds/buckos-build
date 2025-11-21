@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "mesa-src",
     src_uri = "https://archive.mesa3d.org/mesa-24.0.1.tar.xz",
-    sha256 = "0c7e109e1c474e9a9e5c4bc8a3b6a5e0f3e2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c",
+    sha256 = "f387192b08c471c545590dd12230a2a343244804b5fe866fec6aea02eab57613",
 )
 
 configure_make_package(
@@ -34,6 +34,37 @@ meson setup .. --prefix=/usr \\
     deps = [
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/libinput:libinput",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# virglrenderer - Virtual 3D GPU for QEMU
+# =============================================================================
+
+download_source(
+    name = "virglrenderer-src",
+    src_uri = "https://gitlab.freedesktop.org/virgl/virglrenderer/-/archive/virglrenderer-1.2.0/virglrenderer-virglrenderer-1.2.0.tar.bz2",
+    sha256 = "47a64189492a754685a430c713ac6700f4b1c3e7b871e87889ddb96e4d65e8ab",
+)
+
+configure_make_package(
+    name = "virglrenderer",
+    source = ":virglrenderer-src",
+    version = "1.2.0",
+    description = "Library to implement a virtual 3D GPU used by qemu",
+    homepage = "https://virgil3d.github.io/",
+    license = "MIT",
+    pre_configure = """
+mkdir -p build
+cd build
+meson setup .. --prefix=/usr \
+    -Dplatforms=egl,glx \
+    -Dvulkan-dload=false
+""",
+    deps = [
+        "//packages/linux/desktop/libdrm:libdrm",
+        ":mesa",
     ],
     visibility = ["PUBLIC"],
 )

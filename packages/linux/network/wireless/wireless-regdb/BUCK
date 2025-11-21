@@ -5,7 +5,7 @@ use_package(
     name = "wireless-regdb",
     version = "2024.01.23",
     src_uri = "https://www.kernel.org/pub/software/network/wireless-regdb/wireless-regdb-2024.01.23.tar.xz",
-    sha256 = "c64a2c369d6c60c0e2a4cebf1e85b0b59c1da1e8a56eb6c1cf9a9c1fc4be1c2a",
+    sha256 = "c8a61c9acf76fa7eb4239e89f640dee3e87098d9f69b4d3518c9c60fc6d20c55",
 
     iuse = [],
     use_defaults = [],

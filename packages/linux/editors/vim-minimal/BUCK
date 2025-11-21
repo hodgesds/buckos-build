@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "vim-minimal-src",
     src_uri = "https://github.com/vim/vim/archive/v9.1.0.tar.gz",
-    sha256 = "ddb435f6e386c53799a3025bdc5a3533beac735a0ee596cb27ada97366a1c725",
+    sha256 = "f635df405ab92220cdae732f03e09cd0726300178f3a7fdbdc591436c5213cf3",
 )
 
 configure_make_package(

@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "diff-so-fancy-src",
     src_uri = "https://github.com/so-fancy/diff-so-fancy/archive/refs/tags/v1.4.4.tar.gz",
-    sha256 = "c6e4b6b0e3e9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3",
+    sha256 = "3eac2cfb3b1de9d14b6a712941985d6b240b7f3726c94a5e337317c7161e869d",
 )
 
 binary_package(

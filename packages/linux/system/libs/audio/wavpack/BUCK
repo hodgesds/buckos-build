@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "wavpack-src",
     src_uri = "https://github.com/dbry/WavPack/releases/download/5.7.0/wavpack-5.7.0.tar.xz",
-    sha256 = "ec65aa096d4d0f80d51c320a0f2a508e18916e68f4a0f4ac7f3f8f0e4e1e5e5e",
+    sha256 = "e81510fd9ec5f309f58d5de83e9af6c95e267a13753d7e0bbfe7b91273a88bee",
 )
 
 configure_make_package(

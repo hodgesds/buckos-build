@@ -5,7 +5,7 @@ use_package(
     name = "cmus",
     version = "2.11.0",
     src_uri = "https://github.com/cmus/cmus/archive/refs/tags/v2.11.0.tar.gz",
-    sha256 = "5b4b9373d8c7b8a4a3f48b4b4e5c5f6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b",
+    sha256 = "2bbdcd6bbbae301d734214eab791e3755baf4d16db24a44626961a489aa5e0f7",
     description = "Small, fast and powerful console music player",
     homepage = "https://cmus.github.io/",
     license = "GPL-2",

@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "libevdev-src",
     src_uri = "https://www.freedesktop.org/software/libevdev/libevdev-1.13.2.tar.xz",
-    sha256 = "3eca86a6ce55b81d5bce910637fc451c8bbe373b1f43f0b30f74d3234342bea1",
+    sha256 = "3eca86a6ce55b81d5bce910637fc451c8bbe373b1f9698f375c7f1ad0de3ac48",
 )
 
 configure_make_package(

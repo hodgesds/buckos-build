@@ -5,7 +5,7 @@ cmake_package(
     name = "woff2",
     version = "1.0.2",
     src_uri = "https://github.com/google/woff2/archive/refs/tags/v1.0.2.tar.gz",
-    sha256 = "add534f2dd4a8c37df2e6d8b3b7e9c8c9c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c",
+    sha256 = "add272bb09e6384a4833ffca4896350fdb16e0ca22df68c0384773c67a175594",
     description = "Reference implementation of the WOFF 2.0 webfont compression format",
     homepage = "https://github.com/google/woff2",
     license = "MIT",

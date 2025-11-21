@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "splint-src",
     src_uri = "https://github.com/splintchecker/splint/releases/download/splint-3.1.2/splint-3.1.2.src.tgz",
-    sha256 = "c78db643df663313e3fa9d565118391825dd62ce6e0efe0f5d7c4e9c138c3c11",
+    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
 )
 
 configure_make_package(

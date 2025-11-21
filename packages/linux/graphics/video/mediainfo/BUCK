@@ -47,7 +47,7 @@ DESTDIR=$OUT make install
 download_source(
     name = "mediainfo-src",
     src_uri = "https://mediaarea.net/download/source/mediainfo/24.06/mediainfo_24.06.tar.xz",
-    sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4a5b6c7d8e9f0a1b2",
+    sha256 = "32f4a82a31e386e177fdf6e4c237053e475b501089269ab2c729452a09313520",
 )
 
 configure_make_package(
@@ -85,7 +85,7 @@ DESTDIR=$OUT make install
 download_source(
     name = "mediainfo-gui-src",
     src_uri = "https://mediaarea.net/download/source/mediainfo/24.06/mediainfo_24.06.tar.xz",
-    sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4a5b6c7d8e9f0a1b2",
+    sha256 = "32f4a82a31e386e177fdf6e4c237053e475b501089269ab2c729452a09313520",
 )
 
 configure_make_package(

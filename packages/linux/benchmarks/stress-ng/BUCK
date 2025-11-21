@@ -11,7 +11,7 @@ use_package(
     name = "stress-ng",
     version = "0.17.08",
     src_uri = "https://github.com/ColinIanKing/stress-ng/archive/refs/tags/V0.17.08.tar.gz",
-    sha256 = "a8ce0fba9625b0f1d4e32be6bc65ee3f6b2aedf6aa9156df9b8eb31e3e4f4af8",
+    sha256 = "e4982d2a1c57139dad1741d6248b00a30935f746c1f665ec5b9d53c010c8dc08",
     description = "Stress test tool for Linux systems - CPU, memory, I/O, and more",
     homepage = "https://github.com/ColinIanKing/stress-ng",
     license = "GPL-2.0",

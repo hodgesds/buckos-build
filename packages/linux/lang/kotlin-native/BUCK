@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "kotlin-native-src",
     src_uri = "https://github.com/JetBrains/kotlin/releases/download/v1.9.22/kotlin-native-linux-x86_64-1.9.22.tar.gz",
-    sha256 = "cfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcf",
+    sha256 = "c9025a820bc72047ba8ccbc9ec4650b87dfadd7578ef75091f9d7945a0d7cfe4",
 )
 
 binary_package(

@@ -5,7 +5,7 @@ meson_package(
     name = "meld",
     version = "3.22.2",
     src_uri = "https://download.gnome.org/sources/meld/3.22/meld-3.22.2.tar.xz",
-    sha256 = "888b8f0d0c5d7a1b2e3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c",
+    sha256 = "46a0a713fbcd1b153b377a1e0757c8ce255c9822467658eacfbd89b1e92316ef",
     description = "Visual diff and merge tool",
     homepage = "https://meldmerge.org/",
     license = "GPL-2+",

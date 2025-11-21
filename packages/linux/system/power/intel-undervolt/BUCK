@@ -8,7 +8,7 @@ cmake_package(
     name = "intel-undervolt",
     version = "1.7",
     src_uri = "https://github.com/kitsunyan/intel-undervolt/archive/refs/tags/1.7.tar.gz",
-    sha256 = "f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6",
+    sha256 = "29a7ebaee4830d65d0b5cefa6d497887d4f23f34659876dfe944f3a020cf33ff",
     description = "Intel CPU undervolting and power limit tool",
     homepage = "https://github.com/kitsunyan/intel-undervolt",
     license = "GPL-3.0",

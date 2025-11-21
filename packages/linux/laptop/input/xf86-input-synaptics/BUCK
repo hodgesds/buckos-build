@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "xf86-input-synaptics-src",
     src_uri = "https://xorg.freedesktop.org/releases/individual/driver/xf86-input-synaptics-1.9.2.tar.xz",
-    sha256 = "f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6",
+    sha256 = "b8fa4aab913fc63754bbd6439e020658c412743a055201ddf212760593962c38",
 )
 
 # USE flags: See use_flags.bzl for available flags

@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "sdl2-src",
     src_uri = "https://github.com/libsdl-org/SDL/releases/download/release-2.30.8/SDL2-2.30.8.tar.gz",
-    sha256 = "1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3",
+    sha256 = "380c295ea76b9bd72d90075793971c8bcb232ba0a69a9b14da4ae8f603350058",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -64,7 +64,7 @@ mkdir -p "$DESTDIR/usr/lib/cmake/SDL2"
 download_source(
     name = "sdl2-image-src",
     src_uri = "https://github.com/libsdl-org/SDL_image/releases/download/release-2.8.2/SDL2_image-2.8.2.tar.gz",
-    sha256 = "2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4",
+    sha256 = "8f486bbfbcf8464dd58c9e5d93394ab0255ce68b51c5a966a918244820a76ddc",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -92,7 +92,7 @@ configure_make_package(
 download_source(
     name = "sdl2-mixer-src",
     src_uri = "https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.8.0/SDL2_mixer-2.8.0.tar.gz",
-    sha256 = "3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5",
+    sha256 = "1cfb34c87b26dbdbc7afd68c4f545c0116ab5f90bbfecc5aebe2a9cb4bb31549",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -120,7 +120,7 @@ configure_make_package(
 download_source(
     name = "sdl2-ttf-src",
     src_uri = "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.tar.gz",
-    sha256 = "4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6",
+    sha256 = "d48cbd1ce475b9e178206bf3b72d56b66d84d44f64ac05803328396234d67723",
 )
 
 # USE flags: See use_flags.bzl for available flags

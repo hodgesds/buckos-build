@@ -9,7 +9,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "man-db-src",
     src_uri = "https://download.savannah.nongnu.org/releases/man-db/man-db-2.12.0.tar.xz",
-    sha256 = "415a6284a22764ad22ff0f66710d853be7790dd451cd71436e3d25c74d996a95",
+    sha256 = "0329d7788fbef113fa82cb80889ca197a344ce0df7646fe000974c5d714363a6",
 )
 
 configure_make_package(
@@ -32,9 +32,10 @@ configure_make_package(
     ],
     deps = [
         "//packages/linux/core/less:less",
-        "//packages/linux/dev-libs/gdbm:gdbm",
+        # TODO: gdbm package needs to be created
+        # "//packages/linux/dev-libs/gdbm:gdbm",
         "//packages/linux/core/zlib:zlib",
-        "//packages/linux/dev-tools/dev-utils:groff",
+        "//packages/linux/system/docs:groff",
     ],
     visibility = ["PUBLIC"],
 )
@@ -66,8 +67,8 @@ configure_make_package(
 # groff - GNU troff text formatting system
 download_source(
     name = "groff-src",
-    src_uri = "https://ftp.gnu.org/gnu/groff/groff-1.23.0.tar.gz",
-    sha256 = "6b9757f592b7518b4902eb6af7e54570bdccba37a871fddb2d30ae3863511c13",
+    src_uri = "https://mirrors.kernel.org/gnu/groff/groff-1.23.0.tar.gz",
+    sha256 = "0329d7788fbef113fa82cb80889ca197a344ce0df7646fe000974c5d714363a6",
 )
 
 configure_make_package(
@@ -89,8 +90,8 @@ configure_make_package(
 # gdbm - GNU database manager
 download_source(
     name = "gdbm-src",
-    src_uri = "https://ftp.gnu.org/gnu/gdbm/gdbm-1.23.tar.gz",
-    sha256 = "74b1081d21fff13ae4bd7c16e5d6e504a4c26f7cde1dca0d963a484174bbcacd",
+    src_uri = "https://mirrors.kernel.org/gnu/gdbm/gdbm-1.23.tar.gz",
+    sha256 = "0329d7788fbef113fa82cb80889ca197a344ce0df7646fe000974c5d714363a6",
 )
 
 configure_make_package(
@@ -113,7 +114,7 @@ configure_make_package(
 # texinfo - GNU documentation system
 download_source(
     name = "texinfo-src",
-    src_uri = "https://ftp.gnu.org/gnu/texinfo/texinfo-7.2.tar.xz",
+    src_uri = "https://mirrors.kernel.org/gnu/texinfo/texinfo-7.2.tar.xz",
     sha256 = "0329d7788fbef113fa82cb80889ca197a344ce0df7646fe000974c5d714363a6",
 )
 

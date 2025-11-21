@@ -18,7 +18,7 @@ use_package(
     ],
 
     deps = [
-        "//packages/linux/core:libevent",
+        "//packages/linux/system/libs/utility/libevent:libevent",
     ],
 
     description = "User-level SOCKS and port-forwarding proxy for OpenConnect",

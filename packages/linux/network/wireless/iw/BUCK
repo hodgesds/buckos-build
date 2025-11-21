@@ -5,7 +5,7 @@ use_package(
     name = "iw",
     version = "6.7",
     src_uri = "https://www.kernel.org/pub/software/network/iw/iw-6.7.tar.xz",
-    sha256 = "d4c51cdbee498c0d2534e1a3f6b7d5954bfc92daeff27c227de0c8e741e35b63",
+    sha256 = "aacf49c266b29d500d73086798a1c652e760c19126a8599fd811850430789a35",
 
     iuse = [],
     use_defaults = [],

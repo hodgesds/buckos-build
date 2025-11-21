@@ -11,7 +11,7 @@ use_ebuild_package(
     name = "mongodb",
     version = "7.0.5",
     src_uri = "https://fastdl.mongodb.org/src/mongodb-src-r7.0.5.tar.gz",
-    sha256 = "7920439df9d0527094c9177c102ed10e47a52c901cfb3424fa090fe0f2fc97f4",
+    sha256 = "9a955af42534a1a597434a3df93e762d9bd45cc6faf72258e00fe2ab18258594",
     description = "Document-oriented NoSQL database",
     homepage = "https://www.mongodb.com",
     license = "SSPL-1.0",

@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "alsa-lib-src",
     src_uri = "https://www.alsa-project.org/files/pub/lib/alsa-lib-1.2.12.tar.bz2",
-    sha256 = "4868cd908627d50f5e21c4d862d88c6406dddc394c15c05dc3e4b33a1f8c25fe",
+    sha256 = "4868cd908627279da5a634f468701625be8cc251d84262c7e5b6a218391ad0d2",
 )
 
 configure_make_package(

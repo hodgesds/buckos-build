@@ -12,7 +12,7 @@ use_package(
     name = "sysbench",
     version = "1.0.20",
     src_uri = "https://github.com/akopytov/sysbench/archive/refs/tags/1.0.20.tar.gz",
-    sha256 = "e8ee79b1f399b2d167e6a90b1e7a5f0fe47958e0d30ff7777e4fe2e20aeea21c",
+    sha256 = "e8ee79b1f399b2d167e6a90de52ccc90e52408f7ade1b9b7135727efe181347f",
     description = "Multi-threaded benchmark tool for CPU, memory, threads, mutex, and database",
     homepage = "https://github.com/akopytov/sysbench",
     license = "GPL-2.0",

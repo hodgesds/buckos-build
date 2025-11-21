@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "ghostscript-src",
     src_uri = "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs10030/ghostscript-10.03.0.tar.xz",
-    sha256 = "f25ff491a726d883f0b0f9c8af9b895c674cf77cddd814aa3824b3223f439ee5",
+    sha256 = "23c305a9488676608db1cd3906191db172c1fd0c554a0e5ebafec74aadef0530",
 )
 
 configure_make_package(

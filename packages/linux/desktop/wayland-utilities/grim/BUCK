@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "grim-src",
     src_uri = "https://git.sr.ht/~emersion/grim/refs/download/v1.4.1/grim-1.4.1.tar.gz",
-    sha256 = "1eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6c9",
+    sha256 = "93dbbc6608ae541a209c82d7e3cf1035d93844b99d2e40592d0b355f088d9ac5",
 )
 
 configure_make_package(

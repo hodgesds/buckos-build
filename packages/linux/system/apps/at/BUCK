@@ -8,7 +8,7 @@ use_package(
     name = "at",
     version = "3.2.5",
     src_uri = "http://software.calhariz.com/at/at-3.2.5.tar.gz",
-    sha256 = "bb066b389d7c9bb9d84a35738032b85c30aca6b83e1bb5c7c9d0f1e2a3b4c5d6",
+    sha256 = "ce5b95503e888311031f7d5b6556d794f2df4c1598536a44608f1d57c54f300e",
     description = "Delayed job execution and batch processing",
     homepage = "https://salsa.debian.org/debian/at",
     license = "GPL-2+",

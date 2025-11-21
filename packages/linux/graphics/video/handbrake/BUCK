@@ -6,7 +6,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "handbrake-src",
     src_uri = "https://github.com/HandBrake/HandBrake/releases/download/1.8.0/HandBrake-1.8.0-source.tar.bz2",
-    sha256 = "8b1df7d6aa7aa3c2e12978f3473e301c4b60b4fedc749b75aa6f310b80310cef",
+    sha256 = "301df65c39c9b095534e277bfaee2e0c1c34da8cd077480c70664d12e2cf5bbc",
 )
 
 configure_make_package(

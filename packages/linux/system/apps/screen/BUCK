@@ -7,8 +7,8 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 use_package(
     name = "screen",
     version = "4.9.1",
-    src_uri = "https://ftp.gnu.org/gnu/screen/screen-4.9.1.tar.gz",
-    sha256 = "26cef3e3c42571c0d484ad6faf110c5c15091fbf872b06fa7aa4766c7405ac69",
+    src_uri = "https://mirrors.kernel.org/gnu/screen/screen-4.9.1.tar.gz",
+    sha256 = "636976f5bbc149cc214f8048634cfa05e1fda003f08865f262f8d7a31738f135",
     description = "GNU screen terminal multiplexer",
     homepage = "https://www.gnu.org/software/screen",
     license = "GPL-3+",

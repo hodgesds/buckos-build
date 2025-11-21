@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "wine-src",
     src_uri = "https://dl.winehq.org/wine/source/9.x/wine-9.21.tar.xz",
-    sha256 = "5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7",
+    sha256 = "4442b47ffd9b2ea457100e36ed5fd4e6f4d829d9db79a25e605175a988ca2fff",
 )
 
 # USE flags: See use_flags.bzl for available flags

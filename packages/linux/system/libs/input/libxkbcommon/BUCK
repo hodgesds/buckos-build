@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "libxkbcommon-src",
     src_uri = "https://xkbcommon.org/download/libxkbcommon-1.7.0.tar.xz",
-    sha256 = "65782f0a10a4b455af9c6f454ac27b7e0f2a1d15ab7a60d7b4b9f57f9b4e0f3a",
+    sha256 = "65782f0a10a4b455af9c6baab7040e2f537520caa2ec2092805cdfd36863b247",
 )
 
 configure_make_package(

@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "swaylock-src",
     src_uri = "https://github.com/swaywm/swaylock/releases/download/1.7.2/swaylock-1.7.2.tar.gz",
-    sha256 = "9eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6c1",
+    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
 )
 
 configure_make_package(

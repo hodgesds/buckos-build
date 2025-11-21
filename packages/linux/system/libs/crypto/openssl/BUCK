@@ -5,7 +5,7 @@ use_package(
     name = "openssl",
     version = "3.3.2",
     src_uri = "https://www.openssl.org/source/openssl-3.3.2.tar.gz",
-    sha256 = "2e8a40b01979571a0124e00a257335fdee3bb7f570c70e4e4fab27e6efa9e6e5",
+    sha256 = "2e8a40b01979afe8be0bbfb3de5dc1c6709fedb46d6c89c10da114ab5fc3d281",
 
     iuse = ["zlib", "static-libs", "threads", "test"],
     use_defaults = ["zlib", "threads"],

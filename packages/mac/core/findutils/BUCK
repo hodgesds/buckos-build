@@ -5,7 +5,7 @@ load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
 use_package(
     name = "findutils",
     version = "4.10.0",
-    src_uri = "https://ftp.gnu.org/gnu/findutils/findutils-4.10.0.tar.xz",
+    src_uri = "https://mirrors.kernel.org/gnu/findutils/findutils-4.10.0.tar.xz",
     sha256 = "1387e0b67ff247571c7c0e4f2f44bed33d16882dc3e1a9fbefc064d15e76c8ed",
     description = "GNU find utilities (macOS)",
     homepage = "https://www.gnu.org/software/findutils/",

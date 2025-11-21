@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "satty-src",
     src_uri = "https://github.com/gabm/Satty/archive/v0.12.0.tar.gz",
-    sha256 = "5eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6cd",
+    sha256 = "42403b36e7babe245de2bebc78d4bebab68aeaa4594b28bb9d83f44808e52920",
 )
 
 configure_make_package(

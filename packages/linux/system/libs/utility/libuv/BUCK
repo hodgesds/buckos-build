@@ -5,7 +5,7 @@ cmake_package(
     name = "libuv",
     version = "1.49.1",
     src_uri = "https://dist.libuv.org/dist/v1.49.1/libuv-v1.49.1.tar.gz",
-    sha256 = "855d1c7ce1c7e1f80d27ff5de82e0b2b8f3b3c6c0b4a8d0c1e2f3a4b5c6d7e8f",
+    sha256 = "47dbc7bf773598d31e64e665ae0c1954e6c999ef7405c84127dc9958fbd1ca24",
     description = "Cross-platform asynchronous I/O library",
     homepage = "https://libuv.org/",
     license = "MIT",

@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "kitty-src",
     src_uri = "https://github.com/kovidgoyal/kitty/releases/download/v0.31.0/kitty-0.31.0.tar.xz",
-    sha256 = "f5b5f52b0d3c23d6c8c51dc96b1e7d1c5f8c6e8a7b9c0d1e2f3a4b5c6d7e8f9a",
+    sha256 = "d122497134abab8e25dfcb6b127af40cfe641980e007f696732f70ed298198f5",
 )
 
 configure_make_package(

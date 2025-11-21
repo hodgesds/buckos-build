@@ -3,7 +3,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 download_source(
     name = "sed-src",
-    src_uri = "https://ftp.gnu.org/gnu/sed/sed-4.9.tar.xz",
+    src_uri = "https://mirrors.kernel.org/gnu/sed/sed-4.9.tar.xz",
     sha256 = "6e226b732e1cd739464ad6862bd1a1aba42d7982922da7a53519631d24975181",
 )
 

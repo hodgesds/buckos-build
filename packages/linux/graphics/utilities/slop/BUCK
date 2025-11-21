@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "slop-src",
     src_uri = "https://github.com/naelstrof/slop/archive/refs/tags/v7.6.tar.gz",
-    sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+    sha256 = "ec45f9a69d7a24df621f5c634d202451ddca987d550cf588c5c427b99106fb6b",
 )
 
 configure_make_package(

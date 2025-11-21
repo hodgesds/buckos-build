@@ -6,7 +6,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "p7zip-src",
     src_uri = "https://github.com/p7zip-project/p7zip/archive/refs/tags/v17.05.tar.gz",
-    sha256 = "d2788f892571058c08d27095c22154571d2571c1dbe02b9e319b4a1765a7a5a3",
+    sha256 = "2b792dbe3811f14811abbee1f489ca0d3a8d05cc5654824b47a3db0712e5599c",
 )
 
 configure_make_package(

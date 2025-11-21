@@ -5,7 +5,7 @@ use_package(
     name = "fossil",
     version = "2.23",
     src_uri = "https://fossil-scm.org/home/tarball/version-2.23/fossil-2.23.tar.gz",
-    sha256 = "c54e17ab25be1f11cb1d2f8b2d85e9d3a8a3b24e6f5e9a1e3c5a7b8d9e2c3f1a",
+    sha256 = "2ac7eb0f298bc46ee80c8f563546ae1a28f4cb035c7cd094a4465b5706e0390c",
     description = "Simple, high-reliability, distributed software configuration management",
     homepage = "https://fossil-scm.org/",
     license = "BSD-2-Clause",

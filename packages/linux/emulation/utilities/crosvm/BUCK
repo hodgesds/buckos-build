@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "crosvm-src",
     src_uri = "https://chromium.googlesource.com/crosvm/crosvm/+archive/refs/tags/v130.0.tar.gz",
-    sha256 = "7c94f5506f10f9e7abe6fd88c37ddbf1d1e27a64db5a254a6ec77c4a63e4fde6",
+    sha256 = "5e2a3d0c93174ec1f02f7048d89c447dc884d95372933e68a0698d7f9cf3f9f4",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -47,7 +47,7 @@ mkdir -p "$DESTDIR/usr/share/crosvm/seccomp/x86_64"
         "//packages/linux/lang/rust:rust",
         "//packages/linux/system/libs/graphics/minigbm:minigbm",
         "//packages/linux/desktop/mesa:virglrenderer",
-        "//packages/linux/system/libs/libcap:libcap",
+        "//packages/linux/system/libs/ipc/libcap:libcap",
         "//packages/linux/desktop/libdrm:libdrm",
         "//packages/linux/audio/daemons/pulseaudio:pulseaudio",
     ],

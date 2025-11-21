@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "lvm2-src",
     src_uri = "https://sourceware.org/pub/lvm2/LVM2.2.03.23.tgz",
-    sha256 = "6a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+    sha256 = "74e794a9e9dee1bcf8a2065f65b9196c44fdf321e22d63b98ed7de8c9aa17a5d",
 )
 
 configure_make_package(

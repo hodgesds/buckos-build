@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "containerd-src",
     src_uri = "https://github.com/containerd/containerd/archive/refs/tags/v1.7.23.tar.gz",
-    sha256 = "d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
+    sha256 = "393bfde8ca1766a0bca3441e18eddc3f5a5c8d97ef676bde0d6c9903e1b0ec0c",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -72,7 +72,7 @@ containerd config default > "$DESTDIR/etc/containerd/config.toml" 2>/dev/null ||
     deps = [
         "//packages/linux/lang/go:go",
         "//packages/linux/emulation/containers/runc:runc",
-        "//packages/linux/system/libs/libseccomp:libseccomp",
+        "//packages/linux/system/libs/ipc/libseccomp:libseccomp",
     ],
     visibility = ["PUBLIC"],
 )

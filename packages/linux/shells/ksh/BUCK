@@ -6,7 +6,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "ksh-src",
     src_uri = "https://github.com/ksh93/ksh/archive/refs/tags/v1.0.8.tar.gz",
-    sha256 = "d3d7ac17ba6f6772b65cc4aaec3db8d4d24c75f2c8a0dc9a6c9d2c1f8e8a9e6b",
+    sha256 = "b46565045d0eb376d3e6448be6dbc214af454efc405d527f92cb81c244106c8e",
 )
 
 configure_make_package(

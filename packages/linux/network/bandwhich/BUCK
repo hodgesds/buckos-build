@@ -8,7 +8,7 @@ cargo_package(
     name = "bandwhich",
     version = "0.22.2",
     src_uri = "https://github.com/imsnif/bandwhich/archive/refs/tags/v0.22.2.tar.gz",
-    sha256 = "f1g2h3i4j5k6l7m8n9o0p1q2r3s4t5u6v7w8x9y0z1a2b3c4d5e6f7g8h9i0j1k2",
+    sha256 = "4c41719549e05dbaac1bc84828269e59b2f2032e76ae646da9b9e3b87e5a5fd1",
     description = "Terminal bandwidth utilization tool showing per-process usage",
     homepage = "https://github.com/imsnif/bandwhich",
     license = "MIT",

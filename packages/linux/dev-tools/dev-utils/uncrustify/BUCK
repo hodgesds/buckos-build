@@ -9,7 +9,7 @@ cmake_package(
     name = "uncrustify",
     version = "0.78.1",
     src_uri = "https://github.com/uncrustify/uncrustify/archive/refs/tags/uncrustify-0.78.1.tar.gz",
-    sha256 = "ecb4b4f3d5876c4fdeeb5e0d2e5c6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+    sha256 = "ecaf4c0adca14c36dfffa30bc28e69865115ecd602c90eb16a8cddccb41caad2",
     description = "Source code beautifier for C, C++, C#, ObjectiveC, D, Java, Pawn and VALA",
     homepage = "https://uncrustify.sourceforge.net/",
     license = "GPL-2+",

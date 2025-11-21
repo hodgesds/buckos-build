@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "ldb-src",
     src_uri = "https://www.samba.org/ftp/ldb/ldb-2.8.0.tar.gz",
-    sha256 = "PLACEHOLDER_SHA256",
+    sha256 = "358dca10fcd27207ac857a0d7f435a46dbc6cd1f7c10dbb840c1931bf1965f08",
 )
 
 configure_make_package(

@@ -34,7 +34,7 @@ mkdir -p "$DESTDIR/etc/n2n"
 """,
 
     build_deps = [
-        "//packages/linux/core:cmake",
+        "//packages/linux/dev-tools/build-systems/cmake:cmake",
     ],
 
     description = "Peer-to-peer VPN daemon",

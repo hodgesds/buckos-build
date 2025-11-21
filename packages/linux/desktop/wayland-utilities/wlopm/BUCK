@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "wlopm-src",
     src_uri = "https://git.sr.ht/~leon_plickat/wlopm/refs/download/v0.1.0/wlopm-0.1.0.tar.gz",
-    sha256 = "beb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6e3",
+    sha256 = "6e517d3b9cb947565ff4d46aacf9dbc2bb7914b8cc615faecab126facef03f01",
 )
 
 configure_make_package(

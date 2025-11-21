@@ -18,7 +18,7 @@ meson_package(
     name = "pipewire",
     version = "1.0.7",
     src_uri = "https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/1.0.7/pipewire-1.0.7.tar.gz",
-    sha256 = "c9f8d65fe5e6e47fa tried4c8a0b8b8c8e8a5c5e5f5e5a9e70386e9e04c19e3e4f2f6c7",
+    sha256 = "9c45eef65e66224804ae8671849452a7f221e913813072b3aad346f20df666a8",
     description = "Low-latency audio/video router and processor",
     homepage = "https://pipewire.org/",
     license = "MIT",

@@ -6,7 +6,7 @@ use_package(
     name = "openssl",
     version = "3.3.2",
     src_uri = "https://www.openssl.org/source/openssl-3.3.2.tar.gz",
-    sha256 = "2e8a40b01979571965c3c9c3c0b71a1d3b8c7e0c12a7c5e2e9a08b3ec2c2b8c2",
+    sha256 = "2e8a40b01979afe8be0bbfb3de5dc1c6709fedb46d6c89c10da114ab5fc3d281",
     description = "Robust, commercial-grade, full-featured toolkit for TLS and SSL",
     homepage = "https://www.openssl.org/",
     license = "Apache-2.0",

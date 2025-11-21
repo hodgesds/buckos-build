@@ -46,7 +46,7 @@ use_package(
     name = "curl-example",
     version = "8.5.0",
     src_uri = "https://curl.se/download/curl-8.5.0.tar.xz",
-    sha256 = "ce4b6a6655431147624aaf582632a36fe1ade262d5fab385c60f78942dd8d87b",
+    sha256 = "42ab8db9e20d8290a3b633e7fbb3cec15db34df65fd1015ef8ac1e4723750eeb",
 
     # USE flags this package supports
     iuse = [
@@ -123,7 +123,7 @@ use_package(
     name = "curl-gnutls-example",
     version = "8.5.0",
     src_uri = "https://curl.se/download/curl-8.5.0.tar.xz",
-    sha256 = "ce4b6a6655431147624aaf582632a36fe1ade262d5fab385c60f78942dd8d87b",
+    sha256 = "42ab8db9e20d8290a3b633e7fbb3cec15db34df65fd1015ef8ac1e4723750eeb",
     iuse = ["ssl", "gnutls", "http2", "ipv6", "zstd", "brotli", "ldap", "debug"],
     use_defaults = ["ssl", "ipv6"],
     use_deps = {
@@ -316,7 +316,7 @@ HARDENED_ENV = get_env_preset("hardened")
 download_source(
     name = "openssh-src",
     src_uri = "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.6p1.tar.gz",
-    sha256 = "910211c07255a8c5ad654391f0e28c8a0bfb80e0b0e7a4df75fe0a63d0cc7755",
+    sha256 = "910211c07255a8c5ad654391b40ee59800710dd8119dd5362de09385aa7a777c",
 )
 
 configure_make_package(

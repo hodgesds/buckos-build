@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "json-src",
     src_uri = "https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/JSON-4.10.tar.gz",
-    sha256 = "1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
+    sha256 = "df8b5143d9a7de99c47b55f1a170bd1f69f711935c186a6dc0ab56dd05758e35",
 )
 
 configure_make_package(
@@ -29,7 +29,7 @@ configure_make_package(
 download_source(
     name = "json-xs-src",
     src_uri = "https://cpan.metacpan.org/authors/id/M/ML/MLEHMANN/JSON-XS-4.03.tar.gz",
-    sha256 = "2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3",
+    sha256 = "515536f45f2fa1a7e88c8824533758d0121d267ab9cb453a1b5887c8a56b9068",
 )
 
 configure_make_package(
@@ -78,7 +78,7 @@ configure_make_package(
 download_source(
     name = "yaml-src",
     src_uri = "https://cpan.metacpan.org/authors/id/I/IN/INGY/YAML-1.30.tar.gz",
-    sha256 = "4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5",
+    sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
 )
 
 configure_make_package(
@@ -102,7 +102,7 @@ configure_make_package(
 download_source(
     name = "yaml-xs-src",
     src_uri = "https://cpan.metacpan.org/authors/id/I/IN/INGY/YAML-LibYAML-0.89.tar.gz",
-    sha256 = "5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6",
+    sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
 )
 
 configure_make_package(
@@ -126,7 +126,7 @@ configure_make_package(
 download_source(
     name = "yaml-tiny-src",
     src_uri = "https://cpan.metacpan.org/authors/id/E/ET/ETHER/YAML-Tiny-1.74.tar.gz",
-    sha256 = "6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7",
+    sha256 = "7b38ca9f5d3ce24230a6b8bdc1f47f5b2db348e7f7f9666c26f5955636e33d6c",
 )
 
 configure_make_package(
@@ -150,7 +150,7 @@ configure_make_package(
 download_source(
     name = "xml-libxml-src",
     src_uri = "https://cpan.metacpan.org/authors/id/S/SH/SHLOMIF/XML-LibXML-2.0210.tar.gz",
-    sha256 = "7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8",
+    sha256 = "a29bf3f00ab9c9ee04218154e0afc8f799bf23674eb99c1a9ed4de1f4059a48d",
 )
 
 configure_make_package(
@@ -174,7 +174,7 @@ configure_make_package(
 download_source(
     name = "xml-simple-src",
     src_uri = "https://cpan.metacpan.org/authors/id/G/GR/GRANTM/XML-Simple-2.25.tar.gz",
-    sha256 = "8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9",
+    sha256 = "531fddaebea2416743eb5c4fdfab028f502123d9a220405a4100e68fc480dbf8",
 )
 
 configure_make_package(
@@ -199,7 +199,7 @@ configure_make_package(
 download_source(
     name = "xml-parser-src",
     src_uri = "https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-2.47.tar.gz",
-    sha256 = "9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0",
+    sha256 = "ad4aae643ec784f489b956abe952432871a622d4e2b5c619e8855accbfc4d1d8",
 )
 
 configure_make_package(
@@ -223,7 +223,7 @@ configure_make_package(
 download_source(
     name = "xml-twig-src",
     src_uri = "https://cpan.metacpan.org/authors/id/M/MI/MIROD/XML-Twig-3.52.tar.gz",
-    sha256 = "0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1",
+    sha256 = "fef75826c24f2b877d0a0d2645212fc4fb9756ed4d2711614ac15c497e8680ad",
 )
 
 configure_make_package(
@@ -248,7 +248,7 @@ configure_make_package(
 download_source(
     name = "data-dumper-src",
     src_uri = "https://cpan.metacpan.org/authors/id/N/NW/NWCLARK/Data-Dumper-2.188.tar.gz",
-    sha256 = "1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+    sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
 )
 
 configure_make_package(
@@ -272,7 +272,7 @@ configure_make_package(
 download_source(
     name = "sereal-encoder-src",
     src_uri = "https://cpan.metacpan.org/authors/id/Y/YV/YVES/Sereal-Encoder-5.004.tar.gz",
-    sha256 = "2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3",
+    sha256 = "5e5a86ccd32dae34ed80932ecbe5c68e29752b5de0e9b0a793ab7eb2ca55cb1b",
 )
 
 configure_make_package(
@@ -295,7 +295,7 @@ configure_make_package(
 download_source(
     name = "sereal-decoder-src",
     src_uri = "https://cpan.metacpan.org/authors/id/Y/YV/YVES/Sereal-Decoder-5.004.tar.gz",
-    sha256 = "3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4",
+    sha256 = "68ef0314d87d1a6e60bb0f66fcf43eb2cacdeb1754432f5e25e784e39d3e6784",
 )
 
 configure_make_package(
@@ -319,7 +319,7 @@ configure_make_package(
 download_source(
     name = "storable-src",
     src_uri = "https://cpan.metacpan.org/authors/id/N/NW/NWCLARK/Storable-3.32.tar.gz",
-    sha256 = "4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5",
+    sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
 )
 
 configure_make_package(

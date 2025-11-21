@@ -47,7 +47,7 @@ meson_package(
     ],
     deps = [
         "//packages/linux/system/libs/ipc/dbus:dbus",
-        "//packages/linux/system/security/linux-pam:linux-pam",
+        "//packages/linux/system/security/encryption:linux-pam",
         ":libfprint",
         "//packages/linux/system/security/auth/privilege:polkit",
     ],

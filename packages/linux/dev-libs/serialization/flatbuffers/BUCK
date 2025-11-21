@@ -5,7 +5,7 @@ cmake_package(
     name = "flatbuffers",
     version = "24.3.25",
     src_uri = "https://github.com/google/flatbuffers/archive/refs/tags/v24.3.25.tar.gz",
-    sha256 = "4157c5cacdb59737c5d627e47ac26b140e9f605e7cd01c035715f5de089d4f40",
+    sha256 = "4157c5cacdb59737c5d627e47ac26b140e9ee28b1102f812b36068aab728c1ed",
     description = "Memory efficient serialization library",
     homepage = "https://google.github.io/flatbuffers/",
     license = "Apache-2.0",

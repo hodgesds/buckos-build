@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "portaudio-src",
     src_uri = "https://github.com/PortAudio/portaudio/archive/refs/tags/v19.7.0.tar.gz",
-    sha256 = "5af29ba58bbdbb0df2ff11f5e2ef1e2e8a7c1c4e5b6f7a8d9c0e1b2f3a4d5c6e",
+    sha256 = "5af29ba58bbdbb7bbcefaaecc77ec8fc413f0db6f4c4e286c40c3e1b83174fa0",
 )
 
 configure_make_package(

@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "udisks2-src",
     src_uri = "https://github.com/storaged-project/udisks/releases/download/udisks-2.10.1/udisks-2.10.1.tar.bz2",
-    sha256 = "4a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+    sha256 = "b75734ccf602540dedb4068bec206adcb508a4c003725e117ae8f994d92d8ece",
 )
 
 configure_make_package(

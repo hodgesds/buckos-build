@@ -4,8 +4,8 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 use_package(
     name = "glibc",
     version = "2.39",
-    src_uri = "https://ftp.gnu.org/gnu/glibc/glibc-2.39.tar.xz",
-    sha256 = "f77bd47cf8170c57365ae7bf86696c118adb3b120d3259c64c502d3dc1e2d926",
+    src_uri = "https://mirrors.kernel.org/gnu/glibc/glibc-2.39.tar.xz",
+    sha256 = "3fa7c7f56c7902fd087feeab89db11866afdc772bd79746672f341baf128a7c9",
     description = "GNU C Library (glibc) - the standard C library for GNU/Linux systems",
     homepage = "https://www.gnu.org/software/libc/",
     license = "LGPL-2.1+ GPL-2+",

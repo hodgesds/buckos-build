@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "blueman-src",
     src_uri = "https://github.com/blueman-project/blueman/releases/download/2.3.5/blueman-2.3.5.tar.xz",
-    sha256 = "d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0",
+    sha256 = "b2d21afdf77a06cd86daf5402406f7d2a53459817e29e0bebc4911d4f0dcfda1",
 )
 
 # USE flags: See use_flags.bzl for available flags

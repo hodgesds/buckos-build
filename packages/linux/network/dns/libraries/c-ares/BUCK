@@ -5,7 +5,7 @@ use_package(
     name = "c-ares",
     version = "1.27.0",
     src_uri = "https://c-ares.org/download/c-ares-1.27.0.tar.gz",
-    sha256 = "0a72be66959955c43e2af2fbd03418e82a2bd5464604f3f0f73daf1c117c9a64",
+    sha256 = "7537c5052714cd304f912602b97f240f034b12d79accc9c7880dd6cdd7d79b96",
 
     iuse = ["static-libs"],
     use_defaults = [],

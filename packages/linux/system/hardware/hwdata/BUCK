@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "hwdata-src",
     src_uri = "https://github.com/vcrhonek/hwdata/archive/refs/tags/v0.379.tar.gz",
-    sha256 = "PLACEHOLDER_SHA256",
+    sha256 = "b98ef646d530d5fd3afa3180efbf7c8e22d3da0088f5836f41ee25380d87b092",
 )
 
 configure_make_package(

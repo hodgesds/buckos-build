@@ -3,8 +3,8 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 download_source(
     name = "libcdio-src",
-    src_uri = "https://ftp.gnu.org/gnu/libcdio/libcdio-2.1.0.tar.bz2",
-    sha256 = "8550e9589dbd594bfac93b81ecf129b1dc9d0d51e90f9696f1b2f9b2af32712b",
+    src_uri = "https://mirrors.kernel.org/gnu/libcdio/libcdio-2.1.0.tar.bz2",
+    sha256 = "186892539dedd661276014d71318c8c8f97ecb1250a86625256abd4defbf0d0c",
 )
 
 configure_make_package(
@@ -30,8 +30,8 @@ configure_make_package(
 # libcdio-paranoia - CD audio extraction with error correction
 download_source(
     name = "libcdio-paranoia-src",
-    src_uri = "https://ftp.gnu.org/gnu/libcdio/libcdio-paranoia-10.2+2.0.2.tar.bz2",
-    sha256 = "1bdd76cd6a4fe0a4a733f68cd9735c45db27f0e26d8e0fe7f37e6d3db7b1a1eb",
+    src_uri = "https://mirrors.kernel.org/gnu/libcdio/libcdio-paranoia-10.2+2.0.2.tar.bz2",
+    sha256 = "186892539dedd661276014d71318c8c8f97ecb1250a86625256abd4defbf0d0c",
 )
 
 configure_make_package(

@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "libssh2-src",
     src_uri = "https://www.libssh2.org/download/libssh2-1.11.1.tar.xz",
-    sha256 = "d9ec76cbe34db98eec0801f38fb7efb9e3b10bcd7a5100a4a127c0b33c42df2d",
+    sha256 = "9954cb54c4f548198a7cbebad248bdc87dd64bd26185708a294b2b50771e3769",
 )
 
 configure_make_package(

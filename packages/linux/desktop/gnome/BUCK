@@ -40,7 +40,7 @@ meson setup .. --prefix=/usr \\
 download_source(
     name = "gobject-introspection-src",
     src_uri = "https://download.gnome.org/sources/gobject-introspection/1.78/gobject-introspection-1.78.1.tar.xz",
-    sha256 = "3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b",
+    sha256 = "bd7babd99af7258e76819e45ba4a6bc399608fe762d83fde3cac033c50841bb4",
 )
 
 configure_make_package(
@@ -609,7 +609,7 @@ meson setup .. --prefix=/usr \\
 download_source(
     name = "gnome-shell-src",
     src_uri = "https://download.gnome.org/sources/gnome-shell/45/gnome-shell-45.4.tar.xz",
-    sha256 = "5a4b3c2d1e0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1e0d9c8b7a6f5e4d3",
+    sha256 = "5bfea379e120b1c7f237f3ec369ad27ef5c2f5930c7df163b392782d8582090d",
 )
 
 configure_make_package(
@@ -642,7 +642,7 @@ meson setup .. --prefix=/usr \\
 download_source(
     name = "mutter-src",
     src_uri = "https://download.gnome.org/sources/mutter/45/mutter-45.4.tar.xz",
-    sha256 = "4a3b2c1d0e9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2",
+    sha256 = "91140837be15582f2c753be661ab8e42dad55d4a1b0f0650bd0b2c93f02bd7ab",
 )
 
 configure_make_package(

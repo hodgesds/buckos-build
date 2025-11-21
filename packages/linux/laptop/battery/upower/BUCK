@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "upower-src",
     src_uri = "https://gitlab.freedesktop.org/upower/upower/-/archive/v1.90.2/upower-v1.90.2.tar.gz",
-    sha256 = "e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1",
+    sha256 = "5c4e736648f0c89d2368fbbe1e6fc0598a1565c4b435bade1d65e890259fb759",
 )
 
 # USE flags: See use_flags.bzl for available flags

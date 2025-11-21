@@ -55,7 +55,7 @@ install -m 0644 contrib/completion/fish/docker.fish "$DESTDIR/usr/share/fish/ven
 download_source(
     name = "docker-engine-src",
     src_uri = "https://github.com/moby/moby/archive/refs/tags/v27.3.1.tar.gz",
-    sha256 = "df7d44387166d90954e290dfbe0a278649bf71d0e89933615bdc0757580b68e4",
+    sha256 = "d18208d9e0b6421307342cdef266193984c97c87177b9262b1113e6e9e7e020e",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -140,8 +140,8 @@ echo 'g docker - -' > "$DESTDIR/usr/lib/sysusers.d/docker.conf"
         "//packages/linux/lang/go:go",
         "//packages/linux/emulation/containers/containerd:containerd",
         "//packages/linux/emulation/containers/runc:runc",
-        "//packages/linux/system/libs/libseccomp:libseccomp",
-        "//packages/linux/network/iptables:iptables",
+        "//packages/linux/system/libs/ipc/libseccomp:libseccomp",
+        "//packages/linux/network/firewall/iptables:iptables",
     ],
     visibility = ["PUBLIC"],
 )
@@ -150,7 +150,7 @@ echo 'g docker - -' > "$DESTDIR/usr/lib/sysusers.d/docker.conf"
 download_source(
     name = "docker-compose-src",
     src_uri = "https://github.com/docker/compose/archive/refs/tags/v2.30.3.tar.gz",
-    sha256 = "df7d44387166d90954e290dfbe0a278649bf71d0e89933615bdc0757580b68e4",
+    sha256 = "b9b6f45ccad892a3f9353a03b6bdf3f79ea15ee2076f98bf013ef1db40034378",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -191,7 +191,7 @@ ln -sf /usr/lib/docker/cli-plugins/docker-compose "$DESTDIR/usr/bin/docker-compo
 download_source(
     name = "docker-buildx-src",
     src_uri = "https://github.com/docker/buildx/archive/refs/tags/v0.18.0.tar.gz",
-    sha256 = "df7d44387166d90954e290dfbe0a278649bf71d0e89933615bdc0757580b68e4",
+    sha256 = "a935cb2715a5054d918d40ef07cdd4a6465b20a755d466248718ab59fd41c334",
 )
 
 # USE flags: See use_flags.bzl for available flags

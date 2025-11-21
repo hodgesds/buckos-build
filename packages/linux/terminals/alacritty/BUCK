@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "alacritty-src",
     src_uri = "https://github.com/alacritty/alacritty/archive/refs/tags/v0.13.1.tar.gz",
-    sha256 = "38a42e23e1e6faaa9e300347df3f7b58c99e34f1c5a40b588826bce5d6735a93",
+    sha256 = "38a42e23e1e6faaa9e300347df3f7b58b6182908a701517aac6e296fbdf37451",
 )
 
 configure_make_package(

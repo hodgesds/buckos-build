@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "dxvk-src",
     src_uri = "https://github.com/doitsujin/dxvk/archive/refs/tags/v2.4.1.tar.gz",
-    sha256 = "6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8",
+    sha256 = "aa6b95f6c80dab704fa15df5b22b5f5a4931687c0bdab190f32fe666f6c0a707",
 )
 
 # USE flags: See use_flags.bzl for available flags

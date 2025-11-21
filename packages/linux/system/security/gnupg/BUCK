@@ -4,37 +4,37 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "gnupg-src",
     src_uri = "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.4.3.tar.bz2",
-    sha256 = "d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3",
+    sha256 = "a271ae6d732f6f4d80c258ad9ee88dd9c94c8fdc33c3e45328c4d7c126bd219d",
 )
 
 download_source(
     name = "libgpg-error-src",
     src_uri = "https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.47.tar.bz2",
-    sha256 = "a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4",
+    sha256 = "9e3c670966b96ecc746c28c2c419541e3bcb787d1a73930f5e5f5e1bcbbb9bdb",
 )
 
 download_source(
     name = "libgcrypt-src",
     src_uri = "https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.10.3.tar.bz2",
-    sha256 = "b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5",
+    sha256 = "8b0870897ac5ac67ded568dcfadf45969cfa8a6beb0fd60af2a9eadc2a3272aa",
 )
 
 download_source(
     name = "libksba-src",
     src_uri = "https://gnupg.org/ftp/gcrypt/libksba/libksba-1.6.5.tar.bz2",
-    sha256 = "c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6",
+    sha256 = "a564628c574c99287998753f98d750babd91a4e9db451f46ad140466ef2a6d16",
 )
 
 download_source(
     name = "libassuan-src",
     src_uri = "https://gnupg.org/ftp/gcrypt/libassuan/libassuan-2.5.6.tar.bz2",
-    sha256 = "d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7",
+    sha256 = "e9fd27218d5394904e4e39788f9b1742711c3e6b41689a31aa3380bd5aa4f426",
 )
 
 download_source(
     name = "npth-src",
     src_uri = "https://gnupg.org/ftp/gcrypt/npth/npth-1.6.tar.bz2",
-    sha256 = "e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8",
+    sha256 = "1393abd9adcf0762d34798dc34fdcf4d0d22a8410721e76f1e3afcd1daa4e2d1",
 )
 
 configure_make_package(

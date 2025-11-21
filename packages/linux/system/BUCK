@@ -212,9 +212,9 @@ rootfs(
         # Networking
         "//packages/linux/system/libs/crypto/openssl:openssl",
         "//packages/linux/system/libs/network/curl:curl",
-        "//packages/linux/system/network/openssh:openssh",
-        "//packages/linux/system/network/iproute2:iproute2",
-        "//packages/linux/system/network/dhcpcd:dhcpcd",
+        "//packages/linux/network/openssh:openssh",
+        "//packages/linux/network/iproute2:iproute2",
+        "//packages/linux/network/dhcpcd:dhcpcd",
     ],
     visibility = ["PUBLIC"],
 )

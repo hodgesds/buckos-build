@@ -48,7 +48,7 @@ configure_make_package(
 download_source(
     name = "fcitx5-src",
     src_uri = "https://download.fcitx-im.org/fcitx5/fcitx5/fcitx5-5.1.8.tar.xz",
-    sha256 = "4a457f10e29da0623e96cbbaca89cc529145587141f8e64c305f17dc875d5e6e",
+    sha256 = "e7558003e06e41fcd112b7bd66a884f42df732682f0a29327ccef119cae90a9b",
 )
 
 configure_make_package(
@@ -92,7 +92,7 @@ configure_make_package(
 download_source(
     name = "fcitx5-gtk-src",
     src_uri = "https://download.fcitx-im.org/fcitx5/fcitx5-gtk/fcitx5-gtk-5.1.1.tar.xz",
-    sha256 = "4a457f10e29da0623e96cbbaca89cc529145587141f8e64c305f17dc875d5e6e",
+    sha256 = "d6cda72de020031daf8da4dbc6c7923c8025edadec1a3acb9aa28e9efb78b013",
 )
 
 configure_make_package(
@@ -130,7 +130,7 @@ configure_make_package(
 download_source(
     name = "fcitx5-qt-src",
     src_uri = "https://download.fcitx-im.org/fcitx5/fcitx5-qt/fcitx5-qt-5.1.5.tar.xz",
-    sha256 = "4a457f10e29da0623e96cbbaca89cc529145587141f8e64c305f17dc875d5e6e",
+    sha256 = "f663f12f0c3806684f43dcc64decc4f81c853e9027e2203188e20d7507b39c31",
 )
 
 configure_make_package(
@@ -148,7 +148,7 @@ configure_make_package(
             -DCMAKE_BUILD_TYPE=Release \
             -DENABLE_QT4=OFF \
             -DENABLE_QT5=ON \
-            -DENABLE_QT6=ON
+            -DENABLE_QT6=OFF
     """,
     configure_args = [],
     make_args = ["-C", "build"],
@@ -159,7 +159,6 @@ configure_make_package(
     deps = [
         ":fcitx5",
         "//packages/linux/desktop/qt:qt5",
-        "//packages/linux/desktop/qt:qt6",
     ],
     visibility = ["PUBLIC"],
 )
@@ -168,7 +167,7 @@ configure_make_package(
 download_source(
     name = "fcitx5-chinese-addons-src",
     src_uri = "https://download.fcitx-im.org/fcitx5/fcitx5-chinese-addons/fcitx5-chinese-addons-5.1.4.tar.xz",
-    sha256 = "4a457f10e29da0623e96cbbaca89cc529145587141f8e64c305f17dc875d5e6e",
+    sha256 = "39b582d76543582d59c71fe4a0f1e082d032bd7f145b3320d34d38f961317ed2",
 )
 
 configure_make_package(
@@ -205,7 +204,7 @@ configure_make_package(
 download_source(
     name = "ibus-anthy-src",
     src_uri = "https://github.com/ibus/ibus-anthy/releases/download/1.5.15/ibus-anthy-1.5.15.tar.gz",
-    sha256 = "4a457f10e29da0623e96cbbaca89cc529145587141f8e64c305f17dc875d5e6e",
+    sha256 = "58c4e6d5836a4ac9e33aa9e84e58c4deb67ada98f3b544b2440c5783237ed98b",
 )
 
 configure_make_package(
@@ -231,7 +230,7 @@ configure_make_package(
 download_source(
     name = "ibus-libpinyin-src",
     src_uri = "https://github.com/libpinyin/ibus-libpinyin/releases/download/1.15.3/ibus-libpinyin-1.15.3.tar.gz",
-    sha256 = "4a457f10e29da0623e96cbbaca89cc529145587141f8e64c305f17dc875d5e6e",
+    sha256 = "58bfe019208f2326c10394be9e3835bee153d72155effea2a395ab25918625dc",
 )
 
 configure_make_package(
@@ -256,7 +255,7 @@ configure_make_package(
 download_source(
     name = "ibus-hangul-src",
     src_uri = "https://github.com/libhangul/ibus-hangul/releases/download/1.5.5/ibus-hangul-1.5.5.tar.gz",
-    sha256 = "4a457f10e29da0623e96cbbaca89cc529145587141f8e64c305f17dc875d5e6e",
+    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
 )
 
 configure_make_package(

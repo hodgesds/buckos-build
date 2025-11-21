@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "freecad-src",
     src_uri = "https://github.com/FreeCAD/FreeCAD/archive/refs/tags/0.21.2.tar.gz",
-    sha256 = "ceaf77cd12e8ad533d1535cc27ae4ca2a6e80778502dc9cdec906415d674b674",
+    sha256 = "65d5d93c948603cc77d154c0e6d8c333b7f213bae9ffd18c9bdce9bbb0339867",
 )
 
 configure_make_package(

@@ -3,7 +3,7 @@ load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 download_source(
     name = "openscad-src",
     src_uri = "https://github.com/openscad/openscad/releases/download/openscad-2024.12.06/openscad-2024.12.06.src.tar.gz",
-    sha256 = "77ba0bba0d3a5b5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b",
+    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
 )
 
 ebuild_package(

@@ -5,7 +5,7 @@ use_package(
     name = "ncmpcpp",
     version = "0.9.2",
     src_uri = "https://github.com/ncmpcpp/ncmpcpp/archive/refs/tags/v0.9.2.tar.gz",
-    sha256 = "a4b3b4c5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3",
+    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
     description = "NCurses Music Player Client Plus Plus - featureful ncurses MPD client",
     homepage = "https://github.com/ncmpcpp/ncmpcpp",
     license = "GPL-2",

@@ -40,7 +40,7 @@ mkdir -p "$DESTDIR/var/lib/softether"
     ],
 
     build_deps = [
-        "//packages/linux/core:cmake",
+        "//packages/linux/dev-tools/build-systems/cmake:cmake",
     ],
 
     description = "Multi-protocol VPN software (SSL-VPN, L2TP, IPsec, OpenVPN)",

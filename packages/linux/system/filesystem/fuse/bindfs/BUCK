@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "bindfs-src",
     src_uri = "https://bindfs.org/downloads/bindfs-1.17.6.tar.gz",
-    sha256 = "7a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+    sha256 = "d3beb3cc69bb2b6802cc539588e921fea973ed6191b133f2024719311d1cc18b",
 )
 
 configure_make_package(

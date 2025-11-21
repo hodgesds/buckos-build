@@ -26,7 +26,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "perl-src",
     src_uri = "https://www.cpan.org/src/5.0/perl-5.38.2.tar.xz",
-    sha256 = "a0a31534451eb7b83c7d6594a497543a54d488bc90ca00f5e34762577f40571d",
+    sha256 = "8c78af23d5cec8af3dd78a1a34e548e6d6ceabd2d51281bc654f9e993d438aed",
 )
 
 configure_make_package(

@@ -6,7 +6,7 @@ use_package(
     name = "git",
     version = "2.47.0",
     src_uri = "https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.47.0.tar.xz",
-    sha256 = "17bb5b0ba7d7b90c5b8f7e5a5e2a9c47b0b6e45a0c6c6f6c8e0c0f0e0a0b0c0d",
+    sha256 = "1ce114da88704271b43e027c51e04d9399f8c88e9ef7542dae7aebae7d87bc4e",
     description = "Fast, scalable, distributed revision control system",
     homepage = "https://git-scm.com/",
     license = "GPL-2",

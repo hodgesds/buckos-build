@@ -15,7 +15,7 @@ use_package(
     name = "lighttpd",
     version = "1.4.76",
     src_uri = "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.76.tar.xz",
-    sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+    sha256 = "8cbf4296e373cfd0cedfe9d978760b5b05c58fdc4048b4e2bcaf0a61ac8f5011",
     description = "Lightweight, fast web server optimized for high-performance environments",
     homepage = "https://www.lighttpd.net/",
     license = "BSD-3-Clause",

@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "gamemode-src",
     src_uri = "https://github.com/FeralInteractive/gamemode/archive/refs/tags/1.8.2.tar.gz",
-    sha256 = "3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5",
+    sha256 = "2b4a20894822caf04767af6a1601130d6b718fc30b8a77895607341b1674740f",
 )
 
 # USE flags: See use_flags.bzl for available flags

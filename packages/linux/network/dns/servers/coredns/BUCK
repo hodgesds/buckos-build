@@ -3,7 +3,7 @@ load("//defs:package_defs.bzl", "download_source", "binary_package")
 download_source(
     name = "coredns-src",
     src_uri = "https://github.com/coredns/coredns/releases/download/v1.11.1/coredns_1.11.1_linux_amd64.tgz",
-    sha256 = "c1e5e7a7c4d8e3f9a5b6c2d4e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5",
+    sha256 = "f96cdee0934c5c12a28bb0fb080bed688fdd7bfdeae2f64984f02bdec2d65498",
 )
 
 binary_package(

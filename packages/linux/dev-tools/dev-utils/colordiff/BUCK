@@ -5,7 +5,7 @@ use_package(
     name = "colordiff",
     version = "1.0.21",
     src_uri = "https://www.colordiff.org/colordiff-1.0.21.tar.gz",
-    sha256 = "7add151eadfff2999f3bafbb6f92ecdef624c0dbf2c2ad8c7f1f8d4f7c2e9f8a",
+    sha256 = "9b30f4257ef0f0806dea5a27c9ad8edc3f7999f05ddaff6f0627064dc927e615",
     description = "Colorizes diff output",
     homepage = "https://www.colordiff.org/",
     license = "GPL-2+",

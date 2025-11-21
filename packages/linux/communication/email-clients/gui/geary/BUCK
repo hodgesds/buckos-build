@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "geary-src",
     src_uri = "https://download.gnome.org/sources/geary/46/geary-46.0.tar.xz",
-    sha256 = "afad151302817ddf098b5e416e7ac7f2d5eea567a3b80bb90bd3c62afd13b9a1",
+    sha256 = "5ee37b5ca9655fad31d99dd74500c3105e4e61a302e6dfbea932853a626fd43c",
 )
 
 binary_package(

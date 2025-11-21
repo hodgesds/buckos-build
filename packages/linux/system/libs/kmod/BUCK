@@ -10,7 +10,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "kmod-src",
     src_uri = "https://kernel.org/pub/linux/utils/kernel/kmod/kmod-32.tar.xz",
-    sha256 = "630ed0d9a14e0671d4569d2f4ef9d7bd4ef8f853e4afba7fd9f7a58c1f77c9a4",
+    sha256 = "630ed0d92275a88cb9a7bf68f5700e911fdadaf02e051cf2e4680ff8480bd492",
 )
 
 configure_make_package(

@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "ocaml-src",
     src_uri = "https://github.com/ocaml/ocaml/archive/refs/tags/5.1.1.tar.gz",
-    sha256 = "57920d5c8d5b39d7c89b1f3c1d7b3e5a5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b",
+    sha256 = "57f7b382b3d71198413ede405d95ef3506f1cdc480cda1dca1e26b37cb090e17",
 )
 
 configure_make_package(

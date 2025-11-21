@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "ag-src",
     src_uri = "https://github.com/ggreer/the_silver_searcher/archive/refs/tags/2.2.0.tar.gz",
-    sha256 = "d9621a878542f3733b5c6e71c849b9d1a830ed77cb1a1f6c2ea441d4b0643170",
+    sha256 = "6a0a19ca5e73b2bef9481c29a508d2413ca1a0a9a5a6b1bd9bbd695a7626cbf9",
 )
 
 configure_make_package(

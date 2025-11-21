@@ -5,7 +5,7 @@ use_package(
     name = "libreswan",
     version = "4.12",
     src_uri = "https://download.libreswan.org/libreswan-4.12.tar.gz",
-    sha256 = "42bab24a69a42aacbc9c0d2e25a4b5c1f6f4b1aeee9f2ab9e6c2c0e4c3c8b9e7",
+    sha256 = "ae85abe415f7becf4b6a2b9897e1712f27e5aac9c35dfbdddbcce0ad7dfd99f7",
 
     iuse = ["ssl", "curl", "systemd", "dnssec", "labeled-ipsec"],
     use_defaults = ["ssl", "curl", "systemd"],

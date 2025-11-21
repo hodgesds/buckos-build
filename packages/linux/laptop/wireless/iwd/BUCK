@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "iwd-src",
     src_uri = "https://kernel.org/pub/linux/network/wireless/iwd-2.13.tar.xz",
-    sha256 = "b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8",
+    sha256 = "5c58d0cc7c2c81540a515a7487330468c61615d23031af47be15f694fbfbc8b3",
 )
 
 # USE flags: See use_flags.bzl for available flags

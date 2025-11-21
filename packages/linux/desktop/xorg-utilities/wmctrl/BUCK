@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "wmctrl-src",
     src_uri = "https://sites.google.com/site/aborber/wmctrl/wmctrl-1.07.tar.gz",
-    sha256 = "d78a1efdb62f18674298ad039c5cbdb1edb6e8e1c1c8ed9e2a59c5d40e8c7b53",
+    sha256 = "d668ccc530f27c8ebde2c277dedad704d69b3d457d9f7ec81a638ec9461541ec",
 )
 
 configure_make_package(

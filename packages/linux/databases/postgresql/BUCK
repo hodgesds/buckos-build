@@ -17,7 +17,7 @@ use_package(
     name = "postgresql",
     version = "16.2",
     src_uri = "https://ftp.postgresql.org/pub/source/v16.2/postgresql-16.2.tar.bz2",
-    sha256 = "446e88294dbc2c8f8e4f5c2c6d9e6a9b0c8c5c3e0f7d9a5b2e1f3c4d5a6b7c8d",
+    sha256 = "446e88294dbc2c9085ab4b7061a646fa604b4bec03521d5ea671c2e5ad9b2952",
     description = "Powerful, open source object-relational database system",
     homepage = "https://www.postgresql.org/",
     license = "PostgreSQL",

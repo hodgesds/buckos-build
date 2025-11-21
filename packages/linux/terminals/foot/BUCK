@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "foot-src",
     src_uri = "https://codeberg.org/dnkl/foot/archive/1.16.2.tar.gz",
-    sha256 = "b0be7f4daa4d59e89c4ccd2b0b7d9cd8b64a0c5b1d5f9ed3aacc6e0f5d23a9d2",
+    sha256 = "0e02af376e5f4a96eeb90470b7ad2e79a1d660db2a7d1aa772be43c7db00e475",
 )
 
 configure_make_package(

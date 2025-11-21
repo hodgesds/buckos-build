@@ -5,6 +5,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/libs/graphics/pixman:pixman",
         "//packages/linux/system/libs/graphics/cairo:cairo",
+        "//packages/linux/system/libs/graphics/lcms2:lcms2",
     ],
     visibility = ["PUBLIC"],
 )

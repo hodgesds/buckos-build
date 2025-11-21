@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "lcov-src",
     src_uri = "https://github.com/linux-test-project/lcov/releases/download/v2.0/lcov-2.0.tar.gz",
-    sha256 = "1857bb18c87ab7ce8f8f8d1e3d9e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e",
+    sha256 = "1857bb18e27abe8bcec701a907d5c47e01db4d4c512fc098d1a6acd29267bf46",
 )
 
 configure_make_package(

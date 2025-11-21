@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 # gengetopt - Generate C code to parse command-line arguments
 download_source(
     name = "gengetopt-src",
-    src_uri = "https://ftp.gnu.org/gnu/gengetopt/gengetopt-2.23.tar.xz",
+    src_uri = "https://mirrors.kernel.org/gnu/gengetopt/gengetopt-2.23.tar.xz",
     sha256 = "b941aec9011864978dd7fdeb052b1943535824169d2aa2b0e7eae9ab807584ac",
 )
 

@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "mate-panel-src",
     src_uri = "https://pub.mate-desktop.org/releases/1.28/mate-panel-1.28.1.tar.xz",
-    sha256 = "4a3b2c1d0e9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2",
+    sha256 = "5133c64f5969ae8eeebe6e8bba450dea792cb0be06d9ae1c36e8569d2f8524ba",
 )
 
 configure_make_package(
@@ -25,7 +25,7 @@ configure_make_package(
 download_source(
     name = "marco-src",
     src_uri = "https://pub.mate-desktop.org/releases/1.28/marco-1.28.1.tar.xz",
-    sha256 = "3a2b1c0d9e8f7e6d5c4b3a2f1e0d9c8b7a6f5e4d3c2b1a0f9e8d7c6b5a4f3e2d1",
+    sha256 = "2496e5e40ee980cd6849493ac3e0f8fd0dec8b81c674da8d9ba19a577f0ac2e1",
 )
 
 configure_make_package(

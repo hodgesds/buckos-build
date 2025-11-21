@@ -15,7 +15,7 @@ use_package(
     name = "w3m",
     version = "0.5.3+git20230121",
     src_uri = "https://github.com/tats/w3m/releases/download/v0.5.3+git20230121/w3m-0.5.3+git20230121.tar.gz",
-    sha256 = "6c9f3b63a0f5c7f7e8e9d2a5b4c7e1f3a5b7d9e1c3a5b7d9f1a3c5d7e9f1a3b5",
+    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
     description = "Text-based web browser with support for tables, frames, and images",
     homepage = "https://w3m.sourceforge.net/",
     license = "MIT",

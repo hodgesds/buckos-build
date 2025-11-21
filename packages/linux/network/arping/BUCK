@@ -9,7 +9,7 @@ use_package(
     name = "arping",
     version = "2.24",
     src_uri = "https://github.com/ThomasHabets/arping/archive/refs/tags/arping-2.24.tar.gz",
-    sha256 = "915e3e4a4b3b6e9b4c0d8a7f6e5d4c3b2a1a0b9c8d7e6f5a4b3c2d1e0f9a8b7c",
+    sha256 = "e443f65a44e247b27da8177decac31aa84336d5de87eab44fc02e33e7ba0b251",
 
     iuse = ["vlan"],
     use_defaults = [],

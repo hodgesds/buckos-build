@@ -69,8 +69,8 @@ meson_package(
     deps = [
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/ipc/dbus:dbus",
-        "//packages/linux/dev-libs/json-glib:json-glib",
-        "//packages/linux/fonts/libraries:fontconfig",
+        "//packages/linux/desktop/gnome:json-glib",
+        "//packages/linux/fonts/libraries/fontconfig:fontconfig",
     ],
     visibility = ["PUBLIC"],
 )

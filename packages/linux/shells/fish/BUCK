@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "fish-src",
     src_uri = "https://github.com/fish-shell/fish-shell/releases/download/3.7.0/fish-3.7.0.tar.xz",
-    sha256 = "df1b7378b714f0690b285ed9e4e58afe270ac98dbc9ca5839589e34d199014d0",
+    sha256 = "df1b7378b714f0690b285ed9e4e58afe270ac98dbc9ca5839589c1afcca33ab1",
 )
 
 configure_make_package(

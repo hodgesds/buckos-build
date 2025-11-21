@@ -3,8 +3,8 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 download_source(
     name = "nettle-src",
-    src_uri = "https://ftp.gnu.org/gnu/nettle/nettle-3.10.tar.gz",
-    sha256 = "b4c518adb174e484cb4acea54118f02380c7133771e7e9beb98a0787194ee47c",
+    src_uri = "https://mirrors.kernel.org/gnu/nettle/nettle-3.10.tar.gz",
+    sha256 = "2c61bb31a5da062ce70093d5ebb23e7232f49b59f3740da06efbbfb8c8869508",
 )
 
 configure_make_package(

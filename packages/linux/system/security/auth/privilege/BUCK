@@ -26,7 +26,7 @@ meson_package(
     ],
     deps = [
         "//packages/linux/system/libs/ipc/dbus:dbus",
-        "//packages/linux/system/libs/ipc/dbus:glib",
+        "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/security/encryption:linux-pam",
         "//packages/linux/system/init/elogind:elogind",
         ":duktape",

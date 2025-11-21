@@ -7,7 +7,7 @@ use_package(
     name = "zabbix",
     version = "7.0.0",
     src_uri = "https://cdn.zabbix.com/zabbix/sources/stable/7.0/zabbix-7.0.0.tar.gz",
-    sha256 = "3f04dd40f62a1b3b28d2c3f1c4c456c4ae69b4e7c0ca9f5c8f5f5f5f5f5f5f5f",
+    sha256 = "520641483223f680ef6e685284b556ba34a496d886a38dc3bca085cde21031b1",
 
     iuse = ["ssl", "sqlite", "mysql", "postgresql", "agent", "server", "proxy", "curl", "ipv6"],
     use_defaults = ["ssl", "sqlite", "agent", "server", "curl", "ipv6"],

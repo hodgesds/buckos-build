@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "e2fsprogs-src",
     src_uri = "https://mirrors.edge.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.47.0/e2fsprogs-1.47.0.tar.xz",
-    sha256 = "c3b6c836e9444ea56c0e3e6ede3f16f1e32ccc7e4e3fae7b35ab20091a4d24c1",
+    sha256 = "bfaa9e66fd2df3ebdb3896f85140dacfe39d54cfe8f385a9dd273f9745a8dc4c",
 )
 
 configure_make_package(

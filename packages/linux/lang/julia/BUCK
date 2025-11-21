@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "julia-src",
     src_uri = "https://github.com/JuliaLang/julia/releases/download/v1.10.0/julia-1.10.0.tar.gz",
-    sha256 = "7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c",
+    sha256 = "13e7ea0661a3500b7edb667c6e45e0d824a5fc01a356274d5c93e9018a2f26e6",
 )
 
 binary_package(

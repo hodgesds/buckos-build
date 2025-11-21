@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "wlsunset-src",
     src_uri = "https://git.sr.ht/~kennylevinsen/wlsunset/refs/download/0.4.0/wlsunset-0.4.0.tar.gz",
-    sha256 = "3eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6db",
+    sha256 = "9a735dacb07a5336c0c32b5e1883cd132d6bc70df3c426ca98df084072f3b672",
 )
 
 configure_make_package(

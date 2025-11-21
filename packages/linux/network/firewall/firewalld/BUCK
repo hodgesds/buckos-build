@@ -9,7 +9,7 @@ use_package(
     name = "firewalld",
     version = "2.1.2",
     src_uri = "https://github.com/firewalld/firewalld/releases/download/v2.1.2/firewalld-2.1.2.tar.bz2",
-    sha256 = "7d6a43e5b7a8b8b5a8c9d3e2f1a0b8c6d4e2f0a8b6c4d2e0f8a6b4c2d0e8f6a4",
+    sha256 = "94323ebff87185721caa6bff80699132f15131af73b9bcedc45e60b1827c91c5",
 
     iuse = ["gui", "nftables", "iptables"],
     use_defaults = ["nftables"],

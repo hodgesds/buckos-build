@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "xbindkeys-src",
     src_uri = "https://www.nongnu.org/xbindkeys/xbindkeys-1.8.7.tar.gz",
-    sha256 = "955016ca6285fe6d8dd7adfec4b85f43fff7c2abb76058c5e40efce9e4fbb5e9",
+    sha256 = "a29b86a8ec91d4abc83b420e547da27470847d0efe808aa6e75147aa0adb82f2",
 )
 
 configure_make_package(

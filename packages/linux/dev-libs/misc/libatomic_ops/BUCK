@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "libatomic_ops-src",
     src_uri = "https://github.com/ivmai/libatomic_ops/releases/download/v7.8.2/libatomic_ops-7.8.2.tar.gz",
-    sha256 = "d305207fe207f2b3fb5cb4c019f96ab6868363e0faa9b3e89e03ec5d653b5e6e",
+    sha256 = "d305207fe207f2b3fb5cb4c019da12b44ce3fcbc593dfd5080d867b1a2419b51",
 )
 
 configure_make_package(

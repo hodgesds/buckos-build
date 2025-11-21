@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "btrfs-progs-src",
     src_uri = "https://mirrors.edge.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v6.7.tar.xz",
-    sha256 = "3b5f9e45ae9e4ff5f5c67b65f7f0e8e0e8b4e4c6d8a0b2c4e6f8a0b2c4e6f8a0",
+    sha256 = "df4dc0310e8cf2abbd3facd940327d22aaa2f84689e195305660259fa8c29c29",
 )
 
 configure_make_package(
@@ -21,7 +21,7 @@ configure_make_package(
     deps = [
         "//packages/linux/core/util-linux:util-linux",
         "//packages/linux/core/zlib:zlib",
-        "//packages/linux/core:lzo",
+        "//packages/linux/system/libs/compression/lzo:lzo",
         "//packages/linux/system/libs/compression/zstd:zstd",
     ],
     visibility = ["PUBLIC"],

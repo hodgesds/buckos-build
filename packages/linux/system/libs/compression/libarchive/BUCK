@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "libarchive-src",
     src_uri = "https://github.com/libarchive/libarchive/releases/download/v3.7.4/libarchive-3.7.4.tar.xz",
-    sha256 = "f887755c434a736a609cbd28d87ddbfbe9d6a3bb5b703c22c02f6af80a802735",
+    sha256 = "268e9d73642a80d6bc7611d499768f92a9e227d8c11fa5c0760c880daeb60268",
 )
 
 configure_make_package(

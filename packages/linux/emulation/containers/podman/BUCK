@@ -73,9 +73,9 @@ EOF
     deps = [
         "//packages/linux/lang/go:go",
         "//packages/linux/emulation/containers/crun:crun",
-        "//packages/linux/emulation/containers/conmon:conmon",
-        "//packages/linux/system/libs/libseccomp:libseccomp",
-        "//packages/linux/system/init/systemd:libsystemd",
+        ":conmon",
+        "//packages/linux/system/libs/ipc/libseccomp:libseccomp",
+        "//packages/linux/system/init/systemd:systemd",
     ],
     visibility = ["PUBLIC"],
 )
@@ -118,7 +118,7 @@ install -m 0644 contrib/completions/bash/buildah "$DESTDIR/usr/share/bash-comple
     deps = [
         "//packages/linux/lang/go:go",
         "//packages/linux/emulation/containers/runc:runc",
-        "//packages/linux/system/libs/libseccomp:libseccomp",
+        "//packages/linux/system/libs/ipc/libseccomp:libseccomp",
     ],
     visibility = ["PUBLIC"],
 )
@@ -191,8 +191,8 @@ install -m 0755 bin/conmon "$DESTDIR/usr/bin/"
     """,
     deps = [
         "//packages/linux/dev-libs/glib:glib",
-        "//packages/linux/system/libs/libseccomp:libseccomp",
-        "//packages/linux/system/init/systemd:libsystemd",
+        "//packages/linux/system/libs/ipc/libseccomp:libseccomp",
+        "//packages/linux/system/init/systemd:systemd",
     ],
     visibility = ["PUBLIC"],
 )

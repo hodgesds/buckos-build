@@ -9,7 +9,7 @@ use_package(
     name = "nethogs",
     version = "0.8.7",
     src_uri = "https://github.com/raboof/nethogs/archive/refs/tags/v0.8.7.tar.gz",
-    sha256 = "2652305e62a75dfb6322e100dda15c6073f94bef5b3c4e96bad7802e64209038",
+    sha256 = "957d6afcc220dfbba44c819162f44818051c5b4fb793c47ba98294393986617d",
 
     iuse = [],
     use_defaults = [],

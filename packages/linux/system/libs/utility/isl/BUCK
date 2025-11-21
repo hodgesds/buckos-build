@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "isl-src",
     src_uri = "https://libisl.sourceforge.io/isl-0.26.tar.xz",
-    sha256 = "a0b5cb06d24f9fa9e77b55fabbe9a3c94a336190345ac76b46b7d7218b92dd4e",
+    sha256 = "a0b5cb06d24f9fa9e77b55fabbe9a3c94a336190345c2555f9915bb38e976504",
 )
 
 configure_make_package(

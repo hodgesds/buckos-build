@@ -8,7 +8,7 @@ python_package(
     name = "tuned",
     version = "2.22.1",
     src_uri = "https://github.com/redhat-performance/tuned/archive/refs/tags/v2.22.1.tar.gz",
-    sha256 = "c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3",
+    sha256 = "b0b4cf3d02a4c002bde141cdb18301177a94316f63e9d69162cedd7ebccd4d22",
     description = "Adaptive system tuning daemon with power-saving profiles",
     homepage = "https://github.com/redhat-performance/tuned",
     license = "GPL-2.0",

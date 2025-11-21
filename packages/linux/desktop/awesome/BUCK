@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "awesome-src",
     src_uri = "https://github.com/awesomeWM/awesome/releases/download/v4.3/awesome-4.3.tar.xz",
-    sha256 = "4a3b2c1d0e9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2",
+    sha256 = "78264d6f012350b371e339127aca485260bc0aa935eff578ba75ce1a00e11753",
 )
 
 configure_make_package(

@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "eww-src",
     src_uri = "https://github.com/elkowar/eww/archive/v0.5.0.tar.gz",
-    sha256 = "2eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41c2f9a29c6da",
+    sha256 = "ea4f62e48e3750a361e0f359933d7d840d158592ff5b3683ba1f3ccf42bda819",
 )
 
 configure_make_package(

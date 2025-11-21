@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "rust-src",
     src_uri = "https://static.rust-lang.org/dist/rustc-1.75.0-src.tar.xz",
-    sha256 = "5b739f45bc9d341e2d1c570d65d2375591e22c2d23ef32f1185f2c4ec4e46f65",
+    sha256 = "5af7603c159253ee912b32a709c9e7f95bad1d9d668e46206290c5f40e2b694b",
 )
 
 binary_package(

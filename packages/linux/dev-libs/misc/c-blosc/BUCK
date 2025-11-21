@@ -5,11 +5,12 @@ cmake_package(
     name = "c-blosc",
     version = "1.21.5",
     src_uri = "https://github.com/Blosc/c-blosc/archive/refs/tags/v1.21.5.tar.gz",
-    sha256 = "32e61961bbf81ffea6ff30e9d70fca36c86178afd3e3e65c45d3dd0e2141ca08",
+    sha256 = "32e61961bbf81ffea6ff30e9d70fca36c86178afd3e3cfa13376adec8c687509",
     description = "High performance compressor optimized for binary data",
     homepage = "https://www.blosc.org/",
     license = "BSD-3-Clause",
     cmake_args = [
+        "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
         "-DBUILD_SHARED=ON",
         "-DBUILD_STATIC=OFF",
         "-DBUILD_TESTS=OFF",

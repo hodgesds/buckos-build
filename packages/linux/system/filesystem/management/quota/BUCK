@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "quota-src",
     src_uri = "https://sourceforge.net/projects/linuxquota/files/quota-tools/4.09/quota-4.09.tar.gz",
-    sha256 = "5a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+    sha256 = "9cdaca154bc92afc3117f0e5f5b3208dd5f84583af1cf061c39baa0a2bb142f9",
 )
 
 configure_make_package(

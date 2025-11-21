@@ -9,7 +9,7 @@ use_package(
     name = "dhcpcd",
     version = "10.0.6",
     src_uri = "https://github.com/NetworkConfiguration/dhcpcd/releases/download/v10.0.6/dhcpcd-10.0.6.tar.xz",
-    sha256 = "779a99d85b66e5e39cd0e8d5b03b4096d89ae87c01aedf16d3f7b4e790163b87",
+    sha256 = "779d3ae514e8f24d7449503e1f0a20f5137c773bd04ca98c62386bf81e99f482",
 
     iuse = ["udev", "ipv6", "auth", "embedded"],
     use_defaults = ["ipv6"],

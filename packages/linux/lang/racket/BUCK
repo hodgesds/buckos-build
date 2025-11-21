@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "racket-src",
     src_uri = "https://download.racket-lang.org/installers/8.11.1/racket-8.11.1-src.tgz",
-    sha256 = "bfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbfbf",
+    sha256 = "e59ab030b92a78e3589ec405c5d25fa517688c20990233bd68cb34568d654c05",
 )
 
 configure_make_package(

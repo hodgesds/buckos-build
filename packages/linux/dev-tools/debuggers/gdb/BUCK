@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 use_package(
     name = "gdb",
     version = "14.1",
-    src_uri = "https://ftp.gnu.org/gnu/gdb/gdb-14.1.tar.xz",
+    src_uri = "https://mirrors.kernel.org/gnu/gdb/gdb-14.1.tar.xz",
     sha256 = "d66df51276143451fcbff464cc8723d68f1e9df45a6a2d5635a54e71643edb80",
     description = "GNU Debugger",
     homepage = "https://www.gnu.org/software/gdb/",

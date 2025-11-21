@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "openrc-src",
     src_uri = "https://github.com/OpenRC/openrc/archive/refs/tags/0.54.2.tar.gz",
-    sha256 = "61f598c69ce04c0faa2dbde2f6df4c15ee97180b98de4c8f2c3b3ea1f7391d2f",
+    sha256 = "1075c7793c0479a65810984036dc7c82142e934b19310edeb397db8939bf526c",
 )
 
 configure_make_package(

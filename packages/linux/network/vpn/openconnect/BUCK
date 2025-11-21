@@ -5,7 +5,7 @@ use_package(
     name = "openconnect",
     version = "9.12",
     src_uri = "https://www.infradead.org/openconnect/download/openconnect-9.12.tar.gz",
-    sha256 = "a2bedce3aa4dfe75e36e407e48e8e8bc91d46def5335ac9564fbf91bd4b2413e",
+    sha256 = "949e4ad8d28a089fd44b5730dcc28612d257d97bbc5d451176e02a8fe368ec79",
 
     iuse = ["ssl", "gnutls", "lz4", "stoken", "libpcsclite"],
     use_defaults = ["ssl", "lz4"],
@@ -13,7 +13,7 @@ use_package(
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
         "gnutls": ["//packages/linux/network/gnutls:gnutls"],
-        "lz4": ["//packages/linux/core:lz4"],
+        "lz4": ["//packages/linux/system/libs/compression/lz4:lz4"],
     },
 
     use_configure = {
@@ -42,7 +42,7 @@ mkdir -p "$DESTDIR/etc/vpnc"
 """,
 
     deps = [
-        "//packages/linux/core:libxml2",
+        "//packages/linux/system/libs/data/libxml2:libxml2",
         "//packages/linux/core/zlib:zlib",
     ],
 

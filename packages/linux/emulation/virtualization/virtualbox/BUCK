@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "virtualbox-src",
     src_uri = "https://download.virtualbox.org/virtualbox/7.1.4/VirtualBox-7.1.4.tar.bz2",
-    sha256 = "f7f9b5d8e4c3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b7",
+    sha256 = "0f08fd98057167eb06b1b88dab2aeca99d6033a187cd2dd200e2c9595b5ae0c3",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -126,6 +126,20 @@ configure_make_package(
     ],
     deps = [
         "//packages/linux/kernel:linux-headers",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# VirtualBox full - Meta-package with all VirtualBox components
+# =============================================================================
+
+filegroup(
+    name = "virtualbox-full",
+    srcs = [
+        ":virtualbox",
+        ":virtualbox-guest-additions",
+        ":virtualbox-modules",
     ],
     visibility = ["PUBLIC"],
 )

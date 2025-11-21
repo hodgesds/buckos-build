@@ -5,7 +5,7 @@ use_package(
     name = "wavemon",
     version = "0.9.5",
     src_uri = "https://github.com/uoaerg/wavemon/releases/download/v0.9.5/wavemon-0.9.5.tar.gz",
-    sha256 = "6ea791a885f1d5fb5b5bfb2e2ec6f8ff27ba1df9c5c9f8c00c0c20fca8f9a49e",
+    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
 
     iuse = ["ncurses"],
     use_defaults = ["ncurses"],

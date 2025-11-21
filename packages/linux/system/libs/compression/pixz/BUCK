@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "pixz-src",
     src_uri = "https://github.com/vasi/pixz/releases/download/v1.0.7/pixz-1.0.7.tar.xz",
-    sha256 = "e5e32c6eb0bf112b98e74a5da8fb63b9f2acdd89d0bdee6d5178e961d6d0b5f6",
+    sha256 = "e5e32c6eb0bf112b98e74a5da8fb63b9f2cae71800f599d97ce540e150c8ddc5",
 )
 
 configure_make_package(

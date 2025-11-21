@@ -27,7 +27,7 @@ configure_make_package(
 download_source(
     name = "spice-server-src",
     src_uri = "https://www.spice-space.org/download/releases/spice-0.15.2.tar.bz2",
-    sha256 = "b9e3c3aee2d5e9db7f64c10c1ca4f53d1cfb9d9e2b7e8d0c4f5a6b7c8d9e0f1a2",
+    sha256 = "6d9eb6117f03917471c4bc10004abecff48a79fb85eb85a1c45f023377015b81",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -135,10 +135,25 @@ install -m 0644 data/70-spice-vdagentd.rules "$DESTDIR/usr/lib/udev/rules.d/" 2>
     """,
     deps = [
         "//packages/linux/dev-libs/glib:glib",
-        "//packages/linux/desktop/xorg:libx11",
-        "//packages/linux/desktop/xorg:libxfixes",
-        "//packages/linux/desktop/xorg:libxrandr",
-        "//packages/linux/system/init/systemd:libsystemd",
+        "//packages/linux/desktop/xorg-server:libx11",
+        "//packages/linux/desktop/xorg-server:libxfixes",
+        "//packages/linux/desktop/xorg-server:libxrandr",
+        "//packages/linux/system/init/systemd:systemd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# SPICE full - Meta-package with all spice components
+# =============================================================================
+
+filegroup(
+    name = "spice-full",
+    srcs = [
+        ":spice-server",
+        ":spice-gtk",
+        ":spice-protocol",
+        ":spice-vdagent",
     ],
     visibility = ["PUBLIC"],
 )

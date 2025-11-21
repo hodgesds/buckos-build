@@ -157,7 +157,7 @@ DESTDIR=$OUT make install
     deps = [
         "//packages/linux/desktop/kde:kf5",
         "//packages/linux/desktop/qt:qt5",
-        "//packages/linux/core:poppler",
+        "//packages/linux/editors/poppler:poppler",
     ],
     build_deps = [],
     visibility = ["PUBLIC"],
@@ -198,8 +198,8 @@ DESTDIR=$OUT make install
     deps = [
         "//packages/linux/desktop/kde:kf5",
         "//packages/linux/desktop/qt:qt5",
-        "//packages/linux/core:exiv2",
-        "//packages/linux/core:lcms2",
+        "//packages/linux/dev-libs/exiv2:exiv2",
+        "//packages/linux/system/libs/graphics/lcms2:lcms2",
     ],
     build_deps = [],
     visibility = ["PUBLIC"],
@@ -320,8 +320,8 @@ DESTDIR=$OUT make install
     deps = [
         "//packages/linux/desktop/kde:kf5",
         "//packages/linux/desktop/qt:qt5",
-        "//packages/linux/core:gmp",
-        "//packages/linux/core:mpfr",
+        "//packages/linux/dev-libs/gmp:gmp",
+        "//packages/linux/dev-libs/mpfr:mpfr",
     ],
     build_deps = [],
     visibility = ["PUBLIC"],
@@ -361,7 +361,6 @@ DESTDIR=$OUT make install
     deps = [
         "//packages/linux/desktop/kde:kf5",
         "//packages/linux/desktop/qt:qt5",
-        "//packages/linux/core:vlc",
     ],
     build_deps = [],
     visibility = ["PUBLIC"],
@@ -402,8 +401,7 @@ DESTDIR=$OUT make install
     deps = [
         "//packages/linux/desktop/kde:kf5",
         "//packages/linux/desktop/qt:qt5",
-        "//packages/linux/core:openssl",
-        "//packages/linux/core:libfakekey",
+        "//packages/linux/system/libs/crypto/openssl:openssl",
     ],
     build_deps = [],
     visibility = ["PUBLIC"],
@@ -561,7 +559,7 @@ DESTDIR=$OUT make install
     deps = [
         "//packages/linux/desktop/kde:kf5",
         "//packages/linux/desktop/qt:qt5",
-        "//packages/linux/core:lm-sensors",
+        "//packages/linux/laptop/monitoring/lm-sensors:lm-sensors",
     ],
     build_deps = [],
     visibility = ["PUBLIC"],
@@ -614,7 +612,7 @@ DESTDIR=$OUT make install
 # download_source(
 #     name = "partitionmanager-src",
 #     src_uri = "https://download.kde.org/stable/release-service/24.02.0/src/partitionmanager-24.02.0.tar.xz",
-#     sha256 = "b2ec49165805bca5b806f66b4ec53dd4a98dd46633aed54e69f040a1df15a4ac",
+#     sha256 = "e0efff427b2155b09784851fa1645511ffb93629e557e887ec5dacff2fe223a0",
 # )
 #
 # configure_make_package(
@@ -683,8 +681,7 @@ DESTDIR=$OUT make install
     deps = [
         "//packages/linux/desktop/kde:kf5",
         "//packages/linux/desktop/qt:qt5",
-        "//packages/linux/core:libktorrent",
-        "//packages/linux/core:boost",
+        "//packages/linux/dev-libs/boost:boost",
     ],
     build_deps = [],
     visibility = ["PUBLIC"],

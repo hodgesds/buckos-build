@@ -13,7 +13,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "firefox-src",
     src_uri = "https://archive.mozilla.org/pub/firefox/releases/128.0/source/firefox-128.0.source.tar.xz",
-    sha256 = "1d0c0ff2c0d3bb9d1da4f4f67e8b8c23c91cfd8a5eb29a7d2c9d41ebf0a4f3e4",
+    sha256 = "65271ffefb235ea1e162a081f2074a0f06fce27b2f613f573c126ba8eef95172",
 )
 
 binary_package(

@@ -5,7 +5,7 @@ go_package(
     name = "fzf",
     version = "0.55.0",
     src_uri = "https://github.com/junegunn/fzf/archive/refs/tags/v0.55.0.tar.gz",
-    sha256 = "805383f71bca7f8fb271ecd716852aea88fd898d5027d58add9e43df6ea766da",
+    sha256 = "f2d5f89ca451577e17464b9bb596dc0d0ecececb5eaa63622c41b57cd0b7b8cc",
     description = "Command-line fuzzy finder for interactive filtering",
     homepage = "https://github.com/junegunn/fzf",
     license = "MIT",

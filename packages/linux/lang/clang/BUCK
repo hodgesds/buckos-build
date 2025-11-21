@@ -9,7 +9,7 @@ cmake_package(
     name = "clang",
     version = "18.1.8",
     src_uri = "https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/llvm-project-18.1.8.src.tar.xz",
-    sha256 = "f68cf90f369bc7d0158ba70d860b0cb34dbc163d6ff0ebc6cfa5e515b9b2e28d",
+    sha256 = "5af7603c159253ee912b32a709c9e7f95bad1d9d668e46206290c5f40e2b694b",
     description = "C/C++/Objective-C compiler based on LLVM",
     homepage = "https://clang.llvm.org/",
     license = "Apache-2.0 WITH LLVM-exception",

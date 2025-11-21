@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "pcsx2-src",
     src_uri = "https://github.com/PCSX2/pcsx2/archive/refs/tags/v2.1.265.tar.gz",
-    sha256 = "0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
+    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
 )
 
 # USE flags: See use_flags.bzl for available flags

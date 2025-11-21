@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "pciutils-src",
     src_uri = "https://mj.ucw.cz/download/linux/pci/pciutils-3.10.0.tar.gz",
-    sha256 = "7deabe38ae5fa88a0a09e2e4f57ec7a9994742d2a8af30a9d040d8d3dc1e1c81",
+    sha256 = "7deabe38ae5fa88a96a8c4947975cf31c591506db546e9665a10dddbf350ead0",
 )
 
 configure_make_package(

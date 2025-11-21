@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "s-tui-src",
     src_uri = "https://github.com/amanusk/s-tui/archive/refs/tags/v1.1.6.tar.gz",
-    sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+    sha256 = "99a8905673a427ebce4f77d94c76cd59d4b3f0da74c018e7cb4951c72825bbe7",
 )
 
 binary_package(

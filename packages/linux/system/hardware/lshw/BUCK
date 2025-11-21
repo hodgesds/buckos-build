@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "lshw-src",
     src_uri = "https://www.ezix.org/software/files/lshw-B.02.20.tar.gz",
-    sha256 = "060254ae75a93cfe40c2b843c7ccf7e8a88d71d329e8adb51fb5620e8f3a8b69",
+    sha256 = "06d9cf122422220e5dc94e8ea5b01816a69bb6b59368f63d7f21fff31fc6922a",
 )
 
 configure_make_package(

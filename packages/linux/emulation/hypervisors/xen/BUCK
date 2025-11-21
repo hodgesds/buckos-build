@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "xen-src",
     src_uri = "https://downloads.xenproject.org/release/xen/4.18.3/xen-4.18.3.tar.gz",
-    sha256 = "b21d9c7b0c10dc55d06b2086d7c30bb0f2aee0edbe3e5c0a06f79e7e8a3a5eaa",
+    sha256 = "d3eb539a556352f3f47881d71fb0e5777b2f3e9a4251d283c18c67ce996774b7",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -35,8 +35,8 @@ configure_make_package(
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/system/libs/io/libaio:libaio",
         "//packages/linux/lang/python:python",
-        "//packages/linux/system/libs/ncurses:ncurses",
-        "//packages/linux/system/libs/libuuid:libuuid",
+        "//packages/linux/core/ncurses:ncurses",
+        "//packages/linux/core/util-linux:util-linux",
         "//packages/linux/system/libs/data/yajl:yajl",
         "//packages/linux/emulation/hypervisors/qemu:qemu",
     ],

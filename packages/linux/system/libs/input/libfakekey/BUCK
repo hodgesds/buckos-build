@@ -1,0 +1,26 @@
+load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+
+download_source(
+    name = "libfakekey-src",
+    src_uri = "https://git.yoctoproject.org/libfakekey/snapshot/libfakekey-0.3.tar.gz",
+    sha256 = "d282fa6481a5b85f71e36e8bad4cfa938cc8eaac4c42ffa27f9203ac634813f4",
+)
+
+configure_make_package(
+    name = "libfakekey",
+    source = ":libfakekey-src",
+    version = "0.3",
+    description = "Library for faking X keyboard events",
+    homepage = "https://www.yoctoproject.org/tools-resources/projects/matchbox",
+    license = "GPL-2.0-or-later",
+    configure_args = [
+        "--disable-static",
+    ],
+    deps = [
+        # TODO: X11 libraries need to be created (libx11, libxtst)
+        # "//packages/linux/x-windows/x11/libs:libx11",
+        # "//packages/linux/x-windows/x11/libs:libxtst",
+    ],
+    visibility = ["PUBLIC"],
+)

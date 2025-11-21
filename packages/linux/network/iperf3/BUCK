@@ -9,7 +9,7 @@ use_package(
     name = "iperf3",
     version = "3.16",
     src_uri = "https://downloads.es.net/pub/iperf/iperf-3.16.tar.gz",
-    sha256 = "dbcf6f1dc00fab2d29a2ab1d2fab8f1ce03e5086f85e40d5e855757ac0e58a8e",
+    sha256 = "cc740c6bbea104398cc3e466befc515a25896ec85e44a662d5f4a767b9cf713e",
 
     iuse = ["ssl", "static-libs", "sctp"],
     use_defaults = ["ssl"],

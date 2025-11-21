@@ -42,7 +42,7 @@ install -m 0644 contrib/completions/bash/runc "$DESTDIR/usr/share/bash-completio
     """,
     deps = [
         "//packages/linux/lang/go:go",
-        "//packages/linux/system/libs/libseccomp:libseccomp",
+        "//packages/linux/system/libs/ipc/libseccomp:libseccomp",
     ],
     visibility = ["PUBLIC"],
 )

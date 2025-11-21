@@ -3,8 +3,8 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 download_source(
     name = "diffutils-src",
-    src_uri = "https://ftp.gnu.org/gnu/diffutils/diffutils-3.10.tar.xz",
-    sha256 = "90e5e93cc724e4ebe12ede80df1634063c7a855f5e86b7d6cc60bce38c44e29c",
+    src_uri = "https://mirrors.kernel.org/gnu/diffutils/diffutils-3.10.tar.xz",
+    sha256 = "90e5e93cc724e4ebe12ede80df1634063c7a855692685919bfe60b556c9bd09e",
 )
 
 configure_make_package(

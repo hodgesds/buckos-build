@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "krita-src",
     src_uri = "https://download.kde.org/stable/krita/5.2.2/krita-5.2.2.tar.gz",
-    sha256 = "d0fcaf9a5034b01c00fc6b29ac44537dd6f9c38e3b63fb8c865e2c8c8e8a8a8a",
+    sha256 = "a0f883d5e5f85334036bc23f69c8a4ba6cff79042c5bc37aafec5c5fac043f5f",
 )
 
 configure_make_package(

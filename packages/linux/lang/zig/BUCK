@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "zig-src",
     src_uri = "https://ziglang.org/download/0.11.0/zig-0.11.0.tar.xz",
-    sha256 = "9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d9d",
+    sha256 = "72014e700e50c0d3528cef3adf80b76b26ab27730133e8202716a187a799e951",
 )
 
 binary_package(

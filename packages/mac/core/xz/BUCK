@@ -6,7 +6,7 @@ use_package(
     name = "xz",
     version = "5.6.3",
     src_uri = "https://github.com/tukaani-project/xz/releases/download/v5.6.3/xz-5.6.3.tar.xz",
-    sha256 = "b1d45295d3f71f25a4c9101bd7c8d16cb56348bbef3bbc738da0351e17c73317",
+    sha256 = "db0590629b6f0fa36e74aea5f9731dc6f8df068ce7b7bafa45301832a5eebc3a",
     description = "General-purpose data compression with high compression ratio",
     homepage = "https://tukaani.org/xz/",
     license = "public-domain",

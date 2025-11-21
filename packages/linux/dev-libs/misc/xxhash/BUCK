@@ -5,10 +5,17 @@ cmake_package(
     name = "xxhash",
     version = "0.8.2",
     src_uri = "https://github.com/Cyan4973/xxHash/archive/refs/tags/v0.8.2.tar.gz",
-    sha256 = "baee0c6afd4f03165de7a4e67988d16f0f2b257b51f0e8e9b75ff8e84e6b1445",
+    sha256 = "baee0c6afd4f03165de7a4e67988d16f0f2b257b51d0e3cb91909302a26a79c4",
     description = "Extremely fast non-cryptographic hash algorithm",
     homepage = "https://cyan4973.github.io/xxHash/",
     license = "BSD-2-Clause",
+    pre_configure = """
+        if [ -d cmake_unofficial ]; then
+            mv cmake_unofficial/* . || true
+            [ -f cmake_unofficial/.gitignore ] && mv cmake_unofficial/.gitignore . || true
+            rmdir cmake_unofficial || true
+        fi
+    """,
     cmake_args = [
         "-DBUILD_SHARED_LIBS=ON",
     ],

@@ -8,14 +8,14 @@ use_package(
     name = "kbd",
     version = "2.6.4",
     src_uri = "https://www.kernel.org/pub/linux/utils/kbd/kbd-2.6.4.tar.xz",
-    sha256 = "e7e755e79c8b8a0d824caca7f0c4c9f3e4a3a6e3a5b8c7d9e0f1a2b3c4d5e6f7",
+    sha256 = "519f8d087aecca7e0a33cd084bef92c066eb19731666653dcc70c9d71aa40926",
     description = "Keyboard and console utilities",
     homepage = "https://kbd-project.org/",
     license = "GPL-2.0-or-later",
     iuse = ["pam", "nls", "vlock"],
     use_defaults = [],
     use_deps = {
-        "pam": ["//packages/linux/system/libs/linux-pam:linux-pam"],
+        "pam": ["//packages/linux/system/security:linux-pam"],
     },
     use_configure = {
         "vlock": "--enable-vlock",
@@ -28,7 +28,7 @@ use_package(
         "--datadir=/usr/share/kbd",
     ],
     deps = [
-        "//packages/linux/system/libs/linux-pam:linux-pam",
+        "//packages/linux/system/security:linux-pam",
     ],
     visibility = ["PUBLIC"],
 )

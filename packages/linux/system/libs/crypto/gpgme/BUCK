@@ -23,7 +23,7 @@ configure_make_package(
         "--disable-g13-test",
     ],
     deps = [
-        "//packages/linux/system/apps/gnupg:gnupg",
+        "//packages/linux/system/security/gnupg:gnupg",
     ],
     visibility = ["PUBLIC"],
 )

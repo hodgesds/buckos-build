@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "cpufrequtils-src",
     src_uri = "https://kernel.org/pub/linux/utils/kernel/cpufreq/cpufrequtils-008.tar.xz",
-    sha256 = "c7f3a8e1b2d4f5a6e7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0",
+    sha256 = "a2149db551f83112209b1a8e79bd50d386979bbf64edbc69126f4e0b4f0a4cab",
 )
 
 configure_make_package(

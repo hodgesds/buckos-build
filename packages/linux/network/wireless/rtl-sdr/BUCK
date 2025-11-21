@@ -5,7 +5,7 @@ use_package(
     name = "rtl-sdr",
     version = "2.0.1",
     src_uri = "https://github.com/osmocom/rtl-sdr/archive/refs/tags/v2.0.1.tar.gz",
-    sha256 = "e0e09b4c5cb3a6f5b83dc8a903a10e9d16aec7d9e7de8c5f0c0ba2f7d8f39c5e",
+    sha256 = "ee9b76568cde94674816e99f918b01718f9dd88a1804a3227808c0ef744fbc18",
 
     iuse = ["udev"],
     use_defaults = [],

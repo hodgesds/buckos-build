@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "budgie-desktop-src",
     src_uri = "https://github.com/BuddiesOfBudgie/budgie-desktop/releases/download/v10.9.1/budgie-desktop-10.9.1.tar.xz",
-    sha256 = "2a1b0c9d8e7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0",
+    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
 )
 
 configure_make_package(

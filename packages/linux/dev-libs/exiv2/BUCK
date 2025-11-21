@@ -4,9 +4,9 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 # exiv2 - Image metadata library and tools
 cmake_package(
     name = "exiv2",
-    version = "0.28.2",
-    src_uri = "https://github.com/Exiv2/exiv2/releases/download/v0.28.2/exiv2-0.28.2-Source.tar.gz",
-    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+    version = "0.28.7",
+    src_uri = "https://github.com/Exiv2/exiv2/archive/refs/tags/v0.28.7.tar.gz",
+    sha256 = "5e292b02614dbc0cee40fe1116db2f42f63ef6b2ba430c77b614e17b8d61a638",
     description = "Image metadata library and tools",
     homepage = "https://www.exiv2.org/",
     license = "GPL-2.0-or-later",

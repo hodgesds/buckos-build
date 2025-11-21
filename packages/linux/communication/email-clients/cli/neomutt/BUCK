@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "neomutt-src",
     src_uri = "https://github.com/neomutt/neomutt/archive/20240425.tar.gz",
-    sha256 = "c1552ff370c7d6e4c8e79f6b3e92d9c7a22c0ccbc5b6c5f63f73f8e55de2f3e1",
+    sha256 = "a5aed0a0f506260997821c23cb148bc5ca4938fd613e0e8b89556f397ffc17f7",
 )
 
 # USE flags: See use_flags.bzl for available flags

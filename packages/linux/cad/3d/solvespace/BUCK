@@ -3,7 +3,7 @@ load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 download_source(
     name = "solvespace-src",
     src_uri = "https://github.com/solvespace/solvespace/archive/refs/tags/v3.1.tar.gz",
-    sha256 = "99ba0bba0d3a5b5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b",
+    sha256 = "ab4b3a5fecb1800f8eab82a92138a70227e869d2066ee881441b1e13035786dc",
 )
 
 ebuild_package(

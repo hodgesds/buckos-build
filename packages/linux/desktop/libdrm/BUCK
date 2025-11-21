@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "libdrm-src",
     src_uri = "https://dri.freedesktop.org/libdrm/libdrm-2.4.120.tar.xz",
-    sha256 = "5b5e5f5e4e3e2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6",
+    sha256 = "3bf55363f76c7250946441ab51d3a6cc0ae518055c0ff017324ab76cdefb327a",
 )
 
 configure_make_package(

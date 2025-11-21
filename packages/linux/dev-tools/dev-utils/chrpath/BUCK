@@ -5,7 +5,7 @@ use_package(
     name = "chrpath",
     version = "0.16",
     src_uri = "https://github.com/nickg/chrpath/archive/refs/tags/v0.16.tar.gz",
-    sha256 = "c3e9f5e6d7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4",
+    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
     description = "Modify rpath of compiled programs",
     homepage = "https://github.com/nickg/chrpath",
     license = "GPL-2",

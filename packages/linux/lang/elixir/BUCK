@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "elixir-src",
     src_uri = "https://github.com/elixir-lang/elixir/archive/refs/tags/v1.16.0.tar.gz",
-    sha256 = "6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b",
+    sha256 = "d7fe641e3c85c9774232618d22c880c86c2f31e3508c344ce75d134cd40aea18",
 )
 
 binary_package(

@@ -3,7 +3,7 @@ load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 download_source(
     name = "freecad-src",
     src_uri = "https://github.com/FreeCAD/FreeCAD/archive/refs/tags/1.0.0.tar.gz",
-    sha256 = "66ba0bba0d3a5b5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b",
+    sha256 = "51115afd8e3b89f4bac343b986b0800d8e1c68fc1e322c3cd179cfe1033ef937",
 )
 
 ebuild_package(

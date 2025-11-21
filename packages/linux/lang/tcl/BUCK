@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "tcl-src",
     src_uri = "https://prdownloads.sourceforge.net/tcl/tcl8.6.13-src.tar.gz",
-    sha256 = "43a1fae7412f61ff11de2cfd05d28cfc3a73762f354a417c62370a54e5e5c8a1",
+    sha256 = "43a1fae7412f61ff11de2cfd05d28cfc3a73762f354a417c62370a54e2caf066",
 )
 
 configure_make_package(

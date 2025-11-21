@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "nvme-cli-src",
     src_uri = "https://github.com/linux-nvme/nvme-cli/archive/refs/tags/v2.7.1.tar.gz",
-    sha256 = "2a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+    sha256 = "4c69d0f3c8b553110d0f63f5876d56627abd2d9f5d3904e2480cedd03cb15654",
 )
 
 configure_make_package(

@@ -26,7 +26,7 @@ use_package(
 
     deps = [
         "//packages/linux/network/libpcap:libpcap",
-        "//packages/linux/core/pcre:pcre",
+        "//packages/linux/system/libs/utility/pcre2:pcre2",
     ],
 
     description = "Network intrusion detection and prevention system",

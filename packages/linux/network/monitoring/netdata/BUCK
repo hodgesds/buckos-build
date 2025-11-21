@@ -5,13 +5,13 @@ use_package(
     name = "netdata",
     version = "1.44.3",
     src_uri = "https://github.com/netdata/netdata/releases/download/v1.44.3/netdata-v1.44.3.tar.gz",
-    sha256 = "a0b1c2d3e4f5g6h7i8j9k0l1m2n3o4p5q6r7s8t9u0v1w2x3y4z5a6b7c8d9e0f",
+    sha256 = "50df30a9aaf60d550eb8e607230d982827e04194f7df3eba0e83ff7919270ad2",
 
     iuse = ["ssl", "zlib", "curl"],
     use_defaults = ["ssl", "zlib", "curl"],
 
     use_deps = {
-        "zlib": ["//packages/linux/system/libs/compression/zlib:zlib"],
+        "zlib": ["//packages/linux/core/zlib:zlib"],
         "curl": ["//packages/linux/network/curl:curl"],
     },
 

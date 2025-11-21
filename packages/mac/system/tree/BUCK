@@ -6,7 +6,7 @@ use_package(
     name = "tree",
     version = "2.1.3",
     src_uri = "https://github.com/Old-Man-Programmer/tree/archive/refs/tags/2.1.3.tar.gz",
-    sha256 = "5f3f6e32c2a88b0b0c4f8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b",
+    sha256 = "3ffe2c8bb21194b088ad1e723f0cf340dd434453c5ff9af6a38e0d47e0c2723b",
     description = "Display directories as trees",
     homepage = "http://mama.indstate.edu/users/ice/tree/",
     license = "GPL-2.0",

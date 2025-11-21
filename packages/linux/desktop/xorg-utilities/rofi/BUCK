@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "rofi-src",
     src_uri = "https://github.com/davatorium/rofi/releases/download/1.7.5/rofi-1.7.5.tar.gz",
-    sha256 = "d89a1d0f9e8c71bf853c9ca7d4bcafdb7d6cf5ae5f7c21be7b4c5e1ba0dc1b7e",
+    sha256 = "2fa9a8959e09116e0d4ad4314e4b1904a96ccce51ed6d5a7ef533af3364b9651",
 )
 
 configure_make_package(

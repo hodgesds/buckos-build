@@ -4,7 +4,7 @@ python_package(
     name = "fonttools",
     version = "4.50.0",
     src_uri = "https://github.com/fonttools/fonttools/releases/download/4.50.0/fonttools-4.50.0.tar.gz",
-    sha256 = "fa5cf61c8a3ec4bcd5b6e5e8f8b5b5e5d6b6b5e5a8a5e5b5c5d5e5f5a5b5c5d5e",
+    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
     description = "Library for manipulating fonts in Python",
     homepage = "https://github.com/fonttools/fonttools",
     license = "MIT",

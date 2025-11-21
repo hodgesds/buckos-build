@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 use_package(
     name = "make",
     version = "4.4.1",
-    src_uri = "https://ftp.gnu.org/gnu/make/make-4.4.1.tar.gz",
+    src_uri = "https://mirrors.kernel.org/gnu/make/make-4.4.1.tar.gz",
     sha256 = "dd16fb1d67bfab79a72f5e8390735c49e3e8e70b4945a15ab1f81ddb78658fb3",
     description = "GNU make utility to maintain groups of programs",
     homepage = "https://www.gnu.org/software/make/",

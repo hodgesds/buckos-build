@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "ngspice-src",
     src_uri = "https://downloads.sourceforge.net/ngspice/ngspice-43.tar.gz",
-    sha256 = "14dca6b8bdbcb5e3e8c7d3b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5a5b5",
+    sha256 = "14dd6a6f08531f2051c13ae63790a45708bd43f3e77886a6a84898c297b13699",
 )
 
 # USE flags: See use_flags.bzl for available flags

@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "autorandr-src",
     src_uri = "https://github.com/phillipberndt/autorandr/archive/1.14.tar.gz",
-    sha256 = "f52fb8b09c89d86c7b3e1f7a5e91f9d61c2e7dbf6f9a7e5b3c1a9d7e5f3b1a2c",
+    sha256 = "d7d4f2e57c14c0e032ddfde24da2b22e5831cc792dca2c6bad3622502e634c60",
 )
 
 configure_make_package(

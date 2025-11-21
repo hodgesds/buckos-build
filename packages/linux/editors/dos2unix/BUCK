@@ -6,7 +6,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "dos2unix-src",
     src_uri = "https://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.5.2.tar.gz",
-    sha256 = "264742446608442eb48f96c20af6f6ec3a5fefdf89e801a3a6cd12efc28ef6b2",
+    sha256 = "264742446608442eb48f96c20af6da303cb3a92b364e72cb7e24f88239c4bf3a",
 )
 
 configure_make_package(

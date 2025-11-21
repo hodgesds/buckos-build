@@ -30,5 +30,8 @@ make INSTALL_ROOT="$DESTDIR" install
     rdepend = [
         "//packages/linux/desktop/qt:qt5",
     ],
+    bdepend = [
+        "//packages/linux/desktop/qt:qt5",
+    ],
     visibility = ["PUBLIC"],
 )

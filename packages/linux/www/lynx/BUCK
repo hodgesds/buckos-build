@@ -15,7 +15,7 @@ use_package(
     name = "lynx",
     version = "2.9.0",
     src_uri = "https://invisible-mirror.net/archives/lynx/tarballs/lynx2.9.0.tar.bz2",
-    sha256 = "3c8c61d4c7d9a2c2f8c1c3e5a7b9d4f6e8a0c2d4e6f8a0b2c4d6e8f0a2b4c6d8",
+    sha256 = "5bcae5e2e6043ca7b220963a97763c49c13218d849ffda6be7739bfd5a2d36ff",
     description = "Text-based web browser with SSL support",
     homepage = "https://lynx.invisible-island.net/",
     license = "GPL-2.0",

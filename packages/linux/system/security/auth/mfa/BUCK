@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "oath-toolkit-src",
     src_uri = "https://download.savannah.nongnu.org/releases/oath-toolkit/oath-toolkit-2.6.9.tar.gz",
-    sha256 = "333ac831c8f1a6dbd7feb897339bba453ff34d3b0f4cfaa6b5a20dba55c8e985",
+    sha256 = "f28d3d0bfe84f43be4db6d607a59ceb723010592447e2ba8d3ec1df97294f6c9",
 )
 
 configure_make_package(

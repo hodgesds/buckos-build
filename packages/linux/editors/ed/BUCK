@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 # ed - GNU ed line editor
 download_source(
     name = "ed-src",
-    src_uri = "https://ftp.gnu.org/gnu/ed/ed-1.20.2.tar.lz",
+    src_uri = "https://mirrors.kernel.org/gnu/ed/ed-1.20.2.tar.lz",
     sha256 = "65fec7318f48c2ca17f334ac0f4703defe62037bb13cc23920de077b5fa24523",
 )
 

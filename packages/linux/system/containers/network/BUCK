@@ -9,7 +9,7 @@ load("//defs:eclasses.bzl", "inherit")
 download_source(
     name = "cni-plugins-src",
     src_uri = "https://github.com/containernetworking/plugins/archive/refs/tags/v1.4.1.tar.gz",
-    sha256 = "5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f",
+    sha256 = "f8e7055bc77bbd1e978157c2dcb53836f5f4d9d582f7bc2dffdd78997a267f96",
 )
 
 ebuild_package(
@@ -37,7 +37,7 @@ install -m 755 bin/* "$DESTDIR/usr/lib/cni/"
 download_source(
     name = "netavark-src",
     src_uri = "https://github.com/containers/netavark/archive/refs/tags/v1.10.3.tar.gz",
-    sha256 = "6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a",
+    sha256 = "fdc3010cb221f0fcef0302f57ef6f4d9168a61f9606238a3e1ed4d2e348257b7",
 )
 
 ebuild_package(
@@ -61,7 +61,7 @@ install -m 755 target/release/netavark "$DESTDIR/usr/libexec/podman/"
 download_source(
     name = "aardvark-dns-src",
     src_uri = "https://github.com/containers/aardvark-dns/archive/refs/tags/v1.10.0.tar.gz",
-    sha256 = "7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b",
+    sha256 = "b3e77b3ff4eb40f010c78ca00762761e8c639c47e1cb67686d1eb7f522fbc81e",
 )
 
 ebuild_package(
@@ -85,7 +85,7 @@ install -m 755 target/release/aardvark-dns "$DESTDIR/usr/libexec/podman/"
 download_source(
     name = "slirp4netns-src",
     src_uri = "https://github.com/rootless-containers/slirp4netns/archive/refs/tags/v1.2.3.tar.gz",
-    sha256 = "9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d",
+    sha256 = "acce648fab8fe5f113c41a8fd6d20177708519b4ddaa60f845e1998a17b22ca5",
 )
 
 ebuild_package(
@@ -106,9 +106,10 @@ make install DESTDIR="$DESTDIR"
 """,
     rdepend = [
         "//packages/linux/dev-libs/glib:glib",
-        "//packages/linux/system/libs/network/libslirp:libslirp",
+        # TODO: libslirp package needs to be created
+        # "//packages/linux/system/libs/network/libslirp:libslirp",
         "//packages/linux/system/libs/ipc/libseccomp:libseccomp",
-        "//packages/linux/system/libs/utility/libcap:libcap",
+        "//packages/linux/system/libs/ipc/libcap:libcap",
     ],
     visibility = ["PUBLIC"],
 )

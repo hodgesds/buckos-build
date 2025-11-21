@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "acpi_call-src",
     src_uri = "https://github.com/nix-community/acpi_call/archive/refs/tags/v1.2.2.tar.gz",
-    sha256 = "f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2",
+    sha256 = "8b1902a94395c2fa5a97f81c94868a9cbc46a48e12309ad01626439bde96f1d9",
 )
 
 # USE flags: See use_flags.bzl for available flags

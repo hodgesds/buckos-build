@@ -1,26 +1,21 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-use_package(
-    name = "busybox",
-    version = "1.36.1",
+# Download source - explicitly created with PUBLIC visibility for reuse
+download_source(
+    name = "busybox-src",
     src_uri = "https://busybox.net/downloads/busybox-1.36.1.tar.bz2",
-    sha256 = "b8cc24c9574d809e7279c3be349795c5d5ceb6fdf19ca709f80cde50e47de314",
+    sha256 = "6917569008ed8665c736b1d5b2dbbf8d863edac2478a1f05e998d535dea5b017",
+    visibility = ["PUBLIC"],
+)
+
+configure_make_package(
+    name = "busybox",
+    source = ":busybox-src",
+    version = "1.36.1",
     description = "BusyBox combines tiny versions of many common UNIX utilities into a single small executable",
     homepage = "https://busybox.net/",
     license = "GPL-2.0",
-
-    # USE flags this package supports
-    iuse = [
-        "static",
-        "debug",
-        "selinux",
-        "pam",
-    ],
-
-    # Default USE flags
-    use_defaults = ["static"],
-
     pre_configure = """
 # Use default config and enable static linking for init
 make defconfig

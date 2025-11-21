@@ -5,7 +5,7 @@ use_package(
     name = "mercurial",
     version = "6.6",
     src_uri = "https://www.mercurial-scm.org/release/mercurial-6.6.tar.gz",
-    sha256 = "a50e253f09ddd94d1512ee3cf820b95b39aa31cbb3b43caac4a44658a61e9449",
+    sha256 = "6b8e78c71915cd61db64a02f397b506d7a5496aa33e5b342783959ead0114514",
     description = "Scalable distributed SCM tool",
     homepage = "https://www.mercurial-scm.org/",
     license = "GPL-2+",

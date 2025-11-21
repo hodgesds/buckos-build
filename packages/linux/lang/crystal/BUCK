@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "crystal-src",
     src_uri = "https://github.com/crystal-lang/crystal/archive/refs/tags/1.11.2.tar.gz",
-    sha256 = "aeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeaeae",
+    sha256 = "25f87148565633405af413d31d96b552fbbe31f05e654b8a30df1c989a65d407",
 )
 
 binary_package(

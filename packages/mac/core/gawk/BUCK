@@ -5,7 +5,7 @@ load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
 use_package(
     name = "gawk",
     version = "5.3.1",
-    src_uri = "https://ftp.gnu.org/gnu/gawk/gawk-5.3.1.tar.xz",
+    src_uri = "https://mirrors.kernel.org/gnu/gawk/gawk-5.3.1.tar.xz",
     sha256 = "2c2d0d048bc86eed0c99c7d5e7be1f2a3d6c3e16ac7c38c01e19bffece8f3ca4",
     description = "GNU awk utility (macOS)",
     homepage = "https://www.gnu.org/software/gawk/",

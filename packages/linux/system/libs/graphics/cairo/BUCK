@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "cairo-src",
     src_uri = "https://www.cairographics.org/releases/cairo-1.18.2.tar.xz",
-    sha256 = "a62b9bb42425e844cc3d6ddde043ff39dbabedd1542eba57a2eb79f85889b4dd",
+    sha256 = "a62b9bb42425e844cc3d6ddde043ff39dbabedd1542eba57a2eb79f85889d45a",
 )
 
 configure_make_package(

@@ -16,7 +16,7 @@ cmake_package(
     name = "lmms",
     version = "1.2.2",
     src_uri = "https://github.com/LMMS/lmms/releases/download/v1.2.2/lmms_1.2.2.tar.xz",
-    sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+    sha256 = "b185507fb64ecfd8e31145135b58ab244b637f9efc09c4176caf70aa3cbaae1e",
     description = "Linux MultiMedia Studio - music production software",
     homepage = "https://lmms.io/",
     license = "GPL-2",

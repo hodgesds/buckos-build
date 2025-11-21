@@ -5,7 +5,7 @@ use_package(
     name = "alsa-utils",
     version = "1.2.11",
     src_uri = "https://www.alsa-project.org/files/pub/utils/alsa-utils-1.2.11.tar.bz2",
-    sha256 = "9e70386e9e04c19e3e4f2f6c7b8c4fe0b0d55b1e3d3f3a3a8c8e8a5c5e5f5e5a",
+    sha256 = "9ac6ca3a883f151e568dcf979b8d2e5cbecc51b819bb0e6bb8a2e9b34cc428a7",
     description = "ALSA utilities including alsamixer, amixer, aplay, arecord",
     homepage = "https://www.alsa-project.org/",
     license = "GPL-2",

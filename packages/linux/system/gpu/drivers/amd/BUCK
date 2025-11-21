@@ -13,13 +13,13 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "amd-drivers-src",
     src_uri = "https://repo.radeon.com/amdgpu/6.1.3/ubuntu/pool/main/a/amdgpu-dkms/amdgpu-dkms_6.7.0.60103-2069308.24.04_all.deb",
-    sha256 = "4e21d4ae5f8c9393937aaf76f55c06dae9a05e9c9bd9580fbe75967ce10c678c",
+    sha256 = "1e09c2334b6f4eb9080a5930225e2101dd4782766b1806c14bc8bfd6f2e48f7e",
 )
 
 download_source(
     name = "amd-firmware-src",
     src_uri = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-20241017.tar.gz",
-    sha256 = "4d898a09e0b8f3a8acdb2d7ca0e5c2eb3770fdcec6bbffb8941631fa582cc749",
+    sha256 = "6b948fe9fec10ad57f34bf8561a9f9c3175732a17ac0610e33f1b9ef04a2ed54",
 )
 
 binary_package(

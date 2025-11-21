@@ -9,7 +9,7 @@ go_package(
     name = "github-cli",
     version = "2.43.1",
     src_uri = "https://github.com/cli/cli/archive/refs/tags/v2.43.1.tar.gz",
-    sha256 = "1ea3f451fb7002c1fb95a7fab21e9ab16591058492628fe264c5878e79ec7c90",
+    sha256 = "ea60f2570510a9e3c8c7f75d830f0acfd2b06ddb5d3e4a1d0ae0c5f23423553c",
     description = "GitHub's official command line tool",
     homepage = "https://cli.github.com",
     license = "MIT",

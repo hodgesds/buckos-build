@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "xev-src",
     src_uri = "https://xorg.freedesktop.org/releases/individual/app/xev-1.2.5.tar.xz",
-    sha256 = "ba2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a71",
+    sha256 = "c9461a4389714e0f33974f9e75934bdc38d836a0f059b8dc089c7cbf2ce36ec1",
 )
 
 configure_make_package(

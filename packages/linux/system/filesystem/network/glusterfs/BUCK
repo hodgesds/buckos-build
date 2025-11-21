@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "glusterfs-src",
     src_uri = "https://download.gluster.org/pub/gluster/glusterfs/11/11.1/glusterfs-11.1.tar.gz",
-    sha256 = "7a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+    sha256 = "6a31b8450d02cd12f47f4571c031e9d6b8705279a0e8970ae9a05e1c87dffb76",
 )
 
 configure_make_package(

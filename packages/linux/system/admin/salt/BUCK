@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "salt-src",
     src_uri = "https://github.com/saltstack/salt/releases/download/v3007.0/salt-3007.0.tar.gz",
-    sha256 = "41bf84e71fc655bf8a4b52eb440d0621ae961096a086d20e132e1512e2eddff8",
+    sha256 = "9591159d86f0a180e4e0645b2320d0235e23e66c66797df61508bf185e0ac1d2",
 )
 
 ebuild_package(

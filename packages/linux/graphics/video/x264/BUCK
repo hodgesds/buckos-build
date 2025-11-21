@@ -6,7 +6,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "x264-src",
     src_uri = "https://code.videolan.org/videolan/x264/-/archive/stable/x264-stable.tar.bz2",
-    sha256 = "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+    sha256 = "740126cb48549ca4e2f09b4ae13beed592d5b54744044e38f28662fd96d0ba56",
 )
 
 configure_make_package(

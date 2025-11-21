@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "apparmor-src",
     src_uri = "https://gitlab.com/apparmor/apparmor/-/archive/v3.1.6/apparmor-v3.1.6.tar.gz",
-    sha256 = "i4j5k6l7m8n9o0p1q2r3s4t5u6v7w8x9y0z1a2b3c4d5e6f7g8h9i0j1k2l3m4n5",
+    sha256 = "a7899f1529ad7f1e33fb07109075be3827edf43997040ecdec601590748f1039",
 )
 
 configure_make_package(

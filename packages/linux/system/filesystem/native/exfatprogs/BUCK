@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "exfatprogs-src",
     src_uri = "https://github.com/exfatprogs/exfatprogs/releases/download/1.2.2/exfatprogs-1.2.2.tar.xz",
-    sha256 = "7a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+    sha256 = "61d517231f8ec177eeb5955fd6edb89748d3f88ba412c48bcb32741b430e359a",
 )
 
 configure_make_package(

@@ -9,7 +9,7 @@ use_package(
     name = "fping",
     version = "5.2",
     src_uri = "https://fping.org/dist/fping-5.2.tar.gz",
-    sha256 = "4a2f0c59ab7d8d8a6ba9c7bd9cdba5e85a50b87c1c1e52f03c56e51f4e07b51f",
+    sha256 = "a7692d10d73fb0bb76e1f7459aa7f19bbcdbfc5adbedef02f468974b18b0e42f",
 
     iuse = ["ipv6", "safe-limits"],
     use_defaults = ["ipv6"],

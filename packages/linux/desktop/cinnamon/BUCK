@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "cinnamon-src",
     src_uri = "https://github.com/linuxmint/cinnamon/archive/refs/tags/6.0.4.tar.gz",
-    sha256 = "6a5b4c3d2e1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4",
+    sha256 = "6df5a3a5e1d11772f7c06af54f80840226396a47abbfb158f07a97174e489139",
 )
 
 configure_make_package(
@@ -33,7 +33,7 @@ meson setup .. --prefix=/usr
 download_source(
     name = "muffin-src",
     src_uri = "https://github.com/linuxmint/muffin/archive/refs/tags/6.0.1.tar.gz",
-    sha256 = "5a4b3c2d1e0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1e0d9c8b7a6f5e4d3",
+    sha256 = "3f305c345db72e8bf14f19e56a88e466029997ff41cbc091148d16dbf20b087e",
 )
 
 configure_make_package(

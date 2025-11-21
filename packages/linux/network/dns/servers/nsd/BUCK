@@ -5,7 +5,7 @@ use_package(
     name = "nsd",
     version = "4.8.0",
     src_uri = "https://nlnetlabs.nl/downloads/nsd/nsd-4.8.0.tar.gz",
-    sha256 = "d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
+    sha256 = "820da4e384721915f4bcaf7f2bed98519da563c6e4c130c742c724760ec02a0a",
 
     iuse = ["ssl", "ratelimit"],
     use_defaults = ["ssl", "ratelimit"],

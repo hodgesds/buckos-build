@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "entr-src",
     src_uri = "https://eradman.com/entrproject/code/entr-5.6.tar.gz",
-    sha256 = "8e7d35cc5cd1f82cccba07e7e4716fc54e6a3d38c9e1be20cc3be5e8b2f9f3de",
+    sha256 = "0222b8df928d3b5a3b5194d63e7de098533e04190d9d9a154b926c6c1f9dd14e",
 )
 
 configure_make_package(

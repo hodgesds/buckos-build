@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "openal-soft-src",
     src_uri = "https://github.com/kcat/openal-soft/archive/refs/tags/1.23.1.tar.gz",
-    sha256 = "796f4b89134c4e57270b7f0d755f0fa3b91b8b2e2c4d7c6ec2e3e0c7a8b9d1e0f",
+    sha256 = "dfddf3a1f61059853c625b7bb03de8433b455f2f79f89548cbcbd5edca3d4a4a",
 )
 
 configure_make_package(

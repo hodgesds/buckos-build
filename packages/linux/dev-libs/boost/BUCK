@@ -7,8 +7,8 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
 download_source(
     name = "boost-src",
-    src_uri = "https://boostorg.jfrog.io/artifactory/main/release/1.84.0/source/boost_1_84_0.tar.bz2",
-    sha256 = "cc4b893acf645c9d4b698e9a0f08ca8846b5d35de9f86b6f93d1e3466b9d4ef4",
+    src_uri = "https://archives.boost.io/release/1.84.0/source/boost_1_84_0.tar.bz2",
+    sha256 = "cc4b893acf645c9d4b698e9a0f08ca8846aa5d6c68275c14c3e7949c24109454",
 )
 
 binary_package(
@@ -19,10 +19,31 @@ binary_package(
     homepage = "https://www.boost.org/",
     license = "BSL-1.0",
     install_script = """
-        cd boost_1_84_0
-        ./bootstrap.sh --prefix=$PREFIX --with-toolset=gcc
+        # Sources are in $SRCS, work in $SRCS to build
+        cd "$SRCS"
+        ls -la
+        # Find the boost directory
+        if [ -f bootstrap.sh ]; then
+            # Already in the right directory
+            echo "Found bootstrap.sh in current directory"
+        elif [ -d boost_1_84_0 ]; then
+            echo "Found boost_1_84_0 directory"
+            cd boost_1_84_0
+        else
+            # Try to find boost directory
+            BOOST_DIR=$(find . -maxdepth 2 -name "bootstrap.sh" -type f | head -1 | xargs dirname)
+            if [ -n "$BOOST_DIR" ]; then
+                echo "Found boost in: $BOOST_DIR"
+                cd "$BOOST_DIR"
+            else
+                echo "Cannot find boost directory with bootstrap.sh"
+                exit 1
+            fi
+        fi
+        ./bootstrap.sh --prefix=/usr --with-toolset=gcc
         ./b2 install \
-            --prefix=$PREFIX \
+            --prefix=/usr \
+            destdir="$OUT" \
             --without-python \
             --without-mpi \
             variant=release \

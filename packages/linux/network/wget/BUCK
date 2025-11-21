@@ -8,8 +8,8 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 use_package(
     name = "wget",
     version = "1.21.4",
-    src_uri = "https://ftp.gnu.org/gnu/wget/wget-1.21.4.tar.gz",
-    sha256 = "81542f5cefb8faacc39bbbc6c82f1a21c79d735d656324326d0595c6a9341396",
+    src_uri = "https://mirrors.kernel.org/gnu/wget/wget-1.21.4.tar.gz",
+    sha256 = "81542f5cefb8faacc39bbbc6c82ded80e3e4a88505ae72ea51df27525bcde04c",
 
     iuse = ["ssl", "gnutls", "ipv6", "idn", "nls", "pcre"],
     use_defaults = ["ssl", "ipv6"],

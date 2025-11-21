@@ -6,7 +6,7 @@ meson_package(
     name = "gtk3",
     version = "3.24.41",
     src_uri = "https://download.gnome.org/sources/gtk+/3.24/gtk+-3.24.41.tar.xz",
-    sha256 = "47b1992fd4de581a5436906af6e4c47ff8833d6d34c7b11d2cdbb55cdb63fc3b",
+    sha256 = "47da61487af3087a94bc49296fd025ca0bc02f96ef06c556e7c8988bd651b6fa",
     description = "Multi-platform toolkit for creating graphical user interfaces",
     homepage = "https://www.gtk.org/",
     license = "LGPL-2.1+",

@@ -5,7 +5,7 @@ use_package(
     name = "bind",
     version = "9.18.24",
     src_uri = "https://downloads.isc.org/isc/bind9/9.18.24/bind-9.18.24.tar.xz",
-    sha256 = "1c8c0e16c868df7d129a0273be17e2e4a2fa62c54c7ab0d11f4e6e85d0e42c42",
+    sha256 = "709d73023c9115ddad3bab65b6c8c79a590196d0d114f5d0ca2533dbd52ddf66",
 
     iuse = ["ssl", "threads", "ipv6", "idn", "static-libs"],
     use_defaults = ["ssl", "threads", "ipv6", "idn"],

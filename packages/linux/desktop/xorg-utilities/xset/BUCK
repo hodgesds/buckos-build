@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "xset-src",
     src_uri = "https://xorg.freedesktop.org/releases/individual/app/xset-1.2.5.tar.xz",
-    sha256 = "9f3f4fd9221e8284e4e12e2a0fb3cb40a8664c67e7a6f25d9a0e8e75d3a8e6ed",
+    sha256 = "9f692d55635b3862cd63633b1222a87680ec283c7a8e8ed6dd698a3147f75e2f",
 )
 
 configure_make_package(

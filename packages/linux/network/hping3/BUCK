@@ -9,7 +9,7 @@ use_package(
     name = "hping3",
     version = "3.0.0",
     src_uri = "https://github.com/antirez/hping/archive/refs/heads/master.tar.gz",
-    sha256 = "7f64320c2f5c58a0f39abe5c3bf0f9d3ef4d2e05a479e9a3c3fb3fc77b50e2f0",
+    sha256 = "be8f8e8453263312ce789763420154c57e4485eb3674aae5d64b0921c3f67ba9",
 
     iuse = ["tcl"],
     use_defaults = [],

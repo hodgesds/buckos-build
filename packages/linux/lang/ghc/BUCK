@@ -8,13 +8,13 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "ghc-src",
     src_uri = "https://downloads.haskell.org/~ghc/9.4.8/ghc-9.4.8-src.tar.xz",
-    sha256 = "0bf407eb67a3a0013f5c0d5a59e0679f6a6ac3e5f9c5c5b5f9a5b5b5b5b5b5b5",
+    sha256 = "0bf407eb67fe3e3c24b0f4c8dea8cb63e07f63ca0f76cf2058565143507ab85e",
 )
 
 download_source(
     name = "ghc-bootstrap-src",
     src_uri = "https://downloads.haskell.org/~ghc/9.4.8/ghc-9.4.8-x86_64-alpine3_12-linux.tar.xz",
-    sha256 = "1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a",
+    sha256 = "55faf0ec6630d635f97a2bf8f8f79ef587b027962d237f0be3a667b1bbb512b8",
 )
 
 binary_package(

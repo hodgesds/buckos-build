@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "bspwm-src",
     src_uri = "https://github.com/baskerville/bspwm/archive/refs/tags/0.9.10.tar.gz",
-    sha256 = "6a5b4c3d2e1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4",
+    sha256 = "0d0f5e465b9c27a5c2143c86189392fa297fad55253b9ed8f6854473d3928f8f",
 )
 
 configure_make_package(

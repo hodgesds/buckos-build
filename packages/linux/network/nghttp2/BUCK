@@ -9,7 +9,7 @@ use_package(
     name = "nghttp2",
     version = "1.59.0",
     src_uri = "https://github.com/nghttp2/nghttp2/releases/download/v1.59.0/nghttp2-1.59.0.tar.xz",
-    sha256 = "90fd27685120404544e963e96e1db98b9d0be66f2124f5dd4c2f6e0bdd5dda65",
+    sha256 = "fdc9bd71f5cf8d3fdfb63066b89364c10eb2fdeab55f3c6755cd7917b2ec4ffb",
 
     iuse = ["static-libs", "tools", "xml"],
     use_defaults = [],

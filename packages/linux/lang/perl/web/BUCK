@@ -84,7 +84,7 @@ configure_make_package(
 download_source(
     name = "plack-src",
     src_uri = "https://cpan.metacpan.org/authors/id/M/MI/MIYAGAWA/Plack-1.0051.tar.gz",
-    sha256 = "b5f6d7e8c9a3f4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9",
+    sha256 = "bebde91c42298ed6ec8e6c82b21433a1b49aa39412c247f3905b80f955acf77b",
 )
 
 configure_make_package(
@@ -135,7 +135,7 @@ configure_make_package(
 download_source(
     name = "uri-src",
     src_uri = "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/URI-5.21.tar.gz",
-    sha256 = "d1b2c3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
+    sha256 = "96265860cd61bde16e8415dcfbf108056de162caa0ac37f81eb695c9d2e0ab77",
 )
 
 configure_make_package(
@@ -159,7 +159,7 @@ configure_make_package(
 download_source(
     name = "html-parser-src",
     src_uri = "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTML-Parser-3.82.tar.gz",
-    sha256 = "e2f3c4d5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3",
+    sha256 = "5b1f20dd0e471a049c13a53d0fcd0442f58518889180536c6f337112c9a430d8",
 )
 
 configure_make_package(
@@ -184,7 +184,7 @@ configure_make_package(
 download_source(
     name = "html-tree-src",
     src_uri = "https://cpan.metacpan.org/authors/id/K/KE/KENTNL/HTML-Tree-5.07.tar.gz",
-    sha256 = "f3e4d5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4",
+    sha256 = "f0374db84731c204b86c1d5b90975fef0d30a86bd9def919343e554e31a9dbbf",
 )
 
 configure_make_package(

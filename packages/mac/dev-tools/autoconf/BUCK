@@ -5,7 +5,7 @@ load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
 use_package(
     name = "autoconf",
     version = "2.72",
-    src_uri = "https://ftp.gnu.org/gnu/autoconf/autoconf-2.72.tar.xz",
+    src_uri = "https://mirrors.kernel.org/gnu/autoconf/autoconf-2.72.tar.xz",
     sha256 = "ba885c1319578d6c94d46e9c0e8d8ec49c4e0e7f5d4db05357edb5d5e5e5e5e5",
     description = "Automatic configure script builder",
     homepage = "https://www.gnu.org/software/autoconf/",

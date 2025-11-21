@@ -6,7 +6,7 @@ use_package(
     name = "curl",
     version = "8.10.1",
     src_uri = "https://curl.se/download/curl-8.10.1.tar.xz",
-    sha256 = "b3bd7c92bfa47481d52d3b29f8c45481c64e476b9c32de28dd37b3f1f989d4d6",
+    sha256 = "73a4b0e99596a09fa5924a4fb7e4b995a85fda0d18a2c02ab9cf134bebce04ee",
 
     iuse = ["ssl", "http2", "ipv6", "zstd", "brotli", "idn", "static-libs", "libressl", "rtmp", "ssh"],
     use_defaults = ["ssl", "http2", "ipv6"],

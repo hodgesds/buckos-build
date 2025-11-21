@@ -7,7 +7,7 @@ use_package(
     name = "suricata",
     version = "7.0.3",
     src_uri = "https://www.openinfosecfoundation.org/download/suricata-7.0.3.tar.gz",
-    sha256 = "ea0742d7a98783f1af4a57661af6068bc2d850ac3eca04b3204d28ce165e35ff",
+    sha256 = "d235cbb77a2b760e7ed0e77ef6d8916551258053c33f5a4d7db2c63a1f55cbfa",
 
     iuse = ["lua", "geoip", "ssl", "redis", "nfqueue"],
     use_defaults = ["lua", "geoip", "ssl"],
@@ -38,7 +38,7 @@ use_package(
 
     deps = [
         "//packages/linux/network/libpcap:libpcap",
-        "//packages/linux/core/pcre:pcre",
+        "//packages/linux/system/libs/utility/pcre2:pcre2",
     ],
 
     description = "High performance Network IDS, IPS and Network Security Monitoring engine",

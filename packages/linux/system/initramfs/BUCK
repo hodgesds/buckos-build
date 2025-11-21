@@ -83,7 +83,7 @@ filegroup(
         "//packages/linux/system/init/eudev:eudev",
         "//packages/linux/core/busybox:busybox",
         "//packages/linux/core/util-linux:util-linux",
-        "//packages/linux/core:coreutils",
+        "//packages/linux/system/apps/coreutils:coreutils",
     ],
     visibility = ["PUBLIC"],
 )

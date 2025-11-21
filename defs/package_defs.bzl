@@ -39,32 +39,61 @@ curl -L -o "$FILENAME" "$URL"
 # Verify checksum
 echo "$3  $FILENAME" | sha256sum -c -
 
-# Extract based on file extension
-case "$FILENAME" in
-    *.tar.gz|*.tgz)
-        tar xzf "$FILENAME" --strip-components=1
-        ;;
-    *.tar.xz|*.txz)
-        tar xJf "$FILENAME" --strip-components=1
-        ;;
-    *.tar.bz2|*.tbz2)
-        tar xjf "$FILENAME" --strip-components=1
-        ;;
-    *.tar)
-        tar xf "$FILENAME" --strip-components=1
-        ;;
-    *.zip)
-        unzip -q "$FILENAME"
-        # For zip files, find the top-level dir and move contents up
-        if [ $(ls -1 | wc -l) -eq 1 ] && [ -d "$(ls -1)" ]; then
-            mv "$(ls -1)"/* . && rmdir "$(ls -1)"
-        fi
-        ;;
-    *)
-        echo "Error: Unknown archive format: $FILENAME" >&2
+# Detect actual file type (not just extension)
+FILETYPE=$(file -b "$FILENAME")
+
+# Extract based on actual file type
+if [[ "$FILETYPE" == *"gzip compressed"* ]]; then
+    echo "Detected: gzip compressed tarball"
+    tar xzf "$FILENAME" --strip-components=1
+elif [[ "$FILETYPE" == *"XZ compressed"* ]]; then
+    echo "Detected: XZ compressed tarball"
+    tar xJf "$FILENAME" --strip-components=1
+elif [[ "$FILETYPE" == *"bzip2 compressed"* ]]; then
+    echo "Detected: bzip2 compressed tarball"
+    tar xjf "$FILENAME" --strip-components=1
+elif [[ "$FILETYPE" == *"POSIX tar archive"* ]]; then
+    echo "Detected: uncompressed tar archive"
+    tar xf "$FILENAME" --strip-components=1
+elif [[ "$FILETYPE" == *"Zip archive"* ]]; then
+    echo "Detected: Zip archive"
+    unzip -q "$FILENAME"
+    # For zip files, find the top-level dir and move contents up
+    if [ $(ls -1 | wc -l) -eq 1 ] && [ -d "$(ls -1)" ]; then
+        mv "$(ls -1)"/* . && rmdir "$(ls -1)"
+    fi
+elif [[ "$FILETYPE" == *"HTML"* ]]; then
+    echo "Error: Downloaded file appears to be HTML, not an archive!" >&2
+    echo "File type: $FILETYPE" >&2
+    echo "This usually means the URL returned an error page instead of the file." >&2
+    head -20 "$FILENAME" >&2
+    exit 1
+elif [[ "$FILETYPE" == *"ASCII text"* ]] || [[ "$FILETYPE" == *"C source"* ]] || [[ "$FILETYPE" == *"source"* ]]; then
+    # Check if this is a valid source file (not an error page)
+    # Valid source files have common extensions like .c, .h, .cpp, .py, .sh, etc.
+    if [[ "$FILENAME" =~ \.(c|h|cpp|hpp|cc|cxx|py|sh|pl|rb|java|rs|go|js|ts)$ ]]; then
+        echo "Detected: Single source file - $FILENAME"
+        echo "Keeping file as-is (no extraction needed)"
+    else
+        echo "Error: Downloaded file appears to be ASCII text, not an archive!" >&2
+        echo "File type: $FILETYPE" >&2
+        echo "Filename: $FILENAME" >&2
+        echo "This usually means the URL returned an error page instead of the file." >&2
+        head -20 "$FILENAME" >&2
         exit 1
-        ;;
-esac
+    fi
+else
+    # Fallback: try tar with auto-detect
+    echo "Unknown file type: $FILETYPE"
+    echo "Attempting tar with auto-compression detection..."
+    if tar xaf "$FILENAME" --strip-components=1 2>/dev/null; then
+        echo "Successfully extracted with tar auto-detect"
+    else
+        echo "Error: Could not extract archive" >&2
+        echo "File type: $FILETYPE" >&2
+        exit 1
+    fi
+fi
 
 rm "$FILENAME"
 """,

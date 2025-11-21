@@ -4,8 +4,8 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 # coccinelle - Semantic patching tool for C
 download_source(
     name = "coccinelle-src",
-    src_uri = "https://coccinelle.gitlabpages.inria.fr/website/distrib/coccinelle-1.1.1.tar.gz",
-    sha256 = "cea75b0a503a77e1c60a39c02d8849c285aed5d983b1e96c6e7c90b735982d32",
+    src_uri = "https://gitlab.inria.fr/coccinelle/coccinelle/-/archive/1.3.0/coccinelle-1.3.0.tar.bz2",
+    sha256 = "32e541430916ab6556e4f771439f64395b051d50ba346165833a5216e327d63b",
 )
 
 configure_make_package(

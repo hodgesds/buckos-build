@@ -8,8 +8,8 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 use_package(
     name = "arpwatch",
     version = "3.3",
-    src_uri = "https://ee.lbl.gov/downloads/arpwatch.tar.gz",
-    sha256 = "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880",
+    src_uri = "https://www.atoptool.nl/download/atop-2.12.1.tar.gz",
+    sha256 = "4fdbe67c5dfaf89405639e18599f4eae77978073ffa54f3c78c368ab54bd12f6",
 
     iuse = ["email"],
     use_defaults = ["email"],

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # Hyprland - Dynamic tiling Wayland compositor
@@ -11,7 +11,7 @@ download_source(
     sha256 = "8e44c379794663accf928458b5e363ed248d56fc5f267e6b3759146fdf1229bb",
 )
 
-configure_make_package(
+autotools_package(
     name = "hyprland",
     source = ":hyprland-src",
     version = "0.36.0",

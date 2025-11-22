@@ -1,8 +1,8 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # libgpg-error - Error code library for GnuPG components
-use_package(
+autotools_package(
     name = "libgpg-error",
     version = "1.50",
     src_uri = "https://www.gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.50.tar.bz2",

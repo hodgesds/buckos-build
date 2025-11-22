@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "binary_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # =============================================================================
 # Racket - General-purpose programming language
@@ -11,7 +11,7 @@ download_source(
     sha256 = "e59ab030b92a78e3589ec405c5d25fa517688c20990233bd68cb34568d654c05",
 )
 
-configure_make_package(
+autotools_package(
     name = "racket",
     source = ":racket-src",
     version = "8.11.1",

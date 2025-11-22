@@ -2,10 +2,10 @@
 # ufw - Uncomplicated Firewall
 # =============================================================================
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
-use_package(
+autotools_package(
     name = "ufw",
     version = "0.36.2",
     src_uri = "https://launchpad.net/ufw/0.36/0.36.2/+download/ufw-0.36.2.tar.gz",

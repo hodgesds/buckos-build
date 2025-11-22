@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # alacritty - GPU-accelerated terminal (Rust/Cargo build)
 # USE flags: wayland, X
@@ -11,7 +11,7 @@ download_source(
     sha256 = "38a42e23e1e6faaa9e300347df3f7b58b6182908a701517aac6e296fbdf37451",
 )
 
-configure_make_package(
+autotools_package(
     name = "alacritty",
     source = ":alacritty-src",
     version = "0.13.1",

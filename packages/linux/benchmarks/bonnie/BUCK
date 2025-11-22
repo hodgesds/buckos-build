@@ -1,11 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # bonnie++ - Filesystem and disk I/O benchmark
 #
 # USE flags: (minimal flags for this benchmark)
 
-use_package(
+autotools_package(
     name = "bonnie",
     version = "2.00a",
     src_uri = "https://www.coker.com.au/bonnie++/bonnie++-2.00a.tgz",

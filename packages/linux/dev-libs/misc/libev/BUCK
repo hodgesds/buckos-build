@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 download_source(
     name = "libev-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "507eb7b8d1015fbec5b935f34ebed15bf346bed04a11ab82b8eee848c4205aea",
 )
 
-configure_make_package(
+autotools_package(
     name = "libev",
     source = ":libev-src",
     version = "4.33",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # links - Text and graphics mode web browser
 #
@@ -12,7 +12,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 #   fb         - Enable framebuffer graphics support
 #   javascript - Enable JavaScript support
 
-use_package(
+autotools_package(
     name = "links",
     version = "2.29",
     src_uri = "http://links.twibright.com/download/links-2.29.tar.bz2",

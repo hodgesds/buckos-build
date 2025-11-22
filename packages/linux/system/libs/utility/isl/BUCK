@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "isl-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "a0b5cb06d24f9fa9e77b55fabbe9a3c94a336190345c2555f9915bb38e976504",
 )
 
-configure_make_package(
+autotools_package(
     name = "isl",
     source = ":isl-src",
     version = "0.26",

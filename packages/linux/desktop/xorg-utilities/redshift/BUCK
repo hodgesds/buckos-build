@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "redshift-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "d2f8c5300e3ce2a84fe6584d2f1483aa9eadc668ab1951b2c2b8a03ece3a22ba",
 )
 
-configure_make_package(
+autotools_package(
     name = "redshift",
     source = ":redshift-src",
     version = "1.12",

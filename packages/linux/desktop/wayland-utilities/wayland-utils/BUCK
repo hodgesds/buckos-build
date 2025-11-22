@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "wayland-utils-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "d9278c22554586881802540751bcc42569262bf80cd9ac9b0fd12ff4bd09a9e4",
 )
 
-configure_make_package(
+autotools_package(
     name = "wayland-utils",
     source = ":wayland-utils-src",
     version = "1.2.0",

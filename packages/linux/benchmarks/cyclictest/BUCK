@@ -1,12 +1,12 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # cyclictest - Real-time latency benchmark
 #
 # USE flags:
 #   numa     - Enable NUMA support
 
-use_package(
+autotools_package(
     name = "cyclictest",
     version = "2.6",
     src_uri = "https://git.kernel.org/pub/scm/utils/rt-tests/rt-tests.git/snapshot/rt-tests-2.6.tar.gz",

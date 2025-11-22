@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "popt-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "c25a4838fc8e4c1c8aacb8bd620edb3084a3d63bf8987fdad3ca2758c63240f9",
 )
 
-configure_make_package(
+autotools_package(
     name = "popt",
     source = ":popt-src",
     version = "1.19",

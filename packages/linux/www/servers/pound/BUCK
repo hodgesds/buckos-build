@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # pound - Reverse proxy and load balancer
 #
@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 #   ssl     - Enable SSL/TLS support with OpenSSL
 #   pcre    - Enable PCRE regular expressions
 
-use_package(
+autotools_package(
     name = "pound",
     version = "4.12",
     src_uri = "https://github.com/graygnuorg/pound/releases/download/v4.12/pound-4.12.tar.gz",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # cloc - Count lines of code
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "27b6b007a5d482e5f50b23984cbe10f6a9f26e1052e9c7e010edfdcf879dc554",
 )
 
-configure_make_package(
+autotools_package(
     name = "cloc",
     source = ":cloc-src",
     version = "2.06",

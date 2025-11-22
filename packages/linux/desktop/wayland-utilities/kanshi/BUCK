@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "kanshi-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "c62f2f19f1f6c9513d3eeea23efc8579c76e0ef6460b72f15b2d90392ebcc421",
 )
 
-configure_make_package(
+autotools_package(
     name = "kanshi",
     source = ":kanshi-src",
     version = "1.5.1",

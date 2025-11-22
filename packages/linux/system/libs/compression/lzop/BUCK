@@ -1,8 +1,8 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # lzop - Fast file compressor using LZO
-use_package(
+autotools_package(
     name = "lzop",
     version = "1.04",
     src_uri = "https://www.lzop.org/download/lzop-1.04.tar.gz",

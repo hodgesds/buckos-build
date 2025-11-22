@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # DateTime - A date and time object for Perl
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "0bfda7ff0253fb3d88cf4bdb5a14afb8cea24d147975d5bdf3c88b40e7ab140e",
 )
 
-configure_make_package(
+autotools_package(
     name = "datetime",
     source = ":datetime-src",
     version = "1.65",
@@ -37,7 +37,7 @@ download_source(
     sha256 = "7490b4194b5d23a4e144976dedb3bdbcc6d3364b5d139cc922a86d41fdb87afb",
 )
 
-configure_make_package(
+autotools_package(
     name = "datetime-locale",
     source = ":datetime-locale-src",
     version = "1.40",
@@ -63,7 +63,7 @@ download_source(
     sha256 = "6214f9c9c8dfa2000bae912ef2b8ebc5b163a83a0b5b2a82705162dad63466fa",
 )
 
-configure_make_package(
+autotools_package(
     name = "datetime-timezone",
     source = ":datetime-timezone-src",
     version = "2.62",
@@ -92,7 +92,7 @@ download_source(
     sha256 = "701e46802c86ed4d88695c1a6dacbbe90b3390beeb794f387e7c792300037579",
 )
 
-configure_make_package(
+autotools_package(
     name = "datetime-format-strptime",
     source = ":datetime-format-strptime-src",
     version = "1.79",
@@ -119,7 +119,7 @@ download_source(
     sha256 = "582847f6e029065334a00564f20cd7c28f4e5cd4ec21513d0f692531ed3b56e1",
 )
 
-configure_make_package(
+autotools_package(
     name = "datetime-format-iso8601",
     source = ":datetime-format-iso8601-src",
     version = "0.16",
@@ -145,7 +145,7 @@ download_source(
     sha256 = "61ffb23d85b3ca1786b2da3289e99b57e0625fe0e49db02a6dc0cb62c689e2f2",
 )
 
-configure_make_package(
+autotools_package(
     name = "datetime-format-builder",
     source = ":datetime-format-builder-src",
     version = "0.83",
@@ -171,7 +171,7 @@ download_source(
     sha256 = "fe340eba8765f9263694674e5dff14833443e19865e5ff427bbd79b7b5f8a9b8",
 )
 
-configure_make_package(
+autotools_package(
     name = "time-duration",
     source = ":time-duration-src",
     version = "1.21",
@@ -195,7 +195,7 @@ download_source(
     sha256 = "64acfa042f634fcef8dadf55e7f42ba4eaab8aaeb7d5212eb89815a31f78f6fd",
 )
 
-configure_make_package(
+autotools_package(
     name = "time-moment",
     source = ":time-moment-src",
     version = "0.44",
@@ -219,7 +219,7 @@ download_source(
     sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
 )
 
-configure_make_package(
+autotools_package(
     name = "time-hires",
     source = ":time-hires-src",
     version = "1.9775",
@@ -243,7 +243,7 @@ download_source(
     sha256 = "7ce137b2e797b7c0901f3adf1a05a19343356cd1f04676aa1c56a9f624f859ad",
 )
 
-configure_make_package(
+autotools_package(
     name = "date-calc",
     source = ":date-calc-src",
     version = "6.4",

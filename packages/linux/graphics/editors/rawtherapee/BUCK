@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "rawtherapee-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "a799b53cd54dba4a211479e342ffc9c5db1c44d3d6c3a27d5cc13adf0debd2da",
 )
 
-configure_make_package(
+autotools_package(
     name = "rawtherapee",
     source = ":rawtherapee-src",
     version = "5.10",

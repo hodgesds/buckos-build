@@ -1,11 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # lftp - Sophisticated file transfer program
 # =============================================================================
 
-use_package(
+autotools_package(
     name = "lftp",
     version = "4.9.2",
     src_uri = "https://lftp.yar.ru/ftp/lftp-4.9.2.tar.xz",

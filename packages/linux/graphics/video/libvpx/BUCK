@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # libvpx - VP8/VP9 codec library
 
@@ -9,7 +9,7 @@ download_source(
     sha256 = "901747254d80a7937c933d03bd7c5d41e8e6c883e0665fadcb172542167c7977",
 )
 
-configure_make_package(
+autotools_package(
     name = "libvpx",
     source = ":libvpx-src",
     version = "1.14.1",

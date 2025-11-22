@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # LiVES - Video editing system and VJ tool
 
@@ -9,7 +9,7 @@ download_source(
     sha256 = "5aa438b5af7e97f77bbbeadf032cfd8d64aca0a880780180600d5aada05c229a",
 )
 
-configure_make_package(
+autotools_package(
     name = "lives",
     source = ":lives-src",
     version = "3.2.0",

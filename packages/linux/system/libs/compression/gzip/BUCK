@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # gzip - GNU compression utility
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "3bf0a64973597ca8f51646fcdb604d4a17a72a562a8f8b559347041de11619b3",
 )
 
-configure_make_package(
+autotools_package(
     name = "gzip",
     source = ":gzip-src",
     version = "1.14",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # ksh - KornShell, an interactive command and scripting language
 
@@ -9,7 +9,7 @@ download_source(
     sha256 = "b46565045d0eb376d3e6448be6dbc214af454efc405d527f92cb81c244106c8e",
 )
 
-configure_make_package(
+autotools_package(
     name = "ksh",
     source = ":ksh-src",
     version = "1.0.8",

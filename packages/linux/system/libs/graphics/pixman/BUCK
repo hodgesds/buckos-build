@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "pixman-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "a0624db90180c7ddb79fc7a9151093dc37c646d8c38d3f232f767cf64b85a226",
 )
 
-configure_make_package(
+autotools_package(
     name = "pixman",
     source = ":pixman-src",
     version = "0.43.4",

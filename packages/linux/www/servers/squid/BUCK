@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # squid - Caching proxy for the Web
 #
@@ -11,7 +11,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 #   pam       - Enable PAM authentication
 #   kerberos  - Enable Kerberos authentication
 
-use_package(
+autotools_package(
     name = "squid",
     version = "6.12",
     src_uri = "https://www.squid-cache.org/Versions/v6/squid-6.12.tar.gz",

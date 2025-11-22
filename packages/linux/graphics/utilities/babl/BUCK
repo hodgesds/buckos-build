@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "babl-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "26defe9deaab7ac4d0e076cab49c2a0d6ebd0df0c31fd209925a5f07edee1475",
 )
 
-configure_make_package(
+autotools_package(
     name = "babl",
     source = ":babl-src",
     version = "0.1.108",

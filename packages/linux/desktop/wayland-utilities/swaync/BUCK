@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "swaync-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "3f00bc858b7b3610e88ef0f6ee64d727892dd82f280f1dfc01dde863c2ea3376",
 )
 
-configure_make_package(
+autotools_package(
     name = "swaync",
     source = ":swaync-src",
     version = "0.9.0",

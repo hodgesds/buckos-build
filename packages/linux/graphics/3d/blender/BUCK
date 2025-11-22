@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # USE flags for blender (cmake build):
 # - cycles: Cycles render engine (default: enabled)
@@ -17,7 +17,7 @@ download_source(
     sha256 = "aaa0e729da7591cfbf45772af76345977daaa7b11a0af35d98f9313e246077a3",
 )
 
-configure_make_package(
+autotools_package(
     name = "blender",
     source = ":blender-src",
     version = "4.0.2",

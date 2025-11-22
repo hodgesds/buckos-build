@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # rc - Plan 9 shell
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "0b83f8698dd8ef44ca97b25c4748c087133f53c7fff39b6b70dab65931def8b0",
 )
 
-configure_make_package(
+autotools_package(
     name = "rc",
     source = ":rc-src",
     version = "1.7.4",

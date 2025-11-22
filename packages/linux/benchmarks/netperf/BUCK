@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # netperf - Network performance benchmark
 #
@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 #   histogram - Enable histogram support
 #   demo      - Enable demo mode
 
-use_package(
+autotools_package(
     name = "netperf",
     version = "2.7.0",
     src_uri = "https://github.com/HewlettPackard/netperf/archive/refs/tags/netperf-2.7.0.tar.gz",

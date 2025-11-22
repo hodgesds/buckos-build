@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # discount - C implementation of Markdown
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "0ed8cc27ac5d46dc6a8beedd5e5673ac8b466a6474bdb7d35f37c815f670385f",
 )
 
-configure_make_package(
+autotools_package(
     name = "discount",
     source = ":discount-src",
     version = "3.0.0d",

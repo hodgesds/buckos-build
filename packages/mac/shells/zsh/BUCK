@@ -1,8 +1,8 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
 
-use_package(
+autotools_package(
     name = "zsh",
     version = "5.9",
     src_uri = "https://sourceforge.net/projects/zsh/files/zsh/5.9/zsh-5.9.tar.xz",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "exfat-fuse-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
 )
 
-configure_make_package(
+autotools_package(
     name = "exfat-fuse",
     source = ":exfat-fuse-src",
     version = "1.4.0",

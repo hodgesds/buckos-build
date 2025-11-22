@@ -1,8 +1,8 @@
 # SDL2 - Simple DirectMedia Layer
 # Cross-platform library for low level access to audio, input, and graphics
 
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "sdl2-src",
@@ -12,7 +12,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "sdl2",
     source = ":sdl2-src",
     version = "2.30.8",
@@ -69,7 +69,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "sdl2-image",
     source = ":sdl2-image-src",
     version = "2.8.2",
@@ -97,7 +97,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "sdl2-mixer",
     source = ":sdl2-mixer-src",
     version = "2.8.0",
@@ -125,7 +125,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "sdl2-ttf",
     source = ":sdl2-ttf-src",
     version = "2.22.0",

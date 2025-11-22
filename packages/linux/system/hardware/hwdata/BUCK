@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # hwdata - Hardware identification databases
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "620fe1c22922a3d1bd1062424e9cc6b954acea2f83b72ff0cb45144981cb1975",
 )
 
-configure_make_package(
+autotools_package(
     name = "hwdata",
     source = ":hwdata-src",
     version = "0.391",

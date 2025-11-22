@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 download_source(
     name = "oniguruma-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "60162bd3b9fc6f4886d4c7a07925ffd374167732f55dce8c491bfd9cd818a6cf",
 )
 
-configure_make_package(
+autotools_package(
     name = "oniguruma",
     source = ":oniguruma-src",
     version = "6.9.9",

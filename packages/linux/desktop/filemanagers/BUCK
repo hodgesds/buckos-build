@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "meson_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "meson_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # File Managers for Various Desktop Environments
@@ -35,7 +35,7 @@ download_source(
     sha256 = "e8308a1f139602d8c125f594bfcebb063b7dac1fbb6e14293bab4cdb3ecf1d08",
 )
 
-configure_make_package(
+autotools_package(
     name = "thunar",
     source = ":thunar-src",
     version = "4.18.10",
@@ -67,7 +67,7 @@ download_source(
     sha256 = "14cb7b247493c4cce65fbb5902611e3ad00a7a870fbc1e50adc50428c5140cf7",
 )
 
-configure_make_package(
+autotools_package(
     name = "pcmanfm",
     source = ":pcmanfm-src",
     version = "1.3.2",
@@ -92,7 +92,7 @@ download_source(
     sha256 = "e65aa86650879fcd6c06983164b95409b92724482191f06472c567cbd8cf5ddd",
 )
 
-configure_make_package(
+autotools_package(
     name = "libfm",
     source = ":libfm-src",
     version = "1.3.2",
@@ -139,7 +139,7 @@ download_source(
     sha256 = "1e3014ce1455817ec2ef74d09efdfb6835d8a372ed9a16efb5919ef7b821957a",
 )
 
-configure_make_package(
+autotools_package(
     name = "caja",
     source = ":caja-src",
     version = "1.28.0",
@@ -166,7 +166,7 @@ download_source(
     sha256 = "ce088a04c91c25263a9675dc5c43514b7ec1b38c8ea43d9a9d00923ff6cdd251",
 )
 
-configure_make_package(
+autotools_package(
     name = "ranger",
     source = ":ranger-src",
     version = "1.9.3",
@@ -192,7 +192,7 @@ download_source(
     sha256 = "ed47fc22c58cf4f4e4116a58c500bdb9f9ccc0b89f87be09f321e8d1431226ab",
 )
 
-configure_make_package(
+autotools_package(
     name = "lf",
     source = ":lf-src",
     version = "r31",

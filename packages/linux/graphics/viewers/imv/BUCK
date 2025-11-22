@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "imv-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "3b11991a86942d757830015033b1c3a3cc915be2f0c20fee7bc7493be560cbcb",
 )
 
-configure_make_package(
+autotools_package(
     name = "imv",
     source = ":imv-src",
     version = "4.5.0",

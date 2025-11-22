@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # virt-manager - Desktop user interface for managing VMs
 download_source(
@@ -10,7 +10,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "virt-manager",
     source = ":virt-manager-src",
     version = "4.1.0",
@@ -43,7 +43,7 @@ update-desktop-database "$DESTDIR/usr/share/applications" 2>/dev/null || true
 # virt-install - Command line tool for creating VMs
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "virt-install",
     source = ":virt-manager-src",
     version = "4.1.0",
@@ -69,7 +69,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "virt-viewer",
     source = ":virt-viewer-src",
     version = "11.0",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # NOTE: The minigbm source URL points to a live Git branch (main) which means
 # the archive content and SHA256 checksum change frequently as new commits are pushed.
@@ -10,7 +10,7 @@ download_source(
     sha256 = "93fced221184e108e18eacb9f643293c8a0903b3e264863f13c1e2b869cb8ea6",
 )
 
-configure_make_package(
+autotools_package(
     name = "minigbm",
     source = ":minigbm-src",
     version = "main",

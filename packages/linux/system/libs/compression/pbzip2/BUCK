@@ -1,8 +1,8 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # pbzip2 - Parallel bzip2 compression
-use_package(
+autotools_package(
     name = "pbzip2",
     version = "1.1.13",
     src_uri = "https://launchpad.net/pbzip2/1.1/1.1.13/+download/pbzip2-1.1.13.tar.gz",

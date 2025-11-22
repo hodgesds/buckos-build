@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # CUPS - Common UNIX Printing System
@@ -11,7 +11,7 @@ download_source(
     sha256 = "dd54228dd903526428ce7e37961afaed230ad310788141da75cebaa08362cf6c",
 )
 
-configure_make_package(
+autotools_package(
     name = "cups",
     source = ":cups-src",
     version = "2.4.7",
@@ -56,7 +56,7 @@ download_source(
     sha256 = "b5152e3dd148ed73835827ac2f219df7cf5808dbf9dbaec2aa0127b44de800d8",
 )
 
-configure_make_package(
+autotools_package(
     name = "cups-filters",
     source = ":cups-filters-src",
     version = "2.0.0",
@@ -87,7 +87,7 @@ download_source(
     sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
 )
 
-configure_make_package(
+autotools_package(
     name = "libpaper",
     source = ":libpaper-src",
     version = "2.1.3",

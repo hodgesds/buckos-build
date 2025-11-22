@@ -1,7 +1,7 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
-use_package(
+autotools_package(
     name = "tinc",
     version = "1.0.36",
     src_uri = "https://www.tinc-vpn.org/packages/tinc-1.0.36.tar.gz",

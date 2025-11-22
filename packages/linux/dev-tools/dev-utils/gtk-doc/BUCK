@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # gtk-doc - GTK+ documentation generator
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "cc1b709a20eb030a278a1f9842a362e00402b7f834ae1df4c1998a723152bf43",
 )
 
-configure_make_package(
+autotools_package(
     name = "gtk-doc",
     source = ":gtk-doc-src",
     version = "1.33.2",

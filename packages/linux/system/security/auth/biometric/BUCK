@@ -1,8 +1,8 @@
 # Biometric authentication packages
 # Fingerprint readers and related libraries
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "meson_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "meson_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # libfprint - Fingerprint reader library
 meson_package(
@@ -61,7 +61,7 @@ download_source(
     sha256 = "f549cc33d35c0601674bfacf7c6ad683c187595eb4125b423238d3e9aa4209ce",
 )
 
-configure_make_package(
+autotools_package(
     name = "nss",
     source = ":nss-src",
     version = "3.98",
@@ -100,7 +100,7 @@ download_source(
     sha256 = "7ea3297ea5969b5d25a5dd8d47f2443cda88e9ee746301f6e1e1426f8a6abc8f",
 )
 
-configure_make_package(
+autotools_package(
     name = "nspr",
     source = ":nspr-src",
     version = "4.35",

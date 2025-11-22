@@ -1,7 +1,7 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
-use_package(
+autotools_package(
     name = "stubby",
     version = "0.4.3",
     src_uri = "https://github.com/getdnsapi/stubby/releases/download/v0.4.3/stubby-0.4.3.tar.gz",

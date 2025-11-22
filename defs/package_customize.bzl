@@ -66,7 +66,7 @@ load("//defs:use_flags.bzl",
      "use_configure_args",
      "use_dep",
 )
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package", "inherit")
 
 # =============================================================================
 # CUSTOMIZATION CONFIGURATION
@@ -361,22 +361,35 @@ def customized_package(
         sha256 = sha256,
     )
 
-    # Create the package with customizations
-    configure_make_package(
+    # Use autotools eclass for build
+    eclass_config = inherit(["autotools"])
+
+    # Set environment variables for autotools eclass
+    env = dict(customized["env"])
+    if customized["configure_args"]:
+        env["EXTRA_ECONF"] = " ".join(customized["configure_args"])
+    if make_args:
+        env["EXTRA_EMAKE"] = " ".join(make_args)
+
+    # Create the package with customizations using ebuild_package
+    ebuild_package(
         name = name,
         source = ":" + src_name,
         version = version,
-        configure_args = customized["configure_args"],
-        make_args = make_args,
-        deps = customized["deps"],
-        build_deps = build_deps,
+        src_configure = eclass_config["src_configure"],
+        src_compile = eclass_config["src_compile"],
+        src_install = eclass_config["src_install"],
+        use_flags = customized["effective_use"],
+        rdepend = customized["deps"],
+        bdepend = build_deps,
         maintainers = maintainers,
-        env = customized["env"],
-        pre_configure = customized["pre_configure"],
+        env = env,
+        src_prepare = customized["pre_configure"],
         post_install = kwargs.get("post_install", ""),
         description = kwargs.get("description", ""),
         homepage = kwargs.get("homepage", ""),
         license = kwargs.get("license", ""),
+        visibility = kwargs.get("visibility", ["PUBLIC"]),
     )
 
     return customized["effective_use"]

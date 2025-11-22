@@ -1,11 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # arping - Send ARP requests to identify hosts on a network
 # =============================================================================
 
-use_package(
+autotools_package(
     name = "arping",
     version = "2.24",
     src_uri = "https://github.com/ThomasHabets/arping/archive/refs/tags/arping-2.24.tar.gz",

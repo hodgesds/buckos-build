@@ -1,8 +1,8 @@
 # Additional PAM modules
 # Mount, script, SSH, PKCS#11, and blacklist modules
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # pam_mount - Mount volumes on login
 download_source(
@@ -11,7 +11,7 @@ download_source(
     sha256 = "5426207a485680f8e1764ba405bb38c39a4e0c8306bc8271910f1b819a336ced",
 )
 
-configure_make_package(
+autotools_package(
     name = "pam-mount",
     source = ":pam-mount-src",
     version = "2.20",
@@ -41,7 +41,7 @@ download_source(
     sha256 = "0aab103d318e3048ccc6f8285950f99284c814f996d2dcbcae8f10d3b8bd8cfe",
 )
 
-configure_make_package(
+autotools_package(
     name = "pam-script",
     source = ":pam-script-src",
     version = "1.1.9",
@@ -68,7 +68,7 @@ download_source(
     sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
 )
 
-configure_make_package(
+autotools_package(
     name = "pam-ssh",
     source = ":pam-ssh-src",
     version = "2.3",
@@ -93,7 +93,7 @@ download_source(
     sha256 = "c29cfd021fd3793263f1784b039f166f0e751996bada656a0f9470005eb0c093",
 )
 
-configure_make_package(
+autotools_package(
     name = "pam-pkcs11",
     source = ":pam-pkcs11-src",
     version = "0.6.12",
@@ -126,7 +126,7 @@ download_source(
     sha256 = "164d1d5fe042d85f653e61ab8823257a2b377d0c43f391d35d11143b72802ad3",
 )
 
-configure_make_package(
+autotools_package(
     name = "pam-abl",
     source = ":pam-abl-src",
     version = "0.6.0",

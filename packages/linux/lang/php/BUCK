@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "binary_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # =============================================================================
 # PHP - General-purpose scripting language
@@ -11,7 +11,7 @@ download_source(
     sha256 = "841910e1bb78a3a21a0dd48ed2f7e7f3ce7b2b9b91ff54ce6cb96dd6d4572b59",
 )
 
-configure_make_package(
+autotools_package(
     name = "php",
     source = ":php-src",
     version = "8.3.2",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "binary_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # =============================================================================
 # Ruby - Dynamic, open source programming language
@@ -11,7 +11,7 @@ download_source(
     sha256 = "676b65a36e637e90f982b57b059189b3276b9045034dcd186a7e9078847b975b",
 )
 
-configure_make_package(
+autotools_package(
     name = "ruby",
     source = ":ruby-src",
     version = "3.3.0",

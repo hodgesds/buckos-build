@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # mupdf - Lightweight PDF and XPS viewer
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "478f2a167feae2a291c8b8bc5205f2ce2f09f09b574a6eb0525bfad95a3cfe66",
 )
 
-configure_make_package(
+autotools_package(
     name = "mupdf",
     source = ":mupdf-src",
     version = "1.23.11",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "wtype-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "da91786d828b6a6e29b884bc510473939eda052658ebef87d7bdeafa6a8746f9",
 )
 
-configure_make_package(
+autotools_package(
     name = "wtype",
     source = ":wtype-src",
     version = "0.4",

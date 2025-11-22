@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "fuse3-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "f797055d9296b275e981f5f62d4e32e089614fc253d1ef2985851025b8a0ce87",
 )
 
-configure_make_package(
+autotools_package(
     name = "fuse3",
     source = ":fuse3-src",
     version = "3.16.2",

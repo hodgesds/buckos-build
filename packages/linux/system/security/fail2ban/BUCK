@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "fail2ban-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "ae8b0b41f27a7be12d40488789d6c258029b23a01168e3c0d347ee80b325ac23",
 )
 
-configure_make_package(
+autotools_package(
     name = "fail2ban",
     source = ":fail2ban-src",
     version = "1.0.2",

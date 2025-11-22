@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package", "ebuild_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package", "ebuild_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # Container Packages Category
 # This directory contains packages for container runtimes, tools, and orchestration

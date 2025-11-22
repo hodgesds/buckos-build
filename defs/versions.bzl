@@ -31,7 +31,7 @@ Example usage:
     ]
 """
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package", "inherit")
 
 # ============================================================================
 # VERSION COMPARISON UTILITIES
@@ -398,17 +398,34 @@ def versioned_package(
         )
         source = ":" + versioned_name + "-src"
 
-    # Filter out parameters that configure_make_package doesn't support
-    filtered_kwargs = dict(kwargs)
-    # Remove configure_command if present - it's not supported by configure_make_package
-    filtered_kwargs.pop("configure_command", None)
+    # Use autotools eclass for build
+    eclass_config = inherit(["autotools"])
 
-    # Create the versioned package
-    configure_make_package(
+    # Set environment variables for autotools eclass
+    env = dict(kwargs.get("env", {}))
+    if "configure_args" in kwargs and kwargs["configure_args"]:
+        env["EXTRA_ECONF"] = " ".join(kwargs["configure_args"])
+    if "make_args" in kwargs and kwargs["make_args"]:
+        env["EXTRA_EMAKE"] = " ".join(kwargs["make_args"])
+
+    # Create the versioned package using ebuild_package
+    ebuild_package(
         name = versioned_name,
         source = source,
         version = version,
-        **filtered_kwargs
+        src_configure = eclass_config["src_configure"],
+        src_compile = eclass_config["src_compile"],
+        src_install = eclass_config["src_install"],
+        rdepend = kwargs.get("deps", []),
+        bdepend = kwargs.get("build_deps", []),
+        maintainers = kwargs.get("maintainers", []),
+        env = env,
+        src_prepare = kwargs.get("pre_configure", ""),
+        post_install = kwargs.get("post_install", ""),
+        description = kwargs.get("description", ""),
+        homepage = kwargs.get("homepage", ""),
+        license = kwargs.get("license", ""),
+        visibility = kwargs.get("visibility", ["PUBLIC"]),
     )
 
     # Create slot alias (if requested)

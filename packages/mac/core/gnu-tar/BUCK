@@ -1,8 +1,8 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
 
-use_package(
+autotools_package(
     name = "gnu-tar",
     version = "1.35",
     src_uri = "https://mirrors.kernel.org/gnu/tar/tar-1.35.tar.xz",

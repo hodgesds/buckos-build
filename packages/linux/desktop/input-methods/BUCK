@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "meson_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "meson_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # Input Method Frameworks
@@ -13,7 +13,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "ibus",
     source = ":ibus-src",
     version = "1.5.29",
@@ -53,7 +53,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "fcitx5",
     source = ":fcitx5-src",
     version = "5.1.8",
@@ -98,7 +98,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "fcitx5-gtk",
     source = ":fcitx5-gtk-src",
     version = "5.1.1",
@@ -137,7 +137,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "fcitx5-qt",
     source = ":fcitx5-qt-src",
     version = "5.1.5",
@@ -175,7 +175,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "fcitx5-chinese-addons",
     source = ":fcitx5-chinese-addons-src",
     version = "5.1.4",
@@ -213,7 +213,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "ibus-anthy",
     source = ":ibus-anthy-src",
     version = "1.5.15",
@@ -240,7 +240,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "ibus-libpinyin",
     source = ":ibus-libpinyin-src",
     version = "1.15.3",
@@ -266,7 +266,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "ibus-hangul",
     source = ":ibus-hangul-src",
     version = "1.5.5",

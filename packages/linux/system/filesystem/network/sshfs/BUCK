@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "sshfs-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "5218ce7bdd2ce0a34137a0d7798e0f6d09f0e6d21b1e98ee730a18b0699c2e99",
 )
 
-configure_make_package(
+autotools_package(
     name = "sshfs",
     source = ":sshfs-src",
     version = "3.7.3",

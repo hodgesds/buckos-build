@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "multipath-tools-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "8f0a7ddc01137d0f90ac3ef5700131dfbd6cf3bbbccdcfa317e8379efa328d59",
 )
 
-configure_make_package(
+autotools_package(
     name = "multipath-tools",
     source = ":multipath-tools-src",
     version = "0.9.7",

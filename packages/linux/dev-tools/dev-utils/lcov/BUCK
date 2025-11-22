@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 download_source(
     name = "lcov-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "1857bb18e27abe8bcec701a907d5c47e01db4d4c512fc098d1a6acd29267bf46",
 )
 
-configure_make_package(
+autotools_package(
     name = "lcov",
     source = ":lcov-src",
     version = "2.0",

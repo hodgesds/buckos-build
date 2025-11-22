@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # w3m - Text-based web browser with tables and frames support
 #
@@ -11,7 +11,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 #   image    - Enable framebuffer image support
 #   ncurses  - Use ncurses for terminal handling
 
-use_package(
+autotools_package(
     name = "w3m",
     version = "0.5.3+git20230121",
     src_uri = "https://github.com/tats/w3m/releases/download/v0.5.3+git20230121/w3m-0.5.3+git20230121.tar.gz",

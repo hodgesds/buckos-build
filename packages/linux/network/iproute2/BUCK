@@ -1,11 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # iproute2 - Network configuration utilities
 # =============================================================================
 
-use_package(
+autotools_package(
     name = "iproute2",
     version = "6.6.0",
     src_uri = "https://mirrors.edge.kernel.org/pub/linux/utils/net/iproute2/iproute2-6.6.0.tar.xz",

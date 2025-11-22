@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "libaio-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "716c7059703247344eb066b54ecbc3ca2134f0103307192e6c2b7dab5f9528ab",
 )
 
-configure_make_package(
+autotools_package(
     name = "libaio",
     source = ":libaio-src",
     version = "0.3.113",

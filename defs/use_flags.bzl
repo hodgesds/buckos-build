@@ -9,8 +9,8 @@ Similar to Gentoo's USE flags, this provides:
 - USE flag expansion and inheritance
 
 Example usage:
-    # Define package with USE flags
-    use_package(
+    # Define package with USE flags (in defs/package_defs.bzl)
+    autotools_package(
         name = "curl",
         version = "8.5.0",
         src_uri = "https://curl.se/download/curl-8.5.0.tar.xz",
@@ -45,7 +45,7 @@ Example usage:
     package_use("curl", ["-ssl", "gnutls", "brotli"])
 """
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "ebuild_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package", "autotools_package")
 
 # =============================================================================
 # GLOBAL USE FLAG REGISTRY
@@ -729,153 +729,6 @@ def use_go_build_args(use_tags, enabled_flags, extra_args = []):
     return args
 
 # =============================================================================
-# USE-AWARE PACKAGE MACRO (DEPRECATED)
-# =============================================================================
-
-# DEPRECATED: Use autotools_package() from package_defs.bzl instead.
-# This function will be removed in a future release.
-# autotools_package() provides the same functionality but uses the eclass
-# system for better consistency with other language package types.
-def use_package(
-        name,
-        version,
-        src_uri,
-        sha256,
-        iuse = [],
-        use_defaults = [],
-        use_deps = {},
-        use_configure = {},
-        use_env = {},
-        use_patches = {},
-        global_use = None,
-        package_overrides = None,
-        configure_args = [],
-        make_args = [],
-        deps = [],
-        build_deps = [],
-        maintainers = [],
-        signature_uri = None,
-        gpg_key = None,
-        gpg_keyring = None,
-        auto_detect_signature = True,
-        **kwargs):
-    """DEPRECATED: Use autotools_package() instead.
-
-    Create a package with USE flag support.
-
-    This is the main macro for creating packages with conditional features.
-
-    Args:
-        name: Package name
-        version: Package version
-        src_uri: Source download URL
-        sha256: Source checksum
-        iuse: List of USE flags this package supports
-        use_defaults: Default enabled USE flags for this package
-        use_deps: Dict mapping USE flag to conditional dependencies
-        use_configure: Dict mapping USE flag to configure arguments
-        use_env: Dict mapping USE flag to environment variables
-        use_patches: Dict mapping USE flag to patches to apply
-        global_use: Global USE flag configuration (from set_use_flags)
-        package_overrides: Package-specific USE overrides (from package_use)
-        configure_args: Base configure arguments (always applied)
-        make_args: Make arguments
-        deps: Base dependencies (always applied)
-        build_deps: Build dependencies
-        maintainers: Package maintainers
-        signature_uri: Optional URL to GPG signature file (.asc or .sig)
-        gpg_key: Optional GPG key ID or fingerprint to import and verify against
-        gpg_keyring: Optional path to GPG keyring file with trusted keys
-        auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
-        **kwargs: Additional arguments passed to underlying rule
-
-    Example:
-        use_package(
-            name = "curl",
-            version = "8.5.0",
-            src_uri = "https://curl.se/download/curl-8.5.0.tar.xz",
-            sha256 = "...",
-            iuse = ["ssl", "gnutls", "http2", "zstd", "ipv6"],
-            use_defaults = ["ssl", "ipv6"],
-            use_deps = {
-                "ssl": ["//packages/linux/dev-libs/openssl"],
-                "http2": ["//packages/linux/net-libs/nghttp2"],
-            },
-            use_configure = {
-                "ssl": "--with-ssl",
-                "-ssl": "--without-ssl",
-                "http2": "--with-nghttp2",
-                "ipv6": "--enable-ipv6",
-                "-ipv6": "--disable-ipv6",
-            },
-            global_use = set_use_flags(["ssl", "http2", "-ipv6"]),
-        )
-    """
-    src_name = name + "-src"
-
-    # Download source
-    download_source(
-        name = src_name,
-        src_uri = src_uri,
-        sha256 = sha256,
-        signature_uri = signature_uri,
-        gpg_key = gpg_key,
-        gpg_keyring = gpg_keyring,
-        auto_detect_signature = auto_detect_signature,
-    )
-
-    # Calculate effective USE flags
-    effective_use = get_effective_use(
-        name,
-        iuse,
-        use_defaults,
-        global_use,
-        package_overrides,
-    )
-
-    # Resolve conditional dependencies
-    resolved_deps = list(deps)
-    resolved_deps.extend(use_dep(use_deps, effective_use))
-
-    # Generate configure arguments
-    resolved_configure = list(configure_args)
-    resolved_configure.extend(use_configure_args(use_configure, effective_use))
-
-    # Resolve environment variables
-    resolved_env = dict(kwargs.get("env", {}))
-    for flag, env_dict in use_env.items():
-        if flag in effective_use:
-            resolved_env.update(env_dict)
-
-    # Generate patch application in pre_configure
-    pre_configure = kwargs.get("pre_configure", "")
-    for flag, patches in use_patches.items():
-        if flag in effective_use:
-            for patch in patches:
-                pre_configure += '\npatch -p1 < "{}"'.format(patch)
-
-    # Create the package
-    configure_make_package(
-        name = name,
-        source = ":" + src_name,
-        version = version,
-        configure_args = resolved_configure,
-        make_args = make_args,
-        deps = resolved_deps,
-        build_deps = build_deps,
-        maintainers = maintainers,
-        env = resolved_env,
-        pre_configure = pre_configure if pre_configure else kwargs.get("pre_configure", ""),
-        post_install = kwargs.get("post_install", ""),
-        description = kwargs.get("description", ""),
-        homepage = kwargs.get("homepage", ""),
-        license = kwargs.get("license", ""),
-        visibility = kwargs.get("visibility", ["PUBLIC"]),
-    )
-
-    return effective_use
-
-# =============================================================================
 # EBUILD-STYLE USE PACKAGE
 # =============================================================================
 
@@ -971,6 +824,7 @@ def use_ebuild_package(
         description = kwargs.get("description", ""),
         homepage = kwargs.get("homepage", ""),
         license = kwargs.get("license", ""),
+        visibility = kwargs.get("visibility", ["PUBLIC"]),
     )
 
     return effective_use
@@ -1130,7 +984,7 @@ def profile_package(
         sha256: Source checksum
         iuse: Supported USE flags
         profile: Profile name (minimal, server, desktop, developer, hardened, default)
-        **kwargs: Additional arguments for use_package
+        **kwargs: Additional arguments for autotools_package
 
     Example:
         profile_package(
@@ -1155,7 +1009,7 @@ def profile_package(
     iuse_set = set(iuse)
     use_defaults = [f for f in profile_config["enabled"] if f in iuse_set]
 
-    return use_package(
+    return autotools_package(
         name = name,
         version = version,
         src_uri = src_uri,
@@ -1165,3 +1019,4 @@ def profile_package(
         global_use = global_use,
         **kwargs
     )
+

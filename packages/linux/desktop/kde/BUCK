@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "cmake_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "cmake_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # KDE Frameworks 5 (KF5) - Collection of libraries for KDE applications
@@ -40,7 +40,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "plasma-desktop",
     source = ":plasma-desktop-src",
     version = "6.0.1",
@@ -68,7 +68,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "kwin",
     source = ":kwin-src",
     version = "6.0.1",

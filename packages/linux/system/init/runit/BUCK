@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # -----------------------------------------------------------------------------
 # runit - UNIX init scheme with service supervision
@@ -11,7 +11,7 @@ download_source(
     sha256 = "6fd0160cb0cf1207de4e66754b6d39750cff14bb0aa66ab49490992c0c47ba18",
 )
 
-configure_make_package(
+autotools_package(
     name = "runit",
     source = ":runit-src",
     version = "2.1.2",

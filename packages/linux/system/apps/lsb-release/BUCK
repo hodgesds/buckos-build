@@ -1,10 +1,10 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # lsb-release - LSB release information utility
 # USE flags: (minimal package)
 
-use_package(
+autotools_package(
     name = "lsb-release",
     version = "3.2",
     src_uri = "https://github.com/thkukuk/lsb-release_os-release/archive/refs/tags/v3.2.tar.gz",

@@ -1,9 +1,9 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # gperf - Perfect hash function generator
 
-use_package(
+autotools_package(
     name = "gperf",
     version = "3.1",
     src_uri = "https://mirrors.kernel.org/pub/gnu/gperf/gperf-3.1.tar.gz",

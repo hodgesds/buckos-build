@@ -1,8 +1,8 @@
 # rfkill - Tool to enable and disable wireless devices
 # Controls the state of RF kill switches
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "rfkill-src",
@@ -12,7 +12,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "rfkill",
     source = ":rfkill-src",
     version = "6.6.8",

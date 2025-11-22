@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "satty-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "42403b36e7babe245de2bebc78d4bebab68aeaa4594b28bb9d83f44808e52920",
 )
 
-configure_make_package(
+autotools_package(
     name = "satty",
     source = ":satty-src",
     version = "0.12.0",

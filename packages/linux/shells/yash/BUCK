@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # yash - POSIX-compliant command line shell
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "f7f5a1ffd246692568e4823a59b20357317d92663573bd1099254c0c89de71f5",
 )
 
-configure_make_package(
+autotools_package(
     name = "yash",
     source = ":yash-src",
     version = "2.56.1",

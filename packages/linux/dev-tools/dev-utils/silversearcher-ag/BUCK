@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 download_source(
     name = "ag-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "6a0a19ca5e73b2bef9481c29a508d2413ca1a0a9a5a6b1bd9bbd695a7626cbf9",
 )
 
-configure_make_package(
+autotools_package(
     name = "silversearcher-ag",
     source = ":ag-src",
     version = "2.2.0",

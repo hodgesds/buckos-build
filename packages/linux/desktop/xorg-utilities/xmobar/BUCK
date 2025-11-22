@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "xmobar-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "146eb569fefefbc3428c6ec5ea1998cd7af274945cfa453e5100d0b37564cec6",
 )
 
-configure_make_package(
+autotools_package(
     name = "xmobar",
     source = ":xmobar-src",
     version = "0.48.1",

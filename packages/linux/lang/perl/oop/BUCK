@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # Moose - A postmodern object system for Perl 5
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "7c2daddc49754ded93f65b8ce9e3ac9b6d11ab27d111ec77f95a8528cf4ac409",
 )
 
-configure_make_package(
+autotools_package(
     name = "moose",
     source = ":moose-src",
     version = "2.2207",
@@ -39,7 +39,7 @@ download_source(
     sha256 = "fb5a2952649faed07373f220b78004a9c6aba387739133740c1770e9b1f4b108",
 )
 
-configure_make_package(
+autotools_package(
     name = "moo",
     source = ":moo-src",
     version = "2.005005",
@@ -68,7 +68,7 @@ download_source(
     sha256 = "ce8dc23946153a467ff09765167ee2590f5c502120f48a2d9441733f39aa32ee",
 )
 
-configure_make_package(
+autotools_package(
     name = "mouse",
     source = ":mouse-src",
     version = "2.5.10",
@@ -92,7 +92,7 @@ download_source(
     sha256 = "d7bdee9e138a4f83aa52d0a981625644bda87ff16642dfa845dcb44d9a242b45",
 )
 
-configure_make_package(
+autotools_package(
     name = "role-tiny",
     source = ":role-tiny-src",
     version = "2.002004",
@@ -116,7 +116,7 @@ download_source(
     sha256 = "65cd85bfe475d066e9186f7a8cc636070985b30b0ebb1cde8681cf062c2e15fc",
 )
 
-configure_make_package(
+autotools_package(
     name = "class-method-modifiers",
     source = ":class-method-modifiers-src",
     version = "2.15",
@@ -140,7 +140,7 @@ download_source(
     sha256 = "94bebd500af55762e83ea2f2bc594d87af828072370c7110c60c238a800d15b2",
 )
 
-configure_make_package(
+autotools_package(
     name = "sub-quote",
     source = ":sub-quote-src",
     version = "2.006008",
@@ -164,7 +164,7 @@ download_source(
     sha256 = "2a48fa779b5297e56156380e8b32637c6c58decb4f4a7f3c7350523e11275f8f",
 )
 
-configure_make_package(
+autotools_package(
     name = "class-load",
     source = ":class-load-src",
     version = "0.25",
@@ -190,7 +190,7 @@ download_source(
     sha256 = "b194290f257cc6275a039374111554c666a1650e4c01ad799c1e0a277f47917d",
 )
 
-configure_make_package(
+autotools_package(
     name = "data-visitor",
     source = ":data-visitor-src",
     version = "0.32",
@@ -215,7 +215,7 @@ download_source(
     sha256 = "ea0944f2f5ec98d895bef6d503e6e4a376fea6383a6bc64c7670d46ff2218cad",
 )
 
-configure_make_package(
+autotools_package(
     name = "eval-closure",
     source = ":eval-closure-src",
     version = "0.14",
@@ -240,7 +240,7 @@ download_source(
     sha256 = "9cd87b3492cbf0be9d2df9317b2adf9fc30663770e69906654bea3f41b17cb08",
 )
 
-configure_make_package(
+autotools_package(
     name = "moosex-types",
     source = ":moosex-types-src",
     version = "0.50",
@@ -265,7 +265,7 @@ download_source(
     sha256 = "1cfe766c5d7f0ecab57f733dcca430a2a2acd6b995757141b940ade3692bec9e",
 )
 
-configure_make_package(
+autotools_package(
     name = "moosex-role-parameterized",
     source = ":moosex-role-parameterized-src",
     version = "1.11",
@@ -290,7 +290,7 @@ download_source(
     sha256 = "697e7f775edfc85f4cf07792d04fd19b09c25285f98f5938e8efc4f74507a128",
 )
 
-configure_make_package(
+autotools_package(
     name = "type-tiny",
     source = ":type-tiny-src",
     version = "2.004000",
@@ -315,7 +315,7 @@ download_source(
     sha256 = "12950a664c0607ea3fca7480f365df54d1746291f45ebb0ed80917b74fb15ef5",
 )
 
-configure_make_package(
+autotools_package(
     name = "object-pad",
     source = ":object-pad-src",
     version = "0.809",
@@ -339,7 +339,7 @@ download_source(
     sha256 = "ee058a63912fa1fcb9a72498f56ca421a2056dc7f9f4b67837446d6421815615",
 )
 
-configure_make_package(
+autotools_package(
     name = "class-tiny",
     source = ":class-tiny-src",
     version = "1.008",

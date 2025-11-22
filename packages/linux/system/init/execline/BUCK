@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # -----------------------------------------------------------------------------
 # execline - Non-interactive scripting language
@@ -11,7 +11,7 @@ download_source(
     sha256 = "9ab55d561539dfa76ff4a97906fa995fc4a288e3de5225cb1a9d8fa9e9ebc49b",
 )
 
-configure_make_package(
+autotools_package(
     name = "execline",
     source = ":execline-src",
     version = "2.9.4.0",

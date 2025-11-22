@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "libsndfile-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "3799ca9924d3125038880367bf1468e53a1b7e3686a934f098b7e1d286cdb80e",
 )
 
-configure_make_package(
+autotools_package(
     name = "libsndfile",
     source = ":libsndfile-src",
     version = "1.2.2",

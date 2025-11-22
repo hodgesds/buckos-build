@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # zip - Info-ZIP compression utility
 
@@ -9,7 +9,7 @@ download_source(
     sha256 = "f0e8bb1f9b7eb0b01285495a2699df3a4b766784c1765a8f1aeedf63c0806369",
 )
 
-configure_make_package(
+autotools_package(
     name = "zip",
     source = ":zip-src",
     version = "3.0",

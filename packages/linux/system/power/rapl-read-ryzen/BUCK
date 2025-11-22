@@ -1,8 +1,8 @@
 # rapl-read-ryzen - AMD RAPL Power Reading Tool
 # Read power consumption from AMD Ryzen processors via RAPL
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "rapl-read-ryzen-src",
@@ -10,7 +10,7 @@ download_source(
     sha256 = "f2611e6c2290ff72714722beb6f8beb7a60f0954ca93101ba55e5b9d50ad1ce1",
 )
 
-configure_make_package(
+autotools_package(
     name = "rapl-read-ryzen",
     source = ":rapl-read-ryzen-src",
     version = "0.2",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # keyutils - Linux key management utilities
 
@@ -9,7 +9,7 @@ download_source(
     sha256 = "a61d5706136ae4c05bd48f86186bcfdbd88dd8bd5107e3e195c924cfc1b39bb4",
 )
 
-configure_make_package(
+autotools_package(
     name = "keyutils",
     source = ":keyutils-src",
     version = "1.6.3",

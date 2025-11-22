@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # eudev - Gentoo's fork of systemd-udev
@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 # Standalone device manager for /dev, independent of systemd.
 # Handles device nodes, hotplugging, and firmware loading.
 
-use_package(
+autotools_package(
     name = "eudev",
     version = "3.2.14",
     src_uri = "https://github.com/eudev-project/eudev/releases/download/v3.2.14/eudev-3.2.14.tar.gz",
@@ -67,7 +67,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "hwids",
     source = ":hwids-src",
     version = "20230308",

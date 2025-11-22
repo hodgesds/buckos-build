@@ -1,8 +1,8 @@
 # lshw - Hardware Lister
 # Provides detailed information about the hardware configuration
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "lshw-src",
@@ -10,7 +10,7 @@ download_source(
     sha256 = "06d9cf122422220e5dc94e8ea5b01816a69bb6b59368f63d7f21fff31fc6922a",
 )
 
-configure_make_package(
+autotools_package(
     name = "lshw",
     source = ":lshw-src",
     version = "B.02.20",

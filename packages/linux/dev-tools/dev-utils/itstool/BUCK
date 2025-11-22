@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # itstool - ITS-based XML translation tool
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "6b9a7cd29a12bb95598f5750e8763cee78836a1a207f85b74d8b3275b27e87ca",
 )
 
-configure_make_package(
+autotools_package(
     name = "itstool",
     source = ":itstool-src",
     version = "2.0.7",

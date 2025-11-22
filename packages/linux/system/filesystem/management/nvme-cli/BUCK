@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "nvme-cli-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "4c69d0f3c8b553110d0f63f5876d56627abd2d9f5d3904e2480cedd03cb15654",
 )
 
-configure_make_package(
+autotools_package(
     name = "nvme-cli",
     source = ":nvme-cli-src",
     version = "2.7.1",

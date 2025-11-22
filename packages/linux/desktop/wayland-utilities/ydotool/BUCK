@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "ydotool-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "ba075a43aa6ead51940e892ecffa4d0b8b40c241e4e2bc4bd9bd26b61fde23bd",
 )
 
-configure_make_package(
+autotools_package(
     name = "ydotool",
     source = ":ydotool-src",
     version = "1.0.4",

@@ -253,133 +253,6 @@ download_source = rule(
     },
 )
 
-def _configure_make_package_impl(ctx: AnalysisContext) -> list[Provider]:
-    """Build a package using configure && make && make install."""
-    install_dir = ctx.actions.declare_output(ctx.attrs.name, dir = True)
-
-    # Get source directory from dependency
-    src_dir = ctx.attrs.source[DefaultInfo].default_outputs[0]
-
-    # Build configuration
-    configure_args = " ".join(ctx.attrs.configure_args) if ctx.attrs.configure_args else ""
-    make_args = " ".join(ctx.attrs.make_args) if ctx.attrs.make_args else ""
-    env_vars = " ".join(["{}={}".format(k, v) for k, v in ctx.attrs.env.items()]) if ctx.attrs.env else ""
-
-    # Pre-configure commands
-    pre_configure = ctx.attrs.pre_configure if ctx.attrs.pre_configure else ""
-
-    # Post-install commands
-    post_install = ctx.attrs.post_install if ctx.attrs.post_install else ""
-
-    script = ctx.actions.write(
-        "build.sh",
-        """#!/bin/bash
-set -e
-# Convert DESTDIR to absolute path before cd
-export DESTDIR="$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
-export PREFIX="${{PREFIX:-/usr}}"
-
-# Ensure output directory exists
-mkdir -p "$DESTDIR"
-
-cd "$2"
-export SRCDIR="$(pwd)"
-
-# Set environment
-{env}
-
-# Pre-configure hook
-{pre_configure}
-
-# Configure
-CONFIGURE_ARGS="{configure_args}"
-if [ -n "$CONFIGURE_ARGS" ] || [ -f configure ] || [ -f Configure ] || [ -f CMakeLists.txt ]; then
-    if [ -f configure ]; then
-        ./configure --prefix="$PREFIX" {configure_args}
-    elif [ -f Configure ]; then
-        ./Configure --prefix="$PREFIX" {configure_args}
-    elif [ -f CMakeLists.txt ]; then
-        mkdir -p build && cd build
-        cmake .. -DCMAKE_INSTALL_PREFIX="$PREFIX" {configure_args}
-    fi
-fi
-
-# Build
-MAKE_ARGS="{make_args}"
-if [ -n "$MAKE_ARGS" ] || [ -f Makefile ] || [ -f makefile ]; then
-    make -j$(nproc) {make_args}
-fi
-
-# Install
-if [ -f Makefile ] || [ -f makefile ]; then
-    make install DESTDIR="$DESTDIR" {make_args} || true
-fi
-
-# Post-install hook
-{post_install}
-""".format(
-            env = env_vars,
-            pre_configure = pre_configure,
-            configure_args = configure_args,
-            make_args = make_args,
-            post_install = post_install,
-        ),
-    )
-
-    # Collect dependency outputs for build environment
-    dep_dirs = []
-    for dep in ctx.attrs.deps:
-        dep_dirs.append(dep[DefaultInfo].default_outputs[0])
-
-    ctx.actions.run(
-        cmd_args([
-            "bash",
-            script,
-            install_dir.as_output(),
-            src_dir,
-        ]),
-        category = "build",
-        identifier = ctx.attrs.name,
-    )
-
-    return [
-        DefaultInfo(default_output = install_dir),
-        PackageInfo(
-            name = ctx.attrs.name,
-            version = ctx.attrs.version,
-            description = ctx.attrs.description,
-            homepage = ctx.attrs.homepage,
-            license = ctx.attrs.license,
-            src_uri = "",
-            checksum = "",
-            dependencies = ctx.attrs.deps,
-            build_dependencies = ctx.attrs.build_deps,
-            maintainers = ctx.attrs.maintainers,
-        ),
-    ]
-
-# DEPRECATED: Use autotools_package() instead of configure_make_package.
-# This rule will be removed in a future release.
-# configure_make_package uses a Buck2 rule which is less flexible than
-# the eclass-based approach. Use autotools_package() for new packages.
-configure_make_package = rule(
-    impl = _configure_make_package_impl,
-    attrs = {
-        "source": attrs.dep(),
-        "version": attrs.string(),
-        "description": attrs.string(default = ""),
-        "homepage": attrs.string(default = ""),
-        "license": attrs.string(default = ""),
-        "configure_args": attrs.list(attrs.string(), default = []),
-        "make_args": attrs.list(attrs.string(), default = []),
-        "env": attrs.dict(attrs.string(), attrs.string(), default = {}),
-        "pre_configure": attrs.string(default = ""),
-        "post_install": attrs.string(default = ""),
-        "deps": attrs.list(attrs.dep(), default = []),
-        "build_deps": attrs.list(attrs.dep(), default = []),
-        "maintainers": attrs.list(attrs.string(), default = []),
-    },
-)
 
 def _kernel_config_impl(ctx: AnalysisContext) -> list[Provider]:
     """Merge kernel configuration fragments into a single .config file."""
@@ -2415,8 +2288,8 @@ def simple_package(
         auto_detect_signature: bool = True,
         **kwargs):
     """
-    Convenience macro for standard autotools packages.
-    Creates both source download and build rules.
+    Convenience macro for standard autotools packages without USE flags.
+    This is a simplified wrapper around autotools_package() for basic packages.
 
     Args:
         signature_uri: Optional URL to GPG signature file (.asc or .sig)
@@ -2424,26 +2297,20 @@ def simple_package(
         gpg_keyring: Optional path to GPG keyring file with trusted keys
         auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
     """
-    src_name = name + "-src"
-
-    download_source(
-        name = src_name,
+    # Forward to autotools_package() which supports both USE flags and simple builds
+    autotools_package(
+        name = name,
+        version = version,
         src_uri = src_uri,
         sha256 = sha256,
-        signature_uri = signature_uri,
-        gpg_key = gpg_key,
-        gpg_keyring = gpg_keyring,
-        auto_detect_signature = auto_detect_signature,
-    )
-
-    configure_make_package(
-        name = name,
-        source = ":" + src_name,
-        version = version,
         configure_args = configure_args,
         make_args = make_args,
         deps = deps,
         maintainers = maintainers,
+        signature_uri = signature_uri,
+        gpg_key = gpg_key,
+        gpg_keyring = gpg_keyring,
+        auto_detect_signature = auto_detect_signature,
         **kwargs
     )
 

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # mkinitcpio - Arch Linux initramfs creation utility
@@ -13,7 +13,7 @@ download_source(
     sha256 = "2a48b25553a4d661d99904952c0a16419a0a7466f7487bd44397da770558ec7d",
 )
 
-configure_make_package(
+autotools_package(
     name = "mkinitcpio",
     source = ":mkinitcpio-src",
     version = "38",
@@ -70,7 +70,7 @@ mkdir -p $OUT/etc/mkinitcpio.d
 )
 
 # mkinitcpio-busybox - Busybox for use in initramfs
-configure_make_package(
+autotools_package(
     name = "mkinitcpio-busybox",
     source = "//packages/linux/core/busybox:busybox-src",
     version = "1.36.1",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "swappy-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "266fac289d4b903d80d44746044bafe8a8b663c6032be696c651ad390bcb1850",
 )
 
-configure_make_package(
+autotools_package(
     name = "swappy",
     source = ":swappy-src",
     version = "1.5.1",

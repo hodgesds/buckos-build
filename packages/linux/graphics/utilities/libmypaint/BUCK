@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "libmypaint-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "741754f293f6b7668f941506da07cd7725629a793108bb31633fb6c3eae5315f",
 )
 
-configure_make_package(
+autotools_package(
     name = "libmypaint",
     source = ":libmypaint-src",
     version = "1.6.1",

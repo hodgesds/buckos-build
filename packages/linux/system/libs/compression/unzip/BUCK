@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # unzip - Info-ZIP extraction utility for .zip archives
 
@@ -9,7 +9,7 @@ download_source(
     sha256 = "036d96991646d0449ed0aa952e4fbe21b476ce994abc276e49d30e686708bd37",
 )
 
-configure_make_package(
+autotools_package(
     name = "unzip",
     source = ":unzip-src",
     version = "6.0",

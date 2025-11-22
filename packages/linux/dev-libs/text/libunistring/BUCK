@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 download_source(
     name = "libunistring-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "632bd65ed74a881ca8a0309a1001c428bd1cbd5cd7ddbf8cedcd2e65f4dcdc44",
 )
 
-configure_make_package(
+autotools_package(
     name = "libunistring",
     source = ":libunistring-src",
     version = "1.2",

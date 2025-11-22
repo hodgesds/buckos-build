@@ -1,11 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # dbench - Database-style benchmark for filesystems
 #
 # USE flags: (minimal flags for this benchmark)
 
-use_package(
+autotools_package(
     name = "dbench",
     version = "4.0",
     src_uri = "https://samba.org/ftp/tridge/dbench/dbench-4.0.tar.gz",

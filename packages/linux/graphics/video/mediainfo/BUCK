@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # MediaInfo - Display information about media files
 
@@ -9,7 +9,7 @@ download_source(
     sha256 = "0683f28a2475dc2417205ba528debccc407da4d9fa6516eb4b75b3ff7244e96e",
 )
 
-configure_make_package(
+autotools_package(
     name = "libmediainfo",
     source = ":libmediainfo-src",
     version = "24.06",
@@ -50,7 +50,7 @@ download_source(
     sha256 = "32f4a82a31e386e177fdf6e4c237053e475b501089269ab2c729452a09313520",
 )
 
-configure_make_package(
+autotools_package(
     name = "mediainfo",
     source = ":mediainfo-src",
     version = "24.06",
@@ -88,7 +88,7 @@ download_source(
     sha256 = "32f4a82a31e386e177fdf6e4c237053e475b501089269ab2c729452a09313520",
 )
 
-configure_make_package(
+autotools_package(
     name = "mediainfo-gui",
     source = ":mediainfo-gui-src",
     version = "24.06",

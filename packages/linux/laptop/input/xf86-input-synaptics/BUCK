@@ -1,8 +1,8 @@
 # xf86-input-synaptics - X.Org Synaptics touchpad driver
 # Synaptics touchpad driver for X.Org (legacy, prefer libinput)
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "xf86-input-synaptics-src",
@@ -13,7 +13,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "xf86-input-synaptics",
     source = ":xf86-input-synaptics-src",
     version = "1.9.2",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # nginx - High-performance HTTP server and reverse proxy
 #
@@ -12,7 +12,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 #   realip    - Enable real IP detection behind proxies
 #   stub_status - Enable server status page
 
-use_package(
+autotools_package(
     name = "nginx",
     version = "1.26.2",
     src_uri = "https://nginx.org/download/nginx-1.26.2.tar.gz",

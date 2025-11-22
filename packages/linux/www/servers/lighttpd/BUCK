@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # lighttpd - Lightweight, fast web server
 #
@@ -11,7 +11,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 #   mysql   - Enable MySQL authentication
 #   ldap    - Enable LDAP authentication
 
-use_package(
+autotools_package(
     name = "lighttpd",
     version = "1.4.76",
     src_uri = "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.76.tar.xz",

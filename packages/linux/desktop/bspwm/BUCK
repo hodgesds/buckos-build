@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # bspwm - Binary space partitioning window manager
@@ -11,7 +11,7 @@ download_source(
     sha256 = "0d0f5e465b9c27a5c2143c86189392fa297fad55253b9ed8f6854473d3928f8f",
 )
 
-configure_make_package(
+autotools_package(
     name = "bspwm",
     source = ":bspwm-src",
     version = "0.9.10",

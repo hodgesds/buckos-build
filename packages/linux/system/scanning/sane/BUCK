@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # SANE - Scanner Access Now Easy
@@ -11,7 +11,7 @@ download_source(
     sha256 = "0bd3114d0ed8eca9f054e2c6727ab95afa6da0e8e602cc648955e1a788bc2070",
 )
 
-configure_make_package(
+autotools_package(
     name = "sane-backends",
     source = ":sane-backends-src",
     version = "1.3.0",
@@ -47,7 +47,7 @@ download_source(
     sha256 = "c16e6590142fe563be5143122b3bbb53f6b00a7da9d952f61c47fa26f7b4f0a9",
 )
 
-configure_make_package(
+autotools_package(
     name = "simple-scan",
     source = ":simple-scan-src",
     version = "46.0",
@@ -80,7 +80,7 @@ download_source(
     sha256 = "c15ee8defcfb05da1fd1deea2c9aaa3cc6fb32489794f571ec09dd8b4d938aa6",
 )
 
-configure_make_package(
+autotools_package(
     name = "skanlite",
     source = ":skanlite-src",
     version = "24.02.0",

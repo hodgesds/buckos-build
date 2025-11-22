@@ -1,11 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # Wayland - Next-generation display protocol
 # =============================================================================
 
-use_package(
+autotools_package(
     name = "wayland",
     version = "1.22.0",
     src_uri = "https://gitlab.freedesktop.org/wayland/wayland/-/releases/1.22.0/downloads/wayland-1.22.0.tar.xz",
@@ -33,7 +33,7 @@ meson setup .. --prefix=/usr $CONFIGURE_ARGS
     visibility = ["PUBLIC"],
 )
 
-use_package(
+autotools_package(
     name = "wayland-protocols",
     version = "1.33",
     src_uri = "https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.33/downloads/wayland-protocols-1.33.tar.xz",

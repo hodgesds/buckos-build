@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "meson_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "meson_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # Desktop Accessibility Tools
@@ -74,7 +74,7 @@ download_source(
     sha256 = "1ce4759ffabbaf1aeb433a5ec0739be0676e9bdfbae9444a7b3be1b2af3ec12b",
 )
 
-configure_make_package(
+autotools_package(
     name = "speech-dispatcher",
     source = ":speech-dispatcher-src",
     version = "0.11.5",
@@ -107,7 +107,7 @@ download_source(
     sha256 = "0823df5648659dcb67915baaf99118dcc8853639f47cadaa029c174bdd768d20",
 )
 
-configure_make_package(
+autotools_package(
     name = "espeak-ng",
     source = ":espeak-ng-src",
     version = "1.51.1",
@@ -137,7 +137,7 @@ download_source(
     sha256 = "9c43d9f4bd30f4fea7f780d4e8b14f7589107c52e9cb6bd202bd0d1c2064de55",
 )
 
-configure_make_package(
+autotools_package(
     name = "caribou",
     source = ":caribou-src",
     version = "0.4.21",
@@ -166,7 +166,7 @@ download_source(
     sha256 = "c2b671e67e0c288a69fc33dc1b6f1b534d07882c2aceed37004bf48c601afa72",
 )
 
-configure_make_package(
+autotools_package(
     name = "libcanberra",
     source = ":libcanberra-src",
     version = "0.30",

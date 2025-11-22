@@ -1,8 +1,8 @@
 # Gamescope - SteamOS session compositing window manager
 # Micro-compositor for running games with improved display features
 
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "gamescope-src",
@@ -12,7 +12,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "gamescope",
     source = ":gamescope-src",
     version = "3.14.24",

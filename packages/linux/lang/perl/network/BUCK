@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # LWP - The World-Wide Web library for Perl
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "75c2e57d6102eea540f3611b56fd86268a59b022dd00ea6562ac36412fcdf8e1",
 )
 
-configure_make_package(
+autotools_package(
     name = "lwp",
     source = ":lwp-src",
     version = "6.76",
@@ -35,7 +35,7 @@ download_source(
     sha256 = "7ce6367e861883b6868d6dd86168af33524717d8cc94100c2abf9bd86a82b4d8",
 )
 
-configure_make_package(
+autotools_package(
     name = "http-tiny",
     source = ":http-tiny-src",
     version = "0.088",
@@ -59,7 +59,7 @@ download_source(
     sha256 = "01cb8406612a3f738842d1e97313ae4d874870d1b8d6d66331f16000943d4cbe",
 )
 
-configure_make_package(
+autotools_package(
     name = "http-message",
     source = ":http-message-src",
     version = "6.45",
@@ -84,7 +84,7 @@ download_source(
     sha256 = "8c9a541a4a39f6c0c7e3d0b700b05dfdb830bd490a1b1942a7dedd1b50d9a8c8",
 )
 
-configure_make_package(
+autotools_package(
     name = "http-cookies",
     source = ":http-cookies-src",
     version = "6.11",
@@ -109,7 +109,7 @@ download_source(
     sha256 = "95b2f7c0628a7e246a159665fbf0620d0d7835e3a940f22d3fdd47c3aa799c2e",
 )
 
-configure_make_package(
+autotools_package(
     name = "io-socket-ssl",
     source = ":io-socket-ssl-src",
     version = "2.085",
@@ -134,7 +134,7 @@ download_source(
     sha256 = "9d7be8a56d1bedda05c425306cc504ba134307e0c09bda4a788c98744ebcd95d",
 )
 
-configure_make_package(
+autotools_package(
     name = "net-ssleay",
     source = ":net-ssleay-src",
     version = "1.94",
@@ -158,7 +158,7 @@ download_source(
     sha256 = "563d11731ff44307fa2779a6958fd2d2f6643fbd9a3174cbf350228b159681f8",
 )
 
-configure_make_package(
+autotools_package(
     name = "socket",
     source = ":socket-src",
     version = "2.038",
@@ -182,7 +182,7 @@ download_source(
     sha256 = "13d7edc4b8cea0132147faac3571f6b3c71d1d0cfd844c530c5a044f4a3ec31e",
 )
 
-configure_make_package(
+autotools_package(
     name = "net-dns",
     source = ":net-dns-src",
     version = "1.44",
@@ -206,7 +206,7 @@ download_source(
     sha256 = "a71f4db580e1a767d6936faa5baf38f1fa617824342da078b561283e86f8f4a2",
 )
 
-configure_make_package(
+autotools_package(
     name = "libnet",
     source = ":libnet-src",
     version = "3.15",
@@ -230,7 +230,7 @@ download_source(
     sha256 = "98fb067850699a224babc348f1cefe30d744c60da8902e7a5ce9d8b7e73df735",
 )
 
-configure_make_package(
+autotools_package(
     name = "email-mime",
     source = ":email-mime-src",
     version = "1.953",
@@ -254,7 +254,7 @@ download_source(
     sha256 = "dead783d62a968a5104c962e5562172d1e4dfebfa07a323ca62a4f9b455d000d",
 )
 
-configure_make_package(
+autotools_package(
     name = "email-sender",
     source = ":email-sender-src",
     version = "2.601",
@@ -280,7 +280,7 @@ download_source(
     sha256 = "14135fe6fd9df5fcdc40f767ab9cf49e623ce8c5223ba91e1d44e04d1e0aa1c9",
 )
 
-configure_make_package(
+autotools_package(
     name = "www-mechanize",
     source = ":www-mechanize-src",
     version = "2.18",
@@ -306,7 +306,7 @@ download_source(
     sha256 = "35ddbd8880d71f19e202433e1761fd1177385e630bf50685bc48b6b7acb857b9",
 )
 
-configure_make_package(
+autotools_package(
     name = "furl",
     source = ":furl-src",
     version = "3.14",

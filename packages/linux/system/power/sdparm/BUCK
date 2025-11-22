@@ -1,8 +1,8 @@
 # sdparm - SCSI Device Parameters
 # Get/set SCSI device parameters including power conditions
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "sdparm-src",
@@ -10,7 +10,7 @@ download_source(
     sha256 = "c4c9efafdbeb662e2f9712707ec490932bd4d010bb1129ae7a99526546eeadbe",
 )
 
-configure_make_package(
+autotools_package(
     name = "sdparm",
     source = ":sdparm-src",
     version = "1.12",

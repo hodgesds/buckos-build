@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # -----------------------------------------------------------------------------
 # s6 - Small and secure supervision software suite
@@ -11,7 +11,7 @@ download_source(
     sha256 = "800d31226f6c25cdd3ec0b65240f80b56ce5ec137341d0a8d154e77638e58103",
 )
 
-configure_make_package(
+autotools_package(
     name = "s6",
     source = ":s6-src",
     version = "2.12.0.3",

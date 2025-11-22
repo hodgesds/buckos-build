@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "wlopm-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "6e517d3b9cb947565ff4d46aacf9dbc2bb7914b8cc615faecab126facef03f01",
 )
 
-configure_make_package(
+autotools_package(
     name = "wlopm",
     source = ":wlopm-src",
     version = "0.1.0",

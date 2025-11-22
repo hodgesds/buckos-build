@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # DBI - Database independent interface for Perl
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
 )
 
-configure_make_package(
+autotools_package(
     name = "dbi",
     source = ":dbi-src",
     version = "1.643",
@@ -32,7 +32,7 @@ download_source(
     sha256 = "8994997d84b9feb4547795f78746c661fb72e3cb6a25dbdd789b731f5688a4dd",
 )
 
-configure_make_package(
+autotools_package(
     name = "dbd-sqlite",
     source = ":dbd-sqlite-src",
     version = "1.74",
@@ -57,7 +57,7 @@ download_source(
     sha256 = "92bbe8a363040f8ce6a3f1963f128132e245861a9b4dc5a84178b42d625a7807",
 )
 
-configure_make_package(
+autotools_package(
     name = "dbd-pg",
     source = ":dbd-pg-src",
     version = "3.18.0",
@@ -82,7 +82,7 @@ download_source(
     sha256 = "33a6bf1b685cc50c46eb1187a3eb259ae240917bc189d26b81418790aa6da5df",
 )
 
-configure_make_package(
+autotools_package(
     name = "dbd-mysql",
     source = ":dbd-mysql-src",
     version = "5.004",
@@ -107,7 +107,7 @@ download_source(
     sha256 = "341e0b6ecb29d8c49174a6c09d7c6dbf38729ba4015ee7fd70360a4ffee1f251",
 )
 
-configure_make_package(
+autotools_package(
     name = "dbix-class",
     source = ":dbix-class-src",
     version = "0.082843",
@@ -135,7 +135,7 @@ download_source(
     sha256 = "35a642662c349420d44be6e0ef7d8765ea743eb12ad14399aa3a232bb94e6e9a",
 )
 
-configure_make_package(
+autotools_package(
     name = "sql-abstract",
     source = ":sql-abstract-src",
     version = "2.000001",
@@ -160,7 +160,7 @@ download_source(
     sha256 = "a45e2fddf2cc452092d14456b4b3f749339b901e0837015a76185314e0487e66",
 )
 
-configure_make_package(
+autotools_package(
     name = "rose-db",
     source = ":rose-db-src",
     version = "0.778",
@@ -185,7 +185,7 @@ download_source(
     sha256 = "a322c8df00e3e5655fdf4d0b7ab9d799289320e29f64fe99ac7af124484ef9d8",
 )
 
-configure_make_package(
+autotools_package(
     name = "mojo-pg",
     source = ":mojo-pg-src",
     version = "4.27",
@@ -211,7 +211,7 @@ download_source(
     sha256 = "5739a9af3fc0fc162b38032df610a070035263bfbe0bec16aec52f0dddd7b647",
 )
 
-configure_make_package(
+autotools_package(
     name = "mojo-sqlite",
     source = ":mojo-sqlite-src",
     version = "3.009",
@@ -237,7 +237,7 @@ download_source(
     sha256 = "14cb899797212615b4e93f916dcbdafb48d01c5eaab2038fe6cb179bf95c6feb",
 )
 
-configure_make_package(
+autotools_package(
     name = "redis",
     source = ":redis-src",
     version = "2.000",
@@ -262,7 +262,7 @@ download_source(
     sha256 = "201935f92dac94f39c35de73661e8b252439e496f228657db85ff93257c3268f",
 )
 
-configure_make_package(
+autotools_package(
     name = "mongodb",
     source = ":mongodb-src",
     version = "2.2.2",
@@ -288,7 +288,7 @@ download_source(
     sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
 )
 
-configure_make_package(
+autotools_package(
     name = "cache-memcached-fast",
     source = ":cache-memcached-fast-src",
     version = "0.28",

@@ -1,8 +1,8 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl")
 
 # Nettle - Low-level cryptographic library
-use_package(
+autotools_package(
     name = "nettle",
     version = "3.10",
     src_uri = "https://mirrors.kernel.org/gnu/nettle/nettle-3.10.tar.gz",

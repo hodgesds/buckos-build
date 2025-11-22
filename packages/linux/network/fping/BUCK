@@ -1,11 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # fping - Fast ping utility for multiple hosts
 # =============================================================================
 
-use_package(
+autotools_package(
     name = "fping",
     version = "5.2",
     src_uri = "https://fping.org/dist/fping-5.2.tar.gz",

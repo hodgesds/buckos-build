@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "lcms2-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "d873d34ad8b9b4cea010631f1a6228d2087475e4dc5e763eb81acc23d9d45a51",
 )
 
-configure_make_package(
+autotools_package(
     name = "lcms2",
     source = ":lcms2-src",
     version = "2.16",

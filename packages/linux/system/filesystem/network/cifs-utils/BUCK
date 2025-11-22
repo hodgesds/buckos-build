@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "cifs-utils-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "0defaab85bd3ea46ffc45ab41fb0d0ad54d05ae2cfaa7e503de86d4f12bc8161",
 )
 
-configure_make_package(
+autotools_package(
     name = "cifs-utils",
     source = ":cifs-utils-src",
     version = "7.0",

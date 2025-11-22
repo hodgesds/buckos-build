@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "dmenu-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "d4d4ca77b59140f272272db537e05bb91a5914f56802652dc57e61a773d43792",
 )
 
-configure_make_package(
+autotools_package(
     name = "dmenu",
     source = ":dmenu-src",
     version = "5.2",

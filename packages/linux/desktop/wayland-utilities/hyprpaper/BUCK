@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "hyprpaper-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "71d8294ffbcbaae628c4eabdcb3b7fb1974d6bed7794b787bb77934d0a3f4538",
 )
 
-configure_make_package(
+autotools_package(
     name = "hyprpaper",
     source = ":hyprpaper-src",
     version = "0.6.0",

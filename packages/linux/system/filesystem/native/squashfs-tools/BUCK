@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "squashfs-tools-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "9c4974e07c61547dae14af4ed1f358b7d04618ae194e54d6be72ee126f0d2f53",
 )
 
-configure_make_package(
+autotools_package(
     name = "squashfs-tools",
     source = ":squashfs-tools-src",
     version = "4.6.1",

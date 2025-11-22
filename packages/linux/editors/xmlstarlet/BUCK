@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 download_source(
     name = "xmlstarlet-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "15d838c4f3375332fd95554619179b69e4ec91418a3a5296e7c631b7ed19e7ca",
 )
 
-configure_make_package(
+autotools_package(
     name = "xmlstarlet",
     source = ":xmlstarlet-src",
     version = "1.6.1",

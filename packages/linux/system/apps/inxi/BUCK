@@ -1,10 +1,10 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # inxi - Full featured CLI system information tool
 # USE flags: (script-based package)
 
-use_package(
+autotools_package(
     name = "inxi",
     version = "3.3.31",
     src_uri = "https://github.com/smxi/inxi/archive/refs/tags/3.3.31-1.tar.gz",

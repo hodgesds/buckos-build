@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # tcsh - Enhanced version of the Berkeley UNIX C shell
 
@@ -9,7 +9,7 @@ download_source(
     sha256 = "1e927d52e9c85d162bf985f24d13c6ccede9beb880d86fec492ed15480a5c71a",
 )
 
-configure_make_package(
+autotools_package(
     name = "tcsh",
     source = ":tcsh-src",
     version = "6.24.13",

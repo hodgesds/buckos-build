@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "xclip-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "ca5b8804e3c910a66423a882d79bf3c9450b875ac8528791fb60ec9de667f758",
 )
 
-configure_make_package(
+autotools_package(
     name = "xclip",
     source = ":xclip-src",
     version = "0.13",

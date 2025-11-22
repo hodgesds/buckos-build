@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "yambar-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "3649878ae7282203b4ff2aa9f45afad32a6fc8c921d94b6abdac2a1d21045aaf",
 )
 
-configure_make_package(
+autotools_package(
     name = "yambar",
     source = ":yambar-src",
     version = "1.11.0",

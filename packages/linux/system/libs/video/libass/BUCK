@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "libass-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "eae425da50f0015c21f7b3a9c7262a910f0218af469e22e2931462fed3c50959",
 )
 
-configure_make_package(
+autotools_package(
     name = "libass",
     source = ":libass-src",
     version = "0.17.3",

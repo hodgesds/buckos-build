@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # dracut - Modern initramfs infrastructure
@@ -13,7 +13,7 @@ download_source(
     sha256 = "9a92b4f0643926a65162171d68b9525fc93e6e82f455a4b3938db385a841bda8",
 )
 
-configure_make_package(
+autotools_package(
     name = "dracut",
     source = ":dracut-src",
     version = "103",

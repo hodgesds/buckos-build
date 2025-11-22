@@ -1,8 +1,8 @@
 # Password quality and security packages
 # Password strength checking libraries and tools
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # libpwquality - Password quality checking library
 download_source(
@@ -12,7 +12,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "libpwquality",
     source = ":libpwquality-src",
     version = "1.4.5",
@@ -44,7 +44,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "cracklib",
     source = ":cracklib-src",
     version = "2.9.11",
@@ -77,7 +77,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "passwdqc",
     source = ":passwdqc-src",
     version = "2.0.3",

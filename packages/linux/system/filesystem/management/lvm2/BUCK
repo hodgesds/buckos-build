@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "lvm2-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "74e794a9e9dee1bcf8a2065f65b9196c44fdf321e22d63b98ed7de8c9aa17a5d",
 )
 
-configure_make_package(
+autotools_package(
     name = "lvm2",
     source = ":lvm2-src",
     version = "2.03.23",

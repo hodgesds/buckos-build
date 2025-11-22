@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 download_source(
     name = "libmicrohttpd-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "a89e09fc9b4de34dde19f4fcb4faaa1ce10299b9908db1132bbfa1de47882b94",
 )
 
-configure_make_package(
+autotools_package(
     name = "libmicrohttpd",
     source = ":libmicrohttpd-src",
     version = "1.0.1",

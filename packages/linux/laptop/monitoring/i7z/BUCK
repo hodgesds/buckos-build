@@ -1,8 +1,8 @@
 # i7z - Intel i7 CPU reporting tool
 # Real time reporting of CPU frequency, C-states for Intel i7 processors
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "i7z-src",
@@ -12,7 +12,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "i7z",
     source = ":i7z-src",
     version = "93_p20131012",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "bcachefs-tools-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "d50004dec86f490b9538f9a0d923dcb19d57a184446e0368a37b86603aa4dda2",
 )
 
-configure_make_package(
+autotools_package(
     name = "bcachefs-tools",
     source = ":bcachefs-tools-src",
     version = "1.4.1",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "wlr-randr-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "8af085aeed3132f7442a05bafeadfd0ea30e9a4818af1a91e161f7d560f2cd93",
 )
 
-configure_make_package(
+autotools_package(
     name = "wlr-randr",
     source = ":wlr-randr-src",
     version = "0.4.1",

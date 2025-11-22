@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # SDDM - Simple Desktop Display Manager (KDE default)
@@ -11,7 +11,7 @@ download_source(
     sha256 = "f895de2683627e969e4849dbfbbb2b500787481ca5ba0de6d6dfdae5f1549abf",
 )
 
-configure_make_package(
+autotools_package(
     name = "sddm",
     source = ":sddm-src",
     version = "0.21.0",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # ldb - LDAP-like embedded database
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "358dca10fcd27207ac857a0d7f435a46dbc6cd1f7c10dbb840c1931bf1965f08",
 )
 
-configure_make_package(
+autotools_package(
     name = "ldb",
     source = ":ldb-src",
     version = "2.8.0",

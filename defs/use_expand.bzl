@@ -682,7 +682,7 @@ from defs.use_expand import generate_iuse_expand, package_use_expand
 # Generate IUSE for Python package
 result = package_use_expand("PYTHON_TARGETS", ["python3_11", "python3_12"])
 
-use_package(
+autotools_package(
     name = "my-python-package",
     iuse = result["iuse"],
     use_deps = result["use_deps"],

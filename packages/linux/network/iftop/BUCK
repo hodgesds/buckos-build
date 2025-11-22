@@ -1,11 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # iftop - Display bandwidth usage on an interface
 # =============================================================================
 
-use_package(
+autotools_package(
     name = "iftop",
     version = "1.0pre4",
     src_uri = "http://www.ex-parrot.com/pdw/iftop/download/iftop-1.0pre4.tar.gz",

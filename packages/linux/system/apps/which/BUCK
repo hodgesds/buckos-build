@@ -1,10 +1,10 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # which - Shows full path of commands
 # USE flags: (minimal package)
 
-use_package(
+autotools_package(
     name = "which",
     version = "2.21",
     src_uri = "https://mirrors.kernel.org/gnu/which/which-2.21.tar.gz",

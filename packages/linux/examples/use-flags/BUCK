@@ -42,7 +42,7 @@ GLOBAL_USE = set_use_flags([
 ])
 
 # Example: curl with USE flags
-use_package(
+autotools_package(
     name = "curl-example",
     version = "8.5.0",
     src_uri = "https://curl.se/download/curl-8.5.0.tar.xz",
@@ -119,7 +119,7 @@ CURL_GNUTLS_OVERRIDE = package_use("curl-gnutls", [
     "brotli",    # Also enable brotli
 ])
 
-use_package(
+autotools_package(
     name = "curl-gnutls-example",
     version = "8.5.0",
     src_uri = "https://curl.se/download/curl-8.5.0.tar.xz",
@@ -319,7 +319,7 @@ download_source(
     sha256 = "910211c07255a8c5ad654391b40ee59800710dd8119dd5362de09385aa7a777c",
 )
 
-configure_make_package(
+autotools_package(
     name = "openssh-hardened-example",
     source = ":openssh-src",
     version = "9.6p1",

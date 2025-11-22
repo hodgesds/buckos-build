@@ -1,11 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # tcpdump - Command-line packet analyzer
 # =============================================================================
 
-use_package(
+autotools_package(
     name = "tcpdump",
     version = "4.99.4",
     src_uri = "https://www.tcpdump.org/release/tcpdump-4.99.4.tar.gz",

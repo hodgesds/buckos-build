@@ -1,8 +1,8 @@
 # Directory services and enterprise authentication packages
 # Kerberos, LDAP, SASL, SSSD, and related libraries
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # MIT Kerberos
 download_source(
@@ -12,7 +12,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "krb5",
     source = ":krb5-src",
     version = "1.21.2",
@@ -58,7 +58,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "e2fsprogs-libs",
     source = ":e2fsprogs-libs-src",
     version = "1.47.0",
@@ -87,7 +87,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "openldap",
     source = ":openldap-src",
     version = "2.6.7",
@@ -130,7 +130,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "cyrus-sasl",
     source = ":cyrus-sasl-src",
     version = "2.1.28",
@@ -178,7 +178,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "lmdb",
     source = ":lmdb-src",
     version = "0.9.32",
@@ -205,7 +205,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "sssd",
     source = ":sssd-src",
     version = "2.9.4",
@@ -261,7 +261,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "talloc",
     source = ":talloc-src",
     version = "2.4.2",
@@ -284,7 +284,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "tdb",
     source = ":tdb-src",
     version = "1.4.10",
@@ -307,7 +307,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "tevent",
     source = ":tevent-src",
     version = "0.16.1",
@@ -331,7 +331,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "ldb",
     source = ":ldb-src",
     version = "2.8.1",
@@ -359,7 +359,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "ding-libs",
     source = ":ding-libs-src",
     version = "0.6.2",
@@ -385,7 +385,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "libunistring",
     source = ":libunistring-src",
     version = "1.2",
@@ -411,7 +411,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "nss-pam-ldapd",
     source = ":nss-pam-ldapd-src",
     version = "0.9.12",

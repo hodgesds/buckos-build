@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # cppcheck - Static analysis for C/C++ (cmake build)
 # USE flags: qt5, pcre, test
@@ -11,7 +11,7 @@ download_source(
     sha256 = "8229afe1dddc3ed893248b8a723b428dc221ea014fbc76e6289840857c03d450",
 )
 
-configure_make_package(
+autotools_package(
     name = "cppcheck",
     source = ":cppcheck-src",
     version = "2.13.0",

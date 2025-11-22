@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "wshowkeys-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "4861ff114b8f2132940ec60547c6be54a55562918a8fa907a3c405c10c749f21",
 )
 
-configure_make_package(
+autotools_package(
     name = "wshowkeys",
     source = ":wshowkeys-src",
     version = "1.0",

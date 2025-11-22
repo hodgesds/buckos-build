@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # AnyEvent - The DBI of event loop programming
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "50beea689c098fe4aaeb83806c40b9fe7f946d5769acf99f849f099091a4b985",
 )
 
-configure_make_package(
+autotools_package(
     name = "anyevent",
     source = ":anyevent-src",
     version = "7.17",
@@ -32,7 +32,7 @@ download_source(
     sha256 = "dc94ec92296db27fede6c37bba8b9c748c571000db8e61f794198981973c97ce",
 )
 
-configure_make_package(
+autotools_package(
     name = "io-async",
     source = ":io-async-src",
     version = "0.803",
@@ -57,7 +57,7 @@ download_source(
     sha256 = "57de2b635b15fa3a31a9e55dd51122149e5414e1158ee82235062634ee18a693",
 )
 
-configure_make_package(
+autotools_package(
     name = "poe",
     source = ":poe-src",
     version = "1.370",
@@ -81,7 +81,7 @@ download_source(
     sha256 = "c035e3d9e69a3af144b33ac834dee9e65ad360f2a51db9f158dc342ecddd5f44",
 )
 
-configure_make_package(
+autotools_package(
     name = "future",
     source = ":future-src",
     version = "0.50",
@@ -105,7 +105,7 @@ download_source(
     sha256 = "c6a0f4de462bf324b5baca1775d199ec3246a358c13db9b64acbfcdbe6e5ec21",
 )
 
-configure_make_package(
+autotools_package(
     name = "future-asyncawait",
     source = ":future-asyncawait-src",
     version = "0.66",
@@ -130,7 +130,7 @@ download_source(
     sha256 = "1928e48033540e11ebf5506986dd101af78d2421d210f96599223b15d51714c6",
 )
 
-configure_make_package(
+autotools_package(
     name = "coro",
     source = ":coro-src",
     version = "6.57",
@@ -155,7 +155,7 @@ download_source(
     sha256 = "1211683dce7b6771f4ab710cc153712bdd77ba6157a13294d0bb73491fd06560",
 )
 
-configure_make_package(
+autotools_package(
     name = "ev",
     source = ":ev-src",
     version = "4.34",
@@ -180,7 +180,7 @@ download_source(
 )
 
 # Note: Mojo::IOLoop is part of Mojolicious, using the same source
-configure_make_package(
+autotools_package(
     name = "mojo-ioloop",
     source = ":mojo-ioloop-src",
     version = "9.37",
@@ -204,7 +204,7 @@ download_source(
     sha256 = "34c4ddf91fc93d1090d86da14df706d175b1610c67372c01e12ce9555d4dd1dc",
 )
 
-configure_make_package(
+autotools_package(
     name = "guard",
     source = ":guard-src",
     version = "1.023",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "f2fs-tools-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "208c7a07e95383fbd7b466b5681590789dcb41f41bf197369c41a95383b57c5e",
 )
 
-configure_make_package(
+autotools_package(
     name = "f2fs-tools",
     source = ":f2fs-tools-src",
     version = "1.16.0",

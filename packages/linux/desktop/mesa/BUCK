@@ -1,11 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # Mesa - OpenGL and Vulkan implementation
 # =============================================================================
 
-use_package(
+autotools_package(
     name = "mesa",
     version = "24.0.1",
     src_uri = "https://archive.mesa3d.org/mesa-24.0.1.tar.xz",
@@ -101,7 +101,7 @@ meson setup .. --prefix=/usr \\
 # virglrenderer - Virtual 3D GPU for QEMU
 # =============================================================================
 
-use_package(
+autotools_package(
     name = "virglrenderer",
     version = "1.2.0",
     src_uri = "https://gitlab.freedesktop.org/virgl/virglrenderer/-/archive/virglrenderer-1.2.0/virglrenderer-virglrenderer-1.2.0.tar.bz2",

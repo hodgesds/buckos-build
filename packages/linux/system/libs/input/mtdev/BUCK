@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "mtdev-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "a107adad2101fecac54ac7f9f0e0a0dd155d954193da55c2340c97f2ff1d814e",
 )
 
-configure_make_package(
+autotools_package(
     name = "mtdev",
     source = ":mtdev-src",
     version = "1.1.7",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "obs-studio-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "490bae1c392b3b344b0270afd8cb887da4bc50bd92c0c426e96713c1ccb9701a",
 )
 
-configure_make_package(
+autotools_package(
     name = "obs-studio",
     source = ":obs-studio-src",
     version = "30.1.2",

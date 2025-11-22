@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # postgresql - Powerful object-relational database system
 #
@@ -13,7 +13,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 #   ldap     - Enable LDAP authentication
 #   pam      - Enable PAM authentication
 
-use_package(
+autotools_package(
     name = "postgresql",
     version = "16.2",
     src_uri = "https://ftp.postgresql.org/pub/source/v16.2/postgresql-16.2.tar.bz2",

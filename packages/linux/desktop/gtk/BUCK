@@ -1,8 +1,8 @@
-load("//defs:package_defs.bzl", "meson_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "meson_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # GTK3 - GIMP Toolkit version 3
-use_package(
+autotools_package(
     name = "gtk3",
     version = "3.24.41",
     src_uri = "https://download.gnome.org/sources/gtk+/3.24/gtk+-3.24.41.tar.xz",
@@ -62,7 +62,7 @@ meson setup .. --prefix=/usr \
 )
 
 # GTK4 - GIMP Toolkit version 4
-use_package(
+autotools_package(
     name = "gtk4",
     version = "4.14.1",
     src_uri = "https://download.gnome.org/sources/gtk/4.14/gtk-4.14.1.tar.xz",

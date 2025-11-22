@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "synfig-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "aa91593c28a89f269be1be9c8bd9ecca6491f9e6af26744d1c160c6553ee2ced",
 )
 
-configure_make_package(
+autotools_package(
     name = "synfig-core",
     source = ":synfig-src",
     version = "1.5.1",
@@ -43,7 +43,7 @@ DESTDIR=$OUT make install
     visibility = ["PUBLIC"],
 )
 
-configure_make_package(
+autotools_package(
     name = "synfig-studio",
     source = ":synfig-src",
     version = "1.5.1",

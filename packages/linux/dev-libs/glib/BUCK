@@ -1,7 +1,7 @@
-load("//defs:package_defs.bzl", "meson_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "meson_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
-use_package(
+autotools_package(
     name = "glib",
     version = "2.80.0",
     src_uri = "https://download.gnome.org/sources/glib/2.80/glib-2.80.0.tar.xz",

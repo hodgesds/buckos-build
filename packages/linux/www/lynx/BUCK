@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # lynx - Text-based web browser
 #
@@ -11,7 +11,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 #   unicode  - Enable wide character (Unicode) support
 #   ncurses  - Use ncurses for terminal handling
 
-use_package(
+autotools_package(
     name = "lynx",
     version = "2.9.0",
     src_uri = "https://invisible-mirror.net/archives/lynx/tarballs/lynx2.9.0.tar.bz2",

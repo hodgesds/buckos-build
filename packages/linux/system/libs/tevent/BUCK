@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # tevent - Event system library
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "362971e0f32dc1905f6fe4736319c4b8348c22dc85aa6c3f690a28efe548029e",
 )
 
-configure_make_package(
+autotools_package(
     name = "tevent",
     source = ":tevent-src",
     version = "0.16.1",

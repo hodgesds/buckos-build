@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # doxygen - Documentation generator (cmake build)
 # USE flags: dot, latex, qt5
@@ -11,7 +11,7 @@ download_source(
     sha256 = "dd7c556b4d96ca5e682534bc1f1a78a5cfabce0c425b14c1b8549802686a4442",
 )
 
-configure_make_package(
+autotools_package(
     name = "doxygen",
     source = ":doxygen-src",
     version = "1.10.0",

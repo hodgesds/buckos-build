@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "openshot-src",
@@ -13,7 +13,7 @@ download_source(
     sha256 = "58765cfc8aec199814346e97ce31a5618a261260b380670a6fb2bf6f68733638",
 )
 
-configure_make_package(
+autotools_package(
     name = "libopenshot",
     source = ":libopenshot-src",
     version = "0.3.2",
@@ -45,7 +45,7 @@ DESTDIR=$OUT make install
     visibility = ["PUBLIC"],
 )
 
-configure_make_package(
+autotools_package(
     name = "openshot",
     source = ":openshot-src",
     version = "3.1.1",

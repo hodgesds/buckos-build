@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "wmctrl-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "d668ccc530f27c8ebde2c277dedad704d69b3d457d9f7ec81a638ec9461541ec",
 )
 
-configure_make_package(
+autotools_package(
     name = "wmctrl",
     source = ":wmctrl-src",
     version = "1.07",

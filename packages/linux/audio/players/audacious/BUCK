@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "meson_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "meson_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # USE flags for audacious (meson build):
 # - gtk: GTK+ interface (default: enabled)

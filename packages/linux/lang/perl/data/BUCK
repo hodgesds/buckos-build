@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # JSON - JSON (JavaScript Object Notation) encoder/decoder
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "df8b5143d9a7de99c47b55f1a170bd1f69f711935c186a6dc0ab56dd05758e35",
 )
 
-configure_make_package(
+autotools_package(
     name = "json",
     source = ":json-src",
     version = "4.10",
@@ -32,7 +32,7 @@ download_source(
     sha256 = "515536f45f2fa1a7e88c8824533758d0121d267ab9cb453a1b5887c8a56b9068",
 )
 
-configure_make_package(
+autotools_package(
     name = "json-xs",
     source = ":json-xs-src",
     version = "4.03",
@@ -56,7 +56,7 @@ download_source(
     sha256 = "f5b6bc19f579e66b7299f8748b8ac3e171936dc4e7fcb72a8a257a9bd482a331",
 )
 
-configure_make_package(
+autotools_package(
     name = "json-maybexs",
     source = ":json-maybexs-src",
     version = "1.004005",
@@ -81,7 +81,7 @@ download_source(
     sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
 )
 
-configure_make_package(
+autotools_package(
     name = "yaml",
     source = ":yaml-src",
     version = "1.30",
@@ -105,7 +105,7 @@ download_source(
     sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
 )
 
-configure_make_package(
+autotools_package(
     name = "yaml-xs",
     source = ":yaml-xs-src",
     version = "0.89",
@@ -129,7 +129,7 @@ download_source(
     sha256 = "7b38ca9f5d3ce24230a6b8bdc1f47f5b2db348e7f7f9666c26f5955636e33d6c",
 )
 
-configure_make_package(
+autotools_package(
     name = "yaml-tiny",
     source = ":yaml-tiny-src",
     version = "1.74",
@@ -153,7 +153,7 @@ download_source(
     sha256 = "a29bf3f00ab9c9ee04218154e0afc8f799bf23674eb99c1a9ed4de1f4059a48d",
 )
 
-configure_make_package(
+autotools_package(
     name = "xml-libxml",
     source = ":xml-libxml-src",
     version = "2.0210",
@@ -177,7 +177,7 @@ download_source(
     sha256 = "531fddaebea2416743eb5c4fdfab028f502123d9a220405a4100e68fc480dbf8",
 )
 
-configure_make_package(
+autotools_package(
     name = "xml-simple",
     source = ":xml-simple-src",
     version = "2.25",
@@ -202,7 +202,7 @@ download_source(
     sha256 = "ad4aae643ec784f489b956abe952432871a622d4e2b5c619e8855accbfc4d1d8",
 )
 
-configure_make_package(
+autotools_package(
     name = "xml-parser",
     source = ":xml-parser-src",
     version = "2.47",
@@ -226,7 +226,7 @@ download_source(
     sha256 = "fef75826c24f2b877d0a0d2645212fc4fb9756ed4d2711614ac15c497e8680ad",
 )
 
-configure_make_package(
+autotools_package(
     name = "xml-twig",
     source = ":xml-twig-src",
     version = "3.52",
@@ -251,7 +251,7 @@ download_source(
     sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
 )
 
-configure_make_package(
+autotools_package(
     name = "data-dumper",
     source = ":data-dumper-src",
     version = "2.188",
@@ -275,7 +275,7 @@ download_source(
     sha256 = "5e5a86ccd32dae34ed80932ecbe5c68e29752b5de0e9b0a793ab7eb2ca55cb1b",
 )
 
-configure_make_package(
+autotools_package(
     name = "sereal-encoder",
     source = ":sereal-encoder-src",
     version = "5.004",
@@ -298,7 +298,7 @@ download_source(
     sha256 = "68ef0314d87d1a6e60bb0f66fcf43eb2cacdeb1754432f5e25e784e39d3e6784",
 )
 
-configure_make_package(
+autotools_package(
     name = "sereal-decoder",
     source = ":sereal-decoder-src",
     version = "5.004",
@@ -322,7 +322,7 @@ download_source(
     sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
 )
 
-configure_make_package(
+autotools_package(
     name = "storable",
     source = ":storable-src",
     version = "3.32",

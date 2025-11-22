@@ -1,8 +1,8 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # pigz - Parallel implementation of gzip for modern multi-processor machines
-use_package(
+autotools_package(
     name = "pigz",
     version = "2.8",
     src_uri = "https://zlib.net/pigz/pigz-2.8.tar.gz",

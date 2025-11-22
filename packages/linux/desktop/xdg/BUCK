@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "meson_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "meson_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # XDG Desktop Integration Tools
@@ -13,7 +13,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "xdg-utils",
     source = ":xdg-utils-src",
     version = "1.2.1",
@@ -37,7 +37,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "xdg-user-dirs",
     source = ":xdg-user-dirs-src",
     version = "0.18",
@@ -126,7 +126,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "xdg-desktop-portal-kde",
     source = ":xdg-desktop-portal-kde-src",
     version = "6.0.1",

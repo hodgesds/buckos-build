@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "gptfdisk-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "dafead2693faeb8e8b97832b23407f6ed5b3219bc1784f482dd855774e2d50c2",
 )
 
-configure_make_package(
+autotools_package(
     name = "gptfdisk",
     source = ":gptfdisk-src",
     version = "1.0.9",

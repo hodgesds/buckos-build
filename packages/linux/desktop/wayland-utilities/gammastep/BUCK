@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "gammastep-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "bbb9d90e1cf30920c1017db4ce5c4652e4c7843fd4c4e34164d99ecbc3bbb4c0",
 )
 
-configure_make_package(
+autotools_package(
     name = "gammastep",
     source = ":gammastep-src",
     version = "2.0.9",

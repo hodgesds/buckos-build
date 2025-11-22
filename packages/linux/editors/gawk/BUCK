@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 download_source(
     name = "gawk-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "b58ee11a89c10970c8975da73d35b4aabbcae86820f04893eff1d0c1643d5055",
 )
 
-configure_make_package(
+autotools_package(
     name = "gawk",
     source = ":gawk-src",
     version = "5.3.0",

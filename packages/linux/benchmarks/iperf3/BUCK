@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # iperf3 - Network bandwidth measurement tool
 #
@@ -7,7 +7,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 #   ssl      - Enable SSL/TLS support with OpenSSL
 #   sctp     - Enable SCTP support
 
-use_package(
+autotools_package(
     name = "iperf3",
     version = "3.16",
     src_uri = "https://github.com/esnet/iperf/releases/download/3.16/iperf-3.16.tar.gz",

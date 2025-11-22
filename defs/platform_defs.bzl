@@ -182,7 +182,7 @@ def platform_select(platform_values, default = None):
         A dict suitable for use with select()
 
     Example:
-        configure_make_package(
+        autotools_package(
             name = "mypackage",
             configure_args = select(platform_select({
                 PLATFORM_LINUX: ["--enable-linux-specific"],

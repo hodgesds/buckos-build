@@ -1,10 +1,10 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # cryptsetup - Disk encryption setup utility
 # USE flags: openssl, gcrypt, nettle, nls, argon2, ssh-token, fips
 
-use_package(
+autotools_package(
     name = "popt",
     version = "1.19",
     src_uri = "http://ftp.rpm.org/popt/releases/popt-1.x/popt-1.19.tar.gz",
@@ -28,7 +28,7 @@ use_package(
     visibility = ["PUBLIC"],
 )
 
-use_package(
+autotools_package(
     name = "lvm2",
     version = "2.03.23",
     src_uri = "https://sourceware.org/ftp/lvm2/LVM2.2.03.23.tgz",
@@ -64,7 +64,7 @@ use_package(
     visibility = ["PUBLIC"],
 )
 
-use_package(
+autotools_package(
     name = "cryptsetup",
     version = "2.6.1",
     src_uri = "https://www.kernel.org/pub/linux/utils/cryptsetup/v2.6/cryptsetup-2.6.1.tar.xz",

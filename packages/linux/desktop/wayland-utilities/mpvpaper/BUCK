@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "mpvpaper-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "2a66b2dcabc864c544de2344fd4d8ce23984e4540c4b0d4befae2dc83393f090",
 )
 
-configure_make_package(
+autotools_package(
     name = "mpvpaper",
     source = ":mpvpaper-src",
     version = "1.6",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # Path::Tiny - File path utility
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "861ef09bca68254e9ab24337bb6ec9d58593a792e9d68a27ee6bec2150f06741",
 )
 
-configure_make_package(
+autotools_package(
     name = "path-tiny",
     source = ":path-tiny-src",
     version = "0.146",
@@ -32,7 +32,7 @@ download_source(
     sha256 = "4c3c21992a9d42be3a79dd74a3c83d27d38057269d65509a2f555ea0fb2bc5b0",
 )
 
-configure_make_package(
+autotools_package(
     name = "file-slurp",
     source = ":file-slurp-src",
     version = "9999.32",
@@ -56,7 +56,7 @@ download_source(
     sha256 = "d5a36487339888c3cd758e648160ee1d70eb4153cacbaff57846dbcefb344b0c",
 )
 
-configure_make_package(
+autotools_package(
     name = "file-slurper",
     source = ":file-slurper-src",
     version = "0.014",
@@ -80,7 +80,7 @@ download_source(
     sha256 = "7e6f16cc33eb1f29ff25bee51d513f4b8a84947bbfa18edb2d3cc40a2d64cafe",
 )
 
-configure_make_package(
+autotools_package(
     name = "file-find-rule",
     source = ":file-find-rule-src",
     version = "0.34",
@@ -105,7 +105,7 @@ download_source(
     sha256 = "593737c62df0f6dab5d4122e0b4476417945bb6262c33eedc009665ef1548852",
 )
 
-configure_make_package(
+autotools_package(
     name = "file-homedir",
     source = ":file-homedir-src",
     version = "1.006",
@@ -129,7 +129,7 @@ download_source(
     sha256 = "3201f1a60e3f16484082e6045c896842261fc345de9fb2e620fd2a2c7af3a93a",
 )
 
-configure_make_package(
+autotools_package(
     name = "file-which",
     source = ":file-which-src",
     version = "1.27",
@@ -153,7 +153,7 @@ download_source(
     sha256 = "2290d61bf5c39882fc3311da9ce1c7f42dbdf825ae169e552c59fe4598b36f4a",
 )
 
-configure_make_package(
+autotools_package(
     name = "file-temp",
     source = ":file-temp-src",
     version = "0.2311",
@@ -177,7 +177,7 @@ download_source(
     sha256 = "d3971cf78a8345e38042b208bb7b39cb695080386af629f4a04ffd6549df1157",
 )
 
-configure_make_package(
+autotools_package(
     name = "file-copy-recursive",
     source = ":file-copy-recursive-src",
     version = "0.45",
@@ -201,7 +201,7 @@ download_source(
     sha256 = "189b3a13fc0a1ba412b9d9ec5901e9e5e444cc746b9f0156d4399370d33655c6",
 )
 
-configure_make_package(
+autotools_package(
     name = "file-listing",
     source = ":file-listing-src",
     version = "6.16",
@@ -225,7 +225,7 @@ download_source(
     sha256 = "54e21d250c0229127e30b77a3461e10077854ec244f26fb670f1b445ed4c4d5b",
 )
 
-configure_make_package(
+autotools_package(
     name = "io-all",
     source = ":io-all-src",
     version = "0.87",
@@ -249,7 +249,7 @@ download_source(
     sha256 = "984e185d785baf6129c6e75f8eb44411745ac00bf6122fb1c8e822a3861ec650",
 )
 
-configure_make_package(
+autotools_package(
     name = "archive-zip",
     source = ":archive-zip-src",
     version = "1.68",
@@ -273,7 +273,7 @@ download_source(
     sha256 = "81633c87f737846183d35c0f4c9d402da947a846b4881b30cce6d9ebe3c89d19",
 )
 
-configure_make_package(
+autotools_package(
     name = "archive-tar",
     source = ":archive-tar-src",
     version = "3.02",

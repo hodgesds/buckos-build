@@ -1,8 +1,8 @@
 # GameMode - Optimize Linux system performance for gaming
 # Developed by Feral Interactive
 
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "gamemode-src",
@@ -12,7 +12,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "gamemode",
     source = ":gamemode-src",
     version = "1.8.2",

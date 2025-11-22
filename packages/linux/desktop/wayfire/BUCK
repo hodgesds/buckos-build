@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # Wayfire - 3D Wayland compositor
@@ -11,7 +11,7 @@ download_source(
     sha256 = "8ac1947b688a9ec6c4d9ee2d77311bb357a8ead25665b8000eda96952328290d",
 )
 
-configure_make_package(
+autotools_package(
     name = "wayfire",
     source = ":wayfire-src",
     version = "0.8.1",

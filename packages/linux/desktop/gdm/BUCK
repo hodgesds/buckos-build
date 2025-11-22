@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # GDM - GNOME Display Manager
@@ -11,7 +11,7 @@ download_source(
     sha256 = "6572578c05e3c6569d6ed269f7de2aaf3a035657654586d8243907bb7a6ffa85",
 )
 
-configure_make_package(
+autotools_package(
     name = "gdm",
     source = ":gdm-src",
     version = "45.0.1",

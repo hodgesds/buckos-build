@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # Test::Simple - Basic utilities for writing tests
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "7b4b03cee7f9e928fe10e8a3efef02b2a286f0877979694b2a9ef99250bd8c5c",
 )
 
-configure_make_package(
+autotools_package(
     name = "test-simple",
     source = ":test-simple-src",
     version = "1.302199",
@@ -32,7 +32,7 @@ download_source(
     sha256 = "b6591f6ccdd853c7efc9ff3c5756370403211cffe46047f082b1cd1611a84e5f",
 )
 
-configure_make_package(
+autotools_package(
     name = "test-deep",
     source = ":test-deep-src",
     version = "1.204",
@@ -56,7 +56,7 @@ download_source(
     sha256 = "156b13f07764f766d8b45a43728f2439af81a3512625438deab783b7883eb533",
 )
 
-configure_make_package(
+autotools_package(
     name = "test-exception",
     source = ":test-exception-src",
     version = "0.43",
@@ -81,7 +81,7 @@ download_source(
     sha256 = "98ca32e7f2f5ea89b8bfb9a0609977f3d153e242e2e51705126cb954f1a06b57",
 )
 
-configure_make_package(
+autotools_package(
     name = "test-warn",
     source = ":test-warn-src",
     version = "0.37",
@@ -106,7 +106,7 @@ download_source(
     sha256 = "2b7f80da87f5a6fe0360d9ee521051053017442c3a26e85db68dfac9f8307623",
 )
 
-configure_make_package(
+autotools_package(
     name = "test-mockobject",
     source = ":test-mockobject-src",
     version = "1.20200122",
@@ -131,7 +131,7 @@ download_source(
     sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
 )
 
-configure_make_package(
+autotools_package(
     name = "test-mock-time",
     source = ":test-mock-time-src",
     version = "0.2.1",
@@ -155,7 +155,7 @@ download_source(
     sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
 )
 
-configure_make_package(
+autotools_package(
     name = "test-nowarnings",
     source = ":test-nowarnings-src",
     version = "1.06",
@@ -180,7 +180,7 @@ download_source(
     sha256 = "cac16a56cd843b0809e5b49199d60d75a8dbad7ca9a08380dbf3f5cc3aaa38d9",
 )
 
-configure_make_package(
+autotools_package(
     name = "test-differences",
     source = ":test-differences-src",
     version = "0.71",
@@ -206,7 +206,7 @@ download_source(
     sha256 = "089eb894f7bace4c37c6334e0e290eb20338ee10223af0c82cbe7281c78382df",
 )
 
-configure_make_package(
+autotools_package(
     name = "test-most",
     source = ":test-most-src",
     version = "0.38",
@@ -235,7 +235,7 @@ download_source(
     sha256 = "37dfffdafb84b762efe96b02fb2aa41f37026c73e6b83590db76229697f3c4a6",
 )
 
-configure_make_package(
+autotools_package(
     name = "test-fatal",
     source = ":test-fatal-src",
     version = "0.017",
@@ -260,7 +260,7 @@ download_source(
     sha256 = "4b88de549597eecddf7c3c38a4d0204a16f59ad804577b671896ac04e24e040f",
 )
 
-configure_make_package(
+autotools_package(
     name = "test-requires",
     source = ":test-requires-src",
     version = "0.11",
@@ -284,7 +284,7 @@ download_source(
     sha256 = "f6a8482740b075fad22aaf4d987d38ef927c6d2b452d4ae0d0bd8f779830556e",
 )
 
-configure_make_package(
+autotools_package(
     name = "test-output",
     source = ":test-output-src",
     version = "1.033",
@@ -308,7 +308,7 @@ download_source(
     sha256 = "60a8dbcc60168bf1daa5cc2350236df9343e9878f4ab9830970a5dde6fe8e5fc",
 )
 
-configure_make_package(
+autotools_package(
     name = "test-pod",
     source = ":test-pod-src",
     version = "1.52",
@@ -332,7 +332,7 @@ download_source(
     sha256 = "48c9cca9f7d99eee741176445b431adf09c029e1aa57c4703c9f46f7601d40d4",
 )
 
-configure_make_package(
+autotools_package(
     name = "test-pod-coverage",
     source = ":test-pod-coverage-src",
     version = "1.10",
@@ -357,7 +357,7 @@ download_source(
     sha256 = "f40c1543992e5d65a6f78003d462d59acd79ae6d30d38047b1c69d999d2b1fd8",
 )
 
-configure_make_package(
+autotools_package(
     name = "devel-cover",
     source = ":devel-cover-src",
     version = "1.44",

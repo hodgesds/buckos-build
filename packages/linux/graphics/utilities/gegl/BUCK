@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "gegl-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "418c26d94be8805d7d98f6de0c6825ca26bd74fcacb6c188da47533d9ee28247",
 )
 
-configure_make_package(
+autotools_package(
     name = "gegl",
     source = ":gegl-src",
     version = "0.4.48",

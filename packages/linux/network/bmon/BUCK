@@ -1,11 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # bmon - Bandwidth monitor and rate estimator
 # =============================================================================
 
-use_package(
+autotools_package(
     name = "bmon",
     version = "4.0",
     src_uri = "https://github.com/tgraf/bmon/releases/download/v4.0/bmon-4.0.tar.gz",

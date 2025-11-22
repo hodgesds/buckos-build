@@ -1,11 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # ettercap - Comprehensive suite for man-in-the-middle attacks
 # =============================================================================
 
-use_package(
+autotools_package(
     name = "ettercap",
     version = "0.8.3.1",
     src_uri = "https://github.com/Ettercap/ettercap/archive/refs/tags/v0.8.3.1.tar.gz",

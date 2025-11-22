@@ -1,10 +1,10 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # baselayout - Filesystem baselayout and target system init scripts
 # USE flags: (minimal package)
 
-use_package(
+autotools_package(
     name = "baselayout",
     version = "2.9",
     src_uri = "https://gitweb.gentoo.org/proj/baselayout.git/snapshot/baselayout-2.9.tar.gz",

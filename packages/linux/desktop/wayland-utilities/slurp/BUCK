@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "slurp-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "0fa880d4a93e1c795e3b5929fbea47546df0955bea34fc2f7ffeb1751678f663",
 )
 
-configure_make_package(
+autotools_package(
     name = "slurp",
     source = ":slurp-src",
     version = "1.5.0",

@@ -1,6 +1,6 @@
-load("//defs:package_defs.bzl", "binary_package", "rootfs")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
-load("//defs:package_defs.bzl", "binary_package", "rootfs", "initramfs", "qemu_boot_script", "iso_image")
+load("//defs:package_defs.bzl", "binary_package", "rootfs", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "binary_package", "rootfs", "initramfs", "qemu_boot_script", "iso_image", "autotools_package")
 
 # =============================================================================
 # Base system files - Essential configuration and scripts

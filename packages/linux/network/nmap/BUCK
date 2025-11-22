@@ -1,11 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # nmap - Network exploration tool and security scanner
 # =============================================================================
 
-use_package(
+autotools_package(
     name = "nmap",
     version = "7.94",
     src_uri = "https://nmap.org/dist/nmap-7.94.tar.bz2",

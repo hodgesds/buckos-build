@@ -1,8 +1,8 @@
 # Comprehensive encryption tools package
 # This directory contains various encryption and cryptographic utilities
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "cargo_package", "go_package", "cmake_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "cargo_package", "go_package", "cmake_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # AGE - Simple, modern, secure file encryption
@@ -87,7 +87,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "libsodium",
     source = ":libsodium-src",
     version = "1.0.19",
@@ -117,7 +117,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "signify",
     source = ":signify-src",
     version = "31",
@@ -150,7 +150,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "libbsd",
     source = ":libbsd-src",
     version = "0.12.2",
@@ -180,7 +180,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "libmd",
     source = ":libmd-src",
     version = "1.1.0",
@@ -209,7 +209,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "ccrypt",
     source = ":ccrypt-src",
     version = "1.11",
@@ -243,7 +243,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "pass",
     source = ":pass-src",
     version = "1.7.4",
@@ -279,7 +279,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "tomb",
     source = ":tomb-src",
     version = "2.10",
@@ -358,7 +358,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "linux-pam",
     source = ":linux-pam-src",
     version = "1.6.1",
@@ -396,7 +396,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "ecryptfs-utils",
     source = ":ecryptfs-utils-src",
     version = "111",
@@ -431,7 +431,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "keyutils",
     source = ":keyutils-src",
     version = "1.6.3",
@@ -490,7 +490,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "veracrypt",
     source = ":veracrypt-src",
     version = "1.26.7",
@@ -525,7 +525,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "fuse3",
     source = ":fuse3-src",
     version = "3.16.2",
@@ -583,7 +583,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "pcsc-lite",
     source = ":pcsc-lite-src",
     version = "2.0.3",
@@ -619,7 +619,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "libusb",
     source = ":libusb-src",
     version = "1.0.27",
@@ -677,7 +677,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "nettle",
     source = ":nettle-src",
     version = "3.9.1",
@@ -707,7 +707,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "opensc",
     source = ":opensc-src",
     version = "0.25.1",
@@ -743,7 +743,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "argon2",
     source = ":argon2-src",
     version = "20190702",
@@ -776,7 +776,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "libressl",
     source = ":libressl-src",
     version = "3.9.2",
@@ -806,7 +806,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "botan",
     source = ":botan-src",
     version = "3.4.0",
@@ -839,7 +839,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "hashcat",
     source = ":hashcat-src",
     version = "6.2.6",
@@ -872,7 +872,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "john",
     source = ":john-src",
     version = "1.9.0",
@@ -912,7 +912,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "bcrypt",
     source = ":bcrypt-src",
     version = "1.1",
@@ -947,7 +947,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "libp11",
     source = ":libp11-src",
     version = "0.4.12",
@@ -978,7 +978,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "clevis",
     source = ":clevis-src",
     version = "21",
@@ -1011,7 +1011,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "jose",
     source = ":jose-src",
     version = "14",
@@ -1045,7 +1045,7 @@ download_source(
     auto_detect_signature=False,
 )
 
-configure_make_package(
+autotools_package(
     name = "jansson",
     source = ":jansson-src",
     version = "2.14",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # Docker CLI
 download_source(
@@ -10,7 +10,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "docker-cli",
     source = ":docker-cli-src",
     version = "27.3.1",
@@ -60,7 +60,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "docker-engine",
     source = ":docker-engine-src",
     version = "27.3.1",
@@ -155,7 +155,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "docker-compose",
     source = ":docker-compose-src",
     version = "2.30.3",
@@ -196,7 +196,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "docker-buildx",
     source = ":docker-buildx-src",
     version = "0.18.0",

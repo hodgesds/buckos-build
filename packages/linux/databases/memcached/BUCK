@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # memcached - High-performance distributed memory object caching system
 #
@@ -9,7 +9,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 #   sasl     - Enable SASL authentication
 #   doc      - Build documentation
 
-use_package(
+autotools_package(
     name = "memcached",
     version = "1.6.28",
     src_uri = "https://www.memcached.org/files/memcached-1.6.28.tar.gz",

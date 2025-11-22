@@ -10,7 +10,7 @@ Slots:
 - "1.0": OpenSSL 1.0.x series (legacy)
 """
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:versions.bzl", "multi_version_package", "versioned_package", "register_package_versions", "slot_dep", "version_dep")
 
 # ============================================================================
@@ -114,7 +114,7 @@ download_source(
     sha256 = "14c826f07c7e433706fb5c69fa9e25dab95684844b4c962a2cf1bf183eb4690e",
 )
 
-configure_make_package(
+autotools_package(
     name = "openssl-3.2.0",
     source = ":openssl-3.2.0-src",
     version = "3.2.0",
@@ -141,7 +141,7 @@ download_source(
     sha256 = "cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8",
 )
 
-configure_make_package(
+autotools_package(
     name = "openssl-1.1.1w",
     source = ":openssl-1.1.1w-src",
     version = "1.1.1w",
@@ -190,7 +190,7 @@ alias(
 # ============================================================================
 
 # Example: A package that needs OpenSSL 1.1.x for compatibility
-# configure_make_package(
+# autotools_package(
 #     name = "legacy-app",
 #     ...
 #     deps = [
@@ -202,7 +202,7 @@ alias(
 # )
 
 # Example: A package that needs any OpenSSL 3.x
-# configure_make_package(
+# autotools_package(
 #     name = "modern-app",
 #     ...
 #     deps = [

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # Natron - Open-source compositing software (node-based)
 
@@ -9,7 +9,7 @@ download_source(
     sha256 = "261005f7f7d98210a560dab895a24cb12dec70df3dc40ebd0f5cc2892250bb16",
 )
 
-configure_make_package(
+autotools_package(
     name = "natron",
     source = ":natron-src",
     version = "2.5.0",

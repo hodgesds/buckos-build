@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "waybar-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "db1364fe89502ac67f245a6c8c51290a52afd74a51eed26fa9ecb5b3443df57a",
 )
 
-configure_make_package(
+autotools_package(
     name = "waybar",
     source = ":waybar-src",
     version = "0.10.0",

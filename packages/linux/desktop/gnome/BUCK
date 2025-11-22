@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # GNOME - Modern, elegant desktop environment
@@ -15,7 +15,7 @@ download_source(
     sha256 = "24b8e0672dca120cc32d394bccb85844e732e04fe75d18bb0573b2dbc7548f63",
 )
 
-configure_make_package(
+autotools_package(
     name = "glib",
     source = ":glib-src",
     version = "2.78.4",
@@ -43,7 +43,7 @@ download_source(
     sha256 = "bd7babd99af7258e76819e45ba4a6bc399608fe762d83fde3cac033c50841bb4",
 )
 
-configure_make_package(
+autotools_package(
     name = "gobject-introspection",
     source = ":gobject-introspection-src",
     version = "1.78.1",
@@ -69,7 +69,7 @@ download_source(
     sha256 = "1c83a8b58ce7c99f853eed80cd36b2343fe9cf80e5d9d846912777f69b7475aa",
 )
 
-configure_make_package(
+autotools_package(
     name = "gtk3",
     source = ":gtk3-src",
     version = "3.24.41",
@@ -101,7 +101,7 @@ download_source(
     sha256 = "28b356d590ee68ef626e2ef9820b2dd21441484a9a042a5a3f0c40e9dfc4f4f8",
 )
 
-configure_make_package(
+autotools_package(
     name = "gtk4",
     source = ":gtk4-src",
     version = "4.12.5",
@@ -134,7 +134,7 @@ download_source(
     sha256 = "33fa16754e7370c841767298b3ff5f23003ee1d2515cc2ff255e65ef3d4e8713",
 )
 
-configure_make_package(
+autotools_package(
     name = "libadwaita",
     source = ":libadwaita-src",
     version = "1.4.2",
@@ -162,7 +162,7 @@ download_source(
     sha256 = "3dba407f2b5fc117e192f3025f0a1cc8edc1fd9b934b1c578b2b97342139415a",
 )
 
-configure_make_package(
+autotools_package(
     name = "pango",
     source = ":pango-src",
     version = "1.51.2",
@@ -188,7 +188,7 @@ download_source(
     sha256 = "ee9b6c75d13ba096907a2e3c6b27b61bcd17f5c7ebeab5a5b439d2f2e39fe44b",
 )
 
-configure_make_package(
+autotools_package(
     name = "gdk-pixbuf",
     source = ":gdk-pixbuf-src",
     version = "2.42.10",
@@ -215,7 +215,7 @@ download_source(
     sha256 = "ac4de2a4ef4bd5665052952fe169657e65e895c5057dffb3c2a810f6191a0c36",
 )
 
-configure_make_package(
+autotools_package(
     name = "atk",
     source = ":atk-src",
     version = "2.38.0",
@@ -241,7 +241,7 @@ download_source(
     sha256 = "5727b5c0687ac57ba8040e79bd6731b714a36b8fcf32190f236b8fb3698789e7",
 )
 
-configure_make_package(
+autotools_package(
     name = "at-spi2-core",
     source = ":at-spi2-core-src",
     version = "2.50.1",
@@ -268,7 +268,7 @@ download_source(
     sha256 = "97ef5eb92ca811039ad50a65f06633f1aae64792789307be7170795d8b319454",
 )
 
-configure_make_package(
+autotools_package(
     name = "json-glib",
     source = ":json-glib-src",
     version = "1.8.0",
@@ -296,7 +296,7 @@ download_source(
     sha256 = "291c67725f36ed90ea43efff25064b69c5a2d1981488477c05c481a3b4b0c5aa",
 )
 
-configure_make_package(
+autotools_package(
     name = "libsoup3",
     source = ":libsoup3-src",
     version = "3.4.4",
@@ -325,7 +325,7 @@ download_source(
     sha256 = "9aec7ab872c2050404907ae94f0ae7abec8a54bd9c894ddb5c2d0f51e932b9a1",
 )
 
-configure_make_package(
+autotools_package(
     name = "gjs",
     source = ":gjs-src",
     version = "1.78.4",
@@ -354,7 +354,7 @@ download_source(
     sha256 = "a535fb2a98fea8a2449cd1a02cccf5190131dddff52e715afdace3feb536eae7",
 )
 
-configure_make_package(
+autotools_package(
     name = "vte",
     source = ":vte-src",
     version = "0.74.2",
@@ -383,7 +383,7 @@ download_source(
     sha256 = "365c8d04daf79b38c8b3dc9626349a024f9e4befdd31fede74b42f7a9fbe0ae2",
 )
 
-configure_make_package(
+autotools_package(
     name = "gsettings-desktop-schemas",
     source = ":gsettings-desktop-schemas-src",
     version = "45.0",
@@ -409,7 +409,7 @@ download_source(
     sha256 = "42c773745d84ba14bc1cf1c4c6f4606148803a5cd337941c63964795f3c59d42",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-desktop",
     source = ":gnome-desktop-src",
     version = "44.0",
@@ -437,7 +437,7 @@ download_source(
     sha256 = "2d9a6826d158470449a173871221596da0f83ebdcff98b90c7049089056a37aa",
 )
 
-configure_make_package(
+autotools_package(
     name = "geocode-glib",
     source = ":geocode-glib-src",
     version = "3.26.4",
@@ -466,7 +466,7 @@ download_source(
     sha256 = "366e866ff2a708b894cfea9475b8e8ff54cb3e2b477ea72a8ade0dabee5f48a4",
 )
 
-configure_make_package(
+autotools_package(
     name = "libgweather",
     source = ":libgweather-src",
     version = "4.4.0",
@@ -496,7 +496,7 @@ download_source(
     sha256 = "297cb9c2cccd8e8617623d1a3e8415b4530b8e5a893e3527bbfd1edd13237b4c",
 )
 
-configure_make_package(
+autotools_package(
     name = "libpeas",
     source = ":libpeas-src",
     version = "1.36.0",
@@ -524,7 +524,7 @@ download_source(
     sha256 = "9a3e2571f1048035d80238f52c8760125884a43baf8a580fedb7250c1ad0a9e7",
 )
 
-configure_make_package(
+autotools_package(
     name = "libsecret",
     source = ":libsecret-src",
     version = "0.21.3",
@@ -552,7 +552,7 @@ download_source(
     sha256 = "ee8f3ef946156ad3406fdf45feedbdcd932dbd211ab4f16f75eba4f36fb2f6c0",
 )
 
-configure_make_package(
+autotools_package(
     name = "libnotify",
     source = ":libnotify-src",
     version = "0.8.3",
@@ -581,7 +581,7 @@ download_source(
     sha256 = "905bcdb85847d6b8f8861e56b30cd6dc61eae67ecef4cd994a9f925a26a2c1fe",
 )
 
-configure_make_package(
+autotools_package(
     name = "libwnck",
     source = ":libwnck-src",
     version = "43.0",
@@ -612,7 +612,7 @@ download_source(
     sha256 = "5bfea379e120b1c7f237f3ec369ad27ef5c2f5930c7df163b392782d8582090d",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-shell",
     source = ":gnome-shell-src",
     version = "45.4",
@@ -645,7 +645,7 @@ download_source(
     sha256 = "91140837be15582f2c753be661ab8e42dad55d4a1b0f0650bd0b2c93f02bd7ab",
 )
 
-configure_make_package(
+autotools_package(
     name = "mutter",
     source = ":mutter-src",
     version = "45.4",
@@ -674,7 +674,7 @@ download_source(
     sha256 = "706d2ffcacac38553a3c0185793f5a2b4aac940bb5e789d953c9808163bef2f1",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-session",
     source = ":gnome-session-src",
     version = "45.0",
@@ -704,7 +704,7 @@ download_source(
     sha256 = "c62bfec9817eee5b83ebe901a9286189a67eb5ff033c5dd41506574f822bf090",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-settings-daemon",
     source = ":gnome-settings-daemon-src",
     version = "45.1",
@@ -733,7 +733,7 @@ download_source(
     sha256 = "b1e949c4e86c0624ec6a6ed0df09c9fae2b22983c1dca60ed86aec8ef0b24004",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-control-center",
     source = ":gnome-control-center-src",
     version = "45.3",
@@ -765,7 +765,7 @@ download_source(
     sha256 = "c7f4d040cc76a6b7fe67e08ef9106911c3c80d40fc88cbfc8e2684a4c946e3e6",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-keyring",
     source = ":gnome-keyring-src",
     version = "42.1",
@@ -789,7 +789,7 @@ download_source(
     sha256 = "3ea0c71084bf595cce5caa37ceff2e853d0ec9644bb01fd4643300adb9517f8a",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-online-accounts",
     source = ":gnome-online-accounts-src",
     version = "3.48.1",
@@ -820,7 +820,7 @@ download_source(
     sha256 = "225d70b6a40268f225c2ac428ee5eb52d5a6fda2602955d50a24970526fe2452",
 )
 
-configure_make_package(
+autotools_package(
     name = "evolution-data-server",
     source = ":evolution-data-server-src",
     version = "3.50.3",
@@ -851,7 +851,7 @@ download_source(
     sha256 = "52592cfe19baffd16dbe47475be7da750dbd0b6333fd7acb60faa9da5bc40df2",
 )
 
-configure_make_package(
+autotools_package(
     name = "tracker",
     source = ":tracker-src",
     version = "3.6.0",
@@ -881,7 +881,7 @@ download_source(
     sha256 = "0ad722f3d532c21d757cf488f942960679ea8f457925efa97656ed4c9e9ba4ff",
 )
 
-configure_make_package(
+autotools_package(
     name = "tracker-miners",
     source = ":tracker-miners-src",
     version = "3.6.2",
@@ -913,7 +913,7 @@ download_source(
     sha256 = "ba5d53df39a155562df971ef5e31e827074905d0c48eab1eb2421a10284b990d",
 )
 
-configure_make_package(
+autotools_package(
     name = "nautilus",
     source = ":nautilus-src",
     version = "45.2.1",
@@ -945,7 +945,7 @@ download_source(
     sha256 = "1c83a8b58ce7c99f853eed80cd36b2343fe9cf80e5d9d846912777f69b7475aa",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-terminal",
     source = ":gnome-terminal-src",
     version = "3.50.1",
@@ -976,7 +976,7 @@ download_source(
     sha256 = "f3ffcb11a92dfd04ba3c3b3d0e667847d4449a21e012ae36f07dda05ac7d3a52",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-text-editor",
     source = ":gnome-text-editor-src",
     version = "45.3",
@@ -1004,7 +1004,7 @@ download_source(
     sha256 = "b38a3010c34f59e13b05175e9d20ca02a3110443fec2b1e5747413801bc9c23f",
 )
 
-configure_make_package(
+autotools_package(
     name = "gtksourceview5",
     source = ":gtksourceview5-src",
     version = "5.10.0",
@@ -1033,7 +1033,7 @@ download_source(
     sha256 = "d18647d4275cbddf0d32817b1d04e307342a85be914ec4dad2d8082aaf8aa4a8",
 )
 
-configure_make_package(
+autotools_package(
     name = "evince",
     source = ":evince-src",
     version = "45.0",
@@ -1064,7 +1064,7 @@ download_source(
     sha256 = "8650f662d4921d83a7904f6bb9ca245baf735f717b47fac5b37f0d90e5e891a8",
 )
 
-configure_make_package(
+autotools_package(
     name = "eog",
     source = ":eog-src",
     version = "45.3",
@@ -1094,7 +1094,7 @@ download_source(
     sha256 = "f65f2d1208d085ab5ffa998dd43c92fe952272d4d59b51cfecc11ebdffca2d86",
 )
 
-configure_make_package(
+autotools_package(
     name = "loupe",
     source = ":loupe-src",
     version = "45.3",
@@ -1121,7 +1121,7 @@ download_source(
     sha256 = "7dcbf32384897171cbe5483ec664d994e5e755e912ae1df911624f03c90867c2",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-calculator",
     source = ":gnome-calculator-src",
     version = "45.0.2",
@@ -1150,7 +1150,7 @@ download_source(
     sha256 = "7fa8507543865aa7432bb5319830c87158b5447ca09cca45b607dc6796c71008",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-calendar",
     source = ":gnome-calendar-src",
     version = "45.1",
@@ -1180,7 +1180,7 @@ download_source(
     sha256 = "823f5609eecd90c424dd3e64857287bc1321fb6dfe28924a474ff0e9acf21b75",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-contacts",
     source = ":gnome-contacts-src",
     version = "45.1",
@@ -1210,7 +1210,7 @@ download_source(
     sha256 = "fc8eb4fd9530f1e641dc00ee2086ee7d354a7a00b0a0d1722e305d5c9aab91b5",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-clocks",
     source = ":gnome-clocks-src",
     version = "45.0",
@@ -1239,7 +1239,7 @@ download_source(
     sha256 = "30c0029702883dc8d8160e6de1d6116877cd6c25bc950d4e4902a6ab467b2fa4",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-weather",
     source = ":gnome-weather-src",
     version = "45.0",
@@ -1268,7 +1268,7 @@ download_source(
     sha256 = "2f1b3a0d9642f8c3b0cb28b7bf564282ac2ca5d6c4e0c05ee600b2f447f1602a",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-maps",
     source = ":gnome-maps-src",
     version = "45.3",
@@ -1299,7 +1299,7 @@ download_source(
     sha256 = "c5e272d90bf9986a3f8613d76e0d27fa42dfacee5c0192e73921bb94b1868a2e",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-system-monitor",
     source = ":gnome-system-monitor-src",
     version = "45.0.2",
@@ -1327,7 +1327,7 @@ download_source(
     sha256 = "775676df958e2ea2452f7568f28b2ea581063d312773dd5c0b7624c1b9b2da8c",
 )
 
-configure_make_package(
+autotools_package(
     name = "libgtop",
     source = ":libgtop-src",
     version = "2.41.3",
@@ -1351,7 +1351,7 @@ download_source(
     sha256 = "540ff4ec9a6b9630003ff4cd60d624f39fe70f25a9559e5333389603c85b9529",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-disk-utility",
     source = ":gnome-disk-utility-src",
     version = "45.1",
@@ -1381,7 +1381,7 @@ download_source(
     sha256 = "3fd54fcc14d291b77fff12deefff00da383e0a6400af507d1605fbcb49b8c741",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-characters",
     source = ":gnome-characters-src",
     version = "45.0",
@@ -1409,7 +1409,7 @@ download_source(
     sha256 = "97cb6b68dda60de0ab3038383586f1e4bc1da5a48f44025bd6bbe74ea05c2b08",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-font-viewer",
     source = ":gnome-font-viewer-src",
     version = "45.0",
@@ -1436,7 +1436,7 @@ download_source(
     sha256 = "b28a06ea5c98bd17f2873b507f085b0ca0de9810136611f4f2eeb098614ece52",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-logs",
     source = ":gnome-logs-src",
     version = "45.0",
@@ -1465,7 +1465,7 @@ download_source(
     sha256 = "4adb7dec926428f74263d5796673cf142e4720b6e768f5468a8d0933f98c9597",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-screenshot",
     source = ":gnome-screenshot-src",
     version = "41.0",
@@ -1492,7 +1492,7 @@ download_source(
     sha256 = "253994658ae861794d0c6e0e0f475dfe1caf277e3674b8792790238f34cfd6ee",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-tweaks",
     source = ":gnome-tweaks-src",
     version = "45.0",
@@ -1521,7 +1521,7 @@ download_source(
     sha256 = "05b497229073ff557f10b326e074c5066f8743a302d4820ab97bcb5cd2dab087",
 )
 
-configure_make_package(
+autotools_package(
     name = "libhandy",
     source = ":libhandy-src",
     version = "1.8.3",
@@ -1554,7 +1554,7 @@ download_source(
     sha256 = "b36d3655928b5896462a4d39f83b6ad66d37dbc9c99dceb02ea8a2e37394a41e",
 )
 
-configure_make_package(
+autotools_package(
     name = "totem",
     source = ":totem-src",
     version = "43.0",
@@ -1583,7 +1583,7 @@ download_source(
     sha256 = "c0df0f68d5cf9d7da43c81c7f13f11158358368f98c22d47722f3bd04bd3ac1c",
 )
 
-configure_make_package(
+autotools_package(
     name = "totem-pl-parser",
     source = ":totem-pl-parser-src",
     version = "3.26.6",
@@ -1610,7 +1610,7 @@ download_source(
     sha256 = "95959cdb802444048d50a1a91c42db8b25165a0a68533bc03895eb372c4dde0b",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-music",
     source = ":gnome-music-src",
     version = "45.1",
@@ -1639,7 +1639,7 @@ download_source(
     sha256 = "5f2185c4c99e54ddf2b8baf60c82819950e54952e132e8639875f3edcbf8f68e",
 )
 
-configure_make_package(
+autotools_package(
     name = "cheese",
     source = ":cheese-src",
     version = "44.1",
@@ -1670,7 +1670,7 @@ download_source(
     sha256 = "4c08c315282f3ebf7a2da6f20e0ff9f0c71daa5229fcd2fe0b5c0aaaaa06f0ad",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-sound-recorder",
     source = ":gnome-sound-recorder-src",
     version = "42.0",
@@ -1702,7 +1702,7 @@ download_source(
     sha256 = "6c302e9bdd66290cb0e26f62843cd4c435a4955abdbb4f151f07dc80495d6730",
 )
 
-configure_make_package(
+autotools_package(
     name = "epiphany",
     source = ":epiphany-src",
     version = "45.3",
@@ -1734,7 +1734,7 @@ download_source(
     sha256 = "b9fab525b90a3e27d113c16fb868c2b9c47bf8149310d14db862ea1912c06fb8",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-connections",
     source = ":gnome-connections-src",
     version = "45.0",
@@ -1766,7 +1766,7 @@ download_source(
     sha256 = "242da02593293d456ea24108a45934730a1e316d8dc5b18d9df0e864db7ba596",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-builder",
     source = ":gnome-builder-src",
     version = "45.0",
@@ -1799,7 +1799,7 @@ download_source(
     sha256 = "63ceeefd05392e02044881ef1ecd724293553da5735b7efc082b2d13fe85dd04",
 )
 
-configure_make_package(
+autotools_package(
     name = "devhelp",
     source = ":devhelp-src",
     version = "43.0",
@@ -1827,7 +1827,7 @@ download_source(
     sha256 = "1180297678eedae6217cc514a2638c187d2f1d1ef2720cb9079b740c429941dd",
 )
 
-configure_make_package(
+autotools_package(
     name = "dconf-editor",
     source = ":dconf-editor-src",
     version = "45.0.1",
@@ -1858,7 +1858,7 @@ download_source(
     sha256 = "348508f8f6e7451c07344ffa7a09a990cf1d2883bccf533409dbe029268d49f2",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-chess",
     source = ":gnome-chess-src",
     version = "43.2",
@@ -1885,7 +1885,7 @@ download_source(
     sha256 = "3502e9b3f71cb3b2e711c0e6019187febcc2bca877e3d456dcab700f7be31272",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-mines",
     source = ":gnome-mines-src",
     version = "40.1",
@@ -1912,7 +1912,7 @@ download_source(
     sha256 = "6518d9233a46d7e13805ac787667ba4701948d9ed41a47b88797fcdba43b8fba",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-sudoku",
     source = ":gnome-sudoku-src",
     version = "44.0",
@@ -1939,7 +1939,7 @@ download_source(
     sha256 = "53821f6fe32eddcb9eef3324f646aaac83cc6d3de0937dfd5f266470d453d2a4",
 )
 
-configure_make_package(
+autotools_package(
     name = "libgnome-games-support",
     source = ":libgnome-games-support-src",
     version = "2.0.0",
@@ -1970,7 +1970,7 @@ download_source(
     sha256 = "cc63080eefa147a8472ab1a5ff087b97a27ab723a4ee005ed41e8c9dd7798e41",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-boxes",
     source = ":gnome-boxes-src",
     version = "45.0",
@@ -1999,7 +1999,7 @@ download_source(
     sha256 = "a7d2cf308a6c839ee0b0bf074f8f5fd60d62ae2f064a94b3c610d6560b758e86",
 )
 
-configure_make_package(
+autotools_package(
     name = "baobab",
     source = ":baobab-src",
     version = "45.0",
@@ -2026,7 +2026,7 @@ download_source(
     sha256 = "d6b9245b22237da7bd1739dd28c23cc8f3835f99fa10c1037d9dd7635335251c",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-software",
     source = ":gnome-software-src",
     version = "45.3",
@@ -2059,7 +2059,7 @@ download_source(
     sha256 = "6a5f14b05a3471fe43853cc2b0e1ae5484d7f9f86f7ea376179829b9bf4ac1dd",
 )
 
-configure_make_package(
+autotools_package(
     name = "sushi",
     source = ":sushi-src",
     version = "45.0",
@@ -2086,7 +2086,7 @@ download_source(
     sha256 = "5be4b8ef4b8f4d5ecaccc31048db6e085a8f7bffadaa0843b8e8a788ff1dadee",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-tour",
     source = ":gnome-tour-src",
     version = "45.0",
@@ -2113,7 +2113,7 @@ download_source(
     sha256 = "206338c174fb776753320f4ddaac89478192629d143e22b0cc459a859b402a22",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-initial-setup",
     source = ":gnome-initial-setup-src",
     version = "45.3",
@@ -2143,7 +2143,7 @@ download_source(
     sha256 = "1c83a8b58ce7c99f853eed80cd36b2343fe9cf80e5d9d846912777f69b7475aa",
 )
 
-configure_make_package(
+autotools_package(
     name = "gnome-user-docs",
     source = ":gnome-user-docs-src",
     version = "45.2",
@@ -2163,7 +2163,7 @@ download_source(
     sha256 = "a2c5fd0787a9089c722cc66bd0f85cdf7088d870e7b6cc85799f8e5bff9eac4b",
 )
 
-configure_make_package(
+autotools_package(
     name = "yelp",
     source = ":yelp-src",
     version = "42.2",
@@ -2191,7 +2191,7 @@ download_source(
     sha256 = "238be150b1653080ce139971330fd36d3a26595e0d6a040a2c030bf3d2005bcd",
 )
 
-configure_make_package(
+autotools_package(
     name = "yelp-xsl",
     source = ":yelp-xsl-src",
     version = "42.1",
@@ -2215,7 +2215,7 @@ download_source(
     sha256 = "52372ec6f5ba066409e8dfc4a62fdb2c57e79f83a809cf295ff0e040eebb233b",
 )
 
-configure_make_package(
+autotools_package(
     name = "amberol",
     source = ":amberol-src",
     version = "0.10.3",
@@ -2242,7 +2242,7 @@ download_source(
     sha256 = "710a3b733da5eb349bf8dc3c37ef0afeb301c8299c22e7fad3c753576f33f7f4",
 )
 
-configure_make_package(
+autotools_package(
     name = "blanket",
     source = ":blanket-src",
     version = "0.6.0",
@@ -2269,7 +2269,7 @@ download_source(
     sha256 = "385b7bec4d722e5249e75fea868f2bc9c125e9a56c35638f28efa5f82c170b0d",
 )
 
-configure_make_package(
+autotools_package(
     name = "dialect",
     source = ":dialect-src",
     version = "2.1.1",
@@ -2297,7 +2297,7 @@ download_source(
     sha256 = "6b70dd2f6c347d448c2d6140fdb70429d17135e6713ea6c095df1b34e4010e6a",
 )
 
-configure_make_package(
+autotools_package(
     name = "newsflash",
     source = ":newsflash-src",
     version = "3.1.6",
@@ -2325,7 +2325,7 @@ download_source(
     sha256 = "a885e7a99dffa8835c9c9d6e9639b3552b97ebdaf6d1826767583b7e18171d87",
 )
 
-configure_make_package(
+autotools_package(
     name = "tangram",
     source = ":tangram-src",
     version = "3.0",

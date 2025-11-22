@@ -1,8 +1,8 @@
 # Network authentication packages
 # RADIUS and TACACS+ PAM modules
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # pam_radius - RADIUS PAM module
 download_source(
@@ -11,7 +11,7 @@ download_source(
     sha256 = "798dc358e7a143163e103bd38c4101645b2e93d82aa0ec63d32c0cb929d9c65c",
 )
 
-configure_make_package(
+autotools_package(
     name = "pam-radius",
     source = ":pam-radius-src",
     version = "2.0.0",
@@ -44,7 +44,7 @@ download_source(
     sha256 = "b6c102eef0a42e3946bcdc29bbf7145c6dd13aa1fb6c58f6d282826166391837",
 )
 
-configure_make_package(
+autotools_package(
     name = "pam-tacplus",
     source = ":pam-tacplus-src",
     version = "1.7.0",

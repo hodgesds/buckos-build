@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "glusterfs-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "6a31b8450d02cd12f47f4571c031e9d6b8705279a0e8970ae9a05e1c87dffb76",
 )
 
-configure_make_package(
+autotools_package(
     name = "glusterfs",
     source = ":glusterfs-src",
     version = "11.1",

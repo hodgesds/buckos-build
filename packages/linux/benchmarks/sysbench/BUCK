@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # sysbench - Multi-threaded benchmark tool
 #
@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 #   postgres - Enable PostgreSQL support
 #   lua      - Enable Lua scripting
 
-use_package(
+autotools_package(
     name = "sysbench",
     version = "1.0.20",
     src_uri = "https://github.com/akopytov/sysbench/archive/refs/tags/1.0.20.tar.gz",

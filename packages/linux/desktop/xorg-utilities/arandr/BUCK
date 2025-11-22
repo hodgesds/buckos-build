@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "arandr-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "e4cbbe3698bb812b395770870174be0094bbaeb391105a811f95f42eb182ae02",
 )
 
-configure_make_package(
+autotools_package(
     name = "arandr",
     source = ":arandr-src",
     version = "0.1.11",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "wlsunset-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "9a735dacb07a5336c0c32b5e1883cd132d6bc70df3c426ca98df084072f3b672",
 )
 
-configure_make_package(
+autotools_package(
     name = "wlsunset",
     source = ":wlsunset-src",
     version = "0.4.0",

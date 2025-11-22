@@ -1,8 +1,8 @@
 # pciutils - PCI Utilities
 # Provides lspci and other PCI device inspection tools
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "pciutils-src",
@@ -10,7 +10,7 @@ download_source(
     sha256 = "7deabe38ae5fa88a96a8c4947975cf31c591506db546e9665a10dddbf350ead0",
 )
 
-configure_make_package(
+autotools_package(
     name = "pciutils",
     source = ":pciutils-src",
     version = "3.10.0",

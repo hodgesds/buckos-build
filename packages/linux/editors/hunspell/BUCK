@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # hunspell - Spell checker and morphological analyzer
 
@@ -9,7 +9,7 @@ download_source(
     sha256 = "69fa312d3586c988789266eaf7ffc9861d9f6396c31fc930a014d551b59bbd6e",
 )
 
-configure_make_package(
+autotools_package(
     name = "hunspell",
     source = ":hunspell-src",
     version = "1.7.2",

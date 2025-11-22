@@ -1,8 +1,8 @@
 # Vulkan Tools - Vulkan SDK components
 # Essential libraries and tools for Vulkan graphics API
 
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "vulkan-headers-src",
@@ -12,7 +12,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "vulkan-headers",
     source = ":vulkan-headers-src",
     version = "1.3.296",
@@ -47,7 +47,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "vulkan-loader",
     source = ":vulkan-loader-src",
     version = "1.3.296",
@@ -89,7 +89,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "vulkan-tools",
     source = ":vulkan-tools-src",
     version = "1.3.296",
@@ -136,7 +136,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "vulkan-validation-layers",
     source = ":vulkan-validation-layers-src",
     version = "1.3.296",

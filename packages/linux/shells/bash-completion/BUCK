@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # bash-completion - Programmable completion functions for bash
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
 )
 
-configure_make_package(
+autotools_package(
     name = "bash-completion",
     source = ":bash-completion-src",
     version = "2.14.0",

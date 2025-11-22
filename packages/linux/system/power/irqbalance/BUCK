@@ -1,8 +1,8 @@
 # irqbalance - IRQ Load Balancing Daemon
 # Distributes hardware interrupts across processors for optimal power and performance
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "irqbalance-src",
@@ -10,7 +10,7 @@ download_source(
     sha256 = "8d698799251ea8518f342f36be26f2f092df51189f6777db33116d40cf0dae6c",
 )
 
-configure_make_package(
+autotools_package(
     name = "irqbalance",
     source = ":irqbalance-src",
     version = "1.9.3",

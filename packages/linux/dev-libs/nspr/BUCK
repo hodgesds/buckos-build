@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 
 # NSPR - Netscape Portable Runtime
 # Cross-platform abstraction for system-level functions
@@ -8,7 +8,7 @@ download_source(
     sha256 = "55dec317f1401cd2e5dba844d340b930ab7547f818179a4002bce62e6f1c6895",
 )
 
-configure_make_package(
+autotools_package(
     name = "nspr",
     source = ":nspr-src",
     version = "4.36",

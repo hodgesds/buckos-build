@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # -----------------------------------------------------------------------------
 # dinit - Service manager and init system
@@ -11,7 +11,7 @@ download_source(
     sha256 = "16f70d6ad3ba3ec5c709c810fbfb009f65e41c0b95d32b3725ae88e477b1c48a",
 )
 
-configure_make_package(
+autotools_package(
     name = "dinit",
     source = ":dinit-src",
     version = "0.18.0",

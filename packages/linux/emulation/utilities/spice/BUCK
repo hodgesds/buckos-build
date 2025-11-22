@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # SPICE protocol library
 download_source(
@@ -11,7 +11,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "spice-protocol",
     source = ":spice-protocol-src",
     version = "0.14.4",
@@ -34,7 +34,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "spice-server",
     source = ":spice-server-src",
     version = "0.15.2",
@@ -71,7 +71,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "spice-gtk",
     source = ":spice-gtk-src",
     version = "0.42",
@@ -111,7 +111,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "spice-vdagent",
     source = ":spice-vdagent-src",
     version = "0.22.1",

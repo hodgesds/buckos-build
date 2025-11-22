@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # conky - System monitor widget
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "1bf5868da44056badd4718a3c8dcc6905f7118a9f86e785b354a8ecdb157a59e",
 )
 
-configure_make_package(
+autotools_package(
     name = "conky",
     source = ":conky-src",
     version = "1.19.6",

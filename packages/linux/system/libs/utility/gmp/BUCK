@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "gmp-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "a04adb257e0be315c085602018c18a530d54500edd78f6658eb4f99a9f919290",
 )
 
-configure_make_package(
+autotools_package(
     name = "gmp",
     source = ":gmp-src",
     version = "6.3.0",

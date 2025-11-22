@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # Xen hypervisor
 download_source(
@@ -10,7 +10,7 @@ download_source(
 
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "xen",
     source = ":xen-src",
     version = "4.18.3",
@@ -46,7 +46,7 @@ configure_make_package(
 # Xen tools only (hypervisor already installed)
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "xen-tools",
     source = ":xen-src",
     version = "4.18.3",
@@ -73,7 +73,7 @@ configure_make_package(
 # Xen libraries for guest OS
 # USE flags: See use_flags.bzl for available flags
 
-configure_make_package(
+autotools_package(
     name = "xen-libs",
     source = ":xen-src",
     version = "4.18.3",

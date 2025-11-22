@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # Text::CSV - Comma-separated values manipulator
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "4f80122e4ea0b05079cad493e386564030f18c8d7b1f9af561df86985a653fe3",
 )
 
-configure_make_package(
+autotools_package(
     name = "text-csv",
     source = ":text-csv-src",
     version = "2.04",
@@ -32,7 +32,7 @@ download_source(
     sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
 )
 
-configure_make_package(
+autotools_package(
     name = "text-csv-xs",
     source = ":text-csv-xs-src",
     version = "1.54",
@@ -56,7 +56,7 @@ download_source(
     sha256 = "e8baa07b1b3f53e00af3636898bbf73aec9a0ff38f94536ede1dbe96ef086f04",
 )
 
-configure_make_package(
+autotools_package(
     name = "text-diff",
     source = ":text-diff-src",
     version = "1.45",
@@ -80,7 +80,7 @@ download_source(
     sha256 = "a295ea7d1ef241ae2640c1f7864b628f8e6f99ec14fb1da781b2f5f2168dcf09",
 )
 
-configure_make_package(
+autotools_package(
     name = "text-template",
     source = ":text-template-src",
     version = "1.61",
@@ -104,7 +104,7 @@ download_source(
     sha256 = "fa83812ad59b111c543a3678115012aeb3e4ab3067c2261a38fdbcacf1b761cd",
 )
 
-configure_make_package(
+autotools_package(
     name = "text-tabs-wrap",
     source = ":text-tabs-wrap-src",
     version = "2024.001",
@@ -128,7 +128,7 @@ download_source(
     sha256 = "319ce8cd665341e56521fa155d962a19328e90d9f7036765925ccde26725c469",
 )
 
-configure_make_package(
+autotools_package(
     name = "string-util",
     source = ":string-util-src",
     version = "1.34",
@@ -152,7 +152,7 @@ download_source(
     sha256 = "773e0f0f21c0cb2cf664cee6ba28ff70259babcc892f9b650f9cbda00be092ad",
 )
 
-configure_make_package(
+autotools_package(
     name = "text-balanced",
     source = ":text-balanced-src",
     version = "2.06",
@@ -176,7 +176,7 @@ download_source(
     sha256 = "6c24f14ddc1d20e26161c207b73ca184eed2ef57f08b5fb2ee196e6e2e88b1c6",
 )
 
-configure_make_package(
+autotools_package(
     name = "text-unidecode",
     source = ":text-unidecode-src",
     version = "1.30",
@@ -200,7 +200,7 @@ download_source(
     sha256 = "069ccd49d3f0a2dedb115f4bdc9fbac07a83592840953d1fcdfc39eb9d305287",
 )
 
-configure_make_package(
+autotools_package(
     name = "text-glob",
     source = ":text-glob-src",
     version = "0.11",
@@ -224,7 +224,7 @@ download_source(
     sha256 = "ee07853aee06f310e040b6bf1a0199a18d81896d3219b9b35c9630d0eb69089b",
 )
 
-configure_make_package(
+autotools_package(
     name = "regexp-common",
     source = ":regexp-common-src",
     version = "2017060201",

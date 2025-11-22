@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # arj - ARJ archive utility
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "589e4c9bccc8669e7b6d8d6fcd64e01f6a2c21fe10aad56a83304ecc3b96a7db",
 )
 
-configure_make_package(
+autotools_package(
     name = "arj",
     source = ":arj-src",
     version = "3.10.22",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # KDE Applications - Popular KDE apps collection
@@ -14,7 +14,7 @@ download_source(
     sha256 = "2915edcd856552bd6199efb23dcaf194605ee4fb307c75e27606198253dfdfe0",
 )
 
-configure_make_package(
+autotools_package(
     name = "konsole",
     source = ":konsole-src",
     version = "24.02.0",
@@ -53,7 +53,7 @@ download_source(
     sha256 = "10ef284597e28f933d8b4ead75d02759a15df4bcc928ed10b54f8065b7431257",
 )
 
-configure_make_package(
+autotools_package(
     name = "dolphin",
     source = ":dolphin-src",
     version = "24.02.0",
@@ -92,7 +92,7 @@ download_source(
     sha256 = "9b1efcccf4e36efcdbc2eada6399cd8128ce187a19182400313062f75ee35f48",
 )
 
-configure_make_package(
+autotools_package(
     name = "kate",
     source = ":kate-src",
     version = "24.02.0",
@@ -131,7 +131,7 @@ download_source(
     sha256 = "fc265548f859562c54cd40587ff3c6a1c2d0f7926617951b06e6145d1f42938c",
 )
 
-configure_make_package(
+autotools_package(
     name = "okular",
     source = ":okular-src",
     version = "24.02.0",
@@ -172,7 +172,7 @@ download_source(
     sha256 = "03606d3cba1520f04556ac92b2aa449f85e7daca36a637162d33c05ec42bb0b4",
 )
 
-configure_make_package(
+autotools_package(
     name = "gwenview",
     source = ":gwenview-src",
     version = "24.02.0",
@@ -214,7 +214,7 @@ download_source(
     sha256 = "ff11fe9352d8aa80207a21f3e024e18b4035cbbe689abaad20a91fe36c455469",
 )
 
-configure_make_package(
+autotools_package(
     name = "ark",
     source = ":ark-src",
     version = "24.02.0",
@@ -255,7 +255,7 @@ download_source(
     sha256 = "614b10c990b5c1e2af539c6f60da5cab8d1975b6c17a2c2458a81b95d2e4c3d1",
 )
 
-configure_make_package(
+autotools_package(
     name = "spectacle",
     source = ":spectacle-src",
     version = "24.02.0",
@@ -295,7 +295,7 @@ download_source(
     sha256 = "c19b639d632bee1edf3e9f832e7981f5671a12b464b4678ba52dbb1fff2fc7c5",
 )
 
-configure_make_package(
+autotools_package(
     name = "kcalc",
     source = ":kcalc-src",
     version = "24.02.0",
@@ -336,7 +336,7 @@ download_source(
     sha256 = "ecb670005aa3bb1dd0f407c2ac0331c703194cfb2b1346492ffc3361b840b8b4",
 )
 
-configure_make_package(
+autotools_package(
     name = "elisa",
     source = ":elisa-src",
     version = "24.02.0",
@@ -375,7 +375,7 @@ download_source(
     sha256 = "d95c5b3693d14b954fb09a22d2fc1712815aa424740cbf5872c40a59ed424e0d",
 )
 
-configure_make_package(
+autotools_package(
     name = "kdeconnect",
     source = ":kdeconnect-kde-src",
     version = "24.02.0",
@@ -416,7 +416,7 @@ download_source(
     sha256 = "8f0b9b8f25798d0a58ae207e13c8ac55c87e2205fa6c8651b9af3f97c002f6a4",
 )
 
-configure_make_package(
+autotools_package(
     name = "yakuake",
     source = ":yakuake-src",
     version = "24.02.0",
@@ -456,7 +456,7 @@ download_source(
     sha256 = "e0efff427b2155b09784851fa1645511ffb93629e557e887ec5dacff2fe223a0",
 )
 
-configure_make_package(
+autotools_package(
     name = "konversation",
     source = ":konversation-src",
     version = "23.10.0",
@@ -495,7 +495,7 @@ download_source(
     sha256 = "07f907ebfc5edb3918a3e039a6c11ec5cfc69d0f16859da2c813c998a4c20796",
 )
 
-configure_make_package(
+autotools_package(
     name = "filelight",
     source = ":filelight-src",
     version = "24.02.0",
@@ -534,7 +534,7 @@ download_source(
     sha256 = "071afe664c38ec6ab7b292b90e6b55cc2d2beb20be3f8aa53b131682893a5c49",
 )
 
-configure_make_package(
+autotools_package(
     name = "ksystemstats",
     source = ":ksystemstats-src",
     version = "6.0.1",
@@ -574,7 +574,7 @@ download_source(
     sha256 = "2f8979978b348d6b71ac078f989dd21ff4e9b6b0d25b5e59a371be500fc99d51",
 )
 
-configure_make_package(
+autotools_package(
     name = "plasma-systemmonitor",
     source = ":plasma-systemmonitor-src",
     version = "6.0.1",
@@ -615,7 +615,7 @@ DESTDIR=$OUT make install
 #     sha256 = "e0efff427b2155b09784851fa1645511ffb93629e557e887ec5dacff2fe223a0",
 # )
 #
-# configure_make_package(
+# autotools_package(
 #     name = "partitionmanager",
 #     source = ":partitionmanager-src",
 #     version = "24.02.0",
@@ -656,7 +656,7 @@ download_source(
     sha256 = "03845a7efe778d4dc7ed396f284f09d6707d506d6b3a64039ec64baca589305a",
 )
 
-configure_make_package(
+autotools_package(
     name = "ktorrent",
     source = ":ktorrent-src",
     version = "24.02.0",
@@ -696,7 +696,7 @@ download_source(
     sha256 = "37bf204519d0ab1ba40964af02741bc228f11e97f28c4c518ca05d358df18283",
 )
 
-configure_make_package(
+autotools_package(
     name = "krusader",
     source = ":krusader-src",
     version = "2.8.1",

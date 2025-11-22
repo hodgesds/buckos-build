@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "fuzzel-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "fb68a09a6f6f3dde8266177b1bef6f5c91b3bf60e9925eea7887ad2fa81d2183",
 )
 
-configure_make_package(
+autotools_package(
     name = "fuzzel",
     source = ":fuzzel-src",
     version = "1.9.2",

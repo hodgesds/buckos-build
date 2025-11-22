@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "curlftpfs-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "4eb44739c7078ba0edde177bdd266c4cfb7c621075f47f64c85a06b12b3c6958",
 )
 
-configure_make_package(
+autotools_package(
     name = "curlftpfs",
     source = ":curlftpfs-src",
     version = "0.9.2",

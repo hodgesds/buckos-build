@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "dosfstools-src",
@@ -7,7 +7,7 @@ download_source(
     sha256 = "64926eebf90092dca21b14259a5301b7b98e7b1943e8a201c7d726084809b527",
 )
 
-configure_make_package(
+autotools_package(
     name = "dosfstools",
     source = ":dosfstools-src",
     version = "4.2",

@@ -1,10 +1,10 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # strace - System call tracer
 # USE flags: unwind, selinux, static-libs
 
-use_package(
+autotools_package(
     name = "strace",
     version = "6.7",
     src_uri = "https://github.com/strace/strace/releases/download/v6.7/strace-6.7.tar.xz",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # talloc - Memory allocator from Samba project
 download_source(
@@ -8,7 +8,7 @@ download_source(
     sha256 = "dc46c40b9f46bb34dd97fe41f548b0e8b247b77a918576733c528e83abd854dd",
 )
 
-configure_make_package(
+autotools_package(
     name = "talloc",
     source = ":talloc-src",
     version = "2.4.3",

@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # -----------------------------------------------------------------------------
 # systemd - System and Service Manager
@@ -13,7 +13,7 @@ download_source(
     sha256 = "28854ffb2cb5f9e07fcbdbaf1e03a80b3462a12edeef84893ca2f37b22e4491e",
 )
 
-configure_make_package(
+autotools_package(
     name = "systemd",
     source = ":systemd-src",
     version = "255",

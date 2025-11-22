@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "configure_make_package", "download_source")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # -----------------------------------------------------------------------------
 # OpenRC - Dependency-based init system
@@ -11,7 +11,7 @@ download_source(
     sha256 = "1075c7793c0479a65810984036dc7c82142e934b19310edeb397db8939bf526c",
 )
 
-configure_make_package(
+autotools_package(
     name = "openrc",
     source = ":openrc-src",
     version = "0.54.2",

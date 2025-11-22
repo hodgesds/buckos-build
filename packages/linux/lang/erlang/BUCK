@@ -1,5 +1,5 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "binary_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # =============================================================================
 # Erlang/OTP - Concurrent functional programming language
@@ -11,7 +11,7 @@ download_source(
     sha256 = "97e6f57a163cab5fa61954c40dd43e7f51560085c83e5d127172fa83f6b561ab",
 )
 
-configure_make_package(
+autotools_package(
     name = "erlang",
     source = ":erlang-src",
     version = "26.2.1",

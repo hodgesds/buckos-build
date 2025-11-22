@@ -1,7 +1,7 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
-use_package(
+autotools_package(
     name = "ltrace",
     version = "0.7.91_pre20221216",
     src_uri = "https://gitlab.com/cespedes/ltrace/-/archive/5cffc0d2134f697fbac8627ec5b5f0085cd47c8a.tar.bz2",

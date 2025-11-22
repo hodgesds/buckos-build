@@ -1,24 +1,49 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "zstd-src",
+use_package(
+    name = "zstd",
+    version = "1.5.6",
     src_uri = "https://github.com/facebook/zstd/releases/download/v1.5.6/zstd-1.5.6.tar.gz",
     sha256 = "8c29e06cf42aacc1eafc4077ae2ec6c6fcb96a626157e0593d5e82a34fd403c1",
-    auto_detect_signature=False,
-)
-
-configure_make_package(
-    name = "zstd",
-    source = ":zstd-src",
-    version = "1.5.6",
+    auto_detect_signature = False,
     description = "Fast lossless compression algorithm",
     homepage = "https://facebook.github.io/zstd/",
     license = "BSD-3-Clause",
+    iuse = ["static-libs", "lz4", "zlib", "lzma", "threads"],
+    use_defaults = ["threads"],
+    use_configure = {},
+    use_deps = {
+        "lz4": ["//packages/linux/system/libs/compression/lz4:lz4"],
+        "zlib": ["//packages/linux/core/zlib:zlib"],
+        "lzma": ["//packages/linux/system/libs/compression/xz:xz"],
+    },
     configure_args = [],
-    make_args = [
-        "prefix=/usr",
-        "lib-mt",
-    ],
+    pre_configure = """
+# USE flags: static-libs, lz4, zlib, lzma, threads
+MAKE_FLAGS="prefix=/usr"
+if [ "${USE_threads}" = "1" ]; then
+    MAKE_FLAGS="$MAKE_FLAGS lib-mt"
+else
+    MAKE_FLAGS="$MAKE_FLAGS lib"
+fi
+if [ "${USE_lz4}" = "1" ]; then
+    MAKE_FLAGS="$MAKE_FLAGS HAVE_LZ4=1"
+fi
+if [ "${USE_zlib}" = "1" ]; then
+    MAKE_FLAGS="$MAKE_FLAGS HAVE_ZLIB=1"
+fi
+if [ "${USE_lzma}" = "1" ]; then
+    MAKE_FLAGS="$MAKE_FLAGS HAVE_LZMA=1"
+fi
+export ZSTD_MAKE_FLAGS="$MAKE_FLAGS"
+""",
+    make_args = ["$ZSTD_MAKE_FLAGS"],
+    post_install = """
+if [ "${USE_static_libs}" != "1" ]; then
+    rm -f "$DESTDIR/usr/lib/libzstd.a"
+fi
+""",
+    deps = [],
     visibility = ["PUBLIC"],
 )

@@ -1,24 +1,42 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "libpng-src",
+use_package(
+    name = "libpng",
+    version = "1.6.44",
     src_uri = "https://download.sourceforge.net/libpng/libpng-1.6.44.tar.xz",
     sha256 = "60c4da1d5b7f0aa8d158da48e8f8afa9773c1c8baa5d21974df61f1886b8ce8e",
-)
-
-configure_make_package(
-    name = "libpng",
-    source = ":libpng-src",
-    version = "1.6.44",
+    auto_detect_signature = False,
     description = "Library for manipulating PNG images",
     homepage = "http://www.libpng.org/pub/png/libpng.html",
     license = "libpng-2.0",
-    configure_args = [
-        "--disable-static",
+
+    # USE flags this package supports
+    iuse = [
+        "static-libs",  # Build static libraries
+        "apng",         # Animated PNG support
     ],
+
+    # Default USE flags
+    use_defaults = [],
+
+    # Conditional configure arguments
+    use_configure = {
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+        "apng": "--enable-arm-neon",
+        "-apng": "",
+    },
+
+    use_deps = {},
+    configure_args = ["--prefix=/usr"],
     deps = [
         "//packages/linux/core/zlib:zlib",
     ],
+
+    pre_configure = """
+# USE flags: static-libs, apng
+""",
+
     visibility = ["PUBLIC"],
 )

@@ -1,27 +1,42 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "libssh2-src",
+use_package(
+    name = "libssh2",
+    version = "1.11.1",
     src_uri = "https://www.libssh2.org/download/libssh2-1.11.1.tar.xz",
     sha256 = "9954cb54c4f548198a7cbebad248bdc87dd64bd26185708a294b2b50771e3769",
-    auto_detect_signature=False,
-)
+    auto_detect_signature = False,
 
-configure_make_package(
-    name = "libssh2",
-    source = ":libssh2-src",
-    version = "1.11.1",
     description = "Client-side library implementing the SSH2 protocol",
     homepage = "https://www.libssh2.org/",
     license = "BSD-3-Clause",
+
+    # USE flags:
+    # static-libs - Build static libraries
+    # zlib - Enable zlib compression support
+    # gcrypt - Use libgcrypt instead of OpenSSL for crypto
+    iuse = ["static-libs", "zlib", "gcrypt"],
+    use_defaults = ["zlib"],
+
+    use_configure = {
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+        "gcrypt": "--with-crypto=libgcrypt",
+        "-gcrypt": "--with-crypto=openssl",
+    },
+
+    use_deps = {
+        "gcrypt": ["//packages/linux/system/libs/crypto/libgcrypt:libgcrypt"],
+        "-gcrypt": ["//packages/linux/system/libs/crypto/openssl:openssl"],
+        "zlib": ["//packages/linux/core/zlib:zlib"],
+    },
+
     configure_args = [
-        "--disable-static",
-        "--with-crypto=openssl",
+        "--enable-shared",
     ],
-    deps = [
-        "//packages/linux/system/libs/crypto/openssl:openssl",
-        "//packages/linux/core/zlib:zlib",
-    ],
+
+    deps = [],
+
     visibility = ["PUBLIC"],
 )

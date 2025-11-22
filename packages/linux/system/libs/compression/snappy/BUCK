@@ -1,18 +1,34 @@
 load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-cmake_package(
+use_package(
     name = "snappy",
     version = "1.2.1",
     src_uri = "https://github.com/google/snappy/archive/refs/tags/1.2.1.tar.gz",
     sha256 = "736aeb64d86566d2236ddffa2865ee5d7a82d26c9016b36218fcc27ea4f09f86",
+    auto_detect_signature = False,
     description = "Fast compressor/decompressor library",
     homepage = "https://google.github.io/snappy/",
     license = "BSD-3-Clause",
-    cmake_args = [
-        "-DSNAPPY_BUILD_TESTS=OFF",
+    iuse = ["static-libs", "test"],
+    use_defaults = [],
+    use_configure = {
+        "static-libs": "-DBUILD_SHARED_LIBS=OFF",
+        "-static-libs": "-DBUILD_SHARED_LIBS=ON",
+        "test": "-DSNAPPY_BUILD_TESTS=ON",
+        "-test": "-DSNAPPY_BUILD_TESTS=OFF",
+    },
+    use_deps = {},
+    configure_args = [
         "-DSNAPPY_BUILD_BENCHMARKS=OFF",
-        "-DBUILD_SHARED_LIBS=ON",
     ],
+    pre_configure = """
+# USE flags: static-libs, test
+# Snappy uses CMake build system
+# BUILD_SHARED_LIBS controls library type
+# SNAPPY_BUILD_TESTS enables/disables tests
+""",
+    build_system = "cmake",
+    deps = [],
     visibility = ["PUBLIC"],
 )

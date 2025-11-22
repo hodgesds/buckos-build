@@ -2,23 +2,33 @@ load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # lzop - Fast file compressor using LZO
-download_source(
-    name = "lzop-src",
+use_package(
+    name = "lzop",
+    version = "1.04",
     src_uri = "https://www.lzop.org/download/lzop-1.04.tar.gz",
     sha256 = "7e72b62a8a60aff5200a047eea0773a8fb205caf7acbe1774d95147f305a2f41",
-)
-
-configure_make_package(
-    name = "lzop",
-    source = ":lzop-src",
-    version = "1.04",
+    auto_detect_signature = False,
     description = "Very fast file compressor using the LZO compression library",
     homepage = "http://www.lzop.org/",
     license = "GPL-2.0",
+    iuse = ["nls"],
+    use_defaults = [],
+    use_configure = {
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+    },
+    use_deps = {
+        "nls": ["//packages/linux/dev-libs/misc/gettext:gettext"],
+    },
     configure_args = [
         "--prefix=/usr",
-        "--disable-static",
     ],
+    pre_configure = """
+# USE flags: nls
+# lzop is a command-line utility (no library), so no static-libs flag needed
+# Uses autotools build system
+# --enable-nls/--disable-nls controls internationalization support
+""",
     deps = [
         "//packages/linux/system/libs/compression/lzo:lzo",
     ],

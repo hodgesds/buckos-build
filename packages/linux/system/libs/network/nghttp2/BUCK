@@ -1,23 +1,49 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "nghttp2-src",
+use_package(
+    name = "nghttp2",
+    version = "1.63.0",
     src_uri = "https://github.com/nghttp2/nghttp2/releases/download/v1.63.0/nghttp2-1.63.0.tar.xz",
     sha256 = "4879c75dd32a74421b9857924449460b8341796c0613ba114ab2188e4622354b",
-    auto_detect_signature=False,
-)
+    auto_detect_signature = False,
 
-configure_make_package(
-    name = "nghttp2",
-    source = ":nghttp2-src",
-    version = "1.63.0",
     description = "HTTP/2 C library and tools",
     homepage = "https://nghttp2.org/",
     license = "MIT",
+
+    # USE flags:
+    # static-libs - Build static libraries
+    # tools - Build HTTP/2 command-line tools (nghttp, nghttpd, nghttpx, h2load)
+    # xml - Enable XML support (libxml2)
+    # examples - Build example programs
+    # hpack-tools - Build HPACK tools
+    iuse = ["static-libs", "tools", "xml", "examples", "hpack-tools"],
+    use_defaults = [],
+
+    use_configure = {
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+        "tools": "--enable-app",
+        "-tools": "--disable-app",
+        "xml": "--enable-libxml2",
+        "-xml": "--disable-libxml2",
+        "examples": "--enable-examples",
+        "-examples": "--disable-examples",
+        "hpack-tools": "--enable-hpack-tools",
+        "-hpack-tools": "--disable-hpack-tools",
+    },
+
+    use_deps = {
+        "xml": ["//packages/linux/system/libs/xml/libxml2:libxml2"],
+    },
+
     configure_args = [
-        "--disable-static",
+        "--enable-shared",
         "--enable-lib-only",
     ],
+
+    deps = [],
+
     visibility = ["PUBLIC"],
 )

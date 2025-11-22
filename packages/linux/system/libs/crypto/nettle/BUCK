@@ -1,22 +1,51 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "nettle-src",
+use_package(
+    name = "nettle",
+    version = "3.10",
     src_uri = "https://mirrors.kernel.org/gnu/nettle/nettle-3.10.tar.gz",
     sha256 = "2c61bb31a5da062ce70093d5ebb23e7232f49b59f3740da06efbbfb8c8869508",
-)
-
-configure_make_package(
-    name = "nettle",
-    source = ":nettle-src",
-    version = "3.10",
+    auto_detect_signature = False,
     description = "Low-level cryptographic library",
     homepage = "https://www.lysator.liu.se/~nisse/nettle/",
     license = "LGPL-3.0",
+
+    # USE flags: static-libs, openssl, doc, asm, gmp
+    iuse = ["static-libs", "openssl", "doc", "asm", "gmp"],
+    use_defaults = ["asm", "gmp"],
+
+    use_configure = {
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+        "openssl": "--enable-openssl",
+        "-openssl": "--disable-openssl",
+        "doc": "--enable-documentation",
+        "-doc": "--disable-documentation",
+        "asm": "--enable-assembler",
+        "-asm": "--disable-assembler",
+        "gmp": "--enable-public-key",
+        "-gmp": "--disable-public-key",
+    },
+
+    use_deps = {
+        "openssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
+        "gmp": ["//packages/linux/dev-libs/gmp:gmp"],
+    },
+
     configure_args = [
-        "--disable-static",
         "--enable-shared",
     ],
+
+    pre_configure = """
+# Available USE flags:
+# - static-libs: Build static libraries
+# - openssl: Enable OpenSSL interoperability
+# - doc: Build documentation
+# - asm: Enable assembly optimizations
+# - gmp: Enable public-key crypto (requires GMP)
+""",
+
+    deps = [],
     visibility = ["PUBLIC"],
 )

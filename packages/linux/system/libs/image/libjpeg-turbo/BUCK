@@ -1,18 +1,80 @@
 load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-cmake_package(
+use_package(
     name = "libjpeg-turbo",
     version = "3.0.4",
     src_uri = "https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/3.0.4/libjpeg-turbo-3.0.4.tar.gz",
     sha256 = "99130559e7d62e8d695f2c0eaeef912c5828d5b84a0537dcb24c9678c9d5b76b",
-    auto_detect_signature=False,
+    auto_detect_signature = False,
     description = "JPEG image codec with SIMD acceleration",
     homepage = "https://libjpeg-turbo.org/",
     license = "IJG",
-    cmake_args = [
-        "-DENABLE_STATIC=OFF",
-        "-DWITH_JPEG8=ON",
+
+    # USE flags this package supports
+    iuse = [
+        "static-libs",  # Build static libraries
+        "jpeg7",        # Build libjpeg v7 API/ABI compatibility
+        "jpeg8",        # Build libjpeg v8 API/ABI compatibility (default)
+        "java",         # Build Java wrapper for TurboJPEG
+        "simd",         # Enable SIMD acceleration
     ],
+
+    # Default USE flags
+    use_defaults = ["jpeg8", "simd"],
+
+    # CMake-based build - use pre_configure to set cmake args
+    use_configure = {},
+
+    use_deps = {
+        "java": ["//packages/linux/lang/openjdk:openjdk"],
+    },
+
+    configure_args = [],
+    deps = [],
+
+    pre_configure = """
+# USE flags: static-libs, jpeg7, jpeg8, java, simd
+# This is a CMake-based package
+
+CMAKE_ARGS="-DCMAKE_INSTALL_PREFIX=/usr"
+
+if [ "${USE_static_libs}" = "1" ]; then
+    CMAKE_ARGS="$CMAKE_ARGS -DENABLE_STATIC=ON -DENABLE_SHARED=ON"
+else
+    CMAKE_ARGS="$CMAKE_ARGS -DENABLE_STATIC=OFF -DENABLE_SHARED=ON"
+fi
+
+if [ "${USE_jpeg7}" = "1" ]; then
+    CMAKE_ARGS="$CMAKE_ARGS -DWITH_JPEG7=ON"
+fi
+
+if [ "${USE_jpeg8}" = "1" ]; then
+    CMAKE_ARGS="$CMAKE_ARGS -DWITH_JPEG8=ON"
+fi
+
+if [ "${USE_java}" = "1" ]; then
+    CMAKE_ARGS="$CMAKE_ARGS -DWITH_JAVA=ON"
+else
+    CMAKE_ARGS="$CMAKE_ARGS -DWITH_JAVA=OFF"
+fi
+
+if [ "${USE_simd}" = "1" ]; then
+    CMAKE_ARGS="$CMAKE_ARGS -DWITH_SIMD=ON"
+else
+    CMAKE_ARGS="$CMAKE_ARGS -DWITH_SIMD=OFF"
+fi
+
+# Run cmake
+cmake $CMAKE_ARGS -B build -S .
+""",
+
+    # Override configure step since we're using cmake
+    configure_command = "true",  # Skip configure, we did it in pre_configure
+
+    # Use cmake build
+    make_command = "cmake --build build",
+    install_command = "cmake --install build --prefix $DESTDIR/usr",
+
     visibility = ["PUBLIC"],
 )

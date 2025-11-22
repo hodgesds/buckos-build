@@ -839,6 +839,44 @@ If a package attempts network access during build, it fails with "Network is unr
 
 **Implementation:** `defs/package_defs.bzl` lines 2158-2223
 
+### Intelligent Error Detection and Reporting
+
+BuckOs automatically detects common build errors and provides actionable fixes, making it easier to debug and fix build failures - especially useful for automation.
+
+**Automatic error detection for:**
+- Missing pkg-config dependencies
+- CMake compatibility issues
+- Meson unknown options
+- Meson boolean format errors (Meson 1.0+)
+
+**Example error output:**
+```
+✗ Build phase 'src_configure' FAILED (exit code: 1)
+  Package: pulseaudio-17.0
+  Category: audio/daemons
+  Phase: src_configure
+  Working directory: /path/to/build
+
+Analyzing error log...
+
+DETECTED: Meson boolean format error (Meson 1.0+)
+  Fix: Replace true/false with enabled/disabled/auto in meson_args
+
+Common fixes for src_configure:
+  - Check if all dependencies are installed
+  - Review configure_args in BUCK file
+  - For CMake: Check cmake_args
+  - For Meson: Ensure options use enabled/disabled/auto format
+```
+
+**Features:**
+- Each build phase logs output to `$T/<phase>.log` for analysis
+- Errors are detected using pattern matching
+- Suggested fixes are specific to the error type
+- Machine-parseable output for automation tools
+
+**Implementation:** `defs/package_defs.bzl` lines 2215-2320
+
 ### GPG Signature Verification
 
 Packages can optionally verify GPG signatures during download:
@@ -858,7 +896,31 @@ The system automatically:
 - Downloads and verifies GPG signatures
 - Imports trusted GPG keys
 - Detects and rejects invalid signature files (HTML error pages, etc.)
-- Reports verification status clearly
+- Reports verification status with detailed error messages
+
+**Enhanced GPG error messages:**
+```
+✗ Signature verification FAILED
+  File:         package-1.0.tar.gz
+  Signature:    package-1.0.tar.gz.asc
+  Signature URL: https://example.com/package-1.0.tar.gz.asc
+  Expected Key: ABCD1234EF567890
+
+GPG output:
+gpg: Signature made ...
+gpg: BAD signature from ...
+
+Fix options:
+  1. Disable GPG verification: Set auto_detect_signature=False in BUCK file
+  2. Import the correct key: gpg --recv-keys <KEY_ID>
+  3. Check if signature URL is correct
+```
+
+This makes it easy to:
+- Identify which file/signature failed
+- See what key was expected
+- Get actionable steps to fix the issue
+- Disable verification if needed for testing
 
 ## Comparison to Gentoo
 

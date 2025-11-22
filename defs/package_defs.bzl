@@ -358,6 +358,10 @@ fi
         ),
     ]
 
+# DEPRECATED: Use autotools_package() instead of configure_make_package.
+# This rule will be removed in a future release.
+# configure_make_package uses a Buck2 rule which is less flexible than
+# the eclass-based approach. Use autotools_package() for new packages.
 configure_make_package = rule(
     impl = _configure_make_package_impl,
     attrs = {
@@ -2452,20 +2456,60 @@ def cmake_package(
         pre_configure: str = "",
         deps: list[str] = [],
         maintainers: list[str] = [],
+        # USE flag support
+        iuse: list[str] = [],
+        use_defaults: list[str] = [],
+        use_options: dict = {},
+        use_deps: dict = {},
+        global_use: dict | None = None,
+        package_overrides: dict | None = None,
         signature_uri: str | None = None,
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
         auto_detect_signature: bool = True,
         **kwargs):
     """
-    Convenience macro for CMake packages.
+    Convenience macro for CMake packages with USE flag support.
     Uses the cmake eclass for standardized build phases.
 
     Args:
+        name: Package name
+        version: Package version
+        src_uri: Source download URL
+        sha256: Source checksum
+        cmake_args: Base CMake arguments
+        pre_configure: Pre-configure script
+        deps: Base dependencies (always applied)
+        maintainers: Package maintainers
+        iuse: List of USE flags this package supports
+        use_defaults: Default enabled USE flags
+        use_options: Dict mapping USE flag to CMake option(s)
+                     Example: {"ssl": "ENABLE_SSL", "tests": "BUILD_TESTING"}
+        use_deps: Dict mapping USE flag to conditional dependencies
+        global_use: Global USE flag configuration
+        package_overrides: Package-specific USE overrides
         signature_uri: Optional URL to GPG signature file (.asc or .sig)
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
         auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
+
+    Example:
+        cmake_package(
+            name = "libfoo",
+            version = "1.2.3",
+            src_uri = "https://example.com/libfoo-1.2.3.tar.gz",
+            sha256 = "...",
+            iuse = ["ssl", "tests", "doc"],
+            use_defaults = ["ssl"],
+            use_options = {
+                "ssl": "ENABLE_SSL",
+                "tests": "BUILD_TESTING",
+                "doc": "BUILD_DOCUMENTATION",
+            },
+            use_deps = {
+                "ssl": ["//packages/linux/dev-libs/openssl"],
+            },
+        )
     """
     src_name = name + "-src"
 
@@ -2479,13 +2523,37 @@ def cmake_package(
         auto_detect_signature = auto_detect_signature,
     )
 
+    # Calculate effective USE flags if USE flags are specified
+    effective_use = []
+    resolved_deps = list(deps)
+    resolved_cmake_args = list(cmake_args)
+
+    if iuse:
+        from_use_flags = load("//defs:use_flags.bzl", "get_effective_use", "use_dep", "use_cmake_options")
+
+        effective_use = from_use_flags.get_effective_use(
+            name,
+            iuse,
+            use_defaults,
+            global_use,
+            package_overrides,
+        )
+
+        # Resolve conditional dependencies
+        resolved_deps.extend(from_use_flags.use_dep(use_deps, effective_use))
+
+        # Generate CMake options based on USE flags
+        if use_options:
+            cmake_opts = from_use_flags.use_cmake_options(use_options, effective_use)
+            resolved_cmake_args.extend(cmake_opts)
+
     # Use eclass inheritance for cmake
     eclass_config = inherit(["cmake"])
 
     # Handle cmake_args by setting environment variable
     env = kwargs.pop("env", {})
-    if cmake_args:
-        env["CMAKE_EXTRA_ARGS"] = " ".join(cmake_args)
+    if resolved_cmake_args:
+        env["CMAKE_EXTRA_ARGS"] = " ".join(resolved_cmake_args)
 
     # Merge eclass bdepend with any existing bdepend
     bdepend = list(kwargs.pop("bdepend", []))
@@ -2501,10 +2569,11 @@ def cmake_package(
         src_configure = eclass_config["src_configure"],
         src_compile = eclass_config["src_compile"],
         src_install = eclass_config["src_install"],
-        rdepend = deps,
+        rdepend = resolved_deps,
         bdepend = bdepend,
         env = env,
         maintainers = maintainers,
+        use_flags = effective_use,
         **kwargs
     )
 
@@ -2516,20 +2585,59 @@ def meson_package(
         meson_args: list[str] = [],
         deps: list[str] = [],
         maintainers: list[str] = [],
+        # USE flag support
+        iuse: list[str] = [],
+        use_defaults: list[str] = [],
+        use_options: dict = {},
+        use_deps: dict = {},
+        global_use: dict | None = None,
+        package_overrides: dict | None = None,
         signature_uri: str | None = None,
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
         auto_detect_signature: bool = True,
         **kwargs):
     """
-    Convenience macro for Meson packages.
+    Convenience macro for Meson packages with USE flag support.
     Uses the meson eclass for standardized build phases.
 
     Args:
+        name: Package name
+        version: Package version
+        src_uri: Source download URL
+        sha256: Source checksum
+        meson_args: Base Meson arguments
+        deps: Base dependencies (always applied)
+        maintainers: Package maintainers
+        iuse: List of USE flags this package supports
+        use_defaults: Default enabled USE flags
+        use_options: Dict mapping USE flag to Meson option(s)
+                     Example: {"ssl": "ssl", "tests": "tests"}
+        use_deps: Dict mapping USE flag to conditional dependencies
+        global_use: Global USE flag configuration
+        package_overrides: Package-specific USE overrides
         signature_uri: Optional URL to GPG signature file (.asc or .sig)
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
         auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
+
+    Example:
+        meson_package(
+            name = "libbar",
+            version = "2.3.4",
+            src_uri = "https://example.com/libbar-2.3.4.tar.xz",
+            sha256 = "...",
+            iuse = ["ssl", "tests", "doc"],
+            use_defaults = ["ssl"],
+            use_options = {
+                "ssl": "ssl",
+                "tests": "tests",
+                "doc": "docs",
+            },
+            use_deps = {
+                "ssl": ["//packages/linux/dev-libs/openssl"],
+            },
+        )
     """
     src_name = name + "-src"
 
@@ -2543,13 +2651,37 @@ def meson_package(
         auto_detect_signature = auto_detect_signature,
     )
 
+    # Calculate effective USE flags if USE flags are specified
+    effective_use = []
+    resolved_deps = list(deps)
+    resolved_meson_args = list(meson_args)
+
+    if iuse:
+        from_use_flags = load("//defs:use_flags.bzl", "get_effective_use", "use_dep", "use_meson_options")
+
+        effective_use = from_use_flags.get_effective_use(
+            name,
+            iuse,
+            use_defaults,
+            global_use,
+            package_overrides,
+        )
+
+        # Resolve conditional dependencies
+        resolved_deps.extend(from_use_flags.use_dep(use_deps, effective_use))
+
+        # Generate Meson options based on USE flags
+        if use_options:
+            meson_opts = from_use_flags.use_meson_options(use_options, effective_use)
+            resolved_meson_args.extend(meson_opts)
+
     # Use eclass inheritance for meson
     eclass_config = inherit(["meson"])
 
     # Handle meson_args by setting environment variable
     env = kwargs.pop("env", {})
-    if meson_args:
-        env["MESON_EXTRA_ARGS"] = " ".join(meson_args)
+    if resolved_meson_args:
+        env["MESON_EXTRA_ARGS"] = " ".join(resolved_meson_args)
 
     # Merge eclass bdepend with any existing bdepend
     bdepend = list(kwargs.pop("bdepend", []))
@@ -2564,36 +2696,83 @@ def meson_package(
         src_configure = eclass_config["src_configure"],
         src_compile = eclass_config["src_compile"],
         src_install = eclass_config["src_install"],
-        rdepend = deps,
+        rdepend = resolved_deps,
         bdepend = bdepend,
         env = env,
         maintainers = maintainers,
+        use_flags = effective_use,
         **kwargs
     )
 
-def cargo_package(
+def autotools_package(
         name: str,
         version: str,
         src_uri: str,
         sha256: str,
-        bins: list[str] = [],
-        cargo_args: list[str] = [],
+        configure_args: list[str] = [],
+        make_args: list[str] = [],
         deps: list[str] = [],
         maintainers: list[str] = [],
+        # USE flag support
+        iuse: list[str] = [],
+        use_defaults: list[str] = [],
+        use_configure: dict = {},
+        use_deps: dict = {},
+        global_use: dict | None = None,
+        package_overrides: dict | None = None,
         signature_uri: str | None = None,
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
         auto_detect_signature: bool = True,
         **kwargs):
     """
-    Convenience macro for Rust/Cargo packages.
-    Uses the cargo eclass for standardized build phases.
+    Convenience macro for autotools packages with USE flag support.
+    Uses the autotools eclass for standardized build phases.
+
+    This replaces both configure_make_package() and use_package() with a
+    unified interface consistent with all other language package types.
 
     Args:
+        name: Package name
+        version: Package version
+        src_uri: Source download URL
+        sha256: Source checksum
+        configure_args: Base configure arguments
+        make_args: Make arguments
+        deps: Base dependencies (always applied)
+        maintainers: Package maintainers
+        iuse: List of USE flags this package supports
+        use_defaults: Default enabled USE flags
+        use_configure: Dict mapping USE flag to configure argument(s)
+                       Example: {"ssl": "--with-ssl", "-ssl": "--without-ssl"}
+        use_deps: Dict mapping USE flag to conditional dependencies
+        global_use: Global USE flag configuration
+        package_overrides: Package-specific USE overrides
         signature_uri: Optional URL to GPG signature file (.asc or .sig)
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
         auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
+
+    Example:
+        autotools_package(
+            name = "curl",
+            version = "8.5.0",
+            src_uri = "https://curl.se/download/curl-8.5.0.tar.xz",
+            sha256 = "...",
+            iuse = ["ssl", "http2", "ipv6"],
+            use_defaults = ["ssl", "ipv6"],
+            use_configure = {
+                "ssl": "--with-ssl",
+                "-ssl": "--without-ssl",
+                "http2": "--with-nghttp2",
+                "ipv6": "--enable-ipv6",
+                "-ipv6": "--disable-ipv6",
+            },
+            use_deps = {
+                "ssl": ["//packages/linux/dev-libs/openssl"],
+                "http2": ["//packages/linux/net-libs/nghttp2"],
+            },
+        )
     """
     src_name = name + "-src"
 
@@ -2607,13 +2786,180 @@ def cargo_package(
         auto_detect_signature = auto_detect_signature,
     )
 
+    # Calculate effective USE flags if USE flags are specified
+    effective_use = []
+    resolved_deps = list(deps)
+    resolved_configure_args = list(configure_args)
+
+    if iuse:
+        from_use_flags = load("//defs:use_flags.bzl", "get_effective_use", "use_dep", "use_configure_args")
+
+        effective_use = from_use_flags.get_effective_use(
+            name,
+            iuse,
+            use_defaults,
+            global_use,
+            package_overrides,
+        )
+
+        # Resolve conditional dependencies
+        resolved_deps.extend(from_use_flags.use_dep(use_deps, effective_use))
+
+        # Generate configure arguments based on USE flags
+        if use_configure:
+            config_args = from_use_flags.use_configure_args(use_configure, effective_use)
+            resolved_configure_args.extend(config_args)
+
+    # Use eclass inheritance for autotools
+    eclass_config = inherit(["autotools"])
+
+    # Handle configure and make args by setting environment variables
+    env = kwargs.pop("env", {})
+    if resolved_configure_args:
+        env["EXTRA_ECONF"] = " ".join(resolved_configure_args)
+    if make_args:
+        env["EXTRA_EMAKE"] = " ".join(make_args)
+
+    # Merge eclass bdepend with any existing bdepend
+    bdepend = list(kwargs.pop("bdepend", []))
+    for dep in eclass_config["bdepend"]:
+        if dep not in bdepend:
+            bdepend.append(dep)
+
+    # Get pre_configure and post_install if provided
+    pre_configure = kwargs.pop("pre_configure", "")
+    post_install = kwargs.pop("post_install", "")
+
+    # Combine with eclass phases
+    src_prepare = eclass_config.get("src_prepare", "")
+    if pre_configure:
+        src_prepare += "\n" + pre_configure
+
+    src_install = eclass_config["src_install"]
+    if post_install:
+        src_install += "\n" + post_install
+
+    ebuild_package(
+        name = name,
+        source = ":" + src_name,
+        version = version,
+        src_prepare = src_prepare,
+        src_configure = eclass_config["src_configure"],
+        src_compile = eclass_config["src_compile"],
+        src_install = src_install,
+        rdepend = resolved_deps,
+        bdepend = bdepend,
+        env = env,
+        maintainers = maintainers,
+        use_flags = effective_use,
+        **kwargs
+    )
+
+def cargo_package(
+        name: str,
+        version: str,
+        src_uri: str,
+        sha256: str,
+        bins: list[str] = [],
+        cargo_args: list[str] = [],
+        deps: list[str] = [],
+        maintainers: list[str] = [],
+        # USE flag support
+        iuse: list[str] = [],
+        use_defaults: list[str] = [],
+        use_features: dict = {},
+        use_deps: dict = {},
+        global_use: dict | None = None,
+        package_overrides: dict | None = None,
+        signature_uri: str | None = None,
+        gpg_key: str | None = None,
+        gpg_keyring: str | None = None,
+        auto_detect_signature: bool = True,
+        **kwargs):
+    """
+    Convenience macro for Rust/Cargo packages with USE flag support.
+    Uses the cargo eclass for standardized build phases.
+
+    Args:
+        name: Package name
+        version: Package version
+        src_uri: Source download URL
+        sha256: Source checksum
+        bins: Binary names to install
+        cargo_args: Base Cargo arguments
+        deps: Base dependencies (always applied)
+        maintainers: Package maintainers
+        iuse: List of USE flags this package supports
+        use_defaults: Default enabled USE flags
+        use_features: Dict mapping USE flag to Cargo feature(s)
+                      Example: {"ssl": "tls", "compression": ["zstd", "brotli"]}
+        use_deps: Dict mapping USE flag to conditional dependencies
+        global_use: Global USE flag configuration
+        package_overrides: Package-specific USE overrides
+        signature_uri: Optional URL to GPG signature file (.asc or .sig)
+        gpg_key: Optional GPG key ID or fingerprint to import and verify against
+        gpg_keyring: Optional path to GPG keyring file with trusted keys
+        auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
+
+    Example:
+        cargo_package(
+            name = "ripgrep",
+            version = "14.0.0",
+            src_uri = "https://github.com/BurntSushi/ripgrep/archive/14.0.0.tar.gz",
+            sha256 = "...",
+            iuse = ["pcre2", "simd"],
+            use_defaults = ["simd"],
+            use_features = {
+                "pcre2": "pcre2",
+                "simd": "simd-accel",
+            },
+            use_deps = {
+                "pcre2": ["//packages/linux/dev-libs/pcre2"],
+            },
+        )
+    """
+    src_name = name + "-src"
+
+    download_source(
+        name = src_name,
+        src_uri = src_uri,
+        sha256 = sha256,
+        signature_uri = signature_uri,
+        gpg_key = gpg_key,
+        gpg_keyring = gpg_keyring,
+        auto_detect_signature = auto_detect_signature,
+    )
+
+    # Calculate effective USE flags if USE flags are specified
+    effective_use = []
+    resolved_deps = list(deps)
+    resolved_cargo_args = list(cargo_args)
+
+    if iuse:
+        from_use_flags = load("//defs:use_flags.bzl", "get_effective_use", "use_dep", "use_cargo_args")
+
+        effective_use = from_use_flags.get_effective_use(
+            name,
+            iuse,
+            use_defaults,
+            global_use,
+            package_overrides,
+        )
+
+        # Resolve conditional dependencies
+        resolved_deps.extend(from_use_flags.use_dep(use_deps, effective_use))
+
+        # Generate Cargo arguments with features
+        if use_features:
+            resolved_cargo_args = from_use_flags.use_cargo_args(use_features, effective_use, cargo_args)
+
     # Use eclass inheritance for cargo
     eclass_config = inherit(["cargo"])
 
     # Handle cargo_args by setting environment variable
     env = kwargs.pop("env", {})
-    if cargo_args:
-        env["CARGO_BUILD_FLAGS"] = " ".join(cargo_args)
+    if resolved_cargo_args:
+        env["CARGO_BUILD_FLAGS"] = " ".join(resolved_cargo_args)
 
     # Merge eclass bdepend with any existing bdepend
     bdepend = list(kwargs.pop("bdepend", []))
@@ -2634,10 +2980,11 @@ def cargo_package(
         src_configure = eclass_config["src_configure"],
         src_compile = eclass_config["src_compile"],
         src_install = src_install,
-        rdepend = deps,
+        rdepend = resolved_deps,
         bdepend = bdepend,
         env = env,
         maintainers = maintainers,
+        use_flags = effective_use,
         **kwargs
     )
 
@@ -2650,20 +2997,60 @@ def go_package(
         packages: list[str] = ["."],
         deps: list[str] = [],
         maintainers: list[str] = [],
+        # USE flag support
+        iuse: list[str] = [],
+        use_defaults: list[str] = [],
+        use_tags: dict = {},
+        use_deps: dict = {},
+        global_use: dict | None = None,
+        package_overrides: dict | None = None,
         signature_uri: str | None = None,
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
         auto_detect_signature: bool = True,
         **kwargs):
     """
-    Convenience macro for Go packages.
+    Convenience macro for Go packages with USE flag support.
     Uses the go-module eclass for standardized build phases.
 
     Args:
+        name: Package name
+        version: Package version
+        src_uri: Source download URL
+        sha256: Source checksum
+        bins: Binary names to install
+        packages: Go packages to build
+        deps: Base dependencies (always applied)
+        maintainers: Package maintainers
+        iuse: List of USE flags this package supports
+        use_defaults: Default enabled USE flags
+        use_tags: Dict mapping USE flag to Go build tag(s)
+                  Example: {"sqlite": "sqlite", "postgres": "postgres"}
+        use_deps: Dict mapping USE flag to conditional dependencies
+        global_use: Global USE flag configuration
+        package_overrides: Package-specific USE overrides
         signature_uri: Optional URL to GPG signature file (.asc or .sig)
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
         auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
+
+    Example:
+        go_package(
+            name = "go-sqlite3",
+            version = "1.14.18",
+            src_uri = "https://github.com/mattn/go-sqlite3/archive/v1.14.18.tar.gz",
+            sha256 = "...",
+            iuse = ["icu", "json1", "fts5"],
+            use_defaults = ["json1"],
+            use_tags = {
+                "icu": "icu",
+                "json1": "json1",
+                "fts5": "fts5",
+            },
+            use_deps = {
+                "icu": ["//packages/linux/dev-libs/icu"],
+            },
+        )
     """
     src_name = name + "-src"
 
@@ -2677,6 +3064,29 @@ def go_package(
         auto_detect_signature = auto_detect_signature,
     )
 
+    # Calculate effective USE flags if USE flags are specified
+    effective_use = []
+    resolved_deps = list(deps)
+    resolved_go_build_args = kwargs.pop("go_build_args", [])
+
+    if iuse:
+        from_use_flags = load("//defs:use_flags.bzl", "get_effective_use", "use_dep", "use_go_build_args")
+
+        effective_use = from_use_flags.get_effective_use(
+            name,
+            iuse,
+            use_defaults,
+            global_use,
+            package_overrides,
+        )
+
+        # Resolve conditional dependencies
+        resolved_deps.extend(from_use_flags.use_dep(use_deps, effective_use))
+
+        # Generate Go build arguments with tags
+        if use_tags:
+            resolved_go_build_args = from_use_flags.use_go_build_args(use_tags, effective_use, resolved_go_build_args)
+
     # Use eclass inheritance for go-module
     eclass_config = inherit(["go-module"])
 
@@ -2685,10 +3095,9 @@ def go_package(
     if packages != ["."]:
         env["GO_PACKAGES"] = " ".join(packages)
 
-    # Handle go_build_args - pop it from kwargs since ebuild_package doesn't accept it
-    go_build_args = kwargs.pop("go_build_args", [])
-    if go_build_args:
-        env["GO_BUILD_FLAGS"] = " ".join(go_build_args)
+    # Handle go_build_args
+    if resolved_go_build_args:
+        env["GO_BUILD_FLAGS"] = " ".join(resolved_go_build_args)
 
     # Merge eclass bdepend with any existing bdepend
     bdepend = list(kwargs.pop("bdepend", []))
@@ -2706,10 +3115,11 @@ def go_package(
         src_configure = eclass_config["src_configure"],
         src_compile = eclass_config["src_compile"],
         src_install = src_install,
-        rdepend = deps,
+        rdepend = resolved_deps,
         bdepend = bdepend,
         env = env,
         maintainers = maintainers,
+        use_flags = effective_use,
         **kwargs
     )
 
@@ -2721,20 +3131,58 @@ def python_package(
         python: str = "python3",
         deps: list[str] = [],
         maintainers: list[str] = [],
+        # USE flag support
+        iuse: list[str] = [],
+        use_defaults: list[str] = [],
+        use_extras: dict = {},
+        use_deps: dict = {},
+        global_use: dict | None = None,
+        package_overrides: dict | None = None,
         signature_uri: str | None = None,
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
         auto_detect_signature: bool = True,
         **kwargs):
     """
-    Convenience macro for Python packages.
+    Convenience macro for Python packages with USE flag support.
     Uses the python-single-r1 eclass for standardized build phases.
 
     Args:
+        name: Package name
+        version: Package version
+        src_uri: Source download URL
+        sha256: Source checksum
+        python: Python interpreter (default: python3)
+        deps: Base dependencies (always applied)
+        maintainers: Package maintainers
+        iuse: List of USE flags this package supports
+        use_defaults: Default enabled USE flags
+        use_extras: Dict mapping USE flag to Python extras
+                    Example: {"ssl": "ssl", "http2": "http2"}
+        use_deps: Dict mapping USE flag to conditional dependencies
+        global_use: Global USE flag configuration
+        package_overrides: Package-specific USE overrides
         signature_uri: Optional URL to GPG signature file (.asc or .sig)
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
         auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
+
+    Example:
+        python_package(
+            name = "requests",
+            version = "2.31.0",
+            src_uri = "https://github.com/psf/requests/archive/v2.31.0.tar.gz",
+            sha256 = "...",
+            iuse = ["socks", "security"],
+            use_defaults = ["security"],
+            use_extras = {
+                "socks": "socks",
+                "security": "security",
+            },
+            use_deps = {
+                "socks": ["//packages/linux/dev-python/pysocks"],
+            },
+        )
     """
     src_name = name + "-src"
 
@@ -2748,6 +3196,34 @@ def python_package(
         auto_detect_signature = auto_detect_signature,
     )
 
+    # Calculate effective USE flags if USE flags are specified
+    effective_use = []
+    resolved_deps = list(deps)
+    extras = []
+
+    if iuse:
+        from_use_flags = load("//defs:use_flags.bzl", "get_effective_use", "use_dep")
+
+        effective_use = from_use_flags.get_effective_use(
+            name,
+            iuse,
+            use_defaults,
+            global_use,
+            package_overrides,
+        )
+
+        # Resolve conditional dependencies
+        resolved_deps.extend(from_use_flags.use_dep(use_deps, effective_use))
+
+        # Collect Python extras based on USE flags
+        enabled_set = set(effective_use)
+        for flag, extra_name in use_extras.items():
+            if flag in enabled_set:
+                if isinstance(extra_name, list):
+                    extras.extend(extra_name)
+                else:
+                    extras.append(extra_name)
+
     # Use eclass inheritance for python-single-r1
     eclass_config = inherit(["python-single-r1"])
 
@@ -2756,14 +3232,18 @@ def python_package(
     if python != "python3":
         env["PYTHON"] = python
 
+    # Set extras if any are enabled
+    if extras:
+        env["PYTHON_EXTRAS"] = ",".join(extras)
+
     # Merge eclass bdepend with any existing bdepend
     bdepend = list(kwargs.pop("bdepend", []))
     for dep in eclass_config["bdepend"]:
         if dep not in bdepend:
             bdepend.append(dep)
 
-    # Merge eclass rdepend with any existing rdepend
-    rdepend = list(deps)
+    # Merge eclass rdepend with resolved dependencies
+    rdepend = resolved_deps
     for dep in eclass_config.get("rdepend", []):
         if dep not in rdepend:
             rdepend.append(dep)
@@ -2785,6 +3265,7 @@ def python_package(
         bdepend = bdepend,
         env = env,
         maintainers = maintainers,
+        use_flags = effective_use,
         **filtered_kwargs
     )
 

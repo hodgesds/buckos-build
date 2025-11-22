@@ -1,10 +1,10 @@
-load("//defs:package_defs.bzl", "download_source", "meson_package")
-load("//defs:use_flags.bzl", "use_package", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "meson_package", "autotools_package")
+load("//defs:use_flags.bzl", "set_use_flags")
 
 # PulseAudio - A sound server for POSIX and Win32 systems
 # USE flags: alsa, bluetooth, dbus, gstreamer, jack, X, gtk, ssl, systemd, doc
 
-use_package(
+autotools_package(
     name = "pulseaudio",
     version = "17.0",
     src_uri = "https://freedesktop.org/software/pulseaudio/releases/pulseaudio-17.0.tar.xz",

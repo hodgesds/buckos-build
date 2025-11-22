@@ -568,9 +568,174 @@ def use_with(flag, option = None, enabled_flags = None):
     return "--without-{}".format(opt)
 
 # =============================================================================
-# USE-AWARE PACKAGE MACRO
+# CARGO/RUST USE FLAG SUPPORT
 # =============================================================================
 
+def use_cargo_features(use_features, enabled_flags):
+    """Map USE flags to Cargo features.
+
+    Args:
+        use_features: Dict mapping USE flag to Cargo feature name(s)
+                      Example: {"ssl": "tls", "http2": ["http2", "h2"]}
+        enabled_flags: List of enabled USE flags
+
+    Returns:
+        List of Cargo features to enable
+    """
+    features = []
+    enabled_set = set(enabled_flags)
+
+    for flag, cargo_features in use_features.items():
+        if flag in enabled_set:
+            if isinstance(cargo_features, list):
+                features.extend(cargo_features)
+            else:
+                features.append(cargo_features)
+
+    return features
+
+def use_cargo_args(use_features, enabled_flags, extra_args = []):
+    """Generate Cargo build arguments based on USE flags.
+
+    Args:
+        use_features: Dict mapping USE flag to Cargo feature
+        enabled_flags: List of enabled USE flags
+        extra_args: Additional Cargo arguments
+
+    Returns:
+        List of Cargo arguments
+    """
+    args = list(extra_args)
+    features = use_cargo_features(use_features, enabled_flags)
+
+    if features:
+        args.append("--features={}".format(",".join(features)))
+    else:
+        # If no features, build with no default features
+        args.append("--no-default-features")
+
+    return args
+
+# =============================================================================
+# CMAKE USE FLAG SUPPORT
+# =============================================================================
+
+def use_cmake_options(use_options, enabled_flags):
+    """Map USE flags to CMake options.
+
+    Args:
+        use_options: Dict mapping USE flag to CMake option name(s)
+                     Example: {"ssl": "ENABLE_SSL", "tests": "BUILD_TESTING"}
+        enabled_flags: List of enabled USE flags
+
+    Returns:
+        List of CMake options (-DENABLE_SSL=ON, etc.)
+    """
+    options = []
+    enabled_set = set(enabled_flags)
+
+    for flag, cmake_opt in use_options.items():
+        if isinstance(cmake_opt, list):
+            for opt in cmake_opt:
+                if flag in enabled_set:
+                    options.append("-D{}=ON".format(opt))
+                else:
+                    options.append("-D{}=OFF".format(opt))
+        else:
+            if flag in enabled_set:
+                options.append("-D{}=ON".format(cmake_opt))
+            else:
+                options.append("-D{}=OFF".format(cmake_opt))
+
+    return options
+
+# =============================================================================
+# MESON USE FLAG SUPPORT
+# =============================================================================
+
+def use_meson_options(use_options, enabled_flags):
+    """Map USE flags to Meson options.
+
+    Args:
+        use_options: Dict mapping USE flag to Meson option name(s)
+                     Example: {"ssl": "ssl", "tests": "tests"}
+        enabled_flags: List of enabled USE flags
+
+    Returns:
+        List of Meson options (-Dssl=enabled, etc.)
+    """
+    options = []
+    enabled_set = set(enabled_flags)
+
+    for flag, meson_opt in use_options.items():
+        if isinstance(meson_opt, list):
+            for opt in meson_opt:
+                if flag in enabled_set:
+                    options.append("-D{}=enabled".format(opt))
+                else:
+                    options.append("-D{}=disabled".format(opt))
+        else:
+            if flag in enabled_set:
+                options.append("-D{}=enabled".format(meson_opt))
+            else:
+                options.append("-D{}=disabled".format(meson_opt))
+
+    return options
+
+# =============================================================================
+# GO USE FLAG SUPPORT
+# =============================================================================
+
+def use_go_tags(use_tags, enabled_flags):
+    """Map USE flags to Go build tags.
+
+    Args:
+        use_tags: Dict mapping USE flag to Go build tag(s)
+                  Example: {"ssl": "openssl", "sqlite": "sqlite"}
+        enabled_flags: List of enabled USE flags
+
+    Returns:
+        List of Go build tags
+    """
+    tags = []
+    enabled_set = set(enabled_flags)
+
+    for flag, go_tags_value in use_tags.items():
+        if flag in enabled_set:
+            if isinstance(go_tags_value, list):
+                tags.extend(go_tags_value)
+            else:
+                tags.append(go_tags_value)
+
+    return tags
+
+def use_go_build_args(use_tags, enabled_flags, extra_args = []):
+    """Generate Go build arguments based on USE flags.
+
+    Args:
+        use_tags: Dict mapping USE flag to Go build tag
+        enabled_flags: List of enabled USE flags
+        extra_args: Additional Go build arguments
+
+    Returns:
+        List of Go build arguments
+    """
+    args = list(extra_args)
+    tags = use_go_tags(use_tags, enabled_flags)
+
+    if tags:
+        args.append("-tags={}".format(",".join(tags)))
+
+    return args
+
+# =============================================================================
+# USE-AWARE PACKAGE MACRO (DEPRECATED)
+# =============================================================================
+
+# DEPRECATED: Use autotools_package() from package_defs.bzl instead.
+# This function will be removed in a future release.
+# autotools_package() provides the same functionality but uses the eclass
+# system for better consistency with other language package types.
 def use_package(
         name,
         version,
@@ -594,7 +759,9 @@ def use_package(
         gpg_keyring = None,
         auto_detect_signature = True,
         **kwargs):
-    """Create a package with USE flag support.
+    """DEPRECATED: Use autotools_package() instead.
+
+    Create a package with USE flag support.
 
     This is the main macro for creating packages with conditional features.
 

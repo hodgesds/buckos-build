@@ -54,6 +54,31 @@ PHP_TARGETS = [
     "php8_3",
 ]
 
+# Go targets (versions)
+GO_TARGETS = [
+    "go1_21",
+    "go1_22",
+    "go1_23",
+]
+
+# Rust targets (target triples for cross-compilation)
+RUST_TARGETS = [
+    "x86_64_unknown_linux_gnu",
+    "x86_64_unknown_linux_musl",
+    "aarch64_unknown_linux_gnu",
+    "aarch64_unknown_linux_musl",
+    "armv7_unknown_linux_gnueabihf",
+    "i686_unknown_linux_gnu",
+    "riscv64gc_unknown_linux_gnu",
+]
+
+# Node.js targets
+NODE_TARGETS = [
+    "node18",
+    "node20",
+    "node21",
+]
+
 # CPU flags for x86/x86_64
 CPU_FLAGS_X86 = [
     # Basic
@@ -246,6 +271,21 @@ USE_EXPAND_VARS = {
     "PHP_TARGETS": {
         "values": PHP_TARGETS,
         "description": "PHP implementation targets",
+        "multi": True,
+    },
+    "GO_TARGETS": {
+        "values": GO_TARGETS,
+        "description": "Go version targets",
+        "multi": True,
+    },
+    "RUST_TARGETS": {
+        "values": RUST_TARGETS,
+        "description": "Rust target triples for cross-compilation",
+        "multi": True,
+    },
+    "NODE_TARGETS": {
+        "values": NODE_TARGETS,
+        "description": "Node.js version targets",
         "multi": True,
     },
     "CPU_FLAGS_X86": {

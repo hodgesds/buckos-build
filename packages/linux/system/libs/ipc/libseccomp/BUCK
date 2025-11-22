@@ -1,22 +1,27 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "libseccomp-src",
+use_package(
+    name = "libseccomp",
+    version = "2.5.5",
     src_uri = "https://github.com/seccomp/libseccomp/releases/download/v2.5.5/libseccomp-2.5.5.tar.gz",
     sha256 = "248a2c8a4d9b9858aa6baf52712c34afefcf9c9e94b76dce02c1c9aa25fb3375",
-    auto_detect_signature=False,
-)
-
-configure_make_package(
-    name = "libseccomp",
-    source = ":libseccomp-src",
-    version = "2.5.5",
+    auto_detect_signature = False,
     description = "Enhanced seccomp BPF library",
     homepage = "https://github.com/seccomp/libseccomp",
     license = "LGPL-2.1",
-    configure_args = [
-        "--disable-static",
-    ],
+    iuse = ["static-libs", "python"],
+    use_defaults = [],
+    use_configure = {
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+        "python": "--enable-python",
+        "-python": "--disable-python",
+    },
+    use_deps = {
+        "python": ["//packages/linux/lang/python:python"],
+    },
+    configure_args = [],
+    deps = [],
     visibility = ["PUBLIC"],
 )

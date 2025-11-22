@@ -1,27 +1,52 @@
 load("//defs:package_defs.bzl", "meson_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-meson_package(
+use_package(
     name = "harfbuzz",
     version = "10.0.1",
     src_uri = "https://github.com/harfbuzz/harfbuzz/releases/download/10.0.1/harfbuzz-10.0.1.tar.xz",
     sha256 = "b2cb13bd351904cb9038f907dc0dee0ae07127061242fe3556b2795c4e9748fc",
+    auto_detect_signature = False,
     description = "OpenType text shaping engine",
     homepage = "https://harfbuzz.github.io/",
     license = "MIT",
-    meson_args = [
-        "-Dgraphite2=enabled",
-        "-Dfreetype=enabled",
-        "-Dglib=disabled",
-        "-Dgobject=disabled",
-        "-Dcairo=disabled",
-        "-Dicu=disabled",
-        "-Dtests=disabled",
-        "-Ddocs=disabled",
-    ],
+    iuse = ["static-libs", "graphite", "glib", "cairo", "icu", "introspection", "test", "doc"],
+    use_defaults = ["graphite"],
+    use_configure = {
+        "static-libs": "-Ddefault_library=static",
+        "-static-libs": "-Ddefault_library=shared",
+        "graphite": "-Dgraphite2=enabled",
+        "-graphite": "-Dgraphite2=disabled",
+        "glib": "-Dglib=enabled",
+        "-glib": "-Dglib=disabled",
+        "cairo": "-Dcairo=enabled",
+        "-cairo": "-Dcairo=disabled",
+        "icu": "-Dicu=enabled",
+        "-icu": "-Dicu=disabled",
+        "introspection": "-Dintrospection=enabled",
+        "-introspection": "-Dintrospection=disabled",
+        "test": "-Dtests=enabled",
+        "-test": "-Dtests=disabled",
+        "doc": "-Ddocs=enabled",
+        "-doc": "-Ddocs=disabled",
+    },
+    use_deps = {
+        "graphite": ["//packages/linux/system/libs/font/graphite2:graphite2"],
+        "glib": ["//packages/linux/system/libs/utility/glib:glib"],
+        "cairo": ["//packages/linux/system/libs/graphics/cairo:cairo"],
+        "icu": ["//packages/linux/system/libs/utility/icu:icu"],
+    },
+    pre_configure = """
+mkdir -p build
+cd build
+# USE flags: static-libs, graphite, glib, cairo, icu, introspection, test, doc
+meson setup .. --prefix=/usr \
+    -Dfreetype=enabled \
+    -Dgobject=disabled \
+    $CONFIGURE_ARGS
+""",
     deps = [
         "//packages/linux/system/libs/font/freetype:freetype",
-        "//packages/linux/system/libs/font/graphite2:graphite2",
     ],
     visibility = ["PUBLIC"],
 )

@@ -1,25 +1,50 @@
 load("//defs:package_defs.bzl", "meson_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 
-# glib - GNOME core library (meson build)
-# USE flags: doc, introspection, gtk-doc, systemtap, dtrace, test
-# Default: none
-
-meson_package(
+use_package(
     name = "glib",
     version = "2.80.0",
     src_uri = "https://download.gnome.org/sources/glib/2.80/glib-2.80.0.tar.xz",
     sha256 = "8228a92f92a412160b139ae68b6345bd28f24434a7b5af150ebe21ff587a561d",
+    auto_detect_signature = False,
     description = "Low-level core library for GNOME projects",
     homepage = "https://wiki.gnome.org/Projects/GLib",
     license = "LGPL-2.1+",
-    meson_args = [
-        "-Dman-pages=disabled",
-        "-Ddtrace=false",
-        "-Dsystemtap=false",
-        "-Dgtk_doc=false",
-        "-Dtests=false",
-    ],
+    iuse = ["static-libs", "doc", "man", "introspection", "systemtap", "dtrace", "test", "selinux", "xattr", "libmount"],
+    use_defaults = ["xattr", "libmount"],
+    use_configure = {
+        "static-libs": "-Ddefault_library=static",
+        "-static-libs": "-Ddefault_library=shared",
+        "doc": "-Dgtk_doc=true",
+        "-doc": "-Dgtk_doc=false",
+        "man": "-Dman-pages=enabled",
+        "-man": "-Dman-pages=disabled",
+        "introspection": "-Dintrospection=enabled",
+        "-introspection": "-Dintrospection=disabled",
+        "systemtap": "-Dsystemtap=true",
+        "-systemtap": "-Dsystemtap=false",
+        "dtrace": "-Ddtrace=true",
+        "-dtrace": "-Ddtrace=false",
+        "test": "-Dtests=true",
+        "-test": "-Dtests=false",
+        "selinux": "-Dselinux=enabled",
+        "-selinux": "-Dselinux=disabled",
+        "xattr": "-Dxattr=true",
+        "-xattr": "-Dxattr=false",
+        "libmount": "-Dlibmount=enabled",
+        "-libmount": "-Dlibmount=disabled",
+    },
+    use_deps = {
+        "selinux": ["//packages/linux/system/security/selinux:libselinux"],
+    },
+    pre_configure = """
+mkdir -p build
+cd build
+# USE flags: static-libs, doc, man, introspection, systemtap, dtrace, test, selinux, xattr, libmount
+meson setup .. --prefix=/usr \\
+    --buildtype=release \\
+    $CONFIGURE_ARGS
+""",
     deps = [
         "//packages/linux/system/libs/utility/libffi:libffi",
         "//packages/linux/core/zlib:zlib",

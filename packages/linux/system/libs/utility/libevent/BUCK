@@ -1,25 +1,31 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "libevent-src",
+use_package(
+    name = "libevent",
+    version = "2.1.12",
     src_uri = "https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz",
     sha256 = "92e6de1be9ec176428fd2367677e61ceffc2ee1cb119035037a27d346b0403bb",
-    auto_detect_signature=False,
-)
-
-configure_make_package(
-    name = "libevent",
-    source = ":libevent-src",
-    version = "2.1.12",
+    auto_detect_signature = False,
     description = "Event notification library",
     homepage = "https://libevent.org/",
     license = "BSD-3-Clause",
-    configure_args = [
-        "--disable-static",
-    ],
-    deps = [
-        "//packages/linux/system/libs/crypto/openssl:openssl",
-    ],
+    iuse = ["static-libs", "test", "samples", "ssl"],
+    use_defaults = ["ssl"],
+    use_configure = {
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+        "test": "--enable-libevent-regress",
+        "-test": "--disable-libevent-regress",
+        "samples": "--enable-samples",
+        "-samples": "--disable-samples",
+        "ssl": "--enable-openssl",
+        "-ssl": "--disable-openssl",
+    },
+    use_deps = {
+        "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
+    },
+    configure_args = [],
+    deps = [],
     visibility = ["PUBLIC"],
 )

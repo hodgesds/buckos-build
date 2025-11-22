@@ -1,83 +1,87 @@
 load("//defs:package_defs.bzl", "download_source", "meson_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-# USE flags for pipewire (meson build):
-# - alsa: ALSA support (default: enabled)
-# - jack: JACK emulation (default: enabled)
-# - pulseaudio: PulseAudio emulation (default: enabled)
-# - bluetooth: Bluetooth/BlueZ5 support (default: disabled)
-# - gstreamer: GStreamer plugin (default: disabled)
-# - ffmpeg: FFmpeg integration (default: disabled)
-# - vulkan: Vulkan support (default: disabled)
-# - X: X11 support (default: disabled)
-# - v4l: Video4Linux support (default: disabled)
-# - doc: Documentation (default: disabled)
-# - systemd: systemd integration (default: disabled)
-
-meson_package(
+use_package(
     name = "pipewire",
     version = "1.0.7",
     src_uri = "https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/1.0.7/pipewire-1.0.7.tar.gz",
     sha256 = "9c45eef65e66224804ae8671849452a7f221e913813072b3aad346f20df666a8",
+    auto_detect_signature = False,
     description = "Low-latency audio/video router and processor",
     homepage = "https://pipewire.org/",
     license = "MIT",
-    meson_args = [
-        "-Ddocs=disabled",
-        "-Dexamples=disabled",
-        "-Dman=disabled",
-        "-Dtests=disabled",
-        "-Dinstalled_tests=disabled",
-        "-Dgstreamer=disabled",
-        "-Dgstreamer-device-provider=disabled",
-        "-Dsystemd=disabled",
-        "-Dsystemd-system-service=disabled",
-        "-Dsystemd-user-service=disabled",
-        "-Dpipewire-alsa=enabled",
-        "-Dpipewire-jack=enabled",
-        "-Dpipewire-v4l2=disabled",
-        "-Dspa-plugins=enabled",
-        "-Dalsa=enabled",
-        "-Daudiomixer=enabled",
-        "-Daudioconvert=enabled",
-        "-Dbluez5=disabled",
-        "-Dbluez5-codec-aac=disabled",
-        "-Dbluez5-codec-aptx=disabled",
-        "-Dbluez5-codec-ldac=disabled",
-        "-Dcontrol=enabled",
-        "-Daudiotestsrc=enabled",
-        "-Dffmpeg=disabled",
-        "-Djack=enabled",
-        "-Dsupport=enabled",
-        "-Devl=disabled",
-        "-Dtest=disabled",
-        "-Dv4l2=disabled",
-        "-Dlibcamera=disabled",
-        "-Dvideoconvert=disabled",
-        "-Dvideotestsrc=disabled",
-        "-Dvolume=enabled",
-        "-Dvulkan=disabled",
-        "-Dpw-cat=enabled",
-        "-Dudev=enabled",
-        "-Dudevrulesdir=/lib/udev/rules.d",
-        "-Dsdl2=disabled",
-        "-Dsndfile=enabled",
-        "-Dlibpulse=enabled",
-        "-Droc=disabled",
-        "-Davahi=disabled",
-        "-Decho-cancel-webrtc=disabled",
-        "-Dlibusb=disabled",
-        "-Dsession-managers=[]",
-        "-Draop=disabled",
-        "-Dlv2=disabled",
-        "-Dx11=disabled",
-        "-Dx11-xfixes=disabled",
-        "-Dlibcanberra=disabled",
-        "-Dflatpak=disabled",
-        "-Drlimits-install=false",
-    ],
+    iuse = ["alsa", "jack", "pulseaudio", "bluetooth", "gstreamer", "ffmpeg", "vulkan", "X", "v4l2", "libcamera", "systemd", "doc", "test", "examples"],
+    use_defaults = ["alsa", "jack", "pulseaudio"],
+    use_configure = {
+        "alsa": "-Dalsa=enabled -Dpipewire-alsa=enabled",
+        "-alsa": "-Dalsa=disabled -Dpipewire-alsa=disabled",
+        "jack": "-Djack=enabled -Dpipewire-jack=enabled",
+        "-jack": "-Djack=disabled -Dpipewire-jack=disabled",
+        "pulseaudio": "-Dlibpulse=enabled",
+        "-pulseaudio": "-Dlibpulse=disabled",
+        "bluetooth": "-Dbluez5=enabled -Dbluez5-codec-aac=enabled -Dbluez5-codec-aptx=enabled -Dbluez5-codec-ldac=enabled",
+        "-bluetooth": "-Dbluez5=disabled -Dbluez5-codec-aac=disabled -Dbluez5-codec-aptx=disabled -Dbluez5-codec-ldac=disabled",
+        "gstreamer": "-Dgstreamer=enabled -Dgstreamer-device-provider=enabled",
+        "-gstreamer": "-Dgstreamer=disabled -Dgstreamer-device-provider=disabled",
+        "ffmpeg": "-Dffmpeg=enabled",
+        "-ffmpeg": "-Dffmpeg=disabled",
+        "vulkan": "-Dvulkan=enabled",
+        "-vulkan": "-Dvulkan=disabled",
+        "X": "-Dx11=enabled -Dx11-xfixes=enabled",
+        "-X": "-Dx11=disabled -Dx11-xfixes=disabled",
+        "v4l2": "-Dv4l2=enabled -Dpipewire-v4l2=enabled -Dvideoconvert=enabled -Dvideotestsrc=enabled",
+        "-v4l2": "-Dv4l2=disabled -Dpipewire-v4l2=disabled -Dvideoconvert=disabled -Dvideotestsrc=disabled",
+        "libcamera": "-Dlibcamera=enabled",
+        "-libcamera": "-Dlibcamera=disabled",
+        "systemd": "-Dsystemd=enabled -Dsystemd-system-service=enabled -Dsystemd-user-service=enabled",
+        "-systemd": "-Dsystemd=disabled -Dsystemd-system-service=disabled -Dsystemd-user-service=disabled",
+        "doc": "-Ddocs=enabled -Dman=enabled",
+        "-doc": "-Ddocs=disabled -Dman=disabled",
+        "test": "-Dtests=enabled -Dinstalled_tests=enabled -Dtest=enabled",
+        "-test": "-Dtests=disabled -Dinstalled_tests=disabled -Dtest=disabled",
+        "examples": "-Dexamples=enabled",
+        "-examples": "-Dexamples=disabled",
+    },
+    use_deps = {
+        "alsa": ["//packages/linux/audio/daemons/alsa-lib:alsa-lib"],
+        "bluetooth": ["//packages/linux/system/bluetooth/bluez:bluez"],
+        "gstreamer": ["//packages/linux/graphics/video/gstreamer:gstreamer"],
+        "ffmpeg": ["//packages/linux/graphics/video/ffmpeg:ffmpeg"],
+        "vulkan": ["//packages/linux/gaming/libraries/vulkan-loader:vulkan-loader"],
+        "X": ["//packages/linux/desktop/xorg-server:libx11"],
+        "systemd": ["//packages/linux/system/init/systemd:systemd"],
+    },
+    pre_configure = """
+mkdir -p build
+cd build
+# USE flags: alsa, jack, pulseaudio, bluetooth, gstreamer, ffmpeg, vulkan, X, v4l2, libcamera, systemd, doc, test, examples
+meson setup .. --prefix=/usr \
+    -Dspa-plugins=enabled \
+    -Daudiomixer=enabled \
+    -Daudioconvert=enabled \
+    -Dcontrol=enabled \
+    -Daudiotestsrc=enabled \
+    -Dsupport=enabled \
+    -Devl=disabled \
+    -Dvolume=enabled \
+    -Dpw-cat=enabled \
+    -Dudev=enabled \
+    -Dudevrulesdir=/lib/udev/rules.d \
+    -Dsdl2=disabled \
+    -Dsndfile=enabled \
+    -Droc=disabled \
+    -Davahi=disabled \
+    -Decho-cancel-webrtc=disabled \
+    -Dlibusb=disabled \
+    -Dsession-managers=[] \
+    -Draop=disabled \
+    -Dlv2=disabled \
+    -Dlibcanberra=disabled \
+    -Dflatpak=disabled \
+    -Drlimits-install=false \
+    $CONFIGURE_ARGS
+""",
     deps = [
-        "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
         "//packages/linux/audio/libraries/libsndfile:libsndfile",
         "//packages/linux/system/libs/ipc/dbus:dbus",
     ],

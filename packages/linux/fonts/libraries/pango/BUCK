@@ -1,26 +1,50 @@
 load("//defs:package_defs.bzl", "meson_package")
+load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-meson_package(
+use_package(
     name = "pango",
     version = "1.52.2",
     src_uri = "https://download.gnome.org/sources/pango/1.52/pango-1.52.2.tar.xz",
     sha256 = "d0076afe01082814b853deec99f9349ece5f2ce83908b8e58ff736b41f78a96b",
+    auto_detect_signature = False,
     description = "Library for layout and rendering of text",
     homepage = "https://pango.gnome.org/",
     license = "LGPL-2.0-or-later",
-    meson_args = [
-        "-Dintrospection=disabled",
-        "-Dgtk_doc=false",
-        "-Dbuild-testsuite=false",
-        "-Dbuild-examples=false",
-    ],
+    iuse = ["static-libs", "introspection", "cairo", "X", "doc", "test", "examples"],
+    use_defaults = ["cairo"],
+    use_configure = {
+        "static-libs": "-Ddefault_library=static",
+        "-static-libs": "-Ddefault_library=shared",
+        "introspection": "-Dintrospection=enabled",
+        "-introspection": "-Dintrospection=disabled",
+        "cairo": "-Dcairo=enabled",
+        "-cairo": "-Dcairo=disabled",
+        "X": "-Dxft=enabled",
+        "-X": "-Dxft=disabled",
+        "doc": "-Dgtk_doc=true",
+        "-doc": "-Dgtk_doc=false",
+        "test": "-Dbuild-testsuite=true",
+        "-test": "-Dbuild-testsuite=false",
+        "examples": "-Dbuild-examples=true",
+        "-examples": "-Dbuild-examples=false",
+    },
+    use_deps = {
+        "cairo": ["//packages/linux/desktop/cairo:cairo"],
+        "X": ["//packages/linux/desktop/xorg-server:libx11"],
+    },
+    pre_configure = """
+mkdir -p build
+cd build
+# USE flags: static-libs, introspection, cairo, X, doc, test, examples
+meson setup .. --prefix=/usr \
+    $CONFIGURE_ARGS
+""",
     deps = [
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/font/fribidi:fribidi",
         "//packages/linux/fonts/libraries/freetype:freetype",
         "//packages/linux/fonts/libraries/fontconfig:fontconfig",
         "//packages/linux/fonts/libraries/harfbuzz:harfbuzz",
-        "//packages/linux/desktop/cairo:cairo",
     ],
     visibility = ["PUBLIC"],
 )

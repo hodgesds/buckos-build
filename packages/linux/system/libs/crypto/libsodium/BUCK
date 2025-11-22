@@ -1,21 +1,25 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "libsodium-src",
+use_package(
+    name = "libsodium",
+    version = "1.0.20",
     src_uri = "https://download.libsodium.org/libsodium/releases/libsodium-1.0.20.tar.gz",
     sha256 = "ebb65ef6ca439333c2bb41a0c1990587288da07f6c7fd07cb3a18cc18d30ce19",
-)
-
-configure_make_package(
-    name = "libsodium",
-    source = ":libsodium-src",
-    version = "1.0.20",
+    auto_detect_signature = False,
     description = "Modern, portable, easy to use crypto library",
     homepage = "https://libsodium.org/",
     license = "ISC",
-    configure_args = [
-        "--disable-static",
-    ],
+    iuse = ["static-libs", "minimal"],
+    use_defaults = [],
+    use_configure = {
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+        "minimal": "--enable-minimal",
+        "-minimal": "--disable-minimal",
+    },
+    use_deps = {},
+    configure_args = [],
+    deps = [],
     visibility = ["PUBLIC"],
 )

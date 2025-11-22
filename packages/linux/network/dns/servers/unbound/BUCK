@@ -5,7 +5,7 @@ use_package(
     name = "unbound",
     version = "1.19.1",
     src_uri = "https://nlnetlabs.nl/downloads/unbound/unbound-1.19.1.tar.gz",
-    sha256 = "9da6466cf0399b1a247578fe71eaab6135b0140b7fbace9902fa896759fbfad1",
+    sha256 = "bc1d576f3dd846a0739adc41ffaa702404c6767d2b6082deb9f2f97cbb24a3a9",
 
     iuse = ["ssl", "threads", "dnscrypt", "tfo"],
     use_defaults = ["ssl", "threads", "dnscrypt", "tfo"],

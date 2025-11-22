@@ -5,22 +5,22 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 # Openbox - Lightweight, configurable window manager
 # =============================================================================
 
-download_source(
-    name = "openbox-src",
+use_package(
+    name = "openbox",
+    version = "3.6.1",
     src_uri = "http://openbox.org/dist/openbox/openbox-3.6.1.tar.xz",
     sha256 = "abe75855cc5616554ffd47134ad15291fe37ebbebf1a80b69cbde9d670f0e26d",
-)
-
-configure_make_package(
-    name = "openbox",
-    source = ":openbox-src",
-    version = "3.6.1",
+    auto_detect_signature = False,
     description = "Openbox - Highly configurable window manager",
     homepage = "http://openbox.org/",
     license = "GPL-2.0",
-    configure_args = [
-        "--disable-nls",
-    ],
+    iuse = ["nls"],
+    use_defaults = [],
+    use_configure = {
+        "nls": "--enable-nls",
+        "-nls": "--disable-nls",
+    },
+    configure_args = [],
     deps = [
         "//packages/linux/desktop/xorg-server:xorg-server",
         "//packages/linux/desktop/xorg-server:libx11",

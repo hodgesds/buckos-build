@@ -8,6 +8,7 @@ download_source(
     name = "xf86-input-synaptics-src",
     src_uri = "https://xorg.freedesktop.org/releases/individual/driver/xf86-input-synaptics-1.9.2.tar.xz",
     sha256 = "b8fa4aab913fc63754bbd6439e020658c412743a055201ddf212760593962c38",
+    auto_detect_signature=False,
 )
 
 # USE flags: See use_flags.bzl for available flags

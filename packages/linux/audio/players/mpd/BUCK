@@ -20,6 +20,7 @@ meson_package(
     version = "0.23.15",
     src_uri = "https://www.musicpd.org/download/mpd/0.23/mpd-0.23.15.tar.xz",
     sha256 = "550132239ad1acf82ccf8905b56cc13dc2c81a4489b96fba7731b3049907661a",
+    auto_detect_signature=False,
     description = "Music Player Daemon - flexible, powerful, server-side audio player",
     homepage = "https://www.musicpd.org/",
     license = "GPL-2",

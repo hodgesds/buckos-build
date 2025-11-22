@@ -5,6 +5,7 @@ download_source(
     name = "libmad-src",
     src_uri = "https://downloads.sourceforge.net/mad/libmad-0.15.1b.tar.gz",
     sha256 = "bbfac3ed6bfbc2823d3775ebb931087371e142bb0e9bb1bee51a76a6e0078690",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

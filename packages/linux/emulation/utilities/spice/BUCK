@@ -6,6 +6,7 @@ download_source(
     name = "spice-protocol-src",
     src_uri = "https://www.spice-space.org/download/releases/spice-protocol-0.14.4.tar.xz",
     sha256 = "04ffba610d9fd441cfc47dfaa135d70096e60b1046d2119d8db2f8ea0d17d912",
+    auto_detect_signature=False,
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -28,6 +29,7 @@ download_source(
     name = "spice-server-src",
     src_uri = "https://www.spice-space.org/download/releases/spice-0.15.2.tar.bz2",
     sha256 = "6d9eb6117f03917471c4bc10004abecff48a79fb85eb85a1c45f023377015b81",
+    auto_detect_signature=False,
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -64,6 +66,7 @@ download_source(
     name = "spice-gtk-src",
     src_uri = "https://www.spice-space.org/download/gtk/spice-gtk-0.42.tar.xz",
     sha256 = "9380117f1811ad1faa1812cb6602479b6290d4a0d8cc442d44427f7f6c0e7a58",
+    auto_detect_signature=False,
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -103,6 +106,7 @@ download_source(
     name = "spice-vdagent-src",
     src_uri = "https://www.spice-space.org/download/releases/spice-vdagent-0.22.1.tar.bz2",
     sha256 = "93b0d15aca4762cc7d379b179a7101149dbaed62b72112fffb2b3e90b11687a0",
+    auto_detect_signature=False,
 )
 
 # USE flags: See use_flags.bzl for available flags

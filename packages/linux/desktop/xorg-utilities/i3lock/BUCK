@@ -5,6 +5,7 @@ download_source(
     name = "i3lock-src",
     src_uri = "https://i3wm.org/i3lock/i3lock-2.14.1.tar.xz",
     sha256 = "062ef27eba0bc5a0c7ae91f7b7cbbf03b316d6a49fe80a58fc9f20c18a4e6843",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

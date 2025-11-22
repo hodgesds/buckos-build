@@ -9,6 +9,7 @@ use_package(
     version = "1.9.15p5",
     src_uri = "https://www.sudo.ws/dist/sudo-1.9.15p5.tar.gz",
     sha256 = "558d10b9a1991fb3b9fa7fa7b07ec4405b7aefb5b3cb0b0871dbc81e3a88e558",
+    auto_detect_signature=False,
     description = "Execute commands as another user with security policy",
     homepage = "https://www.sudo.ws",
     license = "ISC",

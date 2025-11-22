@@ -9,6 +9,7 @@ download_source(
     name = "libpwquality-src",
     src_uri = "https://github.com/libpwquality/libpwquality/releases/download/libpwquality-1.4.5/libpwquality-1.4.5.tar.bz2",
     sha256 = "6fcf18b75d305d99d04d2e42982ed5b787a081af2842220ed63287a2d6a10988",
+    auto_detect_signature=False,
 )
 
 configure_make_package(
@@ -40,6 +41,7 @@ download_source(
     name = "cracklib-src",
     src_uri = "https://github.com/cracklib/cracklib/releases/download/v2.9.11/cracklib-2.9.11.tar.xz",
     sha256 = "2c83a91dd21d035eab98bded764eb4579b73fd837b683e1a447b11ef604ee130",
+    auto_detect_signature=False,
 )
 
 configure_make_package(
@@ -72,6 +74,7 @@ download_source(
     name = "passwdqc-src",
     src_uri = "https://www.openwall.com/passwdqc/passwdqc-2.0.3.tar.gz",
     sha256 = "53b0f4bc49369f06195e9e13abb6cff352d5acb79e861004ec95973896488cf4",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

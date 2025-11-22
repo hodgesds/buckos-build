@@ -6,6 +6,7 @@ use_package(
     version = "2.2.13",
     src_uri = "https://mirrors.kernel.org/gnu/indent/indent-2.2.13.tar.xz",
     sha256 = "1b81ba4e9a006ca8e6eb5cbbe4cf4f75dfc1fc9301b459aa0d40393e85590a0b",
+    auto_detect_signature=False,
     description = "C language source code formatting program",
     homepage = "https://www.gnu.org/software/indent/",
     license = "GPL-3+",

@@ -16,6 +16,7 @@ use_package(
     version = "6.12",
     src_uri = "https://www.squid-cache.org/Versions/v6/squid-6.12.tar.gz",
     sha256 = "20d6c79214f75b5f889952ed79e1ab8b8c3f909b079671d77bb558a6f0b28625",
+    auto_detect_signature=False,
     description = "Caching proxy for the Web supporting HTTP, HTTPS, FTP",
     homepage = "https://www.squid-cache.org/",
     license = "GPL-2.0",

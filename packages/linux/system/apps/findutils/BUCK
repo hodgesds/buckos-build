@@ -9,6 +9,7 @@ use_package(
     version = "4.9.0",
     src_uri = "https://mirrors.kernel.org/gnu/findutils/findutils-4.9.0.tar.xz",
     sha256 = "a2bfb8c09d436770edc59f50fa483e785b161a3b7b9d547573cb08065fd462fe",
+    auto_detect_signature=False,
     description = "GNU find, xargs, and locate utilities",
     homepage = "https://www.gnu.org/software/findutils",
     license = "GPL-3+",

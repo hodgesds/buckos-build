@@ -5,6 +5,7 @@ download_source(
     name = "xwininfo-src",
     src_uri = "https://xorg.freedesktop.org/releases/individual/app/xwininfo-1.1.6.tar.xz",
     sha256 = "3518897c17448df9ba99ad6d9bb1ca0f17bc0ed7c0fd61281b34ceed29a9253f",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

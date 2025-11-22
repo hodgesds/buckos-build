@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 download_source(
     name = "pcb-rnd-src",
     src_uri = "http://repo.hu/projects/pcb-rnd/releases/pcb-rnd-3.1.4.tar.gz",
-    sha256 = "ddaab560a6221726bd8d77d9673bcc6db8cced51da526e242d432ca1f4a013ff",
+    sha256 = "6602344b28ac8e3ed206ea1ce6872d7ff64eb34ef651ba9dbba30962f7d782c7",
 )
 
 # USE flags: See use_flags.bzl for available flags

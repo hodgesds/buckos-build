@@ -7,7 +7,7 @@ use_package(
     name = "wireshark",
     version = "4.2.3",
     src_uri = "https://www.wireshark.org/download/src/wireshark-4.2.3.tar.xz",
-    sha256 = "5d77552c391a98bf7c08216f166d4b353eeceab0582da3301dd508a25e2d9b0b",
+    sha256 = "a692cd3d536cd9b11f57dfff26038a093d9061c810b8a501d89acde8a0f9d613",
 
     iuse = ["ssl", "gnutls", "lua", "zlib", "pcre", "xml"],
     use_defaults = ["ssl", "gnutls", "zlib", "pcre", "xml"],

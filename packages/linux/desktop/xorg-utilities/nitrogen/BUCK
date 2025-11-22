@@ -5,6 +5,7 @@ download_source(
     name = "nitrogen-src",
     src_uri = "https://github.com/l3ib/nitrogen/releases/download/1.6.1/nitrogen-1.6.1.tar.gz",
     sha256 = "f40213707b7a3be87e556f65521cef8795bd91afda13dfac8f00c3550375837d",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

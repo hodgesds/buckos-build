@@ -9,6 +9,7 @@ use_package(
     version = "6.7",
     src_uri = "https://github.com/strace/strace/releases/download/v6.7/strace-6.7.tar.xz",
     sha256 = "2090201e1a3ff32846f4fe421c1163b15f440bb38e31355d09f82d3949922af7",
+    auto_detect_signature=False,
     description = "System call tracer for Linux",
     homepage = "https://strace.io",
     license = "LGPL-2.1+",

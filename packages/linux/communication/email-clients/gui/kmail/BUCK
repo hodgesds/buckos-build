@@ -5,6 +5,7 @@ download_source(
     name = "kmail-src",
     src_uri = "https://download.kde.org/stable/release-service/24.05.2/src/kmail-24.05.2.tar.xz",
     sha256 = "625e26ef6aac820327da8bf32851c5bef584ad4ce0583a70cfcba076cd50603c",
+    auto_detect_signature=False,
 )
 
 binary_package(

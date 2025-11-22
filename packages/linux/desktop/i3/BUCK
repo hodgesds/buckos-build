@@ -9,6 +9,7 @@ download_source(
     name = "i3-src",
     src_uri = "https://i3wm.org/downloads/i3-4.23.tar.xz",
     sha256 = "61026a7196c9139d0f3aadd27197e8b320c576e3a450e01d74c1aca484044c46",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

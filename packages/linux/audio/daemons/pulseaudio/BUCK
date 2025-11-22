@@ -1,20 +1,10 @@
 load("//defs:package_defs.bzl", "download_source", "meson_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-# USE flags for pulseaudio (meson build):
-# - alsa: ALSA support (default: enabled)
-# - bluetooth: Bluetooth/BlueZ5 support (default: disabled)
-# - dbus: D-Bus support (default: enabled)
-# - gstreamer: GStreamer support (default: disabled)
-# - jack: JACK support (default: disabled)
-# - X: X11 support (default: disabled)
-# - gtk: GTK+ support (default: disabled)
-# - ssl: OpenSSL support (default: disabled)
-# - systemd: systemd integration (default: disabled)
-# - doc: Documentation (default: disabled)
+# PulseAudio - A sound server for POSIX and Win32 systems
+# USE flags: alsa, bluetooth, dbus, gstreamer, jack, X, gtk, ssl, systemd, doc
 
-
-meson_package(
+use_package(
     name = "pulseaudio",
     version = "17.0",
     src_uri = "https://freedesktop.org/software/pulseaudio/releases/pulseaudio-17.0.tar.xz",
@@ -22,40 +12,104 @@ meson_package(
     description = "A sound server for POSIX and Win32 systems",
     homepage = "https://www.freedesktop.org/wiki/Software/PulseAudio/",
     license = "LGPL-2.1",
+
+    # USE flags this package supports
+    iuse = [
+        "alsa",
+        "bluetooth",
+        "dbus",
+        "gstreamer",
+        "jack",
+        "X",
+        "gtk",
+        "ssl",
+        "systemd",
+        "doc",
+        "webrtc-aec",
+        "fftw",
+        "orc",
+        "soxr",
+        "speex",
+    ],
+
+    # Default enabled flags
+    use_defaults = ["alsa", "dbus"],
+
+    # Conditional dependencies based on USE flags
+    use_deps = {
+        "alsa": ["//packages/linux/audio/daemons/alsa-lib:alsa-lib"],
+        "bluetooth": ["//packages/linux/system/bluetooth/bluez:bluez"],
+        "dbus": ["//packages/linux/system/libs/ipc/dbus:dbus"],
+        "gstreamer": ["//packages/linux/graphics/video/gstreamer:gstreamer"],
+        "jack": ["//packages/linux/audio/daemons/jack:jack"],
+        "X": ["//packages/linux/desktop/xorg:xorg-libs"],
+        "gtk": ["//packages/linux/desktop/gtk:gtk3"],
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "systemd": ["//packages/linux/system/init/systemd:systemd"],
+    },
+
+    # Meson options based on USE flags (Meson 1.0+ format: enabled/disabled/auto)
+    use_configure = {
+        # Core features
+        "alsa": "-Dalsa=enabled",
+        "-alsa": "-Dalsa=disabled",
+        "bluetooth": "-Dbluez5=enabled",
+        "-bluetooth": "-Dbluez5=disabled",
+        "dbus": "-Ddbus=enabled",
+        "-dbus": "-Ddbus=disabled",
+        "gstreamer": "-Dgstreamer=enabled",
+        "-gstreamer": "-Dgstreamer=disabled",
+        "jack": "-Djack=enabled",
+        "-jack": "-Djack=disabled",
+        "X": "-Dx11=enabled",
+        "-X": "-Dx11=disabled",
+        "gtk": "-Dgtk=enabled",
+        "-gtk": "-Dgtk=disabled",
+        "ssl": "-Dopenssl=enabled",
+        "-ssl": "-Dopenssl=disabled",
+        "systemd": "-Dsystemd=enabled",
+        "-systemd": "-Dsystemd=disabled",
+
+        # Advanced features
+        "webrtc-aec": "-Dwebrtc-aec=enabled",
+        "-webrtc-aec": "-Dwebrtc-aec=disabled",
+        "fftw": "-Dfftw=enabled",
+        "-fftw": "-Dfftw=disabled",
+        "orc": "-Dorc=enabled",
+        "-orc": "-Dorc=disabled",
+        "soxr": "-Dsoxr=enabled",
+        "-soxr": "-Dsoxr=disabled",
+        "speex": "-Dspeex=enabled",
+        "-speex": "-Dspeex=disabled",
+
+        # Documentation
+        "doc": "-Dman=enabled",
+        "-doc": "-Dman=disabled",
+    },
+
+    # Base Meson arguments (always applied)
     meson_args = [
-        "-Ddaemon=true",
-        "-Dclient=true",
-        "-Ddoxygen=false",
-        "-Dgcov=false",
-        "-Dman=false",
-        "-Dtests=false",
+        "-Ddaemon=enabled",
+        "-Dclient=enabled",
+        "-Ddoxygen=disabled",
+        "-Dgcov=disabled",
+        "-Dtests=disabled",
         "-Ddatabase=simple",
-        "-Dbluez5=false",
-        "-Dfftw=disabled",
-        "-Djack=disabled",
-        "-Dlirc=disabled",
-        "-Dopenssl=disabled",
-        "-Dorc=disabled",
-        "-Dsoxr=disabled",
-        "-Dspeex=disabled",
-        "-Dsystemd=disabled",
         "-Dudev=enabled",
-        "-Dx11=disabled",
         "-Dgsettings=disabled",
-        "-Dgstreamer=disabled",
-        "-Dgtk=disabled",
-        "-Dhal-compat=false",
+        "-Dhal-compat=disabled",
         "-Dasyncns=disabled",
         "-Davahi=disabled",
         "-Dbluez5-gstreamer=disabled",
-        "-Dbluez5-native-headset=false",
-        "-Dbluez5-ofono-headset=false",
-        "-Dwebrtc-aec=disabled",
+        "-Dbluez5-native-headset=disabled",
+        "-Dbluez5-ofono-headset=disabled",
+        "-Dlirc=disabled",
     ],
+
+    # Base dependencies (always required)
     deps = [
-        "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
         "//packages/linux/audio/libraries/libsndfile:libsndfile",
-        "//packages/linux/system/libs/ipc/dbus:dbus",
     ],
+
     visibility = ["PUBLIC"],
 )

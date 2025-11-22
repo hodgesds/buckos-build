@@ -10,6 +10,7 @@ use_package(
     version = "9.6p1",
     src_uri = "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.6p1.tar.gz",
     sha256 = "910211c07255a8c5ad654391b40ee59800710dd8119dd5362de09385aa7a777c",
+    auto_detect_signature=False,
 
     iuse = ["ssl", "pam", "kerberos", "ldap", "libedit"],
     use_defaults = ["ssl"],

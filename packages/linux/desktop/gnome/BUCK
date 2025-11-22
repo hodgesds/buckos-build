@@ -66,7 +66,7 @@ meson setup .. --prefix=/usr \\
 download_source(
     name = "gtk3-src",
     src_uri = "https://download.gnome.org/sources/gtk/3.24/gtk-3.24.41.tar.xz",
-    sha256 = "c375e42b6328de1880de1424a93267d573a1afa2ed37f72a35d8218f6880dd58",
+    sha256 = "1c83a8b58ce7c99f853eed80cd36b2343fe9cf80e5d9d846912777f69b7475aa",
 )
 
 configure_make_package(
@@ -942,7 +942,7 @@ meson setup .. --prefix=/usr \\
 download_source(
     name = "gnome-terminal-src",
     src_uri = "https://download.gnome.org/sources/gnome-terminal/3.50/gnome-terminal-3.50.1.tar.xz",
-    sha256 = "c375e42b6328de1880de1424a93267d573a1afa2ed37f72a35d8218f6880dd58",
+    sha256 = "1c83a8b58ce7c99f853eed80cd36b2343fe9cf80e5d9d846912777f69b7475aa",
 )
 
 configure_make_package(
@@ -2140,7 +2140,7 @@ meson setup .. --prefix=/usr \\
 download_source(
     name = "gnome-user-docs-src",
     src_uri = "https://download.gnome.org/sources/gnome-user-docs/45/gnome-user-docs-45.2.tar.xz",
-    sha256 = "c375e42b6328de1880de1424a93267d573a1afa2ed37f72a35d8218f6880dd58",
+    sha256 = "1c83a8b58ce7c99f853eed80cd36b2343fe9cf80e5d9d846912777f69b7475aa",
 )
 
 configure_make_package(

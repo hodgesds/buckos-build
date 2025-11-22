@@ -1,26 +1,34 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "gnutls-src",
+use_package(
+    name = "gnutls",
+    version = "3.8.7",
     src_uri = "https://www.gnupg.org/ftp/gcrypt/gnutls/v3.8/gnutls-3.8.7.tar.xz",
     sha256 = "fe302f2b6ad5a564bcb3678eb61616413ed5277aaf8e7bf7cdb9a95a18d9f477",
-)
-
-configure_make_package(
-    name = "gnutls",
-    source = ":gnutls-src",
-    version = "3.8.7",
+    auto_detect_signature = False,
     description = "Secure communications library implementing SSL, TLS and DTLS",
     homepage = "https://www.gnutls.org/",
     license = "LGPL-2.1",
+    iuse = ["p11", "guile", "doc", "static-libs"],
+    use_defaults = [],
+    use_configure = {
+        "p11": "--with-p11-kit",
+        "-p11": "--without-p11-kit",
+        "guile": "--enable-guile",
+        "-guile": "--disable-guile",
+        "doc": "--enable-doc",
+        "-doc": "--disable-doc",
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+    },
+    use_deps = {
+        "p11": ["//packages/linux/dev-libs/p11-kit:p11-kit"],
+        "guile": ["//packages/linux/lang/guile:guile"],
+    },
     configure_args = [
-        "--disable-static",
         "--with-included-libtasn1",
         "--with-included-unistring",
-        "--without-p11-kit",
-        "--disable-guile",
-        "--disable-doc",
     ],
     deps = [
         "//packages/linux/system/libs/crypto/nettle:nettle",

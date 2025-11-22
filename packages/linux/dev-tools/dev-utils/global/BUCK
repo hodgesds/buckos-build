@@ -6,6 +6,7 @@ use_package(
     version = "6.6.12",
     src_uri = "https://mirrors.kernel.org/gnu/global/global-6.6.12.tar.gz",
     sha256 = "542a5b06840e14eca548b4bb60b44c0adcf01024e68eb362f8bf716007885901",
+    auto_detect_signature=False,
     description = "GNU GLOBAL source code tagging system",
     homepage = "https://www.gnu.org/software/global/",
     license = "GPL-3+",

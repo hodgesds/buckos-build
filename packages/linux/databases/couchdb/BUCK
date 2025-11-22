@@ -10,7 +10,8 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 download_source(
     name = "couchdb-src",
     src_uri = "https://dlcdn.apache.org/couchdb/source/3.3.3/apache-couchdb-3.3.3.tar.gz",
-    sha256 = "353a3f8d9cbb5de14bf8bbe6ba325697568c83b3868c0fe465ed58ae633bf952",
+    sha256 = "7a2007b5f673d4be22a25c9a111d9066919d872ddb9135a7dcec0122299bd39e",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

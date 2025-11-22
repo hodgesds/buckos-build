@@ -5,49 +5,55 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 # Wayland - Next-generation display protocol
 # =============================================================================
 
-download_source(
-    name = "wayland-src",
+use_package(
+    name = "wayland",
+    version = "1.22.0",
     src_uri = "https://gitlab.freedesktop.org/wayland/wayland/-/releases/1.22.0/downloads/wayland-1.22.0.tar.xz",
     sha256 = "1540af1ea698a471c2d8e9d288332c7e0fd360c8f1d12936ebb7e7cbc2425842",
-)
-
-configure_make_package(
-    name = "wayland",
-    source = ":wayland-src",
-    version = "1.22.0",
+    auto_detect_signature = False,
     description = "Wayland display protocol libraries",
     homepage = "https://wayland.freedesktop.org/",
     license = "MIT",
-    configure_args = [
-        "-Ddocumentation=false",
-        "-Dtests=false",
-    ],
+    iuse = ["doc", "test"],
+    use_defaults = [],
+    use_configure = {
+        "doc": "-Ddocumentation=true",
+        "-doc": "-Ddocumentation=false",
+        "test": "-Dtests=true",
+        "-test": "-Dtests=false",
+    },
+    configure_args = [],
     pre_configure = """
 # Wayland uses meson
 mkdir -p build
 cd build
-meson setup .. --prefix=/usr -Ddocumentation=false -Dtests=false
+# USE flags: doc, test
+meson setup .. --prefix=/usr $CONFIGURE_ARGS
 """,
     visibility = ["PUBLIC"],
 )
 
-download_source(
-    name = "wayland-protocols-src",
+use_package(
+    name = "wayland-protocols",
+    version = "1.33",
     src_uri = "https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.33/downloads/wayland-protocols-1.33.tar.xz",
     sha256 = "94f0c50b090d6e61a03f62048467b19abbe851be4e11ae7b36f65f8b98c3963a",
-)
-
-configure_make_package(
-    name = "wayland-protocols",
-    source = ":wayland-protocols-src",
-    version = "1.33",
+    auto_detect_signature = False,
     description = "Wayland protocol extensions",
     homepage = "https://wayland.freedesktop.org/",
     license = "MIT",
+    iuse = ["test"],
+    use_defaults = [],
+    use_configure = {
+        "test": "-Dtests=true",
+        "-test": "-Dtests=false",
+    },
+    configure_args = [],
     pre_configure = """
 mkdir -p build
 cd build
-meson setup .. --prefix=/usr -Dtests=false
+# USE flags: test
+meson setup .. --prefix=/usr $CONFIGURE_ARGS
 """,
     deps = [":wayland"],
     visibility = ["PUBLIC"],

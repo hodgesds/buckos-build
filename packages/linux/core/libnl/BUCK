@@ -6,6 +6,7 @@ use_package(
     version = "3.9.0",
     src_uri = "https://github.com/thom311/libnl/releases/download/libnl3_9_0/libnl-3.9.0.tar.gz",
     sha256 = "aed507004d728a5cf11eab48ca4bf9e6e1874444e33939b9d3dfed25018ee9bb",
+    auto_detect_signature=False,
     description = "Library for applications dealing with netlink sockets",
     homepage = "https://www.infradead.org/~tgr/libnl/",
     license = "LGPL-2.1",

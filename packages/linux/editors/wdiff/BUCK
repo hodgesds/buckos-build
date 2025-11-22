@@ -6,6 +6,7 @@ download_source(
     name = "wdiff-src",
     src_uri = "https://mirrors.kernel.org/gnu/wdiff/wdiff-1.2.2.tar.gz",
     sha256 = "34ff698c870c87e6e47a838eeaaae729fa73349139fc8db12211d2a22b78af6b",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

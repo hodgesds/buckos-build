@@ -75,7 +75,6 @@ meson_package(
         "-Dlibcanberra=disabled",
         "-Dflatpak=disabled",
         "-Drlimits-install=false",
-        "-Dsnap=false",
     ],
     deps = [
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",

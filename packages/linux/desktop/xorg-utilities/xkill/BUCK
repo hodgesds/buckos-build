@@ -5,6 +5,7 @@ download_source(
     name = "xkill-src",
     src_uri = "https://xorg.freedesktop.org/releases/individual/app/xkill-1.0.6.tar.xz",
     sha256 = "e5a8aa78c475677b11504646da8d93dacc30744258076a2ca418a24438aeb907",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

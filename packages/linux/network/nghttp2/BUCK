@@ -10,6 +10,7 @@ use_package(
     version = "1.59.0",
     src_uri = "https://github.com/nghttp2/nghttp2/releases/download/v1.59.0/nghttp2-1.59.0.tar.xz",
     sha256 = "fdc9bd71f5cf8d3fdfb63066b89364c10eb2fdeab55f3c6755cd7917b2ec4ffb",
+    auto_detect_signature=False,
 
     iuse = ["static-libs", "tools", "xml"],
     use_defaults = [],

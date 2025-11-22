@@ -9,12 +9,14 @@ download_source(
     name = "go-bootstrap-src",
     src_uri = "https://go.dev/dl/go1.21.6.linux-amd64.tar.gz",
     sha256 = "3f934f40ac360b9c01f616a9aa1796d227d8b0328bf64cb045c7b8c4ee9caea4",
+    auto_detect_signature=False,
 )
 
 download_source(
     name = "go-src",
     src_uri = "https://go.dev/dl/go1.22.0.src.tar.gz",
     sha256 = "4d196c3d41a0d6c1dfc64d04e3cc1f608b0c436bd87b7060ce3e23234e1f4d5c",
+    auto_detect_signature=False,
 )
 
 binary_package(

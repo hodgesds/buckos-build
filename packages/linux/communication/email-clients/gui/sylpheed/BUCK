@@ -5,6 +5,7 @@ download_source(
     name = "sylpheed-src",
     src_uri = "https://sylpheed.sraoss.jp/sylpheed/v3.7/sylpheed-3.7.0.tar.xz",
     sha256 = "0d6bc5eb46f5d0a463757c62bc80b00d219b294b3c3662840e4540f6db2e3e49",
+    auto_detect_signature=False,
 )
 
 # USE flags: See use_flags.bzl for available flags

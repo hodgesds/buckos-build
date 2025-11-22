@@ -9,6 +9,7 @@ download_source(
     name = "libdrm-src",
     src_uri = "https://dri.freedesktop.org/libdrm/libdrm-2.4.120.tar.xz",
     sha256 = "3bf55363f76c7250946441ab51d3a6cc0ae518055c0ff017324ab76cdefb327a",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

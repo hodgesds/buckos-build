@@ -7,6 +7,7 @@ download_source(
     name = "aspell-src",
     src_uri = "https://mirrors.kernel.org/gnu/aspell/aspell-0.60.8.1.tar.gz",
     sha256 = "d6da12b34d42d457fa604e435ad484a74b2effcd120ff40acd6bb3fb2887d21b",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

@@ -5,7 +5,7 @@ cmake_package(
     name = "bear",
     version = "3.1.4",
     src_uri = "https://github.com/rizsotto/Bear/archive/refs/tags/3.1.4.tar.gz",
-    sha256 = "47dbc7bf773598d31e64e665ae0c1954e6c999ef7405c84127dc9958fbd1ca24",
+    sha256 = "a1105023795b3e1b9abc29c088cdec5464cc9f3b640b5078dc90a505498da5ff",
     description = "Tool that generates a compilation database for clang tooling",
     homepage = "https://github.com/rizsotto/Bear",
     license = "GPL-3+",

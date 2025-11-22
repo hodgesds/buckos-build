@@ -5,6 +5,7 @@ download_source(
     name = "xprop-src",
     src_uri = "https://xorg.freedesktop.org/releases/individual/app/xprop-1.2.6.tar.xz",
     sha256 = "580b8525b12ecc0144aa16c88b0aafa76d2e799b44c8c6c50f9ce92788b5586e",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

@@ -8,6 +8,7 @@ use_package(
     version = "3.0.21",
     src_uri = "https://download.videolan.org/pub/vlc/3.0.21/vlc-3.0.21.tar.xz",
     sha256 = "24dbbe1d7dfaeea0994d5def0bbde200177347136dbfe573f5b6a4cee25afbb0",
+    auto_detect_signature=False,
     description = "Multi-platform MPEG, VCD/DVD, and DivX player",
     homepage = "https://www.videolan.org/vlc/",
     license = "GPL-2.0-or-later LGPL-2.1-or-later",

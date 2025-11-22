@@ -5,6 +5,7 @@ download_source(
     name = "nghttp2-src",
     src_uri = "https://github.com/nghttp2/nghttp2/releases/download/v1.63.0/nghttp2-1.63.0.tar.xz",
     sha256 = "4879c75dd32a74421b9857924449460b8341796c0613ba114ab2188e4622354b",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

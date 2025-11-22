@@ -6,6 +6,7 @@ use_package(
     version = "2.5.2",
     src_uri = "http://ftp.daper.net/pub/soft/moc/stable/moc-2.5.2.tar.bz2",
     sha256 = "f3a68115602a4788b7cfa9bbe9397a9d5e24c68cb61a57695d1c2c3ecf49db08",
+    auto_detect_signature=False,
     description = "Music On Console - ncurses based console audio player",
     homepage = "https://moc.daper.net/",
     license = "GPL-2",

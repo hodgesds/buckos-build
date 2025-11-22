@@ -9,6 +9,7 @@ download_source(
     name = "lxqt-session-src",
     src_uri = "https://github.com/lxqt/lxqt-session/releases/download/1.4.0/lxqt-session-1.4.0.tar.xz",
     sha256 = "9dcdc846601f1972d01429f2203d36976088edcca5c166eef2b21ad73fcef656",
+    auto_detect_signature=False,
 )
 
 configure_make_package(
@@ -31,6 +32,7 @@ download_source(
     name = "lxqt-panel-src",
     src_uri = "https://github.com/lxqt/lxqt-panel/releases/download/1.4.0/lxqt-panel-1.4.0.tar.xz",
     sha256 = "0e660c0397c96a28f0fcf316b20c72d203c85793a884e1487b3b14e3790defc9",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

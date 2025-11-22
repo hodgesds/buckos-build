@@ -14,7 +14,7 @@ use_package(
     name = "fio",
     version = "3.36",
     src_uri = "https://github.com/axboe/fio/archive/refs/tags/fio-3.36.tar.gz",
-    sha256 = "4ffdbdff5c012ed0808176c3030bc7c458229c06f34cc83856d0b8778f813518",
+    sha256 = "b34b8f3c5cd074c09ea487ffe3f444e95565c214b34a73042f35b00cbaab0e17",
     description = "Flexible I/O tester - benchmark and stress test tool for storage",
     homepage = "https://github.com/axboe/fio",
     license = "GPL-2.0",

@@ -7,19 +7,29 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 # Standalone device manager for /dev, independent of systemd.
 # Handles device nodes, hotplugging, and firmware loading.
 
-download_source(
-    name = "eudev-src",
+use_package(
+    name = "eudev",
+    version = "3.2.14",
     src_uri = "https://github.com/eudev-project/eudev/releases/download/v3.2.14/eudev-3.2.14.tar.gz",
     sha256 = "8da4319102f24abbf7fff5ce9c416af848df163b29590e666d334cc1927f006f",
-)
-
-configure_make_package(
-    name = "eudev",
-    source = ":eudev-src",
-    version = "3.2.14",
+    auto_detect_signature = False,
     description = "Standalone device manager for /dev (fork of systemd-udev)",
     homepage = "https://github.com/eudev-project/eudev",
     license = "GPL-2.0",
+    iuse = ["kmod", "selinux", "doc"],
+    use_defaults = ["kmod"],
+    use_configure = {
+        "kmod": "--enable-kmod",
+        "-kmod": "--disable-kmod",
+        "selinux": "--enable-selinux",
+        "-selinux": "--disable-selinux",
+        "doc": "--enable-manpages",
+        "-doc": "--disable-manpages",
+    },
+    use_deps = {
+        "kmod": ["//packages/linux/system/libs/kmod:kmod"],
+        "selinux": ["//packages/linux/system/security/selinux:selinux"],
+    },
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
@@ -27,9 +37,6 @@ configure_make_package(
         "--with-rootlibdir=/lib",
         "--enable-split-usr",
         "--enable-hwdb",
-        "--enable-kmod",
-        "--disable-selinux",
-        "--disable-manpages",
     ],
     post_install = """
 # Create essential directories
@@ -47,7 +54,6 @@ if [ -x "$OUT/bin/udevadm" ]; then
 fi
 """,
     deps = [
-        "//packages/linux/system/libs/kmod:kmod",
         "//packages/linux/core/util-linux:util-linux",
     ],
     visibility = ["PUBLIC"],
@@ -58,6 +64,7 @@ download_source(
     name = "hwids-src",
     src_uri = "https://github.com/gentoo/hwids/archive/refs/tags/hwids-20230308.tar.gz",
     sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

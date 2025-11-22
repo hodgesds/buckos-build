@@ -7,6 +7,7 @@ cmake_package(
     version = "3.2.5",
     src_uri = "https://archive.apache.org/dist/xerces/c/3/sources/xerces-c-3.2.5.tar.gz",
     sha256 = "545cfcce6c4e755207bd1f27e319241e50e37c0c27250f11cda116018f1ef0f5",
+    auto_detect_signature=False,
     description = "Validating XML parser written in portable C++",
     homepage = "https://xerces.apache.org/xerces-c/",
     license = "Apache-2.0",

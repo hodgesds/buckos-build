@@ -5,6 +5,7 @@ download_source(
     name = "aide-src",
     src_uri = "https://github.com/aide/aide/releases/download/v0.18.6/aide-0.18.6.tar.gz",
     sha256 = "8ff36ce47d37d0cc987762d5d961346d475de74bba8a1832fd006db6edd3c10e",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

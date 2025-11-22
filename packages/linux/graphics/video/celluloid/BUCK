@@ -8,6 +8,7 @@ meson_package(
     version = "0.27",
     src_uri = "https://github.com/celluloid-player/celluloid/releases/download/v0.27/celluloid-0.27.tar.xz",
     sha256 = "216656c4495bb3ca02dc4ad9cf3da8e8f15c8f80e870eeac8eb1eedab4c3788b",
+    auto_detect_signature=False,
     description = "Simple GTK+ frontend for mpv",
     homepage = "https://celluloid-player.github.io/",
     license = "GPL-3.0-or-later",

@@ -6,6 +6,7 @@ download_source(
     name = "mpfr-src",
     src_uri = "https://www.mpfr.org/mpfr-4.2.1/mpfr-4.2.1.tar.xz",
     sha256 = "277807353a6726978996945af13e52829e3abd7a9a5b7fb2793894e18f1fcbb2",
+    auto_detect_signature=False,
 )
 
 ebuild_package(

@@ -5,6 +5,7 @@ download_source(
     name = "clamav-src",
     src_uri = "https://www.clamav.net/downloads/production/clamav-1.2.1.tar.gz",
     sha256 = "9a14fe870cbb8f5f79f668b789dca0f25cc6be22abe32f4f7d3677e4ee3935b0",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

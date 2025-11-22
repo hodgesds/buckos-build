@@ -5,6 +5,7 @@ download_source(
     name = "xinput-src",
     src_uri = "https://xorg.freedesktop.org/releases/individual/app/xinput-1.6.4.tar.xz",
     sha256 = "ad04d00d656884d133110eeddc34e9c69e626ebebbbab04dc95791c2907057c8",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

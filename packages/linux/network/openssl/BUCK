@@ -10,6 +10,7 @@ use_package(
     version = "3.2.0",
     src_uri = "https://www.openssl.org/source/openssl-3.2.0.tar.gz",
     sha256 = "14c826f07c7e433706fb5c69fa9e25dab95684844b4c962a2cf1bf183eb4690e",
+    auto_detect_signature=False,
 
     iuse = ["static-libs", "threads", "zlib", "asm"],
     use_defaults = ["threads", "zlib", "asm"],

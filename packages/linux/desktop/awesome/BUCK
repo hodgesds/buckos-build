@@ -9,6 +9,7 @@ download_source(
     name = "awesome-src",
     src_uri = "https://github.com/awesomeWM/awesome/releases/download/v4.3/awesome-4.3.tar.xz",
     sha256 = "78264d6f012350b371e339127aca485260bc0aa935eff578ba75ce1a00e11753",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

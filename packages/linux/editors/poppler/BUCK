@@ -8,6 +8,7 @@ cmake_package(
     version = "24.02.0",
     src_uri = "https://poppler.freedesktop.org/poppler-24.02.0.tar.xz",
     sha256 = "19187a3fdd05f33e7d604c4799c183de5ca0118640c88b370ddcf3136343222e",
+    auto_detect_signature=False,
     description = "PDF rendering library based on xpdf",
     homepage = "https://poppler.freedesktop.org",
     license = "GPL-2+",

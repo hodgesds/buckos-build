@@ -10,6 +10,7 @@ use_package(
     version = "3.12.1",
     src_uri = "https://www.python.org/ftp/python/3.12.1/Python-3.12.1.tar.xz",
     sha256 = "8dfb8f426fcd226657f9e2bd5f1e96e53264965176fa17d32658e873591aeb21",
+    auto_detect_signature=False,
     description = "Python is a powerful, easy to learn programming language",
     homepage = "https://www.python.org/",
     license = "PSF-2.0",

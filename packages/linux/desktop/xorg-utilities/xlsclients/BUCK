@@ -5,6 +5,7 @@ download_source(
     name = "xlsclients-src",
     src_uri = "https://xorg.freedesktop.org/releases/individual/app/xlsclients-1.1.5.tar.xz",
     sha256 = "68baee57e70250ac4a7759fb78221831f97d88bc8e51dcc2e64eb3f8ca56bae3",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

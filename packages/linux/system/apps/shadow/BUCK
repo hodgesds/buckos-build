@@ -8,7 +8,7 @@ use_package(
     name = "shadow",
     version = "4.14.8",
     src_uri = "https://github.com/shadow-maint/shadow/releases/download/4.14.8/shadow-4.14.8.tar.xz",
-    sha256 = "ff0b99d87eb78004dd9145ac25445f8a5c8dca2dd9942e023a92b8ee11eab5a6",
+    sha256 = "f09eabcc6972f8689813c4fc6b471dc25de435e50528ea2708a6431ebbed9209",
     description = "User and group management utilities (passwd, useradd, etc.)",
     homepage = "https://github.com/shadow-maint/shadow",
     license = "BSD",

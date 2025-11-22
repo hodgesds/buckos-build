@@ -9,6 +9,7 @@ download_source(
     name = "lightdm-src",
     src_uri = "https://github.com/canonical/lightdm/releases/download/1.32.0/lightdm-1.32.0.tar.xz",
     sha256 = "12f5ab432748f0387c7cf8b94430495a558a035a4f8465e5181af6faff133e4b",
+    auto_detect_signature=False,
 )
 
 configure_make_package(

@@ -1,24 +1,29 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
 load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
-download_source(
-    name = "dbus-src",
+use_package(
+    name = "dbus",
+    version = "1.14.10",
     src_uri = "https://dbus.freedesktop.org/releases/dbus/dbus-1.14.10.tar.xz",
     sha256 = "ba1f21d2bd9d339da2d4aa8780c09df32fea87998b73da24f49ab9df1e36a50f",
-)
-
-configure_make_package(
-    name = "dbus",
-    source = ":dbus-src",
-    version = "1.14.10",
+    auto_detect_signature = False,
     description = "Message bus system",
     homepage = "https://www.freedesktop.org/wiki/Software/dbus/",
     license = "AFL-2.1",
+    iuse = ["systemd", "doc", "static-libs"],
+    use_defaults = [],
+    use_configure = {
+        "systemd": "--enable-systemd",
+        "-systemd": "--disable-systemd",
+        "doc": "--enable-doxygen-docs --enable-xml-docs",
+        "-doc": "--disable-doxygen-docs --disable-xml-docs",
+        "static-libs": "--enable-static",
+        "-static-libs": "--disable-static",
+    },
+    use_deps = {
+        "systemd": ["//packages/linux/system/init/systemd:systemd"],
+    },
     configure_args = [
-        "--disable-static",
-        "--disable-doxygen-docs",
-        "--disable-xml-docs",
-        "--disable-systemd",
         "--with-system-socket=/run/dbus/system_bus_socket",
         "--with-console-auth-dir=/run/console",
         "--localstatedir=/var",

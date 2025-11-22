@@ -1,25 +1,30 @@
 load("//defs:package_defs.bzl", "download_source", "configure_make_package")
+load("//defs:use_flags.bzl", "use_package")
 
 # Nettle - Low-level cryptographic library
-download_source(
-    name = "nettle-src",
+use_package(
+    name = "nettle",
+    version = "3.10",
     src_uri = "https://mirrors.kernel.org/gnu/nettle/nettle-3.10.tar.gz",
     sha256 = "b4c518adb174e484cb4acea54118f02380c7133771e7e9beb98a0787194ee47c",
-)
-
-configure_make_package(
-    name = "nettle",
-    source = ":nettle-src",
-    version = "3.10",
+    auto_detect_signature = False,
     description = "Low-level cryptographic library",
     homepage = "https://www.lysator.liu.se/~nisse/nettle/",
     license = "GPL-2+ OR LGPL-3+",
+    iuse = ["openssl"],
+    use_defaults = [],
+    use_configure = {
+        "openssl": "--enable-openssl",
+        "-openssl": "--disable-openssl",
+    },
+    use_deps = {
+        "openssl": ["//packages/linux/network/openssl:openssl"],
+    },
     configure_args = [
         "--prefix=/usr",
         "--enable-shared",
         "--disable-static",
         "--enable-public-key",
-        "--disable-openssl",
     ],
     deps = [
         "//packages/linux/dev-libs/gmp:gmp",

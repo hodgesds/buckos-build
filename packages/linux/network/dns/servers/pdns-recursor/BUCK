@@ -6,6 +6,7 @@ use_package(
     version = "5.0.2",
     src_uri = "https://downloads.powerdns.com/releases/pdns-recursor-5.0.2.tar.bz2",
     sha256 = "a90e8b61fdc181b596144c35920118ca71c3b95f46658cce7e8222750de45ca9",
+    auto_detect_signature=False,
 
     iuse = ["ssl", "dnstap", "lua", "sodium"],
     use_defaults = ["ssl", "dnstap", "lua", "sodium"],

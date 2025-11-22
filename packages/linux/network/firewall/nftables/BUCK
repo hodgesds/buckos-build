@@ -10,6 +10,7 @@ use_package(
     version = "1.0.9",
     src_uri = "https://www.netfilter.org/projects/nftables/files/nftables-1.0.9.tar.xz",
     sha256 = "a3c304cd9ba061239ee0474f9afb938a9bb99d89b960246f66f0c3a0a85e14cd",
+    auto_detect_signature=False,
 
     iuse = ["json", "python", "readline", "debug", "doc"],
     use_defaults = ["json", "readline"],

@@ -3,26 +3,29 @@ load("//defs:use_flags.bzl", "use_package", "set_use_flags")
 
 # MKVToolNix - Set of tools to create, alter and inspect Matroska files
 
-download_source(
-    name = "mkvtoolnix-src",
+use_package(
+    name = "mkvtoolnix",
+    version = "86.0",
     src_uri = "https://mkvtoolnix.download/sources/mkvtoolnix-86.0.tar.xz",
     sha256 = "29a9155fbba99f9074de2abcfbdc4e966ea38c16d9f6f547cf2d8d9a48152c97",
-)
-
-configure_make_package(
-    name = "mkvtoolnix",
-    source = ":mkvtoolnix-src",
-    version = "86.0",
+    auto_detect_signature = False,
     description = "Set of tools to create, alter and inspect Matroska files",
     homepage = "https://mkvtoolnix.download/",
     license = "GPL-2.0-only",
+    iuse = ["gui", "debug"],
+    use_defaults = ["gui"],
+    use_configure = {
+        "gui": "--enable-gui --with-qt6",
+        "-gui": "--disable-gui",
+        "debug": "--disable-optimization --enable-debug",
+        "-debug": "--enable-optimization --disable-debug",
+    },
+    use_deps = {
+        "gui": ["//packages/linux/desktop/qt:qt6"],
+    },
     configure_args = [
         "--prefix=/usr",
-        "--enable-gui",
-        "--enable-optimization",
-        "--disable-debug",
         "--with-boost=/usr",
-        "--with-qt6",
     ],
     make_args = [],
     post_install = """
@@ -30,7 +33,6 @@ DESTDIR=$OUT rake install
 """,
     deps = [
         "//packages/linux/graphics/video/ffmpeg:ffmpeg",
-        "//packages/linux/desktop/qt:qt6",
         "//packages/linux/dev-libs/boost:boost",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/dev-libs/pugixml:pugixml",

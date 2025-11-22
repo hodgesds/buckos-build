@@ -9,6 +9,7 @@ download_source(
     name = "runc-src",
     src_uri = "https://github.com/opencontainers/runc/releases/download/v1.1.12/runc.tar.xz",
     sha256 = "47d9e34500e478d860512b3b646724ee4b9e638692122ddaa82af417668ca4d7",
+    auto_detect_signature=False,
 )
 
 ebuild_package(
@@ -41,6 +42,7 @@ download_source(
     name = "crun-src",
     src_uri = "https://github.com/containers/crun/releases/download/1.14.4/crun-1.14.4.tar.xz",
     sha256 = "fd6af195a73ae9bf3aea1a6c976a914492324c828542f35a7f1570a659f2e512",
+    auto_detect_signature=False,
 )
 
 ebuild_package(
@@ -72,6 +74,7 @@ download_source(
     name = "conmon-src",
     src_uri = "https://github.com/containers/conmon/archive/refs/tags/v2.1.10.tar.gz",
     sha256 = "455fabcbd4a5a5dc5e05374a71b62dc0b08ee865c2ba398e9dc9acac1ea1836a",
+    auto_detect_signature=False,
 )
 
 ebuild_package(

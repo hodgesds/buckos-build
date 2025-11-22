@@ -6,6 +6,7 @@ use_package(
     version = "3.8.2",
     src_uri = "https://mirrors.kernel.org/gnu/bison/bison-3.8.2.tar.xz",
     sha256 = "9bba0214ccf7f1079c5d59210045227bcf619519840ebfa80cd3849cff5a5bf2",
+    auto_detect_signature=False,
     description = "GNU parser generator",
     homepage = "https://www.gnu.org/software/bison/",
     license = "GPL-3+",

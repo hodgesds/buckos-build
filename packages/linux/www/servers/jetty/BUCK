@@ -11,6 +11,7 @@ download_source(
     name = "jetty-src",
     src_uri = "https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-home/12.0.6/jetty-home-12.0.6.tar.gz",
     sha256 = "e433e256fd33279b16435e0f0cd90b187dea3c33c82254ede221b14dc824832a",
+    auto_detect_signature=False,
 )
 
 binary_package(

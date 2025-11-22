@@ -6,7 +6,7 @@ go_package(
     name = "influxdb",
     version = "2.7.5",
     src_uri = "https://github.com/influxdata/influxdb/archive/refs/tags/v2.7.5.tar.gz",
-    sha256 = "fbfb5668fdd596165c8096be4ef9d32e3572e40619f5ae79c8f2c1e81fdfe549",
+    sha256 = "4850fd4de964034fe92ef3c12940107eaf04ab377760de66dc90bf40ca6b7c92",
     bins = ["influxd", "influx"],
     description = "Time series database for metrics and events",
     homepage = "https://www.influxdata.com",

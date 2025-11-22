@@ -42,7 +42,7 @@ make DESTDIR="$DESTDIR" install
 download_source(
     name = "vulkan-loader-src",
     src_uri = "https://github.com/KhronosGroup/Vulkan-Loader/archive/refs/tags/v1.3.296.tar.gz",
-    sha256 = "6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8",
+    sha256 = "682d5323cf31308402c888599b375ebf15810f95d6d1a08ad2f525766becf99b",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -84,7 +84,7 @@ make DESTDIR="$DESTDIR" install
 download_source(
     name = "vulkan-tools-src",
     src_uri = "https://github.com/KhronosGroup/Vulkan-Tools/archive/refs/tags/v1.3.296.tar.gz",
-    sha256 = "7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9",
+    sha256 = "a44b5456f473dae0b6d15c23d3b1eb461bb8ef58867271abd641d99735a54b6c",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -131,7 +131,7 @@ echo "Vulkan tools installed. Run 'vulkaninfo' to verify Vulkan setup."
 download_source(
     name = "vulkan-validation-layers-src",
     src_uri = "https://github.com/KhronosGroup/Vulkan-ValidationLayers/archive/refs/tags/v1.3.296.tar.gz",
-    sha256 = "8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0",
+    sha256 = "99a4047b82b91b7856cbfaf2fe1629c3aa436ed2300a5e64d820b97d8c685564",
 )
 
 # USE flags: See use_flags.bzl for available flags

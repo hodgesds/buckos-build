@@ -9,6 +9,7 @@ use_package(
     version = "1.35",
     src_uri = "https://mirrors.kernel.org/gnu/tar/tar-1.35.tar.xz",
     sha256 = "4d62ff37342ec7aed748535323930c7cf94acf71c3591882b26a7ea50f3edc16",
+    auto_detect_signature=False,
     description = "GNU tape archiver for creating and extracting archives",
     homepage = "https://www.gnu.org/software/tar",
     license = "GPL-3+",

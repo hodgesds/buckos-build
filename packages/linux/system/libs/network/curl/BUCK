@@ -9,6 +9,7 @@ use_package(
     version = "8.10.1",
     src_uri = "https://curl.se/download/curl-8.10.1.tar.xz",
     sha256 = "73a4b0e99596a09fa5924a4fb7e4b995a85fda0d18a2c02ab9cf134bebce04ee",
+    auto_detect_signature=False,
     description = "Command line tool and library for transferring data with URLs",
     homepage = "https://curl.se/",
     license = "curl",

@@ -784,6 +784,82 @@ qemu-system-x86_64 \
 - Ensure kernel has VirtIO network support (included in default config)
 - Verify dhcpcd is included in rootfs for DHCP
 
+## Security Features
+
+BuckOs implements several security features inspired by Gentoo's build system to ensure package integrity and prevent supply chain attacks.
+
+### Enhanced Checksum Verification
+
+When downloading source packages, BuckOs verifies checksums and provides detailed feedback on mismatches:
+
+```
+✗ Checksum verification FAILED
+  Expected: 7c26c04df547877ebc3df71ab8fecb011b5f75f5c8b9c35e8423e69ba1a1ce88
+  Actual:   8a9b2e3f4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f
+  File:     package-1.0.tar.gz
+```
+
+This makes it easy to identify and fix checksum mismatches - simply copy the actual checksum from the build log and update your BUCK file. The system also validates that checksums are properly formatted (64 hex characters for SHA256, 128 for SHA512).
+
+**Implementation:** `defs/package_defs.bzl` lines 45-64
+
+### Network Isolation During Build
+
+Following Gentoo's sandbox approach, BuckOs enforces network isolation during the compile phase to prevent packages from downloading files during the build process.
+
+**How it works:**
+- Uses Linux namespaces (`unshare --net`) to create a network-isolated environment
+- All build phases run without internet access:
+  - `src_prepare` (patches, autoreconf)
+  - `pre_configure`
+  - `src_configure` (CMake/Meson/autotools)
+  - `src_compile` (compilation)
+  - `src_test` (testing)
+  - `src_install` (installation)
+
+**Example output:**
+```
+🔒 Running build phases in network-isolated environment (no internet access)
+📦 Phase: src_configure
+📦 Phase: src_compile
+📦 Phase: src_install
+```
+
+If a package attempts network access during build, it fails with "Network is unreachable", making it easy to identify packages that need additional dependencies declared.
+
+**Benefits:**
+- **Security**: Prevents malicious build scripts from exfiltrating data or downloading malware
+- **Reproducibility**: Ensures all dependencies are explicitly declared in BUCK files
+- **Build correctness**: Forces proper dependency management (can't secretly download files)
+- **Supply chain security**: Prevents unauthorized code execution during builds
+
+**Exceptions:**
+- Download phase (`download_source`) still has network access to fetch sources
+- Gracefully falls back if `unshare` is not available (with warning)
+
+**Implementation:** `defs/package_defs.bzl` lines 2158-2223
+
+### GPG Signature Verification
+
+Packages can optionally verify GPG signatures during download:
+
+```python
+download_source(
+    name = "package-src",
+    src_uri = "https://example.com/package-1.0.tar.gz",
+    sha256 = "...",
+    signature_uri = "https://example.com/package-1.0.tar.gz.asc",
+    gpg_key = "ABCD1234...",  # GPG key fingerprint
+    auto_detect_signature = True,  # Auto-detect .asc/.sig/.sign files
+)
+```
+
+The system automatically:
+- Downloads and verifies GPG signatures
+- Imports trusted GPG keys
+- Detects and rejects invalid signature files (HTML error pages, etc.)
+- Reports verification status clearly
+
 ## Comparison to Gentoo
 
 | Gentoo | BuckOs |

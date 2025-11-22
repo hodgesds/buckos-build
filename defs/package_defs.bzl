@@ -43,7 +43,25 @@ FILENAME="${URL##*/}"
 curl -L -o "$FILENAME" "$URL"
 
 # Verify checksum
-echo "$3  $FILENAME" | sha256sum -c -
+EXPECTED_CHECKSUM="$3"
+if [ -z "$EXPECTED_CHECKSUM" ]; then
+    echo "✗ ERROR: No checksum provided" >&2
+    exit 1
+fi
+
+# Compute actual checksum
+ACTUAL_CHECKSUM=$(sha256sum "$FILENAME" | awk '{print $1}')
+
+# Compare checksums
+if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]; then
+    echo "✗ Checksum verification FAILED" >&2
+    echo "  Expected: $EXPECTED_CHECKSUM" >&2
+    echo "  Actual:   $ACTUAL_CHECKSUM" >&2
+    echo "  File:     $FILENAME" >&2
+    exit 1
+else
+    echo "✓ Checksum verification passed: $EXPECTED_CHECKSUM"
+fi
 
 # Verify GPG signature if provided
 SIGNATURE_URI="$4"
@@ -2137,26 +2155,72 @@ cd "$S"
 # Phase: src_unpack (already done by download_source)
 {src_unpack}
 
-# Phase: src_prepare
+# Network isolation wrapper for build phases
+# This prevents packages from downloading files during build (Gentoo-style sandbox)
+run_isolated() {{
+    if command -v unshare >/dev/null 2>&1; then
+        echo "🔒 Running build phases in network-isolated environment (no internet access)"
+        unshare --net -- bash -c "$@"
+    else
+        echo "⚠ Warning: unshare not available, building without network isolation"
+        bash -c "$@"
+    fi
+}}
+
+# Run all build phases in network-isolated environment
+# Pass variables that need to be available inside the isolated namespace
+run_isolated "
+set -e
+
+# Re-export required variables inside isolated environment
+export PN='{name}'
+export PV='{version}'
+export PACKAGE_NAME='{name}'
+export CATEGORY='{category}'
+export SLOT='{slot}'
+export USE='{use_flags}'
+export DESTDIR='$DESTDIR'
+export S='$S'
+export EPREFIX='\${{EPREFIX:-}}'
+export PREFIX='\${{PREFIX:-/usr}}'
+export LIBDIR='\${{LIBDIR:-lib64}}'
+export LIBDIR_SUFFIX='\${{LIBDIR_SUFFIX:-64}}'
+export BUILD_DIR='\${{BUILD_DIR:-\$S/build}}'
+export WORKDIR='\$(dirname \"\$S\")'
+export T='\$WORKDIR/temp'
+export FILESDIR='\${{FILESDIR:-}}'
+
+# Custom environment
+{env}
+
+# USE flag helper
+use() {{
+    [[ \" \$USE \" == *\" \$1 \"* ]]
+}}
+
+cd \"\$S\"
+
+echo "📦 Phase: src_prepare"
 {src_prepare}
 
-# Phase: pre_configure
+echo "📦 Phase: pre_configure"
 {pre_configure}
 
-# Phase: src_configure
+echo "📦 Phase: src_configure"
 {src_configure}
 
-# Phase: src_compile
+echo "📦 Phase: src_compile"
 {src_compile}
 
-# Phase: src_test
+echo "📦 Phase: src_test"
 if [ -n "{run_tests}" ]; then
     {src_test}
     :
 fi
 
-# Phase: src_install
+echo "📦 Phase: src_install"
 {src_install}
+"
 '''.format(
             name = ctx.attrs.name,
             version = ctx.attrs.version,

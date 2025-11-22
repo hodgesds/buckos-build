@@ -7,6 +7,7 @@ use_package(
     version = "9.5",
     src_uri = "https://mirrors.kernel.org/gnu/coreutils/coreutils-9.5.tar.xz",
     sha256 = "cd328edeac92f6a665de9f323c93b712af1858bc2e0d88f3f7100469470a1b8a",
+    auto_detect_signature=False,
     description = "GNU core utilities (macOS)",
     homepage = "https://www.gnu.org/software/coreutils/",
     license = "GPL-3.0",

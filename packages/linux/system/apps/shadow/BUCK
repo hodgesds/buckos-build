@@ -54,8 +54,8 @@ autotools_package(
 mkdir -p "$DESTDIR/usr/bin" "$DESTDIR/usr/sbin"
 
 # Verify critical binaries exist for the installer
-if [ ! -f "$DESTDIR/usr/bin/chpasswd" ]; then
-    echo "ERROR: chpasswd not found in $DESTDIR/usr/bin"
+if [ ! -f "$DESTDIR/usr/sbin/chpasswd" ]; then
+    echo "ERROR: chpasswd not found in $DESTDIR/usr/sbin"
     ls -la "$DESTDIR/usr/bin" || true
     ls -la "$DESTDIR/usr/sbin" || true
     exit 1
@@ -69,7 +69,7 @@ if [ ! -f "$DESTDIR/usr/sbin/useradd" ]; then
 fi
 
 echo "✓ Shadow package installed successfully"
-echo "  - chpasswd: $DESTDIR/usr/bin/chpasswd"
+echo "  - chpasswd: $DESTDIR/usr/sbin/chpasswd"
 echo "  - useradd: $DESTDIR/usr/sbin/useradd"
 echo "  - passwd: $DESTDIR/usr/bin/passwd"
 """,

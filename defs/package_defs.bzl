@@ -4,6 +4,14 @@ Similar to Gentoo's ebuild system but using Buck2.
 """
 
 load("//defs:eclasses.bzl", "ECLASSES", "inherit")
+load("//defs:use_flags.bzl",
+     "get_effective_use",
+     "use_dep",
+     "use_cmake_options",
+     "use_meson_options",
+     "use_configure_args",
+     "use_cargo_args",
+     "use_go_build_args")
 
 # Package metadata structure
 PackageInfo = provider(fields = [
@@ -28,6 +36,9 @@ def _download_source_impl(ctx: AnalysisContext) -> list[Provider]:
     gpg_key = ctx.attrs.gpg_key if ctx.attrs.gpg_key else ""
     gpg_keyring = ctx.attrs.gpg_keyring if ctx.attrs.gpg_keyring else ""
     auto_detect = "1" if ctx.attrs.auto_detect_signature else ""
+
+    # Build exclude patterns for tar
+    exclude_args = " ".join(["--exclude='{}'".format(pattern) for pattern in ctx.attrs.exclude_patterns])
 
     # Script to download and extract
     script = ctx.actions.write(
@@ -68,6 +79,7 @@ SIGNATURE_URI="$4"
 GPG_KEY="$5"
 GPG_KEYRING="$6"
 AUTO_DETECT="$7"
+EXCLUDE_ARGS="$8"
 
 # Function to try signature verification
 verify_signature() {
@@ -169,16 +181,16 @@ FILETYPE=$(file -b "$FILENAME")
 # Extract based on actual file type
 if [[ "$FILETYPE" == *"gzip compressed"* ]]; then
     echo "Detected: gzip compressed tarball"
-    tar xzf "$FILENAME" --strip-components=1
+    eval tar xzf "$FILENAME" --strip-components=1 $EXCLUDE_ARGS
 elif [[ "$FILETYPE" == *"XZ compressed"* ]]; then
     echo "Detected: XZ compressed tarball"
-    tar xJf "$FILENAME" --strip-components=1
+    eval tar xJf "$FILENAME" --strip-components=1 $EXCLUDE_ARGS
 elif [[ "$FILETYPE" == *"bzip2 compressed"* ]]; then
     echo "Detected: bzip2 compressed tarball"
-    tar xjf "$FILENAME" --strip-components=1
+    eval tar xjf "$FILENAME" --strip-components=1 $EXCLUDE_ARGS
 elif [[ "$FILETYPE" == *"POSIX tar archive"* ]]; then
     echo "Detected: uncompressed tar archive"
-    tar xf "$FILENAME" --strip-components=1
+    eval tar xf "$FILENAME" --strip-components=1 $EXCLUDE_ARGS
 elif [[ "$FILETYPE" == *"Zip archive"* ]]; then
     echo "Detected: Zip archive"
     unzip -q "$FILENAME"
@@ -234,6 +246,7 @@ rm "$FILENAME"
             gpg_key,
             gpg_keyring,
             auto_detect,
+            exclude_args,
         ]),
         category = "download",
         identifier = ctx.attrs.name,
@@ -250,6 +263,7 @@ download_source = rule(
         "gpg_key": attrs.option(attrs.string(), default = None),
         "gpg_keyring": attrs.option(attrs.string(), default = None),
         "auto_detect_signature": attrs.bool(default = True),
+        "exclude_patterns": attrs.list(attrs.string(), default = []),
     },
 )
 
@@ -2096,7 +2110,7 @@ handle_phase_error() {{
     local log_file=\"\$T/\${{phase}}.log\"
 
     echo \"\" >&2
-    echo \"✗ Build phase '\$phase' FAILED (exit code: \$exit_code)\" >&2
+    echo \"✗ Build phase \$phase FAILED (exit code: \$exit_code)\" >&2
     echo \"  Package: {name}-{version}\" >&2
     echo \"  Category: {category}\" >&2
     echo \"  Phase: \$phase\" >&2
@@ -2286,6 +2300,7 @@ def simple_package(
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
         auto_detect_signature: bool = True,
+        exclude_patterns: list[str] = [],
         **kwargs):
     """
     Convenience macro for standard autotools packages without USE flags.
@@ -2296,6 +2311,7 @@ def simple_package(
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
         auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
+        exclude_patterns: List of patterns to exclude from source extraction (passed to tar --exclude)
     """
     # Forward to autotools_package() which supports both USE flags and simple builds
     autotools_package(
@@ -2311,14 +2327,16 @@ def simple_package(
         gpg_key = gpg_key,
         gpg_keyring = gpg_keyring,
         auto_detect_signature = auto_detect_signature,
+        exclude_patterns = exclude_patterns,
         **kwargs
     )
 
 def cmake_package(
         name: str,
         version: str,
-        src_uri: str,
-        sha256: str,
+        src_uri: str | None = None,
+        sha256: str | None = None,
+        source: str | None = None,
         cmake_args: list[str] = [],
         pre_configure: str = "",
         deps: list[str] = [],
@@ -2334,6 +2352,7 @@ def cmake_package(
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
         auto_detect_signature: bool = True,
+        exclude_patterns: list[str] = [],
         **kwargs):
     """
     Convenience macro for CMake packages with USE flag support.
@@ -2359,6 +2378,7 @@ def cmake_package(
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
         auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
+        exclude_patterns: List of patterns to exclude from source extraction (passed to tar --exclude)
 
     Example:
         cmake_package(
@@ -2378,17 +2398,24 @@ def cmake_package(
             },
         )
     """
-    src_name = name + "-src"
-
-    download_source(
-        name = src_name,
-        src_uri = src_uri,
-        sha256 = sha256,
-        signature_uri = signature_uri,
-        gpg_key = gpg_key,
-        gpg_keyring = gpg_keyring,
-        auto_detect_signature = auto_detect_signature,
-    )
+    # Handle source - either use provided source or create one from src_uri
+    if source:
+        src_target = source
+    else:
+        if not src_uri or not sha256:
+            fail("Either 'source' or both 'src_uri' and 'sha256' must be provided")
+        src_name = name + "-src"
+        download_source(
+            name = src_name,
+            src_uri = src_uri,
+            sha256 = sha256,
+            signature_uri = signature_uri,
+            gpg_key = gpg_key,
+            gpg_keyring = gpg_keyring,
+            auto_detect_signature = auto_detect_signature,
+            exclude_patterns = exclude_patterns,
+        )
+        src_target = ":" + src_name
 
     # Calculate effective USE flags if USE flags are specified
     effective_use = []
@@ -2396,9 +2423,7 @@ def cmake_package(
     resolved_cmake_args = list(cmake_args)
 
     if iuse:
-        from_use_flags = load("//defs:use_flags.bzl", "get_effective_use", "use_dep", "use_cmake_options")
-
-        effective_use = from_use_flags.get_effective_use(
+        effective_use = get_effective_use(
             name,
             iuse,
             use_defaults,
@@ -2407,11 +2432,11 @@ def cmake_package(
         )
 
         # Resolve conditional dependencies
-        resolved_deps.extend(from_use_flags.use_dep(use_deps, effective_use))
+        resolved_deps.extend(use_dep(use_deps, effective_use))
 
         # Generate CMake options based on USE flags
         if use_options:
-            cmake_opts = from_use_flags.use_cmake_options(use_options, effective_use)
+            cmake_opts = use_cmake_options(use_options, effective_use)
             resolved_cmake_args.extend(cmake_opts)
 
     # Use eclass inheritance for cmake
@@ -2430,7 +2455,7 @@ def cmake_package(
 
     ebuild_package(
         name = name,
-        source = ":" + src_name,
+        source = src_target,
         version = version,
         pre_configure = pre_configure,
         src_configure = eclass_config["src_configure"],
@@ -2447,8 +2472,9 @@ def cmake_package(
 def meson_package(
         name: str,
         version: str,
-        src_uri: str,
-        sha256: str,
+        src_uri: str | None = None,
+        sha256: str | None = None,
+        source: str | None = None,
         meson_args: list[str] = [],
         deps: list[str] = [],
         maintainers: list[str] = [],
@@ -2463,6 +2489,7 @@ def meson_package(
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
         auto_detect_signature: bool = True,
+        exclude_patterns: list[str] = [],
         **kwargs):
     """
     Convenience macro for Meson packages with USE flag support.
@@ -2487,6 +2514,7 @@ def meson_package(
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
         auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
+        exclude_patterns: List of patterns to exclude from source extraction (passed to tar --exclude)
 
     Example:
         meson_package(
@@ -2506,17 +2534,24 @@ def meson_package(
             },
         )
     """
-    src_name = name + "-src"
-
-    download_source(
-        name = src_name,
-        src_uri = src_uri,
-        sha256 = sha256,
-        signature_uri = signature_uri,
-        gpg_key = gpg_key,
-        gpg_keyring = gpg_keyring,
-        auto_detect_signature = auto_detect_signature,
-    )
+    # Handle source - either use provided source or create one from src_uri
+    if source:
+        src_target = source
+    else:
+        if not src_uri or not sha256:
+            fail("Either 'source' or both 'src_uri' and 'sha256' must be provided")
+        src_name = name + "-src"
+        download_source(
+            name = src_name,
+            src_uri = src_uri,
+            sha256 = sha256,
+            signature_uri = signature_uri,
+            gpg_key = gpg_key,
+            gpg_keyring = gpg_keyring,
+            auto_detect_signature = auto_detect_signature,
+            exclude_patterns = exclude_patterns,
+        )
+        src_target = ":" + src_name
 
     # Calculate effective USE flags if USE flags are specified
     effective_use = []
@@ -2524,9 +2559,7 @@ def meson_package(
     resolved_meson_args = list(meson_args)
 
     if iuse:
-        from_use_flags = load("//defs:use_flags.bzl", "get_effective_use", "use_dep", "use_meson_options")
-
-        effective_use = from_use_flags.get_effective_use(
+        effective_use = get_effective_use(
             name,
             iuse,
             use_defaults,
@@ -2535,11 +2568,11 @@ def meson_package(
         )
 
         # Resolve conditional dependencies
-        resolved_deps.extend(from_use_flags.use_dep(use_deps, effective_use))
+        resolved_deps.extend(use_dep(use_deps, effective_use))
 
         # Generate Meson options based on USE flags
         if use_options:
-            meson_opts = from_use_flags.use_meson_options(use_options, effective_use)
+            meson_opts = use_meson_options(use_options, effective_use)
             resolved_meson_args.extend(meson_opts)
 
     # Use eclass inheritance for meson
@@ -2558,7 +2591,7 @@ def meson_package(
 
     ebuild_package(
         name = name,
-        source = ":" + src_name,
+        source = src_target,
         version = version,
         src_configure = eclass_config["src_configure"],
         src_compile = eclass_config["src_compile"],
@@ -2574,8 +2607,9 @@ def meson_package(
 def autotools_package(
         name: str,
         version: str,
-        src_uri: str,
-        sha256: str,
+        src_uri: str | None = None,
+        sha256: str | None = None,
+        source: str | None = None,
         configure_args: list[str] = [],
         make_args: list[str] = [],
         deps: list[str] = [],
@@ -2591,6 +2625,7 @@ def autotools_package(
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
         auto_detect_signature: bool = True,
+        exclude_patterns: list[str] = [],
         **kwargs):
     """
     Convenience macro for autotools packages with USE flag support.
@@ -2602,8 +2637,9 @@ def autotools_package(
     Args:
         name: Package name
         version: Package version
-        src_uri: Source download URL
-        sha256: Source checksum
+        src_uri: Source download URL (required if source not provided)
+        sha256: Source checksum (required if source not provided)
+        source: Pre-defined source target (alternative to src_uri/sha256)
         configure_args: Base configure arguments
         make_args: Make arguments
         deps: Base dependencies (always applied)
@@ -2619,6 +2655,7 @@ def autotools_package(
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
         auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
+        exclude_patterns: List of patterns to exclude from source extraction (passed to tar --exclude)
 
     Example:
         autotools_package(
@@ -2641,17 +2678,24 @@ def autotools_package(
             },
         )
     """
-    src_name = name + "-src"
-
-    download_source(
-        name = src_name,
-        src_uri = src_uri,
-        sha256 = sha256,
-        signature_uri = signature_uri,
-        gpg_key = gpg_key,
-        gpg_keyring = gpg_keyring,
-        auto_detect_signature = auto_detect_signature,
-    )
+    # Handle source - either use provided source or create one from src_uri
+    if source:
+        src_target = source
+    else:
+        if not src_uri or not sha256:
+            fail("Either 'source' or both 'src_uri' and 'sha256' must be provided")
+        src_name = name + "-src"
+        download_source(
+            name = src_name,
+            src_uri = src_uri,
+            sha256 = sha256,
+            signature_uri = signature_uri,
+            gpg_key = gpg_key,
+            gpg_keyring = gpg_keyring,
+            auto_detect_signature = auto_detect_signature,
+            exclude_patterns = exclude_patterns,
+        )
+        src_target = ":" + src_name
 
     # Calculate effective USE flags if USE flags are specified
     effective_use = []
@@ -2659,9 +2703,7 @@ def autotools_package(
     resolved_configure_args = list(configure_args)
 
     if iuse:
-        from_use_flags = load("//defs:use_flags.bzl", "get_effective_use", "use_dep", "use_configure_args")
-
-        effective_use = from_use_flags.get_effective_use(
+        effective_use = get_effective_use(
             name,
             iuse,
             use_defaults,
@@ -2670,11 +2712,11 @@ def autotools_package(
         )
 
         # Resolve conditional dependencies
-        resolved_deps.extend(from_use_flags.use_dep(use_deps, effective_use))
+        resolved_deps.extend(use_dep(use_deps, effective_use))
 
         # Generate configure arguments based on USE flags
         if use_configure:
-            config_args = from_use_flags.use_configure_args(use_configure, effective_use)
+            config_args = use_configure_args(use_configure, effective_use)
             resolved_configure_args.extend(config_args)
 
     # Use eclass inheritance for autotools
@@ -2708,7 +2750,7 @@ def autotools_package(
 
     ebuild_package(
         name = name,
-        source = ":" + src_name,
+        source = src_target,
         version = version,
         src_prepare = src_prepare,
         src_configure = eclass_config["src_configure"],
@@ -2742,6 +2784,7 @@ def cargo_package(
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
         auto_detect_signature: bool = True,
+        exclude_patterns: list[str] = [],
         **kwargs):
     """
     Convenience macro for Rust/Cargo packages with USE flag support.
@@ -2767,6 +2810,7 @@ def cargo_package(
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
         auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
+        exclude_patterns: List of patterns to exclude from source extraction (passed to tar --exclude)
 
     Example:
         cargo_package(
@@ -2795,6 +2839,7 @@ def cargo_package(
         gpg_key = gpg_key,
         gpg_keyring = gpg_keyring,
         auto_detect_signature = auto_detect_signature,
+        exclude_patterns = exclude_patterns,
     )
 
     # Calculate effective USE flags if USE flags are specified
@@ -2803,9 +2848,7 @@ def cargo_package(
     resolved_cargo_args = list(cargo_args)
 
     if iuse:
-        from_use_flags = load("//defs:use_flags.bzl", "get_effective_use", "use_dep", "use_cargo_args")
-
-        effective_use = from_use_flags.get_effective_use(
+        effective_use = get_effective_use(
             name,
             iuse,
             use_defaults,
@@ -2814,11 +2857,11 @@ def cargo_package(
         )
 
         # Resolve conditional dependencies
-        resolved_deps.extend(from_use_flags.use_dep(use_deps, effective_use))
+        resolved_deps.extend(use_dep(use_deps, effective_use))
 
         # Generate Cargo arguments with features
         if use_features:
-            resolved_cargo_args = from_use_flags.use_cargo_args(use_features, effective_use, cargo_args)
+            resolved_cargo_args = use_cargo_args(use_features, effective_use, cargo_args)
 
     # Use eclass inheritance for cargo
     eclass_config = inherit(["cargo"])
@@ -2875,6 +2918,7 @@ def go_package(
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
         auto_detect_signature: bool = True,
+        exclude_patterns: list[str] = [],
         **kwargs):
     """
     Convenience macro for Go packages with USE flag support.
@@ -2900,6 +2944,7 @@ def go_package(
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
         auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
+        exclude_patterns: List of patterns to exclude from source extraction (passed to tar --exclude)
 
     Example:
         go_package(
@@ -2929,6 +2974,7 @@ def go_package(
         gpg_key = gpg_key,
         gpg_keyring = gpg_keyring,
         auto_detect_signature = auto_detect_signature,
+        exclude_patterns = exclude_patterns,
     )
 
     # Calculate effective USE flags if USE flags are specified
@@ -2937,9 +2983,7 @@ def go_package(
     resolved_go_build_args = kwargs.pop("go_build_args", [])
 
     if iuse:
-        from_use_flags = load("//defs:use_flags.bzl", "get_effective_use", "use_dep", "use_go_build_args")
-
-        effective_use = from_use_flags.get_effective_use(
+        effective_use = get_effective_use(
             name,
             iuse,
             use_defaults,
@@ -2948,11 +2992,11 @@ def go_package(
         )
 
         # Resolve conditional dependencies
-        resolved_deps.extend(from_use_flags.use_dep(use_deps, effective_use))
+        resolved_deps.extend(use_dep(use_deps, effective_use))
 
         # Generate Go build arguments with tags
         if use_tags:
-            resolved_go_build_args = from_use_flags.use_go_build_args(use_tags, effective_use, resolved_go_build_args)
+            resolved_go_build_args = use_go_build_args(use_tags, effective_use, resolved_go_build_args)
 
     # Use eclass inheritance for go-module
     eclass_config = inherit(["go-module"])
@@ -3009,6 +3053,7 @@ def python_package(
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
         auto_detect_signature: bool = True,
+        exclude_patterns: list[str] = [],
         **kwargs):
     """
     Convenience macro for Python packages with USE flag support.
@@ -3033,6 +3078,7 @@ def python_package(
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
         auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
+        exclude_patterns: List of patterns to exclude from source extraction (passed to tar --exclude)
 
     Example:
         python_package(
@@ -3061,6 +3107,7 @@ def python_package(
         gpg_key = gpg_key,
         gpg_keyring = gpg_keyring,
         auto_detect_signature = auto_detect_signature,
+        exclude_patterns = exclude_patterns,
     )
 
     # Calculate effective USE flags if USE flags are specified
@@ -3069,9 +3116,7 @@ def python_package(
     extras = []
 
     if iuse:
-        from_use_flags = load("//defs:use_flags.bzl", "get_effective_use", "use_dep")
-
-        effective_use = from_use_flags.get_effective_use(
+        effective_use = get_effective_use(
             name,
             iuse,
             use_defaults,
@@ -3080,7 +3125,7 @@ def python_package(
         )
 
         # Resolve conditional dependencies
-        resolved_deps.extend(from_use_flags.use_dep(use_deps, effective_use))
+        resolved_deps.extend(use_dep(use_deps, effective_use))
 
         # Collect Python extras based on USE flags
         enabled_set = set(effective_use)
@@ -3301,6 +3346,7 @@ def simple_binary_package(
         symlinks: dict[str, str] = {},
         deps: list[str] = [],
         maintainers: list[str] = [],
+        exclude_patterns: list[str] = [],
         **kwargs):
     """
     Convenience macro for simple precompiled binary packages.
@@ -3323,6 +3369,7 @@ def simple_binary_package(
         name = src_name,
         src_uri = src_uri,
         sha256 = sha256,
+        exclude_patterns = exclude_patterns,
     )
 
     # Build install script
@@ -3358,6 +3405,8 @@ def bootstrap_package(
         bins: list[str] = [],
         deps: list[str] = [],
         maintainers: list[str] = [],
+        exclude_patterns: list[str] = [],
+        bootstrap_exclude_patterns: list[str] = [],
         **kwargs):
     """
     Convenience macro for bootstrap-compiled packages (compilers that need
@@ -3383,12 +3432,14 @@ def bootstrap_package(
         name = src_name,
         src_uri = src_uri,
         sha256 = sha256,
+        exclude_patterns = exclude_patterns,
     )
 
     download_source(
         name = bootstrap_name,
         src_uri = bootstrap_uri,
         sha256 = bootstrap_sha256,
+        exclude_patterns = bootstrap_exclude_patterns,
     )
 
     # Derive bootstrap tarball name from URI

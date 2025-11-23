@@ -45,8 +45,6 @@ Example usage:
     package_use("curl", ["-ssl", "gnutls", "brotli"])
 """
 
-load("//defs:package_defs.bzl", "download_source", "ebuild_package", "autotools_package")
-
 # =============================================================================
 # GLOBAL USE FLAG REGISTRY
 # =============================================================================
@@ -732,103 +730,6 @@ def use_go_build_args(use_tags, enabled_flags, extra_args = []):
 # EBUILD-STYLE USE PACKAGE
 # =============================================================================
 
-def use_ebuild_package(
-        name,
-        version,
-        src_uri,
-        sha256,
-        iuse = [],
-        use_defaults = [],
-        use_deps = {},
-        use_bdeps = {},
-        global_use = None,
-        package_overrides = None,
-        category = "",
-        slot = "0",
-        src_prepare = "",
-        src_configure = "",
-        src_compile = "",
-        src_install = "",
-        rdepend = [],
-        bdepend = [],
-        maintainers = [],
-        **kwargs):
-    """Create an ebuild-style package with full USE flag support.
-
-    This provides maximum flexibility with custom phase functions.
-    USE flags are available in build scripts via the `use` function.
-
-    Args:
-        name: Package name
-        version: Package version
-        src_uri: Source download URL
-        sha256: Source checksum
-        iuse: List of USE flags this package supports
-        use_defaults: Default enabled USE flags
-        use_deps: Dict mapping USE flag to runtime dependencies
-        use_bdeps: Dict mapping USE flag to build dependencies
-        global_use: Global USE configuration
-        package_overrides: Package-specific USE overrides
-        category: Package category
-        slot: Package slot
-        src_prepare: Source preparation script
-        src_configure: Configure script
-        src_compile: Compile script
-        src_install: Install script
-        rdepend: Runtime dependencies
-        bdepend: Build dependencies
-        maintainers: Package maintainers
-        **kwargs: Additional arguments
-    """
-    src_name = name + "-src"
-
-    # Download source
-    download_source(
-        name = src_name,
-        src_uri = src_uri,
-        sha256 = sha256,
-    )
-
-    # Calculate effective USE flags
-    effective_use = get_effective_use(
-        name,
-        iuse,
-        use_defaults,
-        global_use,
-        package_overrides,
-    )
-
-    # Resolve conditional dependencies
-    resolved_rdepend = list(rdepend)
-    resolved_rdepend.extend(use_dep(use_deps, effective_use))
-
-    resolved_bdepend = list(bdepend)
-    resolved_bdepend.extend(use_dep(use_bdeps, effective_use))
-
-    # Create the package with USE flags
-    ebuild_package(
-        name = name,
-        source = ":" + src_name,
-        version = version,
-        category = category,
-        slot = slot,
-        use_flags = effective_use,
-        src_prepare = src_prepare,
-        src_configure = src_configure,
-        src_compile = src_compile,
-        src_install = src_install,
-        rdepend = resolved_rdepend,
-        bdepend = resolved_bdepend,
-        maintainers = maintainers,
-        env = kwargs.get("env", {}),
-        description = kwargs.get("description", ""),
-        homepage = kwargs.get("homepage", ""),
-        license = kwargs.get("license", ""),
-        visibility = kwargs.get("visibility", ["PUBLIC"]),
-    )
-
-    return effective_use
-
 # =============================================================================
 # USE FLAG VALIDATION
 # =============================================================================
@@ -964,59 +865,4 @@ def format_use_string(iuse, enabled_flags):
 # =============================================================================
 # PROFILE-BASED PACKAGE CREATION
 # =============================================================================
-
-def profile_package(
-        name,
-        version,
-        src_uri,
-        sha256,
-        iuse = [],
-        profile = "default",
-        **kwargs):
-    """Create a package using a predefined profile.
-
-    This is a convenience wrapper that applies profile USE flags.
-
-    Args:
-        name: Package name
-        version: Package version
-        src_uri: Source download URL
-        sha256: Source checksum
-        iuse: Supported USE flags
-        profile: Profile name (minimal, server, desktop, developer, hardened, default)
-        **kwargs: Additional arguments for autotools_package
-
-    Example:
-        profile_package(
-            name = "nginx",
-            version = "1.25.3",
-            src_uri = "...",
-            sha256 = "...",
-            iuse = ["ssl", "http2", "debug", "pcre"],
-            profile = "server",
-            use_deps = {...},
-            use_configure = {...},
-        )
-    """
-    profile_config = set_profile(profile)
-
-    global_use = {
-        "enabled": profile_config["enabled"],
-        "disabled": profile_config["disabled"],
-    }
-
-    # Filter to only flags in iuse
-    iuse_set = set(iuse)
-    use_defaults = [f for f in profile_config["enabled"] if f in iuse_set]
-
-    return autotools_package(
-        name = name,
-        version = version,
-        src_uri = src_uri,
-        sha256 = sha256,
-        iuse = iuse,
-        use_defaults = use_defaults,
-        global_use = global_use,
-        **kwargs
-    )
 

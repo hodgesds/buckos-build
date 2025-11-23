@@ -179,18 +179,20 @@ fi
 FILETYPE=$(file -b "$FILENAME")
 
 # Extract based on actual file type
+# Use --transform to decode hex escapes in filenames (Buck2 doesn't allow backslashes)
+# Replace \x2d with - (dash), \x5c with nothing (backslash itself), etc.
 if [[ "$FILETYPE" == *"gzip compressed"* ]]; then
     echo "Detected: gzip compressed tarball"
-    eval tar xzf "$FILENAME" --strip-components=1 $EXCLUDE_ARGS
+    tar xzf "$FILENAME" --strip-components=1 --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
 elif [[ "$FILETYPE" == *"XZ compressed"* ]]; then
     echo "Detected: XZ compressed tarball"
-    eval tar xJf "$FILENAME" --strip-components=1 $EXCLUDE_ARGS
+    tar xJf "$FILENAME" --strip-components=1 --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
 elif [[ "$FILETYPE" == *"bzip2 compressed"* ]]; then
     echo "Detected: bzip2 compressed tarball"
-    eval tar xjf "$FILENAME" --strip-components=1 $EXCLUDE_ARGS
+    tar xjf "$FILENAME" --strip-components=1 --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
 elif [[ "$FILETYPE" == *"POSIX tar archive"* ]]; then
     echo "Detected: uncompressed tar archive"
-    eval tar xf "$FILENAME" --strip-components=1 $EXCLUDE_ARGS
+    tar xf "$FILENAME" --strip-components=1 --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
 elif [[ "$FILETYPE" == *"Zip archive"* ]]; then
     echo "Detected: Zip archive"
     unzip -q "$FILENAME"
@@ -222,7 +224,7 @@ else
     # Fallback: try tar with auto-detect
     echo "Unknown file type: $FILETYPE"
     echo "Attempting tar with auto-compression detection..."
-    if tar xaf "$FILENAME" --strip-components=1 2>/dev/null; then
+    if tar xaf "$FILENAME" --strip-components=1 --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' 2>/dev/null; then
         echo "Successfully extracted with tar auto-detect"
     else
         echo "Error: Could not extract archive" >&2
@@ -1997,13 +1999,13 @@ def _ebuild_package_impl(ctx: AnalysisContext) -> list[Provider]:
     # Get source directory from dependency
     src_dir = ctx.attrs.source[DefaultInfo].default_outputs[0]
 
-    # Build phases
-    src_unpack = ctx.attrs.src_unpack if ctx.attrs.src_unpack else ""
-    src_prepare = ctx.attrs.src_prepare if ctx.attrs.src_prepare else ""
-    pre_configure = ctx.attrs.pre_configure if ctx.attrs.pre_configure else ""
-    src_configure = ctx.attrs.src_configure if ctx.attrs.src_configure else ""
+    # Build phases (use 'true' as no-op for empty phases to avoid syntax errors)
+    src_unpack = ctx.attrs.src_unpack if ctx.attrs.src_unpack else "true"
+    src_prepare = ctx.attrs.src_prepare if ctx.attrs.src_prepare else "true"
+    pre_configure = ctx.attrs.pre_configure if ctx.attrs.pre_configure else "true"
+    src_configure = ctx.attrs.src_configure if ctx.attrs.src_configure else "true"
     src_compile = ctx.attrs.src_compile if ctx.attrs.src_compile else "make -j$(nproc)"
-    src_test = ctx.attrs.src_test if ctx.attrs.src_test else ""
+    src_test = ctx.attrs.src_test if ctx.attrs.src_test else "true"
     src_install = ctx.attrs.src_install if ctx.attrs.src_install else "make install DESTDIR=\"$DESTDIR\""
 
     # Environment variables
@@ -2099,7 +2101,7 @@ export FILESDIR=\${{FILESDIR:-}}
 
 # USE flag helper
 use() {{
-    [[ \" \$USE \" == *\" \$1 \"* ]]
+    [[ \\\" \$USE \\\" == *\\\" \$1 \\\"* ]]
 }}
 
 cd \$S

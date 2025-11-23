@@ -2061,11 +2061,12 @@ cd "$S"
 # Network isolation wrapper for build phases
 # This prevents packages from downloading files during build (Gentoo-style sandbox)
 run_isolated() {{
-    if command -v unshare >/dev/null 2>&1; then
+    # Test if unshare is available and has permission
+    if command -v unshare >/dev/null 2>&1 && unshare --net true 2>/dev/null; then
         echo "🔒 Running build phases in network-isolated environment (no internet access)"
         unshare --net -- bash -c "$@"
     else
-        echo "⚠ Warning: unshare not available, building without network isolation"
+        echo "⚠ Warning: unshare not available or insufficient permissions, building without network isolation"
         bash -c "$@"
     fi
 }}
@@ -2082,16 +2083,16 @@ export PACKAGE_NAME='{name}'
 export CATEGORY='{category}'
 export SLOT='{slot}'
 export USE='{use_flags}'
-export DESTDIR='$DESTDIR'
-export S='$S'
-export EPREFIX='\${{EPREFIX:-}}'
-export PREFIX='\${{PREFIX:-/usr}}'
-export LIBDIR='\${{LIBDIR:-lib64}}'
-export LIBDIR_SUFFIX='\${{LIBDIR_SUFFIX:-64}}'
-export BUILD_DIR='\${{BUILD_DIR:-\$S/build}}'
-export WORKDIR='\$(dirname \"\$S\")'
-export T='\$WORKDIR/temp'
-export FILESDIR='\${{FILESDIR:-}}'
+export DESTDIR=\$DESTDIR
+export S=\$S
+export EPREFIX=\${{EPREFIX:-}}
+export PREFIX=\${{PREFIX:-/usr}}
+export LIBDIR=\${{LIBDIR:-lib64}}
+export LIBDIR_SUFFIX=\${{LIBDIR_SUFFIX:-64}}
+export BUILD_DIR=\${{BUILD_DIR:-\$S/build}}
+export WORKDIR=\$(dirname \"\$S\")
+export T=\$WORKDIR/temp
+export FILESDIR=\${{FILESDIR:-}}
 
 # Custom environment
 {env}
@@ -2101,113 +2102,113 @@ use() {{
     [[ \" \$USE \" == *\" \$1 \"* ]]
 }}
 
-cd \"\$S\"
+cd \$S
 
 # Error handler for build phases
 handle_phase_error() {{
-    local phase=\"\$1\"
-    local exit_code=\"\$2\"
-    local log_file=\"\$T/\${{phase}}.log\"
+    local phase=\$1
+    local exit_code=\$2
+    local log_file=\$T/\${{phase}}.log
 
-    echo \"\" >&2
-    echo \"✗ Build phase \$phase FAILED (exit code: \$exit_code)\" >&2
-    echo \"  Package: {name}-{version}\" >&2
-    echo \"  Category: {category}\" >&2
-    echo \"  Phase: \$phase\" >&2
-    echo \"  Working directory: \$PWD\" >&2
-    echo \"\" >&2
+    echo \\\"\\\" >&2
+    echo \\\"✗ Build phase \$phase FAILED (exit code: \$exit_code)\\\" >&2
+    echo \\\"  Package: {name}-{version}\\\" >&2
+    echo \\\"  Category: {category}\\\" >&2
+    echo \\\"  Phase: \$phase\\\" >&2
+    echo \\\"  Working directory: \$PWD\\\" >&2
+    echo \\\"\\\" >&2
 
     # Detect common error patterns (for automation)
-    if [ -f \"\$log_file\" ]; then
-        echo \"Analyzing error log...\" >&2
+    if [ -f \\\"\$log_file\\\" ]; then
+        echo \\\"Analyzing error log...\\\" >&2
 
         # Check for missing dependencies (pkg-config)
-        if grep -q \"Package .* was not found\" \"\$log_file\" 2>/dev/null; then
-            echo \"\" >&2
-            echo \"DETECTED: Missing pkg-config dependencies\" >&2
-            grep \"Package .* was not found\" \"\$log_file\" | while read line; do
-                echo \"  \$line\" >&2
+        if grep -q \\\"Package .* was not found\\\" \\\"\$log_file\\\" 2>/dev/null; then
+            echo \\\"\\\" >&2
+            echo \\\"DETECTED: Missing pkg-config dependencies\\\" >&2
+            grep \\\"Package .* was not found\\\" \\\"\$log_file\\\" | while read line; do
+                echo \\\"  \$line\\\" >&2
             done
-            echo \"  Fix: Add missing dependencies to deps=[] in BUCK file\" >&2
+            echo \\\"  Fix: Add missing dependencies to deps=[] in BUCK file\\\" >&2
         fi
 
         # Check for CMake compatibility errors
-        if grep -q \"Compatibility with CMake\" \"\$log_file\" 2>/dev/null; then
-            echo \"\" >&2
-            echo \"DETECTED: CMake compatibility issue\" >&2
-            echo \"  Fix: Add -DCMAKE_MINIMUM_REQUIRED_VERSION=3.5 to cmake_args\" >&2
+        if grep -q \\\"Compatibility with CMake\\\" \\\"\$log_file\\\" 2>/dev/null; then
+            echo \\\"\\\" >&2
+            echo \\\"DETECTED: CMake compatibility issue\\\" >&2
+            echo \\\"  Fix: Add -DCMAKE_MINIMUM_REQUIRED_VERSION=3.5 to cmake_args\\\" >&2
         fi
 
         # Check for Meson unknown options
-        if grep -q \"ERROR: Unknown options\" \"\$log_file\" 2>/dev/null; then
-            echo \"\" >&2
-            echo \"DETECTED: Meson unknown options\" >&2
-            grep \"ERROR: Unknown options\" \"\$log_file\" | while read line; do
-                echo \"  \$line\" >&2
+        if grep -q \\\"ERROR: Unknown options\\\" \\\"\$log_file\\\" 2>/dev/null; then
+            echo \\\"\\\" >&2
+            echo \\\"DETECTED: Meson unknown options\\\" >&2
+            grep \\\"ERROR: Unknown options\\\" \\\"\$log_file\\\" | while read line; do
+                echo \\\"  \$line\\\" >&2
             done
-            echo \"  Fix: Remove obsolete options from meson_args in BUCK file\" >&2
+            echo \\\"  Fix: Remove obsolete options from meson_args in BUCK file\\\" >&2
         fi
 
         # Check for Meson boolean format errors
-        if grep -q \"not one of the choices.*enabled.*disabled\" \"\$log_file\" 2>/dev/null; then
-            echo \"\" >&2
-            echo \"DETECTED: Meson boolean format error (Meson 1.0+)\" >&2
-            echo \"  Fix: Replace true/false with enabled/disabled/auto in meson_args\" >&2
+        if grep -q \\\"not one of the choices.*enabled.*disabled\\\" \\\"\$log_file\\\" 2>/dev/null; then
+            echo \\\"\\\" >&2
+            echo \\\"DETECTED: Meson boolean format error (Meson 1.0+)\\\" >&2
+            echo \\\"  Fix: Replace true/false with enabled/disabled/auto in meson_args\\\" >&2
         fi
     fi
 
-    echo \"\" >&2
-    echo \"Common fixes for \$phase:\" >&2
-    case \"\$phase\" in
+    echo \\\"\\\" >&2
+    echo \\\"Common fixes for \$phase:\\\" >&2
+    case \\\"\$phase\\\" in
         src_configure)
-            echo \"  - Check if all dependencies are installed\" >&2
-            echo \"  - Review configure_args in BUCK file\" >&2
-            echo \"  - For CMake: Check cmake_args\" >&2
-            echo \"  - For Meson: Ensure options use enabled/disabled/auto format\" >&2
+            echo \\\"  - Check if all dependencies are installed\\\" >&2
+            echo \\\"  - Review configure_args in BUCK file\\\" >&2
+            echo \\\"  - For CMake: Check cmake_args\\\" >&2
+            echo \\\"  - For Meson: Ensure options use enabled/disabled/auto format\\\" >&2
             ;;
         src_compile)
-            echo \"  - Check for missing build dependencies\" >&2
-            echo \"  - Review compiler errors in build log\" >&2
-            echo \"  - May need additional USE flags or dependencies\" >&2
+            echo \\\"  - Check for missing build dependencies\\\" >&2
+            echo \\\"  - Review compiler errors in build log\\\" >&2
+            echo \\\"  - May need additional USE flags or dependencies\\\" >&2
             ;;
         src_install)
-            echo \"  - Check if DESTDIR is respected\" >&2
-            echo \"  - Review install paths in configure_args\" >&2
+            echo \\\"  - Check if DESTDIR is respected\\\" >&2
+            echo \\\"  - Review install paths in configure_args\\\" >&2
             ;;
     esac
     exit \$exit_code
 }}
 
-echo \"📦 Phase: src_prepare\"
-if ! ( {src_prepare} ) 2>&1 | tee \"\$T/src_prepare.log\"; then
-    handle_phase_error \"src_prepare\" \${{PIPESTATUS[0]}}
+echo \\\"📦 Phase: src_prepare\\\"
+if ! ( {src_prepare} ) 2>&1 | tee \\\"\$T/src_prepare.log\\\"; then
+    handle_phase_error \\\"src_prepare\\\" \${{PIPESTATUS[0]}}
 fi
 
-echo \"📦 Phase: pre_configure\"
-if ! ( {pre_configure} ) 2>&1 | tee \"\$T/pre_configure.log\"; then
-    handle_phase_error \"pre_configure\" \${{PIPESTATUS[0]}}
+echo \\\"📦 Phase: pre_configure\\\"
+if ! ( {pre_configure} ) 2>&1 | tee \\\"\$T/pre_configure.log\\\"; then
+    handle_phase_error \\\"pre_configure\\\" \${{PIPESTATUS[0]}}
 fi
 
-echo \"📦 Phase: src_configure\"
-if ! ( {src_configure} ) 2>&1 | tee \"\$T/src_configure.log\"; then
-    handle_phase_error \"src_configure\" \${{PIPESTATUS[0]}}
+echo \\\"📦 Phase: src_configure\\\"
+if ! ( {src_configure} ) 2>&1 | tee \\\"\$T/src_configure.log\\\"; then
+    handle_phase_error \\\"src_configure\\\" \${{PIPESTATUS[0]}}
 fi
 
-echo \"📦 Phase: src_compile\"
-if ! ( {src_compile} ) 2>&1 | tee \"\$T/src_compile.log\"; then
-    handle_phase_error \"src_compile\" \${{PIPESTATUS[0]}}
+echo \\\"📦 Phase: src_compile\\\"
+if ! ( {src_compile} ) 2>&1 | tee \\\"\$T/src_compile.log\\\"; then
+    handle_phase_error \\\"src_compile\\\" \${{PIPESTATUS[0]}}
 fi
 
-echo \"📦 Phase: src_test\"
-if [ -n \"{run_tests}\" ]; then
-    if ! ( {src_test} ) 2>&1 | tee \"\$T/src_test.log\"; then
-        handle_phase_error \"src_test\" \${{PIPESTATUS[0]}}
+echo \\\"📦 Phase: src_test\\\"
+if [ -n \\\"{run_tests}\\\" ]; then
+    if ! ( {src_test} ) 2>&1 | tee \\\"\$T/src_test.log\\\"; then
+        handle_phase_error \\\"src_test\\\" \${{PIPESTATUS[0]}}
     fi
 fi
 
-echo \"📦 Phase: src_install\"
-if ! ( {src_install} ) 2>&1 | tee \"\$T/src_install.log\"; then
-    handle_phase_error \"src_install\" \${{PIPESTATUS[0]}}
+echo \\\"📦 Phase: src_install\\\"
+if ! ( {src_install} ) 2>&1 | tee \\\"\$T/src_install.log\\\"; then
+    handle_phase_error \\\"src_install\\\" \${{PIPESTATUS[0]}}
 fi
 "
 '''.format(

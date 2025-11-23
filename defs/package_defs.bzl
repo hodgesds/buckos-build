@@ -29,7 +29,7 @@ PackageInfo = provider(fields = [
 
 def _download_source_impl(ctx: AnalysisContext) -> list[Provider]:
     """Download and extract source tarball."""
-    out_dir = ctx.actions.declare_output(ctx.attrs.name + "-src", dir = True)
+    out_dir = ctx.actions.declare_output(ctx.attrs.name, dir = True)
 
     # Build signature verification parameters
     sig_uri = ctx.attrs.signature_uri if ctx.attrs.signature_uri else ""
@@ -656,10 +656,33 @@ def _rootfs_impl(ctx: AnalysisContext) -> list[Provider]:
     """Assemble a root filesystem from packages."""
     rootfs_dir = ctx.actions.declare_output(ctx.attrs.name, dir = True)
 
-    # Collect all package outputs
-    pkg_dirs = []
+    # Recursively collect all packages and their runtime dependencies
+    all_packages = {}  # Use dict to avoid duplicates
+
+    def collect_package_deps(pkg):
+        """Recursively collect a package and its runtime dependencies."""
+        # Get default outputs
+        default_outputs = pkg[DefaultInfo].default_outputs
+
+        # Add all outputs to our collection
+        for output in default_outputs:
+            pkg_key = str(output)
+            if pkg_key not in all_packages:
+                all_packages[pkg_key] = output
+
+        # Try to collect runtime dependencies if this target has PackageInfo
+        # Use get() method which returns None if provider doesn't exist
+        pkg_info = pkg.get(PackageInfo)
+        if pkg_info and pkg_info.dependencies:
+            for dep in pkg_info.dependencies:
+                collect_package_deps(dep)
+
+    # Collect all packages starting from the explicitly listed ones
     for pkg in ctx.attrs.packages:
-        pkg_dirs.append(pkg[DefaultInfo].default_outputs[0])
+        collect_package_deps(pkg)
+
+    # Convert to list for command arguments
+    pkg_dirs = list(all_packages.values())
 
     # Create assembly script
     script_content = """#!/bin/bash
@@ -2060,159 +2083,149 @@ cd "$S"
 # Phase: src_unpack (already done by download_source)
 {src_unpack}
 
-# Network isolation wrapper for build phases
-# This prevents packages from downloading files during build (Gentoo-style sandbox)
-run_isolated() {{
-    # Test if unshare is available and has permission
-    if command -v unshare >/dev/null 2>&1 && unshare --net true 2>/dev/null; then
-        echo "🔒 Running build phases in network-isolated environment (no internet access)"
-        unshare --net -- bash -c "$@"
-    else
-        echo "⚠ Warning: unshare not available or insufficient permissions, building without network isolation"
-        bash -c "$@"
-    fi
-}}
-
-# Run all build phases in network-isolated environment
-# Pass variables that need to be available inside the isolated namespace
-run_isolated "
+# Generate phases script
+cat > "$T/phases.sh" << 'PHASES_EOF'
+#!/bin/bash
 set -e
 
-# Re-export required variables inside isolated environment
+# Variables will be inherited from parent environment
 export PN='{name}'
 export PV='{version}'
 export PACKAGE_NAME='{name}'
 export CATEGORY='{category}'
 export SLOT='{slot}'
 export USE='{use_flags}'
-export DESTDIR=\$DESTDIR
-export S=\$S
-export EPREFIX=\${{EPREFIX:-}}
-export PREFIX=\${{PREFIX:-/usr}}
-export LIBDIR=\${{LIBDIR:-lib64}}
-export LIBDIR_SUFFIX=\${{LIBDIR_SUFFIX:-64}}
-export BUILD_DIR=\${{BUILD_DIR:-\$S/build}}
-export WORKDIR=\$(dirname \"\$S\")
-export T=\$WORKDIR/temp
-export FILESDIR=\${{FILESDIR:-}}
+
+# These are passed via environment
+cd "$S"
 
 # Custom environment
 {env}
 
 # USE flag helper
 use() {{
-    [[ \\\" \$USE \\\" == *\\\" \$1 \\\"* ]]
+    [[ " $USE " == *" $1 "* ]]
 }}
-
-cd \$S
 
 # Error handler for build phases
 handle_phase_error() {{
-    local phase=\$1
-    local exit_code=\$2
-    local log_file=\$T/\${{phase}}.log
+    local phase=$1
+    local exit_code=$2
+    local log_file=$T/${{phase}}.log
 
-    echo \\\"\\\" >&2
-    echo \\\"✗ Build phase \$phase FAILED (exit code: \$exit_code)\\\" >&2
-    echo \\\"  Package: {name}-{version}\\\" >&2
-    echo \\\"  Category: {category}\\\" >&2
-    echo \\\"  Phase: \$phase\\\" >&2
-    echo \\\"  Working directory: \$PWD\\\" >&2
-    echo \\\"\\\" >&2
+    echo "" >&2
+    echo "✗ Build phase $phase FAILED (exit code: $exit_code)" >&2
+    echo "  Package: {name}-{version}" >&2
+    echo "  Category: {category}" >&2
+    echo "  Phase: $phase" >&2
+    echo "  Working directory: $PWD" >&2
+    echo "" >&2
 
     # Detect common error patterns (for automation)
-    if [ -f \\\"\$log_file\\\" ]; then
-        echo \\\"Analyzing error log...\\\" >&2
+    if [ -f "$log_file" ]; then
+        echo "Analyzing error log..." >&2
 
         # Check for missing dependencies (pkg-config)
-        if grep -q \\\"Package .* was not found\\\" \\\"\$log_file\\\" 2>/dev/null; then
-            echo \\\"\\\" >&2
-            echo \\\"DETECTED: Missing pkg-config dependencies\\\" >&2
-            grep \\\"Package .* was not found\\\" \\\"\$log_file\\\" | while read line; do
-                echo \\\"  \$line\\\" >&2
+        if grep -q "Package .* was not found" "$log_file" 2>/dev/null; then
+            echo "" >&2
+            echo "DETECTED: Missing pkg-config dependencies" >&2
+            grep "Package .* was not found" "$log_file" | while read line; do
+                echo "  $line" >&2
             done
-            echo \\\"  Fix: Add missing dependencies to deps=[] in BUCK file\\\" >&2
+            echo "  Fix: Add missing dependencies to deps=[] in BUCK file" >&2
         fi
 
         # Check for CMake compatibility errors
-        if grep -q \\\"Compatibility with CMake\\\" \\\"\$log_file\\\" 2>/dev/null; then
-            echo \\\"\\\" >&2
-            echo \\\"DETECTED: CMake compatibility issue\\\" >&2
-            echo \\\"  Fix: Add -DCMAKE_MINIMUM_REQUIRED_VERSION=3.5 to cmake_args\\\" >&2
+        if grep -q "Compatibility with CMake" "$log_file" 2>/dev/null; then
+            echo "" >&2
+            echo "DETECTED: CMake compatibility issue" >&2
+            echo "  Fix: Add -DCMAKE_MINIMUM_REQUIRED_VERSION=3.5 to cmake_args" >&2
         fi
 
         # Check for Meson unknown options
-        if grep -q \\\"ERROR: Unknown options\\\" \\\"\$log_file\\\" 2>/dev/null; then
-            echo \\\"\\\" >&2
-            echo \\\"DETECTED: Meson unknown options\\\" >&2
-            grep \\\"ERROR: Unknown options\\\" \\\"\$log_file\\\" | while read line; do
-                echo \\\"  \$line\\\" >&2
+        if grep -q "ERROR: Unknown options" "$log_file" 2>/dev/null; then
+            echo "" >&2
+            echo "DETECTED: Meson unknown options" >&2
+            grep "ERROR: Unknown options" "$log_file" | while read line; do
+                echo "  $line" >&2
             done
-            echo \\\"  Fix: Remove obsolete options from meson_args in BUCK file\\\" >&2
+            echo "  Fix: Remove obsolete options from meson_args in BUCK file" >&2
         fi
 
         # Check for Meson boolean format errors
-        if grep -q \\\"not one of the choices.*enabled.*disabled\\\" \\\"\$log_file\\\" 2>/dev/null; then
-            echo \\\"\\\" >&2
-            echo \\\"DETECTED: Meson boolean format error (Meson 1.0+)\\\" >&2
-            echo \\\"  Fix: Replace true/false with enabled/disabled/auto in meson_args\\\" >&2
+        if grep -q "not one of the choices.*enabled.*disabled" "$log_file" 2>/dev/null; then
+            echo "" >&2
+            echo "DETECTED: Meson boolean format error (Meson 1.0+)" >&2
+            echo "  Fix: Replace true/false with enabled/disabled/auto in meson_args" >&2
         fi
     fi
 
-    echo \\\"\\\" >&2
-    echo \\\"Common fixes for \$phase:\\\" >&2
-    case \\\"\$phase\\\" in
+    echo "" >&2
+    echo "Common fixes for $phase:" >&2
+    case "$phase" in
         src_configure)
-            echo \\\"  - Check if all dependencies are installed\\\" >&2
-            echo \\\"  - Review configure_args in BUCK file\\\" >&2
-            echo \\\"  - For CMake: Check cmake_args\\\" >&2
-            echo \\\"  - For Meson: Ensure options use enabled/disabled/auto format\\\" >&2
+            echo "  - Check if all dependencies are installed" >&2
+            echo "  - Review configure_args in BUCK file" >&2
+            echo "  - For CMake: Check cmake_args" >&2
+            echo "  - For Meson: Ensure options use enabled/disabled/auto format" >&2
             ;;
         src_compile)
-            echo \\\"  - Check for missing build dependencies\\\" >&2
-            echo \\\"  - Review compiler errors in build log\\\" >&2
-            echo \\\"  - May need additional USE flags or dependencies\\\" >&2
+            echo "  - Check for missing build dependencies" >&2
+            echo "  - Review compiler errors in build log" >&2
+            echo "  - May need additional USE flags or dependencies" >&2
             ;;
         src_install)
-            echo \\\"  - Check if DESTDIR is respected\\\" >&2
-            echo \\\"  - Review install paths in configure_args\\\" >&2
+            echo "  - Check if DESTDIR is respected" >&2
+            echo "  - Review install paths in configure_args" >&2
             ;;
     esac
-    exit \$exit_code
+    exit $exit_code
 }}
 
-echo \\\"📦 Phase: src_prepare\\\"
-if ! ( {src_prepare} ) 2>&1 | tee \\\"\$T/src_prepare.log\\\"; then
-    handle_phase_error \\\"src_prepare\\\" \${{PIPESTATUS[0]}}
+echo "📦 Phase: src_prepare"
+if ! ( {src_prepare} ) 2>&1 | tee "$T/src_prepare.log"; then
+    handle_phase_error "src_prepare" ${{PIPESTATUS[0]}}
 fi
 
-echo \\\"📦 Phase: pre_configure\\\"
-if ! ( {pre_configure} ) 2>&1 | tee \\\"\$T/pre_configure.log\\\"; then
-    handle_phase_error \\\"pre_configure\\\" \${{PIPESTATUS[0]}}
+echo "📦 Phase: pre_configure"
+if ! ( {pre_configure} ) 2>&1 | tee "$T/pre_configure.log"; then
+    handle_phase_error "pre_configure" ${{PIPESTATUS[0]}}
 fi
 
-echo \\\"📦 Phase: src_configure\\\"
-if ! ( {src_configure} ) 2>&1 | tee \\\"\$T/src_configure.log\\\"; then
-    handle_phase_error \\\"src_configure\\\" \${{PIPESTATUS[0]}}
+echo "📦 Phase: src_configure"
+if ! ( {src_configure} ) 2>&1 | tee "$T/src_configure.log"; then
+    handle_phase_error "src_configure" ${{PIPESTATUS[0]}}
 fi
 
-echo \\\"📦 Phase: src_compile\\\"
-if ! ( {src_compile} ) 2>&1 | tee \\\"\$T/src_compile.log\\\"; then
-    handle_phase_error \\\"src_compile\\\" \${{PIPESTATUS[0]}}
+echo "📦 Phase: src_compile"
+if ! ( {src_compile} ) 2>&1 | tee "$T/src_compile.log"; then
+    handle_phase_error "src_compile" ${{PIPESTATUS[0]}}
 fi
 
-echo \\\"📦 Phase: src_test\\\"
-if [ -n \\\"{run_tests}\\\" ]; then
-    if ! ( {src_test} ) 2>&1 | tee \\\"\$T/src_test.log\\\"; then
-        handle_phase_error \\\"src_test\\\" \${{PIPESTATUS[0]}}
+echo "📦 Phase: src_test"
+if [ -n "{run_tests}" ]; then
+    if ! ( {src_test} ) 2>&1 | tee "$T/src_test.log"; then
+        handle_phase_error "src_test" ${{PIPESTATUS[0]}}
     fi
 fi
 
-echo \\\"📦 Phase: src_install\\\"
-if ! ( {src_install} ) 2>&1 | tee \\\"\$T/src_install.log\\\"; then
-    handle_phase_error \\\"src_install\\\" \${{PIPESTATUS[0]}}
+echo "📦 Phase: src_install"
+if ! ( {src_install} ) 2>&1 | tee "$T/src_install.log"; then
+    handle_phase_error "src_install" ${{PIPESTATUS[0]}}
 fi
-"
+PHASES_EOF
+
+# Make phases script executable
+chmod +x "$T/phases.sh"
+
+# Run phases with network isolation
+if command -v unshare >/dev/null 2>&1 && unshare --net true 2>/dev/null; then
+    echo "🔒 Running build phases in network-isolated environment (no internet access)"
+    DESTDIR="$DESTDIR" S="$S" EPREFIX="$EPREFIX" PREFIX="$PREFIX" LIBDIR="$LIBDIR" LIBDIR_SUFFIX="$LIBDIR_SUFFIX" BUILD_DIR="$BUILD_DIR" WORKDIR="$WORKDIR" T="$T" FILESDIR="$FILESDIR" unshare --net -- "$T/phases.sh"
+else
+    echo "⚠ Warning: unshare not available or insufficient permissions, building without network isolation"
+    DESTDIR="$DESTDIR" S="$S" EPREFIX="$EPREFIX" PREFIX="$PREFIX" LIBDIR="$LIBDIR" LIBDIR_SUFFIX="$LIBDIR_SUFFIX" BUILD_DIR="$BUILD_DIR" WORKDIR="$WORKDIR" T="$T" FILESDIR="$FILESDIR" "$T/phases.sh"
+fi
 '''.format(
             name = ctx.attrs.name,
             version = ctx.attrs.version,

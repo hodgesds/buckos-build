@@ -1,5 +1,4 @@
 # Development Libraries - Comprehensive aggregator for dev-libs
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 # Inspired by Gentoo's dev-libs category
 # This provides convenient groups for common development library dependencies
 

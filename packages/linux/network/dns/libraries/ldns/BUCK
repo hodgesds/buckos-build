@@ -1,11 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 autotools_package(
     name = "ldns",
     version = "1.8.3",
     src_uri = "https://nlnetlabs.nl/downloads/ldns/ldns-1.8.3.tar.gz",
-    sha256 = "f6990f39daf23bc161c14cb2b0d6cd4536867b455b341cf162a1ed7dc4c08839",
+    sha256 = "c3f72dd1036b2907e3a56e6acf9dfb2e551256b3c1bbd9787942deeeb70e7860",
 
     iuse = ["ssl", "dnssec", "static-libs"],
     use_defaults = ["ssl", "dnssec"],

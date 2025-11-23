@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 autotools_package(
@@ -6,6 +6,7 @@ autotools_package(
     version = "2.3.7",
     src_uri = "https://mirrors.kernel.org/gnu/libidn/libidn2-2.3.7.tar.gz",
     sha256 = "4c21a791b610b9519b9d0e12b8097bf2f359b12f8dd92647611a929e6bfd7d64",
+    auto_detect_signature = False,
 
     iuse = ["static-libs", "doc"],
     use_defaults = [],

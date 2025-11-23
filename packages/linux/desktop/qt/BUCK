@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "set_use_flags")
 download_source(
     name = "qt5-src",
     src_uri = "https://download.qt.io/archive/qt/5.15/5.15.12/single/qt-everywhere-opensource-src-5.15.12.tar.xz",
-    sha256 = "600077d4f974183aff000a77d06d6a95b323d3360ef4ff0bfe064c73c980b80b",
+    sha256 = "93f2c0889ee2e9cdf30c170d353c3f829de5f29ba21c119167dee5995e48ccce",
 )
 
 binary_package(

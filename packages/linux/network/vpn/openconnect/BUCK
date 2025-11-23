@@ -1,11 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 autotools_package(
     name = "openconnect",
     version = "9.12",
     src_uri = "https://www.infradead.org/openconnect/download/openconnect-9.12.tar.gz",
-    sha256 = "949e4ad8d28a089fd44b5730dcc28612d257d97bbc5d451176e02a8fe368ec79",
+    sha256 = "a2bedce3aa4dfe75e36e407e48e8e8bc91d46def5335ac9564fbf91bd4b2413e",
 
     iuse = ["ssl", "gnutls", "lz4", "stoken", "libpcsclite"],
     use_defaults = ["ssl", "lz4"],

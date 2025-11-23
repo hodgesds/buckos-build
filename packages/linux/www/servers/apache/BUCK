@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 # apache - Apache HTTP Server
@@ -16,6 +16,7 @@ autotools_package(
     version = "2.4.62",
     src_uri = "https://archive.apache.org/dist/httpd/httpd-2.4.62.tar.bz2",
     sha256 = "674188e7bf44ced82da8db522da946849e22080d73d16c93f7f4df89e25729ec",
+    auto_detect_signature = False,
     description = "Apache HTTP Server - the world's most popular web server",
     homepage = "https://httpd.apache.org/",
     license = "Apache-2.0",

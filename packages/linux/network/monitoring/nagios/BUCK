@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 # nagios - Network monitoring system
@@ -7,7 +7,7 @@ autotools_package(
     name = "nagios",
     version = "4.5.0",
     src_uri = "https://github.com/NagiosEnterprises/nagioscore/releases/download/nagios-4.5.0/nagios-4.5.0.tar.gz",
-    sha256 = "e9a7d5838964d9eca46f935e2b2663a707897f863cbf79c69603c945322e79de",
+    sha256 = "164e05daed1adf72640b323453b6c13f4d13d90e56a95c7cdd8dccf8519e9be0",
 
     iuse = ["ssl", "perl", "web"],
     use_defaults = ["ssl", "perl", "web"],

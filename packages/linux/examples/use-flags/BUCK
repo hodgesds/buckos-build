@@ -21,7 +21,7 @@ load("//defs:package_customize.bzl",
 )
 load("//defs:package_defs.bzl",
      "download_source",
-     "configure_make_package",
+     "autotools_package",
      "ebuild_package",
 )
 

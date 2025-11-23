@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 autotools_package(
@@ -6,6 +6,7 @@ autotools_package(
     version = "1.2.4",
     src_uri = "https://musl.libc.org/releases/musl-1.2.4.tar.gz",
     sha256 = "7a35eae33d5372a7c0da1188de798726f68825513b7ae3ebe97aaaa52114f039",
+    auto_detect_signature = False,
     description = "musl is a lightweight, fast, simple, free C library",
     homepage = "https://musl.libc.org/",
     license = "MIT",

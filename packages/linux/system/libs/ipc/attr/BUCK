@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
@@ -7,15 +7,32 @@ download_source(
     sha256 = "39bf67452fa41d0948c2197601053f4f3c5018a8b4b1129a8d4d480a81a3187b",
 )
 
-autotools_package(
+ebuild_package(
     name = "attr",
     source = ":attr-src",
     version = "2.5.2",
+    category = "system/libs/ipc",
+    slot = "0",
     description = "Extended attribute support library",
     homepage = "https://savannah.nongnu.org/projects/attr",
     license = "LGPL-2.1",
-    configure_args = [
-        "--disable-static",
-    ],
+
+    src_configure = '''
+./configure \\
+    --prefix=/usr \\
+    --build=$(gcc -dumpmachine) \\
+    --host=$(gcc -dumpmachine) \\
+    --disable-static
+''',
+
+    src_compile = '''
+make -j$(nproc)
+''',
+
+    src_install = '''
+make DESTDIR="$DESTDIR" install
+''',
+
+    depend = [],
     visibility = ["PUBLIC"],
 )

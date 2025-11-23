@@ -1,7 +1,7 @@
 # Network authentication packages
 # RADIUS and TACACS+ PAM modules
 
-load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 # pam_radius - RADIUS PAM module

@@ -7,7 +7,7 @@ cmake_package(
     name = "aom",
     version = "3.9.1",
     src_uri = "https://aomedia.googlesource.com/aom/+archive/refs/tags/v3.9.1.tar.gz",
-    sha256 = "1df99de89198ff62085cdf37b6515983bbdcf9fe8ae27dba26562211be17ad56",
+    sha256 = "e35fa29eddb445d66eafe27ed001f942872ffbd8af96fde3e270dcf9fdc23032",
     description = "AV1 codec library from Alliance for Open Media",
     homepage = "https://aomedia.org/",
     license = "BSD-2-Clause",

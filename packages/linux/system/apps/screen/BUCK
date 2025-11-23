@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 # screen - Terminal multiplexer with detach capability
@@ -8,7 +8,7 @@ autotools_package(
     name = "screen",
     version = "4.9.1",
     src_uri = "https://mirrors.kernel.org/gnu/screen/screen-4.9.1.tar.gz",
-    sha256 = "636976f5bbc149cc214f8048634cfa05e1fda003f08865f262f8d7a31738f135",
+    sha256 = "26cef3e3c42571c0d484ad6faf110c5c15091fbf872b06fa7aa4766c7405ac69",
     description = "GNU screen terminal multiplexer",
     homepage = "https://www.gnu.org/software/screen",
     license = "GPL-3+",

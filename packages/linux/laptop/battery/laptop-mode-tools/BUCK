@@ -1,7 +1,7 @@
 # laptop-mode-tools - Laptop power saving tools
 # Reduce power consumption through various kernel and hardware settings
 
-load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(

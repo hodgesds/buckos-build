@@ -1,7 +1,7 @@
 # light - Backlight controller
 # A program to control backlight controllers
 
-load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 # NOTE: 'light' has been replaced by acpilight - a Python-based backlight controller

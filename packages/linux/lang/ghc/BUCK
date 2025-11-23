@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "binary_package", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # =============================================================================
@@ -9,12 +9,14 @@ download_source(
     name = "ghc-src",
     src_uri = "https://downloads.haskell.org/~ghc/9.4.8/ghc-9.4.8-src.tar.xz",
     sha256 = "0bf407eb67fe3e3c24b0f4c8dea8cb63e07f63ca0f76cf2058565143507ab85e",
+    auto_detect_signature = False,
 )
 
 download_source(
     name = "ghc-bootstrap-src",
     src_uri = "https://downloads.haskell.org/~ghc/9.4.8/ghc-9.4.8-x86_64-alpine3_12-linux.tar.xz",
     sha256 = "55faf0ec6630d635f97a2bf8f8f79ef587b027962d237f0be3a667b1bbb512b8",
+    auto_detect_signature = False,
 )
 
 binary_package(

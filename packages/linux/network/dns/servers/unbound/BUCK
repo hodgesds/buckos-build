@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 autotools_package(
@@ -6,6 +6,7 @@ autotools_package(
     version = "1.19.1",
     src_uri = "https://nlnetlabs.nl/downloads/unbound/unbound-1.19.1.tar.gz",
     sha256 = "bc1d576f3dd846a0739adc41ffaa702404c6767d2b6082deb9f2f97cbb24a3a9",
+    auto_detect_signature = False,
 
     iuse = ["ssl", "threads", "dnscrypt", "tfo"],
     use_defaults = ["ssl", "threads", "dnscrypt", "tfo"],

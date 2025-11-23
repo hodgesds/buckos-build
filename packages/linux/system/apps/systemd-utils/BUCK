@@ -12,6 +12,10 @@ meson_package(
     description = "Standalone systemd utilities (udevd, tmpfiles, etc.)",
     homepage = "https://systemd.io",
     license = "LGPL-2.1+",
+
+    # Exclude test files with special characters that Buck2 can't handle
+    exclude_patterns = ["*/test/fuzz"],
+
     meson_args = [
         "-Dprefix=/usr",
         "-Dsysconfdir=/etc",

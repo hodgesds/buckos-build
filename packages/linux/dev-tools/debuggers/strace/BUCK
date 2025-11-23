@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 autotools_package(
@@ -6,6 +6,7 @@ autotools_package(
     version = "6.7",
     src_uri = "https://strace.io/files/6.7/strace-6.7.tar.xz",
     sha256 = "2090201e1a3ff32846f4fe421c1163b15f440bb38e31355d09f82d3949922af7",
+    auto_detect_signature = False,
     description = "System call tracer for Linux",
     homepage = "https://strace.io/",
     license = "LGPL-2.1+",

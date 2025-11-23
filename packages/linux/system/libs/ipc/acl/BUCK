@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
@@ -7,17 +7,33 @@ download_source(
     sha256 = "5f2bdbad629707aa7d85c623f994aa8a1d2dec55a73de5205bac0bf6058a2f7c",
 )
 
-autotools_package(
+ebuild_package(
     name = "acl",
     source = ":acl-src",
     version = "2.3.2",
+    category = "system/libs/ipc",
+    slot = "0",
     description = "Access Control List library",
     homepage = "https://savannah.nongnu.org/projects/acl",
     license = "LGPL-2.1",
-    configure_args = [
-        "--disable-static",
-    ],
-    deps = [
+
+    src_configure = '''
+./configure \\
+    --prefix=/usr \\
+    --build=$(gcc -dumpmachine) \\
+    --host=$(gcc -dumpmachine) \\
+    --disable-static
+''',
+
+    src_compile = '''
+make -j$(nproc)
+''',
+
+    src_install = '''
+make DESTDIR="$DESTDIR" install
+''',
+
+    depend = [
         "//packages/linux/system/libs/ipc/attr:attr",
     ],
     visibility = ["PUBLIC"],

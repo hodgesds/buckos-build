@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 autotools_package(
@@ -6,6 +6,7 @@ autotools_package(
     version = "5.9",
     src_uri = "https://sourceforge.net/projects/zsh/files/zsh/5.9/zsh-5.9.tar.xz",
     sha256 = "9b8d1ecedd5b5e81fbf1918e876752a7dd948e05c1a0dba10ab863842d45acd5",
+    auto_detect_signature = False,
     description = "A very advanced and programmable command interpreter (shell)",
     homepage = "https://www.zsh.org/",
     license = "MIT",

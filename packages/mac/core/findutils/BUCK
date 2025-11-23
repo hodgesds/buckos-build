@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
 
@@ -6,7 +6,7 @@ autotools_package(
     name = "findutils",
     version = "4.10.0",
     src_uri = "https://mirrors.kernel.org/gnu/findutils/findutils-4.10.0.tar.xz",
-    sha256 = "1387e0b67ff247571c7c0e4f2f44bed33d16882dc3e1a9fbefc064d15e76c8ed",
+    sha256 = "1387e0b67ff247d2abde998f90dfbf70c1491391a59ddfecb8ae698789f0a4f5",
     description = "GNU find utilities (macOS)",
     homepage = "https://www.gnu.org/software/findutils/",
     license = "GPL-3.0",

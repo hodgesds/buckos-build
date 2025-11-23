@@ -5,6 +5,58 @@
 # Individual package definitions are in their respective subdirectories.
 
 # =============================================================================
+# Individual Init Systems (aliases for installer compatibility)
+# =============================================================================
+
+filegroup(
+    name = "systemd",
+    srcs = [
+        "//packages/linux/system/init/systemd:systemd",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "openrc",
+    srcs = [
+        "//packages/linux/system/init/openrc:openrc",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "s6",
+    srcs = [
+        "//packages/linux/system/init/s6:s6",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "runit",
+    srcs = [
+        "//packages/linux/system/init/runit:runit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "dinit",
+    srcs = [
+        "//packages/linux/system/init/dinit:dinit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+filegroup(
+    name = "sysvinit",
+    srcs = [
+        "//packages/linux/system/init/sysvinit:sysvinit",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
 # Package Groups
 # =============================================================================
 

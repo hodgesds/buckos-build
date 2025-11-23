@@ -2,14 +2,15 @@
 # ufw - Uncomplicated Firewall
 # =============================================================================
 
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 autotools_package(
     name = "ufw",
     version = "0.36.2",
     src_uri = "https://launchpad.net/ufw/0.36/0.36.2/+download/ufw-0.36.2.tar.gz",
-    sha256 = "64366b6ea5284b23f2ad45e72021f16581bdf918e303678d0702a2c96ce60efe",
+    sha256 = "2a57a99eecef6b44db3537ed2520b30bae3759f8465456e22e404cd643838bf5",
+    auto_detect_signature = False,
 
     iuse = ["ipv6"],
     use_defaults = ["ipv6"],

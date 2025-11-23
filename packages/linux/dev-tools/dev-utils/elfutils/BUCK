@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 autotools_package(
@@ -6,6 +6,7 @@ autotools_package(
     version = "0.191",
     src_uri = "https://sourceware.org/elfutils/ftp/0.191/elfutils-0.191.tar.bz2",
     sha256 = "df76db71366d1d708365fc7a6c60ca48398f14367eb2b8954efc8897147ad871",
+    auto_detect_signature = False,
     description = "Collection of utilities and libraries to read, create and modify ELF files",
     homepage = "https://sourceware.org/elfutils/",
     license = "GPL-2+ LGPL-3+",

@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 autotools_package(
@@ -6,6 +6,7 @@ autotools_package(
     version = "1.7.3",
     src_uri = "https://getdnsapi.net/releases/getdns-1-7-3/getdns-1.7.3.tar.gz",
     sha256 = "f1404ca250f02e37a118aa00cf0ec2cbe11896e060c6d369c6761baea7d55a2c",
+    auto_detect_signature = False,
 
     iuse = ["ssl", "idn", "stubby"],
     use_defaults = ["ssl", "idn"],

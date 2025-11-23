@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 autotools_package(
@@ -6,6 +6,7 @@ autotools_package(
     version = "1.2.11",
     src_uri = "https://www.alsa-project.org/files/pub/lib/alsa-lib-1.2.11.tar.bz2",
     sha256 = "9f3f2f69b995f9ad37359072fbc69a3a88bfba081fc83e9be30e14662795bb4d",
+    auto_detect_signature = False,
     description = "Advanced Linux Sound Architecture library",
     homepage = "https://www.alsa-project.org/",
     license = "LGPL-2.1",

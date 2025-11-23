@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "binary_package", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
@@ -9,7 +9,7 @@ autotools_package(
     name = "net-tools",
     version = "2.10",
     src_uri = "https://sourceforge.net/projects/net-tools/files/net-tools-2.10.tar.xz/download",
-    sha256 = "b262435a5241e89f9f2edf7221e0be939a34a9ad3f5723b4e467f56c3f1b0c94",
+    sha256 = "b262435a5241e89bfa51c3cabd5133753952f7a7b7b93f32e08cb9d96f580d69",
 
     iuse = ["nls", "ipv6"],
     use_defaults = ["ipv6"],

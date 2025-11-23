@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
@@ -7,18 +7,36 @@ download_source(
     sha256 = "23a6ef8aadaf1e3e875f633bb2d116cfef8952dba7bc7c569b13458e1952b30f",
 )
 
-autotools_package(
+ebuild_package(
     name = "libcap",
     source = ":libcap-src",
     version = "2.70",
+    category = "system/libs/ipc",
+    slot = "0",
     description = "POSIX capabilities library",
     homepage = "https://sites.google.com/site/fullycapable/",
     license = "BSD-3-Clause",
-    configure_args = [],
-    make_args = [
-        "prefix=/usr",
-        "lib=lib",
-        "RAISE_SETFCAP=no",
-    ],
+
+    # libcap doesn't use autotools - it's pure Makefile-based
+    src_configure = '''
+# No configure step - Makefile-based build
+true
+''',
+
+    src_compile = '''
+make -j$(nproc) \\
+    prefix=/usr \\
+    lib=lib \\
+    RAISE_SETFCAP=no
+''',
+
+    src_install = '''
+make DESTDIR="$DESTDIR" \\
+    prefix=/usr \\
+    lib=lib \\
+    RAISE_SETFCAP=no \\
+    install
+''',
+
     visibility = ["PUBLIC"],
 )

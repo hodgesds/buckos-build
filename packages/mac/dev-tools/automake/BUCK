@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
 
@@ -6,7 +6,7 @@ autotools_package(
     name = "automake",
     version = "1.17",
     src_uri = "https://mirrors.kernel.org/gnu/automake/automake-1.17.tar.xz",
-    sha256 = "8920c1fc411e13b90bf704ef9db6f29d540f5ce8c0d8c2a7c8f56ae26a9c8f3f",
+    sha256 = "8920c1fc411e13b90bf704ef9db6f29d540e76d232cb3b2c9f4dc4cc599bd990",
     description = "A tool for automatically generating Makefile.in files",
     homepage = "https://www.gnu.org/software/automake/",
     license = "GPL-2.0",

@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "binary_package")
 
 # =============================================================================
 # CA Certificates - Root CA certificates bundle
@@ -7,7 +7,7 @@ load("//defs:package_defs.bzl", "download_source", "configure_make_package", "bi
 download_source(
     name = "ca-certificates-src",
     src_uri = "https://curl.se/ca/cacert-2024-01-09.pem",
-    sha256 = "3519f760fbce62277d4150ab8b2d75156fa760ec019a3b3743b4c5e13e7336fb",
+    sha256 = "c8ac21705c1ba6d45af593da3dc8dae90a710961ed955a66f0eaa3bd0bf6e2be",
 )
 
 binary_package(

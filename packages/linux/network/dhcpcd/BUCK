@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
@@ -10,6 +10,7 @@ autotools_package(
     version = "10.0.6",
     src_uri = "https://github.com/NetworkConfiguration/dhcpcd/releases/download/v10.0.6/dhcpcd-10.0.6.tar.xz",
     sha256 = "779d3ae514e8f24d7449503e1f0a20f5137c773bd04ca98c62386bf81e99f482",
+    auto_detect_signature = False,
 
     iuse = ["udev", "ipv6", "auth", "embedded"],
     use_defaults = ["ipv6"],

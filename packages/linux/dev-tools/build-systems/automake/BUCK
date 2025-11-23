@@ -1,31 +1,49 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
+load("//defs:eclasses.bzl", "inherit")
 load("//defs:use_flags.bzl", "set_use_flags")
 
-autotools_package(
-    name = "automake",
-    version = "1.16.5",
+# Automake cannot use autotools_package because it would create a circular dependency
+# (autotools eclass depends on automake). Build it manually instead.
+download_source(
+    name = "automake-src",
     src_uri = "https://mirrors.kernel.org/gnu/automake/automake-1.16.5.tar.xz",
     sha256 = "f01d58cd6d9d77fbdca9eb4bbd5ead1988228fdb73d6f7a201f5f8d6b118b469",
+    auto_detect_signature = False,
+)
+
+ebuild_package(
+    name = "automake",
+    source = ":automake-src",
+    version = "1.16.5",
+    category = "dev-tools/build-systems",
+    slot = "0",
     description = "Tool for generating GNU Standards-compliant Makefiles",
     homepage = "https://www.gnu.org/software/automake/",
     license = "GPL-2+",
 
-    # USE flags this package supports
-    iuse = [
-        "doc",
-        "test",
-    ],
+    src_configure = '''
+./configure \\
+    --prefix=/usr \\
+    --build=$(gcc -dumpmachine) \\
+    --host=$(gcc -dumpmachine) \\
+    --mandir=/usr/share/man \\
+    --infodir=/usr/share/info \\
+    --datadir=/usr/share \\
+    --sysconfdir=/etc \\
+    --localstatedir=/var \\
+    --libdir=/usr/lib64 \\
+    --disable-doc
+''',
 
-    # Default USE flags
-    use_defaults = [],
+    src_compile = '''
+make -j$(nproc)
+''',
 
-    # Conditional configure arguments
-    use_configure = {
-        "doc": "--enable-doc",
-        "-doc": "--disable-doc",
-    },
+    src_install = '''
+make DESTDIR="$DESTDIR" install
+''',
 
-    deps = [
+    depend = [
         "//packages/linux/dev-tools/build-systems/autoconf:autoconf",
     ],
     visibility = ["PUBLIC"],

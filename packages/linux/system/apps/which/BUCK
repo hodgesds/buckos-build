@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 # which - Shows full path of commands
@@ -8,7 +8,8 @@ autotools_package(
     name = "which",
     version = "2.21",
     src_uri = "https://mirrors.kernel.org/gnu/which/which-2.21.tar.gz",
-    sha256 = "7c79007f4d0d2d02eb61e3e7b704b6c06c0725c71e8ff4991afd9ca6364f2211",
+    sha256 = "f4a245b94124b377d8b49646bf421f9155d36aa7614b6ebf83705d3ffc76eaad",
+    auto_detect_signature = False,
     description = "Shows full path of shell commands",
     homepage = "https://www.gnu.org/software/which",
     license = "GPL-3+",

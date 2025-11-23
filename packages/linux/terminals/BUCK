@@ -1,5 +1,4 @@
 # Filegroup for lightweight terminals
-load("//defs:use_flags.bzl", "use_package", "set_use_flags", "use_dep")
 filegroup(
     name = "lightweight-terminals",
     srcs = [

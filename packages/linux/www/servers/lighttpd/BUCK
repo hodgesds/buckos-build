@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 # lighttpd - Lightweight, fast web server
@@ -16,6 +16,7 @@ autotools_package(
     version = "1.4.76",
     src_uri = "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.76.tar.xz",
     sha256 = "8cbf4296e373cfd0cedfe9d978760b5b05c58fdc4048b4e2bcaf0a61ac8f5011",
+    auto_detect_signature = False,
     description = "Lightweight, fast web server optimized for high-performance environments",
     homepage = "https://www.lighttpd.net/",
     license = "BSD-3-Clause",

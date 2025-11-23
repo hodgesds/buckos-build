@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "binary_package", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # =============================================================================
@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 download_source(
     name = "kotlin-native-src",
     src_uri = "https://github.com/JetBrains/kotlin/releases/download/v1.9.22/kotlin-native-linux-x86_64-1.9.22.tar.gz",
-    sha256 = "c9025a820bc72047ba8ccbc9ec4650b87dfadd7578ef75091f9d7945a0d7cfe4",
+    sha256 = "c2b0a6481ced5401db4a7028661c039b7466996efaa554bbcc6a3d421ac5e7d4",
 )
 
 binary_package(

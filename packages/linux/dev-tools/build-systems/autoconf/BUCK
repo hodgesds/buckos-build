@@ -1,29 +1,49 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
+load("//defs:eclasses.bzl", "inherit")
 load("//defs:use_flags.bzl", "set_use_flags")
 
-autotools_package(
-    name = "autoconf",
-    version = "2.72",
+# Autoconf cannot use autotools_package because it would create a circular dependency
+# (autotools eclass depends on autoconf). Build it manually instead.
+download_source(
+    name = "autoconf-src",
     src_uri = "https://mirrors.kernel.org/gnu/autoconf/autoconf-2.72.tar.xz",
     sha256 = "ba885c1319578d6c94d46e9b0dceb4014caafe2490e437a0dbca3f270a223f5a",
+    auto_detect_signature = False,
+)
+
+ebuild_package(
+    name = "autoconf",
+    source = ":autoconf-src",
+    version = "2.72",
+    category = "dev-tools/build-systems",
+    slot = "0",
     description = "Automatic configure script builder",
     homepage = "https://www.gnu.org/software/autoconf/",
     license = "GPL-3+",
 
-    # USE flags this package supports
-    iuse = [
-        "doc",
-        "test",
-    ],
+    src_configure = '''
+./configure \\
+    --prefix=/usr \\
+    --build=$(gcc -dumpmachine) \\
+    --host=$(gcc -dumpmachine) \\
+    --mandir=/usr/share/man \\
+    --infodir=/usr/share/info \\
+    --datadir=/usr/share \\
+    --sysconfdir=/etc \\
+    --localstatedir=/var \\
+    --libdir=/usr/lib64 \\
+    --disable-doc
+''',
 
-    # Default USE flags
-    use_defaults = [],
+    src_compile = '''
+make -j$(nproc)
+''',
 
-    # Conditional configure arguments
-    use_configure = {
-        "doc": "--enable-doc",
-        "-doc": "--disable-doc",
-    },
+    src_install = '''
+make DESTDIR="$DESTDIR" install
+''',
 
+    # No dependencies - autoconf is a bootstrap package
+    depend = [],
     visibility = ["PUBLIC"],
 )

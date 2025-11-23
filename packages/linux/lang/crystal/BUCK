@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "binary_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "binary_package", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # =============================================================================
@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 download_source(
     name = "crystal-src",
     src_uri = "https://github.com/crystal-lang/crystal/archive/refs/tags/1.11.2.tar.gz",
-    sha256 = "25f87148565633405af413d31d96b552fbbe31f05e654b8a30df1c989a65d407",
+    sha256 = "9740f0f52745d399449b11a64b060216c8599ef73712615fe8956a1e8f7c5d9c",
 )
 
 binary_package(

@@ -16,7 +16,7 @@ load("//defs:use_flags.bzl", "set_use_flags")
 download_source(
     name = "linux-firmware-src",
     src_uri = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-20241017.tar.gz",
-    sha256 = "6b948fe9fec10ad57f34bf8561a9f9c3175732a17ac0610e33f1b9ef04a2ed54",
+    sha256 = "80b3e047c6939b27b8882467a102eb697de51c67584568f8d38483cc9ecb59b0",
 )
 
 binary_package(

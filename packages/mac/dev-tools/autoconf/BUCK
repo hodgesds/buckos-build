@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 load("//defs:platform_defs.bzl", "PLATFORM_MACOS")
 
@@ -6,7 +6,7 @@ autotools_package(
     name = "autoconf",
     version = "2.72",
     src_uri = "https://mirrors.kernel.org/gnu/autoconf/autoconf-2.72.tar.xz",
-    sha256 = "ba885c1319578d6c94d46e9c0e8d8ec49c4e0e7f5d4db05357edb5d5e5e5e5e5",
+    sha256 = "ba885c1319578d6c94d46e9b0dceb4014caafe2490e437a0dbca3f270a223f5a",
     description = "Automatic configure script builder",
     homepage = "https://www.gnu.org/software/autoconf/",
     license = "GPL-3.0",

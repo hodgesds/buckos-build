@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 # pam - Pluggable Authentication Modules
@@ -9,23 +9,35 @@ download_source(
     auto_detect_signature=False,
 )
 
-autotools_package(
+ebuild_package(
     name = "pam",
     source = ":pam-src",
     version = "1.6.1",
+    category = "system/security/auth",
+    slot = "0",
     description = "Pluggable Authentication Modules",
     homepage = "https://github.com/linux-pam/linux-pam",
     license = "BSD-3-Clause",
-    configure_args = [
-        "--prefix=/usr",
-        "--sysconfdir=/etc",
-        "--libdir=/usr/lib",
-        "--sbindir=/usr/sbin",
-        "--enable-securedir=/usr/lib/security",
-        "--disable-nls",
-        "--disable-db",
-    ],
-    deps = [
-    ],
+
+    src_configure = '''
+./configure \\
+    --prefix=/usr \\
+    --sysconfdir=/etc \\
+    --libdir=/usr/lib \\
+    --sbindir=/usr/sbin \\
+    --enable-securedir=/usr/lib/security \\
+    --disable-nls \\
+    --disable-db
+''',
+
+    src_compile = '''
+make -j$(nproc)
+''',
+
+    src_install = '''
+make DESTDIR="$DESTDIR" install
+''',
+
+    depend = [],
     visibility = ["PUBLIC"],
 )

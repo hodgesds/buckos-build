@@ -1,33 +1,50 @@
-load("//defs:package_defs.bzl", "download_source", "configure_make_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
+load("//defs:eclasses.bzl", "inherit")
 load("//defs:use_flags.bzl", "set_use_flags")
 
-autotools_package(
-    name = "libtool",
-    version = "2.4.7",
+# Libtool cannot use autotools_package because it would create a circular dependency
+# (autotools eclass depends on libtool). Build it manually instead.
+download_source(
+    name = "libtool-src",
     src_uri = "https://mirrors.kernel.org/gnu/libtool/libtool-2.4.7.tar.xz",
     sha256 = "4f7f217f057ce655ff22559ad221a0fd8ef84ad1fc5fcb6990cecc333aa1635d",
+    auto_detect_signature = False,
+)
+
+ebuild_package(
+    name = "libtool",
+    source = ":libtool-src",
+    version = "2.4.7",
+    category = "dev-tools/build-systems",
+    slot = "0",
     description = "Generic library support script",
     homepage = "https://www.gnu.org/software/libtool/",
     license = "GPL-2+",
 
-    # USE flags this package supports
-    iuse = [
-        "doc",
-        "static-libs",
-    ],
+    src_configure = '''
+./configure \\
+    --prefix=/usr \\
+    --build=$(gcc -dumpmachine) \\
+    --host=$(gcc -dumpmachine) \\
+    --mandir=/usr/share/man \\
+    --infodir=/usr/share/info \\
+    --datadir=/usr/share \\
+    --sysconfdir=/etc \\
+    --localstatedir=/var \\
+    --libdir=/usr/lib64 \\
+    --disable-static
+''',
 
-    # Default USE flags
-    use_defaults = [],
+    src_compile = '''
+make -j$(nproc)
+''',
 
-    # Conditional configure arguments
-    use_configure = {
-        "static-libs": "--enable-static",
-        "-static-libs": "--disable-static",
-    },
+    src_install = '''
+make DESTDIR="$DESTDIR" install
+''',
 
-    deps = [
-        "//packages/linux/dev-tools/build-systems/autoconf:autoconf",
-        "//packages/linux/dev-tools/build-systems/automake:automake",
-    ],
+    # No dependencies - libtool is a bootstrap package that must build without
+    # depending on automake/autoconf (which themselves depend on libtool via autotools eclass)
+    depend = [],
     visibility = ["PUBLIC"],
 )

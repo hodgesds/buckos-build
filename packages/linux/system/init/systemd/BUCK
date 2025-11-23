@@ -1,89 +1,116 @@
-load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:package_defs.bzl", "meson_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 # -----------------------------------------------------------------------------
 # systemd - System and Service Manager
 # -----------------------------------------------------------------------------
-# USE flags: pam, selinux, apparmor, audit, acl, gcrypt, gnutls, openssl,
-#            tpm2, curl, idn, polkit, dbus, qrencode, microhttpd, man
 
-download_source(
-    name = "systemd-src",
+meson_package(
+    name = "systemd",
+    version = "255",
     src_uri = "https://github.com/systemd/systemd/archive/refs/tags/v255.tar.gz",
     sha256 = "28854ffb2cb5f9e07fcbdbaf1e03a80b3462a12edeef84893ca2f37b22e4491e",
-)
-
-autotools_package(
-    name = "systemd",
-    source = ":systemd-src",
-    version = "255",
     description = "System and Service Manager",
     homepage = "https://systemd.io/",
     license = "LGPL-2.1-or-later",
-    # USE flags: pam, selinux, apparmor, audit, acl, gcrypt, gnutls, openssl,
-    #            curl, idn, polkit, dbus, qrencode, microhttpd, man, tpm2
-    # use_deps: pam -> //packages/linux/system/security/auth/pam
-    #           selinux -> //packages/linux/system/security/selinux
-    #           apparmor -> //packages/linux/system/security/apparmor
-    #           audit -> //packages/linux/system/security/audit
-    #           acl -> //packages/linux/system/libs/ipc/acl
-    #           gcrypt -> //packages/linux/system/libs/crypto/libgcrypt
-    #           gnutls -> //packages/linux/system/libs/crypto/gnutls
-    #           openssl -> //packages/linux/system/libs/crypto/openssl
-    #           curl -> //packages/linux/system/libs/network/curl
-    #           polkit -> //packages/linux/system/security/auth/privilege/polkit
-    #           dbus -> //packages/linux/system/libs/ipc/dbus
-    pre_configure = """
-# systemd uses meson build system
-mkdir -p build
-cd build
-meson setup .. \
-    --prefix=/usr \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    -Dmode=release \
-    -Dsplit-bin=true \
-    -Dsplit-usr=false \
-    -Drootprefix=/usr \
-    -Dsysvinit-path=/etc/init.d \
-    -Ddefault-hierarchy=unified \
-    -Dpam=false \
-    -Dselinux=false \
-    -Dapparmor=false \
-    -Daudit=false \
-    -Dpolkit=false \
-    -Dacl=false \
-    -Dsmack=false \
-    -Dgcrypt=false \
-    -Dgnutls=false \
-    -Dopenssl=false \
-    -Dp11kit=false \
-    -Dlibfido2=false \
-    -Dtpm2=false \
-    -Dcurl=false \
-    -Didn=false \
-    -Dlibidn2=false \
-    -Dlibiptc=false \
-    -Dqrencode=false \
-    -Dmicrohttpd=false \
-    -Dglib=false \
-    -Ddbus=false \
-    -Dman=false \
-    -Dhtml=false \
-    -Dtests=false
-""",
-    configure_args = [],
-    make_args = ["-C", "build"],
-    post_install = """
-cd build
-DESTDIR=$OUT meson install
-# Create essential symlinks
-mkdir -p $OUT/sbin
-ln -sf ../usr/lib/systemd/systemd $OUT/sbin/init
-""",
+
+    # Exclude test files with special characters that Buck2 can't handle
+    exclude_patterns = ["*/test/fuzz"],
+
+    # USE flags this package supports
+    iuse = [
+        "pam",
+        "selinux",
+        "apparmor",
+        "audit",
+        "acl",
+        "gcrypt",
+        "gnutls",
+        "openssl",
+        "tpm2",
+        "curl",
+        "idn",
+        "polkit",
+        "dbus",
+        "qrencode",
+        "microhttpd",
+        "man",
+    ],
+
+    # Default USE flags (minimal build)
+    use_defaults = [],
+
+    # Map USE flags to Meson options (both enabled and disabled forms)
+    use_options = {
+        "pam": "pam=enabled",
+        "-pam": "pam=disabled",
+        "selinux": "selinux=enabled",
+        "-selinux": "selinux=disabled",
+        "apparmor": "apparmor=enabled",
+        "-apparmor": "apparmor=disabled",
+        "audit": "audit=enabled",
+        "-audit": "audit=disabled",
+        "acl": "acl=enabled",
+        "-acl": "acl=disabled",
+        "gcrypt": "gcrypt=enabled",
+        "-gcrypt": "gcrypt=disabled",
+        "gnutls": "gnutls=enabled",
+        "-gnutls": "gnutls=disabled",
+        "openssl": "openssl=enabled",
+        "-openssl": "openssl=disabled",
+        "tpm2": "tpm2=enabled",
+        "-tpm2": "tpm2=disabled",
+        "curl": "curl=enabled",
+        "-curl": "curl=disabled",
+        "idn": "libidn2=enabled",
+        "-idn": "libidn2=disabled",
+        "polkit": "polkit=enabled",
+        "-polkit": "polkit=disabled",
+        "dbus": "dbus=enabled",
+        "-dbus": "dbus=disabled",
+        "qrencode": "qrencode=enabled",
+        "-qrencode": "qrencode=disabled",
+        "microhttpd": "microhttpd=enabled",
+        "-microhttpd": "microhttpd=disabled",
+        "man": "man=enabled",
+        "-man": "man=disabled",
+    },
+
+    # Conditional dependencies based on USE flags
+    use_deps = {
+        "pam": ["//packages/linux/system/security/auth/pam:pam"],
+        "acl": ["//packages/linux/system/libs/ipc/acl:acl"],
+        "gcrypt": ["//packages/linux/system/libs/crypto/libgcrypt:libgcrypt"],
+        "gnutls": ["//packages/linux/system/libs/crypto/gnutls:gnutls"],
+        "openssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
+        "curl": ["//packages/linux/network/curl:curl"],
+        "polkit": ["//packages/linux/system/security/auth/polkit:polkit"],
+        "dbus": ["//packages/linux/system/libs/ipc/dbus:dbus"],
+    },
+
+    meson_args = [
+        "-Dprefix=/usr",
+        "-Dsysconfdir=/etc",
+        "-Dlocalstatedir=/var",
+        "-Dmode=release",
+        "-Dsplit-bin=true",
+        "-Dsplit-usr=false",
+        "-Drootprefix=/usr",
+        "-Dsysvinit-path=/etc/init.d",
+        "-Ddefault-hierarchy=unified",
+        "-Dsmack=false",
+        "-Dp11kit=false",
+        "-Dlibfido2=false",
+        "-Dlibiptc=false",
+        "-Dglib=false",
+        "-Dhtml=false",
+        "-Dtests=false",
+    ],
+
     deps = [
         "//packages/linux/core/util-linux:util-linux",
+        "//packages/linux/system/libs/ipc/libcap:libcap",
     ],
-    build_deps = [],
+
     visibility = ["PUBLIC"],
 )

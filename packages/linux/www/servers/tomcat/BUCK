@@ -11,6 +11,7 @@ download_source(
     name = "tomcat-src",
     src_uri = "https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.19/bin/apache-tomcat-10.1.19.tar.gz",
     sha256 = "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880",
+    auto_detect_signature = False,
 )
 
 binary_package(

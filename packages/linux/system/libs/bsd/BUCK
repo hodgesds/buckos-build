@@ -8,7 +8,7 @@ autotools_package(
     version = "0.12.2",
     src_uri = "https://libbsd.freedesktop.org/releases/libbsd-0.12.2.tar.xz",
     sha256 = "b88cc9163d0c652aaf39a99991d974ddba1c3a9711db8f1b5838af2a14731014",
-    auto_detect_signature = True,
+    gpg_key = "B972BF3EA4AE57A3",  # Guillem Jover
     description = "Utility functions from BSD systems (strlcpy, arc4random, etc.)",
     homepage = "https://libbsd.freedesktop.org/",
     license = "BSD ISC",

@@ -714,17 +714,6 @@ for cmd in sh bash; do
     fi
 done
 
-# Create PAM module directory symlinks
-# PAM looks for modules in /lib*/security when relative paths are used
-# but our modules are installed in /usr/lib/security
-if [ -d "$ROOTFS/usr/lib/security" ]; then
-    mkdir -p "$ROOTFS/lib"
-    mkdir -p "$ROOTFS/lib64"
-    ln -sf ../usr/lib/security "$ROOTFS/lib/security"
-    ln -sf ../usr/lib/security "$ROOTFS/lib64/security"
-    echo "Created PAM module symlinks: /lib/security and /lib64/security -> /usr/lib/security"
-fi
-
 # Set permissions
 chmod 1777 "$ROOTFS/tmp"
 chmod 755 "$ROOTFS/root"

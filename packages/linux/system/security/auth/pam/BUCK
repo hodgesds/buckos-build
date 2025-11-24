@@ -25,7 +25,7 @@ ebuild_package(
     --sysconfdir=/etc \\
     --libdir=/usr/lib \\
     --sbindir=/usr/sbin \\
-    --enable-securedir=/usr/lib/security \\
+    --enable-securedir=/lib64/security \\
     --disable-nls \\
     --disable-db
 ''',

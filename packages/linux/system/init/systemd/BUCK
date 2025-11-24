@@ -1,116 +1,92 @@
 load("//defs:package_defs.bzl", "meson_package")
-load("//defs:use_flags.bzl", "set_use_flags")
 
 # -----------------------------------------------------------------------------
-# systemd - System and Service Manager
+# systemd - System and service manager
 # -----------------------------------------------------------------------------
 
 meson_package(
     name = "systemd",
-    version = "255",
-    src_uri = "https://github.com/systemd/systemd/archive/refs/tags/v255.tar.gz",
-    sha256 = "28854ffb2cb5f9e07fcbdbaf1e03a80b3462a12edeef84893ca2f37b22e4491e",
-    description = "System and Service Manager",
+    version = "256.7",
+    src_uri = "https://github.com/systemd/systemd/archive/refs/tags/v256.7.tar.gz",
+    sha256 = "896d76ff65c88f5fd9e42f90d152b0579049158a163431dd77cdc57748b1d7b0",
+    auto_detect_signature = False,
+    description = "System and service manager",
     homepage = "https://systemd.io/",
-    license = "LGPL-2.1-or-later",
-
-    # Exclude test files with special characters that Buck2 can't handle
-    exclude_patterns = ["*/test/fuzz"],
-
-    # USE flags this package supports
-    iuse = [
-        "pam",
-        "selinux",
-        "apparmor",
-        "audit",
-        "acl",
-        "gcrypt",
-        "gnutls",
-        "openssl",
-        "tpm2",
-        "curl",
-        "idn",
-        "polkit",
-        "dbus",
-        "qrencode",
-        "microhttpd",
-        "man",
-    ],
-
-    # Default USE flags (minimal build)
-    use_defaults = [],
-
-    # Map USE flags to Meson options (both enabled and disabled forms)
-    use_options = {
-        "pam": "pam=enabled",
-        "-pam": "pam=disabled",
-        "selinux": "selinux=enabled",
-        "-selinux": "selinux=disabled",
-        "apparmor": "apparmor=enabled",
-        "-apparmor": "apparmor=disabled",
-        "audit": "audit=enabled",
-        "-audit": "audit=disabled",
-        "acl": "acl=enabled",
-        "-acl": "acl=disabled",
-        "gcrypt": "gcrypt=enabled",
-        "-gcrypt": "gcrypt=disabled",
-        "gnutls": "gnutls=enabled",
-        "-gnutls": "gnutls=disabled",
-        "openssl": "openssl=enabled",
-        "-openssl": "openssl=disabled",
-        "tpm2": "tpm2=enabled",
-        "-tpm2": "tpm2=disabled",
-        "curl": "curl=enabled",
-        "-curl": "curl=disabled",
-        "idn": "libidn2=enabled",
-        "-idn": "libidn2=disabled",
-        "polkit": "polkit=enabled",
-        "-polkit": "polkit=disabled",
-        "dbus": "dbus=enabled",
-        "-dbus": "dbus=disabled",
-        "qrencode": "qrencode=enabled",
-        "-qrencode": "qrencode=disabled",
-        "microhttpd": "microhttpd=enabled",
-        "-microhttpd": "microhttpd=disabled",
-        "man": "man=enabled",
-        "-man": "man=disabled",
-    },
-
-    # Conditional dependencies based on USE flags
+    license = "GPL-2.0-or-later LGPL-2.1-or-later",
+    iuse = ["pam", "acl", "selinux", "audit", "cryptsetup", "gcrypt", "lz4", "xz", "zstd"],
+    use_defaults = ["pam", "acl", "lz4", "xz", "zstd"],
     use_deps = {
         "pam": ["//packages/linux/system/security/auth/pam:pam"],
         "acl": ["//packages/linux/system/libs/ipc/acl:acl"],
-        "gcrypt": ["//packages/linux/system/libs/crypto/libgcrypt:libgcrypt"],
-        "gnutls": ["//packages/linux/system/libs/crypto/gnutls:gnutls"],
-        "openssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
-        "curl": ["//packages/linux/network/curl:curl"],
-        "polkit": ["//packages/linux/system/security/auth/polkit:polkit"],
-        "dbus": ["//packages/linux/system/libs/ipc/dbus:dbus"],
     },
-
     meson_args = [
-        "-Dprefix=/usr",
+        "-Drootprefix=/",
         "-Dsysconfdir=/etc",
-        "-Dlocalstatedir=/var",
+        "-Drootlibdir=/lib64",
         "-Dmode=release",
-        "-Dsplit-bin=true",
-        "-Dsplit-usr=false",
-        "-Drootprefix=/usr",
-        "-Dsysvinit-path=/etc/init.d",
-        "-Ddefault-hierarchy=unified",
-        "-Dsmack=false",
-        "-Dp11kit=false",
-        "-Dlibfido2=false",
-        "-Dlibiptc=false",
-        "-Dglib=false",
-        "-Dhtml=false",
+        # Disable features not needed for installer
+        "-Dselinux=disabled",
+        "-Daudit=disabled",
+        "-Dcryptsetup=disabled",
+        "-Dlibcryptsetup-plugins=disabled",
+        "-Dgcrypt=disabled",
+        "-Dp11kit=disabled",
+        "-Dlibfido2=disabled",
+        "-Dtpm=false",
+        "-Dtpm2=disabled",
+        "-Dqrencode=disabled",
+        "-Dmicrohttpd=disabled",
+        "-Dlibcurl=disabled",
+        "-Delfutils=disabled",
+        "-Dzlib=enabled",
+        "-Dbzip2=disabled",
+        "-Dxz=enabled",
+        "-Dlz4=enabled",
+        "-Dzstd=enabled",
+        "-Ddefault-compression=zstd",
+        # Minimal components
+        "-Dstandalone-binaries=true",
+        "-Dstatic-libsystemd=false",
+        "-Dstatic-libudev=false",
+        # Disable optional components
+        "-Dman=disabled",
+        "-Dhtml=disabled",
+        "-Dtranslations=false",
+        "-Dnls=false",
         "-Dtests=false",
+        "-Dinstall-tests=false",
+        "-Dslow-tests=false",
+        "-Dfuzz-tests=false",
+        # Disable network components not needed for installer
+        "-Dresolve=false",
+        "-Dtimesyncd=false",
+        "-Dnetworkd=false",
+        # Keep essential components
+        "-Dlogind=true",
+        "-Dhostnamed=true",
+        "-Dlocaled=true",
+        "-Dtimedated=true",
+        # Disable optional services
+        "-Dcoredump=false",
+        "-Dpstore=false",
+        "-Doomd=false",
+        "-Dimportd=false",
+        "-Dhomed=false",
+        "-Dportabled=false",
+        "-Dsysext=false",
+        "-Duserdb=false",
+        "-Dfirstboot=true",
+        # Use PAM if enabled
+        "-Dpam=auto",
+        "-Dacl=auto",
+        # Build configuration
+        "-Dsplit-usr=false",
+        "-Dsplit-bin=false",
+        "-Dcompat-mutable-uid-boundaries=false",
     ],
-
     deps = [
-        "//packages/linux/core/util-linux:util-linux",
-        "//packages/linux/system/libs/ipc/libcap:libcap",
+        "//packages/linux/core/util-linux:util-linux",  # libmount, libblkid
+        "//packages/linux/core/zlib:zlib",
     ],
-
     visibility = ["PUBLIC"],
 )

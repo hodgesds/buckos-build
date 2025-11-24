@@ -17,11 +17,54 @@ autotools_package(
     description = "GNU GRUB is a Multiboot boot loader",
     homepage = "https://www.gnu.org/software/grub/",
     license = "GPL-3.0",
+    pre_configure = """
+# Create extra_deps.lst to avoid build error (from Gentoo ebuild)
+# See: https://bugs.gentoo.org/ - extra_deps.lst missing from source tarball
+echo "depends bli part_gpt" > grub-core/extra_deps.lst
+""",
     configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--libdir=/usr/lib64",
         "--target=x86_64",
         "--with-platform=efi",
         "--disable-werror",
     ],
+    deps = [
+        "//packages/linux/core/xz:xz",
+        "//packages/linux/system/filesystem/management/lvm2:lvm2",
+        "//packages/linux/system/init/eudev:eudev",
+        "//packages/linux/core/bash:bash",  # grub-mkconfig requires bash
+        "//packages/linux/editors/sed:sed",  # grub-mkconfig scripts require sed
+    ],
+    post_install = """
+# Verify GRUB modules were installed by make install
+module_count=$(find $DESTDIR/usr/lib64/grub/x86_64-efi -name "*.module" 2>/dev/null | wc -l)
+if [ "$module_count" -gt 0 ]; then
+    echo "✓ GRUB modules installed successfully ($module_count modules)"
+else
+    echo "✗ Warning: No GRUB modules found after installation"
+    echo "  This may cause grub-install to fail"
+fi
+
+# Create /etc/default/grub with BuckOS branding
+mkdir -p "$DESTDIR/etc/default"
+cat > "$DESTDIR/etc/default/grub" << 'EOF'
+# GRUB boot loader configuration for BuckOS
+
+GRUB_DISTRIBUTOR="BuckOS"
+GRUB_DEFAULT=0
+GRUB_TIMEOUT=5
+GRUB_CMDLINE_LINUX_DEFAULT="quiet"
+GRUB_CMDLINE_LINUX=""
+
+# Uncomment to enable graphical terminal
+#GRUB_TERMINAL_OUTPUT=gfxterm
+
+# Uncomment to disable OS prober
+GRUB_DISABLE_OS_PROBER=true
+EOF
+""",
     visibility = ["PUBLIC"],
 )
 
@@ -35,10 +78,53 @@ autotools_package(
     description = "GNU GRUB for BIOS systems",
     homepage = "https://www.gnu.org/software/grub/",
     license = "GPL-3.0",
+    pre_configure = """
+# Create extra_deps.lst to avoid build error (from Gentoo ebuild)
+# See: https://bugs.gentoo.org/ - extra_deps.lst missing from source tarball
+echo "depends bli part_gpt" > grub-core/extra_deps.lst
+""",
     configure_args = [
+        "--prefix=/usr",
+        "--sysconfdir=/etc",
+        "--libdir=/usr/lib64",
         "--target=i386",
         "--with-platform=pc",
         "--disable-werror",
     ],
+    deps = [
+        "//packages/linux/core/xz:xz",
+        "//packages/linux/system/filesystem/management/lvm2:lvm2",
+        "//packages/linux/system/init/eudev:eudev",
+        "//packages/linux/core/bash:bash",  # grub-mkconfig requires bash
+        "//packages/linux/editors/sed:sed",  # grub-mkconfig scripts require sed
+    ],
+    post_install = """
+# Verify GRUB modules were installed by make install
+module_count=$(find $DESTDIR/usr/lib64/grub/i386-pc -name "*.module" 2>/dev/null | wc -l)
+if [ "$module_count" -gt 0 ]; then
+    echo "✓ GRUB modules installed successfully ($module_count modules)"
+else
+    echo "✗ Warning: No GRUB modules found after installation"
+    echo "  This may cause grub-install to fail"
+fi
+
+# Create /etc/default/grub with BuckOS branding
+mkdir -p "$DESTDIR/etc/default"
+cat > "$DESTDIR/etc/default/grub" << 'EOF'
+# GRUB boot loader configuration for BuckOS
+
+GRUB_DISTRIBUTOR="BuckOS"
+GRUB_DEFAULT=0
+GRUB_TIMEOUT=5
+GRUB_CMDLINE_LINUX_DEFAULT="quiet"
+GRUB_CMDLINE_LINUX=""
+
+# Uncomment to enable graphical terminal
+#GRUB_TERMINAL_OUTPUT=gfxterm
+
+# Uncomment to disable OS prober
+GRUB_DISABLE_OS_PROBER=true
+EOF
+""",
     visibility = ["PUBLIC"],
 )

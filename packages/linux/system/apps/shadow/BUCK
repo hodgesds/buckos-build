@@ -47,6 +47,8 @@ autotools_package(
         "--sysconfdir=/etc",
     ],
     deps = [
+        "//packages/linux/system/libs/crypto/libxcrypt:libxcrypt",  # Provides libcrypt.so.2 for password hashing
+        "//packages/linux/system/libs/bsd:libbsd",  # BSD utility functions
     ],
 
     post_install = """

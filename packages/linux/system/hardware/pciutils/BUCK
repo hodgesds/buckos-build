@@ -8,6 +8,7 @@ download_source(
     name = "pciutils-src",
     src_uri = "https://mj.ucw.cz/download/linux/pci/pciutils-3.10.0.tar.gz",
     sha256 = "7deabe38ae5fa88a96a8c4947975cf31c591506db546e9665a10dddbf350ead0",
+    gpg_key = "157FF24D47EEA720",  # Martin Mares <mj@ucw.cz>
 )
 
 autotools_package(

@@ -184,15 +184,19 @@ FILETYPE=$(file -b "$FILENAME")
 if [[ "$FILETYPE" == *"gzip compressed"* ]]; then
     echo "Detected: gzip compressed tarball"
     tar xzf "$FILENAME" --strip-components=1 --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
+    rm "$FILENAME"
 elif [[ "$FILETYPE" == *"XZ compressed"* ]]; then
     echo "Detected: XZ compressed tarball"
     tar xJf "$FILENAME" --strip-components=1 --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
+    rm "$FILENAME"
 elif [[ "$FILETYPE" == *"bzip2 compressed"* ]]; then
     echo "Detected: bzip2 compressed tarball"
     tar xjf "$FILENAME" --strip-components=1 --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
+    rm "$FILENAME"
 elif [[ "$FILETYPE" == *"POSIX tar archive"* ]]; then
     echo "Detected: uncompressed tar archive"
     tar xf "$FILENAME" --strip-components=1 --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
+    rm "$FILENAME"
 elif [[ "$FILETYPE" == *"Zip archive"* ]]; then
     echo "Detected: Zip archive"
     unzip -q "$FILENAME"
@@ -200,18 +204,21 @@ elif [[ "$FILETYPE" == *"Zip archive"* ]]; then
     if [ $(ls -1 | wc -l) -eq 1 ] && [ -d "$(ls -1)" ]; then
         mv "$(ls -1)"/* . && rmdir "$(ls -1)"
     fi
+    rm "$FILENAME"
 elif [[ "$FILETYPE" == *"HTML"* ]]; then
     echo "Error: Downloaded file appears to be HTML, not an archive!" >&2
     echo "File type: $FILETYPE" >&2
     echo "This usually means the URL returned an error page instead of the file." >&2
     head -20 "$FILENAME" >&2
     exit 1
-elif [[ "$FILETYPE" == *"ASCII text"* ]] || [[ "$FILETYPE" == *"C source"* ]] || [[ "$FILETYPE" == *"source"* ]]; then
+elif [[ "$FILETYPE" == *"ASCII text"* ]] || [[ "$FILETYPE" == *"C source"* ]] || [[ "$FILETYPE" == *"source"* ]] || [[ "$FILETYPE" == *"Unicode text"* ]]; then
     # Check if this is a valid source file (not an error page)
     # Valid source files have common extensions like .c, .h, .cpp, .py, .sh, etc.
-    if [[ "$FILENAME" =~ \.(c|h|cpp|hpp|cc|cxx|py|sh|pl|rb|java|rs|go|js|ts)$ ]]; then
+    # Also handle certificate and key files like .pem, .crt, .key
+    if [[ "$FILENAME" =~ \.(c|h|cpp|hpp|cc|cxx|py|sh|pl|rb|java|rs|go|js|ts|pem|crt|key)$ ]]; then
         echo "Detected: Single source file - $FILENAME"
         echo "Keeping file as-is (no extraction needed)"
+        # Don't remove the file - we need to keep it
     else
         echo "Error: Downloaded file appears to be ASCII text, not an archive!" >&2
         echo "File type: $FILETYPE" >&2
@@ -226,14 +233,13 @@ else
     echo "Attempting tar with auto-compression detection..."
     if tar xaf "$FILENAME" --strip-components=1 --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' 2>/dev/null; then
         echo "Successfully extracted with tar auto-detect"
+        rm "$FILENAME"
     else
         echo "Error: Could not extract archive" >&2
         echo "File type: $FILETYPE" >&2
         exit 1
     fi
 fi
-
-rm "$FILENAME"
 """,
     )
 
@@ -452,13 +458,13 @@ export PV="{version}"
 export PACKAGE_NAME="{name}"
 
 # Directory setup
-export OUT="$1"
-export WORK="$2"
-export SRCS="$3"
+mkdir -p "$1"
+mkdir -p "$2"
+export OUT="$(cd "$1" && pwd)"
+export WORK="$(cd "$2" && pwd)"
+export SRCS="$(cd "$3" && pwd)"
 export BUILD_DIR="$WORK/build"
 
-mkdir -p "$OUT"
-mkdir -p "$WORK"
 mkdir -p "$BUILD_DIR"
 
 # Change to working directory
@@ -697,6 +703,14 @@ mkdir -p "$ROOTFS"/{bin,sbin,lib,lib64,usr/{bin,sbin,lib,lib64},etc,var,tmp,proc
 for pkg_dir in "$@"; do
     if [ -d "$pkg_dir" ]; then
         cp -a "$pkg_dir"/* "$ROOTFS"/ 2>/dev/null || true
+    fi
+done
+
+# Create compatibility symlinks for /bin -> /usr/bin
+# Many scripts expect common utilities in /bin (especially /bin/sh)
+for cmd in sh bash; do
+    if [ -f "$ROOTFS/usr/bin/$cmd" ] && [ ! -e "$ROOTFS/bin/$cmd" ]; then
+        ln -sf ../usr/bin/$cmd "$ROOTFS/bin/$cmd"
     fi
 done
 

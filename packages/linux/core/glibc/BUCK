@@ -1,79 +1,49 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
-autotools_package(
-    name = "glibc",
-    version = "2.39",
+download_source(
+    name = "glibc-src",
     src_uri = "https://mirrors.kernel.org/gnu/glibc/glibc-2.39.tar.xz",
     sha256 = "f77bd47cf8170c57365ae7bf86696c118adb3b120d3259c64c502d3dc1e2d926",
-    auto_detect_signature=False,
+    auto_detect_signature = False,
+)
+
+ebuild_package(
+    source = ":glibc-src",
+    name = "glibc",
+    version = "2.39",
+    category = "core",
+    slot = "0",
     description = "GNU C Library (glibc) - the standard C library for GNU/Linux systems",
     homepage = "https://www.gnu.org/software/libc/",
     license = "LGPL-2.1+ GPL-2+",
 
-    # USE flags this package supports
-    iuse = [
-        "static-libs",
-        "debug",
-        "headers-only",
-        "multilib",
-        "nscd",
-        "profile",
-        "selinux",
-        "systemtap",
-        "gd",
-    ],
-
-    # Default USE flags
-    use_defaults = ["multilib"],
-
-    # Conditional dependencies
-    use_deps = {
-        "gd": ["//packages/linux/graphics/gd:gd"],
-        "selinux": ["//packages/linux/system/security/selinux:selinux"],
-    },
-
-    # Conditional configure arguments
-    use_configure = {
-        "static-libs": "--enable-static",
-        "-static-libs": "--disable-static",
-        "debug": "--enable-debug",
-        "-debug": "--disable-debug",
-        "multilib": "--enable-multi-arch",
-        "-multilib": "--disable-multi-arch",
-        "nscd": "--enable-nscd",
-        "-nscd": "--disable-nscd",
-        "profile": "--enable-profile",
-        "-profile": "--disable-profile",
-        "systemtap": "--enable-systemtap",
-        "-systemtap": "--disable-systemtap",
-    },
-
-    pre_configure = """
+    src_configure = """
 # glibc requires out-of-tree build
 mkdir -p ../glibc-build
 cd ../glibc-build
 # Run configure from build directory
-"$SRCDIR"/configure --prefix=/usr --with-headers=/usr/include --enable-kernel=3.2 --enable-add-ons --enable-bind-now --enable-stack-protector=strong --enable-stackguard-randomization --disable-werror
-# Skip the automatic configure step by creating a dummy configure
-cd "$SRCDIR"
-mv configure configure.orig || true
-echo '#!/bin/bash' > configure
-echo 'exit 0' >> configure
-chmod +x configure
-cd ../glibc-build
+"$S"/configure \\
+    --prefix=/usr \\
+    --with-headers=/usr/include \\
+    --enable-kernel=3.2 \\
+    --enable-add-ons \\
+    --enable-bind-now \\
+    --enable-stack-protector=strong \\
+    --enable-stackguard-randomization \\
+    --disable-werror
 """,
 
-    configure_args = [
-        "--prefix=/usr",
-        "--with-headers=/usr/include",
-        "--enable-kernel=3.2",
-        "--enable-add-ons",
-        "--enable-bind-now",
-        "--enable-stack-protector=strong",
-        "--enable-stackguard-randomization",
-        "--disable-werror",
-    ],
+    src_compile = """
+cd ../glibc-build
+make -j$(nproc)
+""",
 
+    src_install = """
+cd ../glibc-build
+make DESTDIR="$DESTDIR" install
+""",
+
+    depend = [],
     visibility = ["PUBLIC"],
 )

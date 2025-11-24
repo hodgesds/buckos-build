@@ -1,0 +1,35 @@
+load("//defs:package_defs.bzl", "download_source", "autotools_package")
+
+download_source(
+    name = "efibootmgr-src",
+    src_uri = "https://github.com/rhboot/efibootmgr/archive/18.tar.gz",
+    sha256 = "442867d12f8525034a404fc8af3036dba8e1fc970998af2486c3b940dfad0874",
+    auto_detect_signature = False,
+)
+
+autotools_package(
+    name = "efibootmgr",
+    source = ":efibootmgr-src",
+    version = "18",
+    description = "User-space application to modify the EFI boot manager",
+    homepage = "https://github.com/rhinstaller/efibootmgr",
+    license = "GPL-2",
+    pre_configure = """
+# Remove -Werror to avoid build failures (from Gentoo ebuild)
+sed -i 's/-Werror //' Make.defaults || true
+""",
+    configure_args = [],
+    make_args = [
+        "EFIDIR=BuckOS",
+    ],
+    post_install = """
+# Install efibootmgr
+make DESTDIR=$DESTDIR prefix=/usr EFIDIR=BuckOS install
+""",
+    deps = [
+        "//packages/linux/system/libs/ipc/popt:popt",
+        "//packages/linux/system/hardware/pciutils:pciutils",
+        "//packages/linux/system/libs/efivar:efivar",
+    ],
+    visibility = ["PUBLIC"],
+)

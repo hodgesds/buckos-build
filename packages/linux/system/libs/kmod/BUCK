@@ -41,6 +41,7 @@ done
     deps = [
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/core/xz:xz",
+        "//packages/linux/system/libs/compression/zstd:zstd",
     ],
     visibility = ["PUBLIC"],
 )
@@ -71,6 +72,7 @@ done
     deps = [
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/core/xz:xz",
+        "//packages/linux/system/libs/compression/zstd:zstd",
     ],
     visibility = ["PUBLIC"],
 )

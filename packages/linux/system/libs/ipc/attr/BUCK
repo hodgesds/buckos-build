@@ -4,7 +4,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 download_source(
     name = "attr-src",
     src_uri = "https://download.savannah.gnu.org/releases/attr/attr-2.5.2.tar.gz",
-    sha256 = "39bf67452fa41d0948c2197601053f4f3c5018a8b4b1129a8d4d480a81a3187b",
+    sha256 = "39bf67452fa41d0948c2197601053f48b3d78a029389734332a6309a680c6c87",
+    auto_detect_signature = False,
 )
 
 ebuild_package(

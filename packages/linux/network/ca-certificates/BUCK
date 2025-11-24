@@ -6,21 +6,21 @@ load("//defs:package_defs.bzl", "download_source", "autotools_package", "binary_
 
 download_source(
     name = "ca-certificates-src",
-    src_uri = "https://curl.se/ca/cacert-2024-01-09.pem",
-    sha256 = "c8ac21705c1ba6d45af593da3dc8dae90a710961ed955a66f0eaa3bd0bf6e2be",
+    src_uri = "https://curl.se/ca/cacert.pem",
+    sha256 = "8ac40bdd3d3e151a6b4078d2b2029796e8f843e3f86fbf2adbc4dd9f05e79def",
 )
 
 binary_package(
     name = "ca-certificates",
     srcs = [":ca-certificates-src"],
-    version = "2024.01.09",
+    version = "2025.11.04",
     description = "Common CA certificates PEM files",
     homepage = "https://curl.se/docs/caextract.html",
     license = "MPL-2.0",
     install_script = """
-mkdir -p "$DESTDIR/etc/ssl/certs"
-cp cacert-2024-01-09.pem "$DESTDIR/etc/ssl/certs/ca-certificates.crt"
-ln -sf ca-certificates.crt "$DESTDIR/etc/ssl/certs/ca-bundle.crt"
+mkdir -p "$OUT/etc/ssl/certs"
+cp "$SRCS/cacert.pem" "$OUT/etc/ssl/certs/ca-certificates.crt"
+ln -sf ca-certificates.crt "$OUT/etc/ssl/certs/ca-bundle.crt"
 """,
     visibility = ["PUBLIC"],
 )

@@ -2804,12 +2804,22 @@ def autotools_package(
     pre_configure = kwargs.pop("pre_configure", "")
     post_install = kwargs.pop("post_install", "")
 
+    # Allow overriding eclass phases for non-autotools packages
+    custom_src_configure = kwargs.pop("src_configure", None)
+    custom_src_compile = kwargs.pop("src_compile", None)
+    custom_src_install = kwargs.pop("src_install", None)
+
     # Combine with eclass phases
     src_prepare = eclass_config.get("src_prepare", "")
     if pre_configure:
         src_prepare += "\n" + pre_configure
 
-    src_install = eclass_config["src_install"]
+    # Use custom phases if provided, otherwise use eclass defaults
+    src_configure = custom_src_configure if custom_src_configure else eclass_config["src_configure"]
+    src_compile = custom_src_compile if custom_src_compile else eclass_config["src_compile"]
+
+    # For src_install, always append post_install if provided (whether using custom or eclass)
+    src_install = custom_src_install if custom_src_install else eclass_config["src_install"]
     if post_install:
         src_install += "\n" + post_install
 
@@ -2818,8 +2828,8 @@ def autotools_package(
         source = src_target,
         version = version,
         src_prepare = src_prepare,
-        src_configure = eclass_config["src_configure"],
-        src_compile = eclass_config["src_compile"],
+        src_configure = src_configure,
+        src_compile = src_compile,
         src_install = src_install,
         rdepend = resolved_deps,
         bdepend = bdepend,

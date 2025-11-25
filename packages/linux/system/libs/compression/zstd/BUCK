@@ -19,29 +19,56 @@ autotools_package(
         "lzma": ["//packages/linux/system/libs/compression/xz:xz"],
     },
     configure_args = [],
-    pre_configure = """
-# USE flags: static-libs, lz4, zlib, lzma, threads
-MAKE_FLAGS="prefix=/usr"
-if [ "${USE_threads}" = "1" ]; then
-    MAKE_FLAGS="$MAKE_FLAGS lib-mt"
-else
-    MAKE_FLAGS="$MAKE_FLAGS lib"
-fi
+    # zstd doesn't use autotools - skip configure phase
+    src_configure = """
+# zstd uses plain Makefile, no configure needed
+# Setup environment for build
+export PREFIX=/usr
+
+# Build flags for optional features
 if [ "${USE_lz4}" = "1" ]; then
-    MAKE_FLAGS="$MAKE_FLAGS HAVE_LZ4=1"
+    export HAVE_LZ4=1
 fi
 if [ "${USE_zlib}" = "1" ]; then
-    MAKE_FLAGS="$MAKE_FLAGS HAVE_ZLIB=1"
+    export HAVE_ZLIB=1
 fi
 if [ "${USE_lzma}" = "1" ]; then
-    MAKE_FLAGS="$MAKE_FLAGS HAVE_LZMA=1"
+    export HAVE_LZMA=1
 fi
-export ZSTD_MAKE_FLAGS="$MAKE_FLAGS"
+if [ "${USE_threads}" = "1" ]; then
+    export ZSTD_LEGACY_SUPPORT=0
+    export HAVE_PTHREAD=1
+fi
+
+echo "zstd: Skipping configure (Makefile-only package)"
 """,
-    make_args = ["$ZSTD_MAKE_FLAGS"],
+    # Build zstd programs and libraries
+    src_compile = """
+# Build everything (programs + libraries)
+make -j${MAKEOPTS:-$(nproc)} PREFIX=/usr
+""",
+    # Install both programs and libraries
+    src_install = """
+# Install everything - this includes the shared libraries
+# Override LIBDIR to ensure proper installation path
+make install PREFIX=/usr LIBDIR=/usr/lib64 DESTDIR="$DESTDIR"
+
+# Verify libraries were installed
+if [ ! -f "$DESTDIR/usr/lib/libzstd.so" ] && [ ! -f "$DESTDIR/usr/lib64/libzstd.so" ]; then
+    echo "ERROR: libzstd.so not found after install!"
+    echo "Checking $DESTDIR directory:"
+    find "$DESTDIR" -name "libzstd*"
+    exit 1
+fi
+
+echo "zstd installed successfully with libraries:"
+find "$DESTDIR" -name "libzstd*" -type f -o -name "libzstd*" -type l
+""",
     post_install = """
+# Remove static library if USE flag is disabled
 if [ "${USE_static_libs}" != "1" ]; then
-    rm -f "$DESTDIR/usr/lib/libzstd.a"
+    rm -f "$DESTDIR/usr/lib/libzstd.a" "$DESTDIR/usr/lib64/libzstd.a"
+    echo "Removed static libraries (USE_static_libs not enabled)"
 fi
 """,
     deps = [],

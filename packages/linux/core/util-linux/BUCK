@@ -59,6 +59,9 @@ autotools_package(
         "--enable-losetup",
         "--enable-fsck",
         "--enable-blkid",
+        "--enable-getopt",
+        "--enable-findmnt",
+        "--enable-lsblk",
     ],
 
     deps = [],

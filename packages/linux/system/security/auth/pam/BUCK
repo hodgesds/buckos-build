@@ -38,6 +38,9 @@ make -j$(nproc)
 make DESTDIR="$DESTDIR" install
 ''',
 
-    depend = [],
+    depend = [
+        "//packages/linux/system/libs/ipc/libtirpc:libtirpc",
+        "//packages/linux/system/libs/network/libnsl:libnsl",
+    ],
     visibility = ["PUBLIC"],
 )

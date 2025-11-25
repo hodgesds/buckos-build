@@ -365,11 +365,23 @@ set -e
 export INSTALL_PATH="$1/boot"
 export INSTALL_MOD_PATH="$1"
 mkdir -p "$INSTALL_PATH"
-cd "$2"
+
+# Save absolute paths before changing directory
+SRC_DIR="$(cd "$2" && pwd)"
+if [ -n "$3" ]; then
+    # Convert config path to absolute if it's relative
+    if [[ "$3" = /* ]]; then
+        CONFIG_PATH="$3"
+    else
+        CONFIG_PATH="$(pwd)/$3"
+    fi
+fi
+
+cd "$SRC_DIR"
 
 # Apply config
-if [ -n "$3" ]; then
-    cp "$3" .config
+if [ -n "$CONFIG_PATH" ]; then
+    cp "$CONFIG_PATH" .config
     # Ensure config is complete with olddefconfig
     make olddefconfig
 else
@@ -385,16 +397,20 @@ make modules_install
 """,
     )
 
-    config_arg = config_file if config_file else ""
+    # Build command arguments
+    cmd = cmd_args([
+        "bash",
+        script,
+        install_dir.as_output(),
+        src_dir,
+    ])
+
+    # Add config file if present
+    if config_file:
+        cmd.add(config_file)
 
     ctx.actions.run(
-        cmd_args([
-            "bash",
-            script,
-            install_dir.as_output(),
-            src_dir,
-            config_arg,
-        ]),
+        cmd,
         category = "kernel",
         identifier = ctx.attrs.name,
     )

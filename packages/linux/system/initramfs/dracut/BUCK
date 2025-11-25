@@ -60,6 +60,11 @@ mkdir -p $OUT/usr/share/bash-completion/completions
         "//packages/linux/system/apps/coreutils:coreutils",
         "//packages/linux/core/util-linux:util-linux",
         "//packages/linux/core/xz:xz",
+        "//packages/linux/system/libs/cpio:cpio",
+        "//packages/linux/system/apps/findutils:findutils",
+        "//packages/linux/editors/sed:sed",
+        "//packages/linux/system/libs/compression/gzip:gzip",
+        "//packages/linux/editors/grep:grep",
     ],
     visibility = ["PUBLIC"],
 )

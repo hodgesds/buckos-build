@@ -44,11 +44,22 @@ cat > $OUT/etc/dracut.conf << 'EOF'
 # Compression algorithm (xz, gzip, lz4, zstd)
 compress="zstd"
 
-# Include firmware
+# Include firmware for all hardware (not just currently loaded)
 hostonly="no"
+hostonly_cmdline="no"
 
-# Add additional modules
-# add_dracutmodules+=" lvm dm crypt "
+# Explicitly add firmware module to ensure firmware is included
+add_dracutmodules+=" firmware "
+
+# Firmware directory to search
+firmware_dirs+=" /lib/firmware "
+
+# Add additional modules for storage, network, etc.
+add_dracutmodules+=" base bash systemd systemd-initrd dracut-systemd "
+add_dracutmodules+=" kernel-modules kernel-modules-extra "
+
+# Omit modules we don't need in initramfs
+# omit_dracutmodules+=" network "
 EOF
 
 # Install bash completion
@@ -65,6 +76,8 @@ mkdir -p $OUT/usr/share/bash-completion/completions
         "//packages/linux/editors/sed:sed",
         "//packages/linux/system/libs/compression/gzip:gzip",
         "//packages/linux/editors/grep:grep",
+        "//packages/linux/system/libs/compression/zstd:zstd",  # Required for compression
+        "//packages/linux/system/init/eudev:eudev",  # Required for udev support
     ],
     visibility = ["PUBLIC"],
 )

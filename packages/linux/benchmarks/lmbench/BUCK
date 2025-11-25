@@ -7,8 +7,8 @@ load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 download_source(
     name = "lmbench-src",
-    src_uri = "https://github.com/intel/lmbench/archive/refs/tags/v3.0-a9.tar.gz",
-    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
+    src_uri = "https://sourceforge.net/projects/lmbench/files/development/lmbench-3.0-a9.tgz/download",
+    sha256 = "fb3d8ee01d975d0e5ac467847221bd3a936cee9caedbe1d50511e01bb1628512",
 )
 
 binary_package(

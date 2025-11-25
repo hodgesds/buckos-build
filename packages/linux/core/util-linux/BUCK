@@ -21,12 +21,14 @@ autotools_package(
         "static-libs",
     ],
 
-    # Default USE flags
-    use_defaults = ["ncurses"],
+    # Default USE flags (disable by default for minimal build)
+    use_defaults = [],
 
     # Conditional dependencies
     use_deps = {
         "ncurses": ["//packages/linux/core/ncurses:ncurses"],
+        "systemd": ["//packages/linux/system/init:systemd"],
+        "udev": ["//packages/linux/system/init/eudev:eudev"],
     },
 
     # Conditional configure arguments
@@ -35,9 +37,9 @@ autotools_package(
         "-systemd": "--without-systemd",
         "udev": "--with-udev",
         "-udev": "--without-udev",
-        "ncurses": "--with-ncursesw",
-        "-ncurses": "--without-ncursesw",
-        "pam": "--enable-login --with-pam",
+        "ncurses": "--with-ncursesw --with-tinfo",
+        "-ncurses": "--without-ncursesw --without-ncurses --without-tinfo",
+        "pam": "--with-pam",
         "-pam": "--without-pam",
         "caps": "--with-libcap-ng",
         "-caps": "--without-libcap-ng",
@@ -48,21 +50,66 @@ autotools_package(
     },
 
     # Base configure arguments
+    # Based on Gentoo ebuild - we don't use --disable-all-programs for native builds
+    # because it prevents some utilities like getopt from building properly
     configure_args = [
-        "--disable-all-programs",
+        # Common args (from Gentoo commonargs)
+        "--localstatedir=/var",
+        "--runstatedir=/run",
+        "--enable-fs-paths-extra=/usr/sbin:/bin:/usr/bin",
+
+        # Without dependencies we don't have (or controlled by USE flags)
+        "--without-python",
+        "--without-systemdsystemunitdir",  # systemd itself is USE flag controlled
+        "--without-readline",
+        "--without-slang",
+        "--without-libmagic",
+        "--without-audit",
+        "--without-econf",
+        "--without-cryptsetup",
+
+        # Disable features/programs we don't need (from Gentoo native build)
+        "--disable-chfn-chsh",
+        "--disable-login",
+        "--disable-newgrp",
+        "--disable-nologin",
+        "--disable-pylibmount",
+        "--disable-raw",
+        "--disable-vipw",
+        "--disable-liblastlog2",
+        "--disable-pam-lastlog2",
+        "--disable-asciidoc",
+        "--disable-makeinstall-chown",
+        "--disable-makeinstall-setuid",
+
+        # Enable libraries we need
         "--enable-libsmartcols",
         "--enable-libfdisk",
         "--enable-libmount",
         "--enable-libblkid",
         "--enable-libuuid",
+
+        # Enable programs we need
         "--enable-mount",
         "--enable-losetup",
         "--enable-fsck",
         "--enable-blkid",
-        "--enable-getopt",
+        "--enable-getopt",       # Required by dracut
         "--enable-findmnt",
         "--enable-lsblk",
     ],
+
+    # Post-install script to verify getopt installation
+    post_install = """
+# Verify that getopt was installed
+if [ -f "$DESTDIR/usr/bin/getopt" ]; then
+    echo "✓ getopt installed successfully at $DESTDIR/usr/bin/getopt"
+else
+    echo "✗ Warning: getopt not found at $DESTDIR/usr/bin/getopt"
+    echo "  Checking alternate locations..."
+    find "$DESTDIR" -name "getopt" -type f 2>/dev/null || echo "  getopt not found anywhere in package"
+fi
+""",
 
     deps = [],
     visibility = ["PUBLIC"],

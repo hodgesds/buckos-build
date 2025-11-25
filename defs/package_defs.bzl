@@ -362,12 +362,21 @@ def _kernel_build_impl(ctx: AnalysisContext) -> list[Provider]:
         "build_kernel.sh",
         """#!/bin/bash
 set -e
-export INSTALL_PATH="$1/boot"
-export INSTALL_MOD_PATH="$1"
-mkdir -p "$INSTALL_PATH"
 
 # Save absolute paths before changing directory
 SRC_DIR="$(cd "$2" && pwd)"
+
+# Convert install paths to absolute
+if [[ "$1" = /* ]]; then
+    INSTALL_BASE="$1"
+else
+    INSTALL_BASE="$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
+fi
+
+export INSTALL_PATH="$INSTALL_BASE/boot"
+export INSTALL_MOD_PATH="$INSTALL_BASE"
+mkdir -p "$INSTALL_PATH"
+
 if [ -n "$3" ]; then
     # Convert config path to absolute if it's relative
     if [[ "$3" = /* ]]; then
@@ -382,8 +391,18 @@ cd "$SRC_DIR"
 # Apply config
 if [ -n "$CONFIG_PATH" ]; then
     cp "$CONFIG_PATH" .config
-    # Ensure config is complete with olddefconfig
+    # Ensure config is complete with olddefconfig (non-interactive)
     make olddefconfig
+
+    # If hardware-specific config fragment exists, merge it
+    HARDWARE_CONFIG="$(dirname "$SRC_DIR")/../../hardware-kernel.config"
+    if [ -f "$HARDWARE_CONFIG" ]; then
+        echo "Merging hardware-specific kernel config..."
+        # Use kernel's merge script to combine base config with hardware fragment
+        scripts/kconfig/merge_config.sh -m .config "$HARDWARE_CONFIG"
+        # Update config with new options (non-interactive)
+        make olddefconfig
+    fi
 else
     make defconfig
 fi

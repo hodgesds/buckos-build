@@ -59,35 +59,20 @@ fi
     visibility = ["PUBLIC"],
 )
 
-# hwids - Hardware identification databases
-download_source(
-    name = "hwids-src",
-    src_uri = "https://github.com/gentoo/hwids/archive/refs/tags/hwids-20230308.tar.gz",
-    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
-    auto_detect_signature=False,
-)
-
+# hwdata - Hardware identification databases (replaces hwids)
 autotools_package(
     name = "hwids",
-    source = ":hwids-src",
-    version = "20230308",
-    description = "Hardware identification databases (pci.ids, usb.ids)",
-    homepage = "https://github.com/gentoo/hwids",
-    license = "GPL-2.0",
-    pre_configure = "true",  # No configure script
-    configure_args = [],
-    make_args = [],
-    post_install = """
-mkdir -p $OUT/usr/share/hwdata
-mkdir -p $OUT/usr/share/misc
-
-# Install ID databases
-install -m 644 pci.ids $OUT/usr/share/hwdata/
-install -m 644 usb.ids $OUT/usr/share/hwdata/
-
-# Create compatibility symlinks
-ln -sf ../hwdata/pci.ids $OUT/usr/share/misc/pci.ids
-ln -sf ../hwdata/usb.ids $OUT/usr/share/misc/usb.ids
-""",
+    version = "0.400",
+    src_uri = "https://github.com/vcrhonek/hwdata/archive/refs/tags/v0.400.tar.gz",
+    sha256 = "05d96821aaae04be4e684eaf9ac22e08efe646321bc64be323b91b66e7e2095c",
+    auto_detect_signature = False,
+    description = "Hardware identification and configuration data",
+    homepage = "https://github.com/vcrhonek/hwdata",
+    license = "GPL-2+",
+    configure_args = [
+        "--prefix=/usr",
+        "--libdir=/lib",
+        "--datadir=/usr/share",
+    ],
     visibility = ["PUBLIC"],
 )

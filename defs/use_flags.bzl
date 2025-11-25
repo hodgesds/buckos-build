@@ -100,6 +100,7 @@ GLOBAL_USE_FLAGS = {
     "qt6": "Enable Qt6 toolkit support",
     "cairo": "Enable Cairo graphics library",
     "pango": "Enable Pango text rendering",
+    "splash": "Enable boot splash screen generation",
 
     # Audio & Video
     "alsa": "Enable ALSA audio support",

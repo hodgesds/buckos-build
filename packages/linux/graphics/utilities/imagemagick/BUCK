@@ -78,6 +78,5 @@ make DESTDIR=$OUT install
         "//packages/linux/core/xz:xz",
         "//packages/linux/core/bzip2:bzip2",
     ],
-    build_deps = [],
     visibility = ["PUBLIC"],
 )

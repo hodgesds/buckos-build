@@ -15,6 +15,7 @@ rootfs(
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/core/glibc:glibc",
         "//packages/linux/kernel/buckos-kernel:buckos-kernel-server",
+        "//packages/linux/system/firmware/linux-firmware:linux-firmware",
         "//packages/linux/system/initramfs/dracut:dracut",
         "//packages/linux/boot/grub:grub",
         "//packages/linux/boot/efibootmgr:efibootmgr",

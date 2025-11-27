@@ -8,7 +8,7 @@ load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 download_source(
     name = "lmbench-src",
     src_uri = "https://sourceforge.net/projects/lmbench/files/development/lmbench-3.0-a9.tgz/download",
-    sha256 = "fb3d8ee01d975d0e5ac467847221bd3a936cee9caedbe1d50511e01bb1628512",
+    sha256 = "fbd16c1dab5e1f953e83b120c3f84ba3ce4fe6f420c497e377cbefd2d01b6f2c",
 )
 
 binary_package(

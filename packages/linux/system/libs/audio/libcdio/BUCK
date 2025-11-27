@@ -31,7 +31,7 @@ autotools_package(
 download_source(
     name = "libcdio-paranoia-src",
     src_uri = "https://mirrors.kernel.org/gnu/libcdio/libcdio-paranoia-10.2+2.0.2.tar.bz2",
-    sha256 = "186892539dedd661276014d71318c8c8f97ecb1250a86625256abd4defbf0d0c",
+    sha256 = "8550e9589dbd594bfac93b81ecf129b1dc9d0d51e90f9696f1b2f9b2af32712b",
     auto_detect_signature = False,
 )
 

@@ -312,6 +312,7 @@ output = cmd_list_use_flags(category = "network")
 - `static` - Build static libraries
 - `test` - Enable test suite during build
 - `lto` - Enable Link Time Optimization
+- `verify-signatures` - Verify GPG signatures on source downloads (see below)
 
 ### Security
 - `hardened` - Enable security hardening features
@@ -407,9 +408,36 @@ use_package(
 )
 ```
 
+## Environment Variables
+
+Some USE flags can be controlled via environment variables for global override:
+
+### BUCKOS_VERIFY_SIGNATURES
+
+Controls GPG signature verification globally, similar to the `verify-signatures` USE flag:
+
+```bash
+# Disable signature verification for all packages
+BUCKOS_VERIFY_SIGNATURES=0 buck2 build //packages/linux/...
+
+# Enable signature verification for all packages
+BUCKOS_VERIFY_SIGNATURES=1 buck2 build //packages/linux/...
+
+# Set persistently in your shell profile
+export BUCKOS_VERIFY_SIGNATURES=0
+```
+
+**Values:**
+- `1` or `true` - Enable signature verification globally
+- `0` or `false` - Disable signature verification globally
+- Not set - Use per-package `auto_detect_signature` setting
+
+See `SIGNATURE_VERIFICATION.md` for more details.
+
 ## See Also
 
 - `//defs/use_flags.bzl` - Core USE flag system
 - `//defs/package_customize.bzl` - Package customization
 - `//defs/tooling.bzl` - Tooling integration
 - `//packages/linux/examples/use-flags/BUCK` - Example packages
+- `SIGNATURE_VERIFICATION.md` - GPG signature verification documentation

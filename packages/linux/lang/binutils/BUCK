@@ -9,6 +9,7 @@ download_source(
     name = "binutils-src",
     src_uri = "https://mirrors.kernel.org/gnu/binutils/binutils-2.42.tar.xz",
     sha256 = "f6e4d41fd5fc778b06b7891457b3620da5ecea1006c6a4a41ae998109f85a800",
+    auto_detect_signature = False,
 )
 
 autotools_package(

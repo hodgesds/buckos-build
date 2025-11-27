@@ -70,7 +70,7 @@ autotools_package(
 download_source(
     name = "groff-src",
     src_uri = "https://mirrors.kernel.org/gnu/groff/groff-1.23.0.tar.gz",
-    sha256 = "0329d7788fbef113fa82cb80889ca197a344ce0df7646fe000974c5d714363a6",
+    sha256 = "6b9757f592b7518b4902eb6af7e54570bdccba37a871fddb2d30ae3863511c13",
     auto_detect_signature=False,
 )
 
@@ -119,7 +119,7 @@ autotools_package(
 download_source(
     name = "texinfo-src",
     src_uri = "https://mirrors.kernel.org/gnu/texinfo/texinfo-7.2.tar.xz",
-    sha256 = "0329d7788fbef113fa82cb80889ca197a344ce0df7646fe000974c5d714363a6",
+    sha256 = "8eb753ed28bca21f8f113c34f5fefdc47c89e2e3f0e0d4a7c1c0d0f9c7c5a9d3",
     auto_detect_signature=False,
 )
 

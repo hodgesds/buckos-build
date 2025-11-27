@@ -6,6 +6,7 @@ autotools_package(
     version = "1.8.3",
     src_uri = "https://nlnetlabs.nl/downloads/ldns/ldns-1.8.3.tar.gz",
     sha256 = "c3f72dd1036b2907e3a56e6acf9dfb2e551256b3c1bbd9787942deeeb70e7860",
+    auto_detect_signature = False,
 
     iuse = ["ssl", "dnssec", "static-libs"],
     use_defaults = ["ssl", "dnssec"],

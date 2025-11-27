@@ -9,6 +9,7 @@ autotools_package(
     version = "4.9.1",
     src_uri = "https://mirrors.kernel.org/gnu/screen/screen-4.9.1.tar.gz",
     sha256 = "26cef3e3c42571c0d484ad6faf110c5c15091fbf872b06fa7aa4766c7405ac69",
+    auto_detect_signature = False,
     description = "GNU screen terminal multiplexer",
     homepage = "https://www.gnu.org/software/screen",
     license = "GPL-3+",

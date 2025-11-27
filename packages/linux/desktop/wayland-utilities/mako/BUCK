@@ -5,6 +5,7 @@ download_source(
     name = "mako-src",
     src_uri = "https://github.com/emersion/mako/releases/download/v1.8.0/mako-1.8.0.tar.gz",
     sha256 = "f20ff74925d6876fc243c49cb45cdb849afd55611aa1640471020d191823e3bb",
+    auto_detect_signature = False,
 )
 
 autotools_package(

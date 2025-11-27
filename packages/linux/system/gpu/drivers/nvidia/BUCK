@@ -13,7 +13,7 @@ load("//defs:use_flags.bzl", "set_use_flags")
 download_source(
     name = "nvidia-drivers-src",
     src_uri = "https://us.download.nvidia.com/XFree86/Linux-x86_64/560.35.03/NVIDIA-Linux-x86_64-560.35.03.run",
-    sha256 = "f5c8e5ec5c0d71d5a7e3c0c6e1f0a4b2d8e6f9a0c3b5d7e9f1a2c4e6f8a0b2c4d6",
+    sha256 = "f2932c92fadd43c5b2341be453fc4f73f0ad7185c26bb7a43fbde81ae29f1fe3",
 )
 
 binary_package(

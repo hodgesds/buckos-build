@@ -942,7 +942,7 @@ meson setup .. --prefix=/usr \\
 download_source(
     name = "gnome-terminal-src",
     src_uri = "https://download.gnome.org/sources/gnome-terminal/3.50/gnome-terminal-3.50.1.tar.xz",
-    sha256 = "1c83a8b58ce7c99f853eed80cd36b2343fe9cf80e5d9d846912777f69b7475aa",
+    sha256 = "e96eee5c5a3286a89131289659d51f529a1bae38de8d039c30afd7f0bc3ac272",
 )
 
 autotools_package(
@@ -2140,7 +2140,7 @@ meson setup .. --prefix=/usr \\
 download_source(
     name = "gnome-user-docs-src",
     src_uri = "https://download.gnome.org/sources/gnome-user-docs/45/gnome-user-docs-45.2.tar.xz",
-    sha256 = "1c83a8b58ce7c99f853eed80cd36b2343fe9cf80e5d9d846912777f69b7475aa",
+    sha256 = "40dc0e99e2bf0e79ddd66e1e6de36c49fb5b3d7c05e0d23ccf66ee3e66fbce89",
 )
 
 autotools_package(

@@ -8,6 +8,7 @@ download_source(
     name = "libevdev-src",
     src_uri = "https://www.freedesktop.org/software/libevdev/libevdev-1.13.1.tar.xz",
     sha256 = "06a77bf2ac5c993305882bc1641017f5bec1592d6d1b64787bad492ab34f2f36",
+    auto_detect_signature = False,
 )
 
 # USE flags: See use_flags.bzl for available flags

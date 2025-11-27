@@ -3,14 +3,15 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "imagemagick-src",
-    src_uri = "https://imagemagick.org/archive/ImageMagick-7.1.1-29.tar.xz",
-    sha256 = "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880",
+    src_uri = "https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-41.tar.gz",
+    sha256 = "cabf2516dce66da56dd4e3071453b808eefaf4326a93292d2a222a4ea623d601",
+    auto_detect_signature = False,
 )
 
 autotools_package(
     name = "imagemagick",
     source = ":imagemagick-src",
-    version = "7.1.1.29",
+    version = "7.1.1.41",
     description = "Image manipulation tools and libraries",
     homepage = "https://imagemagick.org/",
     license = "ImageMagick",

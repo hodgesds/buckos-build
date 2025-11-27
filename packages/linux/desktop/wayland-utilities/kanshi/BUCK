@@ -5,6 +5,7 @@ download_source(
     name = "kanshi-src",
     src_uri = "https://git.sr.ht/~emersion/kanshi/refs/download/v1.5.1/kanshi-1.5.1.tar.gz",
     sha256 = "c62f2f19f1f6c9513d3eeea23efc8579c76e0ef6460b72f15b2d90392ebcc421",
+    auto_detect_signature = False,
 )
 
 autotools_package(

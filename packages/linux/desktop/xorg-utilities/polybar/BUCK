@@ -5,6 +5,7 @@ download_source(
     name = "polybar-src",
     src_uri = "https://github.com/polybar/polybar/releases/download/3.7.1/polybar-3.7.1.tar.gz",
     sha256 = "5de6ad385ba09dc453a4e5ec7054749a4882b5b21a62c17ae40bf7c90613ff0f",
+    auto_detect_signature = False,
 )
 
 autotools_package(

@@ -95,6 +95,7 @@ download_source(
     name = "sdl2-mixer-src",
     src_uri = "https://github.com/libsdl-org/SDL_mixer/releases/download/release-2.8.0/SDL2_mixer-2.8.0.tar.gz",
     sha256 = "1cfb34c87b26dbdbc7afd68c4f545c0116ab5f90bbfecc5aebe2a9cb4bb31549",
+    auto_detect_signature = False,
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -123,6 +124,7 @@ download_source(
     name = "sdl2-ttf-src",
     src_uri = "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.22.0/SDL2_ttf-2.22.0.tar.gz",
     sha256 = "d48cbd1ce475b9e178206bf3b72d56b66d84d44f64ac05803328396234d67723",
+    auto_detect_signature = False,
 )
 
 # USE flags: See use_flags.bzl for available flags

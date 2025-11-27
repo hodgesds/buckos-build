@@ -392,7 +392,7 @@ autotools_package(
 download_source(
     name = "ecryptfs-utils-src",
     src_uri = "https://launchpad.net/ecryptfs/trunk/111/+download/ecryptfs-utils-111.tar.gz",
-    sha256 = "771ffb9575cb7d4ca1e27e24875340e775394b2094262d45de180fff765199bf",
+    sha256 = "f6be8241baeda5ab75357ad50ce6cf6fced3b898dd36abd5e78d4d666dacefe1",
     auto_detect_signature=False,
 )
 
@@ -673,7 +673,7 @@ cargo_package(
 download_source(
     name = "nettle-src",
     src_uri = "https://mirrors.kernel.org/gnu/nettle/nettle-3.9.1.tar.gz",
-    sha256 = "f8923c740159052d719dbfc2a2f81942d68dd34fcaf61c706a02c9b80feeef8e",
+    sha256 = "ccfeff981b0ca71bbd6fbcb054f407c60ffb644389a5be80d6716d5b550c6ce3",
     auto_detect_signature=False,
 )
 

@@ -8,6 +8,7 @@ cmake_package(
     version = "0.2.0",
     src_uri = "https://github.com/olive-editor/olive/archive/refs/tags/0.2.0.tar.gz",
     sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
+    auto_detect_signature = False,
     description = "Free non-linear video editor",
     homepage = "https://www.olivevideoeditor.org/",
     license = "GPL-3.0-or-later",

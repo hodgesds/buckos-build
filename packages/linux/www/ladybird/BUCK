@@ -11,7 +11,7 @@ load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 download_source(
     name = "ladybird-src",
     src_uri = "https://github.com/LadybirdWebBrowser/ladybird/archive/refs/heads/master.tar.gz",
-    sha256 = "0536c6b97ec5a62e20e1f930c300dfed1adc6b72ba705ebe3ad214a3ad00daae",
+    sha256 = "4eb93bc50154f9f6c341580cb252d411cda8c9b3dd4658f76847c152911158af",
 )
 
 binary_package(

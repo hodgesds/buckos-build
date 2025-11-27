@@ -9,6 +9,7 @@ download_source(
     name = "julia-src",
     src_uri = "https://github.com/JuliaLang/julia/releases/download/v1.10.0/julia-1.10.0.tar.gz",
     sha256 = "a4136608265c5d9186ae4767e94ddc948b19b43f760aba3501a161290852054d",
+    auto_detect_signature = False,
 )
 
 binary_package(

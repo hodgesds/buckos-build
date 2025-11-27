@@ -4,7 +4,8 @@ load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 download_source(
     name = "libunistring-src",
     src_uri = "https://mirrors.kernel.org/gnu/libunistring/libunistring-1.2.tar.xz",
-    sha256 = "632bd65ed74a881ca8a0309a1001c428bd1cbd5cd7ddbf8cedcd2e65f4dcdc44",
+    sha256 = "89a7e7fb1461c9f5900d1e2e970a9ffbfae8d70e65da39b9378d1aafa4481aff",
+    auto_detect_signature = False,
 )
 
 autotools_package(

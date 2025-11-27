@@ -5,6 +5,7 @@ download_source(
     name = "swayidle-src",
     src_uri = "https://github.com/swaywm/swayidle/releases/download/1.8.0/swayidle-1.8.0.tar.gz",
     sha256 = "16b3e76a117f2f0ff2ee5fbebf38849595cdd705db1cd5f6aceaed00d71b3aa1",
+    auto_detect_signature = False,
 )
 
 autotools_package(

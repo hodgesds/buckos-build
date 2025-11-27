@@ -37,7 +37,7 @@ binary_package(
 download_source(
     name = "amd-ucode-src",
     src_uri = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-20240312.tar.gz",
-    sha256 = "3152bf8acb765b97a739bc07d75e9965d88f47b67546c1fc90f74a5dd09e6103",
+    sha256 = "f02b2d40144e30c5feccbb92f9fe7c47e9533286746fba0a5439b4d1f73f0394",
 )
 
 binary_package(

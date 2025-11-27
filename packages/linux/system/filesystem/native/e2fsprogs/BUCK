@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "set_use_flags")
 download_source(
     name = "e2fsprogs-src",
     src_uri = "https://mirrors.edge.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.47.0/e2fsprogs-1.47.0.tar.xz",
-    sha256 = "bfaa9e66fd2df3ebdb3896f85140dacfe39d54cfe8f385a9dd273f9745a8dc4c",
+    sha256 = "144af53f2bbd921cef6f8bea88bb9faddca865da3fbc657cc9b4d2001097d5db",
 )
 
 autotools_package(

@@ -6,7 +6,7 @@ load("//defs:use_flags.bzl", "set_use_flags")
 download_source(
     name = "hwloc-src",
     src_uri = "https://download.open-mpi.org/release/hwloc/v2.10/hwloc-2.10.0.tar.bz2",
-    sha256 = "4faffa4613e9d647c421da362a2bc4e7451cc3581db245014f19f2cb06c1f434",
+    sha256 = "0305dd60c9de2fbe6519fe2a4e8fdc6d3db8de574a0ca7812b92e80c05ae1392",
 )
 
 autotools_package(

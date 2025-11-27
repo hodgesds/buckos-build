@@ -19,7 +19,7 @@ download_source(
 download_source(
     name = "amd-firmware-src",
     src_uri = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-20241017.tar.gz",
-    sha256 = "6b948fe9fec10ad57f34bf8561a9f9c3175732a17ac0610e33f1b9ef04a2ed54",
+    sha256 = "7636fe4ee954256b530e242a03bae445dd87e4940f008d3d6f39422056bb2196",
 )
 
 binary_package(

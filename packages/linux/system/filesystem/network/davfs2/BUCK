@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "set_use_flags")
 download_source(
     name = "davfs2-src",
     src_uri = "https://download.savannah.nongnu.org/releases/davfs2/davfs2-1.7.0.tar.gz",
-    sha256 = "8a5f6c8e9a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8b0c2",
+    sha256 = "251db75a27380cca1330b1b971700c5e5dcc0c90e5a47622285f0140edfe3a2f",
 )
 
 autotools_package(

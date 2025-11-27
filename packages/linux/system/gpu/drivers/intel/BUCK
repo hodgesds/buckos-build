@@ -13,7 +13,7 @@ load("//defs:use_flags.bzl", "set_use_flags")
 download_source(
     name = "intel-firmware-src",
     src_uri = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-20241017.tar.gz",
-    sha256 = "80b3e047c6939b27b8882467a102eb697de51c67584568f8d38483cc9ecb59b0",
+    sha256 = "7636fe4ee954256b530e242a03bae445dd87e4940f008d3d6f39422056bb2196",
 )
 
 # Intel GPU firmware

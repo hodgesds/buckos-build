@@ -65,14 +65,14 @@ meson setup .. --prefix=/usr \\
 
 download_source(
     name = "gtk3-src",
-    src_uri = "https://download.gnome.org/sources/gtk/3.24/gtk-3.24.41.tar.xz",
-    sha256 = "c375e42b6328de1880de1424a93267d573a1afa2ed37f72a35d8218f6880dd58",
+    src_uri = "https://download.gnome.org/sources/gtk/3.24/gtk-3.24.51.tar.xz",
+    sha256 = "0013877c6bd23c2dbe42ad7c70a053d0e449be66736574e37867c49c5f905a4f",
 )
 
 autotools_package(
     name = "gtk3",
     source = ":gtk3-src",
-    version = "3.24.41",
+    version = "3.24.51",
     description = "GTK+ 3 - Multi-platform toolkit for GUIs",
     homepage = "https://www.gtk.org/",
     license = "LGPL-2.0",

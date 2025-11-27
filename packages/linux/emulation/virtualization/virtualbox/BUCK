@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "set_use_flags")
 download_source(
     name = "virtualbox-src",
     src_uri = "https://download.virtualbox.org/virtualbox/7.1.4/VirtualBox-7.1.4.tar.bz2",
-    sha256 = "0f08fd98057167eb06b1b88dab2aeca99d6033a187cd2dd200e2c9595b5ae0c3",
+    sha256 = "872e7a42b41f8558abbf887f1bdc7aac932bb88b2764d07cbce270cab57e3b5e",
 )
 
 # USE flags: See use_flags.bzl for available flags

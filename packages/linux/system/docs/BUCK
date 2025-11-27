@@ -94,7 +94,7 @@ autotools_package(
 download_source(
     name = "gdbm-src",
     src_uri = "https://mirrors.kernel.org/gnu/gdbm/gdbm-1.23.tar.gz",
-    sha256 = "0329d7788fbef113fa82cb80889ca197a344ce0df7646fe000974c5d714363a6",
+    sha256 = "74b1081d21fff13ae4bd7c16e5d6e504a4c26f7cde1dca0d963a484174bbcacd",
     auto_detect_signature=False,
 )
 

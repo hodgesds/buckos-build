@@ -20,7 +20,7 @@ autotools_package(
     ],
     deps = [
         "//packages/linux/core/xz:xz",
-        "//packages/linux/system/libs/utility/libarchive:libarchive",
+        "//packages/linux/system/libs/compression/libarchive:libarchive",
     ],
     visibility = ["PUBLIC"],
 )

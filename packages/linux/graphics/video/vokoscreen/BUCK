@@ -7,7 +7,7 @@ cmake_package(
     name = "vokoscreen",
     version = "4.2.0",
     src_uri = "https://github.com/vkohaupt/vokoscreenNG/archive/refs/tags/4.2.0.tar.gz",
-    sha256 = "cdcbde0cc6961cd34959ee71c291a3e7e1772209847a4287c8acde0689d31023",
+    sha256 = "5f74fc575ae18e8e62f13f891d79c1c720077f6b630085a02f7576c223cb431c",
     description = "User-friendly screencast creator to record videos from screen",
     homepage = "https://linuxecke.volkoh.de/vokoscreen/vokoscreen.html",
     license = "GPL-2.0-or-later",

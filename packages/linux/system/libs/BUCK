@@ -281,7 +281,7 @@ filegroup(
         "//packages/linux/system/libs/utility/libffi:libffi",
         "//packages/linux/system/libs/utility/libevent:libevent",
         "//packages/linux/system/libs/utility/libuv:libuv",
-        "//packages/linux/system/libs/utility/libarchive:libarchive",
+        "//packages/linux/system/libs/compression/libarchive:libarchive",
     ],
     visibility = ["PUBLIC"],
 )

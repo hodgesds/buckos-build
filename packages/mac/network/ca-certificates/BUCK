@@ -6,7 +6,7 @@ autotools_package(
     name = "ca-certificates",
     version = "2024.07.02",
     src_uri = "https://curl.se/ca/cacert-2024-07-02.pem",
-    sha256 = "1bf458412568e134a4514f5e170a328d11091e071c7c0f65f91a7f4e3b6f8c16",
+    sha256 = "1bf458412568e134a4514f5e170a328d11091e071c7110955c9884ed87972ac9",
     description = "Mozilla's CA certificate bundle",
     homepage = "https://curl.se/docs/caextract.html",
     license = "MPL-2.0",

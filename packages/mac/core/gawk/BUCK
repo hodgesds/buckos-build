@@ -6,7 +6,7 @@ autotools_package(
     name = "gawk",
     version = "5.3.1",
     src_uri = "https://mirrors.kernel.org/gnu/gawk/gawk-5.3.1.tar.xz",
-    sha256 = "2c2d0d048bc86eed0c99c7d5e7be1f2a3d6c3e16ac7c38c01e19bffece8f3ca4",
+    sha256 = "694db764812a6236423d4ff40ceb7b6c4c441301b72ad502bb5c27e00cd56f78",
     description = "GNU awk utility (macOS)",
     homepage = "https://www.gnu.org/software/gawk/",
     license = "GPL-3.0",

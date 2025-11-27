@@ -399,7 +399,43 @@ if [ -n "$3" ]; then
     fi
 fi
 
-cd "$SRC_DIR"
+# Check if we need to force GNU11 standard for GCC 15+ (C23 conflicts with kernel's bool/true/false)
+CC_BIN="${CC:-gcc}"
+CC_VER=$($CC_BIN --version 2>/dev/null | head -1)
+echo "Compiler version: $CC_VER"
+GCC15_COMPAT=""
+if echo "$CC_VER" | grep -iq gcc; then
+    # Extract version number - handles "gcc (GCC) 15.2.1" format using awk
+    GCC_MAJOR=$(echo "$CC_VER" | awk '{for(i=1;i<=NF;i++) if($i ~ /^[0-9]+[.][0-9]/) {split($i,a,"."); print a[1]; exit}}')
+    echo "Detected GCC major version: $GCC_MAJOR"
+    if [ -n "$GCC_MAJOR" ] && [ "$GCC_MAJOR" -ge 15 ] 2>/dev/null; then
+        echo "GCC 15+ detected, will use -std=gnu11 for C23 compatibility"
+        GCC15_COMPAT="-std=gnu11"
+    fi
+fi
+
+# Copy source to writable build directory (buck2 inputs are read-only)
+BUILD_DIR="${BUCK_SCRATCH_PATH:-/tmp/kernel-build-$$}"
+mkdir -p "$BUILD_DIR"
+echo "Copying kernel source to build directory: $BUILD_DIR"
+cp -a "$SRC_DIR"/. "$BUILD_DIR/"
+cd "$BUILD_DIR"
+
+# Apply GCC 15 compatibility patches if needed
+if [ -n "$GCC15_COMPAT" ]; then
+    echo "Patching Makefiles for C23 compatibility..."
+    # The compressed Makefile sets KBUILD_CFLAGS := (overwriting), so we need to append after that line
+    if [ -f arch/x86/boot/compressed/Makefile ]; then
+        # Find and patch after the KBUILD_CFLAGS := line
+        sed -i '/^KBUILD_CFLAGS[[:space:]]*:=/a KBUILD_CFLAGS += '"$GCC15_COMPAT" arch/x86/boot/compressed/Makefile
+        echo "Patched arch/x86/boot/compressed/Makefile"
+    fi
+    # Also patch arch/x86/boot/Makefile similarly
+    if [ -f arch/x86/boot/Makefile ]; then
+        sed -i '/^KBUILD_CFLAGS[[:space:]]*:=/a KBUILD_CFLAGS += '"$GCC15_COMPAT" arch/x86/boot/Makefile
+        echo "Patched arch/x86/boot/Makefile"
+    fi
+fi
 
 # Apply config
 if [ -n "$CONFIG_PATH" ]; then
@@ -1922,6 +1958,83 @@ def cargo_test(args: list[str] = []) -> str:
 # Environment Setup Helpers
 # -----------------------------------------------------------------------------
 
+# Toolchain detection shell functions (Gentoo-style tc-* helpers)
+# These are embedded into build scripts to provide runtime toolchain detection
+TC_FUNCS = '''
+# Gentoo-style toolchain helper functions
+tc-getCC() { echo "${CC:-gcc}"; }
+tc-getCXX() { echo "${CXX:-g++}"; }
+tc-getLD() { echo "${LD:-ld}"; }
+tc-getAR() { echo "${AR:-ar}"; }
+tc-getRANLIB() { echo "${RANLIB:-ranlib}"; }
+tc-getNM() { echo "${NM:-nm}"; }
+tc-getSTRIP() { echo "${STRIP:-strip}"; }
+tc-getOBJCOPY() { echo "${OBJCOPY:-objcopy}"; }
+tc-getPKG_CONFIG() { echo "${PKG_CONFIG:-pkg-config}"; }
+
+tc-is-gcc() {
+    local cc="$(tc-getCC)"
+    local ver=$($cc --version 2>/dev/null | head -1)
+    echo "$ver" | grep -iq "gcc"
+}
+
+tc-is-clang() {
+    local cc="$(tc-getCC)"
+    local ver=$($cc --version 2>/dev/null | head -1)
+    echo "$ver" | grep -iq "clang"
+}
+
+tc-get-compiler-type() {
+    if tc-is-clang; then
+        echo "clang"
+    elif tc-is-gcc; then
+        echo "gcc"
+    else
+        echo "unknown"
+    fi
+}
+
+# Get GCC major version number
+gcc-major-version() {
+    local cc="$(tc-getCC)"
+    local ver=$($cc --version 2>/dev/null | head -1)
+    echo "$ver" | sed -n 's/.*[gG][cC][cC][^0-9]*\\([0-9]*\\)\\..*/\\1/p'
+}
+
+# Get Clang major version number
+clang-major-version() {
+    local cc="$(tc-getCC)"
+    local ver=$($cc --version 2>/dev/null | head -1)
+    echo "$ver" | sed -n 's/.*clang[^0-9]*\\([0-9]*\\)\\..*/\\1/p'
+}
+
+# Check if GCC version is at least N
+gcc-min-version() {
+    local min="$1"
+    local cur=$(gcc-major-version)
+    [ -n "$cur" ] && [ "$cur" -ge "$min" ] 2>/dev/null
+}
+
+# Check if Clang version is at least N
+clang-min-version() {
+    local min="$1"
+    local cur=$(clang-major-version)
+    [ -n "$cur" ] && [ "$cur" -ge "$min" ] 2>/dev/null
+}
+
+# Apply GCC 15+ C23 compatibility fix (wraps CC with -std=gnu11)
+tc-fix-gcc15-c23() {
+    if tc-is-gcc && gcc-min-version 15; then
+        local cc="$(tc-getCC)"
+        export CC="$cc -std=gnu11"
+        export CXX="$(tc-getCXX) -std=gnu++17"
+        echo "Applied GCC 15+ C23 compatibility fix: CC=$CC"
+        return 0
+    fi
+    return 1
+}
+'''
+
 def tc_export(vars: list[str] = ["CC", "CXX", "LD", "AR", "RANLIB", "NM"]) -> str:
     """Export toolchain variables."""
     exports = []
@@ -1945,6 +2058,10 @@ def tc_export(vars: list[str] = ["CC", "CXX", "LD", "AR", "RANLIB", "NM"]) -> st
         elif var == "PKG_CONFIG":
             exports.append('export PKG_CONFIG="${PKG_CONFIG:-pkg-config}"')
     return "\n".join(exports)
+
+def tc_funcs() -> str:
+    """Return shell functions for toolchain detection."""
+    return TC_FUNCS
 
 def append_cflags(flags: list[str]) -> str:
     """Append flags to CFLAGS."""

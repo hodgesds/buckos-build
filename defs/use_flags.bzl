@@ -58,6 +58,7 @@ GLOBAL_USE_FLAGS = {
     "static": "Build static libraries",
     "static-libs": "Build static libraries instead of shared",
     "test": "Enable test suite during build",
+    "verify-signatures": "Verify GPG signatures on source downloads",
 
     # Optimization
     "lto": "Enable Link Time Optimization",

@@ -65,6 +65,31 @@ simple_package(
 )
 ```
 
+### Global Control via Environment Variable
+
+Similar to Gentoo's USE flags, you can control signature verification globally using the `BUCKOS_VERIFY_SIGNATURES` environment variable:
+
+```bash
+# Disable signature verification for all packages
+BUCKOS_VERIFY_SIGNATURES=0 buck2 build //packages/linux/...
+
+# Enable signature verification for all packages
+BUCKOS_VERIFY_SIGNATURES=1 buck2 build //packages/linux/...
+
+# Set persistently in your shell profile
+export BUCKOS_VERIFY_SIGNATURES=0
+```
+
+**Values:**
+- `1` or `true` - Enable signature verification globally (overrides per-package settings)
+- `0` or `false` - Disable signature verification globally (overrides per-package settings)
+- Not set - Use per-package `auto_detect_signature` setting (default behavior)
+
+This is useful when:
+- Building on systems without GPG configured
+- Doing local development where signature verification adds overhead
+- CI/CD environments where you want consistent behavior across all packages
+
 ### Using a Custom Keyring
 
 ```python

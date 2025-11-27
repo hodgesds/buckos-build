@@ -922,6 +922,18 @@ This makes it easy to:
 - Get actionable steps to fix the issue
 - Disable verification if needed for testing
 
+**Global control via environment variable:**
+
+```bash
+# Disable signature verification for all packages
+BUCKOS_VERIFY_SIGNATURES=0 buck2 build //packages/linux/...
+
+# Enable signature verification for all packages
+BUCKOS_VERIFY_SIGNATURES=1 buck2 build //packages/linux/...
+```
+
+See `SIGNATURE_VERIFICATION.md` for full documentation.
+
 ## Comparison to Gentoo
 
 | Gentoo | BuckOs |

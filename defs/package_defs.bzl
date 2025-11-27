@@ -156,6 +156,19 @@ verify_signature() {
     return 1
 }
 
+# Check for global USE flag override via environment variable
+# BUCKOS_VERIFY_SIGNATURES=1 enables verification globally
+# BUCKOS_VERIFY_SIGNATURES=0 disables verification globally
+# If not set, falls back to per-package auto_detect setting
+if [ -n "$BUCKOS_VERIFY_SIGNATURES" ]; then
+    if [ "$BUCKOS_VERIFY_SIGNATURES" = "1" ] || [ "$BUCKOS_VERIFY_SIGNATURES" = "true" ]; then
+        AUTO_DETECT="1"
+    elif [ "$BUCKOS_VERIFY_SIGNATURES" = "0" ] || [ "$BUCKOS_VERIFY_SIGNATURES" = "false" ]; then
+        AUTO_DETECT=""
+        SIGNATURE_URI=""
+    fi
+fi
+
 # Try signature verification
 if [ -n "$SIGNATURE_URI" ]; then
     # Explicit signature URI provided

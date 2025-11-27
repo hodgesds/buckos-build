@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "set_use_flags")
 download_source(
     name = "waybar-src",
     src_uri = "https://github.com/Alexays/Waybar/archive/0.10.0.tar.gz",
-    sha256 = "db1364fe89502ac67f245a6c8c51290a52afd74a51eed26fa9ecb5b3443df57a",
+    sha256 = "3af6665889868f2334ba1793c8b0f3104c4c3b176a8c759f0d08f07266ad2620",
 )
 
 autotools_package(

@@ -26,7 +26,7 @@ load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 download_source(
     name = "perl-src",
     src_uri = "https://www.cpan.org/src/5.0/perl-5.38.2.tar.xz",
-    sha256 = "8c78af23d5cec8af3dd78a1a34e548e6d6ceabd2d51281bc654f9e993d438aed",
+    sha256 = "d91115e90b896520e83d4de6b52f8254ef2b70a8d545ffab33200ea9f1cf29e8",
 )
 
 autotools_package(

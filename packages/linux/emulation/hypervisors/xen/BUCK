@@ -5,7 +5,7 @@ load("//defs:use_flags.bzl", "set_use_flags")
 download_source(
     name = "xen-src",
     src_uri = "https://downloads.xenproject.org/release/xen/4.18.3/xen-4.18.3.tar.gz",
-    sha256 = "d3eb539a556352f3f47881d71fb0e5777b2f3e9a4251d283c18c67ce996774b7",
+    sha256 = "eb7438ca379564f7914b196d35d51c1bd72443d0668c4de36e53d6c2b4665732",
 )
 
 # USE flags: See use_flags.bzl for available flags

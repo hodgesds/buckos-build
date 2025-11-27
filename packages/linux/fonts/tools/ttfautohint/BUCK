@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "set_use_flags")
 download_source(
     name = "ttfautohint-src",
     src_uri = "https://download.savannah.gnu.org/releases/freetype/ttfautohint-1.8.4.tar.gz",
-    sha256 = "c4fbf87f8ca6f3a7e9e5a0b5e0c8a5d6e5a5b5c5d5e5f5a5b5c5d5e5f5a5b5c5",
+    sha256 = "8a876117fa6ebfd2ffe1b3682a9a98c802c0f47189f57d3db4b99774206832e1",
 )
 
 # USE flags: See use_flags.bzl for available flags

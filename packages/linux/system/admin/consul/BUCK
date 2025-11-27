@@ -6,7 +6,7 @@ go_package(
     name = "consul",
     version = "1.17.3",
     src_uri = "https://github.com/hashicorp/consul/archive/refs/tags/v1.17.3.tar.gz",
-    sha256 = "c0628dd525759b5ed422882cf9db83b83ad5b5f5e2a78f33e5d427781d8b3e07",
+    sha256 = "bf574ddca90ba820ce1637dae7b648940ed06dbf8a3fe9781b8270b6bf38b9c4",
     description = "Service mesh and service discovery solution",
     homepage = "https://www.consul.io",
     license = "BUSL-1.1",

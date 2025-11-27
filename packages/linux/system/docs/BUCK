@@ -9,7 +9,7 @@ load("//defs:use_flags.bzl", "set_use_flags")
 download_source(
     name = "man-db-src",
     src_uri = "https://download.savannah.nongnu.org/releases/man-db/man-db-2.12.0.tar.xz",
-    sha256 = "0329d7788fbef113fa82cb80889ca197a344ce0df7646fe000974c5d714363a6",
+    sha256 = "415a6284a22764ad22ff0f66710d853be7790dd451cd71436e3d25c74d996a95",
     auto_detect_signature=False,
 )
 

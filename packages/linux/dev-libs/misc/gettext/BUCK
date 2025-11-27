@@ -5,7 +5,8 @@ load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 download_source(
     name = "gettext-src",
     src_uri = "https://mirrors.kernel.org/gnu/gettext/gettext-0.26.tar.xz",
-    sha256 = "6ea666213b7cf66ea4679d68fac92bacd6995c430f3d78fd1593b0c5b5db3e03",
+    sha256 = "d1fb86e260cfe7da6031f94d2e44c0da55903dbae0a2fa0fae78c91ae1b56f00",
+    auto_detect_signature = False,
 )
 
 autotools_package(

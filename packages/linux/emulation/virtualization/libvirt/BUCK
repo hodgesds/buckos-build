@@ -6,6 +6,7 @@ download_source(
     name = "libvirt-src",
     src_uri = "https://libvirt.org/sources/libvirt-10.7.0.tar.xz",
     sha256 = "ca757322eed998013b21f474c6c0c15dc08320ba6c8bae54aa16a93a1c3b7054",
+    auto_detect_signature = False,
 )
 
 # USE flags: See use_flags.bzl for available flags

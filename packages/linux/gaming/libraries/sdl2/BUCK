@@ -8,6 +8,7 @@ download_source(
     name = "sdl2-src",
     src_uri = "https://github.com/libsdl-org/SDL/releases/download/release-2.30.8/SDL2-2.30.8.tar.gz",
     sha256 = "380c295ea76b9bd72d90075793971c8bcb232ba0a69a9b14da4ae8f603350058",
+    auto_detect_signature = False,
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -65,6 +66,7 @@ download_source(
     name = "sdl2-image-src",
     src_uri = "https://github.com/libsdl-org/SDL_image/releases/download/release-2.8.2/SDL2_image-2.8.2.tar.gz",
     sha256 = "8f486bbfbcf8464dd58c9e5d93394ab0255ce68b51c5a966a918244820a76ddc",
+    auto_detect_signature = False,
 )
 
 # USE flags: See use_flags.bzl for available flags

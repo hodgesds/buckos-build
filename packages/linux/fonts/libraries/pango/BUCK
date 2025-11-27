@@ -5,7 +5,7 @@ autotools_package(
     name = "pango",
     version = "1.52.2",
     src_uri = "https://download.gnome.org/sources/pango/1.52/pango-1.52.2.tar.xz",
-    sha256 = "d0076afe01082814b853deec99f9349ece5f2ce83908b8e58ff736b41f78a96b",
+    sha256 = "1c83a8b58ce7c99f853eed80cd36b2343fe9cf80e5d9d846912777f69b7475aa",
     auto_detect_signature = False,
     description = "Library for layout and rendering of text",
     homepage = "https://pango.gnome.org/",

@@ -6,8 +6,9 @@ load("//defs:use_flags.bzl", "set_use_flags")
 autotools_package(
     name = "gperf",
     version = "3.1",
-    src_uri = "https://mirrors.kernel.org/pub/gnu/gperf/gperf-3.1.tar.gz",
-    sha256 = "38bef8cb64da496d6b9f6fc74514c4f785015a7fbd235468f5dde039a77a2fbd",
+    src_uri = "https://ftp.gnu.org/gnu/gperf/gperf-3.1.tar.gz",
+    sha256 = "588546b945bba4b70b6a3a616e80b4ab466e3f33024a352fc2198112cdbb3ae2",
+    auto_detect_signature = False,
     description = "Perfect hash function generator",
     homepage = "https://www.gnu.org/software/gperf/",
     license = "GPL-3",

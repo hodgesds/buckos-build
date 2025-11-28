@@ -1,0 +1,448 @@
+load("@root//defs:package_defs.bzl", "download_source", "ebuild_package")
+
+# =============================================================================
+# Bootstrap Toolchain for BuckOS
+# =============================================================================
+#
+# This implements a proper two-stage bootstrap similar to Linux From Scratch:
+#
+# Stage 1: Cross-compilation toolchain
+#   1. binutils (cross) - assembler/linker targeting buckos
+#   2. gcc (pass 1) - C compiler only, no libc
+#   3. linux headers - kernel headers for glibc
+#   4. glibc - C library built with cross-gcc
+#   5. libstdc++ - C++ standard library
+#   6. gcc (pass 2) - full compiler with libc support
+#
+# All packages built after this use the bootstrap toolchain, ensuring they
+# link against buckos glibc (2.39) instead of the host's glibc.
+#
+# The target triplet is: x86_64-buckos-linux-gnu
+
+# =============================================================================
+# Stage 1.1: Cross Binutils
+# =============================================================================
+
+download_source(
+    name = "binutils-src",
+    src_uri = "https://mirrors.kernel.org/gnu/binutils/binutils-2.42.tar.xz",
+    sha256 = "f6e4d41fd5fc778b06b7891457b3620da5ecea1006c6a4a41ae998109f85a800",
+    auto_detect_signature = False,
+)
+
+ebuild_package(
+    name = "cross-binutils",
+    source = ":binutils-src",
+    version = "2.42",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "Cross binutils for bootstrap toolchain",
+    homepage = "https://www.gnu.org/software/binutils/",
+    license = "GPL-3.0",
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+mkdir -p build && cd build
+../configure \
+    --prefix=/tools \
+    --target=$BUCKOS_TARGET \
+    --with-sysroot=/tools \
+    --disable-nls \
+    --disable-werror \
+    --enable-gprofng=no \
+    --enable-default-hash-style=gnu
+''',
+
+    src_compile = '''
+cd build
+make -j$(nproc)
+''',
+
+    src_install = '''
+cd build
+make DESTDIR="$DESTDIR" install
+''',
+
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Stage 1.2: GCC Pass 1 (C compiler only, no libc)
+# =============================================================================
+
+download_source(
+    name = "gcc-src",
+    src_uri = "https://mirrors.kernel.org/gnu/gcc/gcc-14.2.0/gcc-14.2.0.tar.xz",
+    sha256 = "a7b39bc69cbf9e25826c5a60ab26477001f7c08d85cec04bc0e29cabed6f3cc9",
+    auto_detect_signature = False,
+)
+
+download_source(
+    name = "mpfr-src",
+    src_uri = "https://mirrors.kernel.org/gnu/mpfr/mpfr-4.2.1.tar.xz",
+    sha256 = "277807353a6726978996945af13e52829e3abd7a9a5b7fb2793894e18f1fcbb2",
+    auto_detect_signature = False,
+)
+
+download_source(
+    name = "gmp-src",
+    src_uri = "https://mirrors.kernel.org/gnu/gmp/gmp-6.3.0.tar.xz",
+    sha256 = "a3c2b80201b89e68616f4ad30bc66aee4927c3ce50e33929ca819d5c43538898",
+    auto_detect_signature = False,
+)
+
+download_source(
+    name = "mpc-src",
+    src_uri = "https://mirrors.kernel.org/gnu/mpc/mpc-1.3.1.tar.gz",
+    sha256 = "ab642492f5cf882b74aa0cb730cd410a81edcdbec895183ce930e706c1c759b8",
+    auto_detect_signature = False,
+)
+
+ebuild_package(
+    name = "cross-gcc-pass1",
+    source = ":gcc-src",
+    version = "14.2.0",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "Cross GCC pass 1 - C compiler only for bootstrap",
+    homepage = "https://gcc.gnu.org/",
+    license = "GPL-3.0",
+
+    src_prepare = '''
+# The GMP, MPFR, MPC sources should be available as dependencies
+# For now, we'll download them inline during prepare
+# In a proper setup, these would be passed as rdepend sources
+true
+''',
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+mkdir -p build && cd build
+../configure \
+    --prefix=/tools \
+    --target=$BUCKOS_TARGET \
+    --with-sysroot=/tools \
+    --with-newlib \
+    --without-headers \
+    --enable-languages=c,c++ \
+    --disable-nls \
+    --disable-shared \
+    --disable-multilib \
+    --disable-threads \
+    --disable-libatomic \
+    --disable-libgomp \
+    --disable-libquadmath \
+    --disable-libssp \
+    --disable-libvtv \
+    --disable-libstdcxx \
+    --disable-decimal-float \
+    --disable-bootstrap
+''',
+
+    src_compile = '''
+cd build
+make -j$(nproc)
+''',
+
+    src_install = '''
+cd build
+make DESTDIR="$DESTDIR" install
+''',
+
+    bdepend = [":cross-binutils"],
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Stage 1.3: Linux API Headers
+# =============================================================================
+
+download_source(
+    name = "linux-headers-src",
+    src_uri = "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.6.tar.xz",
+    sha256 = "d450ab215de4e1f8bb85e0f4216760fa33fd024b4526b144f4ce0d9012b29c9e",
+    auto_detect_signature = False,
+)
+
+ebuild_package(
+    name = "linux-headers",
+    source = ":linux-headers-src",
+    version = "6.12.6",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "Linux kernel headers for glibc build",
+    homepage = "https://kernel.org/",
+    license = "GPL-2.0",
+
+    src_configure = "true",
+    src_compile = "true",
+
+    src_install = '''
+make mrproper
+make headers
+find usr/include -type f ! -name '*.h' -delete
+mkdir -p "$DESTDIR/usr/include"
+cp -rv usr/include/* "$DESTDIR/usr/include/"
+''',
+
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Stage 1.4: Glibc (built with cross-gcc)
+# =============================================================================
+
+download_source(
+    name = "glibc-src",
+    src_uri = "https://mirrors.kernel.org/gnu/glibc/glibc-2.42.tar.xz",
+    sha256 = "d1775e32e4628e64ef930f435b67bb63af7599acb6be2b335b9f19f16509f17f",
+    auto_detect_signature = False,
+    visibility = ["PUBLIC"],
+)
+
+ebuild_package(
+    name = "cross-glibc",
+    source = ":glibc-src",
+    version = "2.42",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "GNU C Library for bootstrap toolchain",
+    homepage = "https://www.gnu.org/software/libc/",
+    license = "LGPL-2.1+",
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+
+# Create directories for final system layout
+mkdir -p "$DESTDIR/usr/lib64"
+mkdir -p "$DESTDIR/lib64"
+
+# Create symlink for LSB compliance
+ln -sfv ../lib/ld-linux-x86-64.so.2 "$DESTDIR/usr/lib64/ld-lsb-x86-64.so.3" || true
+
+mkdir -p build && cd build
+
+# Configure with cross compiler - use /usr prefix for final system
+echo "rootsbindir=/usr/sbin" > configparms
+
+# Find headers from dependency directories (linux-headers provides them)
+# TOOLCHAIN_INCLUDE is set by the build system from bdepend directories
+HEADERS_BASE="${TOOLCHAIN_INCLUDE%%:*}"  # Get first path from colon-separated list
+# Convert relative path to absolute - paths are relative to project root
+# The script runs from source dir which is under buck-out/v2/gen/.../
+if [[ "$HEADERS_BASE" != /* ]]; then
+    # Navigate up from current dir to find buck-out at project root
+    PROJECT_ROOT="${S%/buck-out/*}"
+    HEADERS_BASE="$PROJECT_ROOT/$HEADERS_BASE"
+fi
+# Headers are installed to /usr/include within the dependency output
+HEADERS_PATH="$HEADERS_BASE/usr/include"
+if [ -z "$HEADERS_PATH" ] || [ ! -d "$HEADERS_PATH" ]; then
+    echo "ERROR: Could not find kernel headers." >&2
+    echo "  TOOLCHAIN_INCLUDE=$TOOLCHAIN_INCLUDE" >&2
+    echo "  HEADERS_BASE=$HEADERS_BASE" >&2
+    echo "  HEADERS_PATH=$HEADERS_PATH" >&2
+    echo "  S=$S" >&2
+    exit 1
+fi
+echo "Using kernel headers from: $HEADERS_PATH"
+
+../configure \
+    --prefix=/usr \
+    --host=$BUCKOS_TARGET \
+    --build=$(../scripts/config.guess) \
+    --enable-kernel=4.19 \
+    --with-headers="$HEADERS_PATH" \
+    --disable-nscd \
+    libc_cv_slibdir=/usr/lib64
+''',
+
+    src_compile = '''
+cd build
+make -j$(nproc)
+''',
+
+    src_install = '''
+cd build
+make DESTDIR="$DESTDIR" install
+
+# Create /lib64/ld-linux-x86-64.so.2 symlink (required for dynamic linker to be found)
+ln -sfv ../usr/lib64/ld-linux-x86-64.so.2 "$DESTDIR/lib64/ld-linux-x86-64.so.2"
+
+# Create /etc/ld.so.conf for library search paths
+mkdir -p "$DESTDIR/etc/ld.so.conf.d"
+cat > "$DESTDIR/etc/ld.so.conf" << 'LDCONF'
+# Multilib support
+/usr/lib64
+/usr/lib
+/lib64
+/lib
+include /etc/ld.so.conf.d/*.conf
+LDCONF
+''',
+
+    bdepend = [":cross-gcc-pass1", ":linux-headers"],
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Stage 1.5: Libstdc++ (C++ standard library)
+# =============================================================================
+
+ebuild_package(
+    name = "cross-libstdcxx",
+    source = ":gcc-src",
+    version = "14.2.0",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "C++ standard library for bootstrap",
+    homepage = "https://gcc.gnu.org/",
+    license = "GPL-3.0",
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+mkdir -p build && cd build
+
+# Need the cross-compiler in PATH
+export PATH="$DESTDIR/tools/bin:$PATH"
+
+../libstdc++-v3/configure \
+    --prefix=/usr \
+    --host=$BUCKOS_TARGET \
+    --build=$(../config.guess) \
+    --disable-multilib \
+    --disable-nls \
+    --disable-libstdcxx-pch \
+    --with-gxx-include-dir=/usr/$BUCKOS_TARGET/include/c++/14.2.0
+''',
+
+    src_compile = '''
+cd build
+make -j$(nproc)
+''',
+
+    src_install = '''
+cd build
+make DESTDIR="$DESTDIR" install
+# Remove libtool archives
+rm -vf "$DESTDIR"/usr/lib/lib{stdc++{,exp,fs},supc++}.la || true
+rm -vf "$DESTDIR"/usr/lib64/lib{stdc++{,exp,fs},supc++}.la || true
+''',
+
+    bdepend = [":cross-glibc"],
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Stage 1.6: GCC Pass 2 (full compiler with libc)
+# =============================================================================
+
+ebuild_package(
+    name = "cross-gcc-pass2",
+    source = ":gcc-src",
+    version = "14.2.0",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "Cross GCC pass 2 - full compiler with libc support",
+    homepage = "https://gcc.gnu.org/",
+    license = "GPL-3.0",
+
+    src_prepare = '''
+# Fix file that causes issues with glibc-2.39+
+sed '/thread_header =/s/@.*@/gthr-posix.h/' \
+    -i libgcc/Makefile.in libstdc++-v3/include/Makefile.in || true
+''',
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+
+# Need the cross-compiler and glibc in PATH/sysroot
+export PATH="$DESTDIR/tools/bin:$PATH"
+
+mkdir -p build && cd build
+../configure \
+    --prefix=/tools \
+    --target=$BUCKOS_TARGET \
+    --build=$(../config.guess) \
+    --with-build-sysroot="$DESTDIR" \
+    --enable-languages=c,c++ \
+    --enable-default-pie \
+    --enable-default-ssp \
+    --disable-nls \
+    --disable-multilib \
+    --disable-libatomic \
+    --disable-libgomp \
+    --disable-libquadmath \
+    --disable-libsanitizer \
+    --disable-libssp \
+    --disable-libvtv \
+    --enable-libstdcxx \
+    --disable-bootstrap
+''',
+
+    src_compile = '''
+cd build
+make -j$(nproc)
+''',
+
+    src_install = '''
+cd build
+make DESTDIR="$DESTDIR" install
+
+# Create cc symlink
+ln -sv gcc "$DESTDIR/tools/bin/cc" || true
+''',
+
+    bdepend = [":cross-libstdcxx"],
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Complete Bootstrap Toolchain
+# =============================================================================
+
+# This target aggregates all bootstrap toolchain components
+# Packages depending on this will have access to the full cross-compilation
+# environment with:
+#   - Cross binutils (as, ld, ar, etc.)
+#   - Cross GCC (gcc, g++)
+#   - Glibc and headers
+#   - Libstdc++
+
+ebuild_package(
+    name = "bootstrap-toolchain",
+    source = ":gcc-src",  # Dummy source, we just aggregate deps
+    version = "1.0",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "Complete bootstrap toolchain for BuckOS",
+    homepage = "https://buckos.org/",
+    license = "GPL-3.0",
+
+    src_configure = "true",
+    src_compile = "true",
+
+    src_install = '''
+# Create a marker file and symlinks to indicate this is the toolchain root
+mkdir -p "$DESTDIR/tools"
+echo "BuckOS Bootstrap Toolchain v1.0" > "$DESTDIR/tools/.bootstrap-toolchain"
+echo "Target: x86_64-buckos-linux-gnu" >> "$DESTDIR/tools/.bootstrap-toolchain"
+echo "Glibc: 2.42" >> "$DESTDIR/tools/.bootstrap-toolchain"
+echo "GCC: 14.2.0" >> "$DESTDIR/tools/.bootstrap-toolchain"
+''',
+
+    bdepend = [
+        ":cross-binutils",
+        ":cross-gcc-pass2",
+        ":cross-glibc",
+        ":linux-headers",
+    ],
+    depend = [],
+    visibility = ["PUBLIC"],
+)

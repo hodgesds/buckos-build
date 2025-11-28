@@ -13,6 +13,12 @@ load("//defs:use_flags.bzl",
      "use_cargo_args",
      "use_go_build_args")
 
+# Bootstrap toolchain target path (for use in package definitions)
+# All packages will use this by default to ensure they link against BuckOS glibc
+# rather than the host system's libraries.
+# Note: Uses toolchains// cell prefix per buck2 cell configuration
+BOOTSTRAP_TOOLCHAIN = "toolchains//bootstrap:bootstrap-toolchain"
+
 # Package metadata structure
 PackageInfo = provider(fields = [
     "name",
@@ -2201,6 +2207,13 @@ def _ebuild_package_impl(ctx: AnalysisContext) -> list[Provider]:
     # Get source directory from dependency
     src_dir = ctx.attrs.source[DefaultInfo].default_outputs[0]
 
+    # Collect all dependency directories (bdepend + rdepend) for PATH setup
+    dep_dirs = []
+    for dep in ctx.attrs.bdepend + ctx.attrs.rdepend:
+        outputs = dep[DefaultInfo].default_outputs
+        for output in outputs:
+            dep_dirs.append(output)
+
     # Build phases (use 'true' as no-op for empty phases to avoid syntax errors)
     src_unpack = ctx.attrs.src_unpack if ctx.attrs.src_unpack else "true"
     src_prepare = ctx.attrs.src_prepare if ctx.attrs.src_prepare else "true"
@@ -2219,6 +2232,10 @@ def _ebuild_package_impl(ctx: AnalysisContext) -> list[Provider]:
     # USE flags
     use_flags = " ".join(ctx.attrs.use_flags) if ctx.attrs.use_flags else ""
 
+    # Check if bootstrap toolchain is being used
+    use_bootstrap = ctx.attrs.use_bootstrap if hasattr(ctx.attrs, "use_bootstrap") else False
+    bootstrap_sysroot = ctx.attrs.bootstrap_sysroot if hasattr(ctx.attrs, "bootstrap_sysroot") else ""
+
     script = ctx.actions.write(
         "ebuild.sh",
         '''#!/bin/bash
@@ -2232,10 +2249,211 @@ export CATEGORY="{category}"
 export SLOT="{slot}"
 export USE="{use_flags}"
 
+# Bootstrap toolchain configuration
+USE_BOOTSTRAP="{use_bootstrap}"
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+BOOTSTRAP_SYSROOT="{bootstrap_sysroot}"
+
 # Installation directories
 mkdir -p "$1"
 export DESTDIR="$(cd "$1" && pwd)"
+export OUT="$DESTDIR"  # Alias for compatibility with simple_package/post_install scripts
 export S="$(cd "$2" && pwd)"
+shift 2  # Remove DESTDIR and S from args, remaining args are dependency dirs
+
+# Set up PATH from dependency directories
+DEP_PATH=""
+TOOLCHAIN_PATH=""
+TOOLCHAIN_INCLUDE=""
+TOOLCHAIN_ROOT=""
+for dep_dir in "$@"; do
+    # Check if this is the bootstrap toolchain or has tools dir
+    if [ -d "$dep_dir/tools/bin" ]; then
+        TOOLCHAIN_PATH="${{TOOLCHAIN_PATH:+$TOOLCHAIN_PATH:}}$dep_dir/tools/bin"
+        # Set sysroot from toolchain if not explicitly provided
+        if [ -z "$BOOTSTRAP_SYSROOT" ] && [ -d "$dep_dir/tools" ]; then
+            BOOTSTRAP_SYSROOT="$dep_dir/tools"
+        fi
+    fi
+    # Capture the full toolchain root directory (for glibc, etc)
+    if [ -d "$dep_dir/tools/lib" ]; then
+        TOOLCHAIN_ROOT="${{TOOLCHAIN_ROOT:+$TOOLCHAIN_ROOT:}}$dep_dir/tools"
+    fi
+    # Capture include directory from toolchain dependencies (for linux-headers, etc)
+    if [ -d "$dep_dir/tools/include" ]; then
+        TOOLCHAIN_INCLUDE="${{TOOLCHAIN_INCLUDE:+$TOOLCHAIN_INCLUDE:}}$dep_dir/tools/include"
+    fi
+    if [ -d "$dep_dir/usr/bin" ]; then
+        DEP_PATH="${{DEP_PATH:+$DEP_PATH:}}$dep_dir/usr/bin"
+    fi
+    if [ -d "$dep_dir/bin" ]; then
+        DEP_PATH="${{DEP_PATH:+$DEP_PATH:}}$dep_dir/bin"
+    fi
+    if [ -d "$dep_dir/usr/sbin" ]; then
+        DEP_PATH="${{DEP_PATH:+$DEP_PATH:}}$dep_dir/usr/sbin"
+    fi
+    if [ -d "$dep_dir/sbin" ]; then
+        DEP_PATH="${{DEP_PATH:+$DEP_PATH:}}$dep_dir/sbin"
+    fi
+done
+
+# Export toolchain paths for scripts that need them
+export TOOLCHAIN_INCLUDE  # For --with-headers etc
+export TOOLCHAIN_ROOT     # For copying toolchain files
+
+# Toolchain path goes first, then dependency paths, then host PATH
+if [ -n "$TOOLCHAIN_PATH" ]; then
+    export PATH="$TOOLCHAIN_PATH:$DEP_PATH:$PATH"
+elif [ -n "$DEP_PATH" ]; then
+    export PATH="$DEP_PATH:$PATH"
+fi
+
+# IMPORTANT: Clear host library paths to prevent host glibc/libraries from leaking
+# into the build. This ensures packages link against buckos-provided libraries only.
+# Without this, packages built on newer hosts (e.g., glibc 2.42) would require that
+# version at runtime, breaking portability.
+unset LD_LIBRARY_PATH
+unset LIBRARY_PATH
+unset CPATH
+unset C_INCLUDE_PATH
+unset CPLUS_INCLUDE_PATH
+unset PKG_CONFIG_PATH
+
+# =============================================================================
+# Bootstrap Toolchain Setup
+# =============================================================================
+# Only configure cross-compilation if USE_BOOTSTRAP is explicitly set to "true"
+# The presence of /tools/bin in PATH is NOT sufficient - it must be explicitly requested
+# This allows bootstrap packages to be built with the host compiler
+if [ "$USE_BOOTSTRAP" = "true" ]; then
+    # Verify the cross-compiler actually exists
+    if [ -n "$TOOLCHAIN_PATH" ] && command -v ${{BUCKOS_TARGET}}-gcc >/dev/null 2>&1; then
+        echo "=== Using Bootstrap Toolchain ==="
+        echo "Target: $BUCKOS_TARGET"
+        echo "Sysroot: $BOOTSTRAP_SYSROOT"
+        echo "Toolchain PATH: $TOOLCHAIN_PATH"
+
+        # Set cross-compilation environment variables
+        export CC="${{BUCKOS_TARGET}}-gcc"
+        export CXX="${{BUCKOS_TARGET}}-g++"
+        export AR="${{BUCKOS_TARGET}}-ar"
+        export AS="${{BUCKOS_TARGET}}-as"
+        export LD="${{BUCKOS_TARGET}}-ld"
+        export NM="${{BUCKOS_TARGET}}-nm"
+        export RANLIB="${{BUCKOS_TARGET}}-ranlib"
+        export STRIP="${{BUCKOS_TARGET}}-strip"
+        export OBJCOPY="${{BUCKOS_TARGET}}-objcopy"
+        export OBJDUMP="${{BUCKOS_TARGET}}-objdump"
+        export READELF="${{BUCKOS_TARGET}}-readelf"
+
+        # Set sysroot for all compilation
+        if [ -n "$BOOTSTRAP_SYSROOT" ]; then
+            SYSROOT_FLAGS="--sysroot=$BOOTSTRAP_SYSROOT"
+            export CFLAGS="${{CFLAGS:-}} $SYSROOT_FLAGS"
+            export CXXFLAGS="${{CXXFLAGS:-}} $SYSROOT_FLAGS"
+            export LDFLAGS="${{LDFLAGS:-}} $SYSROOT_FLAGS"
+
+            # Set pkg-config to use sysroot
+            export PKG_CONFIG_SYSROOT_DIR="$BOOTSTRAP_SYSROOT"
+            export PKG_CONFIG_PATH="$BOOTSTRAP_SYSROOT/usr/lib/pkgconfig:$BOOTSTRAP_SYSROOT/usr/share/pkgconfig"
+        fi
+
+        # For autotools, set build/host triplets
+        export BUILD_TRIPLET="$(gcc -dumpmachine)"
+        export HOST_TRIPLET="$BUCKOS_TARGET"
+
+        echo "CC=$CC"
+        echo "CXX=$CXX"
+        echo "CFLAGS=$CFLAGS"
+        echo "==================================="
+    else
+        echo "=== Bootstrap toolchain requested but not available ==="
+        echo "Cross-compiler not found, using host compiler"
+        echo "This is expected for bootstrap stage 1 packages"
+    fi
+fi
+
+# Set up library paths from dependencies for pkg-config and linking
+# Convert all paths to absolute to avoid libtool issues with relative paths
+DEP_LIBPATH=""
+DEP_PKG_CONFIG_PATH=""
+for dep_dir_raw in "$@"; do
+    # Convert to absolute path - crucial for libtool which cds during install
+    if [[ "$dep_dir_raw" = /* ]]; then
+        dep_dir="$dep_dir_raw"
+    else
+        dep_dir="$(cd "$dep_dir_raw" 2>/dev/null && pwd)" || dep_dir="$(pwd)/$dep_dir_raw"
+    fi
+    if [ -d "$dep_dir/usr/lib64" ]; then
+        DEP_LIBPATH="${{DEP_LIBPATH:+$DEP_LIBPATH:}}$dep_dir/usr/lib64"
+    fi
+    if [ -d "$dep_dir/usr/lib" ]; then
+        DEP_LIBPATH="${{DEP_LIBPATH:+$DEP_LIBPATH:}}$dep_dir/usr/lib"
+    fi
+    if [ -d "$dep_dir/lib64" ]; then
+        DEP_LIBPATH="${{DEP_LIBPATH:+$DEP_LIBPATH:}}$dep_dir/lib64"
+    fi
+    if [ -d "$dep_dir/lib" ]; then
+        DEP_LIBPATH="${{DEP_LIBPATH:+$DEP_LIBPATH:}}$dep_dir/lib"
+    fi
+    if [ -d "$dep_dir/usr/lib64/pkgconfig" ]; then
+        DEP_PKG_CONFIG_PATH="${{DEP_PKG_CONFIG_PATH:+$DEP_PKG_CONFIG_PATH:}}$dep_dir/usr/lib64/pkgconfig"
+    fi
+    if [ -d "$dep_dir/usr/lib/pkgconfig" ]; then
+        DEP_PKG_CONFIG_PATH="${{DEP_PKG_CONFIG_PATH:+$DEP_PKG_CONFIG_PATH:}}$dep_dir/usr/lib/pkgconfig"
+    fi
+    if [ -d "$dep_dir/usr/share/pkgconfig" ]; then
+        DEP_PKG_CONFIG_PATH="${{DEP_PKG_CONFIG_PATH:+$DEP_PKG_CONFIG_PATH:}}$dep_dir/usr/share/pkgconfig"
+    fi
+done
+if [ -n "$DEP_LIBPATH" ]; then
+    # Only use dependency paths - do NOT inherit from host environment
+    export LD_LIBRARY_PATH="${{DEP_LIBPATH}}"
+    export LIBRARY_PATH="${{DEP_LIBPATH}}"
+fi
+if [ -n "$DEP_PKG_CONFIG_PATH" ]; then
+    export PKG_CONFIG_PATH="${{DEP_PKG_CONFIG_PATH}}"
+fi
+
+# Set up include paths from dependencies
+DEP_CPATH=""
+for dep_dir_raw in "$@"; do
+    # Convert to absolute path for consistency
+    if [[ "$dep_dir_raw" = /* ]]; then
+        dep_dir="$dep_dir_raw"
+    else
+        dep_dir="$(cd "$dep_dir_raw" 2>/dev/null && pwd)" || dep_dir="$(pwd)/$dep_dir_raw"
+    fi
+    if [ -d "$dep_dir/usr/include" ]; then
+        DEP_CPATH="${{DEP_CPATH:+$DEP_CPATH:}}$dep_dir/usr/include"
+    fi
+    if [ -d "$dep_dir/include" ]; then
+        DEP_CPATH="${{DEP_CPATH:+$DEP_CPATH:}}$dep_dir/include"
+    fi
+done
+if [ -n "$DEP_CPATH" ]; then
+    # Only use dependency paths - do NOT inherit from host environment
+    export CPATH="${{DEP_CPATH}}"
+    export C_INCLUDE_PATH="${{DEP_CPATH}}"
+    export CPLUS_INCLUDE_PATH="${{DEP_CPATH}}"
+fi
+
+# Set up linker flags to prevent searching host library paths
+# This is critical for build isolation - without this, the linker will still
+# find and link against host libraries (like glibc 2.42 on newer systems)
+if [ -n "$DEP_LIBPATH" ]; then
+    # Build -L flags for each dependency library path
+    LDFLAGS_LIBPATH=""
+    RPATH_LINK=""
+    IFS=':' read -ra LIBPATH_ARRAY <<< "$DEP_LIBPATH"
+    for libpath in "${{LIBPATH_ARRAY[@]}}"; do
+        LDFLAGS_LIBPATH="${{LDFLAGS_LIBPATH}} -L$libpath"
+        RPATH_LINK="${{RPATH_LINK}} -Wl,-rpath-link,$libpath"
+    done
+    # Append to LDFLAGS - dependency paths first, then allow fallback to system
+    export LDFLAGS="${{LDFLAGS_LIBPATH}}${{RPATH_LINK}}${{LDFLAGS:+ $LDFLAGS}}"
+fi
+
 export EPREFIX="${{EPREFIX:-}}"
 export PREFIX="${{PREFIX:-/usr}}"
 export LIBDIR="${{LIBDIR:-lib64}}"
@@ -2411,6 +2629,8 @@ fi
             category = ctx.attrs.category,
             slot = ctx.attrs.slot,
             use_flags = use_flags,
+            use_bootstrap = "true" if use_bootstrap else "false",
+            bootstrap_sysroot = bootstrap_sysroot,
             env = env_str,
             src_unpack = src_unpack,
             src_prepare = src_prepare,
@@ -2423,13 +2643,19 @@ fi
         ),
     )
 
+    # Build command with dependency directories as additional arguments
+    cmd = cmd_args([
+        "bash",
+        script,
+        install_dir.as_output(),
+        src_dir,
+    ])
+    # Add all dependency directories as arguments (will be available as $3, $4, etc. in script)
+    for dep_dir in dep_dirs:
+        cmd.add(dep_dir)
+
     ctx.actions.run(
-        cmd_args([
-            "bash",
-            script,
-            install_dir.as_output(),
-            src_dir,
-        ]),
+        cmd,
         category = "ebuild",
         identifier = ctx.attrs.name,
     )
@@ -2475,6 +2701,9 @@ ebuild_package = rule(
         "bdepend": attrs.list(attrs.dep(), default = []),
         "pdepend": attrs.list(attrs.dep(), default = []),
         "maintainers": attrs.list(attrs.string(), default = []),
+        # Bootstrap toolchain support
+        "use_bootstrap": attrs.bool(default = False),
+        "bootstrap_sysroot": attrs.string(default = ""),
     },
 )
 
@@ -2648,6 +2877,11 @@ def cmake_package(
         if dep not in bdepend:
             bdepend.append(dep)
 
+    # Add bootstrap toolchain by default to ensure linking against BuckOS glibc
+    use_bootstrap = kwargs.pop("use_bootstrap", True)
+    if use_bootstrap and BOOTSTRAP_TOOLCHAIN not in bdepend:
+        bdepend.append(BOOTSTRAP_TOOLCHAIN)
+
     ebuild_package(
         name = name,
         source = src_target,
@@ -2783,6 +3017,11 @@ def meson_package(
     for dep in eclass_config["bdepend"]:
         if dep not in bdepend:
             bdepend.append(dep)
+
+    # Add bootstrap toolchain by default to ensure linking against BuckOS glibc
+    use_bootstrap = kwargs.pop("use_bootstrap", True)
+    if use_bootstrap and BOOTSTRAP_TOOLCHAIN not in bdepend:
+        bdepend.append(BOOTSTRAP_TOOLCHAIN)
 
     ebuild_package(
         name = name,
@@ -2929,6 +3168,12 @@ def autotools_package(
     for dep in eclass_config["bdepend"]:
         if dep not in bdepend:
             bdepend.append(dep)
+
+    # Add bootstrap toolchain by default to ensure linking against BuckOS glibc
+    # Skip if this package is part of the bootstrap toolchain itself
+    use_bootstrap = kwargs.pop("use_bootstrap", True)
+    if use_bootstrap and BOOTSTRAP_TOOLCHAIN not in bdepend:
+        bdepend.append(BOOTSTRAP_TOOLCHAIN)
 
     # Get pre_configure and post_install if provided
     pre_configure = kwargs.pop("pre_configure", "")
@@ -3082,6 +3327,11 @@ def cargo_package(
         if dep not in bdepend:
             bdepend.append(dep)
 
+    # Add bootstrap toolchain by default to ensure linking against BuckOS glibc
+    use_bootstrap = kwargs.pop("use_bootstrap", True)
+    if use_bootstrap and BOOTSTRAP_TOOLCHAIN not in bdepend:
+        bdepend.append(BOOTSTRAP_TOOLCHAIN)
+
     # Filter out rdepend from kwargs since we pass it explicitly as deps
     kwargs.pop("rdepend", None)
 
@@ -3220,6 +3470,11 @@ def go_package(
     for dep in eclass_config["bdepend"]:
         if dep not in bdepend:
             bdepend.append(dep)
+
+    # Add bootstrap toolchain by default to ensure linking against BuckOS glibc
+    use_bootstrap = kwargs.pop("use_bootstrap", True)
+    if use_bootstrap and BOOTSTRAP_TOOLCHAIN not in bdepend:
+        bdepend.append(BOOTSTRAP_TOOLCHAIN)
 
     # Use custom install if bins specified, otherwise use eclass default
     src_install = go_src_install(bins) if bins else eclass_config["src_install"]
@@ -3665,3 +3920,4 @@ def bootstrap_package(
         maintainers = maintainers,
         **kwargs
     )
+

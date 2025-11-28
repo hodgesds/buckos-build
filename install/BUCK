@@ -13,6 +13,7 @@ rootfs(
         "//packages/linux/core/file:file",
         "//packages/linux/core/bash:bash",
         "//packages/linux/core/zlib:zlib",
+        "//packages/linux/core/xz:xz",
         "//packages/linux/core/glibc:glibc",
         "//packages/linux/kernel/buckos-kernel:buckos-kernel-server",
         "//packages/linux/system/firmware/linux-firmware:linux-firmware",

@@ -22,16 +22,16 @@ binary_package(
     homepage = "https://gcc.gnu.org/",
     license = "GPL-3.0",
     install_script = """
-        cd $SRCS/gcc-14.2.0
+        cd "$SRCS"
 
-        # Create build directory
-        mkdir -p build
-        cd build
+        # Create build directory (out-of-tree build recommended for GCC)
+        mkdir -p "$WORK/gcc-build"
+        cd "$WORK/gcc-build"
 
         # Configure GCC
-        ../configure \\
+        "$SRCS/configure" \\
             --prefix=/usr \\
-            --libdir=/usr/lib \\
+            --libdir=/usr/lib64 \\
             --libexecdir=/usr/lib \\
             --enable-languages=c,c++,fortran \\
             --enable-shared \\
@@ -46,16 +46,18 @@ binary_package(
             --enable-default-ssp \\
             --disable-multilib \\
             --disable-werror \\
+            --disable-bootstrap \\
+            --disable-libsanitizer \\
             --with-system-zlib \\
             --with-isl \\
             --with-linker-hash-style=gnu
 
         # Build and install
         make -j$(nproc)
-        make DESTDIR=$OUT install
+        make DESTDIR="$OUT" install
 
         # Create compatibility symlinks
-        cd $OUT/usr/bin
+        cd "$OUT/usr/bin"
         ln -sf gcc cc
         ln -sf g++ c++
     """,

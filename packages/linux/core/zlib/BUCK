@@ -1,36 +1,28 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "binary_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
-autotools_package(
-    name = "zlib",
-    version = "1.3.1",
+download_source(
+    name = "zlib-src",
     src_uri = "https://zlib.net/fossils/zlib-1.3.1.tar.gz",
     sha256 = "9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23",
     auto_detect_signature = False,
+)
+
+# zlib uses a non-standard configure script that doesn't accept autotools args
+binary_package(
+    name = "zlib",
+    srcs = [":zlib-src"],
+    version = "1.3.1",
     description = "A massively spiffy yet delicately unobtrusive compression library",
     homepage = "https://zlib.net/",
     license = "zlib",
-
-    # USE flags this package supports
-    iuse = [
-        "static-libs",
-        "minizip",
-    ],
-
-    # Default USE flags
-    use_defaults = [],
-
-    # Conditional configure arguments
-    use_configure = {
-        "static-libs": "--static",
-        "-static-libs": "--shared",
-        # minizip is built separately via contrib/minizip
-    },
-
-    use_deps = {},
-    configure_args = ["--prefix=/usr"],
+    install_script = """
+        # zlib's configure only accepts limited options (no --build, --host)
+        cd "$SRCS"
+        ./configure --prefix=/usr --libdir=/usr/lib64
+        make -j$(nproc)
+        make install DESTDIR="$OUT"
+    """,
     deps = [],
-
-    maintainers = ["core-team"],
     visibility = ["PUBLIC"],
 )

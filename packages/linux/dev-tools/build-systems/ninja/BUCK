@@ -6,20 +6,21 @@ load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 download_source(
     name = "ninja-src",
-    src_uri = "https://github.com/ninja-build/ninja/archive/refs/tags/v1.11.1.tar.gz",
-    sha256 = "31747ae633213f1eda3842686f83c2aa1412e0f5691d1c14dbbcc67fe7400cea",
+    src_uri = "https://github.com/ninja-build/ninja/archive/refs/tags/v1.12.1.tar.gz",
+    sha256 = "821bdff48a3f683bc4bb3b6f0b5fe7b2d647cf65d52aeb63328c91a6c6df285a",
+    auto_detect_signature = False,
 )
 
 binary_package(
     name = "ninja",
     srcs = [":ninja-src"],
-    version = "1.11.1",
+    version = "1.12.1",
     description = "Small build system with a focus on speed",
     homepage = "https://ninja-build.org/",
     license = "Apache-2.0",
     install_script = """
-        cd $SRCS/ninja-* || cd $SRCS
-        python3 configure.py --bootstrap
+        # Source extracts without subdirectory
+        python3 "$SRCS/configure.py" --bootstrap
         mkdir -p "$OUT/usr/bin"
         cp ninja "$OUT/usr/bin/"
     """,

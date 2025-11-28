@@ -3,9 +3,9 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 autotools_package(
     name = "bash",
-    version = "5.2.21",
-    src_uri = "https://mirrors.kernel.org/gnu/bash/bash-5.2.21.tar.gz",
-    sha256 = "c8e31bdc59b69aaffc5b36509905ba3e5cbb12747091d27b4b977f078560d5b8",
+    version = "5.3",
+    src_uri = "https://mirrors.kernel.org/gnu/bash/bash-5.3.tar.gz",
+    sha256 = "0d5cd86965f869a26cf64f4b71be7b96f90a3ba8b3d74e27e8e9d9d5550f31ba",
     auto_detect_signature=False,
     description = "The GNU Bourne Again SHell",
     homepage = "https://www.gnu.org/software/bash/",

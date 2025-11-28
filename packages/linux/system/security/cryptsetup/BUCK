@@ -31,7 +31,7 @@ autotools_package(
 autotools_package(
     name = "lvm2",
     version = "2.03.23",
-    src_uri = "https://sourceware.org/ftp/lvm2/LVM2.2.03.23.tgz",
+    src_uri = "https://mirrors.kernel.org/sourceware/lvm2/LVM2.2.03.23.tgz",
     sha256 = "74e794a9e9dee1bcf8a2065f65b9196c44fdf321e22d63b98ed7de8c9aa17a5d",
     auto_detect_signature=False,
     description = "Logical Volume Manager 2 utilities",

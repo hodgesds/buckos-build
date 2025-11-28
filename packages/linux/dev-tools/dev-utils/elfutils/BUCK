@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "set_use_flags")
 autotools_package(
     name = "elfutils",
     version = "0.191",
-    src_uri = "https://sourceware.org/elfutils/ftp/0.191/elfutils-0.191.tar.bz2",
+    src_uri = "https://mirrors.kernel.org/sourceware/elfutils/0.191/elfutils-0.191.tar.bz2",
     sha256 = "df76db71366d1d708365fc7a6c60ca48398f14367eb2b8954efc8897147ad871",
     auto_detect_signature = False,
     description = "Collection of utilities and libraries to read, create and modify ELF files",

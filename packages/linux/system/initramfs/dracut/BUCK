@@ -21,49 +21,107 @@ autotools_package(
     homepage = "https://github.com/dracut-ng/dracut-ng",
     license = "GPL-2.0-or-later",
     pre_configure = """
-# dracut uses configure script
+# dracut uses a custom configure script (not autotools)
 ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
     --libdir=/usr/lib \
     --systemdsystemunitdir=/usr/lib/systemd/system \
     --bashcompletiondir=/usr/share/bash-completion/completions
+
+# Build the C utilities (dracut-install, skipcpio, dracut-util)
+make dracut-install skipcpio dracut-util
+
+# Skip the autotools configure phase
+touch configure.done
 """,
-    configure_args = [],
+    # Override src_configure to do nothing (we configured in pre_configure)
+    configure_args = ["--help || true"],  # No-op to satisfy autotools eclass
     make_args = [],
     post_install = """
-# Create configuration directories
-mkdir -p $OUT/etc/dracut.conf.d
-mkdir -p $OUT/usr/lib/dracut/modules.d
+# Manual installation since 'make install' requires asciidoc for man pages
 
-# Create default configuration
-cat > $OUT/etc/dracut.conf << 'EOF'
-# Dracut configuration file
-# See dracut.conf(5) for options
+# Create directories
+mkdir -p "$DESTDIR/usr/bin"
+mkdir -p "$DESTDIR/usr/lib/dracut"
+mkdir -p "$DESTDIR/etc/dracut.conf.d"
+mkdir -p "$DESTDIR/usr/share/bash-completion/completions"
+mkdir -p "$DESTDIR/usr/share/pkgconfig"
 
-# Compression algorithm (xz, gzip, lz4, zstd)
+# Install main scripts
+cp dracut.sh "$DESTDIR/usr/bin/dracut"
+chmod +x "$DESTDIR/usr/bin/dracut"
+
+cp lsinitrd.sh "$DESTDIR/usr/bin/lsinitrd"
+chmod +x "$DESTDIR/usr/bin/lsinitrd"
+
+# Install C utilities
+if [ -f src/install/dracut-install ]; then
+    cp src/install/dracut-install "$DESTDIR/usr/lib/dracut/"
+    chmod +x "$DESTDIR/usr/lib/dracut/dracut-install"
+    ln -sf ../lib/dracut/dracut-install "$DESTDIR/usr/bin/dracut-install"
+fi
+
+if [ -f src/skipcpio/skipcpio ]; then
+    cp src/skipcpio/skipcpio "$DESTDIR/usr/lib/dracut/"
+    chmod +x "$DESTDIR/usr/lib/dracut/skipcpio"
+fi
+
+if [ -f dracut-util ]; then
+    cp dracut-util "$DESTDIR/usr/lib/dracut/"
+    chmod +x "$DESTDIR/usr/lib/dracut/dracut-util"
+fi
+
+# Install support scripts to /usr/lib/dracut
+for script in dracut-functions.sh dracut-init.sh dracut-logger.sh dracut-initramfs-restore.sh; do
+    if [ -f "$script" ]; then
+        cp "$script" "$DESTDIR/usr/lib/dracut/"
+    fi
+done
+
+# Install modules (critical!)
+if [ -d modules.d ]; then
+    cp -a modules.d "$DESTDIR/usr/lib/dracut/"
+fi
+
+# Install default configuration
+cp dracut.conf "$DESTDIR/etc/dracut.conf"
+if [ -d dracut.conf.d ]; then
+    cp -a dracut.conf.d/* "$DESTDIR/etc/dracut.conf.d/" 2>/dev/null || true
+fi
+
+# Install pkgconfig file
+if [ -f dracut.pc ]; then
+    cp dracut.pc "$DESTDIR/usr/share/pkgconfig/"
+fi
+
+# Install bash completion
+if [ -d shell-completion/bash ]; then
+    cp shell-completion/bash/* "$DESTDIR/usr/share/bash-completion/completions/" 2>/dev/null || true
+fi
+
+# Create BuckOS-specific configuration
+cat > "$DESTDIR/etc/dracut.conf.d/buckos.conf" << 'EOF'
+# BuckOS dracut configuration
+
+# Compression algorithm
 compress="zstd"
 
-# Include firmware for all hardware (not just currently loaded)
+# Include all drivers (not hostonly)
 hostonly="no"
 hostonly_cmdline="no"
 
-# Explicitly add firmware module to ensure firmware is included
+# Add firmware
 add_dracutmodules+=" firmware "
-
-# Firmware directory to search
 firmware_dirs+=" /lib/firmware "
 
-# Add additional modules for storage, network, etc.
-add_dracutmodules+=" base bash systemd systemd-initrd dracut-systemd "
-add_dracutmodules+=" kernel-modules kernel-modules-extra "
-
-# Omit modules we don't need in initramfs
-# omit_dracutmodules+=" network "
+# Essential modules
+add_dracutmodules+=" base rootfs-block "
 EOF
 
-# Install bash completion
-mkdir -p $OUT/usr/share/bash-completion/completions
+echo "Dracut installation complete"
+ls -la "$DESTDIR/usr/bin/"
+ls -la "$DESTDIR/usr/lib/dracut/" | head -20
 """,
     deps = [
         "//packages/linux/system/libs/kmod:kmod",
@@ -78,6 +136,8 @@ mkdir -p $OUT/usr/share/bash-completion/completions
         "//packages/linux/editors/grep:grep",
         "//packages/linux/system/libs/compression/zstd:zstd",  # Required for compression
         "//packages/linux/system/init/eudev:eudev",  # Required for udev support
+        "//packages/linux/core/zlib:zlib",  # Required by dracut-install
+        "//packages/linux/lang/gcc:gcc",  # Required for libgcc_s.so.1
     ],
     visibility = ["PUBLIC"],
 )

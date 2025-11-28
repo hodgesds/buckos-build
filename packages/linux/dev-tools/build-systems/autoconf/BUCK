@@ -22,7 +22,9 @@ ebuild_package(
     license = "GPL-3+",
 
     src_configure = '''
-./configure \\
+# Pre-set cache variable to skip filesystem character test that creates
+# files with backslashes in their names (Buck2 cannot handle these paths)
+ac_cv_unsupported_fs_chars='\"<>\\\\|' ./configure \\
     --prefix=/usr \\
     --build=$(gcc -dumpmachine) \\
     --host=$(gcc -dumpmachine) \\

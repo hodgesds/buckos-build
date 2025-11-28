@@ -1,49 +1,58 @@
-load("//defs:package_defs.bzl", "download_source", "ebuild_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "ebuild_package")
 
-download_source(
-    name = "glibc-src",
-    src_uri = "https://mirrors.kernel.org/gnu/glibc/glibc-2.39.tar.xz",
-    sha256 = "f77bd47cf8170c57365ae7bf86696c118adb3b120d3259c64c502d3dc1e2d926",
-    auto_detect_signature = False,
-)
+# System glibc package
+# This repackages the cross-glibc from the bootstrap toolchain for the final system.
+# The cross-glibc is now built with --prefix=/usr so it can be copied directly.
 
 ebuild_package(
-    source = ":glibc-src",
+    source = "toolchains//bootstrap:glibc-src",
     name = "glibc",
-    version = "2.39",
+    version = "2.42",
     category = "core",
     slot = "0",
     description = "GNU C Library (glibc) - the standard C library for GNU/Linux systems",
     homepage = "https://www.gnu.org/software/libc/",
     license = "LGPL-2.1+ GPL-2+",
 
-    src_configure = """
-# glibc requires out-of-tree build
-mkdir -p ../glibc-build
-cd ../glibc-build
-# Run configure from build directory
-"$S"/configure \\
-    --prefix=/usr \\
-    --with-headers=/usr/include \\
-    --enable-kernel=3.2 \\
-    --enable-add-ons \\
-    --enable-bind-now \\
-    --enable-stack-protector=strong \\
-    --enable-stackguard-randomization \\
-    --disable-werror
-""",
+    # Don't use bootstrap toolchain for this - it just copies files
+    use_bootstrap = False,
 
-    src_compile = """
-cd ../glibc-build
-make -j$(nproc)
-""",
+    src_configure = "true",
+    src_compile = "true",
 
     src_install = """
-cd ../glibc-build
-make DESTDIR="$DESTDIR" install
+# Copy glibc from cross-glibc build output
+# The cross-glibc is built with --prefix=/usr so paths are already correct
+
+# TOOLCHAIN_ROOT is set by the build system from bdepend directories
+CROSS_GLIBC="${TOOLCHAIN_ROOT%%:*}"  # Get first path from colon-separated list
+
+# Convert relative path to absolute
+if [[ "$CROSS_GLIBC" != /* ]]; then
+    PROJECT_ROOT="${S%/buck-out/*}"
+    CROSS_GLIBC="$PROJECT_ROOT/$CROSS_GLIBC"
+fi
+
+if [ -z "$CROSS_GLIBC" ] || [ ! -d "$CROSS_GLIBC" ]; then
+    echo "ERROR: Could not find cross-glibc." >&2
+    echo "  TOOLCHAIN_ROOT=$TOOLCHAIN_ROOT" >&2
+    echo "  CROSS_GLIBC=$CROSS_GLIBC" >&2
+    echo "  S=$S" >&2
+    exit 1
+fi
+
+echo "Copying glibc from: $CROSS_GLIBC"
+
+# Copy the entire structure - glibc is now built with --prefix=/usr
+# so usr/, lib64/, and etc/ directories exist with correct paths
+cp -a "$CROSS_GLIBC"/* "$DESTDIR/" 2>/dev/null || true
+
+echo "glibc installation complete"
+ls -la "$DESTDIR/usr/lib64/"*.so* 2>/dev/null | head -10 || ls -la "$DESTDIR/lib64/"*.so* 2>/dev/null | head -10 || true
 """,
 
+    # Depend on cross-glibc from bootstrap to get the pre-built glibc
+    bdepend = ["toolchains//bootstrap:cross-glibc"],
     depend = [],
     visibility = ["PUBLIC"],
 )

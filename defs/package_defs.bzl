@@ -2262,11 +2262,17 @@ export S="$(cd "$2" && pwd)"
 shift 2  # Remove DESTDIR and S from args, remaining args are dependency dirs
 
 # Set up PATH from dependency directories
+# Convert relative paths to absolute to ensure they work after cd "$S" in phases.sh
 DEP_PATH=""
+DEP_PYTHONPATH=""
 TOOLCHAIN_PATH=""
 TOOLCHAIN_INCLUDE=""
 TOOLCHAIN_ROOT=""
 for dep_dir in "$@"; do
+    # Convert to absolute path if relative
+    if [[ "$dep_dir" != /* ]]; then
+        dep_dir="$(cd "$dep_dir" 2>/dev/null && pwd)" || continue
+    fi
     # Check if this is the bootstrap toolchain or has tools dir
     if [ -d "$dep_dir/tools/bin" ]; then
         TOOLCHAIN_PATH="${{TOOLCHAIN_PATH:+$TOOLCHAIN_PATH:}}$dep_dir/tools/bin"
@@ -2295,6 +2301,12 @@ for dep_dir in "$@"; do
     if [ -d "$dep_dir/sbin" ]; then
         DEP_PATH="${{DEP_PATH:+$DEP_PATH:}}$dep_dir/sbin"
     fi
+    # Add Python package paths for tools like meson that need Python modules
+    for pypath in "$dep_dir/usr/lib/python"*/dist-packages "$dep_dir/usr/lib/python"*/site-packages; do
+        if [ -d "$pypath" ]; then
+            DEP_PYTHONPATH="${{DEP_PYTHONPATH:+$DEP_PYTHONPATH:}}$pypath"
+        fi
+    done
 done
 
 # Export toolchain paths for scripts that need them
@@ -2306,6 +2318,11 @@ if [ -n "$TOOLCHAIN_PATH" ]; then
     export PATH="$TOOLCHAIN_PATH:$DEP_PATH:$PATH"
 elif [ -n "$DEP_PATH" ]; then
     export PATH="$DEP_PATH:$PATH"
+fi
+
+# Set up PYTHONPATH for Python-based build tools (meson, etc)
+if [ -n "$DEP_PYTHONPATH" ]; then
+    export PYTHONPATH="${{DEP_PYTHONPATH}}${{PYTHONPATH:+:$PYTHONPATH}}"
 fi
 
 # IMPORTANT: Clear host library paths to prevent host glibc/libraries from leaking
@@ -2465,6 +2482,8 @@ export WORKDIR="$(dirname "$S")"
 export T="$WORKDIR/temp"
 export FILESDIR="${{FILESDIR:-}}"
 
+# Clean and recreate temp directory to ensure fresh phases.sh
+rm -rf "$T"
 mkdir -p "$T"
 
 # Custom environment
@@ -2616,12 +2635,22 @@ PHASES_EOF
 chmod +x "$T/phases.sh"
 
 # Run phases with network isolation
+# Export all critical environment variables so phases.sh can inherit them
+export DESTDIR S EPREFIX PREFIX LIBDIR LIBDIR_SUFFIX BUILD_DIR WORKDIR T FILESDIR
+export PATH PYTHONPATH PKG_CONFIG_PATH
+# Export cross-compilation variables if set
+if [ -n "$CC" ]; then
+    export CC CXX AR AS LD NM RANLIB STRIP OBJCOPY OBJDUMP READELF
+    export CFLAGS CXXFLAGS LDFLAGS
+    export CHOST CBUILD
+fi
+
 if command -v unshare >/dev/null 2>&1 && unshare --net true 2>/dev/null; then
     echo "🔒 Running build phases in network-isolated environment (no internet access)"
-    DESTDIR="$DESTDIR" S="$S" EPREFIX="$EPREFIX" PREFIX="$PREFIX" LIBDIR="$LIBDIR" LIBDIR_SUFFIX="$LIBDIR_SUFFIX" BUILD_DIR="$BUILD_DIR" WORKDIR="$WORKDIR" T="$T" FILESDIR="$FILESDIR" unshare --net -- "$T/phases.sh"
+    unshare --net -- "$T/phases.sh"
 else
     echo "⚠ Warning: unshare not available or insufficient permissions, building without network isolation"
-    DESTDIR="$DESTDIR" S="$S" EPREFIX="$EPREFIX" PREFIX="$PREFIX" LIBDIR="$LIBDIR" LIBDIR_SUFFIX="$LIBDIR_SUFFIX" BUILD_DIR="$BUILD_DIR" WORKDIR="$WORKDIR" T="$T" FILESDIR="$FILESDIR" "$T/phases.sh"
+    "$T/phases.sh"
 fi
 '''.format(
             name = ctx.attrs.name,

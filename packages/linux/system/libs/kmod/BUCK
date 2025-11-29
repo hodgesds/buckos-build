@@ -20,11 +20,13 @@ autotools_package(
     description = "Linux kernel module handling tools (modprobe, insmod, rmmod, lsmod, depmod)",
     homepage = "https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git",
     license = "LGPL-2.1-or-later",
+    use_bootstrap = True,  # Use cross-compiler to link against buckos glibc
     configure_args = [
         "--with-xz",
         "--with-zlib",
         "--with-zstd",
-        "--with-openssl",
+        # "--with-openssl",  # Disabled - adds dependency, not critical for basic use
+        # Tools are enabled by default (no --disable-tools)
     ],
     post_install = """
 # Create compatibility symlinks for traditional module tools

@@ -2276,12 +2276,12 @@ for dep_dir in "$@"; do
         fi
     fi
     # Capture the full toolchain root directory (for glibc, etc)
-    if [ -d "$dep_dir/tools/lib" ]; then
-        TOOLCHAIN_ROOT="${{TOOLCHAIN_ROOT:+$TOOLCHAIN_ROOT:}}$dep_dir/tools"
+    if [ -d "$dep_dir/usr/lib64" ] || [ -d "$dep_dir/usr/lib" ]; then
+        TOOLCHAIN_ROOT="${{TOOLCHAIN_ROOT:+$TOOLCHAIN_ROOT:}}$dep_dir"
     fi
     # Capture include directory from toolchain dependencies (for linux-headers, etc)
-    if [ -d "$dep_dir/tools/include" ]; then
-        TOOLCHAIN_INCLUDE="${{TOOLCHAIN_INCLUDE:+$TOOLCHAIN_INCLUDE:}}$dep_dir/tools/include"
+    if [ -d "$dep_dir/usr/include" ]; then
+        TOOLCHAIN_INCLUDE="${{TOOLCHAIN_INCLUDE:+$TOOLCHAIN_INCLUDE:}}$dep_dir"
     fi
     if [ -d "$dep_dir/usr/bin" ]; then
         DEP_PATH="${{DEP_PATH:+$DEP_PATH:}}$dep_dir/usr/bin"
@@ -2895,6 +2895,7 @@ def cmake_package(
         env = env,
         maintainers = maintainers,
         use_flags = effective_use,
+        use_bootstrap = use_bootstrap,
         **kwargs
     )
 
@@ -3035,6 +3036,7 @@ def meson_package(
         env = env,
         maintainers = maintainers,
         use_flags = effective_use,
+        use_bootstrap = use_bootstrap,
         **kwargs
     )
 
@@ -3211,6 +3213,7 @@ def autotools_package(
         env = env,
         maintainers = maintainers,
         use_flags = effective_use,
+        use_bootstrap = use_bootstrap,
         **kwargs
     )
 
@@ -3350,6 +3353,7 @@ def cargo_package(
         env = env,
         maintainers = maintainers,
         use_flags = effective_use,
+        use_bootstrap = use_bootstrap,
         **kwargs
     )
 
@@ -3491,6 +3495,7 @@ def go_package(
         env = env,
         maintainers = maintainers,
         use_flags = effective_use,
+        use_bootstrap = use_bootstrap,
         **kwargs
     )
 
@@ -3614,6 +3619,11 @@ def python_package(
         if dep not in bdepend:
             bdepend.append(dep)
 
+    # Add bootstrap toolchain by default
+    use_bootstrap = kwargs.pop("use_bootstrap", True)
+    if use_bootstrap and BOOTSTRAP_TOOLCHAIN not in bdepend:
+        bdepend.append(BOOTSTRAP_TOOLCHAIN)
+
     # Merge eclass rdepend with resolved dependencies
     rdepend = resolved_deps
     for dep in eclass_config.get("rdepend", []):
@@ -3638,6 +3648,7 @@ def python_package(
         env = env,
         maintainers = maintainers,
         use_flags = effective_use,
+        use_bootstrap = use_bootstrap,
         **filtered_kwargs
     )
 

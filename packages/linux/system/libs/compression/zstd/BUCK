@@ -70,6 +70,13 @@ if [ "${USE_static_libs}" != "1" ]; then
     rm -f "$DESTDIR/usr/lib/libzstd.a" "$DESTDIR/usr/lib64/libzstd.a"
     echo "Removed static libraries (USE_static_libs not enabled)"
 fi
+
+# Fix pkg-config file - zstd's Makefile generates incorrect relative libdir
+# This causes libtool to fail when trying to resolve -Llib64 as an absolute path
+if [ -f "$DESTDIR/usr/lib64/pkgconfig/libzstd.pc" ]; then
+    sed -i 's|^libdir=lib64$|libdir=${prefix}/lib64|' "$DESTDIR/usr/lib64/pkgconfig/libzstd.pc"
+    echo "Fixed libzstd.pc to use absolute libdir path"
+fi
 """,
     deps = [],
     visibility = ["PUBLIC"],

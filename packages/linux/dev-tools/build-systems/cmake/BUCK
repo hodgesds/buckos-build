@@ -1,52 +1,48 @@
 load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
+# =============================================================================
+# CMake - Cross-platform build system
+# =============================================================================
+# NOTE: cmake uses its own bootstrap script, not autotools.
+# We use custom src_configure/src_compile/src_install phases.
+
 autotools_package(
     name = "cmake",
-    version = "3.28.1",
-    src_uri = "https://github.com/Kitware/CMake/releases/download/v3.28.1/cmake-3.28.1.tar.gz",
-    sha256 = "15e94f83e647f7d620a140a7a5da76349fc47a1bfed66d0f5cdee8e7344079ad",
+    version = "4.2.0",
+    src_uri = "https://github.com/Kitware/CMake/releases/download/v4.2.0/cmake-4.2.0.tar.gz",
+    sha256 = "4104e94657d247c811cb29985405a360b78130b5d51e7f6daceb2447830bd579",
+    auto_detect_signature = False,  # Signature key not in keyring
     description = "Cross-platform, open-source build system",
     homepage = "https://cmake.org/",
     license = "BSD-3-Clause",
 
-    # USE flags this package supports
-    iuse = [
-        "doc",
-        "qt5",
-        "ncurses",
-    ],
+    # CMAKE uses its own bootstrap script, not autotools configure
+    src_configure = """
+echo "=== Configuring cmake with bootstrap ==="
+./bootstrap \\
+    --prefix=/usr \\
+    --system-curl \\
+    --system-zlib \\
+    --system-expat \\
+    --parallel=$(nproc) \\
+    --no-qt-gui \\
+    -- -DCMAKE_USE_OPENSSL=ON
+""",
 
-    # Default USE flags
-    use_defaults = ["ncurses"],
+    src_compile = """
+echo "=== Building cmake ==="
+make -j$(nproc)
+""",
 
-    # Conditional dependencies
-    use_deps = {
-        "ncurses": ["//packages/linux/core/ncurses:ncurses"],
-        "qt5": ["//packages/linux/gui/qt5:qt5"],
-    },
-
-    # Conditional configure arguments
-    use_configure = {
-        "doc": "--sphinx-man",
-        "-doc": "--no-sphinx-man",
-        "qt5": "--qt-gui",
-        "-qt5": "--no-qt-gui",
-        "ncurses": "--system-curl",
-        "-ncurses": "",
-    },
-
-    # Base configure arguments (always applied)
-    configure_args = [
-        "--prefix=/usr",
-        "--system-curl",
-        "--system-expat",
-        "--system-zlib",
-        "--parallel=$(nproc)",
-    ],
+    src_install = """
+echo "=== Installing cmake ==="
+make install DESTDIR="$DESTDIR"
+""",
 
     deps = [
         "//packages/linux/core/zlib:zlib",
+        "//packages/linux/core/expat:expat",
         "//packages/linux/network/curl:curl",
         "//packages/linux/network/openssl:openssl",
     ],

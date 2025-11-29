@@ -1,20 +1,22 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package", "binary_package", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "binary_package")
 
 # =============================================================================
-# Rust - Systems programming language
+# Rust - Systems programming language (Pre-built binaries)
 # =============================================================================
+# Using official standalone installers from rust-lang.org
+# Building from source is complex and requires git submodules.
+# Pre-built binaries are recommended for most use cases.
 
 download_source(
-    name = "rust-src",
-    src_uri = "https://static.rust-lang.org/dist/rustc-1.91.0-src.tar.xz",
-    sha256 = "9b94161dba3aa32192e0e75f7891912d98095ffb86087b07a05af35a0265a938",
+    name = "rust-bin-src",
+    src_uri = "https://static.rust-lang.org/dist/rust-1.91.0-x86_64-unknown-linux-gnu.tar.xz",
+    sha256 = "5bea12c1911dda5c0a91cee4e9b617a65bcf23a21e2852a17b544936de1f83e3",
     auto_detect_signature = False,
 )
 
 binary_package(
     name = "rust",
-    srcs = [":rust-src"],
+    srcs = [":rust-bin-src"],
     version = "1.91.0",
     description = "Rust is a systems programming language focused on safety, speed, and concurrency",
     homepage = "https://www.rust-lang.org/",
@@ -22,31 +24,12 @@ binary_package(
     install_script = """
         cd $SRCS
 
-        # Configure Rust build
-        cat > config.toml << 'EOF'
-[llvm]
-link-shared = true
+        # The standalone installer includes install.sh
+        # Install to a temporary destdir
+        ./install.sh --prefix=/usr --destdir="$OUT" --disable-ldconfig
 
-[build]
-docs = false
-extended = true
-tools = ["cargo", "rustfmt", "clippy"]
-jobs = 0
-
-[install]
-prefix = "/usr"
-
-[rust]
-channel = "stable"
-EOF
-
-        # Build and install
-        python3 x.py build
-        DESTDIR=$OUT python3 x.py install
+        echo "Rust installation complete"
+        ls -la "$OUT/usr/bin/" | head -10
     """,
-    deps = [
-        "//packages/linux/lang/python:python",
-        "//packages/linux/dev-tools/build-systems/cmake:cmake",
-    ],
     visibility = ["PUBLIC"],
 )

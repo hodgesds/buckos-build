@@ -7,15 +7,15 @@ load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 download_source(
     name = "binutils-src",
-    src_uri = "https://mirrors.kernel.org/gnu/binutils/binutils-2.42.tar.xz",
-    sha256 = "f6e4d41fd5fc778b06b7891457b3620da5ecea1006c6a4a41ae998109f85a800",
+    src_uri = "https://mirrors.kernel.org/gnu/binutils/binutils-2.45.1.tar.xz",
+    sha256 = "5fe101e6fe9d18fdec95962d81ed670fdee5f37e3f48f0bef87bddf862513aa5",
     auto_detect_signature = False,
 )
 
 autotools_package(
     name = "binutils",
     source = ":binutils-src",
-    version = "2.42",
+    version = "2.45.1",
     description = "GNU Binary Utilities - assembler, linker, and related tools",
     homepage = "https://www.gnu.org/software/binutils/",
     license = "GPL-3.0",

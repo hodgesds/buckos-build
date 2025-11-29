@@ -31,45 +31,73 @@ LLVM_USE_DEPS = {
 _global_use = set_use_flags(LLVM_USE_DEFAULTS)
 _effective_use = LLVM_USE_DEFAULTS
 
-cmake_package(
-    name = "llvm",
-    version = "18.1.8",
-    src_uri = "https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/llvm-project-18.1.8.src.tar.xz",
-    sha256 = "0b58557a6d32ceee97c8d533a59b9212d87e0fc4d2833924eb6c611247db2f2a",
-    auto_detect_signature=False,
-    description = "Low Level Virtual Machine - compiler infrastructure",
-    homepage = "https://llvm.org/",
-    license = "Apache-2.0 WITH LLVM-exception",
-    pre_configure = """
+# Common CMake arguments for all LLVM versions
+LLVM_CMAKE_ARGS = [
+    # Build type - USE flag: debug
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DLLVM_ENABLE_PROJECTS=",
+    "-DLLVM_ENABLE_RUNTIMES=",
+    "-DLLVM_BUILD_LLVM_DYLIB=ON",
+    "-DLLVM_LINK_LLVM_DYLIB=ON",
+    "-DLLVM_ENABLE_RTTI=ON",
+    # USE flag: ffi
+    "-DLLVM_ENABLE_FFI=ON",
+    # USE flag: zlib
+    "-DLLVM_ENABLE_ZLIB=ON",
+    # USE flag: zstd
+    "-DLLVM_ENABLE_ZSTD=OFF",
+    # USE flag: benchmarks
+    "-DLLVM_INCLUDE_BENCHMARKS=OFF",
+    # USE flag: examples
+    "-DLLVM_INCLUDE_EXAMPLES=OFF",
+    # USE flag: test
+    "-DLLVM_INCLUDE_TESTS=OFF",
+    # USE flag: doc
+    "-DLLVM_INCLUDE_DOCS=OFF",
+    "-DLLVM_TARGETS_TO_BUILD=X86;AArch64;ARM;WebAssembly",
+    "-DLLVM_INSTALL_UTILS=ON",
+]
+
+LLVM_PRE_CONFIGURE = """
 # LLVM project structure has sources in llvm/ subdirectory
 export S="$S/llvm"
 cd "$S"
-""",
-    cmake_args = [
-        # Build type - USE flag: debug
-        "-DCMAKE_BUILD_TYPE=Release",
-        "-DLLVM_ENABLE_PROJECTS=",
-        "-DLLVM_ENABLE_RUNTIMES=",
-        "-DLLVM_BUILD_LLVM_DYLIB=ON",
-        "-DLLVM_LINK_LLVM_DYLIB=ON",
-        "-DLLVM_ENABLE_RTTI=ON",
-        # USE flag: ffi
-        "-DLLVM_ENABLE_FFI=ON",
-        # USE flag: zlib
-        "-DLLVM_ENABLE_ZLIB=ON",
-        # USE flag: zstd
-        "-DLLVM_ENABLE_ZSTD=OFF",
-        # USE flag: benchmarks
-        "-DLLVM_INCLUDE_BENCHMARKS=OFF",
-        # USE flag: examples
-        "-DLLVM_INCLUDE_EXAMPLES=OFF",
-        # USE flag: test
-        "-DLLVM_INCLUDE_TESTS=OFF",
-        # USE flag: doc
-        "-DLLVM_INCLUDE_DOCS=OFF",
-        "-DLLVM_TARGETS_TO_BUILD=X86;AArch64;ARM;WebAssembly",
-        "-DLLVM_INSTALL_UTILS=ON",
+"""
+
+# =============================================================================
+# LLVM 21.1.6 (Latest - Default)
+# =============================================================================
+cmake_package(
+    name = "llvm",
+    version = "21.1.6",
+    src_uri = "https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.6/llvm-project-21.1.6.src.tar.xz",
+    sha256 = "ae67086eb04bed7ca11ab880349b5f1ab6f50e1b88cda376eaf8a845b935762b",
+    auto_detect_signature = False,
+    description = "Low Level Virtual Machine - compiler infrastructure",
+    homepage = "https://llvm.org/",
+    license = "Apache-2.0 WITH LLVM-exception",
+    pre_configure = LLVM_PRE_CONFIGURE,
+    cmake_args = LLVM_CMAKE_ARGS,
+    deps = use_dep(LLVM_USE_DEPS, _effective_use) + [
+        "//packages/linux/core/ncurses:ncurses",
     ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# LLVM 18.1.8 (LTS)
+# =============================================================================
+cmake_package(
+    name = "llvm-18",
+    version = "18.1.8",
+    src_uri = "https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/llvm-project-18.1.8.src.tar.xz",
+    sha256 = "0b58557a6d32ceee97c8d533a59b9212d87e0fc4d2833924eb6c611247db2f2a",
+    auto_detect_signature = False,
+    description = "Low Level Virtual Machine - compiler infrastructure (LTS 18.x)",
+    homepage = "https://llvm.org/",
+    license = "Apache-2.0 WITH LLVM-exception",
+    pre_configure = LLVM_PRE_CONFIGURE,
+    cmake_args = LLVM_CMAKE_ARGS,
     deps = use_dep(LLVM_USE_DEPS, _effective_use) + [
         "//packages/linux/core/ncurses:ncurses",
     ],

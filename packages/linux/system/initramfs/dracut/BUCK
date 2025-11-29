@@ -79,11 +79,12 @@ if [ -f dracut-util ]; then
     chmod +x "$DESTDIR/usr/lib/dracut/dracut-util"
 fi
 
-# Install dracut-cpio as /usr/bin/cpio
+# Install dracut-cpio to /usr/lib/dracut/dracut-cpio (where dracut expects it for --enhanced-cpio)
+# dracut-cpio is a specialized optimized cpio implementation used when --enhanced-cpio flag is passed
 if [ -f src/dracut-cpio/target/release/dracut-cpio ]; then
-    cp src/dracut-cpio/target/release/dracut-cpio "$DESTDIR/usr/bin/cpio"
-    chmod +x "$DESTDIR/usr/bin/cpio"
-    echo "Installed dracut-cpio as /usr/bin/cpio"
+    cp src/dracut-cpio/target/release/dracut-cpio "$DESTDIR/usr/lib/dracut/dracut-cpio"
+    chmod +x "$DESTDIR/usr/lib/dracut/dracut-cpio"
+    echo "Installed dracut-cpio to /usr/lib/dracut/dracut-cpio"
 fi
 
 # Install support scripts to /usr/lib/dracut
@@ -153,7 +154,7 @@ ls -la "$DESTDIR/usr/lib/dracut/" | head -20
         "//packages/linux/system/init/eudev:eudev",  # Required for udev support
         "//packages/linux/core/zlib:zlib",  # Required by dracut-install
         "//packages/linux/lang/gcc:gcc",  # Required for libgcc_s.so.1
-        "//packages/linux/lang/rust:rust",  # Required for dracut-cpio
+        "//packages/linux/lang/rust:rust",  # Required for building dracut-cpio
     ],
     visibility = ["PUBLIC"],
 )

@@ -563,68 +563,193 @@ export SRCS="$(cd "$3" && pwd)"
 export BUILD_DIR="$WORK/build"
 shift 3  # Remove OUT, WORK, SRCS from args, remaining are dependency dirs
 
-# Set up PATH and LD_LIBRARY_PATH from dependency directories
+# Set up PATH, LD_LIBRARY_PATH, PKG_CONFIG_PATH from dependency directories
 DEP_PATH=""
 DEP_LD_PATH=""
+DEP_PKG_CONFIG_PATH=""
 PYTHON_HOME=""
 PYTHON_LIB64=""
+
+echo "=== binary_package dependency setup for {name} ==="
+echo "Processing $# dependency directories..."
+
 for dep_dir in "$@"; do
     # Convert to absolute path if relative
     if [[ "$dep_dir" != /* ]]; then
         dep_dir="$(cd "$dep_dir" 2>/dev/null && pwd)" || continue
     fi
-    if [ -d "$dep_dir/usr/bin" ]; then
-        DEP_PATH="${{DEP_PATH:+$DEP_PATH:}}$dep_dir/usr/bin"
-    fi
-    if [ -d "$dep_dir/bin" ]; then
-        DEP_PATH="${{DEP_PATH:+$DEP_PATH:}}$dep_dir/bin"
-    fi
-    if [ -d "$dep_dir/usr/lib" ]; then
-        DEP_LD_PATH="${{DEP_LD_PATH:+$DEP_LD_PATH:}}$dep_dir/usr/lib"
-    fi
-    if [ -d "$dep_dir/usr/lib64" ]; then
-        DEP_LD_PATH="${{DEP_LD_PATH:+$DEP_LD_PATH:}}$dep_dir/usr/lib64"
-    fi
-    if [ -d "$dep_dir/lib" ]; then
-        DEP_LD_PATH="${{DEP_LD_PATH:+$DEP_LD_PATH:}}$dep_dir/lib"
-    fi
-    # Detect Python installation for PYTHONHOME and PYTHONPATH
-    if [ -d "$dep_dir/usr/lib/python3.12" ] && [ -z "$PYTHON_HOME" ]; then
-        PYTHON_HOME="$dep_dir/usr"
-    fi
-    # Also check lib64 for Python (some systems install there)
-    if [ -d "$dep_dir/usr/lib64/python3.12" ] && [ -z "$PYTHON_LIB64" ]; then
-        PYTHON_LIB64="$dep_dir/usr/lib64/python3.12"
-    fi
+
+    echo "  Checking dependency: $dep_dir"
+
+    # Check all standard bin directories
+    for bin_subdir in usr/bin bin usr/sbin sbin; do
+        if [ -d "$dep_dir/$bin_subdir" ]; then
+            DEP_PATH="${{DEP_PATH:+$DEP_PATH:}}$dep_dir/$bin_subdir"
+            echo "    Found bin dir: $dep_dir/$bin_subdir"
+            # List executables for debugging
+            ls "$dep_dir/$bin_subdir" 2>/dev/null | head -5 | while read f; do echo "      - $f"; done
+        fi
+    done
+
+    # Check all standard lib directories
+    for lib_subdir in usr/lib usr/lib64 lib lib64; do
+        if [ -d "$dep_dir/$lib_subdir" ]; then
+            DEP_LD_PATH="${{DEP_LD_PATH:+$DEP_LD_PATH:}}$dep_dir/$lib_subdir"
+            echo "    Found lib dir: $dep_dir/$lib_subdir"
+        fi
+    done
+
+    # Check for pkgconfig directories
+    for pc_subdir in usr/lib64/pkgconfig usr/lib/pkgconfig usr/share/pkgconfig lib/pkgconfig lib64/pkgconfig; do
+        if [ -d "$dep_dir/$pc_subdir" ]; then
+            DEP_PKG_CONFIG_PATH="${{DEP_PKG_CONFIG_PATH:+$DEP_PKG_CONFIG_PATH:}}$dep_dir/$pc_subdir"
+            echo "    Found pkgconfig dir: $dep_dir/$pc_subdir"
+        fi
+    done
+
+    # Detect Python installation (any version)
+    for py_dir in "$dep_dir"/usr/lib/python3.* "$dep_dir"/usr/lib64/python3.*; do
+        if [ -d "$py_dir" ]; then
+            py_version=$(basename "$py_dir")
+            if [ -z "$PYTHON_HOME" ]; then
+                PYTHON_HOME="$dep_dir/usr"
+                echo "    Found PYTHONHOME: $PYTHON_HOME (from $py_version)"
+            fi
+            if [ -d "$py_dir/lib-dynload" ] && [ -z "$PYTHON_LIB64" ]; then
+                PYTHON_LIB64="$py_dir"
+                echo "    Found Python lib-dynload: $py_dir/lib-dynload"
+            fi
+        fi
+    done
 done
 
+echo "=== Environment setup ==="
 if [ -n "$DEP_PATH" ]; then
     export PATH="$DEP_PATH:$PATH"
+    echo "PATH=$PATH"
 fi
 if [ -n "$DEP_LD_PATH" ]; then
     export LD_LIBRARY_PATH="$DEP_LD_PATH${{LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}}"
+    echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
 fi
 if [ -n "$PYTHON_HOME" ]; then
     export PYTHONHOME="$PYTHON_HOME"
+    echo "PYTHONHOME=$PYTHONHOME"
 fi
-# Set PYTHONPATH to include lib-dynload from lib64 if it exists
+# Set PYTHONPATH to include lib-dynload if it exists
 if [ -n "$PYTHON_LIB64" ] && [ -d "$PYTHON_LIB64/lib-dynload" ]; then
     export PYTHONPATH="$PYTHON_LIB64/lib-dynload${{PYTHONPATH:+:$PYTHONPATH}}"
+    echo "PYTHONPATH=$PYTHONPATH"
 fi
+# Set PKG_CONFIG_PATH to find .pc files from dependencies
+if [ -n "$DEP_PKG_CONFIG_PATH" ]; then
+    export PKG_CONFIG_PATH="$DEP_PKG_CONFIG_PATH${{PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}}"
+    echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH"
+fi
+
+# Verify key tools are available
+echo "=== Verifying tools ==="
+MISSING_TOOLS=""
+for tool in cmake python3 cc gcc ninja make; do
+    if command -v $tool >/dev/null 2>&1; then
+        tool_path=$(command -v $tool)
+        tool_version=$($tool --version 2>&1 | head -1 || echo "unknown")
+        echo "  $tool: $tool_path ($tool_version)"
+    else
+        echo "  $tool: NOT FOUND"
+        MISSING_TOOLS="${{MISSING_TOOLS}} $tool"
+    fi
+done
+
+# Show warning for missing tools that might be needed
+if [ -n "$MISSING_TOOLS" ]; then
+    echo ""
+    echo "WARNING: The following tools were not found:$MISSING_TOOLS"
+    echo "If build fails, ensure these tools are in dependencies."
+fi
+
+echo "=== End dependency setup ($(date '+%Y-%m-%d %H:%M:%S')) ==="
+echo ""
+
+# Save replay script for debugging failed builds
+REPLAY_SCRIPT="$WORK/replay-build.sh"
+cat > "$REPLAY_SCRIPT" << 'REPLAY_EOF'
+#!/bin/bash
+# Replay script for {name} {version}
+# Generated: $(date)
+# Re-run this script to reproduce the build environment
+
+set -e
+export OUT="REPLAY_OUT_PLACEHOLDER"
+export WORK="REPLAY_WORK_PLACEHOLDER"
+export SRCS="REPLAY_SRCS_PLACEHOLDER"
+export BUILD_DIR="$WORK/build"
+REPLAY_EOF
+
+# Add environment variables
+echo "export PATH=\"$PATH\"" >> "$REPLAY_SCRIPT"
+echo "export LD_LIBRARY_PATH=\"$LD_LIBRARY_PATH\"" >> "$REPLAY_SCRIPT"
+[ -n "$PYTHONHOME" ] && echo "export PYTHONHOME=\"$PYTHONHOME\"" >> "$REPLAY_SCRIPT"
+[ -n "$PYTHONPATH" ] && echo "export PYTHONPATH=\"$PYTHONPATH\"" >> "$REPLAY_SCRIPT"
+[ -n "$PKG_CONFIG_PATH" ] && echo "export PKG_CONFIG_PATH=\"$PKG_CONFIG_PATH\"" >> "$REPLAY_SCRIPT"
+echo "" >> "$REPLAY_SCRIPT"
+echo "cd \"\$WORK\"" >> "$REPLAY_SCRIPT"
+echo "echo 'Environment ready. Run your commands here.'" >> "$REPLAY_SCRIPT"
+echo "exec bash -i" >> "$REPLAY_SCRIPT"
+
+# Replace placeholders with actual paths
+sed -i "s|REPLAY_OUT_PLACEHOLDER|$OUT|g" "$REPLAY_SCRIPT"
+sed -i "s|REPLAY_WORK_PLACEHOLDER|$WORK|g" "$REPLAY_SCRIPT"
+sed -i "s|REPLAY_SRCS_PLACEHOLDER|$SRCS|g" "$REPLAY_SCRIPT"
+chmod +x "$REPLAY_SCRIPT"
+echo "Replay script saved to: $REPLAY_SCRIPT"
 
 mkdir -p "$BUILD_DIR"
 
 # Change to working directory
 cd "$WORK"
 
+# Build timing
+BUILD_START=$(date +%s)
+
 # Pre-install hook
+PRE_START=$(date +%s)
 {pre_install}
+PRE_END=$(date +%s)
+echo "[TIMING] Pre-install: $((PRE_END - PRE_START)) seconds"
 
 # Main installation script
+MAIN_START=$(date +%s)
 {install_script}
+MAIN_END=$(date +%s)
+echo "[TIMING] Main install: $((MAIN_END - MAIN_START)) seconds"
 
 # Post-install hook
+POST_START=$(date +%s)
 {post_install}
+POST_END=$(date +%s)
+echo "[TIMING] Post-install: $((POST_END - POST_START)) seconds"
+
+BUILD_END=$(date +%s)
+echo "[TIMING] Total build time: $((BUILD_END - BUILD_START)) seconds"
+
+# Post-build summary
+echo ""
+echo "=== Build summary for {name} {version} ==="
+echo "Output directory: $OUT"
+if [ -d "$OUT" ]; then
+    echo "Installed directories:"
+    find "$OUT" -type d -maxdepth 3 | head -20
+    echo ""
+    echo "Installed binaries (first 10):"
+    find "$OUT" -type f -executable -name "*" | head -10
+    echo ""
+    echo "Total files: $(find "$OUT" -type f | wc -l)"
+    echo "Total size: $(du -sh "$OUT" 2>/dev/null | cut -f1)"
+else
+    echo "ERROR: Output directory does not exist!"
+fi
+echo "=== End build summary ($(date '+%Y-%m-%d %H:%M:%S')) ==="
 """.format(
             name = ctx.attrs.name,
             version = ctx.attrs.version,

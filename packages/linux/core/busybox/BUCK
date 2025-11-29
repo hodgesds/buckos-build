@@ -18,20 +18,36 @@ autotools_package(
     homepage = "https://busybox.net/",
     license = "GPL-2.0",
     pre_configure = """
-# Use default config and enable static linking for init
-make defconfig
+# Start with minimal config, then enable only what we need
+make allnoconfig
+
+# Enable cpio (needed for dracut)
+sed -i 's/# CONFIG_CPIO is not set/CONFIG_CPIO=y/' .config
+
+# Enable features cpio needs
+sed -i 's/# CONFIG_FEATURE_CPIO_O is not set/CONFIG_FEATURE_CPIO_O=y/' .config
+sed -i 's/# CONFIG_FEATURE_CPIO_P is not set/CONFIG_FEATURE_CPIO_P=y/' .config
+
+# Enable static linking
 sed -i 's/# CONFIG_STATIC is not set/CONFIG_STATIC=y/' .config
-# Disable tc which has kernel header incompatibilities
-sed -i 's/CONFIG_TC=y/# CONFIG_TC is not set/' .config
+
+# Ensure we have the install applet to create busybox symlink
+sed -i 's/# CONFIG_INSTALL is not set/CONFIG_INSTALL=y/' .config
 """,
     make_args = [
         "CONFIG_PREFIX=$DESTDIR",
     ],
     post_install = """
-# Create symlinks in standard locations
-mkdir -p "$DESTDIR/bin" "$DESTDIR/sbin"
-cd "$DESTDIR"
-# busybox installs with CONFIG_PREFIX, symlinks are auto-created
+# Only create cpio symlink - don't conflict with coreutils
+mkdir -p "$DESTDIR/usr/bin"
+# Remove any auto-created symlinks that might conflict
+find "$DESTDIR" -type l -name "*" ! -name "cpio" -delete 2>/dev/null || true
+# Ensure cpio symlink exists
+if [ -f "$DESTDIR/bin/busybox" ]; then
+    ln -sf /bin/busybox "$DESTDIR/usr/bin/cpio"
+elif [ -f "$DESTDIR/usr/bin/busybox" ]; then
+    ln -sf busybox "$DESTDIR/usr/bin/cpio"
+fi
 """,
     visibility = ["PUBLIC"],
 )

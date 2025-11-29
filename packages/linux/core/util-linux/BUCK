@@ -72,7 +72,7 @@ autotools_package(
         "--disable-chfn-chsh",
         "--disable-login",
         "--disable-newgrp",
-        "--disable-nologin",
+        "--enable-nologin",  # Required by dracut
         "--disable-pylibmount",
         "--disable-raw",
         "--disable-vipw",

@@ -1,58 +1,50 @@
 # =============================================================================
 # System Initialization Packages
 # =============================================================================
-# This file contains filegroups for system initialization (init) systems.
+# This file contains aliases for system initialization (init) systems.
 # Individual package definitions are in their respective subdirectories.
+#
+# NOTE: We use alias() instead of filegroup() because alias passes through
+# the actual target's outputs directly, whereas filegroup creates a wrapper
+# directory. This is important for the rootfs rule which merges package outputs.
 
 # =============================================================================
 # Individual Init Systems (aliases for installer compatibility)
 # =============================================================================
 
-filegroup(
+alias(
     name = "systemd",
-    srcs = [
-        "//packages/linux/system/init/systemd:systemd",
-    ],
+    actual = "//packages/linux/system/init/systemd:systemd",
     visibility = ["PUBLIC"],
 )
 
-filegroup(
+alias(
     name = "openrc",
-    srcs = [
-        "//packages/linux/system/init/openrc:openrc",
-    ],
+    actual = "//packages/linux/system/init/openrc:openrc",
     visibility = ["PUBLIC"],
 )
 
-filegroup(
+alias(
     name = "s6",
-    srcs = [
-        "//packages/linux/system/init/s6:s6",
-    ],
+    actual = "//packages/linux/system/init/s6:s6",
     visibility = ["PUBLIC"],
 )
 
-filegroup(
+alias(
     name = "runit",
-    srcs = [
-        "//packages/linux/system/init/runit:runit",
-    ],
+    actual = "//packages/linux/system/init/runit:runit",
     visibility = ["PUBLIC"],
 )
 
-filegroup(
+alias(
     name = "dinit",
-    srcs = [
-        "//packages/linux/system/init/dinit:dinit",
-    ],
+    actual = "//packages/linux/system/init/dinit:dinit",
     visibility = ["PUBLIC"],
 )
 
-filegroup(
+alias(
     name = "sysvinit",
-    srcs = [
-        "//packages/linux/system/init/sysvinit:sysvinit",
-    ],
+    actual = "//packages/linux/system/init/sysvinit:sysvinit",
     visibility = ["PUBLIC"],
 )
 

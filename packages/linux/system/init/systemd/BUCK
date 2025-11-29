@@ -13,26 +13,27 @@ meson_package(
     description = "System and service manager",
     homepage = "https://systemd.io/",
     license = "GPL-2.0-or-later LGPL-2.1-or-later",
-    iuse = ["pam", "acl", "selinux", "audit", "cryptsetup", "gcrypt", "lz4", "xz", "zstd"],
+    iuse = ["pam", "acl", "selinux", "audit", "gcrypt", "lz4", "xz", "zstd"],
     use_defaults = ["pam", "acl", "lz4", "xz", "zstd"],
     use_deps = {
         "pam": ["//packages/linux/system/security/auth/pam:pam"],
         "acl": ["//packages/linux/system/libs/ipc/acl:acl"],
     },
+    # Fix escaped filenames in units/meson.build for systemd 256.7
+    src_prepare = """
+sed -i 's/system-systemd\\\\\\\\x2dcryptsetup.slice/system-systemd-cryptsetup.slice/g' units/meson.build
+sed -i 's/system-systemd\\\\\\\\x2dveritysetup.slice/system-systemd-veritysetup.slice/g' units/meson.build
+""",
     meson_args = [
-        "-Drootprefix=/",
         "-Dsysconfdir=/etc",
-        "-Drootlibdir=/lib64",
         "-Dmode=release",
-        # Disable features not needed for installer
+        # Disable features not needed for installer (feature type: enabled/disabled/auto)
         "-Dselinux=disabled",
         "-Daudit=disabled",
-        "-Dcryptsetup=disabled",
-        "-Dlibcryptsetup-plugins=disabled",
+        "-Dlibcryptsetup=disabled",
         "-Dgcrypt=disabled",
         "-Dp11kit=disabled",
         "-Dlibfido2=disabled",
-        "-Dtpm=false",
         "-Dtpm2=disabled",
         "-Dqrencode=disabled",
         "-Dmicrohttpd=disabled",
@@ -48,45 +49,43 @@ meson_package(
         "-Dstandalone-binaries=true",
         "-Dstatic-libsystemd=false",
         "-Dstatic-libudev=false",
-        # Disable optional components
+        # Disable optional components (feature type: enabled/disabled)
         "-Dman=disabled",
         "-Dhtml=disabled",
         "-Dtranslations=false",
-        "-Dnls=false",
         "-Dtests=false",
         "-Dinstall-tests=false",
         "-Dslow-tests=false",
         "-Dfuzz-tests=false",
-        # Disable network components not needed for installer
+        # Disable network components not needed for installer (boolean type: true/false)
         "-Dresolve=false",
         "-Dtimesyncd=false",
         "-Dnetworkd=false",
-        # Keep essential components
+        # Keep essential components (boolean type: true/false)
         "-Dlogind=true",
         "-Dhostnamed=true",
         "-Dlocaled=true",
         "-Dtimedated=true",
-        # Disable optional services
-        "-Dcoredump=false",
-        "-Dpstore=false",
-        "-Doomd=false",
-        "-Dimportd=false",
-        "-Dhomed=false",
-        "-Dportabled=false",
-        "-Dsysext=false",
-        "-Duserdb=false",
-        "-Dfirstboot=true",
-        # Use PAM if enabled
+        # Disable optional services (mixed types)
+        "-Dcoredump=false",      # boolean
+        "-Dpstore=false",        # boolean
+        "-Doomd=false",          # boolean
+        "-Dimportd=disabled",    # feature
+        "-Dhomed=disabled",      # feature
+        "-Dportabled=false",     # boolean
+        "-Dsysext=false",        # boolean
+        "-Duserdb=false",        # boolean
+        "-Dfirstboot=true",      # boolean
+        # Use PAM and ACL if enabled (feature type: enabled/disabled/auto)
         "-Dpam=auto",
         "-Dacl=auto",
-        # Build configuration
-        "-Dsplit-usr=false",
-        "-Dsplit-bin=false",
-        "-Dcompat-mutable-uid-boundaries=false",
     ],
     deps = [
         "//packages/linux/core/util-linux:util-linux",  # libmount, libblkid
         "//packages/linux/core/zlib:zlib",
+        "//packages/linux/system/libs/ipc/libseccomp:libseccomp",  # Required for seccomp support
+        "//packages/linux/system/libs/compression/lz4:lz4",  # For lz4 compression
+        "//packages/linux/system/libs/ipc/libcap:libcap",  # Required - POSIX capabilities
     ],
     visibility = ["PUBLIC"],
 )

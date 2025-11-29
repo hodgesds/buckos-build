@@ -1,22 +1,25 @@
 load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
-download_source(
-    name = "audit-src",
-    src_uri = "https://github.com/linux-audit/audit-userspace/archive/refs/tags/v3.1.2.tar.gz",
-    sha256 = "4516dbfd1bea0eea10a30f907e50f17087673a536ec6322a2a568dff4ebe50f4",
-)
-
+# Use official release tarball with configure pre-generated
 autotools_package(
     name = "audit",
-    source = ":audit-src",
-    version = "3.1.2",
+    version = "3.1.5",
+    src_uri = "https://people.redhat.com/sgrubb/audit/audit-3.1.5.tar.gz",
+    sha256 = "660213bac2baebabfc32be4d84a4aeb94effbd3e076b1014b78678b4502cf6ba",
+    auto_detect_signature = False,
     description = "Linux Audit Framework userspace utilities",
     homepage = "https://github.com/linux-audit/audit-userspace",
     license = "LGPL-2.1+",
-    pre_configure = """
-        autoreconf -fiv
-    """,
+    iuse = ["caps"],
+    use_defaults = ["caps"],  # Enable by default for capability checking
+    use_configure = {
+        "caps": "--with-libcap-ng=yes",
+        "!caps": "--with-libcap-ng=no",
+    },
+    use_deps = {
+        "caps": ["//packages/linux/system/libs/ipc/libcap-ng:libcap-ng"],
+    },
     configure_args = [
         "--prefix=/usr",
         "--sbindir=/sbin",

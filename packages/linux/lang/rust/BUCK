@@ -7,20 +7,20 @@ load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 download_source(
     name = "rust-src",
-    src_uri = "https://static.rust-lang.org/dist/rustc-1.75.0-src.tar.xz",
-    sha256 = "4526f786d673e4859ff2afa0bab2ba13c918b796519a25c1acce06dba9542340",
+    src_uri = "https://static.rust-lang.org/dist/rustc-1.91.0-src.tar.xz",
+    sha256 = "9b94161dba3aa32192e0e75f7891912d98095ffb86087b07a05af35a0265a938",
     auto_detect_signature = False,
 )
 
 binary_package(
     name = "rust",
     srcs = [":rust-src"],
-    version = "1.75.0",
+    version = "1.91.0",
     description = "Rust is a systems programming language focused on safety, speed, and concurrency",
     homepage = "https://www.rust-lang.org/",
     license = "Apache-2.0 AND MIT",
     install_script = """
-        cd $SRCS/rustc-1.75.0-src
+        cd $SRCS
 
         # Configure Rust build
         cat > config.toml << 'EOF'
@@ -31,13 +31,13 @@ link-shared = true
 docs = false
 extended = true
 tools = ["cargo", "rustfmt", "clippy"]
+jobs = 0
 
 [install]
 prefix = "/usr"
 
 [rust]
 channel = "stable"
-codegen-units = 1
 EOF
 
         # Build and install
@@ -46,6 +46,7 @@ EOF
     """,
     deps = [
         "//packages/linux/lang/python:python",
+        "//packages/linux/dev-tools/build-systems/cmake:cmake",
     ],
     visibility = ["PUBLIC"],
 )

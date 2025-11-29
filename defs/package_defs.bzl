@@ -525,6 +525,13 @@ def _binary_package_impl(ctx: AnalysisContext) -> list[Provider]:
     for src in ctx.attrs.srcs:
         src_dirs.append(src[DefaultInfo].default_outputs[0])
 
+    # Collect all dependency directories for PATH setup
+    dep_dirs = []
+    for dep in ctx.attrs.deps + ctx.attrs.build_deps:
+        outputs = dep[DefaultInfo].default_outputs
+        for output in outputs:
+            dep_dirs.append(output)
+
     # Build the installation script
     install_script = ctx.attrs.install_script if ctx.attrs.install_script else """
         # Default: copy all source contents to output
@@ -554,6 +561,56 @@ export OUT="$(cd "$1" && pwd)"
 export WORK="$(cd "$2" && pwd)"
 export SRCS="$(cd "$3" && pwd)"
 export BUILD_DIR="$WORK/build"
+shift 3  # Remove OUT, WORK, SRCS from args, remaining are dependency dirs
+
+# Set up PATH and LD_LIBRARY_PATH from dependency directories
+DEP_PATH=""
+DEP_LD_PATH=""
+PYTHON_HOME=""
+PYTHON_LIB64=""
+for dep_dir in "$@"; do
+    # Convert to absolute path if relative
+    if [[ "$dep_dir" != /* ]]; then
+        dep_dir="$(cd "$dep_dir" 2>/dev/null && pwd)" || continue
+    fi
+    if [ -d "$dep_dir/usr/bin" ]; then
+        DEP_PATH="${{DEP_PATH:+$DEP_PATH:}}$dep_dir/usr/bin"
+    fi
+    if [ -d "$dep_dir/bin" ]; then
+        DEP_PATH="${{DEP_PATH:+$DEP_PATH:}}$dep_dir/bin"
+    fi
+    if [ -d "$dep_dir/usr/lib" ]; then
+        DEP_LD_PATH="${{DEP_LD_PATH:+$DEP_LD_PATH:}}$dep_dir/usr/lib"
+    fi
+    if [ -d "$dep_dir/usr/lib64" ]; then
+        DEP_LD_PATH="${{DEP_LD_PATH:+$DEP_LD_PATH:}}$dep_dir/usr/lib64"
+    fi
+    if [ -d "$dep_dir/lib" ]; then
+        DEP_LD_PATH="${{DEP_LD_PATH:+$DEP_LD_PATH:}}$dep_dir/lib"
+    fi
+    # Detect Python installation for PYTHONHOME and PYTHONPATH
+    if [ -d "$dep_dir/usr/lib/python3.12" ] && [ -z "$PYTHON_HOME" ]; then
+        PYTHON_HOME="$dep_dir/usr"
+    fi
+    # Also check lib64 for Python (some systems install there)
+    if [ -d "$dep_dir/usr/lib64/python3.12" ] && [ -z "$PYTHON_LIB64" ]; then
+        PYTHON_LIB64="$dep_dir/usr/lib64/python3.12"
+    fi
+done
+
+if [ -n "$DEP_PATH" ]; then
+    export PATH="$DEP_PATH:$PATH"
+fi
+if [ -n "$DEP_LD_PATH" ]; then
+    export LD_LIBRARY_PATH="$DEP_LD_PATH${{LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}}"
+fi
+if [ -n "$PYTHON_HOME" ]; then
+    export PYTHONHOME="$PYTHON_HOME"
+fi
+# Set PYTHONPATH to include lib-dynload from lib64 if it exists
+if [ -n "$PYTHON_LIB64" ] && [ -d "$PYTHON_LIB64/lib-dynload" ]; then
+    export PYTHONPATH="$PYTHON_LIB64/lib-dynload${{PYTHONPATH:+:$PYTHONPATH}}"
+fi
 
 mkdir -p "$BUILD_DIR"
 
@@ -610,14 +667,19 @@ done
     )
 
     # Then run the installation
+    install_cmd = cmd_args([
+        "bash",
+        script,
+        install_dir.as_output(),
+        work_dir.as_output(),
+        combined_srcs,
+    ])
+    # Add dependency directories for PATH setup
+    for dep_dir in dep_dirs:
+        install_cmd.add(dep_dir)
+
     ctx.actions.run(
-        cmd_args([
-            "bash",
-            script,
-            install_dir.as_output(),
-            work_dir.as_output(),
-            combined_srcs,
-        ]),
+        install_cmd,
         category = "binary_install",
         identifier = ctx.attrs.name,
     )

@@ -20,6 +20,10 @@ autotools_package(
     description = "GNU cpio - copy files to and from archives",
     homepage = "https://www.gnu.org/software/cpio/",
     license = "GPL-3.0",
+    pre_configure = """
+export CFLAGS="-include sys/sysmacros.h"
+export CPPFLAGS="-include sys/sysmacros.h"
+""",
     configure_args = [
         "--enable-mt",
     ],

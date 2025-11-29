@@ -18,6 +18,8 @@ rootfs(
         "//packages/linux/kernel/buckos-kernel:buckos-kernel-server",
         "//packages/linux/system/firmware/linux-firmware:linux-firmware",
         "//packages/linux/system/initramfs/dracut:dracut",
+        "//packages/linux/system/libs/compression/lz4:lz4",
+        "//packages/linux/system/security/audit:audit",
         "//packages/linux/boot/grub:grub",
         "//packages/linux/boot/efibootmgr:efibootmgr",
         "//packages/linux/system/init:systemd",

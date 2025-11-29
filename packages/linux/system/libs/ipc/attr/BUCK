@@ -3,8 +3,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "attr-src",
-    src_uri = "https://download.savannah.gnu.org/releases/attr/attr-2.5.2.tar.gz",
-    sha256 = "39bf67452fa41d0948c2197601053f48b3d78a029389734332a6309a680c6c87",
+    src_uri = "https://download-mirror.savannah.gnu.org/releases/attr/attr-2.5.2.tar.xz",
+    sha256 = "f2e97b0ab7ce293681ab701915766190d607a1dba7fae8a718138150b700a70b",
     auto_detect_signature = False,
 )
 

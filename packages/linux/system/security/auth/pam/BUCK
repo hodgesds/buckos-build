@@ -36,11 +36,17 @@ make -j$(nproc)
 
     src_install = '''
 make DESTDIR="$DESTDIR" install
+
+# Remove libtool .la files to prevent host path contamination
+# The .la files reference /usr/lib/libpam.la which breaks cross-builds
+echo "Removing PAM .la files..."
+find "$DESTDIR" -name "*.la" -type f -delete 2>/dev/null || true
 ''',
 
     depend = [
         "//packages/linux/system/libs/ipc/libtirpc:libtirpc",
         "//packages/linux/system/libs/network/libnsl:libnsl",
+        "//packages/linux/system/libs/crypto/libxcrypt:libxcrypt",  # libcrypt.so.2 for password hashing
     ],
     visibility = ["PUBLIC"],
 )

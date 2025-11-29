@@ -730,6 +730,15 @@ POST_START=$(date +%s)
 POST_END=$(date +%s)
 echo "[TIMING] Post-install: $((POST_END - POST_START)) seconds"
 
+# Global cleanup: Remove libtool .la files to prevent host path leakage
+# Modern systems use pkg-config instead, and .la files often contain
+# absolute paths to host libraries that break cross-compilation
+LA_COUNT=$(find "$DESTDIR" -name "*.la" -type f 2>/dev/null | wc -l)
+if [ "$LA_COUNT" -gt 0 ]; then
+    echo "Removing $LA_COUNT libtool .la files (using pkg-config instead)"
+    find "$DESTDIR" -name "*.la" -type f -delete 2>/dev/null || true
+fi
+
 BUILD_END=$(date +%s)
 echo "[TIMING] Total build time: $((BUILD_END - BUILD_START)) seconds"
 

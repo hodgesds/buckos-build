@@ -46,9 +46,22 @@ autotools_package(
         "--prefix=/usr",
         "--sysconfdir=/etc",
     ],
+    pre_configure = """
+# Remove ALL libtool .la files from sysroot to prevent host path contamination
+# .la files are legacy and cause issues when they reference host system paths
+# Modern systems use pkg-config instead
+echo "Removing all .la files from sysroot..."
+LA_COUNT=$(find "$SYSROOT/usr/lib" "$SYSROOT/usr/lib64" -name "*.la" -type f 2>/dev/null | wc -l)
+if [ "$LA_COUNT" -gt 0 ]; then
+    echo "Found $LA_COUNT .la files to remove"
+    find "$SYSROOT/usr/lib" "$SYSROOT/usr/lib64" -name "*.la" -type f -delete 2>/dev/null || true
+    echo "Done removing .la files"
+fi
+""",
     deps = [
         "//packages/linux/system/libs/crypto/libxcrypt:libxcrypt",  # Provides libcrypt.so.2 for password hashing
         "//packages/linux/system/libs/bsd:libbsd",  # BSD utility functions
+        "//packages/linux/core/libmd:libmd",  # Required by libbsd (fixes libtool .la file issue)
     ],
 
     post_install = """

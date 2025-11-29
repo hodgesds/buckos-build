@@ -10,6 +10,7 @@ rootfs(
         "//packages/linux/system/security/auth/pam:pam",
         "//packages/linux/system/libs/network/libnsl:libnsl",
         "//packages/linux/system/libs/ipc/libtirpc:libtirpc",
+        "//packages/linux/system/libs/crypto/libxcrypt:libxcrypt",
         "//packages/linux/core/file:file",
         "//packages/linux/core/bash:bash",
         "//packages/linux/core/zlib:zlib",

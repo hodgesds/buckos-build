@@ -34,7 +34,7 @@ autotools_package(
     src_uri = "https://mirrors.kernel.org/sourceware/lvm2/LVM2.2.03.23.tgz",
     sha256 = "74e794a9e9dee1bcf8a2065f65b9196c44fdf321e22d63b98ed7de8c9aa17a5d",
     signature_sha256 = "baf194cf8262601e73c7be64b9720300e1f738be7d801eac6bf02f49934dff41",
-    signature_required=False,
+    signature_required = False,
     description = "Logical Volume Manager 2 utilities",
     homepage = "https://sourceware.org/lvm2/",
     license = "GPL-2.0",
@@ -80,6 +80,7 @@ autotools_package(
         "openssl": ["//packages/linux/network/openssl:openssl"],
         "gcrypt": ["//packages/linux/system/libs/crypto/libgcrypt:libgcrypt"],
         "nettle": ["//packages/linux/system/libs/crypto/nettle:nettle"],
+        "argon2": ["//packages/linux/system/libs/crypto/argon2:argon2"],
     },
     use_configure = {
         "openssl": "--with-crypto_backend=openssl",
@@ -101,6 +102,7 @@ autotools_package(
         "--sbindir=/sbin",
         "--sysconfdir=/etc",
         "--localstatedir=/var",
+        "--disable-asciidoc",  # Don't build man pages (requires asciidoctor)
     ],
     post_install = """
         mkdir -p $OUT/etc/crypttab.d
@@ -109,6 +111,7 @@ autotools_package(
         ":popt",
         ":lvm2",
         "//packages/linux/core/util-linux:util-linux",
+        "//packages/linux/system/libs/data/json-c:json-c",
     ],
     visibility = ["PUBLIC"],
 )

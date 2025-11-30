@@ -43,6 +43,7 @@ cmake \\
     -DCMAKE_INSTALL_LIBDIR="${LIBDIR:-lib64}" \\
     -DCMAKE_C_FLAGS="${CFLAGS:-}" \\
     -DCMAKE_CXX_FLAGS="${CXXFLAGS:-}" \\
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \\
     ${CMAKE_EXTRA_ARGS:-}
 ''',
     "src_compile": '''

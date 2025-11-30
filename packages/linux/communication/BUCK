@@ -8,7 +8,7 @@ filegroup(
         "//packages/linux/communication/email-clients:all-email-clients",
         "//packages/linux/communication/email-servers:all-email-servers",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -18,7 +18,7 @@ filegroup(
     srcs = [
         "//packages/linux/communication/email-clients:all-email-clients",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -28,7 +28,7 @@ filegroup(
     srcs = [
         "//packages/linux/communication/email-clients:cli-clients",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -38,7 +38,7 @@ filegroup(
     srcs = [
         "//packages/linux/communication/email-clients:gui-clients",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -48,7 +48,7 @@ filegroup(
     srcs = [
         "//packages/linux/communication/email-servers:all-email-servers",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -58,7 +58,7 @@ filegroup(
     srcs = [
         "//packages/linux/communication/email-servers:all-in-one",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -68,7 +68,7 @@ filegroup(
     srcs = [
         "//packages/linux/communication/email-servers:mta",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -78,7 +78,7 @@ filegroup(
     srcs = [
         "//packages/linux/communication/email-servers:imap-servers",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -88,7 +88,7 @@ filegroup(
     srcs = [
         "//packages/linux/communication/email-servers:traditional-stack",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -99,6 +99,6 @@ filegroup(
         "//packages/linux/communication/email-clients:all-email-clients",
         "//packages/linux/communication/email-servers:all-email-servers",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

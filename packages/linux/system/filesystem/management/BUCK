@@ -22,7 +22,7 @@ filegroup(
         "//packages/linux/system/filesystem/management/quota:quota",
         "//packages/linux/system/filesystem/management/fio:fio",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -33,7 +33,7 @@ filegroup(
         "//packages/linux/system/filesystem/management/parted:parted",
         "//packages/linux/system/filesystem/management/gptfdisk:gptfdisk",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -46,7 +46,7 @@ filegroup(
         "//packages/linux/system/filesystem/management/dmraid:dmraid",
         "//packages/linux/system/filesystem/management/multipath-tools:multipath-tools",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -56,7 +56,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/filesystem/management/cryptsetup:cryptsetup",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -71,7 +71,7 @@ filegroup(
         "//packages/linux/system/filesystem/management/quota:quota",
         "//packages/linux/system/filesystem/management/fio:fio",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -85,6 +85,6 @@ filegroup(
         "//packages/linux/system/filesystem/management/cryptsetup:cryptsetup",
         "//packages/linux/system/filesystem/management/smartmontools:smartmontools",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

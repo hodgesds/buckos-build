@@ -15,7 +15,7 @@ filegroup(
         "//packages/linux/system/filesystem/network/davfs2:davfs2",
         "//packages/linux/system/filesystem/network/curlftpfs:curlftpfs",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -27,6 +27,6 @@ filegroup(
         "//packages/linux/system/filesystem/network/cifs-utils:cifs-utils",
         "//packages/linux/system/filesystem/network/sshfs:sshfs",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

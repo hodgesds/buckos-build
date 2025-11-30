@@ -16,7 +16,7 @@ filegroup(
         "//packages/linux/system/containers/runtime:runc",
         "//packages/linux/system/containers/runtime:conmon",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -29,7 +29,7 @@ filegroup(
         "//packages/linux/system/containers/network:aardvark-dns",
         "//packages/linux/system/containers/network:slirp4netns",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -40,7 +40,7 @@ filegroup(
         "//packages/linux/system/containers/storage:fuse-overlayfs",
         "//packages/linux/system/containers/podman:containers-common",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -53,7 +53,7 @@ filegroup(
         "//packages/linux/system/containers/podman:skopeo",
         "//packages/linux/system/containers/podman:podman-compose",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -66,7 +66,7 @@ filegroup(
         "//packages/linux/system/containers/utils:ctop",
         "//packages/linux/system/containers/utils:lazydocker",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -77,7 +77,7 @@ filegroup(
         "//packages/linux/system/containers/utils:trivy",
         "//packages/linux/system/containers/utils:hadolint",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -93,6 +93,6 @@ filegroup(
         ":container-security",
         "//packages/linux/system/containers/utils:docker-credential-helpers",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

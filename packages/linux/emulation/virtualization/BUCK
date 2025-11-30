@@ -7,7 +7,7 @@ filegroup(
         "//packages/linux/emulation/virtualization/libvirt:libvirt-client",
         "//packages/linux/emulation/virtualization/libvirt:libvirt-python",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -17,7 +17,7 @@ filegroup(
         "//packages/linux/emulation/virtualization/virtualbox:virtualbox",
         "//packages/linux/emulation/virtualization/virtualbox:virtualbox-modules",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -26,7 +26,7 @@ filegroup(
     srcs = [
         "//packages/linux/emulation/virtualization/virtualbox:virtualbox-guest-additions",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -37,7 +37,7 @@ filegroup(
         "//packages/linux/emulation/virtualization/virt-manager:virt-install",
         "//packages/linux/emulation/virtualization/virt-manager:virt-viewer",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -47,7 +47,7 @@ filegroup(
         ":libvirt-full",
         ":virt-manager-full",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -58,6 +58,6 @@ filegroup(
         ":virtualbox-full",
         ":virt-manager-full",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

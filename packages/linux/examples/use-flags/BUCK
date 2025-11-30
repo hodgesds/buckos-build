@@ -214,6 +214,6 @@ filegroup(
         ":libxml2-example",
         ":openssh-hardened-example",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

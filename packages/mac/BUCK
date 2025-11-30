@@ -16,6 +16,7 @@ filegroup(
         "//packages/mac/shells:all-shells",
         "//packages/mac/system:all-system",
     ],
+    default_target_platform = "//platforms:macos-target",
     visibility = ["PUBLIC"],
 )
 
@@ -30,6 +31,7 @@ filegroup(
         "//packages/mac/dev-tools/git:git",
         "//packages/mac/shells/bash:bash",
     ],
+    default_target_platform = "//platforms:macos-target",
     visibility = ["PUBLIC"],
 )
 
@@ -40,6 +42,7 @@ filegroup(
     srcs = [
         "//packages/mac/core:gnu-utils",
     ],
+    default_target_platform = "//platforms:macos-target",
     visibility = ["PUBLIC"],
 )
 
@@ -51,5 +54,6 @@ filegroup(
         "//packages/mac/network/curl:curl",
         "//packages/mac/core:compression",
     ],
+    default_target_platform = "//platforms:macos-target",
     visibility = ["PUBLIC"],
 )

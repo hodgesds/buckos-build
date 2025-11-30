@@ -22,7 +22,7 @@ filegroup(
         "//packages/linux/lang/swift:swift",
         "//packages/linux/lang/kotlin-native:kotlin-native",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -42,7 +42,7 @@ filegroup(
         "//packages/linux/lang/tcl:tcl",
         "//packages/linux/lang/php:php",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -59,7 +59,7 @@ filegroup(
         "//packages/linux/lang/elixir:elixir",
         "//packages/linux/lang/racket:racket",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -73,7 +73,7 @@ filegroup(
     srcs = [
         "//packages/linux/lang/julia:julia",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -89,7 +89,7 @@ filegroup(
         "//packages/linux/lang/linkers:mold",
         "//packages/linux/lang/linkers:lld",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -106,6 +106,6 @@ filegroup(
         ":functional-languages",
         ":scientific-languages",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

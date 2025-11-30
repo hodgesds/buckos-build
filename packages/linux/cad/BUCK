@@ -10,7 +10,7 @@ filegroup(
         "//packages/linux/cad/eda/geda-gaf:geda-gaf",
         "//packages/linux/cad/eda/pcb-rnd:pcb-rnd",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -21,7 +21,7 @@ filegroup(
         "//packages/linux/cad/2d/librecad:librecad",
         "//packages/linux/cad/2d/qcad:qcad",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -34,7 +34,7 @@ filegroup(
         "//packages/linux/cad/3d/brlcad:brlcad",
         "//packages/linux/cad/3d/solvespace:solvespace",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -44,7 +44,7 @@ filegroup(
     srcs = [
         "//packages/linux/cad/eda/ngspice:ngspice",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -56,7 +56,7 @@ filegroup(
         "//packages/linux/cad/eda/geda-gaf:geda-gaf",
         "//packages/linux/cad/eda/pcb-rnd:pcb-rnd",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -68,7 +68,7 @@ filegroup(
         "//packages/linux/cad/3d/openscad:openscad",
         "//packages/linux/cad/3d/solvespace:solvespace",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -80,6 +80,6 @@ filegroup(
         ":2d-cad-packages",
         ":3d-cad-packages",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

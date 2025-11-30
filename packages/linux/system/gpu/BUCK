@@ -21,7 +21,7 @@ filegroup(
         "//packages/linux/system/gpu/drivers/amd:amd-drivers",
         "//packages/linux/system/gpu/drivers/intel:intel-drivers",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -36,7 +36,7 @@ filegroup(
         "//packages/linux/system/gpu/drivers/nvidia:nvidia-drivers",
         "//packages/linux/system/gpu/libraries/cuda-toolkit:cuda-toolkit",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -47,7 +47,7 @@ filegroup(
         "//packages/linux/system/gpu/drivers/amd:amd-drivers",
         "//packages/linux/system/gpu/libraries/rocm:rocm",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -57,7 +57,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/gpu/drivers/intel:intel-drivers",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -72,7 +72,7 @@ filegroup(
         "//packages/linux/system/gpu/libraries/rocm:rocm",
         "//packages/linux/system/gpu/libraries/opencl:opencl",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -85,7 +85,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/gpu/tools/gpu-monitoring:gpu-monitoring",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -101,7 +101,7 @@ filegroup(
         ":compute-libraries",
         ":tools",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -111,7 +111,7 @@ filegroup(
     srcs = [
         ":drivers",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 

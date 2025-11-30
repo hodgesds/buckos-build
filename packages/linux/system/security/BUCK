@@ -10,7 +10,7 @@ filegroup(
         "//packages/linux/system/security/lynis:lynis",
         "//packages/linux/system/security/rkhunter:rkhunter",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -20,7 +20,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/security/auth:all-auth",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -30,7 +30,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/security/auth:core-auth",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -40,7 +40,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/security/auth:directory-services",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -50,7 +50,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/security/auth:two-factor-auth",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -60,7 +60,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/security/auth:pam-modules",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -70,7 +70,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/security/auth:yubikey",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -83,7 +83,7 @@ filegroup(
         "//packages/linux/network/firewall/nftables:nftables",
         "//packages/linux/system/security/fail2ban:fail2ban",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -101,7 +101,7 @@ filegroup(
         "//packages/linux/system/security/cryptsetup:popt",
         "//packages/linux/system/security/cryptsetup:lvm2",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -128,7 +128,7 @@ filegroup(
         "//packages/linux/system/security/encryption:bcrypt",
         "//packages/linux/system/security/encryption:clevis",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -153,7 +153,7 @@ filegroup(
         "//packages/linux/system/security/encryption:jansson",
         "//packages/linux/system/security/encryption:age-plugin-yubikey",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -165,7 +165,7 @@ filegroup(
         "//packages/linux/system/security/bubblewrap:bubblewrap",
         "//packages/linux/system/security/apparmor:apparmor",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -175,7 +175,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/security/clamav:clamav",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -192,7 +192,7 @@ filegroup(
         ":sandbox-packages",
         ":antivirus-packages",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 

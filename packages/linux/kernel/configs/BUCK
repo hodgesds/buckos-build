@@ -4,42 +4,42 @@ load("//defs:package_defs.bzl", "kernel_config")
 export_file(
     name = "base",
     src = "base.config",
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["//packages/linux/kernel/..."],
 )
 
 export_file(
     name = "filesystem",
     src = "filesystem.config",
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["//packages/linux/kernel/..."],
 )
 
 export_file(
     name = "network",
     src = "network.config",
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["//packages/linux/kernel/..."],
 )
 
 export_file(
     name = "hardware",
     src = "hardware.config",
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["//packages/linux/kernel/..."],
 )
 
 export_file(
     name = "virtualization",
     src = "virtualization.config",
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["//packages/linux/kernel/..."],
 )
 
 export_file(
     name = "security",
     src = "security.config",
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["//packages/linux/kernel/..."],
 )
 

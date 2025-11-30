@@ -21,7 +21,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/filesystem/native:native",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -30,7 +30,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/filesystem/native:common",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -44,7 +44,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/filesystem/network:network",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -53,7 +53,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/filesystem/network:common",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -67,7 +67,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/filesystem/fuse:fuse",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -76,7 +76,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/filesystem/fuse:common",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -85,7 +85,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/filesystem/fuse:encrypted",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -99,7 +99,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/filesystem/management:management",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -108,7 +108,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/filesystem/management:partitioning",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -117,7 +117,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/filesystem/management:volume-management",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -126,7 +126,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/filesystem/management:encryption",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -135,7 +135,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/filesystem/management:disk-utilities",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -152,7 +152,7 @@ filegroup(
         ":fuse",
         ":management",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -171,7 +171,7 @@ filegroup(
         "//packages/linux/system/filesystem/management/lvm2:lvm2",
         "//packages/linux/system/filesystem/management/cryptsetup:cryptsetup",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -183,7 +183,7 @@ filegroup(
         "//packages/linux/system/filesystem/native/dosfstools:dosfstools",
         "//packages/linux/system/filesystem/management/parted:parted",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -198,7 +198,7 @@ filegroup(
         "//packages/linux/system/filesystem/management/udisks2:udisks2",
         "//packages/linux/system/filesystem/management/smartmontools:smartmontools",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -215,7 +215,7 @@ filegroup(
         "//packages/linux/system/filesystem/management/quota:quota",
         "//packages/linux/system/filesystem/management/nvme-cli:nvme-cli",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -227,7 +227,7 @@ filegroup(
         "//packages/linux/system/filesystem/management/nvme-cli:nvme-cli",
         "//packages/linux/system/filesystem/management/smartmontools:smartmontools",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -239,6 +239,6 @@ filegroup(
         "//packages/linux/system/filesystem/fuse/encfs:encfs",
         "//packages/linux/system/filesystem/fuse/gocryptfs:gocryptfs",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

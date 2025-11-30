@@ -5,7 +5,7 @@ filegroup(
         "//packages/linux/terminals/st:st",
         "//packages/linux/terminals/foot:foot",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -20,6 +20,6 @@ filegroup(
         "//packages/linux/terminals/xterm:xterm",
         "//packages/linux/terminals/rxvt-unicode:rxvt-unicode",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

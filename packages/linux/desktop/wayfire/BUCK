@@ -43,6 +43,6 @@ filegroup(
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/mesa:mesa",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

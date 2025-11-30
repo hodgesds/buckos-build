@@ -243,7 +243,7 @@ filegroup(
         ":python-3.11.7",
         ":python-3.10.13",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -253,7 +253,7 @@ filegroup(
     srcs = [
         ":python-3.12.1",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -266,7 +266,7 @@ filegroup(
         ":python-3.10.13",
         ":python-2.7.18",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 

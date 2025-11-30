@@ -7,7 +7,7 @@ filegroup(
         "//packages/linux/emulation/hypervisors/qemu:qemu-guest-agent",
         "//packages/linux/emulation/hypervisors/qemu:qemu-img",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -17,7 +17,7 @@ filegroup(
         "//packages/linux/emulation/hypervisors/qemu:qemu-img",
         "//packages/linux/emulation/hypervisors/qemu:qemu-user",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -28,7 +28,7 @@ filegroup(
         "//packages/linux/emulation/hypervisors/xen:xen-tools",
         "//packages/linux/emulation/hypervisors/xen:xen-libs",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -38,6 +38,6 @@ filegroup(
         ":qemu-full",
         ":xen-full",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

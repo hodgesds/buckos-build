@@ -9,7 +9,7 @@ filegroup(
         "//packages/linux/system/hardware/usbutils:usbutils",
         "//packages/linux/system/hardware/dmidecode:dmidecode",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -23,7 +23,7 @@ filegroup(
         "//packages/linux/system/hardware/dmidecode:dmidecode",
         "//packages/linux/system/hardware/hwinfo:hwinfo",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -33,7 +33,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/hardware/pciutils:pciutils",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -43,7 +43,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/hardware/usbutils:usbutils",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -55,6 +55,6 @@ filegroup(
         "//packages/linux/system/hardware/lshw:lshw",
         "//packages/linux/system/hardware/hwinfo:hwinfo",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

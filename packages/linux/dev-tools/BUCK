@@ -11,7 +11,7 @@ filegroup(
         "//packages/linux/dev-tools/vcs/cvs:cvs",
         "//packages/linux/dev-tools/vcs/fossil:fossil",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -22,7 +22,7 @@ filegroup(
         "//packages/linux/dev-tools/vcs/git:git",
         "//packages/linux/dev-tools/vcs/subversion:subversion",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -39,7 +39,7 @@ filegroup(
         "//packages/linux/dev-tools/build-systems/libtool:libtool",
         "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -53,7 +53,7 @@ filegroup(
         "//packages/linux/dev-tools/build-systems/autoconf:autoconf",
         "//packages/linux/dev-tools/build-systems/automake:automake",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -65,7 +65,7 @@ filegroup(
         "//packages/linux/dev-tools/build-systems/ninja:ninja",
         "//packages/linux/dev-tools/build-systems/meson:meson",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -77,7 +77,7 @@ filegroup(
         "//packages/linux/dev-tools/build-systems/automake:automake",
         "//packages/linux/dev-tools/build-systems/libtool:libtool",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -89,7 +89,7 @@ filegroup(
         "//packages/linux/dev-tools/debuggers/strace:strace",
         "//packages/linux/dev-tools/debuggers/ltrace:ltrace",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -100,7 +100,7 @@ filegroup(
         "//packages/linux/dev-tools/debuggers/strace:strace",
         "//packages/linux/dev-tools/debuggers/ltrace:ltrace",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -111,7 +111,7 @@ filegroup(
         "//packages/linux/dev-tools/profilers/valgrind:valgrind",
         "//packages/linux/dev-tools/profilers/binutils:binutils",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -124,7 +124,7 @@ filegroup(
         "//packages/linux/dev-tools/dev-utils/cscope:cscope",
         "//packages/linux/dev-tools/dev-utils/doxygen:doxygen",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -136,7 +136,7 @@ filegroup(
         "//packages/linux/dev-tools/dev-utils/cscope:cscope",
         "//packages/linux/dev-tools/dev-utils/global:global",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -150,7 +150,7 @@ filegroup(
         "//packages/linux/dev-tools/dev-utils/flawfinder:flawfinder",
         "//packages/linux/dev-tools/dev-utils/include-what-you-use:include-what-you-use",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -162,7 +162,7 @@ filegroup(
         "//packages/linux/dev-tools/dev-utils/uncrustify:uncrustify",
         "//packages/linux/dev-tools/dev-utils/astyle:astyle",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -175,7 +175,7 @@ filegroup(
         "//packages/linux/dev-tools/dev-utils/diff-so-fancy:diff-so-fancy",
         "//packages/linux/dev-tools/dev-utils/meld:meld",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -186,7 +186,7 @@ filegroup(
         "//packages/linux/dev-tools/dev-utils/lcov:lcov",
         "//packages/linux/dev-tools/dev-utils/gcovr:gcovr",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -198,7 +198,7 @@ filegroup(
         "//packages/linux/dev-tools/dev-utils/silversearcher-ag:silversearcher-ag",
         "//packages/linux/dev-tools/dev-utils/ripgrep:ripgrep",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -210,7 +210,7 @@ filegroup(
         "//packages/linux/dev-tools/dev-utils/distcc:distcc",
         "//packages/linux/dev-tools/dev-utils/sccache:sccache",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -220,7 +220,7 @@ filegroup(
     srcs = [
         "//packages/linux/dev-tools/dev-utils/bear:bear",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -232,7 +232,7 @@ filegroup(
         "//packages/linux/dev-tools/dev-utils/bison:bison",
         "//packages/linux/dev-tools/dev-utils/re2c:re2c",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -244,7 +244,7 @@ filegroup(
         "//packages/linux/dev-tools/dev-utils/chrpath:chrpath",
         "//packages/linux/dev-tools/dev-utils/elfutils:elfutils",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -255,7 +255,7 @@ filegroup(
         "//packages/linux/dev-tools/dev-utils/hexedit:hexedit",
         "//packages/linux/dev-tools/dev-utils/xxd:xxd",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -266,7 +266,7 @@ filegroup(
         "//packages/linux/dev-tools/dev-utils/doxygen:doxygen",
         "//packages/linux/dev-tools/dev-utils/asciidoc:asciidoc",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -291,7 +291,7 @@ filegroup(
         ":hex-editors",
         ":doc-tools",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -309,7 +309,7 @@ filegroup(
         "//packages/linux/dev-tools/dev-utils/diffutils:diffutils",
         "//packages/linux/dev-tools/dev-utils/ripgrep:ripgrep",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -339,7 +339,7 @@ filegroup(
         "//packages/linux/dev-tools/dev-utils/bison:bison",
         "//packages/linux/dev-tools/dev-utils/lcov:lcov",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -354,7 +354,7 @@ filegroup(
         "//packages/linux/dev-tools/dev-utils/ripgrep:ripgrep",
         "//packages/linux/dev-tools/dev-utils/silversearcher-ag:silversearcher-ag",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -367,7 +367,7 @@ filegroup(
         "//packages/linux/dev-tools/dev-utils/cppcheck:cppcheck",
         "//packages/linux/dev-tools/dev-utils/shellcheck:shellcheck",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -379,6 +379,6 @@ filegroup(
         ":code-formatters",
         ":coverage-tools",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

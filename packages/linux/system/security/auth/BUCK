@@ -25,7 +25,7 @@ filegroup(
         "//packages/linux/system/apps/sudo:sudo",
         "//packages/linux/system/apps/doas:doas",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -37,7 +37,7 @@ filegroup(
         "//packages/linux/system/apps/doas:doas",
         "//packages/linux/system/security/auth/privilege:polkit",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -51,7 +51,7 @@ filegroup(
         "//packages/linux/system/security/auth/directory:sssd",
         "//packages/linux/system/security/auth/directory:nss-pam-ldapd",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -66,7 +66,7 @@ filegroup(
         "//packages/linux/system/security/auth/mfa:yubico-pam",
         "//packages/linux/system/security/auth/mfa:yubikey-manager",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -77,7 +77,7 @@ filegroup(
         "//packages/linux/system/security/auth/network:pam-radius",
         "//packages/linux/system/security/auth/network:pam-tacplus",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -89,7 +89,7 @@ filegroup(
         "//packages/linux/system/security/auth/password:cracklib",
         "//packages/linux/system/security/auth/password:passwdqc",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -100,7 +100,7 @@ filegroup(
         "//packages/linux/system/security/auth/biometric:libfprint",
         "//packages/linux/system/security/auth/biometric:fprintd",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -121,7 +121,7 @@ filegroup(
         "//packages/linux/system/security/auth/pam-modules:pam-pkcs11",
         "//packages/linux/system/security/auth/pam-modules:pam-abl",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -137,7 +137,7 @@ filegroup(
         "//packages/linux/system/security/auth/mfa:libfido2",
         "//packages/linux/system/security/auth/mfa:pam-u2f",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -154,7 +154,7 @@ filegroup(
         ":biometric-auth",
         ":pam-modules",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -168,6 +168,6 @@ filegroup(
         "//packages/linux/system/security/auth/password:libpwquality",
         "//packages/linux/system/security/auth/password:cracklib",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

@@ -10,7 +10,7 @@ filegroup(
         "//packages/linux/communication/email-clients/cli/mutt:mutt",
         "//packages/linux/communication/email-clients/cli/neomutt:neomutt",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -21,7 +21,7 @@ filegroup(
         "//packages/linux/communication/email-clients/cli/mutt:mutt",
         "//packages/linux/communication/email-clients/cli/neomutt:neomutt",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -32,7 +32,7 @@ filegroup(
         "//packages/linux/communication/email-clients/cli/aerc:aerc",
         "//packages/linux/communication/email-clients/cli/himalaya:himalaya",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -42,6 +42,6 @@ filegroup(
     srcs = [
         "//packages/linux/communication/email-clients/cli/alpine:alpine",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

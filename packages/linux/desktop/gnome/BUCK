@@ -2384,7 +2384,7 @@ filegroup(
         ":libgnome-games-support",
         ":yelp-xsl",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -2404,7 +2404,7 @@ filegroup(
         ":tracker-miners",
         "//packages/linux/desktop/gdm:gdm",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -2433,7 +2433,7 @@ filegroup(
         ":gnome-tweaks",
         ":baobab",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -2446,7 +2446,7 @@ filegroup(
         ":cheese",
         ":gnome-sound-recorder",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -2457,7 +2457,7 @@ filegroup(
         ":epiphany",
         ":gnome-connections",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -2469,7 +2469,7 @@ filegroup(
         ":devhelp",
         ":dconf-editor",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -2481,7 +2481,7 @@ filegroup(
         ":gnome-mines",
         ":gnome-sudoku",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -2497,7 +2497,7 @@ filegroup(
         ":gnome-user-docs",
         ":yelp",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -2511,7 +2511,7 @@ filegroup(
         # ":newsflash",  # DISABLED - GitLab.com blocking downloads
         ":tangram",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -2525,7 +2525,7 @@ filegroup(
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/mesa:mesa",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -2541,6 +2541,6 @@ filegroup(
         ":gnome-utilities",
         ":gnome-circle",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

@@ -10,7 +10,7 @@ filegroup(
         "//packages/linux/gaming/emulators/dolphin:dolphin",
         "//packages/linux/gaming/emulators/pcsx2:pcsx2",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -20,7 +20,7 @@ filegroup(
     srcs = [
         "//packages/linux/gaming/emulators/retroarch:retroarch",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -31,6 +31,6 @@ filegroup(
         "//packages/linux/gaming/emulators/dolphin:dolphin",
         "//packages/linux/gaming/emulators/pcsx2:pcsx2",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

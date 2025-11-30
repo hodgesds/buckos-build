@@ -19,7 +19,7 @@
 export_file(
     name = "kernel.config",
     src = "kernel.config",
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 

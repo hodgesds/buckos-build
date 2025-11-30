@@ -7,7 +7,7 @@ filegroup(
         "//packages/linux/system/libs/input/mtdev:mtdev",
         "//packages/linux/system/libs/input/libinput:libinput",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -17,7 +17,7 @@ filegroup(
         "//packages/linux/system/libs/input/libxkbcommon:libxkbcommon",
         "//packages/linux/system/libs/input/libfakekey:libfakekey",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -27,6 +27,6 @@ filegroup(
         ":core-input",
         ":keyboard",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

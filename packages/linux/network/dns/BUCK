@@ -17,7 +17,7 @@ filegroup(
         "//packages/linux/network/dns/libraries/libidn:libidn",
         "//packages/linux/network/dns/libraries/libidn2:libidn2",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -33,7 +33,7 @@ filegroup(
         "//packages/linux/network/dns/servers/powerdns:powerdns",
         "//packages/linux/network/dns/servers/nsd:nsd",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -47,7 +47,7 @@ filegroup(
         "//packages/linux/network/dns/servers/unbound:unbound",
         "//packages/linux/network/dns/servers/pdns-recursor:pdns-recursor",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -61,7 +61,7 @@ filegroup(
         "//packages/linux/network/dns/servers/dnsmasq:dnsmasq",
         "//packages/linux/network/dns/servers/coredns:coredns",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -81,7 +81,7 @@ filegroup(
         "//packages/linux/network/dns/servers/nsd:nsd",
         "//packages/linux/network/dns/servers/pdns-recursor:pdns-recursor",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -95,7 +95,7 @@ filegroup(
         "//packages/linux/network/dns/tools/bind-tools:bind-tools",
         "//packages/linux/network/dns/tools/ldns-utils:ldns-utils",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -110,7 +110,7 @@ filegroup(
         "//packages/linux/network/dns/tools/dog:dog",
         "//packages/linux/network/dns/tools/q:q",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -124,7 +124,7 @@ filegroup(
         "//packages/linux/network/dns/tools/dnscrypt-proxy:dnscrypt-proxy",
         "//packages/linux/network/dns/tools/stubby:stubby",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -143,7 +143,7 @@ filegroup(
         "//packages/linux/network/dns/tools/dog:dog",
         "//packages/linux/network/dns/tools/q:q",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -158,7 +158,7 @@ filegroup(
         "//packages/linux/network/dns/tools/bind-tools:bind-tools",
         "//packages/linux/network/dns/libraries/c-ares:c-ares",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -174,7 +174,7 @@ filegroup(
         "//packages/linux/network/dns/servers/knot-dns:knot-dns",
         "//packages/linux/network/dns/servers/nsd:nsd",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -188,7 +188,7 @@ filegroup(
         "//packages/linux/network/dns/servers/coredns:coredns",
         "//packages/linux/network/dns/servers/unbound:unbound",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -203,6 +203,6 @@ filegroup(
         ":dns-tools",
         ":dns-libraries",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

@@ -159,6 +159,6 @@ filegroup(
         ":spice-protocol",
         ":spice-vdagent",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

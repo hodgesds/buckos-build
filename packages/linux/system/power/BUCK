@@ -9,7 +9,7 @@ filegroup(
         "//packages/linux/system/power/x86_energy_perf_policy:x86_energy_perf_policy",
         "//packages/linux/system/power/intel-speed-select:intel-speed-select",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -19,7 +19,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/power/rapl-read-ryzen:rapl-read-ryzen",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -30,7 +30,7 @@ filegroup(
         "//packages/linux/system/power/cpufrequtils:cpufrequtils",
         "//packages/linux/laptop/power/cpupower:cpupower",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -42,7 +42,7 @@ filegroup(
         "//packages/linux/system/power/irqbalance:irqbalance",
         "//packages/linux/system/power/power-profiles-daemon:power-profiles-daemon",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -54,7 +54,7 @@ filegroup(
         "//packages/linux/system/power/sdparm:sdparm",
         "//packages/linux/system/power/nvme-cli:nvme-cli",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -65,7 +65,7 @@ filegroup(
         "//packages/linux/system/power/powercap:powercap",
         "//packages/linux/system/power/intel-undervolt:intel-undervolt",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -76,7 +76,7 @@ filegroup(
         "//packages/linux/system/power/acpica-tools:acpica-tools",
         "//packages/linux/laptop/power/acpid:acpid",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -89,7 +89,7 @@ filegroup(
         "//packages/linux/system/power/hdparm:hdparm",
         "//packages/linux/system/power/irqbalance:irqbalance",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -103,7 +103,7 @@ filegroup(
         "//packages/linux/laptop/monitoring/powertop:powertop",
         "//packages/linux/laptop/monitoring/lm-sensors:lm-sensors",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -118,7 +118,7 @@ filegroup(
         ":tuning",
         "//packages/linux/system/power/intel-undervolt:intel-undervolt",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -132,7 +132,7 @@ filegroup(
         ":storage-power",
         ":tuning",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -147,7 +147,7 @@ filegroup(
         "//packages/linux/system/power/powercap:powercap",
         "//packages/linux/laptop/monitoring/lm-sensors:lm-sensors",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -163,6 +163,6 @@ filegroup(
         ":power-limits",
         ":acpi-tools",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

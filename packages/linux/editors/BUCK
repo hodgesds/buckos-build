@@ -173,7 +173,7 @@ filegroup(
         ":vscodium",
         ":ed",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -183,7 +183,7 @@ filegroup(
         ":emacs",
         ":vscodium",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -194,7 +194,7 @@ filegroup(
         ":vim-minimal",
         ":neovim",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -204,7 +204,7 @@ filegroup(
         ":vim-minimal",
         ":emacs-nox",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -231,7 +231,7 @@ filegroup(
         ":delta",
         ":sd",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -244,7 +244,7 @@ filegroup(
         ":diffutils",
         ":patch",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -255,7 +255,7 @@ filegroup(
         ":yq",
         ":xmlstarlet",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -267,7 +267,7 @@ filegroup(
         ":delta",
         ":sd",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -278,7 +278,7 @@ filegroup(
         ":ripgrep",
         ":fzf",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -289,7 +289,7 @@ filegroup(
         ":patch",
         ":delta",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -300,7 +300,7 @@ filegroup(
         ":gawk",
         ":sd",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -309,7 +309,7 @@ filegroup(
     srcs = [
         ":pandoc",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -318,7 +318,7 @@ filegroup(
     srcs = [
         ":entr",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -329,7 +329,7 @@ filegroup(
         ":aspell",
         ":enchant",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -340,6 +340,6 @@ filegroup(
         ":all-text-utils",
         ":spell-check",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

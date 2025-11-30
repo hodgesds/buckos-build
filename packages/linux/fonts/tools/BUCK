@@ -5,7 +5,7 @@ filegroup(
     srcs = [
         "//packages/linux/fonts/tools/fontforge:fontforge",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -16,7 +16,7 @@ filegroup(
         "//packages/linux/fonts/tools/woff2:woff2",
         "//packages/linux/fonts/tools/ttfautohint:ttfautohint",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -26,6 +26,6 @@ filegroup(
         ":font-editors",
         ":font-utilities",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

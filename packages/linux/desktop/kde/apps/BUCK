@@ -745,7 +745,7 @@ filegroup(
         ":spectacle",
         ":kcalc",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -763,7 +763,7 @@ filegroup(
         ":ktorrent",
         ":krusader",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -774,6 +774,6 @@ filegroup(
         ":kde-apps-core",
         ":kde-apps-extra",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

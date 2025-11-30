@@ -9,6 +9,7 @@ filegroup(
         "//packages/mac/network/wget:wget",
         "//packages/mac/network/openssh:openssh",
     ],
+    default_target_platform = "//platforms:macos-target",
     visibility = ["PUBLIC"],
 )
 
@@ -19,6 +20,7 @@ filegroup(
         "//packages/mac/network/openssl:openssl",
         "//packages/mac/network/ca-certificates:ca-certificates",
     ],
+    default_target_platform = "//platforms:macos-target",
     visibility = ["PUBLIC"],
 )
 
@@ -29,5 +31,6 @@ filegroup(
         "//packages/mac/network/curl:curl",
         "//packages/mac/network/wget:wget",
     ],
+    default_target_platform = "//platforms:macos-target",
     visibility = ["PUBLIC"],
 )

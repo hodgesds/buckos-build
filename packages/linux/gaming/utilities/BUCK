@@ -10,6 +10,6 @@ filegroup(
         "//packages/linux/gaming/utilities/gamemode:gamemode",
         "//packages/linux/gaming/utilities/gamescope:gamescope",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

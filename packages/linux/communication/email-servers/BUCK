@@ -12,7 +12,7 @@ filegroup(
         "//packages/linux/communication/email-servers/postfix:postfix",
         "//packages/linux/communication/email-servers/stalwart:stalwart",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -23,7 +23,7 @@ filegroup(
         "//packages/linux/communication/email-servers/maddy:maddy",
         "//packages/linux/communication/email-servers/stalwart:stalwart",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -35,7 +35,7 @@ filegroup(
         "//packages/linux/communication/email-servers/opensmtpd:opensmtpd",
         "//packages/linux/communication/email-servers/postfix:postfix",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -45,7 +45,7 @@ filegroup(
     srcs = [
         "//packages/linux/communication/email-servers/dovecot:dovecot",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -56,7 +56,7 @@ filegroup(
         "//packages/linux/communication/email-servers/dovecot:dovecot",
         "//packages/linux/communication/email-servers/postfix:postfix",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -67,7 +67,7 @@ filegroup(
         "//packages/linux/communication/email-servers/maddy:maddy",
         "//packages/linux/communication/email-servers/opensmtpd:opensmtpd",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -78,7 +78,7 @@ filegroup(
         "//packages/linux/communication/email-servers/maddy:maddy",
         "//packages/linux/communication/email-servers/stalwart:stalwart",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -88,7 +88,7 @@ filegroup(
     srcs = [
         "//packages/linux/communication/email-servers/stalwart:stalwart",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -100,6 +100,6 @@ filegroup(
         "//packages/linux/communication/email-servers/exim:exim",
         "//packages/linux/communication/email-servers/postfix:postfix",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

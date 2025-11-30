@@ -17,7 +17,7 @@ filegroup(
         "//packages/linux/system/initramfs/genkernel:genkernel",
         "//packages/linux/system/initramfs/initramfs-tools:initramfs-tools",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -28,7 +28,7 @@ filegroup(
         "//packages/linux/system/initramfs/dracut:dracut",
         "//packages/linux/system/initramfs/mkinitcpio:mkinitcpio",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -40,7 +40,7 @@ filegroup(
         "//packages/linux/system/libs/kmod:kmod",
         "//packages/linux/system/init/eudev:eudev",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -53,7 +53,7 @@ filegroup(
         "//packages/linux/system/libs/kmod:kmod",
         "//packages/linux/system/init/eudev:eudev",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -65,7 +65,7 @@ filegroup(
         "//packages/linux/system/libs/kmod:kmod",
         "//packages/linux/system/init/eudev:eudev",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -77,7 +77,7 @@ filegroup(
         "//packages/linux/system/libs/kmod:kmod",
         "//packages/linux/system/init/eudev:eudev",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -91,7 +91,7 @@ filegroup(
         "//packages/linux/core/util-linux:util-linux",
         "//packages/linux/system/apps/coreutils:coreutils",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -112,7 +112,7 @@ filegroup(
         # Bootloader
         "//packages/linux/boot/grub:grub",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -125,6 +125,6 @@ filegroup(
         "//packages/linux/system/init/eudev:eudev",
         "//packages/linux/boot/grub:grub",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

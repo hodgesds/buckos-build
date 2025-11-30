@@ -6,7 +6,7 @@ filegroup(
         "//packages/linux/laptop/wireless/iwd:iwd",
         "//packages/linux/laptop/wireless/wpa_supplicant:wpa_supplicant",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -16,7 +16,7 @@ filegroup(
         "//packages/linux/laptop/wireless/bluez:bluez",
         "//packages/linux/laptop/wireless/blueman:blueman",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -25,7 +25,7 @@ filegroup(
     srcs = [
         "//packages/linux/laptop/wireless/rfkill:rfkill",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -36,7 +36,7 @@ filegroup(
         "//packages/linux/laptop/wireless/bluez:bluez",
         "//packages/linux/laptop/wireless/rfkill:rfkill",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -49,6 +49,6 @@ filegroup(
         "//packages/linux/laptop/wireless/blueman:blueman",
         "//packages/linux/laptop/wireless/rfkill:rfkill",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

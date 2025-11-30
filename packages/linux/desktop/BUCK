@@ -21,7 +21,7 @@ filegroup(
         "//packages/linux/desktop/xorg-server:xorg-server",
         "//packages/linux/desktop/xorg-server:libx11",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -33,7 +33,7 @@ filegroup(
         "//packages/linux/desktop/sddm:sddm",
         "//packages/linux/desktop/lightdm:lightdm",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -49,7 +49,7 @@ filegroup(
         "//packages/linux/desktop/mate:mate",
         "//packages/linux/desktop/budgie:budgie",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -61,7 +61,7 @@ filegroup(
         "//packages/linux/desktop/hyprland:hyprland-desktop",
         "//packages/linux/desktop/wayfire:wayfire-desktop",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -74,7 +74,7 @@ filegroup(
         "//packages/linux/desktop/openbox:openbox-desktop",
         "//packages/linux/desktop/awesome:awesome-desktop",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -87,7 +87,7 @@ filegroup(
         "//packages/linux/desktop/openbox:openbox-desktop",
         "//packages/linux/desktop/i3:i3-desktop",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -100,7 +100,7 @@ filegroup(
         "//packages/linux/desktop/sway:sway-desktop",
         "//packages/linux/desktop/hyprland:hyprland-desktop",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -114,7 +114,7 @@ filegroup(
         "//packages/linux/desktop/bspwm:bspwm-desktop",
         "//packages/linux/desktop/awesome:awesome-desktop",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -128,7 +128,7 @@ filegroup(
     srcs = [
         "//packages/linux/desktop/xorg-utilities:all",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -138,7 +138,7 @@ filegroup(
     srcs = [
         "//packages/linux/desktop/wayland-utilities:all",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -149,7 +149,7 @@ filegroup(
     srcs = [
         "//packages/linux/desktop/xorg-utilities:essential",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -159,7 +159,7 @@ filegroup(
     srcs = [
         "//packages/linux/desktop/wayland-utilities:essential",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -185,7 +185,7 @@ filegroup(
         "//packages/linux/desktop/xorg-utilities:xorg-bars",
         "//packages/linux/desktop/wayland-utilities:wayland-bars",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -196,7 +196,7 @@ filegroup(
         "//packages/linux/desktop/i3:i3-desktop",
         "//packages/linux/desktop/xorg-utilities:i3-companions",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -207,7 +207,7 @@ filegroup(
         "//packages/linux/desktop/sway:sway-desktop",
         "//packages/linux/desktop/wayland-utilities:sway-companions",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -218,6 +218,6 @@ filegroup(
         "//packages/linux/desktop/hyprland:hyprland-desktop",
         "//packages/linux/desktop/wayland-utilities:hyprland-companions",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

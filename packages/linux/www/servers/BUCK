@@ -8,7 +8,7 @@ filegroup(
         "//packages/linux/www/servers/caddy:caddy",
         "//packages/linux/www/servers/lighttpd:lighttpd",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -20,7 +20,7 @@ filegroup(
         "//packages/linux/www/servers/traefik:traefik",
         "//packages/linux/www/servers/caddy:caddy",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -30,7 +30,7 @@ filegroup(
         "//packages/linux/www/servers/caddy:caddy",
         "//packages/linux/www/servers/lighttpd:lighttpd",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -39,7 +39,7 @@ filegroup(
     srcs = [
         "//packages/linux/www/servers/squid:squid",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -54,6 +54,6 @@ filegroup(
         "//packages/linux/www/servers/traefik:traefik",
         "//packages/linux/www/servers/squid:squid",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

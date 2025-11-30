@@ -57,7 +57,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/init/systemd:systemd",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -67,7 +67,7 @@ filegroup(
         "//packages/linux/system/init/openrc:openrc",
         "//packages/linux/system/init/elogind:elogind",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -80,7 +80,7 @@ filegroup(
         "//packages/linux/system/init/s6-linux-init:s6-linux-init",
         "//packages/linux/system/init/s6-rc:s6-rc",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -91,7 +91,7 @@ filegroup(
         "//packages/linux/system/init/runit:runit",
         "//packages/linux/system/init/dinit:dinit",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -110,6 +110,6 @@ filegroup(
         "//packages/linux/system/init/dinit:dinit",
         "//packages/linux/system/init/sysvinit:sysvinit",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

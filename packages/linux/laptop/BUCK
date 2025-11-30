@@ -7,7 +7,7 @@ filegroup(
     srcs = [
         "//packages/linux/laptop/power:all-power",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -17,7 +17,7 @@ filegroup(
     srcs = [
         "//packages/linux/laptop/brightness:all-brightness",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -27,7 +27,7 @@ filegroup(
     srcs = [
         "//packages/linux/laptop/monitoring:all-monitoring",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -37,7 +37,7 @@ filegroup(
     srcs = [
         "//packages/linux/laptop/input:all-input",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -47,7 +47,7 @@ filegroup(
     srcs = [
         "//packages/linux/laptop/wireless:all-wireless",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -57,7 +57,7 @@ filegroup(
     srcs = [
         "//packages/linux/laptop/battery:all-battery",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -72,7 +72,7 @@ filegroup(
         "//packages/linux/laptop/wireless:essential",
         "//packages/linux/laptop/battery:essential",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -94,7 +94,7 @@ filegroup(
         "//packages/linux/laptop/wireless/rfkill:rfkill",
         "//packages/linux/laptop/battery/upower:upower",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -106,7 +106,7 @@ filegroup(
         "//packages/linux/laptop/wireless/blueman:blueman",
         "//packages/linux/laptop/brightness/ddcutil:ddcutil",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -118,7 +118,7 @@ filegroup(
         "//packages/linux/laptop/battery/tp_smapi:tp_smapi",
         "//packages/linux/laptop/battery/acpi_call:acpi_call",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -130,7 +130,7 @@ filegroup(
         "//packages/linux/laptop/power/thermald:thermald",
         "//packages/linux/laptop/monitoring/i7z:i7z",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -144,7 +144,7 @@ filegroup(
         "//packages/linux/laptop/monitoring/powertop:powertop",
         "//packages/linux/laptop/battery/laptop-mode-tools:laptop-mode-tools",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -159,6 +159,6 @@ filegroup(
         ":wireless",
         ":battery",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

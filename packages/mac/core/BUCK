@@ -16,6 +16,7 @@ filegroup(
         "//packages/mac/core/gawk:gawk",
         "//packages/mac/core/grep:grep",
     ],
+    default_target_platform = "//platforms:macos-target",
     visibility = ["PUBLIC"],
 )
 
@@ -27,6 +28,7 @@ filegroup(
         "//packages/mac/core/bzip2:bzip2",
         "//packages/mac/core/xz:xz",
     ],
+    default_target_platform = "//platforms:macos-target",
     visibility = ["PUBLIC"],
 )
 
@@ -37,6 +39,7 @@ filegroup(
         "//packages/mac/core/ncurses:ncurses",
         "//packages/mac/core/readline:readline",
     ],
+    default_target_platform = "//platforms:macos-target",
     visibility = ["PUBLIC"],
 )
 
@@ -51,5 +54,6 @@ filegroup(
         "//packages/mac/core/gawk:gawk",
         "//packages/mac/core/grep:grep",
     ],
+    default_target_platform = "//platforms:macos-target",
     visibility = ["PUBLIC"],
 )

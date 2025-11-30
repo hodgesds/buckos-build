@@ -354,6 +354,10 @@ ebuild_package(
 
     src_configure = '''
 BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+
+# Clear stale config.cache files that break rebuilds with changed LDFLAGS
+find . -name 'config.cache' -delete 2>/dev/null || true
+
 mkdir -p build && cd build
 
 # Need the cross-compiler in PATH
@@ -412,6 +416,9 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 
 # Need the cross-compiler and glibc in PATH/sysroot
 export PATH="$DESTDIR/tools/bin:$PATH"
+
+# Clear stale config.cache files that break rebuilds with changed LDFLAGS
+find . -name 'config.cache' -delete 2>/dev/null || true
 
 mkdir -p build && cd build
 ../configure \

@@ -7,7 +7,7 @@ filegroup(
         "//packages/linux/audio/players/moc:moc",
         "//packages/linux/audio/players/ncmpcpp:ncmpcpp",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -16,7 +16,7 @@ filegroup(
     srcs = [
         "//packages/linux/audio/players/audacious:audacious",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -25,7 +25,7 @@ filegroup(
     srcs = [
         "//packages/linux/audio/players/mpd:mpd",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -36,6 +36,6 @@ filegroup(
         ":gui-players",
         ":daemon-players",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

@@ -6,7 +6,7 @@ filegroup(
         "//packages/linux/emulation/containers/runc:runc",
         "//packages/linux/emulation/containers/crun:crun",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -20,7 +20,7 @@ filegroup(
         "//packages/linux/emulation/containers/docker:docker-buildx",
         "//packages/linux/emulation/containers/runc:runc",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -32,7 +32,7 @@ filegroup(
         "//packages/linux/emulation/containers/docker:docker-engine",
         "//packages/linux/emulation/containers/runc:runc",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -45,7 +45,7 @@ filegroup(
         "//packages/linux/emulation/containers/podman:conmon",
         "//packages/linux/emulation/containers/crun:crun",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -56,7 +56,7 @@ filegroup(
         "//packages/linux/emulation/containers/podman:conmon",
         "//packages/linux/emulation/containers/crun:crun",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -66,7 +66,7 @@ filegroup(
         "//packages/linux/emulation/containers/containerd:containerd",
         "//packages/linux/emulation/containers/runc:runc",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -76,6 +76,6 @@ filegroup(
         ":docker-full",
         ":podman-full",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

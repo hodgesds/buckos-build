@@ -12,7 +12,7 @@ filegroup(
         "//packages/linux/dev-libs/allocators/jemalloc:jemalloc",
         "//packages/linux/dev-libs/allocators/mimalloc:mimalloc",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -25,7 +25,7 @@ filegroup(
     srcs = [
         "//packages/linux/dev-libs/boost:boost",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -38,7 +38,7 @@ filegroup(
     srcs = [
         "//packages/linux/dev-libs/glib:glib",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -54,7 +54,7 @@ filegroup(
         "//packages/linux/dev-libs/serialization/msgpack:msgpack",
         "//packages/linux/dev-libs/serialization/capnproto:capnproto",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -70,7 +70,7 @@ filegroup(
         "//packages/linux/dev-libs/text/libunistring:libunistring",
         "//packages/linux/dev-libs/text/utf8proc:utf8proc",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -85,7 +85,7 @@ filegroup(
         "//packages/linux/dev-libs/json/simdjson:simdjson",
         "//packages/linux/dev-libs/misc/cjson:cjson",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -98,7 +98,7 @@ filegroup(
     srcs = [
         "//packages/linux/dev-libs/testing/check:check",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -111,7 +111,7 @@ filegroup(
     srcs = [
         "//packages/linux/dev-libs/config/libconfig:libconfig",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -126,7 +126,7 @@ filegroup(
         "//packages/linux/dev-libs/google/glog:glog",
         "//packages/linux/dev-libs/google/abseil-cpp:abseil-cpp",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -140,7 +140,7 @@ filegroup(
         "//packages/linux/dev-libs/database/leveldb:leveldb",
         "//packages/linux/dev-libs/database/rocksdb:rocksdb",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -155,7 +155,7 @@ filegroup(
         "//packages/linux/system/libs/utility/libevent:libevent",
         "//packages/linux/system/libs/utility/libuv:libuv",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -170,7 +170,7 @@ filegroup(
         "//packages/linux/dev-libs/misc/spdlog:spdlog",
         "//packages/linux/dev-libs/misc/double-conversion:double-conversion",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -184,7 +184,7 @@ filegroup(
         "//packages/linux/dev-libs/misc/boehm-gc:boehm-gc",
         "//packages/linux/dev-libs/misc/libatomic_ops:libatomic_ops",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -202,7 +202,7 @@ filegroup(
         "//packages/linux/dev-libs/misc/c-blosc:c-blosc",
         "//packages/linux/dev-libs/misc/libgit2:libgit2",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -219,7 +219,7 @@ filegroup(
         "//packages/linux/dev-libs/google/abseil-cpp:abseil-cpp",
         "//packages/linux/dev-libs/misc/fmt:fmt",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -232,7 +232,7 @@ filegroup(
         ":cpp-utility-libs",
         "//packages/linux/dev-libs/text/re2:re2",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -246,7 +246,7 @@ filegroup(
         "//packages/linux/dev-libs/misc/xxhash:xxhash",
         "//packages/linux/dev-libs/misc/libatomic_ops:libatomic_ops",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -258,7 +258,7 @@ filegroup(
         ":json-libs",
         ":database-libs",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -284,6 +284,6 @@ filegroup(
         ":gc-libs",
         ":misc-libs",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

@@ -5,7 +5,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/libs/multimedia/sdl2:sdl2",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -17,7 +17,7 @@ filegroup(
         "//packages/linux/system/libs/multimedia/sdl2-mixer:sdl2-mixer",
         "//packages/linux/system/libs/multimedia/sdl2-ttf:sdl2-ttf",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -27,7 +27,7 @@ filegroup(
         "//packages/linux/system/libs/multimedia/openal-soft:openal-soft",
         "//packages/linux/system/libs/multimedia/portaudio:portaudio",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -37,6 +37,6 @@ filegroup(
         ":sdl2-all",
         ":audio-frameworks",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

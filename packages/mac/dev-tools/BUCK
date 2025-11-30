@@ -10,6 +10,7 @@ filegroup(
         "//packages/mac/dev-tools/pkg-config:pkg-config",
         "//packages/mac/dev-tools/make:make",
     ],
+    default_target_platform = "//platforms:macos-target",
     visibility = ["PUBLIC"],
 )
 
@@ -23,6 +24,7 @@ filegroup(
         "//packages/mac/dev-tools/pkg-config:pkg-config",
         "//packages/mac/dev-tools/make:make",
     ],
+    default_target_platform = "//platforms:macos-target",
     visibility = ["PUBLIC"],
 )
 
@@ -32,5 +34,6 @@ filegroup(
     srcs = [
         "//packages/mac/dev-tools/git:git",
     ],
+    default_target_platform = "//platforms:macos-target",
     visibility = ["PUBLIC"],
 )

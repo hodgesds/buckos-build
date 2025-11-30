@@ -2175,6 +2175,7 @@ cmake \\
     -DCMAKE_INSTALL_LIBDIR="${{LIBDIR:-lib64}}" \\
     -DCMAKE_C_FLAGS="${{CFLAGS:-}}" \\
     -DCMAKE_CXX_FLAGS="${{CXXFLAGS:-}}" \\
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \\
     {args} \\
     ..
 '''.format(build_type = build_type, args = args_str)

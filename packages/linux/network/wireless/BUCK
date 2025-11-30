@@ -11,7 +11,7 @@ filegroup(
         "//packages/linux/network/wireless/wireless-tools:wireless-tools",
         "//packages/linux/network/wireless/wireless-regdb:wireless-regdb",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -21,7 +21,7 @@ filegroup(
     srcs = [
         "//packages/linux/network/wireless/bluez:bluez",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -32,7 +32,7 @@ filegroup(
         "//packages/linux/network/wireless/aircrack-ng:aircrack-ng",
         "//packages/linux/network/wireless/kismet:kismet",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -42,7 +42,7 @@ filegroup(
     srcs = [
         "//packages/linux/network/wireless/wavemon:wavemon",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -52,7 +52,7 @@ filegroup(
     srcs = [
         "//packages/linux/network/wireless/rtl-sdr:rtl-sdr",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -66,6 +66,6 @@ filegroup(
         ":wireless-monitoring",
         ":sdr-tools",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

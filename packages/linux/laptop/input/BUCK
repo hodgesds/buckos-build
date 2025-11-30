@@ -7,7 +7,7 @@ filegroup(
         "//packages/linux/laptop/input/mtdev:mtdev",
         "//packages/linux/laptop/input/libinput:libinput",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -17,7 +17,7 @@ filegroup(
         "//packages/linux/laptop/input/xf86-input-libinput:xf86-input-libinput",
         "//packages/linux/laptop/input/xf86-input-synaptics:xf86-input-synaptics",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -26,7 +26,7 @@ filegroup(
     srcs = [
         "//packages/linux/laptop/input/libwacom:libwacom",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -37,7 +37,7 @@ filegroup(
         "//packages/linux/laptop/input/mtdev:mtdev",
         "//packages/linux/laptop/input/libinput:libinput",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -51,6 +51,6 @@ filegroup(
         "//packages/linux/laptop/input/xf86-input-synaptics:xf86-input-synaptics",
         "//packages/linux/laptop/input/libwacom:libwacom",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

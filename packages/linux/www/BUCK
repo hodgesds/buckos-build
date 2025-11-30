@@ -7,7 +7,7 @@ filegroup(
         "//packages/linux/www/chromium:chromium",
         "//packages/linux/www/ladybird:ladybird",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -18,7 +18,7 @@ filegroup(
         "//packages/linux/www/w3m:w3m",
         "//packages/linux/www/links:links",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -28,7 +28,7 @@ filegroup(
         ":gui-browsers",
         ":text-browsers",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -38,7 +38,7 @@ filegroup(
     srcs = [
         "//packages/linux/www/servers:all-web-servers",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -49,6 +49,6 @@ filegroup(
         ":all-browsers",
         ":web-servers",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

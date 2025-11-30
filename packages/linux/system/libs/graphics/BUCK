@@ -7,7 +7,7 @@ filegroup(
         "//packages/linux/system/libs/graphics/cairo:cairo",
         "//packages/linux/system/libs/graphics/lcms2:lcms2",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -16,6 +16,6 @@ filegroup(
     srcs = [
         ":core-graphics",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

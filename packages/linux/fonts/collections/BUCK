@@ -6,7 +6,7 @@ filegroup(
         "//packages/linux/fonts/collections/liberation-fonts:liberation-fonts",
         "//packages/linux/fonts/collections/dejavu-fonts:dejavu-fonts",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -15,7 +15,7 @@ filegroup(
     srcs = [
         "//packages/linux/fonts/collections/noto-fonts:noto-fonts",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -26,7 +26,7 @@ filegroup(
         "//packages/linux/fonts/collections/source-fonts:source-serif",
         "//packages/linux/fonts/collections/source-fonts:source-code-pro",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -37,7 +37,7 @@ filegroup(
         "//packages/linux/fonts/collections/dejavu-fonts:dejavu-fonts",
         "//packages/linux/fonts/collections/source-fonts:source-code-pro",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
@@ -48,6 +48,6 @@ filegroup(
         ":google-fonts",
         ":adobe-fonts",
     ],
-    default_target_platform = "//platforms:default",
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

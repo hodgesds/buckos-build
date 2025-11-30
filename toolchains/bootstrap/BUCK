@@ -49,18 +49,26 @@ mkdir -p build && cd build
     --with-sysroot=/tools \
     --disable-nls \
     --disable-werror \
+    --disable-gdb \
+    --disable-gdbserver \
+    --disable-sim \
+    --disable-libdecnumber \
+    --disable-readline \
     --enable-gprofng=no \
-    --enable-default-hash-style=gnu
+    --enable-default-hash-style=gnu \
+    MAKEINFO=true
 ''',
 
     src_compile = '''
 cd build
-make -j$(nproc)
+make -j$(nproc) MAKEINFO=true all-binutils all-gas all-ld
 ''',
 
     src_install = '''
 cd build
-make DESTDIR="$DESTDIR" install
+make DESTDIR="$DESTDIR" install-binutils install-gas install-ld MAKEINFO=true
+# Also install target libraries that were built
+make DESTDIR="$DESTDIR" install-bfd install-libiberty install-libsframe MAKEINFO=true || true
 ''',
 
     depend = [],
@@ -110,10 +118,51 @@ ebuild_package(
     license = "GPL-3.0",
 
     src_prepare = '''
-# The GMP, MPFR, MPC sources should be available as dependencies
-# For now, we'll download them inline during prepare
-# In a proper setup, these would be passed as rdepend sources
-true
+# Link GMP, MPFR, MPC into the GCC source tree (in-tree build)
+# Dependencies are passed as positional arguments after DESTDIR and S
+# We use the DEP_DIRS array set by the build system setup
+
+echo "Available dependency paths:"
+echo "$PATH" | tr ':' '\n' | grep buck-out || true
+
+# Find GMP, MPFR, MPC in buck-out structure
+# The paths follow pattern: buck-out/v2/gen/.../bootstrap/__XXX-src__/XXX-src
+BUCK_OUT="${S%/buck-out/*}/buck-out"
+
+# GMP - search for configure.ac in gmp-src directory
+GMP_DIR=$(find "$BUCK_OUT" -type d -path "*/__gmp-src__/gmp-src" 2>/dev/null | head -1)
+if [[ -n "$GMP_DIR" ]] && [[ -f "$GMP_DIR/configure.ac" ]]; then
+    ln -sfn "$GMP_DIR" gmp
+    echo "Linked GMP from $GMP_DIR"
+else
+    echo "ERROR: Could not find GMP source directory" >&2
+    echo "Searched in: $BUCK_OUT" >&2
+    find "$BUCK_OUT" -type d -name "*gmp*" 2>/dev/null | head -5
+    exit 1
+fi
+
+# MPFR - search for configure.ac in mpfr-src directory
+MPFR_DIR=$(find "$BUCK_OUT" -type d -path "*/__mpfr-src__/mpfr-src" 2>/dev/null | head -1)
+if [[ -n "$MPFR_DIR" ]] && [[ -f "$MPFR_DIR/configure.ac" ]]; then
+    ln -sfn "$MPFR_DIR" mpfr
+    echo "Linked MPFR from $MPFR_DIR"
+else
+    echo "ERROR: Could not find MPFR source directory" >&2
+    exit 1
+fi
+
+# MPC - search for configure.ac in mpc-src directory
+MPC_DIR=$(find "$BUCK_OUT" -type d -path "*/__mpc-src__/mpc-src" 2>/dev/null | head -1)
+if [[ -n "$MPC_DIR" ]] && [[ -f "$MPC_DIR/configure.ac" ]]; then
+    ln -sfn "$MPC_DIR" mpc
+    echo "Linked MPC from $MPC_DIR"
+else
+    echo "ERROR: Could not find MPC source directory" >&2
+    exit 1
+fi
+
+echo "GCC source dependencies linked successfully"
+ls -la gmp mpfr mpc
 ''',
 
     src_configure = '''
@@ -150,7 +199,7 @@ cd build
 make DESTDIR="$DESTDIR" install
 ''',
 
-    bdepend = [":cross-binutils"],
+    bdepend = [":cross-binutils", ":gmp-src", ":mpfr-src", ":mpc-src"],
     depend = [],
     visibility = ["PUBLIC"],
 )

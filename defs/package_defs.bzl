@@ -308,6 +308,7 @@ else
     fi
 fi
 """,
+        is_executable = True,
     )
 
     ctx.actions.run(
@@ -394,6 +395,7 @@ for config in "$@"; do
     fi
 done
 """,
+        is_executable = True,
     )
 
     ctx.actions.run(
@@ -432,8 +434,17 @@ def _kernel_build_impl(ctx: AnalysisContext) -> list[Provider]:
         """#!/bin/bash
 set -e
 
+# Arguments:
+# $1 = install directory (output)
+# $2 = source directory (input)
+# $3 = build scratch directory (output, for writable build)
+# $4 = config file (optional)
+
 # Save absolute paths before changing directory
 SRC_DIR="$(cd "$2" && pwd)"
+
+# Build scratch directory - passed from Buck2 for hermetic builds
+BUILD_DIR="$3"
 
 # Convert install paths to absolute
 if [[ "$1" = /* ]]; then
@@ -446,12 +457,12 @@ export INSTALL_PATH="$INSTALL_BASE/boot"
 export INSTALL_MOD_PATH="$INSTALL_BASE"
 mkdir -p "$INSTALL_PATH"
 
-if [ -n "$3" ]; then
+if [ -n "$4" ]; then
     # Convert config path to absolute if it's relative
-    if [[ "$3" = /* ]]; then
-        CONFIG_PATH="$3"
+    if [[ "$4" = /* ]]; then
+        CONFIG_PATH="$4"
     else
-        CONFIG_PATH="$(pwd)/$3"
+        CONFIG_PATH="$(pwd)/$4"
     fi
 fi
 
@@ -471,7 +482,7 @@ if echo "$CC_VER" | grep -iq gcc; then
 fi
 
 # Copy source to writable build directory (buck2 inputs are read-only)
-BUILD_DIR="${BUCK_SCRATCH_PATH:-/tmp/kernel-build-$$}"
+# BUILD_DIR is passed as $3 from Buck2 for hermetic, deterministic builds
 mkdir -p "$BUILD_DIR"
 echo "Copying kernel source to build directory: $BUILD_DIR"
 cp -a "$SRC_DIR"/. "$BUILD_DIR/"
@@ -539,7 +550,12 @@ make INSTALL_MOD_PATH="$INSTALL_BASE" modules_install
 mkdir -p "$INSTALL_BASE/usr/src/linux-$KRELEASE"
 make INSTALL_HDR_PATH="$INSTALL_BASE/usr" headers_install
 """,
+        is_executable = True,
     )
+
+    # Declare a scratch directory for the kernel build (Buck2 inputs are read-only)
+    # Using a declared output ensures deterministic paths instead of /tmp or $$
+    build_scratch_dir = ctx.actions.declare_output(ctx.attrs.name + "-build-scratch", dir = True)
 
     # Build command arguments
     cmd = cmd_args([
@@ -547,6 +563,7 @@ make INSTALL_HDR_PATH="$INSTALL_BASE/usr" headers_install
         script,
         install_dir.as_output(),
         src_dir,
+        build_scratch_dir.as_output(),
     ])
 
     # Add config file if present
@@ -884,6 +901,7 @@ echo "=== End build summary ($(date '+%Y-%m-%d %H:%M:%S')) ==="
             install_script = install_script,
             post_install = post_install,
         ),
+        is_executable = True,
     )
 
     # Build command with all source directories
@@ -901,6 +919,7 @@ for src_dir in "$@"; do
     fi
 done
 """,
+        is_executable = True,
     )
 
     # Create intermediate combined sources directory
@@ -1018,6 +1037,7 @@ cp -r "$SRC"/* "$OUT{extract_to}/" 2>/dev/null || true
             extract_to = extract_to,
             symlinks = symlinks_script,
         ),
+        is_executable = True,
     )
 
     ctx.actions.run(
@@ -1123,7 +1143,7 @@ chmod 1777 "$ROOTFS/tmp"
 chmod 755 "$ROOTFS/root"
 """
 
-    script = ctx.actions.write("assemble.sh", script_content)
+    script = ctx.actions.write("assemble.sh", script_content, is_executable = True)
 
     cmd = cmd_args(["bash", script, rootfs_dir.as_output()])
     for pkg_dir in pkg_dirs:
@@ -1213,6 +1233,7 @@ find . -print0 | cpio --null -o -H newc | {compress_cmd} > "$OUTPUT"
 
 echo "Created initramfs: $OUTPUT"
 """.format(init_path = init_path, compress_cmd = compress_cmd),
+        is_executable = True,
     )
 
     ctx.actions.run(
@@ -1608,6 +1629,7 @@ ls -lh "$ISO_OUT"
             isolinux_cfg = isolinux_cfg,
             include_rootfs = include_rootfs,
         ),
+        is_executable = True,
     )
 
     rootfs_arg = rootfs_dir if rootfs_dir else ""
@@ -2741,9 +2763,20 @@ if [ -n "$DEP_LIBPATH" ]; then
     # Only use dependency paths - do NOT inherit from host environment
     export LD_LIBRARY_PATH="${{DEP_LIBPATH}}"
     export LIBRARY_PATH="${{DEP_LIBPATH}}"
+    # Add library paths to linker flags so the linker finds our built deps
+    # This is critical because pkg-config returns /usr/lib64 but libs are in buck-out
+    DEP_LDFLAGS=""
+    IFS=':' read -ra LIB_DIRS <<< "$DEP_LIBPATH"
+    for lib_dir in "${{LIB_DIRS[@]}}"; do
+        DEP_LDFLAGS="${{DEP_LDFLAGS}} -L$lib_dir -Wl,-rpath,$lib_dir"
+    done
+    export LDFLAGS="${{LDFLAGS:-}} $DEP_LDFLAGS"
 fi
 if [ -n "$DEP_PKG_CONFIG_PATH" ]; then
     export PKG_CONFIG_PATH="${{DEP_PKG_CONFIG_PATH}}"
+    # When using dependencies from buck-out, don't use sysroot prefix for pkg-config
+    # as the .pc files have /usr paths but the actual files are in buck-out
+    unset PKG_CONFIG_SYSROOT_DIR
 fi
 
 # Set up include paths from dependencies
@@ -3022,6 +3055,7 @@ done
             src_install = src_install,
             run_tests = "yes" if ctx.attrs.run_tests else "",
         ),
+        is_executable = True,
     )
 
     # Build command with dependency directories as additional arguments

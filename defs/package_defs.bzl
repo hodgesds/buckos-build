@@ -730,17 +730,41 @@ if [ -n "$DEP_PATH" ]; then
     echo "PATH=$PATH"
 fi
 if [ -n "$DEP_LD_PATH" ]; then
-    export LD_LIBRARY_PATH="$DEP_LD_PATH${{LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}}"
-    export LIBRARY_PATH="$DEP_LD_PATH${{LIBRARY_PATH:+:$LIBRARY_PATH}}"
+    # Only use dependency library paths - do NOT inherit from host
+    export LD_LIBRARY_PATH="$DEP_LD_PATH"
+    export LIBRARY_PATH="$DEP_LD_PATH"
     echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
     echo "LIBRARY_PATH=$LIBRARY_PATH"
+
+    # Add -L and -rpath flags to LDFLAGS for linker isolation
+    DEP_LDFLAGS=""
+    IFS=':' read -ra LIB_DIRS <<< "$DEP_LD_PATH"
+    for lib_dir in "${{LIB_DIRS[@]}}"; do
+        DEP_LDFLAGS="${{DEP_LDFLAGS}} -L$lib_dir -Wl,-rpath-link,$lib_dir"
+    done
+    export LDFLAGS="${{DEP_LDFLAGS}} ${{LDFLAGS:-}}"
+    echo "LDFLAGS=$LDFLAGS"
 fi
-# Set CPATH for C/C++ include paths
+# Set CPATH for C/C++ include paths - do NOT inherit from host
 if [ -n "$DEP_CPATH" ]; then
-    export CPATH="$DEP_CPATH${{CPATH:+:$CPATH}}"
-    export C_INCLUDE_PATH="$DEP_CPATH${{C_INCLUDE_PATH:+:$C_INCLUDE_PATH}}"
-    export CPLUS_INCLUDE_PATH="$DEP_CPATH${{CPLUS_INCLUDE_PATH:+:$CPLUS_INCLUDE_PATH}}"
+    export CPATH="$DEP_CPATH"
+    export C_INCLUDE_PATH="$DEP_CPATH"
+    export CPLUS_INCLUDE_PATH="$DEP_CPATH"
     echo "CPATH=$CPATH"
+
+    # CRITICAL: Use -isystem instead of -I for dependency includes
+    # -isystem paths are searched BEFORE the compiler's built-in system paths
+    # This ensures our dependency headers are found before host system headers,
+    # preventing version mismatches (e.g., compiling against host pcre2.h 10.47
+    # but linking against our pcre2 library with different symbol versions)
+    DEP_ISYSTEM_FLAGS=""
+    IFS=':' read -ra INC_DIRS <<< "$DEP_CPATH"
+    for inc_dir in "${{INC_DIRS[@]}}"; do
+        DEP_ISYSTEM_FLAGS="${{DEP_ISYSTEM_FLAGS}} -isystem $inc_dir"
+    done
+    export CFLAGS="${{DEP_ISYSTEM_FLAGS}} ${{CFLAGS:-}}"
+    export CXXFLAGS="${{DEP_ISYSTEM_FLAGS}} ${{CXXFLAGS:-}}"
+    echo "CFLAGS=$CFLAGS"
 fi
 # Export DEP_BASE_DIRS for packages that need direct access to dependency prefixes
 echo "DEP_BASE_DIRS=$DEP_BASE_DIRS"
@@ -753,10 +777,69 @@ if [ -n "$PYTHON_LIB64" ] && [ -d "$PYTHON_LIB64/lib-dynload" ]; then
     export PYTHONPATH="$PYTHON_LIB64/lib-dynload${{PYTHONPATH:+:$PYTHONPATH}}"
     echo "PYTHONPATH=$PYTHONPATH"
 fi
-# Set PKG_CONFIG_PATH to find .pc files from dependencies
+# CRITICAL: Use PKG_CONFIG_LIBDIR instead of PKG_CONFIG_PATH
+# PKG_CONFIG_PATH *appends* to the default search (still finds /usr/lib64/pkgconfig)
+# PKG_CONFIG_LIBDIR *replaces* the default search (only finds our dependencies)
 if [ -n "$DEP_PKG_CONFIG_PATH" ]; then
-    export PKG_CONFIG_PATH="$DEP_PKG_CONFIG_PATH${{PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}}"
-    echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH"
+    export PKG_CONFIG_LIBDIR="$DEP_PKG_CONFIG_PATH"
+    unset PKG_CONFIG_PATH
+    unset PKG_CONFIG_SYSROOT_DIR
+    echo "PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR"
+
+    # Create pkg-config wrapper that rewrites paths from .pc files
+    # Problem: .pc files contain prefix=/usr, so pkg-config returns -I/usr/include
+    # which finds host headers instead of our dependency headers in buck-out.
+    mkdir -p "$WORK/bin"
+    cat > "$WORK/bin/pkg-config" << 'PKGCONFIG_WRAPPER_EOF'
+#!/bin/bash
+REAL_PKGCONFIG=""
+for p in $(type -ap pkg-config); do
+    if [ "$p" != "$0" ] && [[ "$p" != */WORK/bin/pkg-config ]] && [[ "$p" != *-work/bin/pkg-config ]]; then
+        REAL_PKGCONFIG="$p"
+        break
+    fi
+done
+[ -z "$REAL_PKGCONFIG" ] && REAL_PKGCONFIG="/usr/bin/pkg-config"
+[ ! -x "$REAL_PKGCONFIG" ] && {{ echo "pkg-config wrapper: cannot find real pkg-config" >&2; exit 1; }}
+
+OUTPUT=$("$REAL_PKGCONFIG" "$@")
+RC=$?
+[ $RC -ne 0 ] && exit $RC
+[ -z "$OUTPUT" ] && exit 0
+
+case "$*" in
+    *--cflags*|*--libs*|*--variable*)
+        PKG_NAME=""
+        for arg in "$@"; do
+            case "$arg" in --*) ;; *) PKG_NAME="$arg"; break ;; esac
+        done
+        if [ -n "$PKG_NAME" ] && [ -n "$PKG_CONFIG_LIBDIR" ]; then
+            IFS=':' read -ra PC_DIRS <<< "$PKG_CONFIG_LIBDIR"
+            for pc_dir in "${{PC_DIRS[@]}}"; do
+                if [ -f "$pc_dir/$PKG_NAME.pc" ]; then
+                    DEP_ROOT="${{pc_dir%/usr/lib64/pkgconfig}}"
+                    DEP_ROOT="${{DEP_ROOT%/usr/lib/pkgconfig}}"
+                    DEP_ROOT="${{DEP_ROOT%/usr/share/pkgconfig}}"
+                    DEP_ROOT="${{DEP_ROOT%/lib64/pkgconfig}}"
+                    DEP_ROOT="${{DEP_ROOT%/lib/pkgconfig}}"
+                    if [ "$DEP_ROOT" != "$pc_dir" ]; then
+                        OUTPUT=$(echo "$OUTPUT" | sed -e "s|-I/usr/include|-I$DEP_ROOT/usr/include|g" \
+                                                      -e "s|-L/usr/lib64|-L$DEP_ROOT/usr/lib64|g" \
+                                                      -e "s|-L/usr/lib|-L$DEP_ROOT/usr/lib|g" \
+                                                      -e "s| /usr/include| $DEP_ROOT/usr/include|g" \
+                                                      -e "s| /usr/lib| $DEP_ROOT/usr/lib|g")
+                    fi
+                    break
+                fi
+            done
+        fi
+        ;;
+esac
+echo "$OUTPUT"
+PKGCONFIG_WRAPPER_EOF
+    chmod +x "$WORK/bin/pkg-config"
+    export PATH="$WORK/bin:$PATH"
+    echo "Installed pkg-config wrapper at $WORK/bin/pkg-config"
 fi
 
 # Verify key tools are available
@@ -2595,6 +2678,9 @@ mkdir -p "$1"
 export DESTDIR="$(cd "$1" && pwd)"
 export OUT="$DESTDIR"  # Alias for compatibility with simple_package/post_install scripts
 export S="$(cd "$2" && pwd)"
+export WORKDIR="$(dirname "$S")"
+export T="$WORKDIR/temp"
+mkdir -p "$T"
 shift 2  # Remove DESTDIR and S from args, remaining args are dependency dirs
 
 # Set up PATH from dependency directories
@@ -2773,11 +2859,141 @@ if [ -n "$DEP_LIBPATH" ]; then
     export LDFLAGS="${{LDFLAGS:-}} $DEP_LDFLAGS"
 fi
 if [ -n "$DEP_PKG_CONFIG_PATH" ]; then
-    export PKG_CONFIG_PATH="${{DEP_PKG_CONFIG_PATH}}"
+    # CRITICAL: Use PKG_CONFIG_LIBDIR instead of PKG_CONFIG_PATH
+    # PKG_CONFIG_PATH *appends* to the default search path (still finds /usr/lib64/pkgconfig)
+    # PKG_CONFIG_LIBDIR *replaces* the default search path (only finds our dependencies)
+    # This prevents pkg-config from finding host system .pc files
+    export PKG_CONFIG_LIBDIR="${{DEP_PKG_CONFIG_PATH}}"
+    unset PKG_CONFIG_PATH
     # When using dependencies from buck-out, don't use sysroot prefix for pkg-config
     # as the .pc files have /usr paths but the actual files are in buck-out
     unset PKG_CONFIG_SYSROOT_DIR
 fi
+
+# =============================================================================
+# pkg-config Wrapper for Build Isolation
+# =============================================================================
+# Even with PKG_CONFIG_LIBDIR pointing to our dependencies, the .pc files contain
+# hardcoded paths like -I/usr/include and -L/usr/lib64. When pkg-config returns
+# these paths, the build system finds host headers/libraries instead of ours.
+#
+# This wrapper intercepts pkg-config calls and rewrites the output paths to point
+# to the actual dependency locations in buck-out.
+
+# Build a mapping of pkgconfig dirs to their dependency roots
+declare -A PKGCONFIG_PREFIX_MAP
+for dep_dir_raw in "$@"; do
+    if [[ "$dep_dir_raw" = /* ]]; then
+        dep_dir="$dep_dir_raw"
+    else
+        dep_dir="$(cd "$dep_dir_raw" 2>/dev/null && pwd)" || continue
+    fi
+    # Map each pkgconfig directory to its dependency root
+    for pc_subdir in usr/lib64/pkgconfig usr/lib/pkgconfig usr/share/pkgconfig lib64/pkgconfig lib/pkgconfig; do
+        if [ -d "$dep_dir/$pc_subdir" ]; then
+            PKGCONFIG_PREFIX_MAP["$dep_dir/$pc_subdir"]="$dep_dir"
+        fi
+    done
+done
+export PKGCONFIG_PREFIX_MAP
+
+# Create pkg-config wrapper in temp directory
+mkdir -p "$T/bin"
+cat > "$T/bin/pkg-config" << 'PKGCONFIG_WRAPPER_EOF'
+#!/bin/bash
+# pkg-config wrapper that rewrites paths from .pc files to actual dependency locations
+#
+# Problem: .pc files contain prefix=/usr, so pkg-config --cflags returns -I/usr/include
+# which finds host headers instead of our dependency headers in buck-out.
+#
+# Solution: Find which dependency provided the .pc file and rewrite /usr paths to
+# point to that dependency's actual location.
+
+REAL_PKGCONFIG=""
+# Find the real pkg-config (skip ourselves)
+for p in $(type -ap pkg-config); do
+    if [ "$p" != "$0" ] && [ "$p" != "$T/bin/pkg-config" ]; then
+        REAL_PKGCONFIG="$p"
+        break
+    fi
+done
+
+if [ -z "$REAL_PKGCONFIG" ]; then
+    # Fallback: try common locations
+    for p in /usr/bin/pkg-config /bin/pkg-config; do
+        if [ -x "$p" ]; then
+            REAL_PKGCONFIG="$p"
+            break
+        fi
+    done
+fi
+
+if [ -z "$REAL_PKGCONFIG" ]; then
+    echo "pkg-config wrapper: cannot find real pkg-config" >&2
+    exit 1
+fi
+
+# Get the output from real pkg-config
+OUTPUT=$("$REAL_PKGCONFIG" "$@")
+RC=$?
+
+if [ $RC -ne 0 ]; then
+    exit $RC
+fi
+
+# If no output or not a flag query, pass through unchanged
+if [ -z "$OUTPUT" ]; then
+    exit 0
+fi
+
+# For --cflags, --libs, --cflags-only-I, --libs-only-L queries, rewrite paths
+case "$*" in
+    *--cflags*|*--libs*|*--variable*)
+        # Determine which package we're querying
+        PKG_NAME=""
+        for arg in "$@"; do
+            case "$arg" in
+                --*) ;;
+                *) PKG_NAME="$arg"; break ;;
+            esac
+        done
+
+        if [ -n "$PKG_NAME" ] && [ -n "$PKG_CONFIG_LIBDIR" ]; then
+            # Find which pkgconfig directory has this package's .pc file
+            IFS=':' read -ra PC_DIRS <<< "$PKG_CONFIG_LIBDIR"
+            for pc_dir in "${{PC_DIRS[@]}}"; do
+                if [ -f "$pc_dir/$PKG_NAME.pc" ]; then
+                    # Extract the dependency root from the pkgconfig path
+                    # e.g., /path/to/buck-out/.../pkg/usr/lib64/pkgconfig -> /path/to/buck-out/.../pkg
+                    DEP_ROOT="${{pc_dir%/usr/lib64/pkgconfig}}"
+                    DEP_ROOT="${{DEP_ROOT%/usr/lib/pkgconfig}}"
+                    DEP_ROOT="${{DEP_ROOT%/usr/share/pkgconfig}}"
+                    DEP_ROOT="${{DEP_ROOT%/lib64/pkgconfig}}"
+                    DEP_ROOT="${{DEP_ROOT%/lib/pkgconfig}}"
+
+                    if [ "$DEP_ROOT" != "$pc_dir" ]; then
+                        # Rewrite /usr paths to point to dependency root
+                        # -I/usr/include -> -I$DEP_ROOT/usr/include
+                        # -L/usr/lib64 -> -L$DEP_ROOT/usr/lib64
+                        OUTPUT=$(echo "$OUTPUT" | sed -e "s|-I/usr/include|-I$DEP_ROOT/usr/include|g" \
+                                                      -e "s|-L/usr/lib64|-L$DEP_ROOT/usr/lib64|g" \
+                                                      -e "s|-L/usr/lib|-L$DEP_ROOT/usr/lib|g" \
+                                                      -e "s| /usr/include| $DEP_ROOT/usr/include|g" \
+                                                      -e "s| /usr/lib| $DEP_ROOT/usr/lib|g")
+                    fi
+                    break
+                fi
+            done
+        fi
+        ;;
+esac
+
+echo "$OUTPUT"
+PKGCONFIG_WRAPPER_EOF
+chmod +x "$T/bin/pkg-config"
+
+# Put our wrapper first in PATH
+export PATH="$T/bin:$PATH"
 
 # Set up include paths from dependencies
 DEP_CPATH=""
@@ -2800,6 +3016,21 @@ if [ -n "$DEP_CPATH" ]; then
     export CPATH="${{DEP_CPATH}}"
     export C_INCLUDE_PATH="${{DEP_CPATH}}"
     export CPLUS_INCLUDE_PATH="${{DEP_CPATH}}"
+
+    # CRITICAL: Use -isystem instead of -I for dependency includes
+    # -I paths are searched AFTER the compiler's built-in system paths
+    # -isystem paths are searched BEFORE built-in system paths but after -I
+    # This ensures our dependency headers (e.g., pcre2.h) are found before
+    # the host system's headers (e.g., /usr/include/pcre2.h), preventing
+    # version mismatches where code compiles against host headers but links
+    # against our libraries.
+    DEP_ISYSTEM_FLAGS=""
+    IFS=':' read -ra INC_DIRS <<< "$DEP_CPATH"
+    for inc_dir in "${{INC_DIRS[@]}}"; do
+        DEP_ISYSTEM_FLAGS="${{DEP_ISYSTEM_FLAGS}} -isystem $inc_dir"
+    done
+    export CFLAGS="${{DEP_ISYSTEM_FLAGS}} ${{CFLAGS:-}}"
+    export CXXFLAGS="${{DEP_ISYSTEM_FLAGS}} ${{CXXFLAGS:-}}"
 fi
 
 # Set up linker flags to prevent searching host library paths
@@ -2825,12 +3056,12 @@ export LIBDIR_SUFFIX="${{LIBDIR_SUFFIX:-64}}"
 
 # Build directories
 export BUILD_DIR="${{BUILD_DIR:-$S/build}}"
-export WORKDIR="$(dirname "$S")"
-export T="$WORKDIR/temp"
+# WORKDIR and T already defined at script start
 export FILESDIR="${{FILESDIR:-}}"
 
 # Clean and recreate temp directory to ensure fresh phases.sh
-rm -rf "$T"
+# Note: preserve $T/bin which contains our pkg-config wrapper
+rm -rf "$T/phases.sh" "$T/phases-run.sh" 2>/dev/null || true
 mkdir -p "$T"
 
 # Custom environment

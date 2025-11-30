@@ -736,7 +736,9 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 ''',
 
     src_compile = '''
-make -j$(nproc)
+# CC_FOR_BUILD is needed for host tools like mkbuiltins that run during compilation
+# These must be compiled with the HOST compiler, not the cross-compiler
+make -j$(nproc) CC_FOR_BUILD=gcc
 ''',
 
     src_install = '''

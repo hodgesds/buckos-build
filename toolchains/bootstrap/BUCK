@@ -25,15 +25,15 @@ load("@root//defs:package_defs.bzl", "download_source", "ebuild_package")
 
 download_source(
     name = "binutils-src",
-    src_uri = "https://github.com/bminor/binutils-gdb/archive/refs/tags/binutils-2_42.tar.gz",
-    sha256 = "ececb35ff37a8a0659bf15b0d140764dd710d88913c6d0346856dc5738bd70b5",
+    src_uri = "https://mirrors.kernel.org/gnu/binutils/binutils-2.44.tar.xz",
+    sha256 = "ce2017e059d63e67ddb9240e9d4ec49c2893605035cd60e92ad53177f4377237",
     auto_detect_signature = False,
 )
 
 ebuild_package(
     name = "cross-binutils",
     source = ":binutils-src",
-    version = "2.42",
+    version = "2.44",
     category = "toolchain/bootstrap",
     slot = "0",
     description = "Cross binutils for bootstrap toolchain",
@@ -66,9 +66,23 @@ make -j$(nproc) MAKEINFO=true all-binutils all-gas all-ld
 
     src_install = '''
 cd build
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 make DESTDIR="$DESTDIR" install-binutils install-gas install-ld MAKEINFO=true
 # Also install target libraries that were built
 make DESTDIR="$DESTDIR" install-bfd install-libiberty install-libsframe MAKEINFO=true || true
+
+# CRITICAL: Remove unprefixed tools from /tools/bin
+# Cross-binutils installs both prefixed (x86_64-buckos-linux-gnu-as) and unprefixed (as) tools.
+# The unprefixed tools would shadow host tools when added to PATH, causing build failures
+# when the host compiler tries to use the cross-assembler (which is an older version).
+# Only keep the prefixed versions for cross-compilation.
+cd "$DESTDIR/tools/bin"
+for tool in addr2line ar as c++filt elfedit gprof ld ld.bfd nm objcopy objdump ranlib readelf size strings strip; do
+    if [ -f "$tool" ] && [ -f "${BUCKOS_TARGET}-${tool}" ]; then
+        echo "Removing unprefixed $tool (keeping ${BUCKOS_TARGET}-${tool})"
+        rm -f "$tool"
+    fi
+done
 ''',
 
     depend = [],
@@ -196,7 +210,19 @@ make -j$(nproc)
 
     src_install = '''
 cd build
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 make DESTDIR="$DESTDIR" install
+
+# Remove unprefixed tools to prevent shadowing host tools in subsequent builds
+cd "$DESTDIR/tools/bin"
+for tool in gcc g++ cpp gcov gcov-dump gcov-tool lto-dump; do
+    if [ -f "$tool" ] && [ -f "${BUCKOS_TARGET}-${tool}" ]; then
+        echo "Removing unprefixed $tool (keeping ${BUCKOS_TARGET}-${tool})"
+        rm -f "$tool"
+    fi
+done
+# Also remove cc symlink if it exists (will be recreated in pass2)
+rm -f cc c++ 2>/dev/null || true
 ''',
 
     bdepend = [":cross-binutils", ":gmp-src", ":mpfr-src", ":mpc-src"],
@@ -262,6 +288,12 @@ ebuild_package(
     homepage = "https://www.gnu.org/software/libc/",
     license = "LGPL-2.1+",
 
+    # glibc requires optimization flags - it won't compile without -O2
+    env = {
+        "CFLAGS": "-O2 -g",
+        "CXXFLAGS": "-O2 -g",
+    },
+
     src_configure = '''
 BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 
@@ -299,6 +331,10 @@ if [ -z "$HEADERS_PATH" ] || [ ! -d "$HEADERS_PATH" ]; then
 fi
 echo "Using kernel headers from: $HEADERS_PATH"
 
+# Set cache variables to bypass tests that require linking (cross-gcc-pass1 can't link without libc)
+# These tell configure to skip certain compile/link tests that would fail
+# libc_cv_pde: PDE (Position Dependent Executable) test - can't link without libc
+# libc_cv_pde_load_address: The load address for PDE executables
 ../configure \
     --prefix=/usr \
     --host=$BUCKOS_TARGET \
@@ -306,7 +342,12 @@ echo "Using kernel headers from: $HEADERS_PATH"
     --enable-kernel=4.19 \
     --with-headers="$HEADERS_PATH" \
     --disable-nscd \
-    libc_cv_slibdir=/usr/lib64
+    --disable-werror \
+    libc_cv_slibdir=/usr/lib64 \
+    libc_cv_forced_unwind=yes \
+    libc_cv_c_cleanup=yes \
+    libc_cv_pde=yes \
+    libc_cv_pde_load_address=0x0000000000400000
 ''',
 
     src_compile = '''
@@ -333,7 +374,7 @@ include /etc/ld.so.conf.d/*.conf
 LDCONF
 ''',
 
-    bdepend = [":cross-gcc-pass1", ":linux-headers"],
+    bdepend = [":cross-binutils", ":cross-gcc-pass1", ":linux-headers"],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -405,27 +446,99 @@ ebuild_package(
     homepage = "https://gcc.gnu.org/",
     license = "GPL-3.0",
 
+    # CRITICAL: Don't pass LDFLAGS/CFLAGS from dependencies to the GCC build
+    # GCC's build system manages flags for HOST and TARGET separately.
+    # The HOST side (cc1, etc.) must link against HOST libraries, not cross-glibc.
+    # The --with-build-sysroot configure option handles TARGET libraries.
+    env = {
+        "LDFLAGS": "",
+        "CFLAGS": "",
+        "CXXFLAGS": "",
+        "CPATH": "",
+        "C_INCLUDE_PATH": "",
+        "CPLUS_INCLUDE_PATH": "",
+    },
+
     src_prepare = '''
 # Fix file that causes issues with glibc-2.39+
 sed '/thread_header =/s/@.*@/gthr-posix.h/' \
     -i libgcc/Makefile.in libstdc++-v3/include/Makefile.in || true
+
+# Link GMP, MPFR, MPC into the GCC source tree (in-tree build)
+# Find GMP, MPFR, MPC in buck-out structure
+BUCK_OUT="${S%/buck-out/*}/buck-out"
+
+# GMP - search for configure.ac in gmp-src directory
+GMP_DIR=$(find "$BUCK_OUT" -type d -path "*/__gmp-src__/gmp-src" 2>/dev/null | head -1)
+if [[ -n "$GMP_DIR" ]] && [[ -f "$GMP_DIR/configure.ac" ]]; then
+    ln -sfn "$GMP_DIR" gmp
+    echo "Linked GMP from $GMP_DIR"
+else
+    echo "ERROR: Could not find GMP source directory" >&2
+    find "$BUCK_OUT" -type d -name "*gmp*" 2>/dev/null | head -5
+    exit 1
+fi
+
+# MPFR - search for configure.ac in mpfr-src directory
+MPFR_DIR=$(find "$BUCK_OUT" -type d -path "*/__mpfr-src__/mpfr-src" 2>/dev/null | head -1)
+if [[ -n "$MPFR_DIR" ]] && [[ -f "$MPFR_DIR/configure.ac" ]]; then
+    ln -sfn "$MPFR_DIR" mpfr
+    echo "Linked MPFR from $MPFR_DIR"
+else
+    echo "ERROR: Could not find MPFR source directory" >&2
+    exit 1
+fi
+
+# MPC - search for configure.ac in mpc-src directory
+MPC_DIR=$(find "$BUCK_OUT" -type d -path "*/__mpc-src__/mpc-src" 2>/dev/null | head -1)
+if [[ -n "$MPC_DIR" ]] && [[ -f "$MPC_DIR/configure.ac" ]]; then
+    ln -sfn "$MPC_DIR" mpc
+    echo "Linked MPC from $MPC_DIR"
+else
+    echo "ERROR: Could not find MPC source directory" >&2
+    exit 1
+fi
+
+echo "GCC source dependencies linked successfully"
+ls -la gmp mpfr mpc
 ''',
 
     src_configure = '''
 BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 
-# Need the cross-compiler and glibc in PATH/sysroot
-export PATH="$DESTDIR/tools/bin:$PATH"
+# Find the sysroot from dependencies (where glibc was installed)
+# TOOLCHAIN_ROOT is set by the build system from bdepend directories
+BUILD_SYSROOT=""
+if [ -n "$TOOLCHAIN_ROOT" ]; then
+    # Use the first directory that has usr/lib64 (glibc)
+    IFS=':' read -ra SYSROOT_DIRS <<< "$TOOLCHAIN_ROOT"
+    for dir in "${SYSROOT_DIRS[@]}"; do
+        if [ -d "$dir/usr/lib64" ] && [ -f "$dir/usr/lib64/libc.so.6" ]; then
+            BUILD_SYSROOT="$dir"
+            echo "Found glibc sysroot: $BUILD_SYSROOT"
+            break
+        fi
+    done
+fi
 
-# Clear stale config.cache files that break rebuilds with changed LDFLAGS
-find . -name 'config.cache' -delete 2>/dev/null || true
+if [ -z "$BUILD_SYSROOT" ]; then
+    echo "ERROR: Could not find glibc sysroot in TOOLCHAIN_ROOT" >&2
+    echo "TOOLCHAIN_ROOT=$TOOLCHAIN_ROOT" >&2
+    exit 1
+fi
+
+# Need the cross-compiler from pass1 in PATH
+if [ -n "$TOOLCHAIN_PATH" ]; then
+    # TOOLCHAIN_PATH is already exported by ebuild.sh
+    echo "Using toolchain PATH: $TOOLCHAIN_PATH"
+fi
 
 mkdir -p build && cd build
 ../configure \
     --prefix=/tools \
     --target=$BUCKOS_TARGET \
     --build=$(../config.guess) \
-    --with-build-sysroot="$DESTDIR" \
+    --with-build-sysroot="$BUILD_SYSROOT" \
     --enable-languages=c,c++ \
     --enable-default-pie \
     --enable-default-ssp \
@@ -448,13 +561,32 @@ make -j$(nproc)
 
     src_install = '''
 cd build
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 make DESTDIR="$DESTDIR" install
 
-# Create cc symlink
-ln -sv gcc "$DESTDIR/tools/bin/cc" || true
+# For cross-gcc-pass2 (the final cross-compiler), we DO want unprefixed symlinks
+# so that build systems looking for 'cc' or 'gcc' in /tools/bin find our cross-compiler.
+# These symlinks point to the prefixed tools.
+cd "$DESTDIR/tools/bin"
+
+# First remove any unprefixed tools that were installed (they're duplicates)
+for tool in gcc g++ cpp gcov gcov-dump gcov-tool lto-dump cc c++; do
+    rm -f "$tool" 2>/dev/null || true
+done
+
+# Create symlinks from unprefixed names to prefixed cross-compiler tools
+# This allows build systems that hardcode 'gcc' or 'cc' to work
+ln -sfv "${BUCKOS_TARGET}-gcc" gcc
+ln -sfv "${BUCKOS_TARGET}-gcc" cc
+ln -sfv "${BUCKOS_TARGET}-g++" g++
+ln -sfv "${BUCKOS_TARGET}-g++" c++
+ln -sfv "${BUCKOS_TARGET}-cpp" cpp
+
+echo "Created symlinks for cross-compiler tools:"
+ls -la gcc g++ cc c++ cpp
 ''',
 
-    bdepend = [":cross-libstdcxx"],
+    bdepend = [":cross-gcc-pass1", ":cross-glibc", ":cross-libstdcxx", ":gmp-src", ":mpfr-src", ":mpc-src"],
     depend = [],
     visibility = ["PUBLIC"],
 )

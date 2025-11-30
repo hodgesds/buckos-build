@@ -22,5 +22,9 @@ autotools_package(
     deps = [
         "//packages/linux/system/libs/utility/gmp:gmp",
     ],
+    # Remove .la files - they contain hardcoded paths that break cross-package builds
+    post_install = '''
+find "$DESTDIR" -name "*.la" -delete
+''',
     visibility = ["PUBLIC"],
 )

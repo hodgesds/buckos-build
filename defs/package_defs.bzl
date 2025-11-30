@@ -2692,6 +2692,7 @@ shift 2  # Remove DESTDIR and S from args, remaining args are dependency dirs
 # Convert relative paths to absolute to ensure they work after cd "$S" in phases.sh
 DEP_PATH=""
 DEP_PYTHONPATH=""
+DEP_PERL5LIB=""
 TOOLCHAIN_PATH=""
 TOOLCHAIN_INCLUDE=""
 TOOLCHAIN_ROOT=""
@@ -2734,6 +2735,12 @@ for dep_dir in "$@"; do
             DEP_PYTHONPATH="${{DEP_PYTHONPATH:+$DEP_PYTHONPATH:}}$pypath"
         fi
     done
+    # Add Perl library paths for tools like automake/aclocal
+    for perlpath in "$dep_dir/usr/share/automake"* "$dep_dir/usr/share/autoconf"* "$dep_dir/usr/lib/perl5" "$dep_dir/usr/share/perl5"; do
+        if [ -d "$perlpath" ]; then
+            DEP_PERL5LIB="${{DEP_PERL5LIB:+$DEP_PERL5LIB:}}$perlpath"
+        fi
+    done
 done
 
 # Export toolchain paths for scripts that need them
@@ -2750,6 +2757,11 @@ fi
 # Set up PYTHONPATH for Python-based build tools (meson, etc)
 if [ -n "$DEP_PYTHONPATH" ]; then
     export PYTHONPATH="${{DEP_PYTHONPATH}}${{PYTHONPATH:+:$PYTHONPATH}}"
+fi
+
+# Set up PERL5LIB for Perl-based build tools (automake/aclocal, etc)
+if [ -n "$DEP_PERL5LIB" ]; then
+    export PERL5LIB="${{DEP_PERL5LIB}}${{PERL5LIB:+:$PERL5LIB}}"
 fi
 
 # IMPORTANT: Clear host library paths to prevent host glibc/libraries from leaking

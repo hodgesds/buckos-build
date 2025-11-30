@@ -19,41 +19,27 @@ ebuild_package(
     license = "LGPL-2.1+",
 
     src_configure = '''
-# Find libtirpc from dependencies and set pkg-config variables directly
-TIRPC_INC=""
-TIRPC_LIB=""
-for dep in $DEPS; do
-    if [ -d "$dep/usr/include/tirpc" ]; then
-        TIRPC_INC="$dep/usr/include/tirpc"
-        echo "Found tirpc includes at $TIRPC_INC"
-    fi
-    if [ -f "$dep/usr/lib64/libtirpc.so" ] || [ -f "$dep/usr/lib64/libtirpc.so.3" ]; then
-        TIRPC_LIB="$dep/usr/lib64"
-    elif [ -f "$dep/usr/lib/libtirpc.so" ] || [ -f "$dep/usr/lib/libtirpc.so.3" ]; then
-        TIRPC_LIB="$dep/usr/lib"
-    fi
-done
+# The framework sets PKG_CONFIG_LIBDIR to point to dependency pkgconfig directories
+# libtirpc provides a .pc file, so pkg-config will find it automatically
+echo "PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR"
 
-if [ -z "$TIRPC_INC" ]; then
-    echo "ERROR: libtirpc headers not found in dependencies"
-    echo "Searched DEPS: $DEPS"
+# Verify libtirpc is available via pkg-config (from the buck dependency)
+if ! pkg-config --exists libtirpc; then
+    echo "ERROR: libtirpc not found via pkg-config"
+    echo "This means the libtirpc dependency may not have installed its .pc file"
+    pkg-config --debug --exists libtirpc 2>&1 | head -20 || true
     exit 1
 fi
 
-echo "Using TIRPC_INC=$TIRPC_INC"
-echo "Using TIRPC_LIB=$TIRPC_LIB"
+echo "Found libtirpc via pkg-config:"
+echo "  CFLAGS: $(pkg-config --cflags libtirpc)"
+echo "  LIBS: $(pkg-config --libs libtirpc)"
 
-# Set TIRPC_CFLAGS and TIRPC_LIBS - these are what configure checks for
-export TIRPC_CFLAGS="-I$TIRPC_INC"
-export TIRPC_LIBS="-L$TIRPC_LIB -ltirpc"
-
-./configure \\
-    --prefix=/usr \\
-    --libdir=/usr/lib64 \\
-    --enable-shared \\
-    --disable-static \\
-    TIRPC_CFLAGS="$TIRPC_CFLAGS" \\
-    TIRPC_LIBS="$TIRPC_LIBS"
+./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --enable-shared \
+    --disable-static
 ''',
 
     src_compile = '''

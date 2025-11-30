@@ -101,7 +101,13 @@ sed -i 's/system-systemd\\\\\\\\x2dveritysetup.slice/system-systemd-veritysetup.
         "//packages/linux/system/libs/compression/zstd:zstd",  # For zstd compression
         "//packages/linux/system/libs/ipc/libcap:libcap",  # Required - POSIX capabilities
         "//packages/linux/system/libs/kmod:kmod",  # For systemd-modules-load
-        "//packages/linux/system/security/cryptsetup:cryptsetup",  # For LUKS/dm-crypt support
+        # For LUKS/dm-crypt support (cryptsetup and its dependencies)
+        "//packages/linux/system/security/cryptsetup:cryptsetup",
+        "//packages/linux/system/security/cryptsetup:lvm2",  # devmapper
+        "//packages/linux/system/init/eudev:eudev",  # libudev (needed by lvm2/devmapper)
+        "//packages/linux/network/openssl:openssl",
+        "//packages/linux/system/libs/data/json-c:json-c",
+        "//packages/linux/system/libs/crypto/argon2:argon2",
     ],
     visibility = ["PUBLIC"],
 )

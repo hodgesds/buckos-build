@@ -157,8 +157,9 @@ mkdir -p "$DESTDIR/usr/share/bash-completion/completions"
 download_source(
     name = "hadolint-src",
     src_uri = "https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64",
-    sha256 = "56de6d5e5ec427e17b74fa48d51271c7fc0d61571e98f47cec6b2ecbed4d1fb0",
+    sha256 = "56de6d5e5ec427e17b74fa48d51271c7fc0d61244bf5c90e828aab8362d55010",
     auto_detect_signature = False,
+    extract = False,
 )
 
 ebuild_package(
@@ -174,8 +175,8 @@ true
 """,
     src_install = """
 mkdir -p "$DESTDIR/usr/bin"
-# The downloaded file is the binary itself
-install -m 755 "$SRCS" "$DESTDIR/usr/bin/hadolint"
+# The downloaded file is the binary itself (in the source dir)
+install -m 755 hadolint-Linux-x86_64 "$DESTDIR/usr/bin/hadolint"
 """,
     visibility = ["PUBLIC"],
 )

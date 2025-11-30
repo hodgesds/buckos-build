@@ -54,7 +54,7 @@ mkdir -p "$DESTDIR/usr/libexec/podman"
 install -m 755 target/release/netavark "$DESTDIR/usr/libexec/podman/"
 """,
     bdepend = inherit(["cargo"])["bdepend"] + [
-        "//packages/linux/dev-libs/google/protobuf:protobuf",
+        "//packages/linux/dev-libs/serialization/protobuf:protobuf",
     ],
     visibility = ["PUBLIC"],
 )

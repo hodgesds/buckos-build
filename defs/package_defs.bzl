@@ -49,6 +49,9 @@ def _download_source_impl(ctx: AnalysisContext) -> list[Provider]:
     # Get strip_components value (default is 1 for backward compatibility)
     strip_components = ctx.attrs.strip_components
 
+    # Get extract setting (default True)
+    do_extract = "1" if ctx.attrs.extract else ""
+
     # Normalize sha256 to space-separated string (handles both single string and list)
     sha256_value = ctx.attrs.sha256
     if type(sha256_value) == "list":
@@ -214,6 +217,13 @@ elif [ -n "$AUTO_DETECT" ]; then
     fi
 fi
 
+# Check if extraction is disabled (arg $10)
+DO_EXTRACT="${10}"
+if [ -z "$DO_EXTRACT" ]; then
+    echo "Extraction disabled - keeping file as-is: $FILENAME"
+    exit 0
+fi
+
 # Detect actual file type (not just extension)
 FILETYPE=$(file -b "$FILENAME")
 
@@ -324,6 +334,7 @@ fi
             auto_detect,
             exclude_args,
             str(strip_components),
+            do_extract,
         ]),
         category = "download",
         identifier = ctx.attrs.name,
@@ -342,6 +353,7 @@ download_source = rule(
         "auto_detect_signature": attrs.bool(default = True),
         "exclude_patterns": attrs.list(attrs.string(), default = []),
         "strip_components": attrs.int(default = 1),
+        "extract": attrs.bool(default = True),
     },
 )
 

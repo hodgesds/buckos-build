@@ -35,7 +35,6 @@ DEP_PATH=""
 DEP_PYTHONPATH=""
 DEP_BASE_DIRS=""
 TOOLCHAIN_PATH=""
-TOOLCHAIN_LIBPATH=""
 TOOLCHAIN_INCLUDE=""
 TOOLCHAIN_ROOT=""
 for dep_dir in "${DEP_DIRS_ARRAY[@]}"; do
@@ -51,10 +50,6 @@ for dep_dir in "${DEP_DIRS_ARRAY[@]}"; do
         # Set sysroot from toolchain if not explicitly provided
         if [ -z "$BOOTSTRAP_SYSROOT" ] && [ -d "$dep_dir/tools" ]; then
             BOOTSTRAP_SYSROOT="$dep_dir/tools"
-        fi
-        # Capture bootstrap toolchain library paths for LD_LIBRARY_PATH
-        if [ -d "$dep_dir/tools/lib" ]; then
-            TOOLCHAIN_LIBPATH="${TOOLCHAIN_LIBPATH:+$TOOLCHAIN_LIBPATH:}$dep_dir/tools/lib"
         fi
     fi
     # Capture the full toolchain root directory (for glibc, etc)
@@ -183,6 +178,10 @@ for dep_dir_raw in "${DEP_DIRS_ARRAY[@]}"; do
     if [ -d "$dep_dir/lib" ]; then
         DEP_LIBPATH="${DEP_LIBPATH:+$DEP_LIBPATH:}$dep_dir/lib"
     fi
+    # Bootstrap toolchain uses /tools/lib
+    if [ -d "$dep_dir/tools/lib" ]; then
+        DEP_LIBPATH="${DEP_LIBPATH:+$DEP_LIBPATH:}$dep_dir/tools/lib"
+    fi
     if [ -d "$dep_dir/usr/lib64/pkgconfig" ]; then
         DEP_PKG_CONFIG_PATH="${DEP_PKG_CONFIG_PATH:+$DEP_PKG_CONFIG_PATH:}$dep_dir/usr/lib64/pkgconfig"
     fi
@@ -193,18 +192,12 @@ for dep_dir_raw in "${DEP_DIRS_ARRAY[@]}"; do
         DEP_PKG_CONFIG_PATH="${DEP_PKG_CONFIG_PATH:+$DEP_PKG_CONFIG_PATH:}$dep_dir/usr/share/pkgconfig"
     fi
 done
-# Set up LD_LIBRARY_PATH - bootstrap toolchain libs MUST come first so bootstrap
-# bash, coreutils, etc. can find their ncurses/readline dependencies before
-# any host libraries are found.
-if [ -n "$TOOLCHAIN_LIBPATH" ] || [ -n "$DEP_LIBPATH" ]; then
-    if [ -n "$TOOLCHAIN_LIBPATH" ] && [ -n "$DEP_LIBPATH" ]; then
-        export LD_LIBRARY_PATH="${TOOLCHAIN_LIBPATH}:${DEP_LIBPATH}"
-    elif [ -n "$TOOLCHAIN_LIBPATH" ]; then
-        export LD_LIBRARY_PATH="${TOOLCHAIN_LIBPATH}"
-    else
-        export LD_LIBRARY_PATH="${DEP_LIBPATH}"
-    fi
-fi
+# NOTE: We intentionally DO NOT set LD_LIBRARY_PATH here.
+# Setting LD_LIBRARY_PATH would pollute the host shell (e.g., /bin/bash) that runs
+# these build scripts, causing symbol lookup errors when the host bash tries to
+# load bootstrap libraries (like libreadline.so.8) that were built against different
+# dependencies. The cross-compiled binaries will find their libraries via -L and
+# -rpath flags at link time instead.
 if [ -n "$DEP_LIBPATH" ]; then
     export LIBRARY_PATH="${DEP_LIBPATH}"
     DEP_LDFLAGS=""
@@ -257,6 +250,10 @@ for dep_dir_raw in "${DEP_DIRS_ARRAY[@]}"; do
     fi
     if [ -d "$dep_dir/include" ]; then
         DEP_CPATH="${DEP_CPATH:+$DEP_CPATH:}$dep_dir/include"
+    fi
+    # Bootstrap toolchain uses /tools/include
+    if [ -d "$dep_dir/tools/include" ]; then
+        DEP_CPATH="${DEP_CPATH:+$DEP_CPATH:}$dep_dir/tools/include"
     fi
 done
 if [ -n "$DEP_CPATH" ]; then

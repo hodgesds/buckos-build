@@ -35,6 +35,7 @@ DEP_PATH=""
 DEP_PYTHONPATH=""
 DEP_BASE_DIRS=""
 TOOLCHAIN_PATH=""
+TOOLCHAIN_LIBPATH=""
 TOOLCHAIN_INCLUDE=""
 TOOLCHAIN_ROOT=""
 for dep_dir in "${DEP_DIRS_ARRAY[@]}"; do
@@ -50,6 +51,10 @@ for dep_dir in "${DEP_DIRS_ARRAY[@]}"; do
         # Set sysroot from toolchain if not explicitly provided
         if [ -z "$BOOTSTRAP_SYSROOT" ] && [ -d "$dep_dir/tools" ]; then
             BOOTSTRAP_SYSROOT="$dep_dir/tools"
+        fi
+        # Capture bootstrap toolchain library paths for LD_LIBRARY_PATH
+        if [ -d "$dep_dir/tools/lib" ]; then
+            TOOLCHAIN_LIBPATH="${TOOLCHAIN_LIBPATH:+$TOOLCHAIN_LIBPATH:}$dep_dir/tools/lib"
         fi
     fi
     # Capture the full toolchain root directory (for glibc, etc)
@@ -188,8 +193,19 @@ for dep_dir_raw in "${DEP_DIRS_ARRAY[@]}"; do
         DEP_PKG_CONFIG_PATH="${DEP_PKG_CONFIG_PATH:+$DEP_PKG_CONFIG_PATH:}$dep_dir/usr/share/pkgconfig"
     fi
 done
+# Set up LD_LIBRARY_PATH - bootstrap toolchain libs MUST come first so bootstrap
+# bash, coreutils, etc. can find their ncurses/readline dependencies before
+# any host libraries are found.
+if [ -n "$TOOLCHAIN_LIBPATH" ] || [ -n "$DEP_LIBPATH" ]; then
+    if [ -n "$TOOLCHAIN_LIBPATH" ] && [ -n "$DEP_LIBPATH" ]; then
+        export LD_LIBRARY_PATH="${TOOLCHAIN_LIBPATH}:${DEP_LIBPATH}"
+    elif [ -n "$TOOLCHAIN_LIBPATH" ]; then
+        export LD_LIBRARY_PATH="${TOOLCHAIN_LIBPATH}"
+    else
+        export LD_LIBRARY_PATH="${DEP_LIBPATH}"
+    fi
+fi
 if [ -n "$DEP_LIBPATH" ]; then
-    export LD_LIBRARY_PATH="${DEP_LIBPATH}"
     export LIBRARY_PATH="${DEP_LIBPATH}"
     DEP_LDFLAGS=""
     IFS=':' read -ra LIB_DIRS <<< "$DEP_LIBPATH"

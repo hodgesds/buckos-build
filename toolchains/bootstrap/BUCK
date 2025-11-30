@@ -604,6 +604,538 @@ ls -la gcc g++ cc c++ cpp
 )
 
 # =============================================================================
+# Stage 2: Bootstrap Core Utilities
+# =============================================================================
+# These are cross-compiled using the bootstrap toolchain and provide the
+# basic utilities needed to run build scripts without depending on host tools.
+
+download_source(
+    name = "ncurses-src",
+    src_uri = "https://mirrors.kernel.org/gnu/ncurses/ncurses-6.4.tar.gz",
+    sha256 = "6931283d9ac87c5073f30b6290c4c75f21632bb4fc3603ac8100812bed248159",
+    signature_required = False,
+)
+
+ebuild_package(
+    name = "bootstrap-ncurses",
+    source = ":ncurses-src",
+    version = "6.4",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "Terminal handling library for bootstrap",
+    homepage = "https://invisible-island.net/ncurses/",
+    license = "MIT",
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+mkdir -p build && cd build
+../configure \
+    --prefix=/tools \
+    --host=$BUCKOS_TARGET \
+    --build=$(../config.guess) \
+    --with-shared \
+    --without-debug \
+    --without-ada \
+    --enable-widec \
+    --enable-overwrite \
+    --without-manpages \
+    --without-progs \
+    --without-tests
+''',
+
+    src_compile = '''
+cd build
+make -j$(nproc)
+''',
+
+    src_install = '''
+cd build
+make DESTDIR="$DESTDIR" install
+# Create non-wide symlinks
+cd "$DESTDIR/tools/lib"
+for lib in ncurses form panel menu; do
+    ln -sf lib${lib}w.so lib${lib}.so 2>/dev/null || true
+    ln -sf lib${lib}w.a lib${lib}.a 2>/dev/null || true
+done
+ln -sf libncursesw.so libcurses.so 2>/dev/null || true
+# tinfo compatibility
+ln -sf libncursesw.so libtinfo.so 2>/dev/null || true
+ln -sf libncursesw.so libtinfow.so 2>/dev/null || true
+''',
+
+    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+download_source(
+    name = "readline-src",
+    src_uri = "https://mirrors.kernel.org/gnu/readline/readline-8.2.tar.gz",
+    sha256 = "3feb7171f16a84ee82ca18a36d7b9be109a52c04f492a053331d7d1095007c35",
+    signature_required = False,
+)
+
+ebuild_package(
+    name = "bootstrap-readline",
+    source = ":readline-src",
+    version = "8.2",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "Command line editing library for bootstrap",
+    homepage = "https://tiswww.case.edu/php/chet/readline/rltop.html",
+    license = "GPL-3.0",
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+./configure \
+    --prefix=/tools \
+    --host=$BUCKOS_TARGET \
+    --build=$(./support/config.guess) \
+    --disable-static \
+    --with-curses
+''',
+
+    src_compile = '''
+make -j$(nproc) SHLIB_LIBS="-lncursesw"
+''',
+
+    src_install = '''
+make DESTDIR="$DESTDIR" install SHLIB_LIBS="-lncursesw"
+''',
+
+    bdepend = [":cross-gcc-pass2", ":cross-glibc", ":bootstrap-ncurses"],
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+download_source(
+    name = "bash-src",
+    src_uri = "https://mirrors.kernel.org/gnu/bash/bash-5.2.tar.gz",
+    sha256 = "a139c166df7ff4471c5e0733051642ee5556c1cc8a4a78f145583c5c81ab32fb",
+    signature_required = False,
+)
+
+ebuild_package(
+    name = "bootstrap-bash",
+    source = ":bash-src",
+    version = "5.2",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "Bourne Again SHell for bootstrap",
+    homepage = "https://www.gnu.org/software/bash/",
+    license = "GPL-3.0",
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+./configure \
+    --prefix=/tools \
+    --host=$BUCKOS_TARGET \
+    --build=$(support/config.guess) \
+    --without-bash-malloc \
+    --with-installed-readline
+''',
+
+    src_compile = '''
+make -j$(nproc)
+''',
+
+    src_install = '''
+make DESTDIR="$DESTDIR" install
+ln -sf bash "$DESTDIR/tools/bin/sh"
+''',
+
+    bdepend = [":cross-gcc-pass2", ":cross-glibc", ":bootstrap-readline", ":bootstrap-ncurses"],
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+download_source(
+    name = "coreutils-src",
+    src_uri = "https://mirrors.kernel.org/gnu/coreutils/coreutils-9.4.tar.xz",
+    sha256 = "ea613a4cf44612326e917201bbbcdfbd301de21ffc3b59b6e5c07e040b275e52",
+    signature_required = False,
+)
+
+ebuild_package(
+    name = "bootstrap-coreutils",
+    source = ":coreutils-src",
+    version = "9.4",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "Core utilities for bootstrap",
+    homepage = "https://www.gnu.org/software/coreutils/",
+    license = "GPL-3.0",
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+./configure \
+    --prefix=/tools \
+    --host=$BUCKOS_TARGET \
+    --build=$(build-aux/config.guess) \
+    --enable-install-program=hostname \
+    --enable-no-install-program=kill,uptime
+''',
+
+    src_compile = '''
+make -j$(nproc)
+''',
+
+    src_install = '''
+make DESTDIR="$DESTDIR" install
+''',
+
+    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+download_source(
+    name = "make-src",
+    src_uri = "https://mirrors.kernel.org/gnu/make/make-4.4.1.tar.gz",
+    sha256 = "dd16fb1d67bfab79a72f5e8390735c49e3e8e70b4945a15ab1f81ddb78658fb3",
+    signature_required = False,
+)
+
+ebuild_package(
+    name = "bootstrap-make",
+    source = ":make-src",
+    version = "4.4.1",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "GNU Make for bootstrap",
+    homepage = "https://www.gnu.org/software/make/",
+    license = "GPL-3.0",
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+./configure \
+    --prefix=/tools \
+    --host=$BUCKOS_TARGET \
+    --build=$(build-aux/config.guess) \
+    --without-guile
+''',
+
+    src_compile = '''
+make -j$(nproc)
+''',
+
+    src_install = '''
+make DESTDIR="$DESTDIR" install
+''',
+
+    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+download_source(
+    name = "sed-src",
+    src_uri = "https://mirrors.kernel.org/gnu/sed/sed-4.9.tar.xz",
+    sha256 = "6e226b732e1cd739464ad6862bd1a1aba42d7982922da7a53519631d24975181",
+    signature_required = False,
+)
+
+ebuild_package(
+    name = "bootstrap-sed",
+    source = ":sed-src",
+    version = "4.9",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "Stream editor for bootstrap",
+    homepage = "https://www.gnu.org/software/sed/",
+    license = "GPL-3.0",
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+./configure \
+    --prefix=/tools \
+    --host=$BUCKOS_TARGET \
+    --build=$(build-aux/config.guess)
+''',
+
+    src_compile = '''
+make -j$(nproc)
+''',
+
+    src_install = '''
+make DESTDIR="$DESTDIR" install
+''',
+
+    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+download_source(
+    name = "gawk-src",
+    src_uri = "https://mirrors.kernel.org/gnu/gawk/gawk-5.3.2.tar.xz",
+    sha256 = "f8c3486509de705192138b00ef2c00bbbdd0e84c30d5c07d23fc73a9dc4cc9cc",
+    signature_required = False,
+)
+
+ebuild_package(
+    name = "bootstrap-gawk",
+    source = ":gawk-src",
+    version = "5.3.2",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "GNU Awk for bootstrap",
+    homepage = "https://www.gnu.org/software/gawk/",
+    license = "GPL-3.0",
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+./configure \
+    --prefix=/tools \
+    --host=$BUCKOS_TARGET \
+    --build=$(build-aux/config.guess)
+''',
+
+    src_compile = '''
+make -j$(nproc)
+''',
+
+    src_install = '''
+make DESTDIR="$DESTDIR" install
+ln -sf gawk "$DESTDIR/tools/bin/awk"
+''',
+
+    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+download_source(
+    name = "grep-src",
+    src_uri = "https://mirrors.kernel.org/gnu/grep/grep-3.11.tar.xz",
+    sha256 = "1db2aedde89d0dea42b16d9528f894c8d15dae4e190b59aecc78f5a951276eab",
+    signature_required = False,
+)
+
+ebuild_package(
+    name = "bootstrap-grep",
+    source = ":grep-src",
+    version = "3.11",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "GNU Grep for bootstrap",
+    homepage = "https://www.gnu.org/software/grep/",
+    license = "GPL-3.0",
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+./configure \
+    --prefix=/tools \
+    --host=$BUCKOS_TARGET \
+    --build=$(build-aux/config.guess)
+''',
+
+    src_compile = '''
+make -j$(nproc)
+''',
+
+    src_install = '''
+make DESTDIR="$DESTDIR" install
+''',
+
+    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+download_source(
+    name = "findutils-src",
+    src_uri = "https://mirrors.kernel.org/gnu/findutils/findutils-4.9.0.tar.xz",
+    sha256 = "a2bfb8c09d436770edc59f50fa483e785b161a3b7b9d547573cb08065fd462fe",
+    signature_required = False,
+)
+
+ebuild_package(
+    name = "bootstrap-findutils",
+    source = ":findutils-src",
+    version = "4.9.0",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "GNU Find utilities for bootstrap",
+    homepage = "https://www.gnu.org/software/findutils/",
+    license = "GPL-3.0",
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+./configure \
+    --prefix=/tools \
+    --host=$BUCKOS_TARGET \
+    --build=$(build-aux/config.guess) \
+    --localstatedir=/tools/var/lib/locate
+''',
+
+    src_compile = '''
+make -j$(nproc)
+''',
+
+    src_install = '''
+make DESTDIR="$DESTDIR" install
+''',
+
+    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+download_source(
+    name = "diffutils-src",
+    src_uri = "https://mirrors.kernel.org/gnu/diffutils/diffutils-3.10.tar.xz",
+    sha256 = "90e5e93cc724e4ebe12ede80df1634063c7a855692685919bfe60b556c9bd09e",
+    signature_required = False,
+)
+
+ebuild_package(
+    name = "bootstrap-diffutils",
+    source = ":diffutils-src",
+    version = "3.10",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "GNU Diff utilities for bootstrap",
+    homepage = "https://www.gnu.org/software/diffutils/",
+    license = "GPL-3.0",
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+./configure \
+    --prefix=/tools \
+    --host=$BUCKOS_TARGET \
+    --build=$(build-aux/config.guess)
+''',
+
+    src_compile = '''
+make -j$(nproc)
+''',
+
+    src_install = '''
+make DESTDIR="$DESTDIR" install
+''',
+
+    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+download_source(
+    name = "tar-src",
+    src_uri = "https://mirrors.kernel.org/gnu/tar/tar-1.35.tar.xz",
+    sha256 = "4d62ff37342ec7aed748535323930c7cf94acf71c3591882b26a7ea50f3edc16",
+    signature_required = False,
+)
+
+ebuild_package(
+    name = "bootstrap-tar",
+    source = ":tar-src",
+    version = "1.35",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "GNU Tar for bootstrap",
+    homepage = "https://www.gnu.org/software/tar/",
+    license = "GPL-3.0",
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+./configure \
+    --prefix=/tools \
+    --host=$BUCKOS_TARGET \
+    --build=$(build-aux/config.guess)
+''',
+
+    src_compile = '''
+make -j$(nproc)
+''',
+
+    src_install = '''
+make DESTDIR="$DESTDIR" install
+''',
+
+    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+download_source(
+    name = "gzip-src",
+    src_uri = "https://mirrors.kernel.org/gnu/gzip/gzip-1.13.tar.xz",
+    sha256 = "7454eb6935db17c6655576c2e1b0fabefd38b4d0936e0f87f48cd062ce91a057",
+    signature_required = False,
+)
+
+ebuild_package(
+    name = "bootstrap-gzip",
+    source = ":gzip-src",
+    version = "1.13",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "GNU Gzip for bootstrap",
+    homepage = "https://www.gnu.org/software/gzip/",
+    license = "GPL-3.0",
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+./configure \
+    --prefix=/tools \
+    --host=$BUCKOS_TARGET \
+    --build=$(build-aux/config.guess)
+''',
+
+    src_compile = '''
+make -j$(nproc)
+''',
+
+    src_install = '''
+make DESTDIR="$DESTDIR" install
+''',
+
+    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+download_source(
+    name = "xz-src",
+    src_uri = "https://github.com/tukaani-project/xz/releases/download/v5.4.5/xz-5.4.5.tar.xz",
+    sha256 = "da9dec6c12cf2ecf269c31ab65b5de18e8e52b96f35d5bcd08c12b43e6878803",
+    signature_required = False,
+)
+
+ebuild_package(
+    name = "bootstrap-xz",
+    source = ":xz-src",
+    version = "5.4.5",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "XZ Utils for bootstrap",
+    homepage = "https://tukaani.org/xz/",
+    license = "public-domain LGPL-2.1+ GPL-2+",
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+./configure \
+    --prefix=/tools \
+    --host=$BUCKOS_TARGET \
+    --build=$(build-aux/config.guess) \
+    --disable-static
+''',
+
+    src_compile = '''
+make -j$(nproc)
+''',
+
+    src_install = '''
+make DESTDIR="$DESTDIR" install
+''',
+
+    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
 # Complete Bootstrap Toolchain
 # =============================================================================
 
@@ -614,11 +1146,12 @@ ls -la gcc g++ cc c++ cpp
 #   - Cross GCC (gcc, g++)
 #   - Glibc and headers
 #   - Libstdc++
+#   - Core utilities (bash, coreutils, make, sed, awk, grep, etc.)
 
 ebuild_package(
     name = "bootstrap-toolchain",
     source = ":gcc-src",  # Dummy source, we just aggregate deps
-    version = "1.0",
+    version = "2.0",
     category = "toolchain/bootstrap",
     slot = "0",
     description = "Complete bootstrap toolchain for BuckOS",
@@ -631,17 +1164,41 @@ ebuild_package(
     src_install = '''
 # Create a marker file and symlinks to indicate this is the toolchain root
 mkdir -p "$DESTDIR/tools"
-echo "BuckOS Bootstrap Toolchain v1.0" > "$DESTDIR/tools/.bootstrap-toolchain"
-echo "Target: x86_64-buckos-linux-gnu" >> "$DESTDIR/tools/.bootstrap-toolchain"
-echo "Glibc: 2.42" >> "$DESTDIR/tools/.bootstrap-toolchain"
-echo "GCC: 14.2.0" >> "$DESTDIR/tools/.bootstrap-toolchain"
+cat > "$DESTDIR/tools/.bootstrap-toolchain" << 'EOF'
+BuckOS Bootstrap Toolchain v2.0
+Target: x86_64-buckos-linux-gnu
+Glibc: 2.42
+GCC: 14.2.0
+
+Core utilities included:
+- bash, coreutils, make
+- sed, gawk, grep
+- findutils, diffutils
+- tar, gzip, xz
+- ncurses, readline
+EOF
 ''',
 
     bdepend = [
+        # Stage 1: Cross-compiler
         ":cross-binutils",
         ":cross-gcc-pass2",
         ":cross-glibc",
         ":linux-headers",
+        # Stage 2: Core utilities
+        ":bootstrap-ncurses",
+        ":bootstrap-readline",
+        ":bootstrap-bash",
+        ":bootstrap-coreutils",
+        ":bootstrap-make",
+        ":bootstrap-sed",
+        ":bootstrap-gawk",
+        ":bootstrap-grep",
+        ":bootstrap-findutils",
+        ":bootstrap-diffutils",
+        ":bootstrap-tar",
+        ":bootstrap-gzip",
+        ":bootstrap-xz",
     ],
     depend = [],
     visibility = ["PUBLIC"],

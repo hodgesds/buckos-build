@@ -209,7 +209,7 @@ ZSH
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/system/libs/data/expat:expat",
         "//packages/linux/desktop/libdrm:libdrm",
-        "//packages/linux/desktop/mesa:mesa",
+        # "//packages/linux/desktop/mesa:mesa",  # Disabled: requires Python mako module
     ],
     visibility = ["PUBLIC"],
 )

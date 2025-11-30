@@ -107,7 +107,7 @@ filegroup(
         "//packages/linux/system/init/eudev:eudev",
         # Filesystem tools
         "//packages/linux/system/filesystem/management/lvm2:lvm2",
-        "//packages/linux/system/filesystem/management/mdadm:mdadm",
+        # "//packages/linux/system/filesystem/management/mdadm:mdadm",  # Disabled: GCC 14+ PIE/warning errors
         "//packages/linux/system/filesystem/management/cryptsetup:cryptsetup",
         # Bootloader
         "//packages/linux/boot/grub:grub",

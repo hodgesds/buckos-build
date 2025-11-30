@@ -1,23 +1,24 @@
-load("//defs:package_defs.bzl", "download_source", "meson_package")
+# TODO: wev - Disabled: uses Makefile not meson, needs to be converted to autotools_package
+# load("//defs:package_defs.bzl", "download_source", "meson_package")
 
-download_source(
-    name = "wev-src",
-    src_uri = "https://git.sr.ht/~sircmpwn/wev/archive/1.0.0.tar.gz",
-    sha256 = "613a1df1a4879d50ce72023de14aaf05be2e6f51346e84a69f50fc6d8502bbf4",
-    signature_required = False,
-)
+# download_source(
+#     name = "wev-src",
+#     src_uri = "https://git.sr.ht/~sircmpwn/wev/archive/1.0.0.tar.gz",
+#     sha256 = "613a1df1a4879d50ce72023de14aaf05be2e6f51346e84a69f50fc6d8502bbf4",
+#     signature_required = False,
+# )
 
-meson_package(
-    name = "wev",
-    source = ":wev-src",
-    version = "1.0.0",
-    description = "Wayland event viewer",
-    homepage = "https://git.sr.ht/~sircmpwn/wev",
-    license = "MIT",
-    meson_args = [],
-    deps = [
-        "//packages/linux/desktop/wayland:wayland",
-        "//packages/linux/desktop/wayland:wayland-protocols",
-    ],
-    visibility = ["PUBLIC"],
-)
+# meson_package(
+#     name = "wev",
+#     source = ":wev-src",
+#     version = "1.0.0",
+#     description = "Wayland event viewer",
+#     homepage = "https://git.sr.ht/~sircmpwn/wev",
+#     license = "MIT",
+#     meson_args = [],
+#     deps = [
+#         "//packages/linux/desktop/wayland:wayland",
+#         "//packages/linux/desktop/wayland:wayland-protocols",
+#     ],
+#     visibility = ["PUBLIC"],
+# )

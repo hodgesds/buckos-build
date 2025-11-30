@@ -190,7 +190,7 @@ filegroup(
         "//packages/linux/network/vpn/strongswan:strongswan",
         "//packages/linux/network/vpn/libreswan:libreswan",
         "//packages/linux/network/vpn/openconnect:openconnect",
-        "//packages/linux/network/vpn/tinc:tinc",
+        # "//packages/linux/network/vpn/tinc:tinc",  # Disabled: autoreconf fails - Automake::Config Perl module not found
         "//packages/linux/network/vpn/zerotier:zerotier",
         "//packages/linux/network/vpn/nebula:nebula",
     ],
@@ -212,7 +212,7 @@ filegroup(
 filegroup(
     name = "vpn-mesh",
     srcs = [
-        "//packages/linux/network/vpn/tinc:tinc",
+        # "//packages/linux/network/vpn/tinc:tinc",  # Disabled: autoreconf fails - Automake::Config Perl module not found
         "//packages/linux/network/vpn/zerotier:zerotier",
         "//packages/linux/network/vpn/nebula:nebula",
         "//packages/linux/network/vpn/tailscale:tailscale",
@@ -270,7 +270,7 @@ filegroup(
 filegroup(
     name = "benchmark-packages",
     srcs = [
-        "//packages/linux/benchmarks/stress-ng:stress-ng",
+        # "//packages/linux/benchmarks/stress-ng:stress-ng",  # Disabled: linker error
         "//packages/linux/benchmarks/fio:fio",
         "//packages/linux/benchmarks/iperf3:iperf3",
         "//packages/linux/benchmarks/hackbench:hackbench",
@@ -366,79 +366,90 @@ filegroup(
 # =============================================================================
 
 # Full desktop environments
-alias(
-    name = "kde-plasma",
-    actual = "//packages/linux/desktop/kde:kde-plasma",
-    visibility = ["PUBLIC"],
-)
+# Disabled: needs Qt6 and KDE Frameworks
+# alias(
+#     name = "kde-plasma",
+#     actual = "//packages/linux/desktop/kde:kde-plasma",
+#     visibility = ["PUBLIC"],
+# )
 
-alias(
-    name = "xfce",
-    actual = "//packages/linux/desktop/xfce:xfce",
-    visibility = ["PUBLIC"],
-)
+# Disabled until intltool dependencies are available
+# alias(
+#     name = "xfce",
+#     actual = "//packages/linux/desktop/xfce:xfce",
+#     visibility = ["PUBLIC"],
+# )
 
-alias(
-    name = "lxqt",
-    actual = "//packages/linux/desktop/lxqt:lxqt",
-    visibility = ["PUBLIC"],
-)
+# Disabled until Qt5 dependencies are available
+# alias(
+#     name = "lxqt",
+#     actual = "//packages/linux/desktop/lxqt:lxqt",
+#     visibility = ["PUBLIC"],
+# )
 
-alias(
-    name = "cinnamon",
-    actual = "//packages/linux/desktop/cinnamon:cinnamon-desktop",
-    visibility = ["PUBLIC"],
-)
+# Disabled: needs cjs-1.0 (Cinnamon JavaScript)
+# alias(
+#     name = "cinnamon",
+#     actual = "//packages/linux/desktop/cinnamon:cinnamon-desktop",
+#     visibility = ["PUBLIC"],
+# )
 
-alias(
-    name = "mate",
-    actual = "//packages/linux/desktop/mate:mate",
-    visibility = ["PUBLIC"],
-)
+# Disabled until GTK3 and X11 session dependencies are available
+# alias(
+#     name = "mate",
+#     actual = "//packages/linux/desktop/mate:mate",
+#     visibility = ["PUBLIC"],
+# )
 
-alias(
-    name = "budgie",
-    actual = "//packages/linux/desktop/budgie:budgie",
-    visibility = ["PUBLIC"],
-)
+# Disabled: requires Vala compiler
+# alias(
+#     name = "budgie",
+#     actual = "//packages/linux/desktop/budgie:budgie",
+#     visibility = ["PUBLIC"],
+# )
 
 # Wayland compositors
-alias(
-    name = "sway",
-    actual = "//packages/linux/desktop/sway:sway-desktop",
-    visibility = ["PUBLIC"],
-)
+# Disabled: needs wlroots
+# alias(
+#     name = "sway",
+#     actual = "//packages/linux/desktop/sway:sway-desktop",
+#     visibility = ["PUBLIC"],
+# )
 
-alias(
-    name = "hyprland",
-    actual = "//packages/linux/desktop/hyprland:hyprland-desktop",
-    visibility = ["PUBLIC"],
-)
+# Disabled: needs OpenGL (mesa requires Python mako)
+# alias(
+#     name = "hyprland",
+#     actual = "//packages/linux/desktop/hyprland:hyprland-desktop",
+#     visibility = ["PUBLIC"],
+# )
 
-alias(
-    name = "wayfire",
-    actual = "//packages/linux/desktop/wayfire:wayfire-desktop",
-    visibility = ["PUBLIC"],
-)
+# Disabled: needs wlroots
+# alias(
+#     name = "wayfire",
+#     actual = "//packages/linux/desktop/wayfire:wayfire-desktop",
+#     visibility = ["PUBLIC"],
+# )
 
-# X11 window managers
-alias(
-    name = "i3",
-    actual = "//packages/linux/desktop/i3:i3-desktop",
-    visibility = ["PUBLIC"],
-)
+# X11 window managers - Disabled until i3 dependencies are available
+# alias(
+#     name = "i3",
+#     actual = "//packages/linux/desktop/i3:i3-desktop",
+#     visibility = ["PUBLIC"],
+# )
 
-alias(
-    name = "bspwm",
-    actual = "//packages/linux/desktop/bspwm:bspwm-desktop",
-    visibility = ["PUBLIC"],
-)
+# Disabled: bspwm needs XCB dependencies that don't exist yet
+# alias(
+#     name = "bspwm",
+#     actual = "//packages/linux/desktop/bspwm:bspwm-desktop",
+#     visibility = ["PUBLIC"],
+# )
 
-alias(
-    name = "awesome",
-    actual = "//packages/linux/desktop/awesome:awesome-desktop",
-    visibility = ["PUBLIC"],
-)
+# Disabled: awesome needs Lua and XCB dependencies that don't exist yet
+# alias(
+#     name = "awesome",
+#     actual = "//packages/linux/desktop/awesome:awesome-desktop",
+#     visibility = ["PUBLIC"],
+# )
 
 # =============================================================================
 # Desktop package groups
@@ -556,12 +567,12 @@ alias(
     visibility = ["PUBLIC"],
 )
 
-# crosvm - Chrome OS VMM
-alias(
-    name = "crosvm",
-    actual = "//packages/linux/emulation/utilities/crosvm:crosvm",
-    visibility = ["PUBLIC"],
-)
+# crosvm - Chrome OS VMM - Disabled: depends on virglrenderer (mesa)
+# alias(
+#     name = "crosvm",
+#     actual = "//packages/linux/emulation/utilities/crosvm:crosvm",
+#     visibility = ["PUBLIC"],
+# )
 
 # virtme-ng - Fast kernel testing
 alias(
@@ -794,35 +805,40 @@ task_set(
 # Desktop Environment Sets
 # =============================================================================
 
-desktop_set(
-    name = "desktop-kde",
-    environment = "kde-desktop",
-    description = "KDE Plasma desktop environment",
-)
+# Disabled: needs Qt6 and KDE Frameworks
+# desktop_set(
+#     name = "desktop-kde",
+#     environment = "kde-desktop",
+#     description = "KDE Plasma desktop environment",
+# )
 
-desktop_set(
-    name = "desktop-xfce",
-    environment = "xfce-desktop",
-    description = "XFCE desktop environment",
-)
+# Disabled until intltool dependencies are available
+# desktop_set(
+#     name = "desktop-xfce",
+#     environment = "xfce-desktop",
+#     description = "XFCE desktop environment",
+# )
 
-desktop_set(
-    name = "desktop-sway",
-    environment = "sway-desktop",
-    description = "Sway Wayland compositor",
-)
+# Disabled: needs wlroots
+# desktop_set(
+#     name = "desktop-sway",
+#     environment = "sway-desktop",
+#     description = "Sway Wayland compositor",
+# )
 
-desktop_set(
-    name = "desktop-hyprland",
-    environment = "hyprland-desktop",
-    description = "Hyprland Wayland compositor",
-)
+# Disabled: needs OpenGL (mesa requires Python mako)
+# desktop_set(
+#     name = "desktop-hyprland",
+#     environment = "hyprland-desktop",
+#     description = "Hyprland Wayland compositor",
+# )
 
-desktop_set(
-    name = "desktop-i3",
-    environment = "i3-desktop",
-    description = "i3 tiling window manager",
-)
+# Disabled until i3 dependencies are available
+# desktop_set(
+#     name = "desktop-i3",
+#     environment = "i3-desktop",
+#     description = "i3 tiling window manager",
+# )
 
 # =============================================================================
 # Combined Sets (Example Configurations)

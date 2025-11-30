@@ -27,7 +27,7 @@ autotools_package(
         "--enable-x11",
         "--enable-xv",
         "--enable-gl",
-        "--enable-vdpau",
+        "--disable-vdpau",  # Disabled: vdpau needs X11 libs
         "--enable-vaapi",
         "--enable-fbdev",
         "--enable-sdl",
@@ -59,7 +59,7 @@ DESTDIR=$OUT make install
     deps = [
         "//packages/linux/graphics/video/ffmpeg:ffmpeg",
         "//packages/linux/graphics/video/libva:libva",
-        "//packages/linux/graphics/video/vdpau:vdpau",
+        # "//packages/linux/graphics/video/vdpau:vdpau",  # Disabled: needs X11 libs
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
         "//packages/linux/audio/daemons/pulseaudio:pulseaudio",
         "//packages/linux/core/zlib:zlib",

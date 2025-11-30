@@ -42,7 +42,7 @@ DESTDIR=$OUT make install
         # "//packages/linux/core/jsoncpp:jsoncpp",  # TODO: not packaged yet
         # "//packages/linux/core/zeromq:zeromq",  # TODO: not packaged yet,
         "//packages/linux/desktop/qt:qt5",
-        "//packages/linux/desktop/mesa:mesa",
+        # "//packages/linux/desktop/mesa:mesa",  # Disabled: requires Python mako module
     ],
     visibility = ["PUBLIC"],
 )

@@ -92,10 +92,12 @@ autotools_package(
     description = "Represent an operation awaiting completion",
     homepage = "https://metacpan.org/pod/Future",
     license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
-    pre_configure = """
-        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    src_configure = """
+        perl Makefile.PL PREFIX=/usr INSTALLDIRS=vendor
     """,
-    configure_args = [],
+    src_install = """
+        make DESTDIR="$DESTDIR" install
+    """,
     deps = [
         "//packages/linux/lang/perl:perl",
     ],

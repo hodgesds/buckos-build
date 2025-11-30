@@ -15,7 +15,7 @@ filegroup(
     name = "xorg-drivers",
     srcs = [
         "//packages/linux/laptop/input/xf86-input-libinput:xf86-input-libinput",
-        "//packages/linux/laptop/input/xf86-input-synaptics:xf86-input-synaptics",
+        # "//packages/linux/laptop/input/xf86-input-synaptics:xf86-input-synaptics",  # Disabled: requires X.org server headers
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -47,7 +47,7 @@ filegroup(
         "//packages/linux/laptop/input/mtdev:mtdev",
         "//packages/linux/laptop/input/libinput:libinput",
         "//packages/linux/laptop/input/xf86-input-libinput:xf86-input-libinput",
-        "//packages/linux/laptop/input/xf86-input-synaptics:xf86-input-synaptics",
+        # "//packages/linux/laptop/input/xf86-input-synaptics:xf86-input-synaptics",  # Disabled: requires X.org server headers
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

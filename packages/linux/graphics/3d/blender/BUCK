@@ -64,7 +64,7 @@ mkdir -p $OUT/usr/share/icons/hicolor/scalable/apps
     deps = [
         "//packages/linux/lang/python:python",
         "//packages/linux/dev-libs/boost:boost",
-        "//packages/linux/desktop/mesa:mesa",
+        # "//packages/linux/desktop/mesa:mesa",  # Disabled: requires Python mako module
         "//packages/linux/dev-libs/openexr:openexr",
         "//packages/linux/system/libs/image/openjpeg:openjpeg",
         "//packages/linux/graphics/video/ffmpeg:ffmpeg",

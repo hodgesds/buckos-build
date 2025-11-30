@@ -17,6 +17,7 @@ cmake_package(
     cmake_args = [],
     deps = [
         "//packages/linux/desktop/wayland:wayland",
+        "//packages/linux/core/libffi:libffi",
     ],
     visibility = ["PUBLIC"],
 )

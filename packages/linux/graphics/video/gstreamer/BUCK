@@ -79,7 +79,7 @@ meson_package(
     deps = [
         ":gstreamer",
         ":gst-plugins-base",
-        "//packages/linux/graphics/video/libvpx:libvpx",
+        # "//packages/linux/graphics/video/libvpx:libvpx",  # Disabled: needs nasm
     ],
     maintainers = [],
     visibility = ["PUBLIC"],

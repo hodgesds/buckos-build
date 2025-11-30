@@ -96,14 +96,14 @@ mkdir -p "$DESTDIR/usr/share/fish/vendor_completions.d"
 """,
     rdepend = [
         "//packages/linux/system/libs/ipc/libseccomp:libseccomp",
-        "//packages/linux/system/libs/crypto/gpgme:gpgme",
+        # "//packages/linux/system/libs/crypto/gpgme:gpgme",  # Disabled: gpgme depends on gnupg (configure can't find libksba)
         "//packages/linux/system/containers/runtime:crun",
         "//packages/linux/system/containers/runtime:conmon",
         "//packages/linux/system/containers/network:cni-plugins",
         "//packages/linux/system/containers/network:netavark",
         "//packages/linux/system/containers/network:aardvark-dns",
         "//packages/linux/system/containers/podman:containers-common",
-        "//packages/linux/system/containers/storage:fuse-overlayfs",
+        # "//packages/linux/system/containers/storage:fuse-overlayfs",  # Disabled: needs source extraction fix
         "//packages/linux/system/containers/network:slirp4netns",
     ],
     bdepend = [
@@ -143,10 +143,10 @@ mkdir -p "$DESTDIR/usr/share/bash-completion/completions"
 """,
     rdepend = [
         "//packages/linux/system/libs/ipc/libseccomp:libseccomp",
-        "//packages/linux/system/libs/crypto/gpgme:gpgme",
+        # "//packages/linux/system/libs/crypto/gpgme:gpgme",  # Disabled: gpgme depends on gnupg (configure can't find libksba)
         "//packages/linux/system/containers/runtime:crun",
         "//packages/linux/system/containers/podman:containers-common",
-        "//packages/linux/system/containers/storage:fuse-overlayfs",
+        # "//packages/linux/system/containers/storage:fuse-overlayfs",  # Disabled: needs source extraction fix
         "//packages/linux/system/containers/network:slirp4netns",
     ],
     bdepend = [
@@ -185,7 +185,7 @@ mkdir -p "$DESTDIR/usr/share/bash-completion/completions"
 ./bin/skopeo completion bash > "$DESTDIR/usr/share/bash-completion/completions/skopeo" || true
 """,
     rdepend = [
-        "//packages/linux/system/libs/crypto/gpgme:gpgme",
+        # "//packages/linux/system/libs/crypto/gpgme:gpgme",  # Disabled: gpgme depends on gnupg (configure can't find libksba)
         "//packages/linux/system/containers/podman:containers-common",
     ],
     bdepend = [

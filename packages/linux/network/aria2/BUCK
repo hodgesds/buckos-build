@@ -19,6 +19,10 @@ autotools_package(
         "ssl": ["//packages/linux/network/openssl:openssl"],
         "gnutls": ["//packages/linux/system/libs/crypto/gnutls:gnutls"],
         "xml": ["//packages/linux/system/libs/data/libxml2:libxml2"],
+        "metalink": [
+            "//packages/linux/system/libs/data/expat:expat",
+            "//packages/linux/system/libs/database/sqlite:sqlite",
+        ],
     },
 
     use_configure = {

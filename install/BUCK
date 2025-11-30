@@ -96,79 +96,79 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
-# KDE Plasma desktop
-filegroup(
-    name = "kde-packages",
-    srcs = [
-        "//packages/linux/desktop/kde:kde-plasma",
-        "//packages/linux/desktop/sddm:sddm",
-    ],
-    visibility = ["PUBLIC"],
-)
+# KDE Plasma desktop - Disabled: needs Qt6 and KDE Frameworks
+# filegroup(
+#     name = "kde-packages",
+#     srcs = [
+#         "//packages/linux/desktop/kde:kde-plasma",
+#         # "//packages/linux/desktop/sddm:sddm",  # Disabled: needs PAM
+#     ],
+#     visibility = ["PUBLIC"],
+# )
 
-# XFCE desktop
-filegroup(
-    name = "xfce-packages",
-    srcs = [
-        "//packages/linux/desktop/xfce:xfce",
-        "//packages/linux/desktop/lightdm:lightdm",
-    ],
-    visibility = ["PUBLIC"],
-)
+# XFCE desktop - Disabled until intltool dependencies are available
+# filegroup(
+#     name = "xfce-packages",
+#     srcs = [
+#         "//packages/linux/desktop/xfce:xfce",
+#         "//packages/linux/desktop/lightdm:lightdm",
+#     ],
+#     visibility = ["PUBLIC"],
+# )
 
-# MATE desktop
-filegroup(
-    name = "mate-packages",
-    srcs = [
-        "//packages/linux/desktop/mate:mate",
-        "//packages/linux/desktop/lightdm:lightdm",
-    ],
-    visibility = ["PUBLIC"],
-)
+# MATE desktop - Disabled until GTK3 and X11 session dependencies are available
+# filegroup(
+#     name = "mate-packages",
+#     srcs = [
+#         "//packages/linux/desktop/mate:mate",
+#         "//packages/linux/desktop/lightdm:lightdm",
+#     ],
+#     visibility = ["PUBLIC"],
+# )
 
-# Cinnamon desktop
-filegroup(
-    name = "cinnamon-packages",
-    srcs = [
-        "//packages/linux/desktop/cinnamon:cinnamon-desktop",
-        "//packages/linux/desktop/lightdm:lightdm",
-    ],
-    visibility = ["PUBLIC"],
-)
+# Cinnamon desktop - Disabled: needs cjs-1.0 (Cinnamon JavaScript)
+# filegroup(
+#     name = "cinnamon-packages",
+#     srcs = [
+#         "//packages/linux/desktop/cinnamon:cinnamon-desktop",
+#         # "//packages/linux/desktop/lightdm:lightdm",  # Disabled: needs PAM headers
+#     ],
+#     visibility = ["PUBLIC"],
+# )
 
-# LXQt desktop
-filegroup(
-    name = "lxqt-packages",
-    srcs = [
-        "//packages/linux/desktop/lxqt:lxqt",
-        "//packages/linux/desktop/sddm:sddm",
-    ],
-    visibility = ["PUBLIC"],
-)
+# LXQt desktop - Disabled until Qt5 dependencies are available
+# filegroup(
+#     name = "lxqt-packages",
+#     srcs = [
+#         "//packages/linux/desktop/lxqt:lxqt",
+#         "//packages/linux/desktop/sddm:sddm",
+#     ],
+#     visibility = ["PUBLIC"],
+# )
 
-# i3 window manager
-filegroup(
-    name = "i3-packages",
-    srcs = [
-        "//packages/linux/desktop:i3-complete",
-    ],
-    visibility = ["PUBLIC"],
-)
+# i3 window manager - Disabled until i3 dependencies are available
+# filegroup(
+#     name = "i3-packages",
+#     srcs = [
+#         "//packages/linux/desktop:i3-complete",
+#     ],
+#     visibility = ["PUBLIC"],
+# )
 
-# Sway compositor
-filegroup(
-    name = "sway-packages",
-    srcs = [
-        "//packages/linux/desktop:sway-complete",
-    ],
-    visibility = ["PUBLIC"],
-)
+# Sway compositor - Disabled: needs wlroots
+# filegroup(
+#     name = "sway-packages",
+#     srcs = [
+#         "//packages/linux/desktop:sway-complete",
+#     ],
+#     visibility = ["PUBLIC"],
+# )
 
-# Hyprland compositor
-filegroup(
-    name = "hyprland-packages",
-    srcs = [
-        "//packages/linux/desktop:hyprland-complete",
-    ],
-    visibility = ["PUBLIC"],
-)
+# Hyprland compositor - Disabled: needs OpenGL (mesa requires Python mako)
+# filegroup(
+#     name = "hyprland-packages",
+#     srcs = [
+#         "//packages/linux/desktop:hyprland-complete",
+#     ],
+#     visibility = ["PUBLIC"],
+# )

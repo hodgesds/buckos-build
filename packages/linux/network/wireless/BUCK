@@ -29,8 +29,8 @@ filegroup(
 filegroup(
     name = "wireless-security",
     srcs = [
-        "//packages/linux/network/wireless/aircrack-ng:aircrack-ng",
-        "//packages/linux/network/wireless/kismet:kismet",
+        # "//packages/linux/network/wireless/aircrack-ng:aircrack-ng",  # Disabled: autoreconf fails - Automake::Config Perl module not found
+        # "//packages/linux/network/wireless/kismet:kismet",  # Disabled: requires libwebsockets (not packaged)
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -40,7 +40,7 @@ filegroup(
 filegroup(
     name = "wireless-monitoring",
     srcs = [
-        "//packages/linux/network/wireless/wavemon:wavemon",
+        # "//packages/linux/network/wireless/wavemon:wavemon",  # Disabled: ncurses wide char support and libnl include issues
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

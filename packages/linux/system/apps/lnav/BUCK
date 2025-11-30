@@ -34,6 +34,8 @@ autotools_package(
     configure_args = [],
     deps = [
         "//packages/linux/core/zlib:zlib",
+        "//packages/linux/network/curl:curl",
+        "//packages/linux/core/bzip2:bzip2",
     ],
     visibility = ["PUBLIC"],
 )

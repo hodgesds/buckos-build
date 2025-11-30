@@ -14,10 +14,13 @@ meson_package(
     description = "Displays keys being pressed on a Wayland compositor",
     homepage = "https://git.sr.ht/~sircmpwn/wshowkeys",
     license = "GPL-3.0",
+    pre_configure = "rm -rf build",  # Clear any stale meson build directory
     meson_args = [],
     deps = [
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/wayland:wayland-protocols",
+        "//packages/linux/core/libffi:libffi",
+        "//packages/linux/desktop/cairo:cairo",
     ],
     visibility = ["PUBLIC"],
 )

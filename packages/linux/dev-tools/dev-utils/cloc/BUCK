@@ -2,6 +2,7 @@ load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # cloc - Count lines of code
+# cloc is a Perl script with Makefile in Unix/ subdirectory
 download_source(
     name = "cloc-src",
     src_uri = "https://github.com/AlDanial/cloc/releases/download/v2.06/cloc-2.06.tar.gz",
@@ -16,10 +17,23 @@ autotools_package(
     description = "Count blank lines, comment lines, and physical lines of source code",
     homepage = "https://github.com/AlDanial/cloc",
     license = "GPL-2.0",
-    configure_args = [],
-    make_args = [
-        "prefix=/usr",
-    ],
+    pre_configure = "true",  # No configure script - cloc is a Perl script
+    src_compile = "true",  # No compilation needed
+    src_install = """
+# Install cloc script
+mkdir -p "$DESTDIR/usr/bin"
+cp cloc "$DESTDIR/usr/bin/"
+chmod +x "$DESTDIR/usr/bin/cloc"
+
+# Install man page if present
+if [ -d Unix ]; then
+    cd Unix
+    if [ -f cloc.1 ]; then
+        mkdir -p "$DESTDIR/usr/share/man/man1"
+        cp cloc.1 "$DESTDIR/usr/share/man/man1/"
+    fi
+fi
+""",
     deps = [
         "//packages/linux/lang/perl:perl",
     ],

@@ -14,13 +14,15 @@ meson_package(
     description = "Swaylock with effects (screenshots, blur, etc.)",
     homepage = "https://github.com/mortie/swaylock-effects",
     license = "MIT",
+    pre_configure = "rm -rf build",  # Clear any stale meson build directory
     meson_args = [
         "-Dpam=enabled",
-        "-Dman-pages=disabled",
     ],
     deps = [
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/wayland:wayland-protocols",
+        "//packages/linux/core/libffi:libffi",
+        "//packages/linux/desktop/cairo:cairo",
     ],
     visibility = ["PUBLIC"],
 )

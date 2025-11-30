@@ -4,32 +4,33 @@ load("//defs:use_flags.bzl", "set_use_flags")
 # =============================================================================
 # SDDM - Simple Desktop Display Manager (KDE default)
 # =============================================================================
+# TODO: sddm - Disabled: requires PAM (not packaged), Qt5
 
-download_source(
-    name = "sddm-src",
-    src_uri = "https://github.com/sddm/sddm/archive/refs/tags/v0.21.0.tar.gz",
-    sha256 = "f895de2683627e969e4849dbfbbb2b500787481ca5ba0de6d6dfdae5f1549abf",
-    signature_required = False,
-)
+# download_source(
+#     name = "sddm-src",
+#     src_uri = "https://github.com/sddm/sddm/archive/refs/tags/v0.21.0.tar.gz",
+#     sha256 = "f895de2683627e969e4849dbfbbb2b500787481ca5ba0de6d6dfdae5f1549abf",
+#     signature_required = False,
+# )
 
-autotools_package(
-    name = "sddm",
-    source = ":sddm-src",
-    version = "0.21.0",
-    description = "Simple Desktop Display Manager - QML-based",
-    homepage = "https://github.com/sddm/sddm",
-    license = "GPL-2.0",
-    pre_configure = """
-mkdir -p build
-cd build
-cmake .. -DCMAKE_INSTALL_PREFIX=/usr \\
-    -DENABLE_JOURNALD=OFF \\
-    -DBUILD_MAN_PAGES=OFF \\
-    -DUID_MIN=1000 \\
-    -DUID_MAX=60000
-""",
-    deps = [
-        "//packages/linux/desktop/wayland:wayland",
-    ],
-    visibility = ["PUBLIC"],
-)
+# autotools_package(
+#     name = "sddm",
+#     source = ":sddm-src",
+#     version = "0.21.0",
+#     description = "Simple Desktop Display Manager - QML-based",
+#     homepage = "https://github.com/sddm/sddm",
+#     license = "GPL-2.0",
+#     pre_configure = """
+# mkdir -p build
+# cd build
+# cmake .. -DCMAKE_INSTALL_PREFIX=/usr \\
+#     -DENABLE_JOURNALD=OFF \\
+#     -DBUILD_MAN_PAGES=OFF \\
+#     -DUID_MIN=1000 \\
+#     -DUID_MAX=60000
+# """,
+#     deps = [
+#         "//packages/linux/desktop/wayland:wayland",
+#     ],
+#     visibility = ["PUBLIC"],
+# )

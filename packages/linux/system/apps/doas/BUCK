@@ -3,6 +3,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 # doas - Simple sudo alternative from OpenBSD
 # USE flags: pam, persist, timestamp-timeout
+# Note: OpenDoas uses a simple BSD-style configure script, not autoconf,
+# so we need to override src_configure to avoid standard autotools args
 
 autotools_package(
     name = "doas",
@@ -18,15 +20,11 @@ autotools_package(
     use_deps = {
         "pam": ["//packages/linux/system/security/auth/pam:pam"],
     },
-    use_configure = {
-        "pam": "--with-pam",
-        "-pam": "--without-pam",
-        "persist": "--with-timestamp",
-        "-persist": "--without-timestamp",
-    },
-    configure_args = [
-        "--prefix=/usr",
-    ],
+    # Custom src_configure because OpenDoas uses a simple BSD-style configure
+    # that doesn't accept standard autotools arguments like --infodir
+    src_configure = """
+./configure --prefix=/usr --without-pam --without-timestamp
+""",
     deps = [],
     visibility = ["PUBLIC"],
 )

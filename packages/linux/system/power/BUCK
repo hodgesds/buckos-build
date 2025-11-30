@@ -26,7 +26,7 @@ filegroup(
     name = "cpu-frequency",
     srcs = [
         "//packages/linux/system/power/cpufrequtils:cpufrequtils",
-        "//packages/linux/laptop/power/cpupower:cpupower",
+        # "//packages/linux/laptop/power/cpupower:cpupower",  # Disabled: requires pciutils
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -36,7 +36,7 @@ filegroup(
 filegroup(
     name = "tuning",
     srcs = [
-        "//packages/linux/system/power/tuned:tuned",
+        # "//packages/linux/system/power/tuned:tuned",  # Disabled: Python setup.py not supported by ebuild
         "//packages/linux/system/power/irqbalance:irqbalance",
         "//packages/linux/system/power/power-profiles-daemon:power-profiles-daemon",
     ],
@@ -72,7 +72,7 @@ filegroup(
     name = "acpi-tools",
     srcs = [
         "//packages/linux/system/power/acpica-tools:acpica-tools",
-        "//packages/linux/laptop/power/acpid:acpid",
+        # "//packages/linux/laptop/power/acpid:acpid",  # Disabled: automake perl module path issue
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -97,7 +97,7 @@ filegroup(
         ":essential",
         ":tuning",
         ":storage-power",
-        "//packages/linux/laptop/monitoring/powertop:powertop",
+        # "//packages/linux/laptop/monitoring/powertop:powertop",  # Disabled: autoreconf fails - Automake::Config Perl module not found
         "//packages/linux/laptop/monitoring/lm-sensors:lm-sensors",
     ],
     default_target_platform = "//platforms:linux-target",

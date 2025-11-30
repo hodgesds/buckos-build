@@ -19,7 +19,7 @@ autotools_package(
     configure_args = [
         "--prefix=/usr",
         "--sysconfdir=/etc",
-        "--enable-apparmor",
+        "--disable-apparmor",
         "--enable-dbusproxy",
         "--enable-firetunnel",
         "--enable-private-home",

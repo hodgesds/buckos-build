@@ -81,13 +81,13 @@ filegroup(
     name = "console",
     srcs = [
         "//packages/linux/laptop/power/tlp:tlp",
-        "//packages/linux/laptop/power/acpid:acpid",
-        "//packages/linux/laptop/power/cpupower:cpupower",
+        # "//packages/linux/laptop/power/acpid:acpid",  # Disabled: automake perl module path issue
+        # "//packages/linux/laptop/power/cpupower:cpupower",  # Disabled: requires pciutils
         "//packages/linux/laptop/brightness/brightnessctl:brightnessctl",
         "//packages/linux/laptop/brightness/light:light",
         "//packages/linux/laptop/monitoring/lm-sensors:lm-sensors",
         "//packages/linux/laptop/monitoring/acpi:acpi",
-        "//packages/linux/laptop/monitoring/powertop:powertop",
+        # "//packages/linux/laptop/monitoring/powertop:powertop",  # Disabled: autoreconf fails - Automake::Config Perl module not found
         "//packages/linux/laptop/input/libevdev:libevdev",
         "//packages/linux/laptop/input/libinput:libinput",
         "//packages/linux/laptop/wireless/iwd:iwd",
@@ -103,7 +103,7 @@ filegroup(
     srcs = [
         ":essential",
         "//packages/linux/laptop/wireless/blueman:blueman",
-        "//packages/linux/laptop/brightness/ddcutil:ddcutil",
+        # "//packages/linux/laptop/brightness/ddcutil:ddcutil",  # Disabled: automake perl module path issue
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -114,8 +114,8 @@ filegroup(
     name = "thinkpad",
     srcs = [
         ":essential",
-        "//packages/linux/laptop/battery/tp_smapi:tp_smapi",
-        "//packages/linux/laptop/battery/acpi_call:acpi_call",
+        # "//packages/linux/laptop/battery/tp_smapi:tp_smapi",  # Disabled: kernel module requires root to install
+        # "//packages/linux/laptop/battery/acpi_call:acpi_call",  # Disabled: kernel module requires INSTALL_MOD_PATH support
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -127,7 +127,7 @@ filegroup(
     srcs = [
         ":essential",
         "//packages/linux/laptop/power/thermald:thermald",
-        "//packages/linux/laptop/monitoring/i7z:i7z",
+        # "//packages/linux/laptop/monitoring/i7z:i7z",  # Disabled: ncurses libtinfow linking and duplicate symbol issues
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -140,7 +140,7 @@ filegroup(
         "//packages/linux/laptop/power/tlp:tlp",
         "//packages/linux/laptop/power/auto-cpufreq:auto-cpufreq",
         "//packages/linux/laptop/power/thermald:thermald",
-        "//packages/linux/laptop/monitoring/powertop:powertop",
+        # "//packages/linux/laptop/monitoring/powertop:powertop",  # Disabled: autoreconf fails - Automake::Config Perl module not found
         "//packages/linux/laptop/battery/laptop-mode-tools:laptop-mode-tools",
     ],
     default_target_platform = "//platforms:linux-target",

@@ -31,37 +31,36 @@ autotools_package(
         "ssl": ["//packages/linux/network/openssl:openssl"],
         "pcre": ["//packages/linux/system/libs/utility/pcre2:pcre2"],
     },
-    configure_args = [
-        "--prefix=/etc/nginx",
-        "--sbin-path=/usr/sbin/nginx",
-        "--modules-path=/usr/lib/nginx/modules",
-        "--conf-path=/etc/nginx/nginx.conf",
-        "--error-log-path=/var/log/nginx/error.log",
-        "--http-log-path=/var/log/nginx/access.log",
-        "--pid-path=/var/run/nginx.pid",
-        "--lock-path=/var/run/nginx.lock",
-        "--http-client-body-temp-path=/var/cache/nginx/client_temp",
-        "--http-proxy-temp-path=/var/cache/nginx/proxy_temp",
-        "--http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp",
-        "--http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp",
-        "--http-scgi-temp-path=/var/cache/nginx/scgi_temp",
-    ],
-    use_configure = {
-        "ssl": "--with-http_ssl_module",
-        "-ssl": "--without-http_ssl_module",
-        "http2": "--with-http_v2_module",
-        "-http2": "--without-http_v2_module",
-        "stream": "--with-stream",
-        "-stream": "--without-stream",
-        "pcre": "--with-pcre",
-        "-pcre": "--without-pcre",
-        "gzip": "--with-http_gzip_static_module",
-        "-gzip": "--without-http_gzip_static_module",
-        "realip": "--with-http_realip_module",
-        "-realip": "--without-http_realip_module",
-        "stub_status": "--with-http_stub_status_module",
-        "-stub_status": "--without-http_stub_status_module",
-    },
+    # nginx uses its own configure script that doesn't support standard autotools options
+    # We must provide a custom src_configure to avoid --host option errors
+    src_configure = """
+./configure \\
+    --prefix=/etc/nginx \\
+    --sbin-path=/usr/sbin/nginx \\
+    --modules-path=/usr/lib/nginx/modules \\
+    --conf-path=/etc/nginx/nginx.conf \\
+    --error-log-path=/var/log/nginx/error.log \\
+    --http-log-path=/var/log/nginx/access.log \\
+    --pid-path=/var/run/nginx.pid \\
+    --lock-path=/var/run/nginx.lock \\
+    --http-client-body-temp-path=/var/cache/nginx/client_temp \\
+    --http-proxy-temp-path=/var/cache/nginx/proxy_temp \\
+    --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp \\
+    --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp \\
+    --http-scgi-temp-path=/var/cache/nginx/scgi_temp \\
+    --with-cc-opt="-I$SYSROOT/usr/include" \\
+    --with-ld-opt="-L$SYSROOT/usr/lib -L$SYSROOT/usr/lib64" \\
+    --with-zlib-opt="-I$SYSROOT/usr/include" \\
+    --with-http_ssl_module \\
+    --with-http_v2_module \\
+    --with-pcre \\
+    --with-http_gzip_static_module \\
+    --with-http_realip_module \\
+    --with-http_stub_status_module
+""",
+    src_install = """
+make DESTDIR="$DESTDIR" install
+""",
     post_install = """
 mkdir -p "$DESTDIR/var/cache/nginx"
 mkdir -p "$DESTDIR/var/log/nginx"

@@ -36,7 +36,7 @@ filegroup(
     srcs = [
         "//packages/linux/emulation/utilities/firecracker:firecracker",
         "//packages/linux/emulation/utilities/cloud-hypervisor:cloud-hypervisor",
-        "//packages/linux/emulation/utilities/crosvm:crosvm",
+        # "//packages/linux/emulation/utilities/crosvm:crosvm"  # Disabled: depends on virglrenderer (mesa),
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

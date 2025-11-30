@@ -18,7 +18,6 @@ meson_package(
     exclude_patterns = ["*/units/system-systemd*", "*/test/fuzz/fuzz-unit-file/*"],
 
     meson_args = [
-        "-Dprefix=/usr",
         "-Dsysconfdir=/etc",
         "-Dlocalstatedir=/var",
         "-Dmode=release",

@@ -33,6 +33,9 @@ autotools_package(
         "-caps": "--without-cap-ng",
     },
 
+    # Clean stale build data from source tarball
+    src_prepare = "rm -f *.o libnetdissect.a config.h config.status config.cache Makefile",
+
     deps = [
         "//packages/linux/network/libpcap:libpcap",
     ],

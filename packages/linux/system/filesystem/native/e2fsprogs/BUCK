@@ -15,6 +15,10 @@ autotools_package(
     description = "Ext2/3/4 filesystem utilities (mke2fs, e2fsck, tune2fs, etc.)",
     homepage = "http://e2fsprogs.sourceforge.net/",
     license = "GPL-2.0",
+    env = {
+        # Use GNU17 to avoid C23 bool keyword conflict (GCC 15 defaults to C23)
+        "CFLAGS": "-std=gnu17",
+    },
     configure_args = [
         "--enable-elf-shlibs",
         "--disable-libblkid",

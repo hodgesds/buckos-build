@@ -37,9 +37,9 @@ filegroup(
         "//packages/linux/lang/python:python",
         "//packages/linux/lang/ruby:ruby",
         "//packages/linux/lang/perl:perl",
-        "//packages/linux/lang/nodejs:nodejs",
+        # "//packages/linux/lang/nodejs:nodejs",  # Disabled: requires Python 3.6-3.12 (host has Python 3.14)
         "//packages/linux/lang/lua:lua",
-        "//packages/linux/lang/tcl:tcl",
+        # "//packages/linux/lang/tcl:tcl",  # Disabled: symbol visibility linking errors (tclStringClassTable)
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

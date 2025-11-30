@@ -21,7 +21,7 @@ autotools_package(
     ],
 
     # Default USE flags
-    use_defaults = [],
+    use_defaults = ["cli"],  # Enable CLI tools (libnl-cli-3.0) - needed by wavemon etc
 
     # Pre-configure to fix missing time.h include
     pre_configure = """

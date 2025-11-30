@@ -20,7 +20,7 @@ autotools_package(
     },
 
     use_configure = {
-        "ssl": "--with-openssl",
+        "ssl": "--with-openssl=$SYSROOT/usr",
         "-ssl": "--without-openssl",
         "static-libs": "--enable-static",
         "-static-libs": "--disable-static",
@@ -32,6 +32,11 @@ autotools_package(
         "--prefix=/usr",
         "--enable-shared",
     ],
+
+    # GCC 14 treats incompatible pointer types as errors by default
+    env = {
+        "CFLAGS": "-O2 -Wno-incompatible-pointer-types",
+    },
 
     deps = [
     ],

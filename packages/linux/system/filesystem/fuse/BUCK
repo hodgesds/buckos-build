@@ -9,12 +9,12 @@ filegroup(
     name = "fuse",
     srcs = [
         "//packages/linux/system/filesystem/fuse/fuse3:fuse3",
-        "//packages/linux/system/filesystem/fuse/ntfs-3g:ntfs-3g",
-        "//packages/linux/system/filesystem/fuse/exfat-fuse:exfat-fuse",
+        # "//packages/linux/system/filesystem/fuse/ntfs-3g:ntfs-3g",  # Disabled: needs autoreconf fix
+        # "//packages/linux/system/filesystem/fuse/exfat-fuse:exfat-fuse",  # Disabled: needs autoreconf fix
         "//packages/linux/system/filesystem/fuse/bindfs:bindfs",
         "//packages/linux/system/filesystem/fuse/unionfs-fuse:unionfs-fuse",
         "//packages/linux/system/filesystem/fuse/archivemount:archivemount",
-        "//packages/linux/system/filesystem/fuse/encfs:encfs",
+        # "//packages/linux/system/filesystem/fuse/encfs:encfs",  # Disabled: needs CMake and tinyxml2
         "//packages/linux/system/filesystem/fuse/gocryptfs:gocryptfs",
     ],
     default_target_platform = "//platforms:linux-target",
@@ -26,7 +26,7 @@ filegroup(
     name = "common",
     srcs = [
         "//packages/linux/system/filesystem/fuse/fuse3:fuse3",
-        "//packages/linux/system/filesystem/fuse/ntfs-3g:ntfs-3g",
+        # "//packages/linux/system/filesystem/fuse/ntfs-3g:ntfs-3g",  # Disabled: needs autoreconf fix
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -36,7 +36,7 @@ filegroup(
 filegroup(
     name = "encrypted",
     srcs = [
-        "//packages/linux/system/filesystem/fuse/encfs:encfs",
+        # "//packages/linux/system/filesystem/fuse/encfs:encfs",  # Disabled: needs CMake and tinyxml2
         "//packages/linux/system/filesystem/fuse/gocryptfs:gocryptfs",
     ],
     default_target_platform = "//platforms:linux-target",

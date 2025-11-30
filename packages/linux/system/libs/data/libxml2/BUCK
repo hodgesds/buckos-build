@@ -22,6 +22,32 @@ autotools_package(
         "--without-lzma",
         "--with-zlib",
     ],
+    # Custom install that makes .pc files and xml2-config relocatable using ${pcfiledir}
+    src_install = """
+        make DESTDIR="$DESTDIR" install
+
+        # Fix .pc files to use relocatable paths with ${pcfiledir}
+        for pc_file in "$DESTDIR"/usr/lib64/pkgconfig/*.pc "$DESTDIR"/usr/lib/pkgconfig/*.pc; do
+            if [ -f "$pc_file" ]; then
+                sed -i \
+                    -e 's|^prefix=/usr$|prefix=${pcfiledir}/../..|' \
+                    -e 's|^exec_prefix=.*|exec_prefix=${prefix}|' \
+                    -e 's|^libdir=.*|libdir=${prefix}/lib64|' \
+                    -e 's|^includedir=.*|includedir=${prefix}/include|' \
+                    "$pc_file"
+            fi
+        done
+
+        # Fix xml2-config to use relative paths
+        if [ -f "$DESTDIR/usr/bin/xml2-config" ]; then
+            sed -i \
+                -e 's|^prefix=/usr$|prefix="$(cd "$(dirname "$0")/.." \\&\\& pwd)"|' \
+                -e 's|^exec_prefix=/usr$|exec_prefix="$prefix"|' \
+                -e 's|^libdir="/usr/lib64"|libdir="$prefix/lib64"|' \
+                -e 's|^includedir="/usr/include"|includedir="$prefix/include"|' \
+                "$DESTDIR/usr/bin/xml2-config"
+        fi
+    """,
     deps = [
         "//packages/linux/core/zlib:zlib",
     ],

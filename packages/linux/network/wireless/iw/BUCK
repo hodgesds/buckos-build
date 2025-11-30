@@ -23,6 +23,7 @@ make install PREFIX=/usr DESTDIR="$DESTDIR"
 """,
 
     deps = [
+        "//packages/linux/core/libnl:libnl",
     ],
 
     description = "nl80211 based CLI configuration utility for wireless devices",

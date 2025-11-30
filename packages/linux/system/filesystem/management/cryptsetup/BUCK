@@ -19,11 +19,14 @@ autotools_package(
         "--with-crypto_backend=openssl",
         "--enable-libargon2",
         "--disable-ssh-token",
+        "--disable-asciidoc",
     ],
     deps = [
         "//packages/linux/core/util-linux:util-linux",
         "//packages/linux/network/openssl:openssl",
         "//packages/linux/system/filesystem/management/lvm2:lvm2",
+        "//packages/linux/system/libs/ipc/popt:popt",
+        "//packages/linux/system/libs/data/json-c:json-c",
     ],
     visibility = ["PUBLIC"],
 )

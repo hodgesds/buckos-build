@@ -14,8 +14,8 @@ filegroup(
     srcs = [
         "//packages/linux/terminals/alacritty:alacritty",
         "//packages/linux/terminals/foot:foot",
-        "//packages/linux/terminals/xterm:xterm",
-        "//packages/linux/terminals/rxvt-unicode:rxvt-unicode",
+        # "//packages/linux/terminals/xterm:xterm",  # Disabled: requires X11 libs
+        # "//packages/linux/terminals/rxvt-unicode:rxvt-unicode",  # Disabled: requires X11 libs
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

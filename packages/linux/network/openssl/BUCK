@@ -27,18 +27,36 @@ autotools_package(
 
     pre_configure = """
 # OpenSSL uses its own Configure script
+# Note: no-asm disables assembly optimizations to avoid assembler compatibility issues
 ./Configure linux-x86_64 \\
     --prefix=/usr \\
     --openssldir=/etc/ssl \\
+    --libdir=lib \\
     shared \\
     no-ssl3 \\
-    no-weak-ssl-ciphers
+    no-weak-ssl-ciphers \\
+    no-asm
+
+# Pre-create directories for OpenSSL install
+mkdir -p "$DESTDIR/usr/lib"
+mkdir -p "$DESTDIR/usr/bin"
+mkdir -p "$DESTDIR/usr/include"
+mkdir -p "$DESTDIR/etc/ssl"
 """,
 
     post_install = """
 # Create symlinks for compatibility
-ln -sf /usr/lib/libssl.so.3 "$DESTDIR/usr/lib/libssl.so" || true
-ln -sf /usr/lib/libcrypto.so.3 "$DESTDIR/usr/lib/libcrypto.so" || true
+# OpenSSL 3.x installs to lib64 on x86_64
+if [ -d "$DESTDIR/usr/lib64" ]; then
+    ln -sf libssl.so.3 "$DESTDIR/usr/lib64/libssl.so" || true
+    ln -sf libcrypto.so.3 "$DESTDIR/usr/lib64/libcrypto.so" || true
+    # Also create lib symlink for compatibility
+    ln -sf ../lib64/libssl.so.3 "$DESTDIR/usr/lib/libssl.so" || true
+    ln -sf ../lib64/libcrypto.so.3 "$DESTDIR/usr/lib/libcrypto.so" || true
+elif [ -d "$DESTDIR/usr/lib" ]; then
+    ln -sf libssl.so.3 "$DESTDIR/usr/lib/libssl.so" || true
+    ln -sf libcrypto.so.3 "$DESTDIR/usr/lib/libcrypto.so" || true
+fi
 """,
 
     description = "TLS/SSL and crypto library",

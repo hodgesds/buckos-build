@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "cmake_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 
 download_source(
     name = "bemenu-src",
@@ -8,16 +8,23 @@ download_source(
     signature_required = False,
 )
 
-cmake_package(
+# bemenu uses GNUmakefile (plain make build system)
+ebuild_package(
     name = "bemenu",
     source = ":bemenu-src",
     version = "0.6.18",
     description = "Dynamic menu library and client program inspired by dmenu",
     homepage = "https://github.com/Cloudef/bemenu",
     license = "GPL-3.0",
-    cmake_args = [],
-    deps = [
+    src_compile = """
+make PREFIX=/usr
+""",
+    src_install = """
+make PREFIX=/usr DESTDIR="$DESTDIR" install
+""",
+    bdepend = [
         "//packages/linux/desktop/wayland:wayland",
+        "//packages/linux/core/libffi:libffi",
     ],
     visibility = ["PUBLIC"],
 )

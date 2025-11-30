@@ -6,7 +6,7 @@ filegroup(
     name = "editors",
     srcs = [
         "//packages/linux/graphics/editors/gimp:gimp",
-        "//packages/linux/graphics/editors/krita:krita",
+        # "//packages/linux/graphics/editors/krita:krita",  # Disabled: needs KDE libs
         "//packages/linux/graphics/editors/inkscape:inkscape",
         "//packages/linux/graphics/editors/darktable:darktable",
         "//packages/linux/graphics/editors/rawtherapee:rawtherapee",
@@ -43,7 +43,7 @@ filegroup(
     name = "screenshot",
     srcs = [
         "//packages/linux/graphics/screenshot/flameshot:flameshot",
-        "//packages/linux/graphics/screenshot/scrot:scrot",
+        # "//packages/linux/graphics/screenshot/scrot:scrot",  # Disabled: needs X11 libs
         "//packages/linux/graphics/screenshot/grim:grim",
         "//packages/linux/graphics/screenshot/maim:maim",
     ],
@@ -142,7 +142,7 @@ filegroup(
         "//packages/linux/graphics/utilities/babl:babl",
         "//packages/linux/graphics/utilities/gegl:gegl",
         "//packages/linux/graphics/utilities/libmypaint:libmypaint",
-        "//packages/linux/graphics/utilities/slop:slop",
+        # "//packages/linux/graphics/utilities/slop:slop",  # Disabled: requires GLM (not packaged)
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -154,9 +154,9 @@ filegroup(
     srcs = [
         "//packages/linux/graphics/editors/gimp:gimp",
         "//packages/linux/graphics/editors/inkscape:inkscape",
-        "//packages/linux/graphics/editors/krita:krita",
+        # "//packages/linux/graphics/editors/krita:krita",  # Disabled: needs KDE libs
         "//packages/linux/graphics/3d/blender:blender",
-        "//packages/linux/graphics/video/kdenlive:kdenlive",
+        # "//packages/linux/graphics/video/kdenlive:kdenlive",  # Disabled: needs KDE libs
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -181,7 +181,7 @@ filegroup(
     name = "minimal",
     srcs = [
         "//packages/linux/graphics/viewers/feh:feh",
-        "//packages/linux/graphics/screenshot/scrot:scrot",
+        # "//packages/linux/graphics/screenshot/scrot:scrot",  # Disabled: needs X11 libs
         "//packages/linux/graphics/utilities/imagemagick:imagemagick",
     ],
     default_target_platform = "//platforms:linux-target",

@@ -10,11 +10,11 @@ alias(
     visibility = ["PUBLIC"],
 )
 
-alias(
-    name = "vim-minimal",
-    actual = "//packages/linux/editors/vim-minimal:vim-minimal",
-    visibility = ["PUBLIC"],
-)
+# alias(
+#     name = "vim-minimal",
+#     actual = "//packages/linux/editors/vim-minimal:vim-minimal",
+#     visibility = ["PUBLIC"],
+# )  # Disabled: Missing ncurses terminal library
 
 alias(
     name = "neovim",
@@ -104,11 +104,11 @@ alias(
     visibility = ["PUBLIC"],
 )
 
-alias(
-    name = "bat",
-    actual = "//packages/linux/editors/bat:bat",
-    visibility = ["PUBLIC"],
-)
+# alias(
+#     name = "bat",
+#     actual = "//packages/linux/editors/bat:bat",
+#     visibility = ["PUBLIC"],
+# )  # Disabled: oniguruma C code compiler issues
 
 alias(
     name = "fzf",
@@ -128,11 +128,11 @@ alias(
     visibility = ["PUBLIC"],
 )
 
-alias(
-    name = "delta",
-    actual = "//packages/linux/editors/delta:delta",
-    visibility = ["PUBLIC"],
-)
+# alias(
+#     name = "delta",
+#     actual = "//packages/linux/editors/delta:delta",
+#     visibility = ["PUBLIC"],
+# )  # Disabled: oniguruma compiler issues
 
 alias(
     name = "sd",
@@ -166,7 +166,7 @@ filegroup(
     name = "all-editors",
     srcs = [
         ":vim",
-        ":vim-minimal",
+        # ":vim-minimal",  # Disabled: Missing ncurses terminal library
         ":neovim",
         ":emacs",
         ":emacs-nox",
@@ -191,7 +191,7 @@ filegroup(
     name = "vim-editors",
     srcs = [
         ":vim",
-        ":vim-minimal",
+        # ":vim-minimal",  # Disabled: Missing ncurses terminal library
         ":neovim",
     ],
     default_target_platform = "//platforms:linux-target",
@@ -201,7 +201,7 @@ filegroup(
 filegroup(
     name = "minimal-editors",
     srcs = [
-        ":vim-minimal",
+        # ":vim-minimal",  # Disabled: Missing ncurses terminal library
         ":emacs-nox",
     ],
     default_target_platform = "//platforms:linux-target",
@@ -224,11 +224,11 @@ filegroup(
         ":yq",
         ":xmlstarlet",
         ":ripgrep",
-        ":bat",
+        # ":bat",  # Disabled: oniguruma compiler issues
         ":fzf",
         ":pandoc",
         ":entr",
-        ":delta",
+        # ":delta",  # Disabled: oniguruma compiler issues
         ":sd",
     ],
     default_target_platform = "//platforms:linux-target",
@@ -263,8 +263,8 @@ filegroup(
     name = "modern-text-utils",
     srcs = [
         ":ripgrep",
-        ":bat",
-        ":delta",
+        # ":bat",  # Disabled: oniguruma compiler issues
+        # ":delta",  # Disabled: oniguruma compiler issues
         ":sd",
     ],
     default_target_platform = "//platforms:linux-target",
@@ -287,7 +287,7 @@ filegroup(
     srcs = [
         ":diffutils",
         ":patch",
-        ":delta",
+        # ":delta",  # Disabled: oniguruma compiler issues
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

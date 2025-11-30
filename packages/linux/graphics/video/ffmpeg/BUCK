@@ -14,7 +14,7 @@ autotools_package(
     homepage = "https://ffmpeg.org/",
     license = "LGPL-2.1-or-later GPL-2.0-or-later",
     iuse = ["X", "wayland", "opengl", "vulkan", "vaapi", "vdpau", "alsa", "pulseaudio", "sdl", "ssl", "v4l", "static-libs", "debug", "doc"],
-    use_defaults = ["X", "opengl", "vulkan", "vaapi", "vdpau", "alsa", "ssl"],
+    use_defaults = ["opengl", "vulkan", "vaapi", "alsa", "ssl"],  # Removed X and vdpau (need X11 libs)
     configure_args = [
         "--prefix=/usr",
         "--enable-gpl",
@@ -66,7 +66,7 @@ autotools_package(
     },
     use_deps = {
         "vaapi": ["//packages/linux/graphics/video/libva:libva"],
-        "vdpau": ["//packages/linux/graphics/video/vdpau:vdpau"],
+        # "vdpau": ["//packages/linux/graphics/video/vdpau:vdpau"],  # Disabled: vdpau needs X11
         "ssl": ["//packages/linux/network/openssl:openssl"],
     },
     make_args = [],
@@ -76,7 +76,7 @@ DESTDIR=$OUT make install
     deps = [
         "//packages/linux/graphics/video/x264:x264",
         "//packages/linux/graphics/video/x265:x265",
-        "//packages/linux/graphics/video/libvpx:libvpx",
+        # "//packages/linux/graphics/video/libvpx:libvpx",  # Disabled: needs nasm
         "//packages/linux/graphics/video/dav1d:dav1d",
         "//packages/linux/graphics/video/aom:aom",
         "//packages/linux/audio/libraries/opus:opus",

@@ -27,37 +27,37 @@ meson_package(
     visibility = ["PUBLIC"],
 )
 
-# Thunar - XFCE File Manager
-download_source(
-    name = "thunar-src",
-    src_uri = "https://archive.xfce.org/src/xfce/thunar/4.18/thunar-4.18.10.tar.bz2",
-    sha256 = "e8308a1f139602d8c125f594bfcebb063b7dac1fbb6e14293bab4cdb3ecf1d08",
-    signature_required = False,
-)
-
-autotools_package(
-    name = "thunar",
-    source = ":thunar-src",
-    version = "4.18.10",
-    description = "Modern file manager for XFCE",
-    homepage = "https://docs.xfce.org/xfce/thunar/start",
-    license = "GPL-2.0-or-later",
-    configure_args = [
-        "--prefix=/usr",
-        "--sysconfdir=/etc",
-        "--enable-gio-unix",
-        "--enable-gudev",
-        "--enable-notifications",
-        "--enable-exif",
-        "--enable-pcre2",
-    ],
-    deps = [
-        "//packages/linux/dev-libs/glib:glib",
-        "//packages/linux/system/filesystem/gvfs:gvfs",
-        "//packages/linux/desktop/xfce:libxfce4ui",
-    ],
-    visibility = ["PUBLIC"],
-)
+# Thunar - XFCE File Manager - Disabled: requires libxfce4ui (XFCE dependency)
+# download_source(
+#     name = "thunar-src",
+#     src_uri = "https://archive.xfce.org/src/xfce/thunar/4.18/thunar-4.18.10.tar.bz2",
+#     sha256 = "e8308a1f139602d8c125f594bfcebb063b7dac1fbb6e14293bab4cdb3ecf1d08",
+#     signature_required = False,
+# )
+#
+# autotools_package(
+#     name = "thunar",
+#     source = ":thunar-src",
+#     version = "4.18.10",
+#     description = "Modern file manager for XFCE",
+#     homepage = "https://docs.xfce.org/xfce/thunar/start",
+#     license = "GPL-2.0-or-later",
+#     configure_args = [
+#         "--prefix=/usr",
+#         "--sysconfdir=/etc",
+#         "--enable-gio-unix",
+#         "--enable-gudev",
+#         "--enable-notifications",
+#         "--enable-exif",
+#         "--enable-pcre2",
+#     ],
+#     deps = [
+#         "//packages/linux/dev-libs/glib:glib",
+#         "//packages/linux/system/filesystem/gvfs:gvfs",
+#         "//packages/linux/desktop/xfce:libxfce4ui",
+#     ],
+#     visibility = ["PUBLIC"],
+# )
 
 # PCManFM - Lightweight file manager
 download_source(
@@ -219,7 +219,7 @@ filegroup(
     name = "filemanagers",
     srcs = [
         ":nautilus",
-        ":thunar",
+        # ":thunar",  # Disabled: requires libxfce4ui
         ":pcmanfm",
         ":nemo",
         ":caja",

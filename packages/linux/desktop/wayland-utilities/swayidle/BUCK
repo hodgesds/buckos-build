@@ -15,13 +15,14 @@ meson_package(
     description = "Idle management daemon for Wayland",
     homepage = "https://github.com/swaywm/swayidle",
     license = "MIT",
+    pre_configure = "rm -rf build",  # Clear any stale meson build directory
     meson_args = [
-        "-Dlogind=enabled",
-        "-Dman-pages=disabled",
+        "-Dlogind=disabled",  # Disables systemd/logind integration
     ],
     deps = [
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/wayland:wayland-protocols",
+        "//packages/linux/core/libffi:libffi",
     ],
     visibility = ["PUBLIC"],
 )

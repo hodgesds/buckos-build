@@ -13,6 +13,7 @@ meson_package(
     description = "Wayland display protocol libraries",
     homepage = "https://wayland.freedesktop.org/",
     license = "MIT",
+    pre_configure = "rm -rf build",  # Clear any stale meson build directory
     meson_args = [
         "-Ddocumentation=false",
         "-Dtests=false",

@@ -24,6 +24,8 @@ autotools_package(
     deps = [
         "//packages/linux/system/libs/font/freetype:freetype",
         "//packages/linux/system/libs/data/expat:expat",
+        "//packages/linux/core/zlib:zlib",
+        "//packages/linux/system/libs/image/libpng:libpng",
     ],
     visibility = ["PUBLIC"],
 )

@@ -76,38 +76,39 @@ autotools_package(
 )
 
 # Skanlite - KDE scanning application
-download_source(
-    name = "skanlite-src",
-    src_uri = "https://download.kde.org/stable/release-service/24.02.0/src/skanlite-24.02.0.tar.xz",
-    sha256 = "c15ee8defcfb05da1fd1deea2c9aaa3cc6fb32489794f571ec09dd8b4d938aa6",
-    signature_sha256 = "39affcdea6cfab2f2173d572e0797c7a820e27dbb9e1e9ac13833e459bc14a45",
-)
-
-autotools_package(
-    name = "skanlite",
-    source = ":skanlite-src",
-    version = "24.02.0",
-    description = "KDE scanner application",
-    homepage = "https://apps.kde.org/skanlite/",
-    license = "GPL-2.0-or-later",
-    pre_configure = """
-        mkdir -p build
-        cd build
-        cmake .. \
-            -DCMAKE_INSTALL_PREFIX=/usr \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DBUILD_TESTING=OFF
-    """,
-    configure_args = [],
-    make_args = ["-C", "build"],
-    post_install = """
-        cd build
-        DESTDIR=$OUT make install
-    """,
-    deps = [
-        ":sane-backends",
-        "//packages/linux/desktop/kde:kf5",
-        "//packages/linux/desktop/qt:qt5",
-    ],
-    visibility = ["PUBLIC"],
-)
+# Disabled: needs KDE libs (kf5)
+# download_source(
+#     name = "skanlite-src",
+#     src_uri = "https://download.kde.org/stable/release-service/24.02.0/src/skanlite-24.02.0.tar.xz",
+#     sha256 = "c15ee8defcfb05da1fd1deea2c9aaa3cc6fb32489794f571ec09dd8b4d938aa6",
+#     signature_sha256 = "39affcdea6cfab2f2173d572e0797c7a820e27dbb9e1e9ac13833e459bc14a45",
+# )
+#
+# autotools_package(
+#     name = "skanlite",
+#     source = ":skanlite-src",
+#     version = "24.02.0",
+#     description = "KDE scanner application",
+#     homepage = "https://apps.kde.org/skanlite/",
+#     license = "GPL-2.0-or-later",
+#     pre_configure = """
+#         mkdir -p build
+#         cd build
+#         cmake .. \
+#             -DCMAKE_INSTALL_PREFIX=/usr \
+#             -DCMAKE_BUILD_TYPE=Release \
+#             -DBUILD_TESTING=OFF
+#     """,
+#     configure_args = [],
+#     make_args = ["-C", "build"],
+#     post_install = """
+#         cd build
+#         DESTDIR=$OUT make install
+#     """,
+#     deps = [
+#         ":sane-backends",
+#         "//packages/linux/desktop/kde:kf5",
+#         "//packages/linux/desktop/qt:qt5",
+#     ],
+#     visibility = ["PUBLIC"],
+# )

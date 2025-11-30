@@ -37,7 +37,7 @@ filegroup(
 filegroup(
     name = "container-storage",
     srcs = [
-        "//packages/linux/system/containers/storage:fuse-overlayfs",
+        # "//packages/linux/system/containers/storage:fuse-overlayfs",  # Disabled: needs source extraction fix
         "//packages/linux/system/containers/podman:containers-common",
     ],
     default_target_platform = "//platforms:linux-target",

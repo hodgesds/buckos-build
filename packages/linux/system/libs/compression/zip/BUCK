@@ -20,7 +20,7 @@ autotools_package(
     configure_args = [],
     make_args = [
         "-f", "unix/Makefile",
-        "generic",
+        "linux",
         "CC=${CC}",
         "CPP=${CC} -E",
         "LOCAL_ZIP=-DLARGE_FILE_SUPPORT",

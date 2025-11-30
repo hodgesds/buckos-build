@@ -21,7 +21,7 @@ Example usage:
     package_set(
         name = "web-development",
         packages = [
-            "//packages/linux/lang/nodejs",
+            # "//packages/linux/lang/nodejs",  # Disabled: requires Python 3.6-3.12
             "//packages/linux/lang/python",
             "//packages/linux/editors:neovim",
         ],
@@ -352,7 +352,7 @@ TASK_PACKAGE_SETS = {
     "benchmarking": {
         "description": "Performance testing and benchmarking tools",
         "packages": [
-            "//packages/linux/benchmarks/stress-ng:stress-ng",
+            # "//packages/linux/benchmarks/stress-ng:stress-ng",  # Disabled: linker error
             "//packages/linux/benchmarks/fio:fio",
             "//packages/linux/benchmarks/iperf3:iperf3",
             "//packages/linux/benchmarks/hackbench:hackbench",
@@ -449,14 +449,14 @@ DESKTOP_ENVIRONMENT_SETS = {
         "inherits": ["desktop"],
     },
 
-    # XFCE
-    "xfce-desktop": {
-        "description": "XFCE lightweight desktop environment",
-        "packages": [
-            "//packages/linux/desktop/xfce:xfce",
-        ],
-        "inherits": ["desktop"],
-    },
+    # XFCE - Disabled until intltool dependencies are available
+    # "xfce-desktop": {
+    #     "description": "XFCE lightweight desktop environment",
+    #     "packages": [
+    #         "//packages/linux/desktop/xfce:xfce",
+    #     ],
+    #     "inherits": ["desktop"],
+    # },
 
     # Sway (Wayland tiling)
     "sway-desktop": {
@@ -476,14 +476,14 @@ DESKTOP_ENVIRONMENT_SETS = {
         "inherits": ["desktop"],
     },
 
-    # i3 (X11 tiling)
-    "i3-desktop": {
-        "description": "i3 X11 tiling window manager",
-        "packages": [
-            "//packages/linux/desktop/i3:i3-desktop",
-        ],
-        "inherits": ["desktop"],
-    },
+    # i3 (X11 tiling) - Disabled until i3 dependencies are available
+    # "i3-desktop": {
+    #     "description": "i3 X11 tiling window manager",
+    #     "packages": [
+    #         "//packages/linux/desktop/i3:i3-desktop",
+    #     ],
+    #     "inherits": ["desktop"],
+    # },
 }
 
 # =============================================================================
@@ -500,14 +500,14 @@ LANGUAGE_DEVELOPMENT_SETS = {
         "inherits": ["developer"],
     },
 
-    # Node.js development
-    "nodejs-dev": {
-        "description": "Node.js development environment with npm",
-        "packages": [
-            "//packages/linux/lang/nodejs:nodejs",
-        ],
-        "inherits": ["developer"],
-    },
+    # Node.js development - DISABLED: requires Python 3.6-3.12 (host has Python 3.14)
+    # "nodejs-dev": {
+    #     "description": "Node.js development environment with npm",
+    #     "packages": [
+    #         "//packages/linux/lang/nodejs:nodejs",
+    #     ],
+    #     "inherits": ["developer"],
+    # },
 
     # Rust development
     "rust-dev": {

@@ -141,10 +141,12 @@ autotools_package(
     description = "String processing utilities",
     homepage = "https://metacpan.org/pod/String::Util",
     license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
-    pre_configure = """
-        perl Makefile.PL PREFIX=$OUT/usr INSTALLDIRS=vendor
+    src_configure = """
+        perl Makefile.PL PREFIX=/usr INSTALLDIRS=vendor
     """,
-    configure_args = [],
+    src_install = """
+        make DESTDIR="$DESTDIR" install
+    """,
     deps = [
         "//packages/linux/lang/perl:perl",
     ],

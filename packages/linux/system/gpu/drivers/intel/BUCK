@@ -37,34 +37,37 @@ cp -r intel/* "$DESTDIR/usr/lib/firmware/intel/" 2>/dev/null || true
     visibility = ["PUBLIC"],
 )
 
-# Intel GPU tools
-meson_package(
-    name = "intel-gpu-tools",
-    version = "1.28",
-    src_uri = "https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/archive/v1.28/igt-gpu-tools-v1.28.tar.gz",
-    sha256 = "ba15b321c5a90da629baf326912c9c0406a903719040eb4959e0af1197935133",
-    signature_required = False,
-    description = "Intel GPU debugging and testing tools",
-    homepage = "https://gitlab.freedesktop.org/drm/igt-gpu-tools",
-    license = "MIT",
-    meson_args = [
-        "-Ddocs=disabled",
-        "-Dtests=disabled",
-        "-Drunner=disabled",
-    ],
-    env = {
-        "CFLAGS": "-O2 -march=x86-64 -pipe",
-        "LDFLAGS": "-Wl,-O1,--as-needed",
-    },
-    visibility = ["PUBLIC"],
-)
+# TODO: Intel GPU tools - needs libpciaccess and libdrm_intel dependencies
+# meson_package(
+#     name = "intel-gpu-tools",
+#     version = "1.28",
+#     src_uri = "https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/archive/v1.28/igt-gpu-tools-v1.28.tar.gz",
+#     sha256 = "ba15b321c5a90da629baf326912c9c0406a903719040eb4959e0af1197935133",
+#     signature_required = False,
+#     description = "Intel GPU debugging and testing tools",
+#     homepage = "https://gitlab.freedesktop.org/drm/igt-gpu-tools",
+#     license = "MIT",
+#     meson_args = [
+#         "-Ddocs=disabled",
+#         "-Dtests=disabled",
+#         "-Drunner=disabled",
+#     ],
+#     deps = [
+#         "//packages/linux/desktop/libdrm:libdrm",
+#     ],
+#     env = {
+#         "CFLAGS": "-O2 -march=x86-64 -pipe",
+#         "LDFLAGS": "-Wl,-O1,--as-needed",
+#     },
+#     visibility = ["PUBLIC"],
+# )
 
 # Combined Intel drivers package
 filegroup(
     name = "intel-drivers",
     srcs = [
         ":intel-firmware",
-        ":intel-gpu-tools",
+        # ":intel-gpu-tools",  # Disabled: needs libpciaccess and libdrm_intel
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

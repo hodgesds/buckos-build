@@ -57,8 +57,9 @@ cmake .. -DCMAKE_INSTALL_PREFIX=/usr \\
 """,
     deps = [
         "//packages/linux/desktop/wayland:wayland",
-        "//packages/linux/desktop/mesa:mesa",
-        "//packages/linux/desktop/sddm:sddm",
+        "//packages/linux/desktop/kde/ecm:extra-cmake-modules",
+        # "//packages/linux/desktop/mesa:mesa",  # Disabled: requires Python mako module
+        # "//packages/linux/desktop/sddm:sddm",  # Disabled: needs PAM
     ],
     visibility = ["PUBLIC"],
 )
@@ -86,7 +87,7 @@ cmake .. -DCMAKE_INSTALL_PREFIX=/usr \\
 """,
     deps = [
         "//packages/linux/desktop/wayland:wayland",
-        "//packages/linux/desktop/mesa:mesa",
+        # "//packages/linux/desktop/mesa:mesa",  # Disabled: requires Python mako module
         "//packages/linux/desktop/libinput:libinput",
     ],
     visibility = ["PUBLIC"],
@@ -98,9 +99,9 @@ filegroup(
     srcs = [
         ":plasma-desktop",
         ":kwin",
-        "//packages/linux/desktop/sddm:sddm",
+        # "//packages/linux/desktop/sddm:sddm",  # Disabled: needs PAM
         "//packages/linux/desktop/wayland:wayland",
-        "//packages/linux/desktop/mesa:mesa",
+        # "//packages/linux/desktop/mesa:mesa",  # Disabled: requires Python mako module
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

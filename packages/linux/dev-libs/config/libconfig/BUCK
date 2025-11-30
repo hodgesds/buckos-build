@@ -15,18 +15,22 @@ autotools_package(
     description = "C/C++ library for processing configuration files",
     homepage = "https://hyperrealm.github.io/libconfig/",
     license = "LGPL-2.1+",
-    # Prevent flex/bison from regenerating parser files - the pre-generated
-    # files in the tarball have incompatible function signatures with newer
-    # flex versions. Touch the .c files to make them newer than .y/.l files.
+    # Force regeneration of flex/bison files - the pre-generated files in the
+    # tarball have incorrect extern declarations that don't match the reentrant
+    # parser calls. Delete the .c/.h files to force make to regenerate them.
     src_prepare = """
 cd lib
-touch scanner.c scanner.h grammar.c grammar.h
+rm -f scanner.c scanner.h grammar.c grammar.h
 cd ..
 """,
     configure_args = [
         "--disable-static",
         "--disable-examples",
         "--disable-tests",
+    ],
+    deps = [
+        "//packages/linux/dev-tools/dev-utils/flex:flex",
+        "//packages/linux/dev-tools/dev-utils/bison:bison",
     ],
     visibility = ["PUBLIC"],
 )

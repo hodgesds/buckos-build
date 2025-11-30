@@ -1,7 +1,7 @@
-load("//defs:package_defs.bzl", "cmake_package", "autotools_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
-autotools_package(
+cmake_package(
     name = "ccache",
     version = "4.9.1",
     src_uri = "https://github.com/ccache/ccache/releases/download/v4.9.1/ccache-4.9.1.tar.xz",
@@ -11,24 +11,13 @@ autotools_package(
     description = "Fast C/C++ compiler cache",
     homepage = "https://ccache.dev/",
     license = "GPL-3+",
-    use_defaults = [],
-    use_configure = {
-        "static-libs": "-DSTATIC_LINK=ON",
-        "-static-libs": "-DSTATIC_LINK=OFF",
-        "doc": "-DENABLE_DOCUMENTATION=ON",
-        "-doc": "-DENABLE_DOCUMENTATION=OFF",
-        "test": "-DENABLE_TESTING=ON",
-        "-test": "-DENABLE_TESTING=OFF",
-    },
-    use_deps = {
-    },
-    pre_configure = """
-mkdir -p build
-cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    $CONFIGURE_ARGS
-""",
+    cmake_args = [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_INSTALL_PREFIX=/usr",
+        "-DSTATIC_LINK=OFF",
+        "-DENABLE_DOCUMENTATION=OFF",
+        "-DENABLE_TESTING=OFF",
+    ],
     deps = [],
     visibility = ["PUBLIC"],
 )

@@ -15,7 +15,7 @@ filegroup(
     name = "keyboard",
     srcs = [
         "//packages/linux/system/libs/input/libxkbcommon:libxkbcommon",
-        "//packages/linux/system/libs/input/libfakekey:libfakekey",
+        # "//packages/linux/system/libs/input/libfakekey:libfakekey",  # Disabled: needs X11 libs
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

@@ -9,17 +9,21 @@ download_source(
     signature_required = False,
 )
 
-autotools_package(
-    name = "arj",
-    source = ":arj-src",
-    version = "3.10.22",
-    description = "Open-source ARJ archiver",
-    homepage = "https://arj.sourceforge.net",
-    license = "GPL-2",
-    configure_args = [
-        "--prefix=/usr",
-    ],
-    deps = [
-    ],
-    visibility = ["PUBLIC"],
-)
+# TODO: ARJ uses an unusual GNU make-based build system in gnu/ subdirectory
+# that requires running ./configure from gnu/ directory and has broken makefiles.
+# This is a legacy archive format rarely needed. Disable until fixed.
+#
+# autotools_package(
+#     name = "arj",
+#     source = ":arj-src",
+#     version = "3.10.22",
+#     description = "Open-source ARJ archiver",
+#     homepage = "https://arj.sourceforge.net",
+#     license = "GPL-2",
+#     configure_args = [
+#         "--prefix=/usr",
+#     ],
+#     deps = [
+#     ],
+#     visibility = ["PUBLIC"],
+# )

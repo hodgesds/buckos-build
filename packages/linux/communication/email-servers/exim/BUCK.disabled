@@ -21,10 +21,15 @@ binary_package(
         # Set release version as environment variable to avoid git detection issues
         export EXIM_RELEASE_VERSION=4.98
 
+        # Set library paths for SQLite and other deps
+        export LDFLAGS="-L$SYSROOT/usr/lib -Wl,-rpath,$SYSROOT/usr/lib"
+        export CFLAGS="-I$SYSROOT/usr/include"
+        export LIBRARY_PATH="$SYSROOT/usr/lib"
+
         # Create Local/Makefile with build configuration
         # Use EXIM_USER=ref:exim to defer user check to runtime
         mkdir -p Local
-        cat > Local/Makefile << 'MAKEFILE'
+        cat > Local/Makefile << MAKEFILE
 BIN_DIRECTORY=/usr/bin
 CONFIGURE_FILE=/etc/exim/exim.conf
 EXIM_USER=ref:exim
@@ -44,7 +49,11 @@ EXPERIMENTAL_DMARC=no
 LOOKUP_DBM=no
 LOOKUP_CDB=no
 USE_SQLITE=yes
+LOOKUP_SQLITE=yes
+LOOKUP_SQLITE_LIBS=-L$SYSROOT/usr/lib -lsqlite3
+LOOKUP_SQLITE_PC=sqlite3
 DBMLIB=-lsqlite3
+EXTRALIBS=-L$SYSROOT/usr/lib
 MAKEFILE
 
         # Build only the exim binary (skip perl-dependent utilities like exim_id_update which need File::FcntlLock)

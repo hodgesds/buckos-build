@@ -9,10 +9,24 @@ meson_package(
     description = "Filesystem in Userspace (FUSE) library and utilities",
     homepage = "https://github.com/libfuse/libfuse",
     license = "LGPL-2.1",
+    # Clean stale meson build data before configuring
+    pre_configure = """
+rm -rf build meson-private
+""",
     meson_args = [
         "-Dexamples=false",
         "-Dtests=false",
         "-Duseroot=false",
     ],
+    # Override src_install to add compatibility symlinks so that #include <fuse.h> works
+    # when packages use the dep's include path (-I.../usr/include)
+    src_install = """
+DESTDIR="$DESTDIR" meson install -C "${BUILD_DIR:-build}"
+# Create compatibility symlinks for fuse.h etc
+cd "$DESTDIR/usr/include"
+for header in fuse3/*.h; do
+    ln -sf "$header" "$(basename $header)"
+done
+""",
     visibility = ["PUBLIC"],
 )

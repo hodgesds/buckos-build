@@ -13,33 +13,41 @@ download_source(
     signature_required=False,
 )
 
-autotools_package(
-    name = "awesome",
-    source = ":awesome-src",
-    version = "4.3",
-    description = "Awesome - Highly configurable window manager for X",
-    homepage = "https://awesomewm.org/",
-    license = "GPL-2.0",
-    pre_configure = """
-mkdir -p build
-cd build
-cmake .. -DCMAKE_INSTALL_PREFIX=/usr \\
-    -DGENERATE_MANPAGES=OFF \\
-    -DGENERATE_DOC=OFF
-""",
-    deps = [
-    ],
-    visibility = ["PUBLIC"],
-)
+# TODO: awesome requires Lua and XCB dependencies that need to be created:
+# - lua or luajit
+# - libxcb and xcb-util libraries
+# Until these packages exist, awesome cannot be built.
+#
+# autotools_package(
+#     name = "awesome",
+#     source = ":awesome-src",
+#     version = "4.3",
+#     description = "Awesome - Highly configurable window manager for X",
+#     homepage = "https://awesomewm.org/",
+#     license = "GPL-2.0",
+#     pre_configure = """
+# mkdir -p build
+# cd build
+# cmake .. -DCMAKE_INSTALL_PREFIX=/usr \
+#     -DGENERATE_MANPAGES=OFF \
+#     -DGENERATE_DOC=OFF
+# """,
+#     deps = [
+#         # TODO: Add when these packages are created:
+#         # "//packages/linux/lang/lua:lua",
+#         # "//packages/linux/desktop/x11/libxcb:libxcb",
+#     ],
+#     visibility = ["PUBLIC"],
+# )
 
-# Awesome meta-package
-filegroup(
-    name = "awesome-desktop",
-    srcs = [
-        ":awesome",
-        "//packages/linux/desktop/lightdm:lightdm",
-        "//packages/linux/desktop/mesa:mesa",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
+# Awesome meta-package (disabled until awesome dependencies are available)
+# filegroup(
+#     name = "awesome-desktop",
+#     srcs = [
+#         ":awesome",
+#         "//packages/linux/desktop/lightdm:lightdm",
+#         "//packages/linux/desktop/mesa:mesa",
+#     ],
+#     default_target_platform = "//platforms:linux-target",
+#     visibility = ["PUBLIC"],
+# )

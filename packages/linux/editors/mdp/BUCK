@@ -20,6 +20,10 @@ autotools_package(
     make_args = [
         "PREFIX=/usr",
     ],
+    # Modern ncurses separates tinfo - need to explicitly link libtinfow for cbreak/etc
+    env = {
+        "LDFLAGS": "-ltinfow",
+    },
     deps = [
         "//packages/linux/core/ncurses:ncurses",
     ],

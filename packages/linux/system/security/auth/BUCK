@@ -93,12 +93,12 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
-# Biometric authentication
+# Biometric authentication - Disabled: NSS uses its own build system
 filegroup(
     name = "biometric-auth",
     srcs = [
-        "//packages/linux/system/security/auth/biometric:libfprint",
-        "//packages/linux/system/security/auth/biometric:fprintd",
+        # "//packages/linux/system/security/auth/biometric:libfprint",  # Disabled
+        # "//packages/linux/system/security/auth/biometric:fprintd",  # Disabled
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

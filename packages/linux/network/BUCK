@@ -157,7 +157,7 @@ filegroup(
     srcs = [
         "//packages/linux/network/libpcap:libpcap",
         "//packages/linux/network/tcpdump:tcpdump",
-        "//packages/linux/network/ngrep:ngrep",
+        # "//packages/linux/network/ngrep:ngrep",  # Disabled: GNU regex configure fails with embedded long paths
         "//packages/linux/network/tshark:tshark",
         "//packages/linux/network/wireshark:wireshark",
     ],
@@ -171,8 +171,8 @@ filegroup(
         "//packages/linux/network/iftop:iftop",
         "//packages/linux/network/bmon:bmon",
         "//packages/linux/network/vnstat:vnstat",
-        "//packages/linux/network/bandwhich:bandwhich",
-        "//packages/linux/network/darkstat:darkstat",
+        # "//packages/linux/network/bandwhich:bandwhich",  # Disabled: Rust time crate incompatibility with newer Rust versions
+        # "//packages/linux/network/darkstat:darkstat",  # Disabled: autoreconf fails - Automake::Config Perl module not found
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -195,8 +195,8 @@ filegroup(
     srcs = [
         "//packages/linux/network/nmap:nmap",
         "//packages/linux/network/masscan:masscan",
-        "//packages/linux/network/hping3:hping3",
-        "//packages/linux/network/ettercap:ettercap",
+        # "//packages/linux/network/hping3:hping3",  # Disabled: Missing net/bpf.h BSD header on Linux
+        # "//packages/linux/network/ettercap:ettercap",  # Disabled: uses CMake not autotools
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -263,7 +263,7 @@ filegroup(
 filegroup(
     name = "messaging",
     srcs = [
-        "//packages/linux/network/signal-desktop:signal-desktop",
+        # "//packages/linux/network/signal-desktop:signal-desktop",  # Disabled: depends on NSS which uses own build system
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

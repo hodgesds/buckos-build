@@ -18,9 +18,10 @@ autotools_package(
 
     use_configure = {},
 
+    # nethogs uses plain Makefile, patch to add libtinfow for split ncurses
+    src_prepare = "sed -i 's/NCURSES_LIBS?=-lncurses/NCURSES_LIBS=-lncursesw -ltinfow/' src/MakeApp.mk",
     make_args = [
         "PREFIX=/usr",
-        "NCURSES_LIBS=-lncursesw -ltinfow -lstdc++",
     ],
 
     deps = [

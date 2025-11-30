@@ -18,8 +18,8 @@ filegroup(
         "//packages/linux/desktop/wayland-utilities/swaylock-effects:swaylock-effects",
         "//packages/linux/desktop/wayland-utilities/swayidle:swayidle",
         "//packages/linux/desktop/wayland-utilities/swaybg:swaybg",
-        "//packages/linux/desktop/wayland-utilities/swaync:swaync",
-        "//packages/linux/desktop/wayland-utilities/wlr-randr:wlr-randr",
+        # "//packages/linux/desktop/wayland-utilities/swaync:swaync",  # Disabled: needs Vala compiler
+        # "//packages/linux/desktop/wayland-utilities/wlr-randr:wlr-randr",  # Disabled: needs wayland-scanner
         "//packages/linux/desktop/wayland-utilities/kanshi:kanshi",
         "//packages/linux/desktop/wayland-utilities/wdisplays:wdisplays",
         "//packages/linux/desktop/wayland-utilities/grim:grim",
@@ -30,26 +30,26 @@ filegroup(
         "//packages/linux/desktop/wayland-utilities/swappy:swappy",
         "//packages/linux/desktop/wayland-utilities/mako:mako",
         "//packages/linux/desktop/wayland-utilities/fnott:fnott",
-        "//packages/linux/desktop/wayland-utilities/wofi:wofi",
+        # "//packages/linux/desktop/wayland-utilities/wofi:wofi",  # Disabled: needs GTK3
         "//packages/linux/desktop/wayland-utilities/fuzzel:fuzzel",
         "//packages/linux/desktop/wayland-utilities/tofi:tofi",
         "//packages/linux/desktop/wayland-utilities/bemenu:bemenu",
         "//packages/linux/desktop/wayland-utilities/wtype:wtype",
         "//packages/linux/desktop/wayland-utilities/ydotool:ydotool",
-        "//packages/linux/desktop/wayland-utilities/wev:wev",
+        # "//packages/linux/desktop/wayland-utilities/wev:wev",  # Disabled: uses Makefile not meson
         "//packages/linux/desktop/wayland-utilities/waybar:waybar",
-        "//packages/linux/desktop/wayland-utilities/yambar:yambar",
-        "//packages/linux/desktop/wayland-utilities/eww:eww",
+        # "//packages/linux/desktop/wayland-utilities/yambar:yambar",  # Disabled: needs tllist library
+        # "//packages/linux/desktop/wayland-utilities/eww:eww",  # Disabled: Rust time crate issue
         "//packages/linux/desktop/wayland-utilities/wlsunset:wlsunset",
-        "//packages/linux/desktop/wayland-utilities/gammastep:gammastep",
+        # "//packages/linux/desktop/wayland-utilities/gammastep:gammastep",  # Disabled: autoreconf/automake Perl issue
         "//packages/linux/desktop/wayland-utilities/waypaper:waypaper",
         "//packages/linux/desktop/wayland-utilities/hyprpaper:hyprpaper",
-        "//packages/linux/desktop/wayland-utilities/mpvpaper:mpvpaper",
-        "//packages/linux/desktop/wayland-utilities/wob:wob",
+        # "//packages/linux/desktop/wayland-utilities/mpvpaper:mpvpaper",  # Disabled: needs EGL (mesa requires Python mako)
+        # "//packages/linux/desktop/wayland-utilities/wob:wob",  # Disabled: needs inih
         "//packages/linux/desktop/wayland-utilities/wshowkeys:wshowkeys",
         "//packages/linux/desktop/wayland-utilities/hyprpicker:hyprpicker",
-        "//packages/linux/desktop/wayland-utilities/wlopm:wlopm",
-        "//packages/linux/desktop/wayland-utilities/wayland-utils:wayland-utils",
+        # "//packages/linux/desktop/wayland-utilities/wlopm:wlopm",  # Disabled: uses Makefile not meson
+        # "//packages/linux/desktop/wayland-utilities/wayland-utils:wayland-utils",  # Disabled: needs wayland-scanner
         # wlprop disabled - repository no longer exists
     ],
     default_target_platform = "//platforms:linux-target",
@@ -76,7 +76,7 @@ filegroup(
         "//packages/linux/desktop/wayland-utilities/swaylock-effects:swaylock-effects",
         "//packages/linux/desktop/wayland-utilities/swayidle:swayidle",
         "//packages/linux/desktop/wayland-utilities/swaybg:swaybg",
-        "//packages/linux/desktop/wayland-utilities/swaync:swaync",
+        # "//packages/linux/desktop/wayland-utilities/swaync:swaync",  # Disabled: needs Vala compiler
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -86,7 +86,7 @@ filegroup(
 filegroup(
     name = "display",
     srcs = [
-        "//packages/linux/desktop/wayland-utilities/wlr-randr:wlr-randr",
+        # "//packages/linux/desktop/wayland-utilities/wlr-randr:wlr-randr",  # Disabled: needs wayland-scanner
         "//packages/linux/desktop/wayland-utilities/kanshi:kanshi",
         "//packages/linux/desktop/wayland-utilities/wdisplays:wdisplays",
     ],
@@ -115,7 +115,7 @@ filegroup(
     srcs = [
         "//packages/linux/desktop/wayland-utilities/mako:mako",
         "//packages/linux/desktop/wayland-utilities/fnott:fnott",
-        "//packages/linux/desktop/wayland-utilities/swaync:swaync",
+        # "//packages/linux/desktop/wayland-utilities/swaync:swaync",  # Disabled: needs Vala compiler
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -125,7 +125,7 @@ filegroup(
 filegroup(
     name = "launchers",
     srcs = [
-        "//packages/linux/desktop/wayland-utilities/wofi:wofi",
+        # "//packages/linux/desktop/wayland-utilities/wofi:wofi",  # Disabled: needs GTK3
         "//packages/linux/desktop/wayland-utilities/fuzzel:fuzzel",
         "//packages/linux/desktop/wayland-utilities/tofi:tofi",
         "//packages/linux/desktop/wayland-utilities/bemenu:bemenu",
@@ -140,7 +140,7 @@ filegroup(
     srcs = [
         "//packages/linux/desktop/wayland-utilities/wtype:wtype",
         "//packages/linux/desktop/wayland-utilities/ydotool:ydotool",
-        "//packages/linux/desktop/wayland-utilities/wev:wev",
+        # "//packages/linux/desktop/wayland-utilities/wev:wev",  # Disabled: uses Makefile not meson
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -151,8 +151,8 @@ filegroup(
     name = "wayland-bars",
     srcs = [
         "//packages/linux/desktop/wayland-utilities/waybar:waybar",
-        "//packages/linux/desktop/wayland-utilities/yambar:yambar",
-        "//packages/linux/desktop/wayland-utilities/eww:eww",
+        # "//packages/linux/desktop/wayland-utilities/yambar:yambar",  # Disabled: needs tllist library
+        # "//packages/linux/desktop/wayland-utilities/eww:eww",  # Disabled: Rust time crate issue
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -163,7 +163,7 @@ filegroup(
     name = "color",
     srcs = [
         "//packages/linux/desktop/wayland-utilities/wlsunset:wlsunset",
-        "//packages/linux/desktop/wayland-utilities/gammastep:gammastep",
+        # "//packages/linux/desktop/wayland-utilities/gammastep:gammastep",  # Disabled: autoreconf/automake Perl issue
         "//packages/linux/desktop/wayland-utilities/hyprpicker:hyprpicker",
     ],
     default_target_platform = "//platforms:linux-target",
@@ -177,7 +177,7 @@ filegroup(
         "//packages/linux/desktop/wayland-utilities/swaybg:swaybg",
         "//packages/linux/desktop/wayland-utilities/waypaper:waypaper",
         "//packages/linux/desktop/wayland-utilities/hyprpaper:hyprpaper",
-        "//packages/linux/desktop/wayland-utilities/mpvpaper:mpvpaper",
+        # "//packages/linux/desktop/wayland-utilities/mpvpaper:mpvpaper",  # Disabled: needs EGL (mesa requires Python mako)
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -187,7 +187,7 @@ filegroup(
 filegroup(
     name = "osd",
     srcs = [
-        "//packages/linux/desktop/wayland-utilities/wob:wob",
+        # "//packages/linux/desktop/wayland-utilities/wob:wob",  # Disabled: needs inih
         "//packages/linux/desktop/wayland-utilities/wshowkeys:wshowkeys",
     ],
     default_target_platform = "//platforms:linux-target",
@@ -205,9 +205,9 @@ filegroup(
         "//packages/linux/desktop/wayland-utilities/grim:grim",
         "//packages/linux/desktop/wayland-utilities/slurp:slurp",
         "//packages/linux/desktop/wayland-utilities/mako:mako",
-        "//packages/linux/desktop/wayland-utilities/wofi:wofi",
+        # "//packages/linux/desktop/wayland-utilities/wofi:wofi",  # Disabled: needs GTK3
         "//packages/linux/desktop/wayland-utilities/waybar:waybar",
-        "//packages/linux/desktop/wayland-utilities/wlr-randr:wlr-randr",
+        # "//packages/linux/desktop/wayland-utilities/wlr-randr:wlr-randr",  # Disabled: needs wayland-scanner
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -220,9 +220,9 @@ filegroup(
         "//packages/linux/desktop/wayland-utilities/swaylock:swaylock",
         "//packages/linux/desktop/wayland-utilities/swayidle:swayidle",
         "//packages/linux/desktop/wayland-utilities/swaybg:swaybg",
-        "//packages/linux/desktop/wayland-utilities/swaync:swaync",
+        # "//packages/linux/desktop/wayland-utilities/swaync:swaync",  # Disabled: needs Vala compiler
         "//packages/linux/desktop/wayland-utilities/waybar:waybar",
-        "//packages/linux/desktop/wayland-utilities/wofi:wofi",
+        # "//packages/linux/desktop/wayland-utilities/wofi:wofi",  # Disabled: needs GTK3
         "//packages/linux/desktop/wayland-utilities/grim:grim",
         "//packages/linux/desktop/wayland-utilities/slurp:slurp",
         "//packages/linux/desktop/wayland-utilities/mako:mako",
@@ -239,7 +239,7 @@ filegroup(
         "//packages/linux/desktop/wayland-utilities/hyprpaper:hyprpaper",
         "//packages/linux/desktop/wayland-utilities/hyprpicker:hyprpicker",
         "//packages/linux/desktop/wayland-utilities/waybar:waybar",
-        "//packages/linux/desktop/wayland-utilities/wofi:wofi",
+        # "//packages/linux/desktop/wayland-utilities/wofi:wofi",  # Disabled: needs GTK3
         "//packages/linux/desktop/wayland-utilities/grim:grim",
         "//packages/linux/desktop/wayland-utilities/slurp:slurp",
         "//packages/linux/desktop/wayland-utilities/mako:mako",
@@ -255,8 +255,8 @@ filegroup(
 filegroup(
     name = "system",
     srcs = [
-        "//packages/linux/desktop/wayland-utilities/wlopm:wlopm",
-        "//packages/linux/desktop/wayland-utilities/wayland-utils:wayland-utils",
+        # "//packages/linux/desktop/wayland-utilities/wlopm:wlopm",  # Disabled: uses Makefile not meson
+        # "//packages/linux/desktop/wayland-utilities/wayland-utils:wayland-utils",  # Disabled: needs wayland-scanner
         # wlprop disabled - repository no longer exists
     ],
     default_target_platform = "//platforms:linux-target",

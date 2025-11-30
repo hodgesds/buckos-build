@@ -74,6 +74,7 @@ autotools_package(
     configure_args = [],
     deps = [
         "//packages/linux/lang/perl:perl",
+        "//packages/linux/core/readline:readline",
     ],
     visibility = ["PUBLIC"],
 )

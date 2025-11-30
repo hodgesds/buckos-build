@@ -14,7 +14,7 @@ autotools_package(
     homepage = "https://www.videolan.org/vlc/",
     license = "GPL-2.0-or-later LGPL-2.1-or-later",
     iuse = ["X", "wayland", "qt5", "alsa", "pulseaudio", "jack", "ffmpeg", "vaapi", "vdpau", "dvd", "bluray", "nls", "lua", "ssl", "ncurses"],
-    use_defaults = ["X", "wayland", "qt5", "alsa", "pulseaudio", "ffmpeg", "vaapi", "vdpau", "dvd", "nls", "ssl"],
+    use_defaults = ["X", "wayland", "qt5", "alsa", "pulseaudio", "ffmpeg", "vaapi", "dvd", "nls", "ssl"],  # Removed vdpau (needs X11 libs)
     configure_args = [
         "--prefix=/usr",
         "--enable-archive",
@@ -98,7 +98,7 @@ autotools_package(
         "pulseaudio": ["//packages/linux/audio/daemons/pulseaudio:pulseaudio"],
         "ffmpeg": ["//packages/linux/graphics/video/ffmpeg:ffmpeg"],
         "vaapi": ["//packages/linux/graphics/video/libva:libva"],
-        "vdpau": ["//packages/linux/graphics/video/vdpau:vdpau"],
+        # "vdpau": ["//packages/linux/graphics/video/vdpau:vdpau"],  # Disabled: needs X11 libs
         "ssl": ["//packages/linux/system/libs/crypto/gnutls:gnutls"],
     },
     make_args = [],
@@ -108,7 +108,7 @@ DESTDIR=$OUT make install
     deps = [
         "//packages/linux/graphics/video/x264:x264",
         "//packages/linux/graphics/video/x265:x265",
-        "//packages/linux/graphics/video/libvpx:libvpx",
+        # "//packages/linux/graphics/video/libvpx:libvpx",  # Disabled: needs nasm
         "//packages/linux/graphics/video/dav1d:dav1d",
         "//packages/linux/graphics/video/aom:aom",
         "//packages/linux/audio/libraries/opus:opus",

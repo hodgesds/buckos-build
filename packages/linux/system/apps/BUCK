@@ -40,7 +40,7 @@ filegroup(
         "//packages/linux/system/apps/htop:htop",
         "//packages/linux/system/apps/lsof:lsof",
         "//packages/linux/system/apps/strace:strace",
-        "//packages/linux/system/apps/psmisc:psmisc",
+        # "//packages/linux/system/apps/psmisc:psmisc",  # Disabled: autoreconf fails (missing Automake::Config Perl module)
         "//packages/linux/core/procps-ng:procps-ng",
     ],
     default_target_platform = "//platforms:linux-target",
@@ -71,7 +71,7 @@ filegroup(
 filegroup(
     name = "logging-packages",
     srcs = [
-        "//packages/linux/system/apps/rsyslog:rsyslog",
+        # "//packages/linux/system/apps/rsyslog:rsyslog",  # Disabled: Missing libestr dependency
         "//packages/linux/system/apps/logrotate:logrotate",
         "//packages/linux/system/apps/lnav:lnav",
     ],
@@ -104,7 +104,7 @@ filegroup(
         "//packages/linux/system/apps/bpf/bpftool:bpftool",
         "//packages/linux/system/apps/bpf/bpftrace:bpftrace",
         "//packages/linux/system/apps/bpf/bpftop:bpftop",
-        "//packages/linux/system/apps/bpf/scx-scheds:scx-scheds",
+        # "//packages/linux/system/apps/bpf/scx-scheds:scx-scheds",  # Disabled: BPF enum discriminant conflicts with kernel 6.17+
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -149,7 +149,7 @@ filegroup(
         ":bpf-packages",
         "//packages/linux/system/apps/rsync:rsync",
         "//packages/linux/system/apps/acpid:acpid",
-        "//packages/linux/system/apps/at:at",
+        # "//packages/linux/system/apps/at:at",  # Disabled: needs mail command configuration fix
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

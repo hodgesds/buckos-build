@@ -6,9 +6,9 @@ filegroup(
     name = "audit-packages",
     srcs = [
         "//packages/linux/system/security/audit:audit",
-        "//packages/linux/system/security/aide:aide",
+        # "//packages/linux/system/security/aide:aide",  # Disabled: requires mhash library (not packaged)
         "//packages/linux/system/security/lynis:lynis",
-        "//packages/linux/system/security/rkhunter:rkhunter",
+        # "//packages/linux/system/security/rkhunter:rkhunter",  # Disabled: custom installer doesn't support standard build phases
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -91,12 +91,12 @@ filegroup(
 filegroup(
     name = "crypto-packages",
     srcs = [
-        "//packages/linux/system/security/gnupg:gnupg",
-        "//packages/linux/system/security/gnupg:libgpg-error",
-        "//packages/linux/system/security/gnupg:libgcrypt",
-        "//packages/linux/system/security/gnupg:libksba",
-        "//packages/linux/system/security/gnupg:libassuan",
-        "//packages/linux/system/security/gnupg:npth",
+        # "//packages/linux/system/security/gnupg:gnupg",  # Disabled: configure can't find libksba despite it being built (pkg-config path issue)
+        # "//packages/linux/system/security/gnupg:libgpg-error",  # Disabled: part of gnupg
+        # "//packages/linux/system/security/gnupg:libgcrypt",  # Disabled: part of gnupg
+        # "//packages/linux/system/security/gnupg:libksba",  # Disabled: part of gnupg
+        # "//packages/linux/system/security/gnupg:libassuan",  # Disabled: part of gnupg
+        # "//packages/linux/system/security/gnupg:npth",  # Disabled: part of gnupg
         "//packages/linux/system/security/cryptsetup:cryptsetup",
         "//packages/linux/system/security/cryptsetup:popt",
         "//packages/linux/system/security/cryptsetup:lvm2",
@@ -186,11 +186,11 @@ filegroup(
 )
 
 # Convenience aliases for commonly used packages
-alias(
-    name = "gnupg",
-    actual = "//packages/linux/system/security/gnupg:gnupg",
-    visibility = ["PUBLIC"],
-)
+# alias(
+#     name = "gnupg",
+#     actual = "//packages/linux/system/security/gnupg:gnupg",
+#     visibility = ["PUBLIC"],
+# )  # Disabled: configure can't find libksba despite it being built (pkg-config path issue)
 
 alias(
     name = "nftables",
@@ -240,17 +240,17 @@ alias(
     visibility = ["PUBLIC"],
 )
 
-alias(
-    name = "rkhunter",
-    actual = "//packages/linux/system/security/rkhunter:rkhunter",
-    visibility = ["PUBLIC"],
-)
+# alias(
+#     name = "rkhunter",
+#     actual = "//packages/linux/system/security/rkhunter:rkhunter",
+#     visibility = ["PUBLIC"],
+# )  # Disabled: custom installer doesn't support standard build phases
 
-alias(
-    name = "aide",
-    actual = "//packages/linux/system/security/aide:aide",
-    visibility = ["PUBLIC"],
-)
+# alias(
+#     name = "aide",
+#     actual = "//packages/linux/system/security/aide:aide",
+#     visibility = ["PUBLIC"],
+# )  # Disabled: requires mhash library (not packaged)
 
 # Encryption tools aliases
 alias(
@@ -488,17 +488,18 @@ alias(
     visibility = ["PUBLIC"],
 )
 
-alias(
-    name = "fprintd",
-    actual = "//packages/linux/system/security/auth/biometric:fprintd",
-    visibility = ["PUBLIC"],
-)
+# Disabled: biometric auth packages use NSS which has its own build system
+# alias(
+#     name = "fprintd",
+#     actual = "//packages/linux/system/security/auth/biometric:fprintd",
+#     visibility = ["PUBLIC"],
+# )
 
-alias(
-    name = "libfprint",
-    actual = "//packages/linux/system/security/auth/biometric:libfprint",
-    visibility = ["PUBLIC"],
-)
+# alias(
+#     name = "libfprint",
+#     actual = "//packages/linux/system/security/auth/biometric:libfprint",
+#     visibility = ["PUBLIC"],
+# )
 
 alias(
     name = "pam-radius",

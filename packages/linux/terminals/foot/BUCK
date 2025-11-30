@@ -21,7 +21,11 @@ meson_package(
     ],
     deps = [
         "//packages/linux/system/libs/graphics/pixman:pixman",
+        "//packages/linux/core/libffi:libffi",  # Needed for wayland-client pkg-config
+        "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/wayland:wayland-protocols",
+        "//packages/linux/system/libs/input/libxkbcommon:libxkbcommon",
+        "//packages/linux/fonts/libraries/fontconfig:fontconfig",
     ],
     visibility = ["PUBLIC"],
 )

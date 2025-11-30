@@ -19,7 +19,7 @@ filegroup(
         "//packages/linux/system/hardware/usbutils:usbutils",
         "//packages/linux/system/hardware/lshw:lshw",
         "//packages/linux/system/hardware/dmidecode:dmidecode",
-        "//packages/linux/system/hardware/hwinfo:hwinfo",
+        # "//packages/linux/system/hardware/hwinfo:hwinfo",  # Disabled: needs libx86emu
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -50,7 +50,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/hardware/dmidecode:dmidecode",
         "//packages/linux/system/hardware/lshw:lshw",
-        "//packages/linux/system/hardware/hwinfo:hwinfo",
+        # "//packages/linux/system/hardware/hwinfo:hwinfo",  # Disabled: needs libx86emu
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

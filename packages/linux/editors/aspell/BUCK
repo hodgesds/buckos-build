@@ -23,6 +23,10 @@ autotools_package(
         "--sysconfdir=/etc",
         "--enable-compile-in-filters",
     ],
+    # Modern ncurses separates libtinfo - need to explicitly link libtinfow for stdscr/etc
+    env = {
+        "LDFLAGS": "-ltinfow",
+    },
     deps = [
         "//packages/linux/core/ncurses:ncurses",
     ],

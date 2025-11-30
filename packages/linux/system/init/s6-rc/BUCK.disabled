@@ -21,19 +21,27 @@ autotools_package(
     license = "ISC",
     # skarnet.org uses non-standard configure - custom src_configure phase
     src_configure = """
-# Find skalibs in dependency directories
+# Find skalibs and s6 in dependency directories
 SKALIBS_DIR=""
+S6_DIR=""
 for dir in ${DEP_BASE_DIRS//:/ }; do
     if [ -d "$dir/usr/lib/skalibs/sysdeps" ]; then
         SKALIBS_DIR="$dir"
-        break
+    fi
+    if [ -d "$dir/usr/include/s6" ]; then
+        S6_DIR="$dir"
     fi
 done
 if [ -z "$SKALIBS_DIR" ]; then
     echo "ERROR: Could not find skalibs sysdeps directory"
     exit 1
 fi
+if [ -z "$S6_DIR" ]; then
+    echo "ERROR: Could not find s6 include directory"
+    exit 1
+fi
 echo "Found skalibs at: $SKALIBS_DIR"
+echo "Found s6 at: $S6_DIR"
 
 ./configure \\
     --prefix=/usr \\
@@ -43,7 +51,9 @@ echo "Found skalibs at: $SKALIBS_DIR"
     --disable-static \\
     --with-sysdeps="$SKALIBS_DIR/usr/lib/skalibs/sysdeps" \\
     --with-include="$SKALIBS_DIR/usr/include" \\
-    --with-lib="$SKALIBS_DIR/usr/lib"
+    --with-include="$S6_DIR/usr/include" \\
+    --with-lib="$SKALIBS_DIR/usr/lib" \\
+    --with-lib="$S6_DIR/usr/lib"
 """,
     deps = [
         "//packages/linux/system/init/skalibs:skalibs",

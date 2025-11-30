@@ -1,92 +1,74 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "meson_package", "python_package")
 
 # libvirt - Virtualization API
 # Use GitHub mirror since libvirt.org/download.libvirt.org often times out
-download_source(
-    name = "libvirt-src",
+# NOTE: libvirt uses meson build system since v8.0.0
+
+meson_package(
+    name = "libvirt",
     src_uri = "https://github.com/libvirt/libvirt/archive/refs/tags/v10.7.0.tar.gz",
     sha256 = "6a89c296c23ee204e35cc4a9dbc8da64033a5c8c8126d7c92184f65e00f4ef65",
     signature_required = False,
-)
-
-# USE flags: See use_flags.bzl for available flags
-
-autotools_package(
-    name = "libvirt",
-    source = ":libvirt-src",
     version = "10.7.0",
     description = "Library and daemon providing a stable API for managing virtualization",
     homepage = "https://libvirt.org/",
     license = "LGPL-2.1",
-    configure_args = [
-        "--prefix=/usr",
-        "--sysconfdir=/etc",
-        "--localstatedir=/var",
-        "--libexecdir=/usr/lib/libvirt",
-        "--with-runstatedir=/run",
-        "--with-qemu",
-        "--with-qemu-user=qemu",
-        "--with-qemu-group=qemu",
-        "--with-lxc",
-        "--with-libxl",
-        "--with-vbox",
-        "--with-libssh2",
-        "--with-sasl",
-        "--with-polkit",
-        "--with-udev",
-        "--with-storage-fs",
-        "--with-storage-lvm",
-        "--with-storage-iscsi",
-        "--with-storage-disk",
-        "--with-storage-rbd",
-        "--with-storage-zfs",
-        "--with-numactl",
-        "--with-numad",
-        "--with-firewalld",
-        "--with-network",
-        "--with-nwfilter",
-        "--with-interface",
-        "--with-macvtap",
-        "--with-virtualport",
-        "--with-secdriver-apparmor=no",
-        "--with-secdriver-selinux=no",
-        "--with-audit",
-        "--with-dtrace",
-        "--with-systemd-daemon",
-        "--with-init-script=systemd",
+    meson_args = [
+        "-Dprefix=/usr",
+        "-Dsysconfdir=/etc",
+        "-Dlocalstatedir=/var",
+        "-Drunstatedir=/run",
+        "-Ddriver_qemu=enabled",
+        "-Ddriver_lxc=enabled",
+        "-Ddriver_libxl=disabled",
+        "-Ddriver_vbox=disabled",
+        "-Dstorage_fs=enabled",
+        "-Dstorage_lvm=enabled",
+        "-Dstorage_iscsi=disabled",
+        "-Dstorage_disk=enabled",
+        "-Dstorage_rbd=disabled",
+        "-Dstorage_zfs=disabled",
+        "-Dpolkit=enabled",
+        "-Dfirewalld=disabled",
+        "-Dsecdriver_apparmor=disabled",
+        "-Dsecdriver_selinux=disabled",
+        "-Daudit=disabled",
+        "-Ddtrace=disabled",
+        "-Dinit_script=none",
+        "-Ddocs=disabled",
+        "-Dtests=disabled",
     ],
     deps = [
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/data/libxml2:libxml2",
-        "//packages/linux/core/libnl:libnl",
-        "//packages/linux/system/libs/data/yajl:yajl",
-        "//packages/linux/system/libs/ipc/libtirpc:libtirpc",
         "//packages/linux/system/libs/crypto/gnutls:gnutls",
-        "//packages/linux/network/curl:curl",
-        "//packages/linux/system/init/eudev:eudev",
-        "//packages/linux/system/security/auth/privilege:polkit",
-        "//packages/linux/system/security/audit:audit",
-        "//packages/linux/emulation/hypervisors/qemu:qemu",
     ],
     visibility = ["PUBLIC"],
 )
 
-# libvirt client libraries only
-# USE flags: See use_flags.bzl for available flags
-
-autotools_package(
+# libvirt client libraries only (minimal build without daemon)
+meson_package(
     name = "libvirt-client",
-    source = ":libvirt-src",
+    src_uri = "https://github.com/libvirt/libvirt/archive/refs/tags/v10.7.0.tar.gz",
+    sha256 = "6a89c296c23ee204e35cc4a9dbc8da64033a5c8c8126d7c92184f65e00f4ef65",
+    signature_required = False,
     version = "10.7.0",
     description = "libvirt client libraries and virsh command-line tool",
     homepage = "https://libvirt.org/",
     license = "LGPL-2.1",
-    configure_args = [
-        "--prefix=/usr",
-        "--sysconfdir=/etc",
-        "--without-libvirtd",
-        "--with-driver-modules=no",
+    meson_args = [
+        "-Dprefix=/usr",
+        "-Dsysconfdir=/etc",
+        "-Ddriver_remote=enabled",
+        "-Ddriver_libvirtd=disabled",
+        "-Ddriver_qemu=disabled",
+        "-Ddriver_lxc=disabled",
+        "-Ddriver_libxl=disabled",
+        "-Ddriver_vbox=disabled",
+        "-Dsecdriver_apparmor=disabled",
+        "-Dsecdriver_selinux=disabled",
+        "-Ddocs=disabled",
+        "-Dtests=disabled",
     ],
     deps = [
         "//packages/linux/dev-libs/glib:glib",
@@ -96,19 +78,16 @@ autotools_package(
     visibility = ["PUBLIC"],
 )
 
-# libvirt Python bindings
-# USE flags: See use_flags.bzl for available flags
-
-autotools_package(
+# libvirt Python bindings (separate package from main libvirt)
+python_package(
     name = "libvirt-python",
-    source = ":libvirt-src",
+    src_uri = "https://github.com/libvirt/libvirt-python/archive/refs/tags/v10.7.0.tar.gz",
+    sha256 = "0438339ba36cc75e454147eb33550dcd7b7fbf9ffb6ab0e71be744022aa5bf02",
+    signature_required = False,
     version = "10.7.0",
     description = "Python bindings for libvirt",
     homepage = "https://libvirt.org/",
     license = "LGPL-2.1",
-    configure_args = [
-        "--prefix=/usr",
-    ],
     deps = [
         ":libvirt",
         "//packages/linux/lang/python:python",

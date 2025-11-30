@@ -20,13 +20,19 @@ autotools_package(
     description = "Tcl is a very powerful but easy to learn dynamic programming language",
     homepage = "https://www.tcl.tk/",
     license = "TCL",
-    pre_configure = """
+    src_configure = """
         cd unix
+        ./configure --prefix=/usr --enable-threads --enable-64bit
     """,
-    configure_args = [
-        "--prefix=/usr",
-        "--enable-threads",
-        "--enable-64bit",
-    ],
+    src_compile = """
+        cd unix
+        make
+    """,
+    src_install = """
+        cd unix
+        make DESTDIR="$DESTDIR" install
+        # Create convenience symlink for tclsh
+        ln -sf tclsh8.6 "$DESTDIR/usr/bin/tclsh"
+    """,
     visibility = ["PUBLIC"],
 )

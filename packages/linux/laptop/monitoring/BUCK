@@ -13,7 +13,7 @@ filegroup(
 filegroup(
     name = "power-analysis",
     srcs = [
-        "//packages/linux/laptop/monitoring/powertop:powertop",
+        # "//packages/linux/laptop/monitoring/powertop:powertop",  # Disabled: autoreconf fails - Automake::Config Perl module not found
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -22,7 +22,7 @@ filegroup(
 filegroup(
     name = "cpu-monitoring",
     srcs = [
-        "//packages/linux/laptop/monitoring/i7z:i7z",
+        # "//packages/linux/laptop/monitoring/i7z:i7z",  # Disabled: ncurses libtinfow linking and duplicate symbol issues
         "//packages/linux/laptop/monitoring/s-tui:s-tui",
     ],
     default_target_platform = "//platforms:linux-target",
@@ -34,7 +34,7 @@ filegroup(
     srcs = [
         "//packages/linux/laptop/monitoring/lm-sensors:lm-sensors",
         "//packages/linux/laptop/monitoring/acpi:acpi",
-        "//packages/linux/laptop/monitoring/powertop:powertop",
+        # "//packages/linux/laptop/monitoring/powertop:powertop",  # Disabled: autoreconf fails - Automake::Config Perl module not found
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -44,10 +44,10 @@ filegroup(
     name = "all-monitoring",
     srcs = [
         "//packages/linux/laptop/monitoring/lm-sensors:lm-sensors",
-        "//packages/linux/laptop/monitoring/powertop:powertop",
+        # "//packages/linux/laptop/monitoring/powertop:powertop",  # Disabled: autoreconf fails - Automake::Config Perl module not found
         "//packages/linux/laptop/monitoring/acpi:acpi",
         "//packages/linux/laptop/monitoring/s-tui:s-tui",
-        "//packages/linux/laptop/monitoring/i7z:i7z",
+        # "//packages/linux/laptop/monitoring/i7z:i7z",  # Disabled: ncurses libtinfow linking and duplicate symbol issues
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

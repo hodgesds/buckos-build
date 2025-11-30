@@ -29,7 +29,7 @@ meson setup .. --prefix=/usr \\
     deps = [
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/sway:wlroots",
-        "//packages/linux/desktop/mesa:mesa",
+        # "//packages/linux/desktop/mesa:mesa",  # Disabled: requires Python mako module
         "//packages/linux/desktop/libinput:libinput",
     ],
     visibility = ["PUBLIC"],
@@ -42,7 +42,7 @@ filegroup(
         ":wayfire",
         "//packages/linux/desktop/sway:wlroots",
         "//packages/linux/desktop/wayland:wayland",
-        "//packages/linux/desktop/mesa:mesa",
+        # "//packages/linux/desktop/mesa:mesa",  # Disabled: requires Python mako module
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

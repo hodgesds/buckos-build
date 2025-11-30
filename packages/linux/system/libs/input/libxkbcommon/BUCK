@@ -9,6 +9,7 @@ meson_package(
     homepage = "https://xkbcommon.org/",
     license = "MIT",
     signature_required = False,
+    pre_configure = "rm -rf build",  # Clear any stale meson build directory
     meson_args = [
         "-Denable-x11=false",
         "-Denable-wayland=false",

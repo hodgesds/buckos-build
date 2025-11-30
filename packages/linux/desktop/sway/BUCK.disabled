@@ -41,7 +41,7 @@ meson setup .. --prefix=/usr \\
     deps = [
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/wayland:wayland-protocols",
-        "//packages/linux/desktop/mesa:mesa",
+        # "//packages/linux/desktop/mesa:mesa",  # Disabled: requires Python mako module
         "//packages/linux/desktop/libinput:libinput",
     ],
     visibility = ["PUBLIC"],
@@ -71,7 +71,7 @@ meson setup .. --prefix=/usr \\
     deps = [
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/wayland:wayland-protocols",
-        "//packages/linux/desktop/mesa:mesa",
+        # "//packages/linux/desktop/mesa:mesa",  # Disabled: requires Python mako module
         "//packages/linux/desktop/libinput:libinput",
         "//packages/linux/desktop/libdrm:libdrm",
     ],
@@ -85,7 +85,7 @@ filegroup(
         ":sway",
         ":wlroots",
         "//packages/linux/desktop/wayland:wayland",
-        "//packages/linux/desktop/mesa:mesa",
+        # "//packages/linux/desktop/mesa:mesa",  # Disabled: requires Python mako module
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

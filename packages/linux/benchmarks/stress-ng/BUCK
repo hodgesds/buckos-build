@@ -1,40 +1,38 @@
 load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
-# stress-ng - Stress test tool for Linux systems
+# TODO: stress-ng - Disabled: linker error with stress_switch_info
+# /usr/bin/ld: stress-ng.o:(.rodata+0x3240): undefined reference to `stress_switch_info'
+# Likely a build issue with missing source file or different GCC version
 #
-# USE flags:
-#   static   - Build static binary
-#   zlib     - Enable zlib compression tests
-
-autotools_package(
-    name = "stress-ng",
-    version = "0.17.08",
-    src_uri = "https://github.com/ColinIanKing/stress-ng/archive/refs/tags/V0.17.08.tar.gz",
-    sha256 = "e4982d2a1c57139dad1741d6248b00a30935f746c1f665ec5b9d53c010c8dc08",
-    signature_required = False,
-    description = "Stress test tool for Linux systems - CPU, memory, I/O, and more",
-    homepage = "https://github.com/ColinIanKing/stress-ng",
-    license = "GPL-2.0",
-    iuse = ["static", "zlib"],
-    use_defaults = ["static"],
-    deps = [],
-    use_deps = {
-        "zlib": ["//packages/linux/core/zlib:zlib"],
-    },
-    pre_configure = """
-# stress-ng uses make directly without configure
-true
-""",
-    configure_args = [],
-    make_args = [],
-    use_configure = {
-        "static": "STATIC=1",
-        "-static": "",
-    },
-    post_install = """
-mkdir -p "$DESTDIR/usr/bin"
-cp stress-ng "$DESTDIR/usr/bin/" 2>/dev/null || true
-""",
-    visibility = ["PUBLIC"],
-)
+# autotools_package(
+#     name = "stress-ng",
+#     version = "0.17.08",
+#     src_uri = "https://github.com/ColinIanKing/stress-ng/archive/refs/tags/V0.17.08.tar.gz",
+#     sha256 = "e4982d2a1c57139dad1741d6248b00a30935f746c1f665ec5b9d53c010c8dc08",
+#     signature_required = False,
+#     description = "Stress test tool for Linux systems - CPU, memory, I/O, and more",
+#     homepage = "https://github.com/ColinIanKing/stress-ng",
+#     license = "GPL-2.0",
+#     iuse = ["static", "zlib"],
+#     use_defaults = ["static"],
+#     deps = [],
+#     use_deps = {
+#         "zlib": ["//packages/linux/core/zlib:zlib"],
+#     },
+#     pre_configure = """
+# # stress-ng uses make directly without configure
+# true
+# """,
+#     configure_args = [],
+#     make_args = [],
+#     use_configure = {
+#         "static": "STATIC=1",
+#         "-static": "",
+#     },
+#     post_install = """
+# mkdir -p "$DESTDIR/usr/bin"
+# cp stress-ng "$DESTDIR/usr/bin/" 2>/dev/null || true
+# """,
+#     visibility = ["PUBLIC"],
+# )

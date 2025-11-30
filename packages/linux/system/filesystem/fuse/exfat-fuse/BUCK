@@ -1,23 +1,27 @@
 load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
-download_source(
-    name = "exfat-fuse-src",
-    src_uri = "https://github.com/relan/exfat/archive/refs/tags/v1.4.0.tar.gz",
-    sha256 = "af560659f55dca0270f94809530f359d6bdad5d313133c68b458fb0a8eeab1c8",
-    signature_required = False,
-)
-
-autotools_package(
-    name = "exfat-fuse",
-    source = ":exfat-fuse-src",
-    version = "1.4.0",
-    description = "FUSE-based exFAT filesystem implementation",
-    homepage = "https://github.com/relan/exfat",
-    license = "GPL-2.0",
-    configure_args = [],
-    deps = [
-        "//packages/linux/system/filesystem/fuse/fuse3:fuse3",
-    ],
-    visibility = ["PUBLIC"],
-)
+# TODO: exfat-fuse - FUSE-based exFAT filesystem
+# GitHub tarballs don't include configure, requiring autoreconf.
+# Needs autoreconf/automake Perl modules to be fixed.
+#
+# download_source(
+#     name = "exfat-fuse-src",
+#     src_uri = "https://github.com/relan/exfat/archive/refs/tags/v1.4.0.tar.gz",
+#     sha256 = "af560659f55dca0270f94809530f359d6bdad5d313133c68b458fb0a8eeab1c8",
+#     signature_required = False,
+# )
+#
+# autotools_package(
+#     name = "exfat-fuse",
+#     source = ":exfat-fuse-src",
+#     version = "1.4.0",
+#     description = "FUSE-based exFAT filesystem implementation",
+#     homepage = "https://github.com/relan/exfat",
+#     license = "GPL-2.0",
+#     configure_args = [],
+#     deps = [
+#         "//packages/linux/system/filesystem/fuse/fuse3:fuse3",
+#     ],
+#     visibility = ["PUBLIC"],
+# )

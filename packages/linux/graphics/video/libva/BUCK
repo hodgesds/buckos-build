@@ -45,21 +45,28 @@ meson_package(
     visibility = ["PUBLIC"],
 )
 
-# Intel Media Driver for VAAPI
-meson_package(
-    name = "intel-media-driver",
-    version = "24.2.5",
-    src_uri = "https://github.com/intel/media-driver/archive/refs/tags/intel-media-24.2.5.tar.gz",
-    sha256 = "dec2210c1f824a721e4ea6f66f5899e300801b3e7fae232d3f8a94db38c2edd1",
-    signature_required = False,
-    description = "Intel Media Driver for VAAPI (Gen8+ graphics)",
-    homepage = "https://github.com/intel/media-driver",
-    license = "MIT BSD-3-Clause",
-    meson_args = [],
-    deps = [
-        ":libva",
-        "//packages/linux/desktop/libdrm:libdrm",
-    ],
-    maintainers = [],
-    visibility = ["PUBLIC"],
-)
+# TODO: Intel Media Driver for VAAPI - Disabled: uses CMake and needs gmmlib
+# This package requires gmmlib (Intel Graphics Memory Management Library) which is not packaged.
+# Also needs proper CMake configuration for Intel-specific options.
+#
+# cmake_package(
+#     name = "intel-media-driver",
+#     version = "24.2.5",
+#     src_uri = "https://github.com/intel/media-driver/archive/refs/tags/intel-media-24.2.5.tar.gz",
+#     sha256 = "dec2210c1f824a721e4ea6f66f5899e300801b3e7fae232d3f8a94db38c2edd1",
+#     signature_required = False,
+#     description = "Intel Media Driver for VAAPI (Gen8+ graphics)",
+#     homepage = "https://github.com/intel/media-driver",
+#     license = "MIT BSD-3-Clause",
+#     cmake_args = [
+#         "-DCMAKE_BUILD_TYPE=Release",
+#         "-DCMAKE_INSTALL_PREFIX=/usr",
+#     ],
+#     deps = [
+#         ":libva",
+#         "//packages/linux/desktop/libdrm:libdrm",
+#         # Need gmmlib dependency
+#     ],
+#     maintainers = [],
+#     visibility = ["PUBLIC"],
+# )

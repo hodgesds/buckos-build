@@ -1,7 +1,7 @@
 # Comprehensive encryption tools package
 # This directory contains various encryption and cryptographic utilities
 
-load("//defs:package_defs.bzl", "download_source", "autotools_package", "cargo_package", "go_package", "cmake_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "cargo_package", "go_package", "cmake_package", "meson_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
@@ -263,7 +263,7 @@ autotools_package(
         "MANDIR=/usr/share/man",
     ],
     deps = [
-        "//packages/linux/system/security/gnupg:gnupg",
+        # "//packages/linux/system/security/gnupg:gnupg",  # Disabled: gnupg configure can't find libksba
         "//packages/linux/system/apps/coreutils:coreutils",
         "//packages/linux/core/util-linux:util-linux",
     ],
@@ -297,7 +297,7 @@ autotools_package(
         "PREFIX=/usr",
     ],
     deps = [
-        "//packages/linux/system/security/gnupg:gnupg",
+        # "//packages/linux/system/security/gnupg:gnupg",  # Disabled: gnupg configure can't find libksba
         "//packages/linux/system/security/cryptsetup:cryptsetup",
         "//packages/linux/core/e2fsprogs:e2fsprogs",
         "//packages/linux/core/util-linux:util-linux",
@@ -417,7 +417,7 @@ autotools_package(
     ],
     deps = [
         ":keyutils",
-        "//packages/linux/system/security/gnupg:libgcrypt",
+        # "//packages/linux/system/security/gnupg:libgcrypt",  # Disabled: gnupg package disabled (configure can't find libksba)
         "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],
@@ -521,30 +521,24 @@ autotools_package(
 # FUSE3 - Filesystem in Userspace
 # =============================================================================
 
-download_source(
-    name = "fuse3-src",
+meson_package(
+    name = "fuse3",
+    version = "3.16.2",
     src_uri = "https://github.com/libfuse/libfuse/releases/download/fuse-3.16.2/fuse-3.16.2.tar.gz",
     sha256 = "f797055d9296b275e981f5f62d4e32e089614fc253d1ef2985851025b8a0ce87",
     signature_required = False,
-)
-
-autotools_package(
-    name = "fuse3",
-    source = ":fuse3-src",
-    version = "3.16.2",
     description = "Filesystem in Userspace (FUSE) interface",
     homepage = "https://github.com/libfuse/libfuse",
     license = "GPL-2.0+ AND LGPL-2.1+",
+    # Clean stale meson build data before configuring
     pre_configure = """
-        # FUSE uses meson, but we'll configure it
-        mkdir -p build && cd build
-        meson setup .. --prefix=/usr --sysconfdir=/etc
-    """,
-    configure_args = [],
-    make_args = [
-        "-C", "build",
+rm -rf build meson-private
+""",
+    meson_args = [
+        "-Dexamples=false",
     ],
     deps = [
+        "//packages/linux/system/init/eudev:eudev",
     ],
     visibility = ["PUBLIC"],
 )

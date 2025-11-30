@@ -43,7 +43,7 @@ filegroup(
         "//packages/linux/system/init/skalibs:skalibs",
         "//packages/linux/system/init/s6:s6",
         "//packages/linux/system/init/s6-linux-init:s6-linux-init",
-        "//packages/linux/system/init/s6-rc:s6-rc",
+        # "//packages/linux/system/init/s6-rc:s6-rc",  # Disabled: missing execline dependency
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -64,7 +64,7 @@ filegroup(
         "//packages/linux/system/init/skalibs:skalibs",
         "//packages/linux/system/init/s6:s6",
         "//packages/linux/system/init/s6-linux-init:s6-linux-init",
-        "//packages/linux/system/init/s6-rc:s6-rc",
+        # "//packages/linux/system/init/s6-rc:s6-rc",  # Disabled: missing execline dependency
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

@@ -68,6 +68,8 @@ _MESON_ECLASS = {
     "name": "meson",
     "description": "Support for meson-based packages",
     "src_configure": '''
+# Clean stale meson build data from source tarballs to prevent version mismatch errors
+rm -rf "${BUILD_DIR:-build}" meson-private
 meson setup "${BUILD_DIR:-build}" \\
     --prefix="${EPREFIX:-/usr}" \\
     --libdir="${LIBDIR:-lib64}" \\

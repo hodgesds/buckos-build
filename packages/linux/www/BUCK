@@ -3,8 +3,8 @@
 filegroup(
     name = "gui-browsers",
     srcs = [
-        "//packages/linux/www/firefox:firefox",
-        "//packages/linux/www/chromium:chromium",
+        # "//packages/linux/www/firefox:firefox",  # Disabled: requires nodejs (which needs Python 3.6-3.12)
+        # "//packages/linux/www/chromium:chromium",  # Disabled: requires nodejs (which needs Python 3.6-3.12)
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

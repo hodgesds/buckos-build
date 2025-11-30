@@ -16,7 +16,7 @@ filegroup(
 filegroup(
     name = "acpi-tools",
     srcs = [
-        "//packages/linux/laptop/power/acpid:acpid",
+        # "//packages/linux/laptop/power/acpid:acpid",  # Disabled: automake perl module path issue
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -36,7 +36,7 @@ filegroup(
 filegroup(
     name = "cpu-scaling",
     srcs = [
-        "//packages/linux/laptop/power/cpupower:cpupower",
+        # "//packages/linux/laptop/power/cpupower:cpupower",  # Disabled: requires pciutils
         "//packages/linux/laptop/power/auto-cpufreq:auto-cpufreq",
     ],
     default_target_platform = "//platforms:linux-target",
@@ -79,7 +79,7 @@ filegroup(
 filegroup(
     name = "tuning-daemons",
     srcs = [
-        "//packages/linux/system/power/tuned:tuned",
+        # "//packages/linux/system/power/tuned:tuned",  # Disabled: Python setup.py not supported by ebuild
         "//packages/linux/system/power/power-profiles-daemon:power-profiles-daemon",
         "//packages/linux/system/power/irqbalance:irqbalance",
     ],
@@ -92,8 +92,8 @@ filegroup(
     name = "power-essential",
     srcs = [
         "//packages/linux/laptop/power/tlp:tlp",
-        "//packages/linux/laptop/power/acpid:acpid",
-        "//packages/linux/laptop/power/cpupower:cpupower",
+        # "//packages/linux/laptop/power/acpid:acpid",  # Disabled: automake perl module path issue
+        # "//packages/linux/laptop/power/cpupower:cpupower",  # Disabled: requires pciutils
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -105,7 +105,7 @@ filegroup(
     srcs = [
         ":power-essential",
         "//packages/linux/system/power/hdparm:hdparm",
-        "//packages/linux/laptop/monitoring/powertop:powertop",
+        # "//packages/linux/laptop/monitoring/powertop:powertop",  # Disabled: autoreconf fails - Automake::Config Perl module not found
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -119,7 +119,7 @@ filegroup(
         "//packages/linux/laptop/power/auto-cpufreq:auto-cpufreq",
         "//packages/linux/laptop/power/thermald:thermald",
         "//packages/linux/system/power/power-profiles-daemon:power-profiles-daemon",
-        "//packages/linux/laptop/monitoring/powertop:powertop",
+        # "//packages/linux/laptop/monitoring/powertop:powertop",  # Disabled: autoreconf fails - Automake::Config Perl module not found
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -158,9 +158,9 @@ filegroup(
     name = "all-power",
     srcs = [
         "//packages/linux/laptop/power/tlp:tlp",
-        "//packages/linux/laptop/power/acpid:acpid",
+        # "//packages/linux/laptop/power/acpid:acpid",  # Disabled: automake perl module path issue
         "//packages/linux/laptop/power/thermald:thermald",
-        "//packages/linux/laptop/power/cpupower:cpupower",
+        # "//packages/linux/laptop/power/cpupower:cpupower",  # Disabled: requires pciutils
         "//packages/linux/laptop/power/auto-cpufreq:auto-cpufreq",
         ":intel-laptop",
         ":amd-laptop",

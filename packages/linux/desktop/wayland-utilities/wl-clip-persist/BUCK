@@ -12,6 +12,7 @@ cargo_package(
     bins = ["wl-clip-persist"],
     deps = [
         "//packages/linux/desktop/wayland:wayland",
+        "//packages/linux/core/libffi:libffi",
     ],
     visibility = ["PUBLIC"],
 )

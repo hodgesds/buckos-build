@@ -55,7 +55,7 @@ meson_package(
         "-Ddrm=enabled",
         "-Dgbm=enabled",
         "-Dvaapi=enabled",
-        "-Dvdpau=enabled",
+        "-Dvdpau=disabled",  # Disabled: vdpau needs X11 libs
         "-Dalsa=enabled",
         "-Djack=enabled",
         "-Dpulse=enabled",
@@ -66,7 +66,7 @@ meson_package(
     deps = [
         "//packages/linux/graphics/video/ffmpeg:ffmpeg",
         "//packages/linux/graphics/video/libva:libva",
-        "//packages/linux/graphics/video/vdpau:vdpau",
+        # "//packages/linux/graphics/video/vdpau:vdpau",  # Disabled: needs X11 libs
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
         "//packages/linux/audio/daemons/pulseaudio:pulseaudio",
         "//packages/linux/audio/daemons/pipewire:pipewire",

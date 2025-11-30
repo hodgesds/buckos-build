@@ -37,6 +37,7 @@ autotools_package(
 
     deps = [
         "//packages/linux/core/zlib:zlib",
+        "//packages/linux/lang/lua:lua",  # Required for Lua scripting
     ],
 
     description = "PowerDNS authoritative server",

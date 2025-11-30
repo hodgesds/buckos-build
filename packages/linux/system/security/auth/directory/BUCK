@@ -46,40 +46,41 @@ autotools_package(
     deps = [
         "//packages/linux/network/openssl:openssl",
         ":openldap",
-        ":e2fsprogs-libs",
+        "//packages/linux/core/e2fsprogs:e2fsprogs",
     ],
     visibility = ["PUBLIC"],
 )
 
-# e2fsprogs-libs (for libcom_err, needed by Kerberos)
-# Note: e2fsprogs-libs separate tarball no longer exists; use main e2fsprogs package
-download_source(
-    name = "e2fsprogs-libs-src",
-    src_uri = "https://mirrors.edge.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.47.0/e2fsprogs-1.47.0.tar.xz",
-    sha256 = "144af53f2bbd921cef6f8bea88bb9faddca865da3fbc657cc9b4d2001097d5db",
-    signature_required = False,
-)
-
-autotools_package(
-    name = "e2fsprogs-libs",
-    source = ":e2fsprogs-libs-src",
-    version = "1.47.0",
-    description = "E2fsprogs libraries (libcom_err, libss)",
-    homepage = "https://e2fsprogs.sourceforge.net/",
-    license = "GPL-2.0 AND LGPL-2.0 AND BSD-3-Clause AND MIT",
-    configure_args = [
-        "--prefix=/usr",
-        "--sysconfdir=/etc",
-        "--enable-elf-shlibs",
-        "--disable-fsck",
-        "--disable-uuidd",
-        "--disable-libuuid",
-        "--disable-libblkid",
-    ],
-    deps = [
-    ],
-    visibility = ["PUBLIC"],
-)
+# TODO: e2fsprogs-libs removed - use //packages/linux/core/e2fsprogs:e2fsprogs instead
+# The e2fsprogs configure requires libuuid even with --disable-libuuid flag.
+# The core e2fsprogs package builds successfully, so we use that for libcom_err/libss.
+# download_source(
+#     name = "e2fsprogs-libs-src",
+#     src_uri = "https://mirrors.edge.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.47.0/e2fsprogs-1.47.0.tar.xz",
+#     sha256 = "144af53f2bbd921cef6f8bea88bb9faddca865da3fbc657cc9b4d2001097d5db",
+#     signature_required = False,
+# )
+#
+# autotools_package(
+#     name = "e2fsprogs-libs",
+#     source = ":e2fsprogs-libs-src",
+#     version = "1.47.0",
+#     description = "E2fsprogs libraries (libcom_err, libss)",
+#     homepage = "https://e2fsprogs.sourceforge.net/",
+#     license = "GPL-2.0 AND LGPL-2.0 AND BSD-3-Clause AND MIT",
+#     configure_args = [
+#         "--prefix=/usr",
+#         "--sysconfdir=/etc",
+#         "--enable-elf-shlibs",
+#         "--disable-fsck",
+#         "--disable-uuidd",
+#         "--disable-libuuid",
+#         "--disable-libblkid",
+#     ],
+#     deps = [
+#     ],
+#     visibility = ["PUBLIC"],
+# )
 
 # OpenLDAP
 download_source(

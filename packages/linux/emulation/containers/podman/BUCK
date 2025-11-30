@@ -161,7 +161,7 @@ install -m 0644 completions/bash/skopeo "$DESTDIR/usr/share/bash-completion/comp
     """,
     deps = [
         "//packages/linux/lang/go:go",
-        "//packages/linux/system/libs/crypto/gpgme:gpgme",
+        # "//packages/linux/system/libs/crypto/gpgme:gpgme",  # Disabled: gpgme depends on gnupg (configure can't find libksba)
     ],
     visibility = ["PUBLIC"],
 )

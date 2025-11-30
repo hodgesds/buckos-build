@@ -111,15 +111,22 @@ autotools_package(
     description = "Netscape Portable Runtime",
     homepage = "https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSPR",
     license = "MPL-2.0",
-    pre_configure = """
-        cd nspr
-    """,
-    configure_args = [
-        "--prefix=/usr",
-        "--enable-64bit",
-        "--enable-optimize",
-        "--disable-debug",
-    ],
+    # NSPR's configure/build is in the nspr subdirectory
+    src_configure = """
+cd nspr && ./configure --prefix=/usr --enable-64bit --enable-optimize --disable-debug
+""",
+    src_compile = """
+cd nspr && make
+""",
+    # NSPR's build system doesn't respect DESTDIR, so manually copy files
+    src_install = """
+mkdir -p "$DESTDIR/usr/lib" "$DESTDIR/usr/include/nspr" "$DESTDIR/usr/bin"
+cd nspr/dist
+cp -L lib/*.so "$DESTDIR/usr/lib/"
+cp -L lib/*.a "$DESTDIR/usr/lib/" || true
+cp -rL include/nspr/* "$DESTDIR/usr/include/nspr/"
+cp -L bin/nspr-config "$DESTDIR/usr/bin/" || true
+""",
     deps = [
     ],
     visibility = ["PUBLIC"],

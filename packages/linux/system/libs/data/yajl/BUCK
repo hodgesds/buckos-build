@@ -1,6 +1,9 @@
 load("//defs:package_defs.bzl", "cmake_package", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
+# yajl 2.1.0 uses deprecated GET_TARGET_PROPERTY(... LOCATION ...) which is
+# no longer supported in modern CMake (CMP0026 cannot be set to OLD).
+# We patch the CMakeLists.txt files to use $<TARGET_FILE:target> generator expressions.
 cmake_package(
     name = "yajl",
     version = "2.1.0",
@@ -10,10 +13,18 @@ cmake_package(
     description = "Yet Another JSON Library - A fast streaming JSON parser",
     homepage = "https://lloyd.github.io/yajl/",
     license = "ISC",
+    src_prepare = """
+# Patch reformatter/CMakeLists.txt to use modern CMake syntax
+# The line is: GET_TARGET_PROPERTY(binPath json_reformat LOCATION)
+sed -i 's/GET_TARGET_PROPERTY(binPath json_reformat LOCATION)/set(binPath $<TARGET_FILE:json_reformat>)/' reformatter/CMakeLists.txt
+
+# Patch verify/CMakeLists.txt to use modern CMake syntax
+# The line is: GET_TARGET_PROPERTY(binPath json_verify LOCATION)
+sed -i 's/GET_TARGET_PROPERTY(binPath json_verify LOCATION)/set(binPath $<TARGET_FILE:json_verify>)/' verify/CMakeLists.txt
+""",
     cmake_args = [
         "-DCMAKE_INSTALL_PREFIX=/usr",
         "-DCMAKE_BUILD_TYPE=Release",
-        "-DCMAKE_POLICY_DEFAULT_CMP0026=OLD",  # Allow GET_TARGET_PROPERTY LOCATION usage
     ],
     visibility = ["PUBLIC"],
 )

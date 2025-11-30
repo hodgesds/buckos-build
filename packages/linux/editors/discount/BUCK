@@ -16,11 +16,10 @@ autotools_package(
     description = "C implementation of John Gruber's Markdown",
     homepage = "https://github.com/Orc/discount",
     license = "BSD-3",
-    configure_args = [
-        "--prefix=/usr",
-        "--enable-all-features",
-        "--with-fenced-code",
-    ],
+    # discount uses configure.sh instead of standard ./configure
+    src_configure = """
+./configure.sh --prefix=/usr --enable-all-features --with-fenced-code
+""",
     deps = [
     ],
     visibility = ["PUBLIC"],

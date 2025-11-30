@@ -41,7 +41,7 @@ DESTDIR=$OUT make install
         "//packages/linux/graphics/video/ffmpeg:ffmpeg",
         "//packages/linux/graphics/video/x264:x264",
         "//packages/linux/graphics/video/x265:x265",
-        "//packages/linux/graphics/video/libvpx:libvpx",
+        # "//packages/linux/graphics/video/libvpx:libvpx",  # Disabled: needs nasm
         "//packages/linux/graphics/video/dav1d:dav1d",
         "//packages/linux/audio/libraries/opus:opus",
         "//packages/linux/audio/libraries/lame:lame",

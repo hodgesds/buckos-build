@@ -21,18 +21,18 @@ autotools_package(
     description = "Tools for creating and extracting SquashFS filesystems",
     homepage = "https://github.com/plougher/squashfs-tools",
     license = "GPL-2.0",
+    # squashfs-tools doesn't have configure, builds directly with make
     pre_configure = """
-# squashfs-tools doesn't have configure, builds directly with make
 cd squashfs-tools
 """,
+    src_configure = "true",  # No configure script - plain Makefile
     configure_args = [],
-    make_args = [
-        "XZ_SUPPORT=1",
-        "LZO_SUPPORT=1",
-        "LZ4_SUPPORT=1",
-        "ZSTD_SUPPORT=1",
-    ],
+    src_compile = """
+cd squashfs-tools && make XZ_SUPPORT=1 LZO_SUPPORT=1 LZ4_SUPPORT=1 ZSTD_SUPPORT=1
+""",
+    make_args = [],
     post_install = """
+cd squashfs-tools
 mkdir -p $DESTDIR/usr/bin
 install -m755 mksquashfs $DESTDIR/usr/bin/
 install -m755 unsquashfs $DESTDIR/usr/bin/

@@ -19,6 +19,8 @@ autotools_package(
     make_args = [
         "BINDIR=/sbin",
         "UDEVDIR=/lib/udev",
+        # Disable GCC 14+ warning about string initializers truncating NUL terminators
+        "CWFLAGS=-Wno-error=unterminated-string-initialization",
     ],
     deps = [
         "//packages/linux/system/init/eudev:eudev",

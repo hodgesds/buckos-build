@@ -23,9 +23,12 @@ meson_package(
         "-Ddocumentation=false",
         "-Dtests=false",
         "-Ddebug-gui=false",
+        "-Dlibwacom=false",
     ],
     deps = [
         "//packages/linux/system/init/eudev:eudev",
+        "//packages/linux/system/libs/input/mtdev:mtdev",
+        "//packages/linux/system/libs/input/libevdev:libevdev",
     ],
     visibility = ["PUBLIC"],
 )

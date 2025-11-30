@@ -32,7 +32,7 @@ DESTDIR=$OUT make install
         # "//packages/linux/system/libs/glm:glm",  # TODO: not packaged yet,
         "//packages/linux/system/libs/utility/icu:icu",
         # "//packages/linux/core/libxext:libxext",  # TODO: X11 libs not packaged yet
-        "//packages/linux/desktop/mesa:mesa",
+        # "//packages/linux/desktop/mesa:mesa",  # Disabled: requires Python mako module
         # "//packages/linux/dev-libs/glew:glew",  # TODO: glew package doesn't exist yet
     ],
     bdepend = [],

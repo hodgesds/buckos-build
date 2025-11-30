@@ -1,10 +1,12 @@
-load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:package_defs.bzl", "autotools_package", "download_source")
 load("//defs:use_flags.bzl", "set_use_flags")
 
+# Use official release tarball which includes generated configure script
+# (GitHub tag tarballs don't include configure)
 download_source(
     name = "smartmontools-src",
-    src_uri = "https://github.com/smartmontools/smartmontools/archive/refs/tags/RELEASE_7_4.tar.gz",
-    sha256 = "790c843fbfb2e55142364a9dbc9adb19d26d2ed7e3de06e0dc0c0a606fa12a1f",
+    src_uri = "https://downloads.sourceforge.net/project/smartmontools/smartmontools/7.4/smartmontools-7.4.tar.gz",
+    sha256 = "e9a61f641ff96ca95319edfb17948cd297d0cd3342736b2c49c99d4716fb993d",
     signature_required = False,
 )
 
@@ -16,6 +18,7 @@ autotools_package(
     homepage = "https://www.smartmontools.org/",
     license = "GPL-2.0",
     configure_args = [
+        "--prefix=/usr",
         "--with-nvme-devicescan",
     ],
     deps = [],

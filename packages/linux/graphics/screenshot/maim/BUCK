@@ -35,8 +35,8 @@ DESTDIR=$OUT make install
         "//packages/linux/system/libs/utility/icu:icu",
         # "//packages/linux/system/libs/x11/libxcomposite:libxcomposite",  # TODO: not packaged yet
         # "//packages/linux/system/libs/glm:glm",  # TODO: not packaged yet,
-        "//packages/linux/desktop/mesa:mesa",
-        "//packages/linux/graphics/utilities/slop:slop",
+        # "//packages/linux/desktop/mesa:mesa",  # Disabled: requires Python mako module
+        # "//packages/linux/graphics/utilities/slop:slop",  # Disabled: requires GLM (not packaged)
     ],
     bdepend = [],
     visibility = ["PUBLIC"],

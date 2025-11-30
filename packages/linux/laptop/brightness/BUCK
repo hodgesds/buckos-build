@@ -13,7 +13,7 @@ filegroup(
 filegroup(
     name = "external-monitors",
     srcs = [
-        "//packages/linux/laptop/brightness/ddcutil:ddcutil",
+        # "//packages/linux/laptop/brightness/ddcutil:ddcutil",  # Disabled: automake perl module path issue
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -33,7 +33,7 @@ filegroup(
     srcs = [
         "//packages/linux/laptop/brightness/brightnessctl:brightnessctl",
         "//packages/linux/laptop/brightness/light:light",
-        "//packages/linux/laptop/brightness/ddcutil:ddcutil",
+        # "//packages/linux/laptop/brightness/ddcutil:ddcutil",  # Disabled: automake perl module path issue
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

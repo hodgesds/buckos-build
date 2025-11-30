@@ -36,7 +36,7 @@ autotools_package(
     use_deps = {
         "png": ["//packages/linux/system/libs/image/libpng:libpng"],
         "glib": ["//packages/linux/dev-libs/glib:glib"],
-        "opengl": ["//packages/linux/desktop/mesa:mesa"],
+        "opengl": [],  # Mesa disabled: requires Python mako module
     },
     pre_configure = """
 mkdir -p build

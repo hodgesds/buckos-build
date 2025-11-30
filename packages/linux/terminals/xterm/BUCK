@@ -1,42 +1,48 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+# TODO: xterm - Disabled: requires X11 libraries
+# xterm is an X11 terminal emulator that needs:
+# - X11 libraries (libX11, libXft, libXaw, etc.)
+# - ncurses/terminfo
+# These dependencies are not currently packaged for this build system.
 
-autotools_package(
-    name = "xterm",
-    version = "390",
-    src_uri = "https://invisible-mirror.net/archives/xterm/xterm-390.tgz",
-    sha256 = "75117c3cc5174a09c425ef106e69404d72f5ef05e03a5da00aaf15792d6f9c0f",
-    signature_sha256 = "145ef8fed6045745ef25cbc56d598127046659eaa8f73bd9f5fb1093c44876a9",
-    signature_required=False,
-    description = "Terminal emulator for the X Window System",
-    homepage = "https://invisible-island.net/xterm/",
-    license = "MIT",
-
-    # USE flags this package supports
-    iuse = [
-        "toolbar",
-        "truetype",
-        "256-color",
-    ],
-
-    # Default USE flags
-    use_defaults = ["truetype", "256-color"],
-
-    # Conditional configure arguments
-    use_configure = {
-        "toolbar": "--enable-toolbar",
-        "-toolbar": "--disable-toolbar",
-        "truetype": "--enable-freetype",
-        "-truetype": "--disable-freetype",
-        "256-color": "--enable-256-color",
-        "-256-color": "--disable-256-color",
-    },
-
-    # Base configure arguments (always applied)
-    configure_args = [
-        "--enable-wide-chars",
-        "--with-app-defaults=/etc/X11/app-defaults",
-    ],
-
-    visibility = ["PUBLIC"],
-)
+# load("//defs:package_defs.bzl", "download_source", "autotools_package")
+# load("//defs:use_flags.bzl", "set_use_flags")
+#
+# autotools_package(
+#     name = "xterm",
+#     version = "390",
+#     src_uri = "https://invisible-mirror.net/archives/xterm/xterm-390.tgz",
+#     sha256 = "75117c3cc5174a09c425ef106e69404d72f5ef05e03a5da00aaf15792d6f9c0f",
+#     signature_sha256 = "145ef8fed6045745ef25cbc56d598127046659eaa8f73bd9f5fb1093c44876a9",
+#     signature_required=False,
+#     description = "Terminal emulator for the X Window System",
+#     homepage = "https://invisible-island.net/xterm/",
+#     license = "MIT",
+#
+#     # USE flags this package supports
+#     iuse = [
+#         "toolbar",
+#         "truetype",
+#         "256-color",
+#     ],
+#
+#     # Default USE flags
+#     use_defaults = ["truetype", "256-color"],
+#
+#     # Conditional configure arguments
+#     use_configure = {
+#         "toolbar": "--enable-toolbar",
+#         "-toolbar": "--disable-toolbar",
+#         "truetype": "--enable-freetype",
+#         "-truetype": "--disable-freetype",
+#         "256-color": "--enable-256-color",
+#         "-256-color": "--disable-256-color",
+#     },
+#
+#     # Base configure arguments (always applied)
+#     configure_args = [
+#         "--enable-wide-chars",
+#         "--with-app-defaults=/etc/X11/app-defaults",
+#     ],
+#
+#     visibility = ["PUBLIC"],
+# )

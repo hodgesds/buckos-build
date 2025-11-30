@@ -14,14 +14,16 @@ meson_package(
     description = "Screen locker for Wayland",
     homepage = "https://github.com/swaywm/swaylock",
     license = "MIT",
+    pre_configure = "rm -rf build",  # Clear any stale meson build directory
     meson_args = [
         "-Dpam=enabled",
         "-Dgdk-pixbuf=enabled",
-        "-Dman-pages=disabled",
     ],
     deps = [
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/wayland:wayland-protocols",
+        "//packages/linux/core/libffi:libffi",
+        "//packages/linux/desktop/cairo:cairo",
     ],
     visibility = ["PUBLIC"],
 )

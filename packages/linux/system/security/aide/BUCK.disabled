@@ -21,13 +21,15 @@ autotools_package(
         "--sysconfdir=/etc",
         "--with-mhash",
         "--with-posix-acl",
-        "--with-selinux",
-        "--with-xattr",
-        "--with-e2fsattrs",
+        "--without-selinux",
+        "--without-xattr",
+        "--without-e2fsattrs",
         "--with-zlib",
     ],
     deps = [
         "//packages/linux/core/zlib:zlib",
+        "//packages/linux/system/libs/utility/pcre2:pcre2",
+        "//packages/linux/system/libs/ipc/acl:acl",
     ],
     visibility = ["PUBLIC"],
 )

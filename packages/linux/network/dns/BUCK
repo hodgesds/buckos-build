@@ -29,7 +29,7 @@ filegroup(
     name = "authoritative-servers",
     srcs = [
         "//packages/linux/network/dns/servers/bind:bind",
-        "//packages/linux/network/dns/servers/powerdns:powerdns",
+        # "//packages/linux/network/dns/servers/powerdns:powerdns",  # Disabled: Lua package lacks pkg-config support
         "//packages/linux/network/dns/servers/nsd:nsd",
     ],
     default_target_platform = "//platforms:linux-target",
@@ -72,7 +72,7 @@ filegroup(
     srcs = [
         "//packages/linux/network/dns/servers/bind:bind",
         "//packages/linux/network/dns/servers/dnsmasq:dnsmasq",
-        "//packages/linux/network/dns/servers/powerdns:powerdns",
+        # "//packages/linux/network/dns/servers/powerdns:powerdns",  # Disabled: Lua package lacks pkg-config support
         "//packages/linux/network/dns/servers/coredns:coredns",
         "//packages/linux/network/dns/servers/nsd:nsd",
         "//packages/linux/network/dns/servers/pdns-recursor:pdns-recursor",
@@ -166,7 +166,7 @@ filegroup(
     name = "enterprise-dns",
     srcs = [
         "//packages/linux/network/dns/servers/bind:bind",
-        "//packages/linux/network/dns/servers/powerdns:powerdns",
+        # "//packages/linux/network/dns/servers/powerdns:powerdns",  # Disabled: Lua package lacks pkg-config support
         "//packages/linux/network/dns/servers/nsd:nsd",
     ],
     default_target_platform = "//platforms:linux-target",

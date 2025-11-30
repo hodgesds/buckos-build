@@ -6,7 +6,7 @@ filegroup(
     name = "all-email-servers",
     srcs = [
         "//packages/linux/communication/email-servers/dovecot:dovecot",
-        "//packages/linux/communication/email-servers/exim:exim",
+        # "//packages/linux/communication/email-servers/exim:exim",  # Disabled: SQLite linking issues
         "//packages/linux/communication/email-servers/maddy:maddy",
         "//packages/linux/communication/email-servers/opensmtpd:opensmtpd",
         "//packages/linux/communication/email-servers/postfix:postfix",
@@ -29,7 +29,7 @@ filegroup(
 filegroup(
     name = "mta",
     srcs = [
-        "//packages/linux/communication/email-servers/exim:exim",
+        # "//packages/linux/communication/email-servers/exim:exim",  # Disabled: SQLite linking issues
         "//packages/linux/communication/email-servers/opensmtpd:opensmtpd",
         "//packages/linux/communication/email-servers/postfix:postfix",
     ],
@@ -84,7 +84,7 @@ filegroup(
     name = "enterprise",
     srcs = [
         "//packages/linux/communication/email-servers/dovecot:dovecot",
-        "//packages/linux/communication/email-servers/exim:exim",
+        # "//packages/linux/communication/email-servers/exim:exim",  # Disabled: SQLite linking issues
         "//packages/linux/communication/email-servers/postfix:postfix",
     ],
     default_target_platform = "//platforms:linux-target",

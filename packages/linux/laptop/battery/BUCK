@@ -12,8 +12,8 @@ filegroup(
 filegroup(
     name = "kernel-modules",
     srcs = [
-        "//packages/linux/laptop/battery/acpi_call:acpi_call",
-        "//packages/linux/laptop/battery/tp_smapi:tp_smapi",
+        # "//packages/linux/laptop/battery/acpi_call:acpi_call",  # Disabled: kernel module requires INSTALL_MOD_PATH support
+        # "//packages/linux/laptop/battery/tp_smapi:tp_smapi",  # Disabled: kernel module requires root to install
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -40,8 +40,8 @@ filegroup(
 filegroup(
     name = "thinkpad",
     srcs = [
-        "//packages/linux/laptop/battery/tp_smapi:tp_smapi",
-        "//packages/linux/laptop/battery/acpi_call:acpi_call",
+        # "//packages/linux/laptop/battery/tp_smapi:tp_smapi",  # Disabled: kernel module requires root to install
+        # "//packages/linux/laptop/battery/acpi_call:acpi_call",  # Disabled: kernel module requires INSTALL_MOD_PATH support
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -51,8 +51,8 @@ filegroup(
     name = "all-battery",
     srcs = [
         "//packages/linux/laptop/battery/upower:upower",
-        "//packages/linux/laptop/battery/acpi_call:acpi_call",
-        "//packages/linux/laptop/battery/tp_smapi:tp_smapi",
+        # "//packages/linux/laptop/battery/acpi_call:acpi_call",  # Disabled: kernel module requires INSTALL_MOD_PATH support
+        # "//packages/linux/laptop/battery/tp_smapi:tp_smapi",  # Disabled: kernel module requires root to install
         "//packages/linux/laptop/battery/laptop-mode-tools:laptop-mode-tools",
     ],
     default_target_platform = "//platforms:linux-target",

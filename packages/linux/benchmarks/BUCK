@@ -2,7 +2,7 @@
 filegroup(
     name = "all-benchmarks",
     srcs = [
-        "//packages/linux/benchmarks/stress-ng:stress-ng",
+        # "//packages/linux/benchmarks/stress-ng:stress-ng",  # Disabled: linker error
         "//packages/linux/benchmarks/fio:fio",
         "//packages/linux/benchmarks/iperf3:iperf3",
         "//packages/linux/benchmarks/hackbench:hackbench",
@@ -22,7 +22,7 @@ filegroup(
 filegroup(
     name = "cpu-memory-benchmarks",
     srcs = [
-        "//packages/linux/benchmarks/stress-ng:stress-ng",
+        # "//packages/linux/benchmarks/stress-ng:stress-ng",  # Disabled: linker error
         "//packages/linux/benchmarks/memtester:memtester",
         "//packages/linux/benchmarks/stream:stream",
     ],

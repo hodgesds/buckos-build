@@ -15,7 +15,7 @@ filegroup(
     srcs = [
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/wayland:wayland-protocols",
-        "//packages/linux/desktop/mesa:mesa",
+        # "//packages/linux/desktop/mesa:mesa",  # Disabled: requires Python mako module
         "//packages/linux/desktop/libdrm:libdrm",
         "//packages/linux/desktop/libinput:libinput",
     ],
@@ -27,9 +27,9 @@ filegroup(
 filegroup(
     name = "display-managers",
     srcs = [
-        "//packages/linux/desktop/gdm:gdm",
-        "//packages/linux/desktop/sddm:sddm",
-        "//packages/linux/desktop/lightdm:lightdm",
+        # "//packages/linux/desktop/gdm:gdm",  # Disabled: needs udev from systemd
+        # "//packages/linux/desktop/sddm:sddm",  # Disabled: needs PAM
+        # "//packages/linux/desktop/lightdm:lightdm",  # Disabled: needs PAM headers
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -39,12 +39,12 @@ filegroup(
 filegroup(
     name = "all-desktops",
     srcs = [
-        "//packages/linux/desktop/kde:kde-plasma",
-        "//packages/linux/desktop/xfce:xfce",
-        "//packages/linux/desktop/lxqt:lxqt",
-        "//packages/linux/desktop/cinnamon:cinnamon-desktop",
-        "//packages/linux/desktop/mate:mate",
-        "//packages/linux/desktop/budgie:budgie",
+        # "//packages/linux/desktop/kde:kde-plasma",  # Disabled: needs Qt6 and KDE Frameworks
+        # "//packages/linux/desktop/xfce:xfce",  # Disabled: needs intltool
+        # "//packages/linux/desktop/lxqt:lxqt",  # Disabled: needs Qt5
+        # "//packages/linux/desktop/cinnamon:cinnamon-desktop",  # Disabled: needs cjs-1.0
+        # "//packages/linux/desktop/mate:mate",  # Disabled: needs GTK3
+        # "//packages/linux/desktop/budgie:budgie",  # Disabled: requires Vala compiler
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -54,9 +54,9 @@ filegroup(
 filegroup(
     name = "wayland-compositors",
     srcs = [
-        "//packages/linux/desktop/sway:sway-desktop",
-        "//packages/linux/desktop/hyprland:hyprland-desktop",
-        "//packages/linux/desktop/wayfire:wayfire-desktop",
+        # "//packages/linux/desktop/sway:sway-desktop",  # Disabled: needs wlroots
+        # "//packages/linux/desktop/hyprland:hyprland-desktop",  # Disabled: needs OpenGL (mesa requires Python mako)
+        # "//packages/linux/desktop/wayfire:wayfire-desktop",  # Disabled: needs wlroots
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -66,9 +66,9 @@ filegroup(
 filegroup(
     name = "x11-window-managers",
     srcs = [
-        "//packages/linux/desktop/i3:i3-desktop",
-        "//packages/linux/desktop/bspwm:bspwm-desktop",
-        "//packages/linux/desktop/awesome:awesome-desktop",
+        # "//packages/linux/desktop/i3:i3-desktop",  # Disabled: needs startup-notification, xcb deps
+        # "//packages/linux/desktop/bspwm:bspwm-desktop",  # Disabled: needs XCB deps
+        # "//packages/linux/desktop/awesome:awesome-desktop",  # Disabled: needs Lua/XCB deps
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -78,9 +78,9 @@ filegroup(
 filegroup(
     name = "lightweight-desktops",
     srcs = [
-        "//packages/linux/desktop/xfce:xfce",
-        "//packages/linux/desktop/lxqt:lxqt",
-        "//packages/linux/desktop/i3:i3-desktop",
+        # "//packages/linux/desktop/xfce:xfce",  # Disabled: needs intltool
+        # "//packages/linux/desktop/lxqt:lxqt",  # Disabled: needs Qt5
+        # "//packages/linux/desktop/i3:i3-desktop",  # Disabled: needs startup-notification, xcb deps
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -90,9 +90,9 @@ filegroup(
 filegroup(
     name = "modern-wayland-desktops",
     srcs = [
-        "//packages/linux/desktop/kde:kde-plasma",
-        "//packages/linux/desktop/sway:sway-desktop",
-        "//packages/linux/desktop/hyprland:hyprland-desktop",
+        # "//packages/linux/desktop/kde:kde-plasma",  # Disabled: needs Qt6 and KDE Frameworks
+        # "//packages/linux/desktop/sway:sway-desktop",  # Disabled: needs wlroots
+        # "//packages/linux/desktop/hyprland:hyprland-desktop",  # Disabled: needs OpenGL (mesa requires Python mako)
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -102,11 +102,11 @@ filegroup(
 filegroup(
     name = "tiling-desktops",
     srcs = [
-        "//packages/linux/desktop/sway:sway-desktop",
-        "//packages/linux/desktop/hyprland:hyprland-desktop",
-        "//packages/linux/desktop/i3:i3-desktop",
-        "//packages/linux/desktop/bspwm:bspwm-desktop",
-        "//packages/linux/desktop/awesome:awesome-desktop",
+        # "//packages/linux/desktop/sway:sway-desktop",  # Disabled: needs wlroots
+        # "//packages/linux/desktop/hyprland:hyprland-desktop",  # Disabled: needs OpenGL (mesa requires Python mako)
+        # "//packages/linux/desktop/i3:i3-desktop",  # Disabled: needs startup-notification, xcb deps
+        # "//packages/linux/desktop/bspwm:bspwm-desktop",  # Disabled: needs XCB deps
+        # "//packages/linux/desktop/awesome:awesome-desktop",  # Disabled: needs Lua/XCB deps
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -138,34 +138,34 @@ filegroup(
 
 
 
-# i3 complete desktop
-filegroup(
-    name = "i3-complete",
-    srcs = [
-        "//packages/linux/desktop/i3:i3-desktop",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
+# i3 complete desktop - Disabled until i3 dependencies are available
+# filegroup(
+#     name = "i3-complete",
+#     srcs = [
+#         "//packages/linux/desktop/i3:i3-desktop",
+#     ],
+#     default_target_platform = "//platforms:linux-target",
+#     visibility = ["PUBLIC"],
+# )
 
-# Sway complete desktop with utilities
-filegroup(
-    name = "sway-complete",
-    srcs = [
-        "//packages/linux/desktop/sway:sway-desktop",
-        "//packages/linux/desktop/wayland-utilities:sway-companions",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
+# Sway complete desktop with utilities - Disabled: needs wlroots
+# filegroup(
+#     name = "sway-complete",
+#     srcs = [
+#         "//packages/linux/desktop/sway:sway-desktop",
+#         "//packages/linux/desktop/wayland-utilities:sway-companions",
+#     ],
+#     default_target_platform = "//platforms:linux-target",
+#     visibility = ["PUBLIC"],
+# )
 
-# Hyprland complete desktop with utilities
-filegroup(
-    name = "hyprland-complete",
-    srcs = [
-        "//packages/linux/desktop/hyprland:hyprland-desktop",
-        "//packages/linux/desktop/wayland-utilities:hyprland-companions",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
+# Hyprland complete desktop with utilities - Disabled: needs OpenGL (mesa requires Python mako)
+# filegroup(
+#     name = "hyprland-complete",
+#     srcs = [
+#         "//packages/linux/desktop/hyprland:hyprland-desktop",
+#         "//packages/linux/desktop/wayland-utilities:hyprland-companions",
+#     ],
+#     default_target_platform = "//platforms:linux-target",
+#     visibility = ["PUBLIC"],
+# )

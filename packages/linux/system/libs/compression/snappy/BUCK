@@ -12,13 +12,13 @@ cmake_package(
     license = "BSD-3-Clause",
     iuse = ["static-libs", "test"],
     use_defaults = [],
+    # USE flag -> CMake option mapping (function adds -D and =ON/OFF automatically)
+    # Note: static-libs inverts BUILD_SHARED_LIBS logic, so we handle it in cmake_args instead
     use_options = {
-        "static-libs": "BUILD_SHARED_LIBS=OFF",
-        "-static-libs": "BUILD_SHARED_LIBS=ON",
-        "test": "SNAPPY_BUILD_TESTS=ON",
-        "-test": "SNAPPY_BUILD_TESTS=OFF",
+        "test": "SNAPPY_BUILD_TESTS",
     },
     cmake_args = [
+        "-DBUILD_SHARED_LIBS=ON",
         "-DSNAPPY_BUILD_BENCHMARKS=OFF",
     ],
     deps = [],

@@ -24,15 +24,13 @@ cmake_package(
     # Default USE flags
     use_defaults = ["jpeg8", "simd"],
 
+    # USE flag -> CMake option mapping (function adds -D and =ON/OFF automatically)
     use_options = {
-        "static-libs": "ENABLE_STATIC=ON",
-        "-static-libs": "ENABLE_STATIC=OFF",
-        "jpeg7": "WITH_JPEG7=ON",
-        "jpeg8": "WITH_JPEG8=ON",
-        "java": "WITH_JAVA=ON",
-        "-java": "WITH_JAVA=OFF",
-        "simd": "WITH_SIMD=ON",
-        "-simd": "WITH_SIMD=OFF",
+        "static-libs": "ENABLE_STATIC",
+        "jpeg7": "WITH_JPEG7",
+        "jpeg8": "WITH_JPEG8",
+        "java": "WITH_JAVA",
+        "simd": "WITH_SIMD",
     },
 
     # use_deps = {

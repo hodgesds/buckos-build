@@ -19,6 +19,10 @@ autotools_package(
     make_args = [
         "PREFIX=/usr",
     ],
+    # Makefile doesn't properly respect DESTDIR for manpages
+    src_install = """
+make DESTDIR="$DESTDIR" PREFIX=/usr MANDIR=/usr/share/man install
+""",
     deps = [],
     visibility = ["PUBLIC"],
 )

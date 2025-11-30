@@ -34,6 +34,7 @@ autotools_package(
     deps = [
         "//packages/linux/system/libs/crypto/nettle:nettle",
         "//packages/linux/system/libs/crypto/libgcrypt:libgcrypt",
+        "//packages/linux/system/libs/utility/gmp:gmp",
     ],
     visibility = ["PUBLIC"],
 )

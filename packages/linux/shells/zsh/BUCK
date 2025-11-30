@@ -34,6 +34,11 @@ autotools_package(
         "-static": "--enable-dynamic",
     },
 
+    # Conditional dependencies
+    use_deps = {
+        "pcre": ["//packages/linux/system/libs/utility/pcre2:pcre2"],
+    },
+
     # Base configure arguments (always applied)
     configure_args = [
         "--enable-etcdir=/etc/zsh",
@@ -42,6 +47,11 @@ autotools_package(
         "--enable-zlogout=/etc/zsh/zlogout",
         "--enable-zprofile=/etc/zsh/zprofile",
         "--enable-zshrc=/etc/zsh/zshrc",
+    ],
+
+    # ncurses is required for terminal handling
+    deps = [
+        "//packages/linux/core/ncurses:ncurses",
     ],
 
     visibility = ["PUBLIC"],

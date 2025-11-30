@@ -24,19 +24,14 @@ cmake_package(
     # Default USE flags
     use_defaults = ["png", "tiff"],
 
+    # USE flag -> CMake option mapping (function adds -D and =ON/OFF automatically)
     use_options = {
-        "static-libs": "BUILD_STATIC_LIBS=ON",
-        "-static-libs": "BUILD_STATIC_LIBS=OFF",
-        "png": "BUILD_PNG=ON",
-        "-png": "BUILD_PNG=OFF",
-        "tiff": "BUILD_TIFF=ON",
-        "-tiff": "BUILD_TIFF=OFF",
-        "lcms2": "BUILD_LCMS2=ON",
-        "-lcms2": "BUILD_LCMS2=OFF",
-        "doc": "BUILD_DOC=ON",
-        "-doc": "BUILD_DOC=OFF",
-        "test": "BUILD_TESTING=ON",
-        "-test": "BUILD_TESTING=OFF",
+        "static-libs": "BUILD_STATIC_LIBS",
+        "png": "BUILD_PNG",
+        "tiff": "BUILD_TIFF",
+        "lcms2": "BUILD_LCMS2",
+        "doc": "BUILD_DOC",
+        "test": "BUILD_TESTING",
     },
 
     use_deps = {

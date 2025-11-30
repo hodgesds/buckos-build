@@ -19,6 +19,10 @@ autotools_package(
         "--without-readline",
         "--without-mpfr",
     ],
+    # C23 has stricter function pointer type checking
+    env = {
+        "CFLAGS": "-std=gnu17 -O2",
+    },
     deps = [
     ],
     visibility = ["PUBLIC"],

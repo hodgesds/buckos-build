@@ -18,5 +18,9 @@ autotools_package(
     configure_args = [
         "--disable-static",
     ],
+    # Force C17 to avoid C23 bool keyword conflict
+    env = {
+        "CFLAGS": "-std=gnu17 -O2",
+    },
     visibility = ["PUBLIC"],
 )

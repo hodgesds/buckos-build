@@ -24,5 +24,8 @@ autotools_package(
     },
     configure_args = [],
     deps = [],
+    bdepend = [
+        "//packages/linux/dev-tools/dev-utils/gperf:gperf",
+    ],
     visibility = ["PUBLIC"],
 )

@@ -3457,14 +3457,21 @@ def cmake_package(
     if use_bootstrap and BOOTSTRAP_TOOLCHAIN not in bdepend:
         bdepend.append(BOOTSTRAP_TOOLCHAIN)
 
+    # Allow overriding eclass phases via kwargs
+    custom_src_prepare = kwargs.pop("src_prepare", None)
+    custom_src_configure = kwargs.pop("src_configure", None)
+    custom_src_compile = kwargs.pop("src_compile", None)
+    custom_src_install = kwargs.pop("src_install", None)
+
     ebuild_package(
         name = name,
         source = src_target,
         version = version,
         pre_configure = pre_configure,
-        src_configure = eclass_config["src_configure"],
-        src_compile = eclass_config["src_compile"],
-        src_install = eclass_config["src_install"],
+        src_prepare = custom_src_prepare if custom_src_prepare else eclass_config.get("src_prepare", ""),
+        src_configure = custom_src_configure if custom_src_configure else eclass_config["src_configure"],
+        src_compile = custom_src_compile if custom_src_compile else eclass_config["src_compile"],
+        src_install = custom_src_install if custom_src_install else eclass_config["src_install"],
         rdepend = resolved_deps,
         bdepend = bdepend,
         env = env,
@@ -3601,7 +3608,8 @@ def meson_package(
     if use_bootstrap and BOOTSTRAP_TOOLCHAIN not in bdepend:
         bdepend.append(BOOTSTRAP_TOOLCHAIN)
 
-    # Pop phase overrides from kwargs if provided
+    # Allow overriding eclass phases via kwargs
+    custom_src_prepare = kwargs.pop("src_prepare", None)
     custom_src_configure = kwargs.pop("src_configure", None)
     custom_src_compile = kwargs.pop("src_compile", None)
     custom_src_install = kwargs.pop("src_install", None)
@@ -3610,6 +3618,7 @@ def meson_package(
         name = name,
         source = src_target,
         version = version,
+        src_prepare = custom_src_prepare if custom_src_prepare else eclass_config.get("src_prepare", ""),
         src_configure = custom_src_configure if custom_src_configure else eclass_config["src_configure"],
         src_compile = custom_src_compile if custom_src_compile else eclass_config["src_compile"],
         src_install = custom_src_install if custom_src_install else eclass_config["src_install"],

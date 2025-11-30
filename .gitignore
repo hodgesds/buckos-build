@@ -3,8 +3,9 @@
 buck-out/
 .buck-out/
 
-# Installer-generated config (regenerated per-install)
+# Installer-generated files (regenerated per-install)
 /config/use_config.bzl
+/install/BUCK
 
 # Prelude (external)
 prelude/

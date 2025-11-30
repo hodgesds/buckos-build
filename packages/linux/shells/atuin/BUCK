@@ -1,27 +1,14 @@
-load("//defs:package_defs.bzl", "download_source", "ebuild_package", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "cargo_package")
 
 # atuin - Magical shell history (Rust-based)
-download_source(
-    name = "atuin-src",
+cargo_package(
+    name = "atuin",
+    version = "18.4.0",
     src_uri = "https://github.com/atuinsh/atuin/archive/refs/tags/v18.4.0.tar.gz",
     sha256 = "de6d2bcf10de4d757916c7e92a70f15929fc1dea75abc4df09b0baedf26a53b2",
-)
-
-ebuild_package(
-    name = "atuin",
-    source = ":atuin-src",
-    version = "18.4.0",
     description = "Magical shell history - sync, search and backup",
     homepage = "https://atuin.sh/",
     license = "MIT",
-    src_compile = """
-make release
-""",
-    src_install = """
-make install PREFIX=/usr DESTDIR="$DESTDIR"
-""",
-    rdepend = [
-    ],
+    bins = ["atuin"],
     visibility = ["PUBLIC"],
 )

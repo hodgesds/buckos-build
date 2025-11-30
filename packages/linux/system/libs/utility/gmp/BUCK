@@ -18,6 +18,9 @@ autotools_package(
     configure_args = [
         "--enable-cxx",
         "--disable-static",
+        # Use -std=gnu17 to avoid C23 K&R function declaration issues in GMP's configure tests
+        "CFLAGS=-O2 -fomit-frame-pointer -std=gnu17",
+        "CXXFLAGS=-O2 -fomit-frame-pointer",
     ],
     visibility = ["PUBLIC"],
 )

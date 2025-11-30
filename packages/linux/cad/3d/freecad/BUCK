@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "ebuild_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package", "cmake_src_configure", "cmake_src_compile", "cmake_src_install")
 
 download_source(
     name = "freecad-src",
@@ -13,29 +13,23 @@ ebuild_package(
     description = "Free and open-source 3D parametric modeler for CAD, MCAD, CAx, CAE and PLM",
     homepage = "https://www.freecad.org/",
     license = "LGPL-2.1",
-    src_configure = """
-cmake_src_configure \\
-    -DBUILD_FEM=ON \\
-    -DBUILD_DRAWING=ON \\
-    -DBUILD_IDF=ON \\
-    -DBUILD_PATH=ON \\
-    -DBUILD_RAYTRACING=ON \\
-    -DBUILD_ROBOT=ON \\
-    -DBUILD_SHIP=ON \\
-    -DBUILD_ARCH=ON \\
-    -DBUILD_DRAFT=ON \\
-    -DBUILD_SPREADSHEET=ON \\
-    -DBUILD_TECHDRAW=ON \\
-    -DFREECAD_USE_OCC_VARIANT="Official Version" \\
-    -DFREECAD_USE_EXTERNAL_PIVY=ON \\
-    -DCMAKE_BUILD_TYPE=Release
-""",
-    src_compile = """
-cmake_src_compile
-""",
-    src_install = """
-cmake_src_install
-""",
+    src_configure = cmake_src_configure([
+        "-DBUILD_FEM=ON",
+        "-DBUILD_DRAWING=ON",
+        "-DBUILD_IDF=ON",
+        "-DBUILD_PATH=ON",
+        "-DBUILD_RAYTRACING=ON",
+        "-DBUILD_ROBOT=ON",
+        "-DBUILD_SHIP=ON",
+        "-DBUILD_ARCH=ON",
+        "-DBUILD_DRAFT=ON",
+        "-DBUILD_SPREADSHEET=ON",
+        "-DBUILD_TECHDRAW=ON",
+        '-DFREECAD_USE_OCC_VARIANT="Official Version"',
+        "-DFREECAD_USE_EXTERNAL_PIVY=ON",
+    ]),
+    src_compile = cmake_src_compile(),
+    src_install = cmake_src_install(),
     rdepend = [
         "//packages/linux/dev-libs/boost:boost",
         "//packages/linux/core/zlib:zlib",

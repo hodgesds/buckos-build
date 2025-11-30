@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "ebuild_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package", "cmake_src_configure", "cmake_src_compile", "cmake_src_install")
 
 download_source(
     name = "brlcad-src",
@@ -13,19 +13,13 @@ ebuild_package(
     description = "Constructive Solid Geometry modeling system with ray-tracing and analysis",
     homepage = "https://brlcad.org/",
     license = "LGPL-2.1",
-    src_configure = """
-cmake_src_configure \\
-    -DBRLCAD_ENABLE_STRICT=OFF \\
-    -DBRLCAD_BUNDLED_LIBS=BUNDLED \\
-    -DBRLCAD_FLAGS_DEBUG=OFF \\
-    -DCMAKE_BUILD_TYPE=Release
-""",
-    src_compile = """
-cmake_src_compile
-""",
-    src_install = """
-cmake_src_install
-""",
+    src_configure = cmake_src_configure([
+        "-DBRLCAD_ENABLE_STRICT=OFF",
+        "-DBRLCAD_BUNDLED_LIBS=BUNDLED",
+        "-DBRLCAD_FLAGS_DEBUG=OFF",
+    ]),
+    src_compile = cmake_src_compile(),
+    src_install = cmake_src_install(),
     rdepend = [
         "//packages/linux/core/zlib:zlib",
     ],

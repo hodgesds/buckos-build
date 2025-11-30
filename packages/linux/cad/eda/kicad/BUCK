@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "ebuild_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package", "cmake_src_configure", "cmake_src_compile", "cmake_src_install")
 
 download_source(
     name = "kicad-src",
@@ -13,21 +13,15 @@ ebuild_package(
     description = "Electronic Design Automation suite for schematic capture, PCB layout, and manufacturing",
     homepage = "https://www.kicad.org/",
     license = "GPL-3.0",
-    src_configure = """
-cmake_src_configure \\
-    -DKICAD_SCRIPTING_WXPYTHON=ON \\
-    -DKICAD_USE_OCC=ON \\
-    -DKICAD_SPICE=ON \\
-    -DKICAD_BUILD_I18N=ON \\
-    -DKICAD_BUILD_QA_TESTS=OFF \\
-    -DCMAKE_BUILD_TYPE=Release
-""",
-    src_compile = """
-cmake_src_compile
-""",
-    src_install = """
-cmake_src_install
-""",
+    src_configure = cmake_src_configure([
+        "-DKICAD_SCRIPTING_WXPYTHON=ON",
+        "-DKICAD_USE_OCC=ON",
+        "-DKICAD_SPICE=ON",
+        "-DKICAD_BUILD_I18N=ON",
+        "-DKICAD_BUILD_QA_TESTS=OFF",
+    ]),
+    src_compile = cmake_src_compile(),
+    src_install = cmake_src_install(),
     rdepend = [
         "//packages/linux/dev-libs/boost:boost",
         "//packages/linux/core/zlib:zlib",

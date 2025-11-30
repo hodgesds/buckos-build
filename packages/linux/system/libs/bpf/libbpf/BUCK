@@ -15,7 +15,7 @@ binary_package(
     homepage = "https://github.com/libbpf/libbpf",
     license = "LGPL-2.1 BSD-2",
     install_script = """
-        cd $SRCS/libbpf-*/src
+        cd $SRCS/src
 
         # Build libbpf
         make BUILD_STATIC_ONLY=1 PREFIX=/usr LIBDIR=/usr/lib

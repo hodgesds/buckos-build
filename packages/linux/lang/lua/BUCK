@@ -21,7 +21,7 @@ binary_package(
     homepage = "https://www.lua.org/",
     license = "MIT",
     install_script = """
-        cd $SRCS/lua-5.4.6
+        cd $SRCS
 
         # Build Lua
         make linux MYCFLAGS="-fPIC" MYLDFLAGS="-Wl,-E"

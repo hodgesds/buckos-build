@@ -27,8 +27,8 @@ autotools_package(
         "--with-systemdsystemunitdir=/usr/lib/systemd/system",
     ],
     deps = [
-        "//packages/linux/system/libs/dbus:dbus",
-        "//packages/linux/system/libs/libxml2:libxml2",
+        "//packages/linux/system/libs/ipc/dbus:dbus",
+        "//packages/linux/system/libs/data/libxml2:libxml2",
     ],
     visibility = ["PUBLIC"],
 )

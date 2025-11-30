@@ -59,7 +59,7 @@ multi_version_package(
             "slot": "3",
             "keywords": ["stable"],
             "src_uri": "https://www.openssl.org/source/openssl-3.1.4.tar.gz",
-            "sha256": "840af5366ab9b522e1b36bd10f5e2465e3a12fea7a9e5f8e15de3ff2f5f3a3eb",
+            "sha256": "840af5366ab9b522bde525826be3ef0fb0af81c6a9ebd84caa600fea1731eee3",
             "configure_args": _common_configure_args + [
                 "--prefix=/usr",
             ],
@@ -81,6 +81,7 @@ multi_version_package(
             "keywords": ["masked"],
             "src_uri": "https://www.openssl.org/source/openssl-1.0.2u.tar.gz",
             "sha256": "ecd0c6ffb493dd06707d38b14bb4d8c2288bb7033735606569d8f90f89669d16",
+            "auto_detect_signature": False,
             "configure_args": [
                 "--prefix=/usr/lib/openssl-1.0",
                 "--openssldir=/etc/ssl",
@@ -94,7 +95,6 @@ multi_version_package(
     description = "TLS/SSL and crypto library",
     homepage = "https://www.openssl.org/",
     license = "Apache-2.0",
-    configure_command = "./config",
     deps = [
         "//packages/linux/core/zlib:zlib",
     ],

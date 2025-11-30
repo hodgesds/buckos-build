@@ -11,8 +11,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "ardour-src",
-    src_uri = "https://community.ardour.org/src/Ardour-8.6.0.tar.bz2",
-    sha256 = "125217b1f8af65032a746d11f2d42e6f01538423684be76a40644f615a88e339",
+    src_uri = "https://github.com/Ardour/ardour/archive/refs/tags/8.6.tar.gz",
+    sha256 = "84d79d73d749cf05a223feb74d5fdfcacfef520e185169752e33fb9bfcbce7b3",
 )
 
 # Ardour uses waf build system
@@ -24,7 +24,7 @@ binary_package(
     homepage = "https://ardour.org/",
     license = "GPL-2",
     install_script = """
-        cd $SRCS/Ardour-8.6.0
+        cd $SRCS
 
         # Configure with waf
         python3 ./waf configure \

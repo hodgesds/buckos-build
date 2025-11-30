@@ -16,10 +16,8 @@ binary_package(
     homepage = "https://vscodium.com/",
     license = "MIT",
     install_script = """
-        # Extract VSCodium tarball
-        mkdir -p extract
-        cd extract
-        tar xf $SRCS/*.tar.gz
+        # Source files are already extracted to $SRCS
+        cd $SRCS
 
         # Install to destination
         mkdir -p "$OUT/opt/vscodium"

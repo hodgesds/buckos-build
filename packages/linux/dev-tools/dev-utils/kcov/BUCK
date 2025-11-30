@@ -5,8 +5,8 @@ load("//defs:package_defs.bzl", "cmake_package")
 cmake_package(
     name = "kcov",
     version = "42",
-    src_uri = "https://github.com/SimonKagworgs/kcov/archive/refs/tags/v42.tar.gz",
-    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+    src_uri = "https://github.com/SimonKagstrom/kcov/archive/refs/tags/v42.tar.gz",
+    sha256 = "2c47d75397af248bc387f60cdd79180763e1f88f3dd71c94bb52478f8e74a1f8",
     description = "Code coverage tool for compiled programs",
     homepage = "https://github.com/SimonKagstrom/kcov",
     license = "GPL-2",

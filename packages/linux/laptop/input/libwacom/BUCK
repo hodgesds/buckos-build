@@ -26,8 +26,8 @@ autotools_package(
         "-Ddocumentation=disabled",
     ],
     deps = [
-        "//packages/linux/system/libs/libxml2:libxml2",
-        "//packages/linux/system/libs/glib:glib",
+        "//packages/linux/system/libs/data/libxml2:libxml2",
+        "//packages/linux/dev-libs/glib:glib",
     ],
     visibility = ["PUBLIC"],
 )

@@ -15,8 +15,9 @@ binary_package(
     homepage = "https://www.shellcheck.net/",
     license = "GPL-3",
     install_script = """
+        cd $SRCS
         mkdir -p "$OUT/usr/bin"
-        cp $SRCS/shellcheck-v0.10.0/shellcheck "$OUT/usr/bin/"
+        cp shellcheck "$OUT/usr/bin/"
         chmod +x "$OUT/usr/bin/shellcheck"
     """,
     visibility = ["PUBLIC"],

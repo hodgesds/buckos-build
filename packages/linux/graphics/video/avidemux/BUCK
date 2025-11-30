@@ -9,7 +9,7 @@ cmake_package(
     src_uri = "https://github.com/mean00/avidemux2/releases/download/2.8.1/avidemux_2.8.1.tar.gz",
     sha256 = "77d9bdca8683ce57c192b69d207cfab7cf92a7759ce0f63fa37b5c8e42ad3da2",
     description = "Free video editor for simple cutting, filtering and encoding",
-    homepage = "http://avidemux.sourceforge.net/",
+    homepage = "https://github.com/mean00/avidemux2",
     license = "GPL-2.0-or-later",
     cmake_args = [
         "-DCMAKE_BUILD_TYPE=Release",

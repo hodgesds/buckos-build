@@ -3,8 +3,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "isl-src",
-    src_uri = "https://libisl.sourceforge.io/isl-0.26.tar.xz",
-    sha256 = "a0b5cb06d24f9fa9e77b55fabbe9a3c94a336190345c2555f9915bb38e976504",
+    src_uri = "https://github.com/inducer/isl/archive/refs/tags/isl-0.26.tar.gz",
+    sha256 = "b0238a1957664d2e13406f0422429690ba4dbfbc79d14dcab51290a5b8eec5ba",
 )
 
 autotools_package(

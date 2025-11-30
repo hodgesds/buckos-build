@@ -4,8 +4,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 autotools_package(
     name = "libmad",
     version = "0.15.1b",
-    src_uri = "https://downloads.sourceforge.net/mad/libmad-0.15.1b.tar.gz",
-    sha256 = "bbfac3ed6bfbc2823d3775ebb931087371e142bb0e9bb1bee51a76a6e0078690",
+    src_uri = "https://github.com/sezero/libmad/archive/refs/tags/0.15.1b.tar.gz",
+    sha256 = "ad10beab9d60260370ebc9994ad475a6a3a156776f2ba0b69ccaadb0f523d390",
     auto_detect_signature = False,
     description = "High-quality MPEG audio decoder library",
     homepage = "https://www.underbit.com/products/mad/",

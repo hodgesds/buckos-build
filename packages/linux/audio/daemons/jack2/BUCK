@@ -25,20 +25,45 @@ binary_package(
     homepage = "https://jackaudio.org/",
     license = "GPL-2",
     install_script = """
-        cd $SRCS/jack2-1.9.22
+        cd $SRCS
+
+        # Remove bundled waflib that doesn't support Python 3.12+
+        rm -rf waflib
+
+        # Remove the wscript loading of xcode6 (macOS-specific)
+        sed -i '/xcode6/d' wscript
+
+        # Download newer waf that supports Python 3.12+
+        curl -sL https://waf.io/waf-2.1.2 -o waf
+        chmod +x waf
+
+        # Extract the newer waflib from the downloaded waf
+        python3 ./waf --help >/dev/null 2>&1 || true
+
+        # Set library path for linking (use LD_LIBRARY_PATH which was set by dep setup)
+        if [ -n "$LD_LIBRARY_PATH" ]; then
+            export LIBRARY_PATH="$LD_LIBRARY_PATH"
+            # Convert LD_LIBRARY_PATH to LDFLAGS -L options
+            IFS=':' read -ra LIBDIRS <<< "$LD_LIBRARY_PATH"
+            for libdir in "${LIBDIRS[@]}"; do
+                export LDFLAGS="${LDFLAGS:+$LDFLAGS }-L$libdir"
+            done
+        fi
+        echo "LIBRARY_PATH=$LIBRARY_PATH"
+        echo "LDFLAGS=$LDFLAGS"
 
         # Configure with waf
+        # --classic builds standard jackd without dbus (jackdbus requires expat)
         python3 ./waf configure \
             --prefix=/usr \
-            --libdir=/usr/lib \
-            --alsa \
+            --libdir=/usr/lib64 \
+            --alsa=yes \
             --classic \
-            --dbus \
             --iio=no \
             --portaudio=no \
-            --readline=no \
             --samplerate=no \
-            --systemd=no
+            --systemd=no \
+            --firewire=no
 
         # Build
         python3 ./waf build
@@ -48,8 +73,6 @@ binary_package(
     """,
     deps = [
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
-        "//packages/linux/system/libs/ipc/dbus:dbus",
-        "//packages/linux/lang/python:python",
     ],
     visibility = ["PUBLIC"],
 )

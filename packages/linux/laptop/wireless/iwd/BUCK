@@ -29,8 +29,8 @@ autotools_package(
         "--enable-ofono",
     ],
     deps = [
-        "//packages/linux/system/libs/dbus:dbus",
-        "//packages/linux/system/libs/readline:readline",
+        "//packages/linux/system/libs/ipc/dbus:dbus",
+        "//packages/linux/core/readline:readline",
     ],
     visibility = ["PUBLIC"],
 )

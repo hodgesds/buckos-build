@@ -18,7 +18,7 @@ autotools_package(
     description = "Static analysis tool for C/C++ code",
     homepage = "https://cppcheck.sourceforge.io/",
     license = "GPL-3",
-    build_deps = [
+    bdepend = [
         "//packages/linux/dev-tools/build-systems/cmake:cmake",
     ],
     configure_args = [

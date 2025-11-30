@@ -33,10 +33,10 @@ autotools_package(
         "LIBDIR=/usr/lib",
     ],
     deps = [
-        "//packages/linux/system/libs/openssl:openssl",
-        "//packages/linux/system/libs/dbus:dbus",
-        "//packages/linux/system/libs/readline:readline",
-        "//packages/linux/system/libs/libnl:libnl",
+        "//packages/linux/network/openssl:openssl",
+        "//packages/linux/system/libs/ipc/dbus:dbus",
+        "//packages/linux/core/readline:readline",
+        "//packages/linux/core/libnl:libnl",
     ],
     visibility = ["PUBLIC"],
 )

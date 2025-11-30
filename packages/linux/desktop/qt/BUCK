@@ -16,7 +16,15 @@ binary_package(
     homepage = "https://www.qt.io/",
     license = "LGPL-3.0-or-later OR GPL-3.0-or-later",
     install_script = """
-        cd qt-everywhere-src-5.15.12
+        # Find the Qt source directory (name varies between releases)
+        QT_DIR=$(ls -d qt-everywhere-* 2>/dev/null | head -1)
+        if [ -z "$QT_DIR" ]; then
+            echo "ERROR: Cannot find Qt source directory"
+            ls -la
+            exit 1
+        fi
+        echo "Using Qt source directory: $QT_DIR"
+        cd "$QT_DIR"
         ./configure \
             -prefix $PREFIX \
             -opensource \

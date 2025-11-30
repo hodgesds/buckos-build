@@ -2,10 +2,12 @@ load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 # crosvm - Chrome OS Virtual Machine Monitor
+# NOTE: Using google/crosvm GitHub mirror as chromium.googlesource blocks CI/CD
+# Version tracks main branch since the mirror doesn't have tagged releases
 download_source(
     name = "crosvm-src",
-    src_uri = "https://chromium.googlesource.com/crosvm/crosvm/+archive/refs/tags/v130.0.tar.gz",
-    sha256 = "bb82f9a230552fc1c77d9e47e43a6b47e1bc19d64c280579439e90e7d74f17c6",
+    src_uri = "https://github.com/google/crosvm/archive/refs/heads/main.tar.gz",
+    sha256 = "7a45edbadabc20132d45cfdfc0d83e5ca7ff7c70dee6f8f9a1c0e38d65d5cc8c",
     auto_detect_signature = False,
 )
 
@@ -14,7 +16,7 @@ download_source(
 autotools_package(
     name = "crosvm",
     source = ":crosvm-src",
-    version = "130.0",
+    version = "main",
     description = "Chrome OS Virtual Machine Monitor for running Linux and Android guests",
     homepage = "https://crosvm.dev/",
     license = "BSD-3-Clause",

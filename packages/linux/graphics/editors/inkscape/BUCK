@@ -9,7 +9,7 @@ load("//defs:use_flags.bzl", "set_use_flags")
 download_source(
     name = "inkscape-src",
     src_uri = "https://media.inkscape.org/dl/resources/file/inkscape-1.3.2.tar.xz",
-    sha256 = "f4f1fa1d483f4b95c6f91cfa22d4ecb4928bbd5de7c174d03fe31cd5c1c3cddc",
+    sha256 = "dbd1844dc443fe5e10d3e9a887144e5fb7223852fff191cfb5ef7adeab0e086b",
 )
 
 autotools_package(
@@ -38,13 +38,13 @@ cd build
 DESTDIR=$OUT make install
 """,
     deps = [
-        "//packages/linux/desktop/gtk:gtkmm",
-        "//packages/linux/dev-libs/libxml2:libxml2",
-        "//packages/linux/dev-libs/libxslt:libxslt",
+        "//packages/linux/desktop/gtk:gtk3",
+        "//packages/linux/system/libs/data/libxml2:libxml2",
+        "//packages/linux/system/libs/data/libxslt:libxslt",
         "//packages/linux/graphics/utilities/imagemagick:imagemagick",
         "//packages/linux/dev-libs/boost:boost",
     ],
-    build_deps = [
+    bdepend = [
         "//packages/linux/lang/python:python",
     ],
     visibility = ["PUBLIC"],

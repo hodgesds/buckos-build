@@ -15,7 +15,7 @@ binary_package(
     homepage = "https://github.com/so-fancy/diff-so-fancy",
     license = "MIT",
     install_script = """
-        cd $SRCS/diff-so-fancy-* || cd $SRCS
+        cd $SRCS
         mkdir -p "$OUT/usr/bin" "$OUT/usr/lib/diff-so-fancy"
         cp -r lib/* "$OUT/usr/lib/diff-so-fancy/"
         cp diff-so-fancy "$OUT/usr/bin/"

@@ -8,10 +8,12 @@ load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 #   wayland  - Enable Wayland support
 #   X        - Enable X11 support
 
+# Note: Ladybird is actively developed and uses git master (no tagged releases yet)
+# The checksum will need periodic updates as the master branch changes
 download_source(
     name = "ladybird-src",
     src_uri = "https://github.com/LadybirdWebBrowser/ladybird/archive/refs/heads/master.tar.gz",
-    sha256 = "4eb93bc50154f9f6c341580cb252d411cda8c9b3dd4658f76847c152911158af",
+    sha256 = "4065a1d40c094235ef97fbfb132d87fb3b9e682f0c2bbf15a8d85024ba75b510",
 )
 
 binary_package(
@@ -22,20 +24,19 @@ binary_package(
     homepage = "https://ladybird.dev/",
     license = "BSD-2-Clause",
     install_script = """
-        cd $SRCS/ladybird-*
+        cd $SRCS
 
-        # Build with CMake
-        cmake -S Meta/Lagom -B Build/lagom \\
+        # Build with CMake (use top-level CMakeLists.txt as per project docs)
+        cmake -B Build \\
             -GNinja \\
             -DCMAKE_BUILD_TYPE=Release \\
             -DCMAKE_INSTALL_PREFIX=/usr \\
-            -DENABLE_QT=ON \\
-            -DENABLE_LAGOM_LADYBIRD=ON
+            -DENABLE_QT=ON
 
-        ninja -C Build/lagom
+        ninja -C Build
 
         # Install
-        DESTDIR="$OUT" ninja -C Build/lagom install
+        DESTDIR="$OUT" ninja -C Build install
     """,
     deps = use_dep(
         {

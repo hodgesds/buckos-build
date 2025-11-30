@@ -28,18 +28,18 @@ cd build
 DESTDIR=$OUT make install
 """,
     deps = [
-        "//packages/linux/system/libs/graphics/libpng:libpng",
-        "//packages/linux/system/libs/graphics/libjpeg-turbo:libjpeg-turbo",
-        "//packages/linux/system/libs/graphics/libwebp:libwebp",
-        "//packages/linux/system/libs/icu:icu",
-        "//packages/linux/system/libs/x11/libx11:libx11",
-        "//packages/linux/system/libs/x11/libxrandr:libxrandr",
-        "//packages/linux/system/libs/x11/libxfixes:libxfixes",
-        "//packages/linux/system/libs/x11/libxcomposite:libxcomposite",
-        "//packages/linux/system/libs/glm:glm",
+        "//packages/linux/system/libs/image/libpng:libpng",
+        "//packages/linux/system/libs/image/libjpeg-turbo:libjpeg-turbo",
+        "//packages/linux/system/libs/image/libwebp:libwebp",
+        "//packages/linux/system/libs/utility/icu:icu",
+        "//packages/linux/desktop/xorg-server:libx11",
+        "//packages/linux/desktop/xorg-server:libxrandr",
+        "//packages/linux/desktop/xorg-server:libxfixes",
+        # "//packages/linux/system/libs/x11/libxcomposite:libxcomposite",  # TODO: not packaged yet
+        # "//packages/linux/system/libs/glm:glm",  # TODO: not packaged yet,
         "//packages/linux/desktop/mesa:mesa",
         "//packages/linux/graphics/utilities/slop:slop",
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

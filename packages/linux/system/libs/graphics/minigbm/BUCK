@@ -1,13 +1,11 @@
 load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
-# NOTE: The minigbm source URL points to a live Git branch (main) which means
-# the archive content and SHA256 checksum change frequently as new commits are pushed.
-# This checksum will need to be updated regularly or the source should be pinned to a specific commit.
+# NOTE: Using intel/minigbm GitHub mirror as chromium.googlesource blocks CI/CD
 download_source(
     name = "minigbm-src",
-    src_uri = "https://chromium.googlesource.com/chromiumos/platform/minigbm/+archive/refs/heads/main.tar.gz",
-    sha256 = "d937e40710ab55c6feac48e27378f8eabb15c1e2b8a24a652b45e585af59edae",
+    src_uri = "https://github.com/intel/minigbm/archive/refs/heads/master.tar.gz",
+    sha256 = "8244c0eea5c9fb39a8f8bf8c8e7522b171a83cb6bf2c402719d86ab5bb0dc87a",
 )
 
 autotools_package(

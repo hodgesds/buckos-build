@@ -3,8 +3,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "attr-src",
-    src_uri = "https://download-mirror.savannah.gnu.org/releases/attr/attr-2.5.2.tar.xz",
-    sha256 = "f2e97b0ab7ce293681ab701915766190d607a1dba7fae8a718138150b700a70b",
+    src_uri = "https://github.com/sailfishos-mirror/attr/archive/refs/tags/v2.5.2.tar.gz",
+    sha256 = "b266cf45e2256b4d85a86554b42c0218abce40356f5c3026f88e15dcf73df775",
     auto_detect_signature = False,
 )
 
@@ -15,7 +15,7 @@ ebuild_package(
     category = "system/libs/ipc",
     slot = "0",
     description = "Extended attribute support library",
-    homepage = "https://savannah.nongnu.org/projects/attr",
+    homepage = "https://github.com/sailfishos-mirror/attr",
     license = "LGPL-2.1",
 
     src_configure = '''

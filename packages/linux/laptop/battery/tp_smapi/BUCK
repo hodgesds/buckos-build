@@ -24,7 +24,7 @@ autotools_package(
         "KDIR=/lib/modules/$(uname -r)/build",
     ],
     deps = [
-        "//packages/linux/kernel:kernel",
+        "//packages/linux/kernel:default",
     ],
     visibility = ["PUBLIC"],
 )

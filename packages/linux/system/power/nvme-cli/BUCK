@@ -18,8 +18,8 @@ meson_package(
         "-Dhtmldir=/usr/share/doc/nvme",
     ],
     deps = [
-        "//packages/linux/system/libs/libnvme:libnvme",
-        "//packages/linux/system/libs/json-c:json-c",
+        # "//packages/linux/system/libs/libnvme:libnvme",  # TODO: not packaged yet,
+        "//packages/linux/system/libs/data/json-c:json-c",
     ],
     visibility = ["PUBLIC"],
 )

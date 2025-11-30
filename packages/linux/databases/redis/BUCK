@@ -1,46 +1,34 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 
 # redis - Advanced key-value store
 #
-# USE flags:
-#   ssl      - Enable SSL/TLS support with OpenSSL
-#   systemd  - Enable systemd integration
-#   jemalloc - Use jemalloc memory allocator
-#   lua      - Enable Lua scripting support
+# Redis doesn't use autotools - it uses a simple Makefile.
+# Build directly in source tree.
 
-autotools_package(
-    name = "redis",
-    version = "7.4.2",
+download_source(
+    name = "redis-src",
     src_uri = "https://download.redis.io/releases/redis-7.4.2.tar.gz",
     sha256 = "4ddebbf09061cbb589011786febdb34f29767dd7f89dbe712d2b68e808af6a1f",
+    auto_detect_signature = False,
+)
+
+ebuild_package(
+    name = "redis",
+    version = "7.4.2",
+    source = ":redis-src",
     description = "Advanced key-value store with support for data structures",
     homepage = "https://redis.io/",
     license = "RSALv2",
-    iuse = ["ssl", "systemd", "jemalloc", "lua"],
-    use_defaults = ["jemalloc"],
-    deps = [
-    ],
-    use_deps = {
-        "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
-        "systemd": ["//packages/linux/system/core/systemd:systemd"],
-        "jemalloc": ["//packages/linux/dev-libs/allocators/jemalloc:jemalloc"],
-    },
-    build_in_source = True,
-    configure_args = [],
-    make_args = [
-        "PREFIX=/usr",
-    ],
-    use_configure = {
-        "ssl": "BUILD_TLS=yes",
-        "-ssl": "BUILD_TLS=no",
-        "systemd": "USE_SYSTEMD=yes",
-        "-systemd": "USE_SYSTEMD=no",
-        "jemalloc": "MALLOC=jemalloc",
-        "-jemalloc": "MALLOC=libc",
-    },
-    make_install_args = [
-        "PREFIX=/usr",
+    # Redis uses make directly, no configure step
+    src_configure = ":",  # no-op
+    src_compile = """
+        make PREFIX=/usr MALLOC=jemalloc
+    """,
+    src_install = """
+        make PREFIX=/usr DESTDIR="${DESTDIR}" install
+    """,
+    rdepend = [
+        "//packages/linux/dev-libs/allocators/jemalloc:jemalloc",
     ],
     visibility = ["PUBLIC"],
 )

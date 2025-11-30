@@ -7,8 +7,8 @@ load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 download_source(
     name = "lmbench-src",
-    src_uri = "https://sourceforge.net/projects/lmbench/files/development/lmbench-3.0-a9.tgz/download",
-    sha256 = "fbd16c1dab5e1f953e83b120c3f84ba3ce4fe6f420c497e377cbefd2d01b6f2c",
+    src_uri = "https://github.com/intel/lmbench/archive/refs/heads/master.tar.gz",
+    sha256 = "45e6d38788df37f9a6bf6e31bd9b13a25fc8603beb672e38199ac7564010ae12",
 )
 
 binary_package(
@@ -18,8 +18,14 @@ binary_package(
     description = "Suite of portable micro-benchmarks for UNIX/POSIX systems",
     homepage = "http://lmbench.sourceforge.net/",
     license = "GPL-2.0",
+    build_deps = [
+        "//packages/linux/system/libs/ipc/libtirpc:libtirpc",
+    ],
     install_script = """
-        cd $SRCS/lmbench-*
+        cd $SRCS
+        # Fix for GCC 14+ stricter C standards and add libtirpc headers for rpc/rpc.h
+        export CFLAGS="-Wno-error=implicit-function-declaration -Wno-error=implicit-int -Wno-error=int-conversion -I$BUILD_DEPS/usr/include/tirpc"
+        export LDFLAGS="-L$BUILD_DEPS/usr/lib -ltirpc"
         make build
         mkdir -p $OUT/usr/bin
         cp bin/*/lmbench $OUT/usr/bin/ 2>/dev/null || true

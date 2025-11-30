@@ -28,8 +28,8 @@ autotools_package(
 # Text::CSV_XS - Comma-Separated Values manipulation routines (XS version)
 download_source(
     name = "text-csv-xs-src",
-    src_uri = "https://cpan.metacpan.org/authors/id/H/HM/HMBRAND/Text-CSV_XS-1.54.tar.gz",
-    sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
+    src_uri = "https://cpan.metacpan.org/authors/id/H/HM/HMBRAND/Text-CSV_XS-1.54.tgz",
+    sha256 = "9e61fb700c1bab7845c1799d1718a65c2b2ade915e020b7a0ca8e703e1b5daa6",
 )
 
 autotools_package(

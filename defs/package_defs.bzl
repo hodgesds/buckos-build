@@ -46,6 +46,16 @@ def _download_source_impl(ctx: AnalysisContext) -> list[Provider]:
     # Build exclude patterns for tar
     exclude_args = " ".join(["--exclude='{}'".format(pattern) for pattern in ctx.attrs.exclude_patterns])
 
+    # Get strip_components value (default is 1 for backward compatibility)
+    strip_components = ctx.attrs.strip_components
+
+    # Normalize sha256 to space-separated string (handles both single string and list)
+    sha256_value = ctx.attrs.sha256
+    if type(sha256_value) == "list":
+        sha256_checksums = " ".join(sha256_value)
+    else:
+        sha256_checksums = sha256_value
+
     # Script to download and extract
     script = ctx.actions.write(
         "download.sh",
@@ -59,9 +69,12 @@ URL="$2"
 FILENAME="${URL##*/}"
 curl -L -o "$FILENAME" "$URL"
 
+# Strip components setting (passed as $9)
+STRIP_COMPONENTS="${9:-1}"
+
 # Verify checksum
-EXPECTED_CHECKSUM="$3"
-if [ -z "$EXPECTED_CHECKSUM" ]; then
+EXPECTED_CHECKSUMS="$3"
+if [ -z "$EXPECTED_CHECKSUMS" ]; then
     echo "✗ ERROR: No checksum provided" >&2
     exit 1
 fi
@@ -69,15 +82,22 @@ fi
 # Compute actual checksum
 ACTUAL_CHECKSUM=$(sha256sum "$FILENAME" | awk '{print $1}')
 
-# Compare checksums
-if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]; then
+# Compare against list of valid checksums (space-separated)
+CHECKSUM_MATCHED=false
+for EXPECTED in $EXPECTED_CHECKSUMS; do
+    if [ "$EXPECTED" = "$ACTUAL_CHECKSUM" ]; then
+        CHECKSUM_MATCHED=true
+        echo "✓ Checksum verification passed: $ACTUAL_CHECKSUM"
+        break
+    fi
+done
+
+if [ "$CHECKSUM_MATCHED" = false ]; then
     echo "✗ Checksum verification FAILED" >&2
-    echo "  Expected: $EXPECTED_CHECKSUM" >&2
+    echo "  Expected: $EXPECTED_CHECKSUMS" >&2
     echo "  Actual:   $ACTUAL_CHECKSUM" >&2
     echo "  File:     $FILENAME" >&2
     exit 1
-else
-    echo "✓ Checksum verification passed: $EXPECTED_CHECKSUM"
 fi
 
 # Verify GPG signature if provided
@@ -201,20 +221,24 @@ FILETYPE=$(file -b "$FILENAME")
 # Use --transform to decode hex escapes in filenames (Buck2 doesn't allow backslashes)
 # Replace \x2d with - (dash), \x5c with nothing (backslash itself), etc.
 if [[ "$FILETYPE" == *"gzip compressed"* ]]; then
-    echo "Detected: gzip compressed tarball"
-    tar xzf "$FILENAME" --strip-components=1 --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
+    echo "Detected: gzip compressed tarball (strip-components=$STRIP_COMPONENTS)"
+    tar xzf "$FILENAME" --strip-components=$STRIP_COMPONENTS --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
     rm "$FILENAME"
 elif [[ "$FILETYPE" == *"XZ compressed"* ]]; then
-    echo "Detected: XZ compressed tarball"
-    tar xJf "$FILENAME" --strip-components=1 --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
+    echo "Detected: XZ compressed tarball (strip-components=$STRIP_COMPONENTS)"
+    tar xJf "$FILENAME" --strip-components=$STRIP_COMPONENTS --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
     rm "$FILENAME"
 elif [[ "$FILETYPE" == *"bzip2 compressed"* ]]; then
-    echo "Detected: bzip2 compressed tarball"
-    tar xjf "$FILENAME" --strip-components=1 --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
+    echo "Detected: bzip2 compressed tarball (strip-components=$STRIP_COMPONENTS)"
+    tar xjf "$FILENAME" --strip-components=$STRIP_COMPONENTS --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
     rm "$FILENAME"
 elif [[ "$FILETYPE" == *"POSIX tar archive"* ]]; then
-    echo "Detected: uncompressed tar archive"
-    tar xf "$FILENAME" --strip-components=1 --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
+    echo "Detected: uncompressed tar archive (strip-components=$STRIP_COMPONENTS)"
+    tar xf "$FILENAME" --strip-components=$STRIP_COMPONENTS --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
+    rm "$FILENAME"
+elif [[ "$FILETYPE" == *"lzip compressed"* ]]; then
+    echo "Detected: lzip compressed tarball (strip-components=$STRIP_COMPONENTS)"
+    lzip -dc "$FILENAME" | tar xf - --strip-components=$STRIP_COMPONENTS --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
     rm "$FILENAME"
 elif [[ "$FILETYPE" == *"Zip archive"* ]]; then
     echo "Detected: Zip archive"
@@ -224,6 +248,14 @@ elif [[ "$FILETYPE" == *"Zip archive"* ]]; then
         mv "$(ls -1)"/* . && rmdir "$(ls -1)"
     fi
     rm "$FILENAME"
+elif [[ "$FILETYPE" == *"Debian binary package"* ]]; then
+    echo "Detected: Debian binary package (.deb)"
+    echo "Keeping file as-is for binary_package extraction"
+    # Don't extract - binary_package will use ar to extract
+elif [[ "$FILETYPE" == *"POSIX shell script"* ]] || [[ "$FILETYPE" == *"shell script"* ]] || [[ "$FILENAME" == *.run ]]; then
+    echo "Detected: Self-extracting shell script (.run)"
+    echo "Keeping file as-is for binary_package extraction"
+    # Don't extract - binary_package install_script will handle extraction (e.g., NVIDIA drivers)
 elif [[ "$FILETYPE" == *"HTML"* ]]; then
     echo "Error: Downloaded file appears to be HTML, not an archive!" >&2
     echo "File type: $FILETYPE" >&2
@@ -247,16 +279,32 @@ elif [[ "$FILETYPE" == *"ASCII text"* ]] || [[ "$FILETYPE" == *"C source"* ]] ||
         exit 1
     fi
 else
-    # Fallback: try tar with auto-detect
+    # Fallback: try to detect by filename extension or try unzip for .zip files
     echo "Unknown file type: $FILETYPE"
-    echo "Attempting tar with auto-compression detection..."
-    if tar xaf "$FILENAME" --strip-components=1 --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' 2>/dev/null; then
-        echo "Successfully extracted with tar auto-detect"
-        rm "$FILENAME"
+    if [[ "$FILENAME" == *.zip ]]; then
+        echo "Attempting unzip based on filename extension..."
+        if unzip -q "$FILENAME" 2>/dev/null; then
+            # For zip files, find the top-level dir and move contents up
+            if [ $(ls -1 | wc -l) -eq 1 ] && [ -d "$(ls -1)" ]; then
+                mv "$(ls -1)"/* . && rmdir "$(ls -1)"
+            fi
+            echo "Successfully extracted with unzip"
+            rm "$FILENAME"
+        else
+            echo "Error: Could not extract zip archive" >&2
+            echo "File type: $FILETYPE" >&2
+            exit 1
+        fi
     else
-        echo "Error: Could not extract archive" >&2
-        echo "File type: $FILETYPE" >&2
-        exit 1
+        echo "Attempting tar with auto-compression detection..."
+        if tar xaf "$FILENAME" --strip-components=$STRIP_COMPONENTS --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' 2>/dev/null; then
+            echo "Successfully extracted with tar auto-detect"
+            rm "$FILENAME"
+        else
+            echo "Error: Could not extract archive" >&2
+            echo "File type: $FILETYPE" >&2
+            exit 1
+        fi
     fi
 fi
 """,
@@ -268,12 +316,13 @@ fi
             script,
             out_dir.as_output(),
             ctx.attrs.src_uri,
-            ctx.attrs.sha256,
+            sha256_checksums,
             sig_uri,
             gpg_key,
             gpg_keyring,
             auto_detect,
             exclude_args,
+            str(strip_components),
         ]),
         category = "download",
         identifier = ctx.attrs.name,
@@ -285,12 +334,13 @@ download_source = rule(
     impl = _download_source_impl,
     attrs = {
         "src_uri": attrs.string(),
-        "sha256": attrs.string(),
+        "sha256": attrs.one_of(attrs.string(), attrs.list(attrs.string())),
         "signature_uri": attrs.option(attrs.string(), default = None),
         "gpg_key": attrs.option(attrs.string(), default = None),
         "gpg_keyring": attrs.option(attrs.string(), default = None),
         "auto_detect_signature": attrs.bool(default = True),
         "exclude_patterns": attrs.list(attrs.string(), default = []),
+        "strip_components": attrs.int(default = 1),
     },
 )
 
@@ -463,7 +513,8 @@ else
 fi
 
 # Build kernel
-make -j$(nproc)
+# Disable -Werror for GCC 15+ which has stricter warnings that older kernel code doesn't satisfy
+make -j$(nproc) WERROR=0
 
 # Install
 make install
@@ -573,6 +624,9 @@ PYTHON_LIB64=""
 echo "=== binary_package dependency setup for {name} ==="
 echo "Processing $# dependency directories..."
 
+# Store all dependency base directories for packages that need them (e.g., GCC)
+export DEP_BASE_DIRS=""
+
 for dep_dir in "$@"; do
     # Convert to absolute path if relative
     if [[ "$dep_dir" != /* ]]; then
@@ -580,6 +634,17 @@ for dep_dir in "$@"; do
     fi
 
     echo "  Checking dependency: $dep_dir"
+
+    # Store base directory
+    DEP_BASE_DIRS="${{DEP_BASE_DIRS:+$DEP_BASE_DIRS:}}$dep_dir"
+
+    # Check all standard include directories
+    for inc_subdir in usr/include include; do
+        if [ -d "$dep_dir/$inc_subdir" ]; then
+            DEP_CPATH="${{DEP_CPATH:+$DEP_CPATH:}}$dep_dir/$inc_subdir"
+            echo "    Found include dir: $dep_dir/$inc_subdir"
+        fi
+    done
 
     # Check all standard bin directories
     for bin_subdir in usr/bin bin usr/sbin sbin; do
@@ -630,8 +695,19 @@ if [ -n "$DEP_PATH" ]; then
 fi
 if [ -n "$DEP_LD_PATH" ]; then
     export LD_LIBRARY_PATH="$DEP_LD_PATH${{LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}}"
+    export LIBRARY_PATH="$DEP_LD_PATH${{LIBRARY_PATH:+:$LIBRARY_PATH}}"
     echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
+    echo "LIBRARY_PATH=$LIBRARY_PATH"
 fi
+# Set CPATH for C/C++ include paths
+if [ -n "$DEP_CPATH" ]; then
+    export CPATH="$DEP_CPATH${{CPATH:+:$CPATH}}"
+    export C_INCLUDE_PATH="$DEP_CPATH${{C_INCLUDE_PATH:+:$C_INCLUDE_PATH}}"
+    export CPLUS_INCLUDE_PATH="$DEP_CPATH${{CPLUS_INCLUDE_PATH:+:$CPLUS_INCLUDE_PATH}}"
+    echo "CPATH=$CPATH"
+fi
+# Export DEP_BASE_DIRS for packages that need direct access to dependency prefixes
+echo "DEP_BASE_DIRS=$DEP_BASE_DIRS"
 if [ -n "$PYTHON_HOME" ]; then
     export PYTHONHOME="$PYTHON_HOME"
     echo "PYTHONHOME=$PYTHONHOME"

@@ -33,9 +33,9 @@ DESTDIR=$OUT meson install
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/graphics/lcms2:lcms2",
     ],
-    build_deps = [
-        "//packages/linux/system/libs/gobject-introspection:gobject-introspection",
-        "//packages/linux/core/vala:vala",
+    bdepend = [
+        "//packages/linux/desktop/gnome/libs:gobject-introspection",
+        "//packages/linux/lang/vala:vala",
     ],
     visibility = ["PUBLIC"],
 )

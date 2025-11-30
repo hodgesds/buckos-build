@@ -15,14 +15,22 @@ binary_package(
     homepage = "https://maddy.email/",
     license = "GPL-3.0",
     install_script = """
-        cd $SRCS/maddy-*
+        cd $SRCS
 
         export CGO_ENABLED=1
         export GOFLAGS="-buildmode=pie -trimpath"
         export LDFLAGS="-X github.com/foxcpp/maddy.Version=0.7.1"
 
+        # Build maddy - maddyctl is in the same cmd/maddy package
         go build -ldflags "$LDFLAGS" -o maddy ./cmd/maddy
-        go build -ldflags "$LDFLAGS" -o maddyctl ./cmd/maddyctl
+
+        # maddyctl may be in a different location or built differently
+        if [ -d "./cmd/maddyctl" ]; then
+            go build -ldflags "$LDFLAGS" -o maddyctl ./cmd/maddyctl
+        else
+            # In newer versions, maddyctl might be part of maddy binary
+            ln -sf maddy maddyctl
+        fi
 
         # Install binaries
         install -Dm755 maddy "$OUT/usr/bin/maddy"

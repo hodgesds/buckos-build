@@ -24,38 +24,48 @@ binary_package(
     homepage = "https://www.nvidia.com/",
     license = "NVIDIA",
     install_script = """
-# Extract NVIDIA driver
-chmod +x NVIDIA-Linux-x86_64-*.run
-./NVIDIA-Linux-x86_64-*.run --extract-only
+cd $SRCS
+# The .run file needs to be found and made executable
+RUN_FILE=$(find . -name "*.run" 2>/dev/null | head -1)
+if [ -z "$RUN_FILE" ]; then
+    echo "Error: NVIDIA .run file not found" >&2
+    ls -la
+    exit 1
+fi
+chmod +x "$RUN_FILE"
+"$RUN_FILE" --extract-only
+
+# Find extracted directory
+NVIDIA_DIR=$(find . -maxdepth 1 -type d -name "NVIDIA-Linux-x86_64-*" | head -1)
 
 # Install kernel modules
-mkdir -p "$DESTDIR/usr/lib/modules"
-cp -r NVIDIA-Linux-x86_64-*/kernel "$DESTDIR/usr/lib/nvidia-modules"
+mkdir -p "$OUT/usr/lib/modules"
+cp -r "$NVIDIA_DIR/kernel" "$OUT/usr/lib/nvidia-modules"
 
 # Install libraries
-mkdir -p "$DESTDIR/usr/lib64"
-cp -a NVIDIA-Linux-x86_64-*/lib*.so* "$DESTDIR/usr/lib64/"
+mkdir -p "$OUT/usr/lib64"
+cp -a "$NVIDIA_DIR"/lib*.so* "$OUT/usr/lib64/"
 
 # Install binaries
-mkdir -p "$DESTDIR/usr/bin"
-install -m 755 NVIDIA-Linux-x86_64-*/nvidia-smi "$DESTDIR/usr/bin/"
-install -m 755 NVIDIA-Linux-x86_64-*/nvidia-settings "$DESTDIR/usr/bin/"
-install -m 755 NVIDIA-Linux-x86_64-*/nvidia-xconfig "$DESTDIR/usr/bin/"
+mkdir -p "$OUT/usr/bin"
+install -m 755 "$NVIDIA_DIR/nvidia-smi" "$OUT/usr/bin/"
+install -m 755 "$NVIDIA_DIR/nvidia-settings" "$OUT/usr/bin/"
+install -m 755 "$NVIDIA_DIR/nvidia-xconfig" "$OUT/usr/bin/"
 
 # Install Vulkan ICD
-mkdir -p "$DESTDIR/usr/share/vulkan/icd.d"
-cp NVIDIA-Linux-x86_64-*/nvidia_icd.json "$DESTDIR/usr/share/vulkan/icd.d/"
+mkdir -p "$OUT/usr/share/vulkan/icd.d"
+cp "$NVIDIA_DIR/nvidia_icd.json" "$OUT/usr/share/vulkan/icd.d/"
 
 # Create modprobe configuration
-mkdir -p "$DESTDIR/etc/modprobe.d"
-cat > "$DESTDIR/etc/modprobe.d/nvidia.conf" << 'EOF'
+mkdir -p "$OUT/etc/modprobe.d"
+cat > "$OUT/etc/modprobe.d/nvidia.conf" << 'EOF'
 # Enable DRM kernel mode setting
 options nvidia-drm modeset=1
 EOF
 
 # Create udev rules
-mkdir -p "$DESTDIR/etc/udev/rules.d"
-cat > "$DESTDIR/etc/udev/rules.d/70-nvidia.rules" << 'EOF'
+mkdir -p "$OUT/etc/udev/rules.d"
+cat > "$OUT/etc/udev/rules.d/70-nvidia.rules" << 'EOF'
 # Create nvidia device nodes
 KERNEL=="nvidia", RUN+="/usr/bin/bash -c '/usr/bin/mknod -m 666 /dev/nvidiactl c $(grep nvidia-frontend /proc/devices | cut -d \\  -f 1) 255'"
 KERNEL=="nvidia", RUN+="/usr/bin/bash -c 'for i in $(seq 0 $(/usr/bin/nvidia-smi -L | wc -l)); do /usr/bin/mknod -m 666 /dev/nvidia$i c $(grep nvidia-frontend /proc/devices | cut -d \\  -f 1) $i; done'"

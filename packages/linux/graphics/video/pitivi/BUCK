@@ -5,9 +5,9 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 meson_package(
     name = "pitivi",
-    version = "2023.03",
-    src_uri = "https://gitlab.gnome.org/GNOME/pitivi/-/archive/2023.03/pitivi-2023.03.tar.bz2",
-    sha256 = "6b70dd2f6c347d448c2d6140fdb70429d17135e6713ea6c095df1b34e4010e6a",
+    version = "2023.03.0",
+    src_uri = "https://github.com/GNOME/pitivi/archive/refs/tags/2023.03.0.tar.gz",
+    sha256 = "312cb3c071abf7d6c211986242595cb2a37dc3d45524923de052706357c48129",
     auto_detect_signature = False,
     description = "Free video editor with a beautiful and intuitive interface",
     homepage = "https://pitivi.org/",

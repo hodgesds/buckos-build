@@ -28,8 +28,8 @@ make DESTDIR=$OUT install
         "//packages/linux/system/libs/data/json-c:json-c",
         "//packages/linux/graphics/utilities/gegl:gegl",
     ],
-    build_deps = [
-        "//packages/linux/system/libs/gobject-introspection:gobject-introspection",
+    bdepend = [
+        "//packages/linux/desktop/gnome/libs:gobject-introspection",
     ],
     visibility = ["PUBLIC"],
 )

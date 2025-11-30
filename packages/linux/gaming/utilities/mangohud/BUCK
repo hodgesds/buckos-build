@@ -67,7 +67,7 @@ EOF
     deps = [
         "//packages/linux/gaming/libraries/vulkan-tools:vulkan-tools",
     ],
-    build_deps = [
+    bdepend = [
         "//packages/linux/lang/python:python",
     ],
     visibility = ["PUBLIC"],

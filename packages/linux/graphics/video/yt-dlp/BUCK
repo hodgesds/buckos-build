@@ -15,6 +15,6 @@ python_package(
         "//packages/linux/graphics/video/ffmpeg:ffmpeg",
         "//packages/linux/lang/python:python",
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

@@ -46,6 +46,6 @@ DESTDIR=$OUT meson install
     deps = [
         "//packages/linux/core/util-linux:util-linux",
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

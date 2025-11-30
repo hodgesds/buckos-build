@@ -36,14 +36,14 @@ cmake_package(
 # gpu-burn - GPU stress testing
 download_source(
     name = "gpu-burn-src",
-    src_uri = "https://github.com/wilicc/gpu-burn/archive/refs/tags/1.1.tar.gz",
-    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
+    src_uri = "https://github.com/wilicc/gpu-burn/archive/refs/heads/master.tar.gz",
+    sha256 = "3d2e53753c8917c99f09bf40ab1141667775d5a1cc073ccad9039c3bbeb2a445",
 )
 
 ebuild_package(
     name = "gpu-burn",
     source = ":gpu-burn-src",
-    version = "1.1",
+    version = "master",
     description = "GPU stress testing and burn-in tool",
     homepage = "https://github.com/wilicc/gpu-burn",
     license = "BSD-2-Clause",

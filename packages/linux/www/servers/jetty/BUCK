@@ -22,17 +22,17 @@ binary_package(
     homepage = "https://www.eclipse.org/jetty",
     license = "Apache-2.0",
     install_script = """
-        cd $SRCS/jetty-home-*
+        cd $SRCS
         mkdir -p "$OUT/usr/share/jetty"
         cp -r * "$OUT/usr/share/jetty/"
         mkdir -p "$OUT/usr/bin"
         ln -s /usr/share/jetty/bin/jetty.sh "$OUT/usr/bin/jetty"
     """,
-    deps = use_dep(
-        {
-            "java": ["//packages/linux/lang/openjdk:openjdk"],
-        },
-        ["java"],
-    ),
+    # deps = use_dep(
+    #     {
+    #         "java": ["//packages/linux/lang/openjdk:openjdk"],  # TODO: not packaged yet
+    #     },
+    #     ["java"],
+    # ),
     visibility = ["PUBLIC"],
 )

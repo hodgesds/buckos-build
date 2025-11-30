@@ -9,8 +9,8 @@ load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 download_source(
     name = "tomcat-src",
-    src_uri = "https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.19/bin/apache-tomcat-10.1.19.tar.gz",
-    sha256 = "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880",
+    src_uri = "https://archive.apache.org/dist/tomcat/tomcat-10/v10.1.19/bin/apache-tomcat-10.1.19.tar.gz",
+    sha256 = "c3ea69d92bcfc3ed792a8d80794acdb856f1c05d8a045e17a71a2588a0c750b7",
     auto_detect_signature = False,
 )
 
@@ -22,17 +22,17 @@ binary_package(
     homepage = "https://tomcat.apache.org",
     license = "Apache-2.0",
     install_script = """
-        cd $SRCS/apache-tomcat-*
+        cd $SRCS
         mkdir -p "$OUT/usr/share/tomcat"
         cp -r * "$OUT/usr/share/tomcat/"
         mkdir -p "$OUT/usr/bin"
         ln -s /usr/share/tomcat/bin/catalina.sh "$OUT/usr/bin/catalina"
     """,
-    deps = use_dep(
-        {
-            "java": ["//packages/linux/lang/openjdk:openjdk"],
-        },
-        ["java"],
-    ),
+    # deps = use_dep(
+    #     {
+    #         "java": ["//packages/linux/lang/openjdk:openjdk"],  # TODO: not packaged yet
+    #     },
+    #     ["java"],
+    # ),
     visibility = ["PUBLIC"],
 )

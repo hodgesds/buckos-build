@@ -19,7 +19,7 @@ binary_package(
     homepage = "https://nim-lang.org/",
     license = "MIT",
     install_script = """
-        cd $SRCS/nim-2.0.2
+        cd $SRCS
 
         # Build Nim
         sh build.sh

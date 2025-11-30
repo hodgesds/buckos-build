@@ -24,7 +24,7 @@ autotools_package(
         "prefix=/usr",
     ],
     deps = [
-        "//packages/linux/system/libs/ncurses:ncurses",
+        "//packages/linux/core/ncurses:ncurses",
     ],
     visibility = ["PUBLIC"],
 )

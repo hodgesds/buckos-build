@@ -3,14 +3,15 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "dia-src",
-    src_uri = "https://gitlab.gnome.org/GNOME/dia/-/archive/0.97.3/dia-0.97.3.tar.gz",
-    sha256 = "6b70dd2f6c347d448c2d6140fdb70429d17135e6713ea6c095df1b34e4010e6a",
+    src_uri = "https://github.com/GNOME/dia/archive/refs/tags/DIA_0_97_2.tar.gz",
+    sha256 = "13437d52f2c5cfdae7ecde8bd5ed0a53a388b0331698236d0ec63453b8a13016",
+    auto_detect_signature = False,
 )
 
 autotools_package(
     name = "dia",
     source = ":dia-src",
-    version = "0.97.3",
+    version = "0.97.2",
     description = "Diagram creation program for GNOME",
     homepage = "https://wiki.gnome.org/Apps/Dia",
     license = "GPL-2.0-or-later",
@@ -30,11 +31,11 @@ DESTDIR=$OUT meson install
 """,
     deps = [
         "//packages/linux/desktop/gtk:gtk3",
-        "//packages/linux/dev-libs/libxml2:libxml2",
+        "//packages/linux/system/libs/data/libxml2:libxml2",
         "//packages/linux/system/libs/graphics/cairo:cairo",
-        "//packages/linux/system/libs/graphics/pango:pango",
-        "//packages/linux/core/graphene:graphene",
+        "//packages/linux/fonts/libraries/pango:pango",
+        # "//packages/linux/core/graphene:graphene",  # TODO: not packaged yet
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

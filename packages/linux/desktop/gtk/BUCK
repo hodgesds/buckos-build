@@ -104,7 +104,7 @@ autotools_package(
     use_deps = {
         "X": ["//packages/linux/desktop/xorg-server:libx11"],
         "wayland": ["//packages/linux/desktop/wayland:wayland"],
-        "vulkan": ["//packages/linux/gaming/libraries/vulkan-loader:vulkan-loader"],
+        "vulkan": ["//packages/linux/gaming/libraries/vulkan-tools:vulkan-loader"],
         "gstreamer": ["//packages/linux/graphics/video/gstreamer:gstreamer"],
         "colord": ["//packages/linux/system/color/colord:colord"],
         "cups": ["//packages/linux/system/printing/cups:cups"],

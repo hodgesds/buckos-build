@@ -8,8 +8,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 autotools_package(
     name = "net-tools",
     version = "2.10",
-    src_uri = "https://sourceforge.net/projects/net-tools/files/net-tools-2.10.tar.xz/download",
-    sha256 = "b262435a5241e89bfa51c3cabd5133753952f7a7b7b93f32e08cb9d96f580d69",
+    src_uri = "https://github.com/ecki/net-tools/archive/refs/tags/v2.10.tar.gz",
+    sha256 = "8e186f65f0ff304989b3dc8b0067c3a07d36ae777da60667bdd6ccb2730908d2",
 
     iuse = ["nls", "ipv6"],
     use_defaults = ["ipv6"],

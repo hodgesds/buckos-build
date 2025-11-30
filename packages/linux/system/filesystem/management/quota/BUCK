@@ -3,8 +3,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "quota-src",
-    src_uri = "https://sourceforge.net/projects/linuxquota/files/quota-tools/4.09/quota-4.09.tar.gz",
-    sha256 = "9cdaca154bc92afc3117f0e5f5b3208dd5f84583af1cf061c39baa0a2bb142f9",
+    src_uri = "https://github.com/sailfishos-mirror/quota/archive/refs/tags/v4.09.tar.gz",
+    sha256 = "68d92d545731799b207a663c15253ba8237c02f67096f8680ae70cdcd1bd449b",
 )
 
 autotools_package(
@@ -12,7 +12,7 @@ autotools_package(
     source = ":quota-src",
     version = "4.09",
     description = "Disk quota management tools",
-    homepage = "https://sourceforge.net/projects/linuxquota/",
+    homepage = "https://github.com/sailfishos-mirror/quota",
     license = "GPL-2.0",
     configure_args = [
         "--disable-ldapmail",

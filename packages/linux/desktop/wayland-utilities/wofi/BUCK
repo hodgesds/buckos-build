@@ -3,8 +3,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "wofi-src",
-    src_uri = "https://hg.sr.ht/~scoopta/wofi/archive/v1.4.1.tar.gz",
-    sha256 = "e95e35c03551c39178c16ad6213a88e3883a236e942d7f2666c780d934c270bb",
+    src_uri = "https://github.com/SimplyCEO/wofi/archive/refs/tags/v1.4.1.tar.gz",
+    sha256 = "815da56e9085e336bb31fbe7137f7db7a6c95db57274a93f6eeea995dee62656",
 )
 
 autotools_package(

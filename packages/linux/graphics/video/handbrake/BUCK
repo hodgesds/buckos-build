@@ -6,7 +6,7 @@ load("//defs:use_flags.bzl", "set_use_flags")
 download_source(
     name = "handbrake-src",
     src_uri = "https://github.com/HandBrake/HandBrake/releases/download/1.8.0/HandBrake-1.8.0-source.tar.bz2",
-    sha256 = "301df65c39c9b095534e277bfaee2e0c1c34da8cd077480c70664d12e2cf5bbc",
+    sha256 = "8b1df7d6aa7aa3c2e12978f3473e301c4b60b4fedc749b75aa6f310b80310cef",
 )
 
 autotools_package(
@@ -47,11 +47,11 @@ DESTDIR=$OUT make install
         "//packages/linux/desktop/gtk:gtk4",
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/data/jansson:jansson",
-        "//packages/linux/core/numactl:numactl",
+        # "//packages/linux/core/numactl:numactl",  # TODO: not packaged yet
     ],
-    build_deps = [
+    bdepend = [
         "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
-        "//packages/linux/lang/nasm:nasm",
+        # "//packages/linux/lang/nasm:nasm",  # TODO: not packaged yet,
         "//packages/linux/lang/python:python",
     ],
     visibility = ["PUBLIC"],

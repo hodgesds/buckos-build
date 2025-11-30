@@ -4,8 +4,9 @@ load("//defs:use_flags.bzl", "set_use_flags")
 autotools_package(
     name = "wireguard-tools",
     version = "1.0.20210914",
-    src_uri = "https://git.zx2c4.com/wireguard-tools/snapshot/wireguard-tools-1.0.20210914.tar.xz",
-    sha256 = "97ff31489217bb265b7ae850d3d0f335ab07d2652ba1feec88b734bc96bd05ac",
+    src_uri = "https://github.com/WireGuard/wireguard-tools/archive/refs/tags/v1.0.20210914.tar.gz",
+    sha256 = "acb8517eed8f352bbf0758a70573c665521a4300d0c4865afebd6b643738c640",
+    auto_detect_signature = False,
 
     iuse = ["bash-completion", "systemd"],
     use_defaults = ["bash-completion", "systemd"],

@@ -5,8 +5,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "dvdauthor-src",
-    src_uri = "https://github.com/ldo/dvdauthor/releases/download/dvdauthor-0.7.2/dvdauthor-0.7.2.tar.gz",
-    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+    src_uri = "https://github.com/ldo/dvdauthor/archive/refs/tags/0.7.2.tar.gz",
+    sha256 = "fd66b92f6c67bd406030ff0f1c3233175768b534df4d341c3f380ecd61de91b5",
 )
 
 autotools_package(
@@ -14,7 +14,7 @@ autotools_package(
     source = ":dvdauthor-src",
     version = "0.7.2",
     description = "Tools for generating DVD files",
-    homepage = "https://dvdauthor.sourceforge.net/",
+    homepage = "https://github.com/ldo/dvdauthor",
     license = "GPL-2.0-or-later",
     configure_args = [
         "--prefix=/usr",
@@ -24,12 +24,12 @@ autotools_package(
 DESTDIR=$OUT make install
 """,
     deps = [
-        "//packages/linux/dev-libs/libxml2:libxml2",
+        "//packages/linux/system/libs/data/libxml2:libxml2",
         "//packages/linux/graphics/utilities/imagemagick:imagemagick",
         "//packages/linux/fonts/libraries/freetype:freetype",
         "//packages/linux/system/libs/font/fribidi:fribidi",
     ],
-    build_deps = [
+    bdepend = [
         "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
     ],
     visibility = ["PUBLIC"],

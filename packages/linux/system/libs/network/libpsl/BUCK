@@ -1,7 +1,7 @@
-load("//defs:package_defs.bzl", "meson_package", "autotools_package")
+load("//defs:package_defs.bzl", "meson_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
-autotools_package(
+meson_package(
     name = "libpsl",
     version = "0.21.5",
     src_uri = "https://github.com/rockdaboot/libpsl/releases/download/0.21.5/libpsl-0.21.5.tar.gz",
@@ -20,14 +20,8 @@ autotools_package(
     iuse = ["static-libs", "builtin", "idn", "icu"],
     use_defaults = ["builtin"],
 
-    build_system = "meson",
-
-    use_meson = {
-        "builtin": "-Dbuiltin=true",
-        "-builtin": "-Dbuiltin=false",
-        "idn": "-Druntime=libidn2",
-        "icu": "-Druntime=libicu",
-        "-idn": "-Druntime=no",
+    use_options = {
+        "builtin": "builtin",
     },
 
     use_deps = {

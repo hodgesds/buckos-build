@@ -14,18 +14,19 @@ binary_package(
     homepage = "https://dnscrypt.info/",
     license = "ISC",
     install_script = """
-install -Dm755 dnscrypt-proxy "$DESTDIR/usr/bin/dnscrypt-proxy"
+cd $SRCS
+install -Dm755 dnscrypt-proxy "$OUT/usr/bin/dnscrypt-proxy"
 
 # Install default configuration
-mkdir -p "$DESTDIR/etc/dnscrypt-proxy"
+mkdir -p "$OUT/etc/dnscrypt-proxy"
 if [ -f example-dnscrypt-proxy.toml ]; then
-    install -Dm644 example-dnscrypt-proxy.toml "$DESTDIR/etc/dnscrypt-proxy/dnscrypt-proxy.toml"
+    install -Dm644 example-dnscrypt-proxy.toml "$OUT/etc/dnscrypt-proxy/dnscrypt-proxy.toml"
 fi
 
 # Install blocklist and other example files
 for f in *.txt *.md; do
     if [ -f "$f" ]; then
-        install -Dm644 "$f" "$DESTDIR/usr/share/dnscrypt-proxy/$f"
+        install -Dm644 "$f" "$OUT/usr/share/dnscrypt-proxy/$f"
     fi
 done
 """,

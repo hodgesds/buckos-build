@@ -2,43 +2,28 @@ load("//defs:package_defs.bzl", "download_source", "autotools_package", "binary_
 load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # =============================================================================
-# Go - Open source programming language
+# Go - Open source programming language (pre-built binary)
 # =============================================================================
 
 download_source(
-    name = "go-bootstrap-src",
-    src_uri = "https://go.dev/dl/go1.21.6.linux-amd64.tar.gz",
-    sha256 = "3f934f40ac360b9c01f616a9aa1796d227d8b0328bf64cb045c7b8c4ee9caea4",
-    auto_detect_signature=False,
-)
-
-download_source(
     name = "go-src",
-    src_uri = "https://go.dev/dl/go1.22.0.src.tar.gz",
-    sha256 = "4d196c3d41a0d6c1dfc64d04e3cc1f608b0c436bd87b7060ce3e23234e1f4d5c",
+    src_uri = "https://go.dev/dl/go1.22.0.linux-amd64.tar.gz",
+    sha256 = "f6c8a87aa03b92c4b0bf3d558e28ea03006eb29db78917daec5cfb6ec1046265",
     auto_detect_signature=False,
 )
 
 binary_package(
     name = "go",
-    srcs = [":go-src", ":go-bootstrap-src"],
+    srcs = [":go-src"],
     version = "1.22.0",
     description = "Go is an open source programming language that makes it easy to build simple, reliable, and efficient software",
     homepage = "https://go.dev/",
     license = "BSD-3-Clause",
     install_script = """
-        # Setup bootstrap Go
-        mkdir -p $WORK/bootstrap
-        tar -xzf $SRCS/go1.21.6.linux-amd64.tar.gz -C $WORK/bootstrap --strip-components=1
-        export GOROOT_BOOTSTRAP=$WORK/bootstrap
-
-        # Build Go from source
-        cd $SRCS/go/src
-        ./make.bash
-
-        # Install
+        # Install pre-built Go
         mkdir -p $OUT/usr/local/go
-        cp -r $SRCS/go/* $OUT/usr/local/go/
+        cp -r $SRCS/* $OUT/usr/local/go/
+
         mkdir -p $OUT/usr/bin
         ln -s /usr/local/go/bin/go $OUT/usr/bin/go
         ln -s /usr/local/go/bin/gofmt $OUT/usr/bin/gofmt

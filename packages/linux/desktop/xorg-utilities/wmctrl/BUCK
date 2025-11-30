@@ -3,8 +3,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "wmctrl-src",
-    src_uri = "https://sites.google.com/site/aborber/wmctrl/wmctrl-1.07.tar.gz",
-    sha256 = "14b25caa188856deb40e6e4521cb35398a68e40a13b5fe7232f9992879b9aee8",
+    src_uri = "https://github.com/Conservatory/wmctrl/archive/7c1dcbaa221a16e8a9765bf2b14d61d640a52304.tar.gz",
+    sha256 = "0e51a4ed3c357a37744c383b0b661a9b2f89948436bb1b45842cdfa8b0436223",
 )
 
 autotools_package(

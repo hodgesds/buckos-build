@@ -3,14 +3,14 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "davfs2-src",
-    src_uri = "https://download.savannah.nongnu.org/releases/davfs2/davfs2-1.7.0.tar.gz",
-    sha256 = "251db75a27380cca1330b1b971700c5e5dcc0c90e5a47622285f0140edfe3a2f",
+    src_uri = "https://github.com/alisarctl/davfs2/archive/refs/tags/rel-1-7-2.tar.gz",
+    sha256 = "6511fd787315840ffa8bd365837126a116c854f5f060ac349734bdef7cde07a2",
 )
 
 autotools_package(
     name = "davfs2",
     source = ":davfs2-src",
-    version = "1.7.0",
+    version = "1.7.2",
     description = "WebDAV filesystem driver (mount.davfs)",
     homepage = "https://savannah.nongnu.org/projects/davfs2",
     license = "GPL-3.0",

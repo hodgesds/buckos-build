@@ -4,8 +4,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 # gmp - GNU Multiple Precision Arithmetic Library
 download_source(
     name = "gmp-src",
-    src_uri = "https://gmplib.org/download/gmp/gmp-6.3.0.tar.xz",
-    sha256 = "a3c2b80201b89e68616f4ad30bc66aee4927c3ce50e33929ca819d5c43538898",
+    src_uri = "https://github.com/alisw/GMP/archive/refs/tags/v6.3.0.tar.gz",
+    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
 )
 
 ebuild_package(

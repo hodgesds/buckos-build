@@ -35,10 +35,10 @@ cd Project/GNU/Library
 DESTDIR=$OUT make install
 """,
     deps = [
-        "//packages/linux/system/libs/curl:curl",
+        "//packages/linux/network/curl:curl",
         "//packages/linux/core/zlib:zlib",
     ],
-    build_deps = [
+    bdepend = [
         "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
     ],
     visibility = ["PUBLIC"],
@@ -75,7 +75,7 @@ DESTDIR=$OUT make install
         ":libmediainfo",
         "//packages/linux/core/zlib:zlib",
     ],
-    build_deps = [
+    bdepend = [
         "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
     ],
     visibility = ["PUBLIC"],
@@ -112,9 +112,9 @@ DESTDIR=$OUT make install
 """,
     deps = [
         ":libmediainfo",
-        "//packages/linux/desktop/wxwidgets:wxwidgets",
+        # "//packages/linux/desktop/wxwidgets:wxwidgets",  # TODO: not packaged yet
     ],
-    build_deps = [
+    bdepend = [
         "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
     ],
     visibility = ["PUBLIC"],

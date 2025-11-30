@@ -49,6 +49,6 @@ mkdir -p $OUT/etc/runlevels/sysinit
 """,
     deps = [
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

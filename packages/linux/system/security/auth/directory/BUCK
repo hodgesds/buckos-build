@@ -51,10 +51,11 @@ autotools_package(
 )
 
 # e2fsprogs-libs (for libcom_err, needed by Kerberos)
+# Note: e2fsprogs-libs separate tarball no longer exists; use main e2fsprogs package
 download_source(
     name = "e2fsprogs-libs-src",
-    src_uri = "https://mirrors.edge.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.47.0/e2fsprogs-libs-1.47.0.tar.xz",
-    sha256 = "38bef8cb64da496d6b9f6fc74514c4f785015a7fbd235468f5dde039a77a2fbd",
+    src_uri = "https://mirrors.edge.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.47.0/e2fsprogs-1.47.0.tar.xz",
+    sha256 = "144af53f2bbd921cef6f8bea88bb9faddca865da3fbc657cc9b4d2001097d5db",
     auto_detect_signature=False,
 )
 
@@ -173,8 +174,8 @@ autotools_package(
 # LMDB - Lightning Memory-Mapped Database
 download_source(
     name = "lmdb-src",
-    src_uri = "https://github.com/LMDB/lmdb/archive/refs/tags/LMDB_0.9.32.tar.gz",
-    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
+    src_uri = "https://github.com/openldap/openldap/archive/refs/tags/LMDB_0.9.32.tar.gz",
+    sha256 = "c0937223bba3c37c896809883a3c9b43049354578b239d6ed2476236a87f40c9",
     auto_detect_signature=False,
 )
 

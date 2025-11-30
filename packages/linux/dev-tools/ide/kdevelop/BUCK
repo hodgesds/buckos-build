@@ -6,9 +6,9 @@ load("//defs:package_defs.bzl", "cmake_package")
 
 cmake_package(
     name = "kdevelop",
-    version = "5.12.230801",
-    src_uri = "https://download.kde.org/stable/kdevelop/5.12.230801/src/kdevelop-5.12.230801.tar.xz",
-    sha256 = "e0efff427b2155b09784851fa1645511ffb93629e557e887ec5dacff2fe223a0",
+    version = "24.08.3",
+    src_uri = "https://download.kde.org/stable/release-service/24.08.3/src/kdevelop-24.08.3.tar.xz",
+    sha256 = "a1690c9672e08064510e4d9c422a214b6d11a54cea5656e29c9445701af4cf71",
     description = "KDE integrated development environment",
     homepage = "https://www.kdevelop.org",
     license = "GPL-2+",

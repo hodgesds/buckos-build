@@ -72,8 +72,8 @@ filegroup(
     name = "firewall-packages",
     srcs = [
         "//packages/linux/network/firewall/nftables:nftables",
-        "//packages/linux/network/firewall/nftables:libnftnl",
-        "//packages/linux/network/firewall/nftables:libmnl",
+        "//packages/linux/network/firewall/nftables:nftables",
+        "//packages/linux/network/firewall/nftables:nftables",
         "//packages/linux/system/security/fail2ban:fail2ban",
     ],
     visibility = ["PUBLIC"],
@@ -391,7 +391,7 @@ alias(
 
 alias(
     name = "shadow",
-    actual = "//packages/linux/system/security/auth:shadow",
+    actual = "//packages/linux/system/security/auth/core:shadow",
     visibility = ["PUBLIC"],
 )
 
@@ -409,79 +409,79 @@ alias(
 
 alias(
     name = "polkit",
-    actual = "//packages/linux/system/security/auth:polkit",
+    actual = "//packages/linux/system/security/auth/privilege:polkit",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "krb5",
-    actual = "//packages/linux/system/security/auth:krb5",
+    actual = "//packages/linux/system/security/auth/directory:krb5",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "kerberos",
-    actual = "//packages/linux/system/security/auth:krb5",
+    actual = "//packages/linux/system/security/auth/directory:krb5",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "openldap",
-    actual = "//packages/linux/system/security/auth:openldap",
+    actual = "//packages/linux/system/security/auth/directory:openldap",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "sssd",
-    actual = "//packages/linux/system/security/auth:sssd",
+    actual = "//packages/linux/system/security/auth/directory:sssd",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "cyrus-sasl",
-    actual = "//packages/linux/system/security/auth:cyrus-sasl",
+    actual = "//packages/linux/system/security/auth/directory:cyrus-sasl",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "oath-toolkit",
-    actual = "//packages/linux/system/security/auth:oath-toolkit",
+    actual = "//packages/linux/system/security/auth/mfa:oath-toolkit",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "google-authenticator",
-    actual = "//packages/linux/system/security/auth:google-authenticator",
+    actual = "//packages/linux/system/security/auth/mfa:google-authenticator",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "libfido2",
-    actual = "//packages/linux/system/security/auth:libfido2",
+    actual = "//packages/linux/system/security/auth/mfa:libfido2",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "pam-u2f",
-    actual = "//packages/linux/system/security/auth:pam-u2f",
+    actual = "//packages/linux/system/security/auth/mfa:pam-u2f",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "yubico-pam",
-    actual = "//packages/linux/system/security/auth:yubico-pam",
+    actual = "//packages/linux/system/security/auth/mfa:yubico-pam",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "yubikey-manager",
-    actual = "//packages/linux/system/security/auth:yubikey-manager",
+    actual = "//packages/linux/system/security/auth/mfa:yubikey-manager",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "libpwquality",
-    actual = "//packages/linux/system/security/auth:libpwquality",
+    actual = "//packages/linux/system/security/auth/password:libpwquality",
     visibility = ["PUBLIC"],
 )
 
@@ -493,30 +493,30 @@ alias(
 
 alias(
     name = "fprintd",
-    actual = "//packages/linux/system/security/auth:fprintd",
+    actual = "//packages/linux/system/security/auth/biometric:fprintd",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "libfprint",
-    actual = "//packages/linux/system/security/auth:libfprint",
+    actual = "//packages/linux/system/security/auth/biometric:libfprint",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "pam-radius",
-    actual = "//packages/linux/system/security/auth:pam-radius",
+    actual = "//packages/linux/system/security/auth/network:pam-radius",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "pam-tacplus",
-    actual = "//packages/linux/system/security/auth:pam-tacplus",
+    actual = "//packages/linux/system/security/auth/network:pam-tacplus",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "nss-pam-ldapd",
-    actual = "//packages/linux/system/security/auth:nss-pam-ldapd",
+    actual = "//packages/linux/system/security/auth/directory:nss-pam-ldapd",
     visibility = ["PUBLIC"],
 )

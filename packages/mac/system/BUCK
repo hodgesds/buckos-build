@@ -7,5 +7,6 @@ filegroup(
         "//packages/mac/system/tree:tree",
         "//packages/mac/system/jq:jq",
     ],
+    default_target_platform = "//platforms:macos-target",
     visibility = ["PUBLIC"],
 )

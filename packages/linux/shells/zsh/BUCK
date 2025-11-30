@@ -4,8 +4,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 autotools_package(
     name = "zsh",
     version = "5.9",
-    src_uri = "https://sourceforge.net/projects/zsh/files/zsh/5.9/zsh-5.9.tar.xz",
-    sha256 = "9b8d1ecedd5b5e81fbf1918e876752a7dd948e05c1a0dba10ab863842d45acd5",
+    src_uri = "https://github.com/zsh-users/zsh/archive/refs/tags/zsh-5.9.tar.gz",
+    sha256 = "11ea641122396836441375f41f6cb2954890546857936b734ccad353ab62bf88",
     auto_detect_signature = False,
     description = "A very advanced and programmable command interpreter (shell)",
     homepage = "https://www.zsh.org/",

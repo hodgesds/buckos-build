@@ -14,20 +14,40 @@ binary_package(
     homepage = "https://github.com/bpftrace/bpftrace",
     license = "Apache-2.0",
     install_script = """
-        cd $SRCS/bpftrace-*
+        cd $SRCS
+
+        # Find dependencies in dep paths
+        ZLIB_LIB=""
+        ZLIB_INC=""
+        LIBBPF_A=""
+        LIBBPF_INC=""
+        for dep in $DEPS; do
+            if [ -f "$dep/usr/lib/libz.so" ]; then
+                ZLIB_LIB="$dep/usr/lib/libz.so"
+                ZLIB_INC="$dep/usr/include"
+            elif [ -f "$dep/usr/lib64/libz.so" ]; then
+                ZLIB_LIB="$dep/usr/lib64/libz.so"
+                ZLIB_INC="$dep/usr/include"
+            fi
+            if [ -f "$dep/usr/lib/libbpf.a" ]; then
+                LIBBPF_A="$dep/usr/lib/libbpf.a"
+                LIBBPF_INC="$dep/usr/include"
+            fi
+        done
 
         # Create build directory
         mkdir -p build && cd build
 
-        # Configure with CMake
-        cmake .. \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_INSTALL_PREFIX=/usr \
-            -DSTATIC_LINKING=ON \
-            -DBUILD_TESTING=OFF \
-            -DCMAKE_PREFIX_PATH=$DEPS/usr \
-            -DLIBBPF_INCLUDE_DIRS=$DEPS/usr/include \
-            -DLIBBPF_LIBRARIES=$DEPS/usr/lib/libbpf.a
+        # Configure with CMake - use dynamic linking to avoid issues
+        CMAKE_OPTS="-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_TESTING=OFF"
+        if [ -n "$ZLIB_LIB" ]; then
+            CMAKE_OPTS="$CMAKE_OPTS -DZLIB_LIBRARY=$ZLIB_LIB -DZLIB_INCLUDE_DIR=$ZLIB_INC"
+        fi
+        if [ -n "$LIBBPF_A" ]; then
+            CMAKE_OPTS="$CMAKE_OPTS -DLIBBPF_INCLUDE_DIRS=$LIBBPF_INC -DLIBBPF_LIBRARIES=$LIBBPF_A"
+        fi
+
+        cmake .. $CMAKE_OPTS
 
         # Build
         make -j$(nproc)

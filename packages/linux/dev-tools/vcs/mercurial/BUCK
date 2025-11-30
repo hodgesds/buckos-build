@@ -5,7 +5,8 @@ autotools_package(
     name = "mercurial",
     version = "6.6",
     src_uri = "https://www.mercurial-scm.org/release/mercurial-6.6.tar.gz",
-    sha256 = "6b8e78c71915cd61db64a02f397b506d7a5496aa33e5b342783959ead0114514",
+    sha256 = "6bfd71cba0df3b18de424216b30e2a541cca6e0104853d3334be80a2ab09a4ad",
+    auto_detect_signature = False,
     description = "Scalable distributed SCM tool",
     homepage = "https://www.mercurial-scm.org/",
     license = "GPL-2+",
@@ -29,7 +30,6 @@ autotools_package(
         "PREFIX=/usr",
         "PYTHON=/usr/bin/python3",
     ],
-    install_target = "install",
     deps = [
         "//packages/linux/lang/python:python",
     ],

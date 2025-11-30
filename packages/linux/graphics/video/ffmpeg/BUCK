@@ -67,7 +67,7 @@ autotools_package(
     use_deps = {
         "vaapi": ["//packages/linux/graphics/video/libva:libva"],
         "vdpau": ["//packages/linux/graphics/video/vdpau:vdpau"],
-        "ssl": ["//packages/linux/system/libs/security/openssl:openssl"],
+        "ssl": ["//packages/linux/network/openssl:openssl"],
     },
     make_args = [],
     post_install = """
@@ -85,9 +85,9 @@ DESTDIR=$OUT make install
         "//packages/linux/audio/libraries/libsndfile:libsndfile",
         "//packages/linux/core/zlib:zlib",
     ],
-    build_deps = [
+    bdepend = [
         "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
-        "//packages/linux/lang/nasm:nasm",
+        # "//packages/linux/lang/nasm:nasm",  # TODO: not packaged yet,
     ],
     visibility = ["PUBLIC"],
 )

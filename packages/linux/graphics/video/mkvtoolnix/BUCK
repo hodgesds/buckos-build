@@ -21,7 +21,7 @@ autotools_package(
         "-debug": "--enable-optimization --disable-debug",
     },
     use_deps = {
-        "gui": ["//packages/linux/desktop/qt:qt6"],
+        "gui": ["//packages/linux/desktop/qt:qt5"],
     },
     configure_args = [
         "--prefix=/usr",
@@ -39,7 +39,7 @@ DESTDIR=$OUT rake install
         "//packages/linux/audio/libraries/flac:flac",
         "//packages/linux/audio/libraries/libvorbis:libvorbis",
     ],
-    build_deps = [
+    bdepend = [
         "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
         "//packages/linux/lang/ruby:ruby",
     ],

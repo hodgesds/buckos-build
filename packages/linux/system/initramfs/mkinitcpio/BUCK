@@ -9,8 +9,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "mkinitcpio-src",
-    src_uri = "https://gitlab.archlinux.org/archlinux/mkinitcpio/mkinitcpio/-/archive/v38/mkinitcpio-v38.tar.gz",
-    sha256 = "2a48b25553a4d661d99904952c0a16419a0a7466f7487bd44397da770558ec7d",
+    src_uri = "https://github.com/archlinux/mkinitcpio/archive/refs/tags/v38.tar.gz",
+    sha256 = "a5a6b6877fda57aaf26b7ebc738ef1dc510d54efb16ede58519b55a1a08028b4",
 )
 
 autotools_package(

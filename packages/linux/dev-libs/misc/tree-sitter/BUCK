@@ -15,8 +15,8 @@ binary_package(
     homepage = "https://tree-sitter.github.io/tree-sitter/",
     license = "MIT",
     install_script = """
-        cd tree-sitter-0.22.6
-        make PREFIX=$PREFIX install
+        cd $SRCS
+        make PREFIX=/usr DESTDIR=$OUT install
     """,
     visibility = ["PUBLIC"],
 )

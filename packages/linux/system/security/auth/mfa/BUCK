@@ -82,7 +82,7 @@ cmake_package(
     ],
     deps = [
         "//packages/linux/system/libs/crypto/openssl:openssl",
-        "//packages/linux/system/libs/hardware/libusb:libusb",
+        "//packages/linux/system/libs/libusb:libusb",
         ":libcbor",
     ],
     visibility = ["PUBLIC"],
@@ -137,8 +137,8 @@ autotools_package(
 # YubiKey Manager
 download_source(
     name = "yubikey-manager-src",
-    src_uri = "https://developers.yubico.com/yubikey-manager/Releases/yubikey-manager-5.4.0.tar.gz",
-    sha256 = "96a2e4b3e1525bcef348f3bd45283d962f9c66f3cb36af3d10b6ec81ca7626a4",
+    src_uri = "https://github.com/Yubico/yubikey-manager/archive/refs/tags/5.4.0.tar.gz",
+    sha256 = "babd34dffbc53445416d1e27e5e5859c95615252f066d0a22cb51653f546af17",
     auto_detect_signature=False,
 )
 

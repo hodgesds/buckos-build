@@ -29,9 +29,9 @@ autotools_package(
         "-Dintrospection=disabled",
     ],
     deps = [
-        "//packages/linux/system/libs/dbus:dbus",
-        "//packages/linux/system/libs/glib:glib",
-        "//packages/linux/system/libs/polkit:polkit",
+        "//packages/linux/system/libs/ipc/dbus:dbus",
+        "//packages/linux/dev-libs/glib:glib",
+        # "//packages/linux/system/libs/polkit:polkit",  # TODO: not packaged yet,
     ],
     visibility = ["PUBLIC"],
 )

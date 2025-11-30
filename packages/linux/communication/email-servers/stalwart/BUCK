@@ -15,10 +15,14 @@ binary_package(
     homepage = "https://stalw.art/",
     license = "AGPL-3.0",
     install_script = """
-        cd $SRCS/mail-server-*
+        cd $SRCS
 
         export CARGO_HOME="$PWD/.cargo"
         export RUSTFLAGS="-C target-feature=-crt-static"
+
+        # Fix for GCC 13+ which requires explicit #include <cstdint> in C++ headers
+        # The bundled RocksDB in librocksdb-sys doesn't have this include
+        export CXXFLAGS="${CXXFLAGS:-} -include cstdint"
 
         cargo build --release --locked
 

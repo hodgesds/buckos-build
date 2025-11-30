@@ -4,23 +4,21 @@ load("//defs:package_defs.bzl", "download_source", "autotools_package", "binary_
 # netcat (OpenBSD variant) - TCP/UDP networking utility
 # =============================================================================
 
-download_source(
-    name = "netcat-src",
-    src_uri = "https://github.com/openbsd/src/archive/refs/tags/OPENBSD_7_4.tar.gz",
-    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
-)
+# Note: Netcat is typically provided by busybox. This package is disabled.
+# The original OpenBSD src archive is too large (~2GB) for practical use.
+# TODO: Consider using ncat from nmap or netcat-openbsd package from Alpine
 
 binary_package(
     name = "netcat",
-    srcs = [":netcat-src"],
-    version = "7.4",
+    srcs = [],
+    version = "placeholder",
     description = "TCP/UDP networking utility (OpenBSD variant)",
     homepage = "https://man.openbsd.org/nc",
     license = "BSD-3-Clause",
     install_script = """
 # Netcat is typically provided by busybox, this is for standalone version
-mkdir -p "$DESTDIR/usr/bin"
-echo "Netcat placeholder - use busybox nc" > "$DESTDIR/usr/bin/nc.note"
+mkdir -p "$OUT/usr/bin"
+echo "Netcat placeholder - use busybox nc" > "$OUT/usr/bin/nc.note"
 """,
     visibility = ["PUBLIC"],
 )

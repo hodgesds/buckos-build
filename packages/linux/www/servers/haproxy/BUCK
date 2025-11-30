@@ -50,10 +50,9 @@ autotools_package(
         "systemd": "USE_SYSTEMD=1",
         "-systemd": "",
     },
-    install_args = [
-        "PREFIX=/usr",
-        "DESTDIR=$DESTDIR",
-    ],
+    src_install = """
+make PREFIX=/usr DESTDIR="$DESTDIR" install
+""",
     post_install = """
 mkdir -p "$DESTDIR/etc/haproxy"
 mkdir -p "$DESTDIR/var/lib/haproxy"

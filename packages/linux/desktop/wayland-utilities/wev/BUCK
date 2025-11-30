@@ -3,8 +3,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "wev-src",
-    src_uri = "https://git.sr.ht/~sircmpwn/wev/refs/download/1.0.0/wev-1.0.0.tar.gz",
-    sha256 = "4ad6d699d6f0b8a88d91afd1bc3150ec1cf43b29e3e84309248144962db3c1af",
+    src_uri = "https://git.sr.ht/~sircmpwn/wev/archive/1.0.0.tar.gz",
+    sha256 = "613a1df1a4879d50ce72023de14aaf05be2e6f51346e84a69f50fc6d8502bbf4",
 )
 
 autotools_package(

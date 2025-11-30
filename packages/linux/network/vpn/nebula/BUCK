@@ -32,7 +32,7 @@ chmod 755 "$DESTDIR/usr/bin/nebula"
 chmod 755 "$DESTDIR/usr/bin/nebula-cert"
 """,
 
-    build_deps = [
+    bdepend = [
         "//packages/linux/lang/go:go",
     ],
 

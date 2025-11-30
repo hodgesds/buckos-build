@@ -2,10 +2,11 @@ load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 # Download source - explicitly created with PUBLIC visibility for reuse
+# Using GitHub mirror since busybox.net can be unreliable
 download_source(
     name = "busybox-src",
-    src_uri = "https://busybox.net/downloads/busybox-1.36.1.tar.bz2",
-    sha256 = "b8cc24c9574d809e7279c3be349795c5d5ceb6fdf19ca709f80cde50e47de314",
+    src_uri = "https://github.com/mirror/busybox/archive/refs/tags/1_36_1.tar.gz",
+    sha256 = "ea5494846c51d946e5e801d1c099b438f683af8147e0be24ca4001073143110f",
     auto_detect_signature=False,
     visibility = ["PUBLIC"],
 )

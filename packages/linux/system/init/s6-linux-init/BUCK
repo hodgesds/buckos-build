@@ -33,6 +33,6 @@ autotools_package(
         "//packages/linux/system/init/execline:execline",
         "//packages/linux/system/init/s6:s6",
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

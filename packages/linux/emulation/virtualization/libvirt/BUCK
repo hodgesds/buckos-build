@@ -61,7 +61,7 @@ autotools_package(
         "//packages/linux/core/libnl:libnl",
         "//packages/linux/system/libs/data/yajl:yajl",
         "//packages/linux/system/libs/ipc/libtirpc:libtirpc",
-        "//packages/linux/network/gnutls:gnutls",
+        "//packages/linux/system/libs/crypto/gnutls:gnutls",
         "//packages/linux/network/curl:curl",
         "//packages/linux/system/init/eudev:eudev",
         "//packages/linux/system/security/auth/privilege:polkit",
@@ -90,7 +90,7 @@ autotools_package(
     deps = [
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/system/libs/data/libxml2:libxml2",
-        "//packages/linux/network/gnutls:gnutls",
+        "//packages/linux/system/libs/crypto/gnutls:gnutls",
     ],
     visibility = ["PUBLIC"],
 )

@@ -44,7 +44,7 @@ DESTDIR=$OUT meson install
         "//packages/linux/graphics/utilities/gegl:gegl",
         "//packages/linux/graphics/utilities/babl:babl",
     ],
-    build_deps = [
+    bdepend = [
         "//packages/linux/lang/python:python",
     ],
     visibility = ["PUBLIC"],

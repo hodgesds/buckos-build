@@ -4,14 +4,14 @@ load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 # gentoo-zsh-completions - Gentoo-specific Zsh completions
 download_source(
     name = "gentoo-zsh-completions-src",
-    src_uri = "https://github.com/gentoo/gentoo-zsh-completions/archive/refs/tags/20230911.tar.gz",
-    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
+    src_uri = "https://github.com/gentoo/gentoo-zsh-completions/archive/refs/heads/master.tar.gz",
+    sha256 = "a60677d7422856b25d5b561e622c64f1d05ed933d887bcce3bdb81916d569617",
 )
 
 ebuild_package(
     name = "gentoo-zsh-completions",
     source = ":gentoo-zsh-completions-src",
-    version = "20230911",
+    version = "master",
     description = "Gentoo-specific Zsh completions",
     homepage = "https://github.com/gentoo/gentoo-zsh-completions",
     license = "GPL-2",

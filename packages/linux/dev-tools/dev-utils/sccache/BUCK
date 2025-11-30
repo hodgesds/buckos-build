@@ -15,8 +15,9 @@ binary_package(
     homepage = "https://github.com/mozilla/sccache",
     license = "Apache-2.0",
     install_script = """
+        cd $SRCS
         mkdir -p "$OUT/usr/bin"
-        cp $SRCS/sccache-v0.8.1-x86_64-unknown-linux-musl/sccache "$OUT/usr/bin/"
+        cp sccache "$OUT/usr/bin/"
         chmod +x "$OUT/usr/bin/sccache"
     """,
     visibility = ["PUBLIC"],

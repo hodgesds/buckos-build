@@ -4,8 +4,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 autotools_package(
     name = "giflib",
     version = "5.2.2",
-    src_uri = "https://sourceforge.net/projects/giflib/files/giflib-5.2.2.tar.gz",
-    sha256 = "be7ffbd057cadebe2aa144542fd90c6838c6a083b5e8a9048b8ee3b66b29d5fb",
+    src_uri = "https://github.com/sailfishos-mirror/giflib/archive/refs/tags/5.2.2.tar.gz",
+    sha256 = "d61f8ca6736d44a53888894858e085cf9266883c98dbbcd9ca0f222b13699190",
     auto_detect_signature = False,
     description = "Library for reading and writing GIF images",
     homepage = "https://giflib.sourceforge.net/",

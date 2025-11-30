@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "set_use_flags")
 download_source(
     name = "krita-src",
     src_uri = "https://download.kde.org/stable/krita/5.2.2/krita-5.2.2.tar.gz",
-    sha256 = "a0f883d5e5f85334036bc23f69c8a4ba6cff79042c5bc37aafec5c5fac043f5f",
+    sha256 = "c1d2e4a36d7d8aa296d021e52be493cc679d3fe5e8aa4fc13c434d33e8154ce2",
 )
 
 autotools_package(
@@ -36,7 +36,7 @@ DESTDIR=$OUT make install
         "//packages/linux/dev-libs/boost:boost",
         "//packages/linux/dev-libs/eigen:eigen",
     ],
-    build_deps = [
+    bdepend = [
         "//packages/linux/lang/python:python",
     ],
     visibility = ["PUBLIC"],

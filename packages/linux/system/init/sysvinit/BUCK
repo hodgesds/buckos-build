@@ -33,6 +33,6 @@ make ROOT=$OUT install
 """,
     deps = [
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

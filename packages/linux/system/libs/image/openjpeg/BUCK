@@ -1,7 +1,7 @@
-load("//defs:package_defs.bzl", "cmake_package", "autotools_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
-autotools_package(
+cmake_package(
     name = "openjpeg",
     version = "2.5.2",
     src_uri = "https://github.com/uclouvain/openjpeg/archive/refs/tags/v2.5.2.tar.gz",
@@ -24,8 +24,20 @@ autotools_package(
     # Default USE flags
     use_defaults = ["png", "tiff"],
 
-    # CMake-based build - use pre_configure to set cmake args
-    use_configure = {},
+    use_options = {
+        "static-libs": "BUILD_STATIC_LIBS=ON",
+        "-static-libs": "BUILD_STATIC_LIBS=OFF",
+        "png": "BUILD_PNG=ON",
+        "-png": "BUILD_PNG=OFF",
+        "tiff": "BUILD_TIFF=ON",
+        "-tiff": "BUILD_TIFF=OFF",
+        "lcms2": "BUILD_LCMS2=ON",
+        "-lcms2": "BUILD_LCMS2=OFF",
+        "doc": "BUILD_DOC=ON",
+        "-doc": "BUILD_DOC=OFF",
+        "test": "BUILD_TESTING=ON",
+        "-test": "BUILD_TESTING=OFF",
+    },
 
     use_deps = {
         "png": ["//packages/linux/system/libs/image/libpng:libpng"],
@@ -33,61 +45,11 @@ autotools_package(
         "lcms2": ["//packages/linux/system/libs/color/lcms2:lcms2"],
     },
 
-    configure_args = [],
+    cmake_args = [
+        "-DBUILD_SHARED_LIBS=ON",
+    ],
+
     deps = [],
-
-    pre_configure = """
-# USE flags: static-libs, png, tiff, lcms2, doc, test
-# This is a CMake-based package
-
-CMAKE_ARGS="-DCMAKE_INSTALL_PREFIX=/usr"
-
-if [ "${USE_static_libs}" = "1" ]; then
-    CMAKE_ARGS="$CMAKE_ARGS -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=ON"
-else
-    CMAKE_ARGS="$CMAKE_ARGS -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=OFF"
-fi
-
-if [ "${USE_png}" = "1" ]; then
-    CMAKE_ARGS="$CMAKE_ARGS -DBUILD_PNG=ON"
-else
-    CMAKE_ARGS="$CMAKE_ARGS -DBUILD_PNG=OFF"
-fi
-
-if [ "${USE_tiff}" = "1" ]; then
-    CMAKE_ARGS="$CMAKE_ARGS -DBUILD_TIFF=ON"
-else
-    CMAKE_ARGS="$CMAKE_ARGS -DBUILD_TIFF=OFF"
-fi
-
-if [ "${USE_lcms2}" = "1" ]; then
-    CMAKE_ARGS="$CMAKE_ARGS -DBUILD_LCMS2=ON"
-else
-    CMAKE_ARGS="$CMAKE_ARGS -DBUILD_LCMS2=OFF"
-fi
-
-if [ "${USE_doc}" = "1" ]; then
-    CMAKE_ARGS="$CMAKE_ARGS -DBUILD_DOC=ON"
-else
-    CMAKE_ARGS="$CMAKE_ARGS -DBUILD_DOC=OFF"
-fi
-
-if [ "${USE_test}" = "1" ]; then
-    CMAKE_ARGS="$CMAKE_ARGS -DBUILD_TESTING=ON"
-else
-    CMAKE_ARGS="$CMAKE_ARGS -DBUILD_TESTING=OFF"
-fi
-
-# Run cmake
-cmake $CMAKE_ARGS -B build -S .
-""",
-
-    # Override configure step since we're using cmake
-    configure_command = "true",  # Skip configure, we did it in pre_configure
-
-    # Use cmake build
-    make_command = "cmake --build build",
-    install_command = "cmake --install build --prefix $DESTDIR/usr",
 
     visibility = ["PUBLIC"],
 )

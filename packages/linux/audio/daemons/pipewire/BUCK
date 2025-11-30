@@ -4,7 +4,7 @@ load("//defs:use_flags.bzl", "set_use_flags")
 autotools_package(
     name = "pipewire",
     version = "1.0.7",
-    src_uri = "https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/1.0.7/pipewire-1.0.7.tar.gz",
+    src_uri = "https://github.com/PipeWire/pipewire/archive/refs/tags/1.0.7.tar.gz",
     sha256 = "9c45eef65e66224804ae8671849452a7f221e913813072b3aad346f20df666a8",
     auto_detect_signature = False,
     description = "Low-latency audio/video router and processor",
@@ -47,7 +47,7 @@ autotools_package(
         "bluetooth": ["//packages/linux/system/bluetooth/bluez:bluez"],
         "gstreamer": ["//packages/linux/graphics/video/gstreamer:gstreamer"],
         "ffmpeg": ["//packages/linux/graphics/video/ffmpeg:ffmpeg"],
-        "vulkan": ["//packages/linux/gaming/libraries/vulkan-loader:vulkan-loader"],
+        "vulkan": ["//packages/linux/gaming/libraries/vulkan-tools:vulkan-loader"],
         "X": ["//packages/linux/desktop/xorg-server:libx11"],
         "systemd": ["//packages/linux/system/init/systemd:systemd"],
     },

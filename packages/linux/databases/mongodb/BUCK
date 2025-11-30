@@ -1,4 +1,4 @@
-load("//defs:use_flags.bzl", "use_ebuild_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 
 # mongodb - Document-oriented database
 #
@@ -7,16 +7,20 @@ load("//defs:use_flags.bzl", "use_ebuild_package")
 #   snappy   - Enable Snappy compression
 #   zstd     - Enable Zstandard compression
 
-use_ebuild_package(
+download_source(
+    name = "mongodb-src",
+    src_uri = "https://github.com/mongodb/mongo/archive/refs/tags/r7.0.5.tar.gz",
+    sha256 = "8b3bd7d5dfb51d008b8e2b2303b84647002cccd9121fe828e5cebcf70873273f",
+    auto_detect_signature = False,
+)
+
+ebuild_package(
     name = "mongodb",
     version = "7.0.5",
-    src_uri = "https://fastdl.mongodb.org/src/mongodb-src-r7.0.5.tar.gz",
-    sha256 = "9a955af42534a1a597434a3df93e762d9bd45cc6faf72258e00fe2ab18258594",
+    source = ":mongodb-src",
     description = "Document-oriented NoSQL database",
     homepage = "https://www.mongodb.com",
     license = "SSPL-1.0",
-    iuse = ["ssl", "snappy", "zstd"],
-    use_defaults = ["ssl"],
     src_compile = """
         python3 buildscripts/scons.py mongod mongos --prefix=/usr
     """,
@@ -24,10 +28,8 @@ use_ebuild_package(
         python3 buildscripts/scons.py install-mongod install-mongos --prefix="${DESTDIR}/usr"
     """,
     rdepend = [
+        "//packages/linux/system/libs/crypto/openssl:openssl",
     ],
-    use_deps = {
-        "ssl": ["//packages/linux/system/libs/crypto/openssl:openssl"],
-    },
     bdepend = [
         "//packages/linux/lang/python:python",
     ],

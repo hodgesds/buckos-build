@@ -33,16 +33,20 @@ binary_package(
     homepage = "https://ollama.ai/",
     license = "MIT",
     install_script = """
-# Install ollama binary
-mkdir -p "$DESTDIR/usr/bin"
-install -m 755 bin/ollama "$DESTDIR/usr/bin/ollama"
+# Install ollama binary from $SRCS (extracted tarball)
+mkdir -p "$OUT/usr/bin"
+install -m 755 "$SRCS/bin/ollama" "$OUT/usr/bin/ollama"
+
+# Install CUDA/ROCm libraries
+mkdir -p "$OUT/usr/lib/ollama"
+cp -r "$SRCS/lib/ollama/"* "$OUT/usr/lib/ollama/" 2>/dev/null || true
 
 # Create ollama user home directory for models
-mkdir -p "$DESTDIR/var/lib/ollama"
+mkdir -p "$OUT/var/lib/ollama"
 
 # Create systemd service file
-mkdir -p "$DESTDIR/etc/systemd/system"
-cat > "$DESTDIR/etc/systemd/system/ollama.service" << 'EOF'
+mkdir -p "$OUT/etc/systemd/system"
+cat > "$OUT/etc/systemd/system/ollama.service" << 'EOF'
 [Unit]
 Description=Ollama Service
 After=network-online.target
@@ -61,8 +65,8 @@ WantedBy=default.target
 EOF
 
 # Create default environment configuration
-mkdir -p "$DESTDIR/etc/ollama"
-cat > "$DESTDIR/etc/ollama/ollama.conf" << 'EOF'
+mkdir -p "$OUT/etc/ollama"
+cat > "$OUT/etc/ollama/ollama.conf" << 'EOF'
 # Ollama configuration
 # OLLAMA_HOST=0.0.0.0:11434
 # OLLAMA_MODELS=/var/lib/ollama/models

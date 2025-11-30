@@ -20,7 +20,8 @@ binary_package(
     license = "Apache-2.0",
     install_script = """
         mkdir -p $OUT/usr/local/kotlin-native
-        cp -r $SRCS/kotlin-native-linux-x86_64-1.9.22/* $OUT/usr/local/kotlin-native/
+        # Source is extracted with strip-components=1, so files are directly in $SRCS
+        cp -r $SRCS/* $OUT/usr/local/kotlin-native/
         mkdir -p $OUT/usr/bin
         ln -s /usr/local/kotlin-native/bin/kotlinc-native $OUT/usr/bin/kotlinc-native
     """,

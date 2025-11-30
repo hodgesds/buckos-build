@@ -16,7 +16,7 @@ meson_package(
     deps = [
         "//packages/linux/graphics/video/mpv:mpv",
         "//packages/linux/desktop/gtk:gtk4",
-        "//packages/linux/desktop/gtk:libadwaita",
+        "//packages/linux/desktop/gtk:gtk4",
     ],
     maintainers = [],
     visibility = ["PUBLIC"],

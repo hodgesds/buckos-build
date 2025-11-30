@@ -3,9 +3,9 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 autotools_package(
     name = "c-ares",
-    version = "1.27.0",
-    src_uri = "https://c-ares.org/download/c-ares-1.27.0.tar.gz",
-    sha256 = "7537c5052714cd304f912602b97f240f034b12d79accc9c7880dd6cdd7d79b96",
+    version = "1.34.5",
+    src_uri = "https://github.com/c-ares/c-ares/releases/download/v1.34.5/c-ares-1.34.5.tar.gz",
+    sha256 = "7d935790e9af081c25c495fd13c2cfcda4792983418e96358ef6e7320ee06346",
 
     iuse = ["static-libs"],
     use_defaults = [],

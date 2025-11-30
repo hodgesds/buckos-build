@@ -3,14 +3,14 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "grim-src",
-    src_uri = "https://git.sr.ht/~emersion/grim/archive/v1.4.1.tar.gz",
-    sha256 = "5ed8e70fcd83a7e203e92d34dbb82a1342d3f13ad98a6b0310cc97e1a9342ded",
+    src_uri = "https://github.com/emersion/grim/archive/refs/tags/v1.4.0.tar.gz",
+    sha256 = "b6786e889ed93568634189a59f6b6429c041bf74883c10e8b6e2ed6772ae7ffb",
 )
 
 autotools_package(
     name = "grim",
     source = ":grim-src",
-    version = "1.4.1",
+    version = "1.4.0",
     description = "Grab images from a Wayland compositor",
     homepage = "https://git.sr.ht/~emersion/grim",
     license = "MIT",
@@ -33,12 +33,12 @@ DESTDIR=$OUT meson install
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/wayland:wayland-protocols",
         "//packages/linux/system/libs/graphics/cairo:cairo",
-        "//packages/linux/system/libs/graphics/libjpeg-turbo:libjpeg-turbo",
-        "//packages/linux/system/libs/graphics/libpng:libpng",
+        "//packages/linux/system/libs/image/libjpeg-turbo:libjpeg-turbo",
+        "//packages/linux/system/libs/image/libpng:libpng",
         "//packages/linux/system/libs/graphics/pixman:pixman",
     ],
-    build_deps = [
-        "//packages/linux/system/libs/scdoc:scdoc",
+    bdepend = [
+        "//packages/linux/dev-tools/doc-tools/scdoc:scdoc",
     ],
     visibility = ["PUBLIC"],
 )

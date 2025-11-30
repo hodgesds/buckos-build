@@ -13,7 +13,7 @@ autotools_package(
 
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
-        "gnutls": ["//packages/linux/network/gnutls:gnutls"],
+        "gnutls": ["//packages/linux/system/libs/crypto/gnutls:gnutls"],
         "lz4": ["//packages/linux/system/libs/compression/lz4:lz4"],
     },
 

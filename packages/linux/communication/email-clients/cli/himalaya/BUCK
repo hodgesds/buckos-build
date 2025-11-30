@@ -15,7 +15,7 @@ binary_package(
     homepage = "https://pimalaya.org/himalaya/",
     license = "MIT",
     install_script = """
-        cd $SRCS/himalaya-*
+        cd $SRCS
         export CARGO_HOME="$PWD/.cargo"
         cargo build --release --locked
         install -Dm755 target/release/himalaya "$OUT/usr/bin/himalaya"

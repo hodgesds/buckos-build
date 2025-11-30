@@ -33,21 +33,21 @@ DESTDIR=$OUT meson install
     deps = [
         "//packages/linux/graphics/utilities/babl:babl",
         "//packages/linux/dev-libs/glib:glib",
-        "//packages/linux/core/json-glib:json-glib",
-        "//packages/linux/system/libs/graphics/libpng:libpng",
-        "//packages/linux/system/libs/graphics/libjpeg-turbo:libjpeg-turbo",
+        "//packages/linux/desktop/gnome:json-glib",
+        "//packages/linux/system/libs/image/libpng:libpng",
+        "//packages/linux/system/libs/image/libjpeg-turbo:libjpeg-turbo",
         "//packages/linux/system/libs/graphics/cairo:cairo",
-        "//packages/linux/system/libs/graphics/pango:pango",
+        "//packages/linux/fonts/libraries/pango:pango",
         "//packages/linux/dev-libs/openexr:openexr",
-        "//packages/linux/core/libraw:libraw",
-        "//packages/linux/core/librsvg:librsvg",
-        "//packages/linux/system/libs/graphics/libwebp:libwebp",
-        "//packages/linux/editors/poppler:poppler",
+        # "//packages/linux/core/libraw:libraw",  # TODO: not packaged yet
+        # "//packages/linux/core/librsvg:librsvg",  # TODO: not packaged yet
+        "//packages/linux/system/libs/image/libwebp:libwebp",
+        # "//packages/linux/editors/poppler:poppler",  # TODO: wrong path
         "//packages/linux/graphics/video/ffmpeg:ffmpeg",
     ],
-    build_deps = [
-        "//packages/linux/system/libs/gobject-introspection:gobject-introspection",
-        "//packages/linux/core/vala:vala",
+    bdepend = [
+        "//packages/linux/desktop/gnome/libs:gobject-introspection",
+        "//packages/linux/lang/vala:vala",
     ],
     visibility = ["PUBLIC"],
 )

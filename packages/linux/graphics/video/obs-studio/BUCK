@@ -38,22 +38,22 @@ cd build
 DESTDIR=$OUT make install
 """,
     deps = [
-        "//packages/linux/desktop/qt:qt6",
+        "//packages/linux/desktop/qt:qt5",
         "//packages/linux/graphics/video/ffmpeg:ffmpeg",
-        "//packages/linux/system/libs/curl:curl",
+        "//packages/linux/network/curl:curl",
         "//packages/linux/system/libs/data/jansson:jansson",
-        "//packages/linux/graphics/video/x264:libx264",
-        "//packages/linux/core/mbedtls:mbedtls",
-        "//packages/linux/core/speexdsp:speexdsp",
-        "//packages/linux/core/rnnoise:rnnoise",
+        "//packages/linux/graphics/video/x264:x264",
+        # "//packages/linux/core/mbedtls:mbedtls",  # TODO: not packaged yet
+        # "//packages/linux/core/speexdsp:speexdsp",  # TODO: not packaged yet
+        # "//packages/linux/core/rnnoise:rnnoise",  # TODO: not packaged yet
         "//packages/linux/audio/daemons/pipewire:pipewire",
-        "//packages/linux/graphics/video/vlc:libvlc",
-        "//packages/linux/core/srt:srt",
-        "//packages/linux/core/rist:rist",
-        "//packages/linux/core/luajit:luajit",
+        "//packages/linux/graphics/video/vlc:vlc",
+        # "//packages/linux/core/srt:srt",  # TODO: not packaged yet
+        # "//packages/linux/core/rist:rist",  # TODO: not packaged yet
+        # "//packages/linux/core/luajit:luajit",  # TODO: not packaged yet
         "//packages/linux/lang/python:python",
         "//packages/linux/desktop/wayland:wayland",
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

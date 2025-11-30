@@ -110,7 +110,7 @@ filegroup(
         "//packages/linux/system/security/auth/password:libpwquality",
         "//packages/linux/system/security/auth/pam-modules:pam-mount",
         "//packages/linux/system/security/auth/pam-modules:pam-script",
-        "//packages/linux/system/security/auth/pam-modules:pam-ssh",
+        "//packages/linux/system/security/auth/pam-modules:pam-ssh-agent-auth",
         "//packages/linux/system/security/auth/pam-modules:pam-pkcs11",
         "//packages/linux/system/security/auth/pam-modules:pam-abl",
     ],

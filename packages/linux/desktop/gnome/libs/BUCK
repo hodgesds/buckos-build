@@ -61,8 +61,8 @@ meson setup .. --prefix=/usr \\
 
 download_source(
     name = "gtk3-src",
-    src_uri = "https://download.gnome.org/sources/gtk/3.24/gtk-3.24.41.tar.xz",
-    sha256 = "c375e42b6328de1880de1424a93267d573a1afa2ed37f72a35d8218f6880dd58",
+    src_uri = "https://download.gnome.org/sources/gtk+/3.24/gtk+-3.24.41.tar.xz",
+    sha256 = "47da61487af3087a94bc49296fd025ca0bc02f96ef06c556e7c8988bd651b6fa",
 )
 
 autotools_package(

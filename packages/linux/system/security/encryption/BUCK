@@ -238,8 +238,8 @@ autotools_package(
 
 download_source(
     name = "pass-src",
-    src_uri = "https://git.zx2c4.com/password-store/snapshot/password-store-1.7.4.tar.xz",
-    sha256 = "cfa9faf659f2ed6b38e7a7c3fb43e177d00edbacc6265e6e32215ff40e3793c0",
+    src_uri = "https://github.com/zx2c4/password-store/archive/refs/tags/1.7.4.tar.gz",
+    sha256 = "ff00bd2db86d8be722fc674f40abdc9b88701e47396378b15a4222c63c1d5243",
     auto_detect_signature=False,
 )
 
@@ -274,8 +274,8 @@ autotools_package(
 
 download_source(
     name = "tomb-src",
-    src_uri = "https://files.dyne.org/tomb/Tomb-2.10.tar.gz",
-    sha256 = "fb4b34c2e8584d7a94711f7b87c6a56745b65a761ae85c4f14f52eb2a7679d43",
+    src_uri = "https://github.com/dyne/Tomb/archive/refs/tags/v2.10.tar.gz",
+    sha256 = "6d714924fb929442990a9d47e3a8a729f443fcb67de7d190e8eb5a78942cd8f5",
     auto_detect_signature=False,
 )
 
@@ -391,8 +391,8 @@ autotools_package(
 
 download_source(
     name = "ecryptfs-utils-src",
-    src_uri = "https://launchpad.net/ecryptfs/trunk/111/+download/ecryptfs-utils-111.tar.gz",
-    sha256 = "f6be8241baeda5ab75357ad50ce6cf6fced3b898dd36abd5e78d4d666dacefe1",
+    src_uri = "https://github.com/dustinkirkland/ecryptfs-utils/archive/5e877f3747303096f7861863bac937be4328fa72.tar.gz",
+    sha256 = "b91cd0a707f0b1d912297efb1019beca1cd973d199c4fd9f0bcdc1898bb66ebe",
     auto_detect_signature=False,
 )
 
@@ -426,8 +426,8 @@ autotools_package(
 
 download_source(
     name = "keyutils-src",
-    src_uri = "https://people.redhat.com/~dhowells/keyutils/keyutils-1.6.3.tar.bz2",
-    sha256 = "bdec88de17ad33ba642d84d050b29d2929caf93f4a79849856ff1e293e380615",
+    src_uri = "https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git/snapshot/keyutils-1.6.3.tar.gz",
+    sha256 = "a61d5706136ae4c05bd48f86186bcfdbd88dd8bd5107e3e195c924cfc1b39bb4",
     auto_detect_signature=False,
 )
 

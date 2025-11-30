@@ -10,6 +10,7 @@ download_source(
     name = "traefik-src",
     src_uri = "https://github.com/traefik/traefik/releases/download/v3.1.6/traefik_v3.1.6_linux_amd64.tar.gz",
     sha256 = "b1f405ab5985121fa54ece00a951781e368bbb8c7e8d3211f66fe4f347a506b7",
+    strip_components = 0,
 )
 
 binary_package(
@@ -22,16 +23,24 @@ binary_package(
     install_script = """
 cd $SRCS
 
-# Install binary
-install -Dm755 traefik "$DESTDIR/usr/bin/traefik"
+# Find and install binary
+if [ -f traefik ]; then
+    install -Dm755 traefik "$OUT/usr/bin/traefik"
+elif [ -f */traefik ]; then
+    install -Dm755 */traefik "$OUT/usr/bin/traefik"
+else
+    echo "Error: traefik binary not found"
+    ls -la
+    exit 1
+fi
 
 # Create configuration directories
-mkdir -p "$DESTDIR/etc/traefik"
-mkdir -p "$DESTDIR/etc/traefik/dynamic"
-mkdir -p "$DESTDIR/var/log/traefik"
+mkdir -p "$OUT/etc/traefik"
+mkdir -p "$OUT/etc/traefik/dynamic"
+mkdir -p "$OUT/var/log/traefik"
 
 # Create default static configuration
-cat > "$DESTDIR/etc/traefik/traefik.yml" << 'EOF'
+cat > "$OUT/etc/traefik/traefik.yml" << 'EOF'
 api:
   dashboard: true
   insecure: true
@@ -56,7 +65,7 @@ accessLog:
 EOF
 
 # Create example dynamic configuration
-cat > "$DESTDIR/etc/traefik/dynamic/example.yml" << 'EOF'
+cat > "$OUT/etc/traefik/dynamic/example.yml" << 'EOF'
 # Example dynamic configuration
 http:
   routers:

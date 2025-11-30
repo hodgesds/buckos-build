@@ -22,8 +22,9 @@ binary_package(
     homepage = "https://perf.wiki.kernel.org/",
     license = "GPL-2.0",
     install_script = """
-        cd $SRCS/linux-*/tools/perf
-        make LDFLAGS=-static NO_LIBPYTHON=1 NO_LIBBPF=1 NO_LIBCAP=1
+        cd $SRCS/tools/perf
+        # Build without optional dependencies
+        make NO_LIBPYTHON=1 NO_LIBBPF=1 NO_LIBCAP=1 NO_JEVENTS=1 NO_SLANG=1 NO_LIBUNWIND=1 NO_LIBTRACEEVENT=1 prefix=/usr
         mkdir -p $OUT/usr/bin
         cp perf $OUT/usr/bin/
     """,

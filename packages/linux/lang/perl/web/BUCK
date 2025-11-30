@@ -208,14 +208,14 @@ autotools_package(
 # Template - Template Toolkit - Perl template processing system
 download_source(
     name = "template-toolkit-src",
-    src_uri = "https://cpan.metacpan.org/authors/id/A/AT/ATOOMIC/Template-Toolkit-3.101.tar.gz",
-    sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
+    src_uri = "https://cpan.metacpan.org/authors/id/T/TO/TODDR/Template-Toolkit-3.102.tar.gz",
+    sha256 = "d161c89dee9b213a7c55709ea782e2dd5923dbd1215b9576612889e6e74a2e06",
 )
 
 autotools_package(
     name = "template-toolkit",
     source = ":template-toolkit-src",
-    version = "3.101",
+    version = "3.102",
     description = "Template Toolkit - Perl template processing system",
     homepage = "http://www.template-toolkit.org/",
     license = "Artistic-1.0-Perl OR GPL-1.0-or-later",

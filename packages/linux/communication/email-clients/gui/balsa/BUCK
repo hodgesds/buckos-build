@@ -15,27 +15,27 @@ binary_package(
     homepage = "https://pawsa.fedorapeople.org/balsa/",
     license = "GPL-2+",
     install_script = """
-        cd $SRCS/balsa-*
+        cd $SRCS
 
-        meson setup build \
+        # Balsa uses autotools, not meson
+        ./configure \
             --prefix=/usr \
-            --buildtype=release \
-            -Dgpgme=true \
-            -Dgtkspell=true \
-            -Dldap=true \
-            -Dsqlite=true \
-            -Dwebkit2=true \
-            -Dgnome-desktop=true \
-            -Dlibsecret=true \
-            -Dgcr=true \
-            -Dmore-warnings=false
+            --with-gpgme \
+            --with-gtkspell \
+            --with-ldap \
+            --with-sqlite \
+            --with-html-widget=webkit2 \
+            --with-gnome \
+            --with-libsecret \
+            --with-gcr
 
-        ninja -C build
-        DESTDIR="$OUT" ninja -C build install
+        make -j$(nproc)
+        make DESTDIR="$OUT" install
     """,
     deps = [
         "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/network/openssl:openssl",
+        "//packages/linux/dev-tools/dev-utils/intltool:intltool",
     ],
     visibility = ["PUBLIC"],
 )

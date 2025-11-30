@@ -3,9 +3,9 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 autotools_package(
     name = "vpnc",
-    version = "0.5.3r550-2",
-    src_uri = "https://github.com/streambinder/vpnc/archive/refs/tags/0.5.3r550-2.tar.gz",
-    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
+    version = "master",
+    src_uri = "https://github.com/streambinder/vpnc/archive/refs/heads/master.tar.gz",
+    sha256 = "e18632389974b44dfd13f283fd43b6932811b335d94a4ed571e6c1eca81c11da",
 
     iuse = ["hybrid"],
     use_defaults = [],

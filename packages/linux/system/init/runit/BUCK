@@ -46,6 +46,6 @@ ln -sf ../usr/bin/runit-init $OUT/sbin/init || true
 """,
     deps = [
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

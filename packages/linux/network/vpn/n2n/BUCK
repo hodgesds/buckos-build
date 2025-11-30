@@ -33,7 +33,7 @@ make DESTDIR=$DESTDIR install
 mkdir -p "$DESTDIR/etc/n2n"
 """,
 
-    build_deps = [
+    bdepend = [
         "//packages/linux/dev-tools/build-systems/cmake:cmake",
     ],
 

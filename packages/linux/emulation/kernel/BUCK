@@ -4,7 +4,6 @@ filegroup(
     name = "virtme-tools",
     srcs = [
         "//packages/linux/emulation/kernel/virtme-ng:virtme-ng",
-        "//packages/linux/emulation/kernel/virtme-ng:virtme",
     ],
     visibility = ["PUBLIC"],
 )

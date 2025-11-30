@@ -4,8 +4,9 @@ load("//defs:use_flags.bzl", "set_use_flags")
 autotools_package(
     name = "tinc",
     version = "1.0.36",
-    src_uri = "https://www.tinc-vpn.org/packages/tinc-1.0.36.tar.gz",
-    sha256 = "40f73bb3facc480effe0e771442a706ff0488edea7a5f2014e7f9a33e6e7a249",
+    src_uri = "https://github.com/gsliepen/tinc/archive/refs/tags/release-1.0.36.tar.gz",
+    sha256 = "04d87f81335ca32f00a5be1fc94d13fae9d8ae3a65452b76df259cb44a1afa78",
+    auto_detect_signature = False,
 
     iuse = ["ssl", "zlib", "lzo"],
     use_defaults = ["ssl", "zlib", "lzo"],

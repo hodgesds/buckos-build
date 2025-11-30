@@ -32,6 +32,6 @@ autotools_package(
         "//packages/linux/system/init/skalibs:skalibs",
         "//packages/linux/system/init/execline:execline",
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

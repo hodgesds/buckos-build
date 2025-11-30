@@ -215,14 +215,14 @@ autotools_package(
 # Time::HiRes - High resolution alarm, sleep, gettimeofday, interval timers
 download_source(
     name = "time-hires-src",
-    src_uri = "https://cpan.metacpan.org/authors/id/A/AT/ATOOMIC/Time-HiRes-1.9775.tar.gz",
-    sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
+    src_uri = "https://cpan.metacpan.org/authors/id/A/AT/ATOOMIC/Time-HiRes-1.9764.tar.gz",
+    sha256 = "9841be5587bfb7cd1f2fe267b5e5ac04ce25e79d5cc77e5ef9a9c5abd101d7b1",
 )
 
 autotools_package(
     name = "time-hires",
     source = ":time-hires-src",
-    version = "1.9775",
+    version = "1.9764",
     description = "High resolution alarm, sleep, gettimeofday, interval timers",
     homepage = "https://metacpan.org/pod/Time::HiRes",
     license = "Artistic-1.0-Perl OR GPL-1.0-or-later",

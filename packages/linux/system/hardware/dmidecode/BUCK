@@ -6,8 +6,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "dmidecode-src",
-    src_uri = "https://download.savannah.gnu.org/releases/dmidecode/dmidecode-3.5.tar.xz",
-    sha256 = "79d76735ee8e25196e2a722964cf9683f5a09581503537884b256b01389cc073",
+    src_uri = "https://github.com/mirror/dmidecode/archive/refs/tags/dmidecode-3-5.tar.gz",
+    sha256 = "5eb2cdca9b6b40b412b66231ac91ffa32baf2e3b27058c8cb2fd53d60844d04e",
 )
 
 autotools_package(

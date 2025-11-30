@@ -27,7 +27,7 @@ autotools_package(
     ],
     deps = [
         "//packages/linux/dev-libs/glib:glib",
-        "//packages/linux/system/libs/libnl:libnl",
+        "//packages/linux/core/libnl:libnl",
     ],
     visibility = ["PUBLIC"],
 )

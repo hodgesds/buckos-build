@@ -19,7 +19,22 @@ binary_package(
     homepage = "https://elixir-lang.org/",
     license = "Apache-2.0",
     install_script = """
-        cd $SRCS/elixir-1.16.0
+        cd $SRCS
+
+        # Find Erlang in dependencies and add to PATH
+        for dep in $DEPS; do
+            if [ -d "$dep/usr/lib/erlang/bin" ]; then
+                export PATH="$dep/usr/lib/erlang/bin:$PATH"
+                echo "Found Erlang bin at $dep/usr/lib/erlang/bin"
+            fi
+            if [ -x "$dep/usr/bin/erlc" ]; then
+                export PATH="$dep/usr/bin:$PATH"
+                echo "Found erlc at $dep/usr/bin"
+            fi
+        done
+
+        echo "PATH=$PATH"
+        echo "Using erlc: $(which erlc || echo 'NOT FOUND')"
 
         # Build Elixir
         make

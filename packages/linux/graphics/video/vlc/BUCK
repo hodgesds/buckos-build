@@ -99,7 +99,7 @@ autotools_package(
         "ffmpeg": ["//packages/linux/graphics/video/ffmpeg:ffmpeg"],
         "vaapi": ["//packages/linux/graphics/video/libva:libva"],
         "vdpau": ["//packages/linux/graphics/video/vdpau:vdpau"],
-        "ssl": ["//packages/linux/core/gnutls:gnutls"],
+        "ssl": ["//packages/linux/system/libs/crypto/gnutls:gnutls"],
     },
     make_args = [],
     post_install = """
@@ -114,10 +114,10 @@ DESTDIR=$OUT make install
         "//packages/linux/audio/libraries/opus:opus",
         "//packages/linux/audio/libraries/libvorbis:libvorbis",
         "//packages/linux/audio/libraries/flac:flac",
-        "//packages/linux/system/libs/security/openssl:openssl",
+        "//packages/linux/network/openssl:openssl",
         "//packages/linux/lang/lua:lua",
     ],
-    build_deps = [
+    bdepend = [
         "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
     ],
     visibility = ["PUBLIC"],

@@ -14,8 +14,9 @@ download_source(
 
 download_source(
     name = "ghc-bootstrap-src",
-    src_uri = "https://downloads.haskell.org/~ghc/9.4.8/ghc-9.4.8-x86_64-alpine3_12-linux.tar.xz",
-    sha256 = "55faf0ec6630d635f97a2bf8f8f79ef587b027962d237f0be3a667b1bbb512b8",
+    # Use Fedora 33 build which has better glibc/ncurses compatibility with modern systems
+    src_uri = "https://downloads.haskell.org/~ghc/9.4.8/ghc-9.4.8-x86_64-fedora33-linux.tar.xz",
+    sha256 = "cc90dc1969af7e1d45b2c086602cea6cc92c2a770913a8c0e28570ca855ece5a",
     auto_detect_signature = False,
 )
 
@@ -27,16 +28,17 @@ binary_package(
     homepage = "https://www.haskell.org/ghc/",
     license = "BSD-3-Clause",
     install_script = """
-        # Setup bootstrap GHC
+        # Both sources are extracted and combined in $SRCS
+        # Setup bootstrap GHC (already extracted)
         mkdir -p $WORK/bootstrap
-        tar -xJf $SRCS/ghc-*-x86_64-alpine3_12-linux.tar.xz -C $WORK/bootstrap --strip-components=1
+        cp -r $SRCS/* $WORK/bootstrap/
         cd $WORK/bootstrap
         ./configure --prefix=$WORK/ghc-boot
         make install
         export PATH=$WORK/ghc-boot/bin:$PATH
 
-        # Build GHC from source
-        cd $SRCS/ghc-9.4.8
+        # Build GHC from source (also in $SRCS)
+        cd $SRCS
         ./configure --prefix=/usr
         make
         make install DESTDIR=$OUT

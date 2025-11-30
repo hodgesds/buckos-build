@@ -5,9 +5,9 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 cmake_package(
     name = "olive",
-    version = "0.2.0",
-    src_uri = "https://github.com/olive-editor/olive/archive/refs/tags/0.2.0.tar.gz",
-    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
+    version = "0.1.2",
+    src_uri = "https://github.com/olive-editor/olive/archive/refs/tags/0.1.2.tar.gz",
+    sha256 = "cb9a5b109e67a47f03448633cbc7a257aa8e6c3c76a59c1fada77fd3d97875c1",
     auto_detect_signature = False,
     description = "Free non-linear video editor",
     homepage = "https://www.olivevideoeditor.org/",
@@ -19,10 +19,10 @@ cmake_package(
     ],
     deps = [
         "//packages/linux/graphics/video/ffmpeg:ffmpeg",
-        "//packages/linux/desktop/qt:qt6",
-        "//packages/linux/dev-libs/opencolorio:opencolorio",
+        "//packages/linux/desktop/qt:qt5",
+        # "//packages/linux/dev-libs/opencolorio:opencolorio",  # TODO: not packaged yet
         "//packages/linux/dev-libs/openexr:openexr",
-        "//packages/linux/core/openimagef:openimagef",
+        # "//packages/linux/core/openimagef:openimagef",  # TODO: OpenImageIO not packaged yet
     ],
     maintainers = [],
     visibility = ["PUBLIC"],

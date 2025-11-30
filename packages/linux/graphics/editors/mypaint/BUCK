@@ -28,8 +28,8 @@ python setup.py install --prefix=/usr --root=$OUT
         "//packages/linux/lang/python:python",
         "//packages/linux/graphics/utilities/libmypaint:libmypaint",
     ],
-    build_deps = [
-        "//packages/linux/lang/python:python-numpy",
+    bdepend = [
+        "//packages/linux/lang/python:python",
     ],
     visibility = ["PUBLIC"],
 )

@@ -31,7 +31,8 @@ Example usage:
     ]
 """
 
-load("//defs:package_defs.bzl", "download_source", "ebuild_package", "inherit")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
+load("//defs:eclasses.bzl", "inherit")
 
 # ============================================================================
 # VERSION COMPARISON UTILITIES
@@ -408,6 +409,12 @@ def versioned_package(
     if "make_args" in kwargs and kwargs["make_args"]:
         env["EXTRA_EMAKE"] = " ".join(kwargs["make_args"])
 
+    # Build src_install with optional post_install appended
+    src_install = eclass_config["src_install"]
+    post_install = kwargs.get("post_install", "")
+    if post_install:
+        src_install += "\n" + post_install
+
     # Create the versioned package using ebuild_package
     ebuild_package(
         name = versioned_name,
@@ -415,13 +422,12 @@ def versioned_package(
         version = version,
         src_configure = eclass_config["src_configure"],
         src_compile = eclass_config["src_compile"],
-        src_install = eclass_config["src_install"],
+        src_install = src_install,
         rdepend = kwargs.get("deps", []),
-        bdepend = kwargs.get("build_deps", []),
+        bdepend = kwargs.get("bdepend", kwargs.get("build_deps", [])),
         maintainers = kwargs.get("maintainers", []),
         env = env,
         src_prepare = kwargs.get("pre_configure", ""),
-        post_install = kwargs.get("post_install", ""),
         description = kwargs.get("description", ""),
         homepage = kwargs.get("homepage", ""),
         license = kwargs.get("license", ""),

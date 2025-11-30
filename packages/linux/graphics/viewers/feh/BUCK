@@ -25,12 +25,12 @@ autotools_package(
 make PREFIX=/usr DESTDIR=$OUT install
 """,
     deps = [
-        "//packages/linux/system/libs/graphics/imlib2:imlib2",
-        "//packages/linux/system/libs/graphics/libpng:libpng",
-        "//packages/linux/core/libexif:libexif",
+        # "//packages/linux/system/libs/graphics/imlib2:imlib2",  # TODO: not packaged yet
+        "//packages/linux/system/libs/image/libpng:libpng",
+        # "//packages/linux/core/libexif:libexif",  # TODO: not packaged yet
         "//packages/linux/core/file:file",
-        "//packages/linux/system/libs/curl:curl",
+        "//packages/linux/network/curl:curl",
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

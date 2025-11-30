@@ -4,8 +4,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 autotools_package(
     name = "nettle",
     version = "3.10",
-    src_uri = "https://mirrors.kernel.org/gnu/nettle/nettle-3.10.tar.gz",
-    sha256 = "b4c518adb174e484cb4acea54118f02380c7133771e7e9beb98a0787194ee47c",
+    src_uri = "https://github.com/gnutls/nettle/archive/refs/tags/nettle_3.10_release_20240616.tar.gz",
+    sha256 = "d34b632e709fb673120422bf7ef790edf8ffcc6f554b2158233b5c4f6968d1f5",
     auto_detect_signature = False,
     description = "Low-level cryptographic library",
     homepage = "https://www.lysator.liu.se/~nisse/nettle/",

@@ -13,7 +13,7 @@ Example usage:
     system_set(
         name = "my-server",
         profile = "server",
-        additions = ["//packages/linux/net-vpn:wireguard-tools"],
+        additions = ["//packages/linux/network/vpn/wireguard-tools:wireguard-tools"],
         removals = ["//packages/linux/editors:emacs"],
     )
 
@@ -50,7 +50,7 @@ SYSTEM_PACKAGES_MUSL = [
     "//packages/linux/core/musl:musl",              # lightweight C library
 
     # Essential system utilities
-    "//packages/linux/system/apps:coreutils",  # ls, cp, mv, rm, etc
+    "//packages/linux/system/apps/coreutils:coreutils",  # ls, cp, mv, rm, etc
     "//packages/linux/core/util-linux:util-linux",        # mount, fdisk, etc
     "//packages/linux/core/procps-ng:procps-ng",         # ps, top, etc
     "//packages/linux/system/apps/shadow:shadow",  # user/group management
@@ -69,7 +69,7 @@ SYSTEM_PACKAGES_GLIBC = [
     "//packages/linux/core/glibc:glibc",             # GNU C library (broader compatibility)
 
     # Essential system utilities
-    "//packages/linux/system/apps:coreutils",  # ls, cp, mv, rm, etc
+    "//packages/linux/system/apps/coreutils:coreutils",  # ls, cp, mv, rm, etc
     "//packages/linux/core/util-linux:util-linux",        # mount, fdisk, etc
     "//packages/linux/core/procps-ng:procps-ng",         # ps, top, etc
     "//packages/linux/system/apps/shadow:shadow",  # user/group management
@@ -104,17 +104,17 @@ BASE_PACKAGES = SYSTEM_PACKAGES + [
     "//packages/linux/system/apps/tar:tar",
 
     # System utilities
-    "//packages/linux/system/apps:coreutils",
-    "//packages/linux/system/apps:findutils",
+    "//packages/linux/system/apps/coreutils:coreutils",
+    "//packages/linux/system/apps/findutils:findutils",
     "//packages/linux/core/procps-ng:procps-ng",
     "//packages/linux/core/file:file",
     "//packages/linux/system/apps/shadow:shadow",
 
     # Networking basics
     "//packages/linux/network/openssl:openssl",
-    "//packages/linux/network:curl",
-    "//packages/linux/network:iproute2",
-    "//packages/linux/network:dhcpcd",
+    "//packages/linux/network/curl:curl",
+    "//packages/linux/network/iproute2:iproute2",
+    "//packages/linux/network/dhcpcd:dhcpcd",
 ]
 
 # =============================================================================
@@ -127,7 +127,7 @@ PROFILE_PACKAGE_SETS = {
     "minimal": {
         "description": "Absolute minimum packages for a bootable system",
         "packages": SYSTEM_PACKAGES + [
-            "//packages/linux/shells:bash",
+            "//packages/linux/core/bash:bash",
             "//packages/linux/core/readline:readline",
             "//packages/linux/core/ncurses:ncurses",
         ],
@@ -140,20 +140,20 @@ PROFILE_PACKAGE_SETS = {
         "description": "Server-optimized package set without GUI",
         "packages": BASE_PACKAGES + [
             # Remote access
-            "//packages/linux/network:openssh",
+            "//packages/linux/network/openssh:openssh",
 
             # Editors
             "//packages/linux/editors:vim",
 
             # System administration
-            "//packages/linux/system/apps:sudo",
-            "//packages/linux/system/apps:tmux",
-            "//packages/linux/system/apps:htop",
-            "//packages/linux/system/apps:rsync",
-            "//packages/linux/system/apps:logrotate",
-            "//packages/linux/system/apps:cronie",
-            "//packages/linux/system/apps:lsof",
-            "//packages/linux/system/apps:strace",
+            "//packages/linux/system/apps/sudo:sudo",
+            "//packages/linux/system/apps/tmux:tmux",
+            "//packages/linux/system/apps/htop:htop",
+            "//packages/linux/system/apps/rsync:rsync",
+            "//packages/linux/system/apps/logrotate:logrotate",
+            "//packages/linux/system/apps/cronie:cronie",
+            "//packages/linux/system/apps/lsof:lsof",
+            "//packages/linux/system/apps/strace:strace",
 
             # Documentation
             "//packages/linux/system/docs:man-db",
@@ -168,26 +168,26 @@ PROFILE_PACKAGE_SETS = {
         "description": "Full desktop environment with multimedia support",
         "packages": BASE_PACKAGES + [
             # Remote access
-            "//packages/linux/network:openssh",
+            "//packages/linux/network/openssh:openssh",
 
             # Editors
             "//packages/linux/editors:vim",
             "//packages/linux/editors:neovim",
 
             # System administration
-            "//packages/linux/system/apps:sudo",
-            "//packages/linux/system/apps:tmux",
-            "//packages/linux/system/apps:htop",
-            "//packages/linux/system/apps:rsync",
-            "//packages/linux/system/apps:logrotate",
-            "//packages/linux/system/apps:cronie",
+            "//packages/linux/system/apps/sudo:sudo",
+            "//packages/linux/system/apps/tmux:tmux",
+            "//packages/linux/system/apps/htop:htop",
+            "//packages/linux/system/apps/rsync:rsync",
+            "//packages/linux/system/apps/logrotate:logrotate",
+            "//packages/linux/system/apps/cronie:cronie",
 
             # Shells
-            "//packages/linux/shells:zsh",
+            "//packages/linux/shells/zsh:zsh",
 
             # Terminals
-            "//packages/linux/terminals:alacritty",
-            "//packages/linux/terminals:foot",
+            "//packages/linux/terminals/alacritty:alacritty",
+            "//packages/linux/terminals/foot:foot",
 
             # Documentation
             "//packages/linux/system/docs:man-db",
@@ -206,7 +206,7 @@ PROFILE_PACKAGE_SETS = {
         "description": "Development-focused with languages, tools, and documentation",
         "packages": BASE_PACKAGES + [
             # Remote access
-            "//packages/linux/network:openssh",
+            "//packages/linux/network/openssh:openssh",
 
             # Editors
             "//packages/linux/editors:vim",
@@ -214,15 +214,15 @@ PROFILE_PACKAGE_SETS = {
             "//packages/linux/editors:emacs",
 
             # Shells
-            "//packages/linux/shells:zsh",
+            "//packages/linux/shells/zsh:zsh",
 
             # System administration
-            "//packages/linux/system/apps:sudo",
-            "//packages/linux/system/apps:tmux",
-            "//packages/linux/system/apps:htop",
-            "//packages/linux/system/apps:rsync",
-            "//packages/linux/system/apps:strace",
-            "//packages/linux/system/apps:lsof",
+            "//packages/linux/system/apps/sudo:sudo",
+            "//packages/linux/system/apps/tmux:tmux",
+            "//packages/linux/system/apps/htop:htop",
+            "//packages/linux/system/apps/rsync:rsync",
+            "//packages/linux/system/apps/strace:strace",
+            "//packages/linux/system/apps/lsof:lsof",
 
             # Documentation
             "//packages/linux/system/docs:man-db",
@@ -239,19 +239,19 @@ PROFILE_PACKAGE_SETS = {
         "description": "Security-hardened configuration with minimal attack surface",
         "packages": BASE_PACKAGES + [
             # Remote access (required for server management)
-            "//packages/linux/network:openssh",
+            "//packages/linux/network/openssh:openssh",
 
             # Minimal editor
             "//packages/linux/editors:vim",
 
             # System administration
-            "//packages/linux/system/apps:sudo",
-            "//packages/linux/system/apps:htop",
-            "//packages/linux/system/apps:rsync",
-            "//packages/linux/system/apps:logrotate",
+            "//packages/linux/system/apps/sudo:sudo",
+            "//packages/linux/system/apps/htop:htop",
+            "//packages/linux/system/apps/rsync:rsync",
+            "//packages/linux/system/apps/logrotate:logrotate",
 
             # VPN for secure communications
-            "//packages/linux/net-vpn:wireguard-tools",
+            "//packages/linux/network/vpn/wireguard-tools:wireguard-tools",
         ],
         "inherits": [],
         "use_profile": "hardened",
@@ -261,9 +261,9 @@ PROFILE_PACKAGE_SETS = {
     "embedded": {
         "description": "Minimal footprint for embedded and IoT systems",
         "packages": SYSTEM_PACKAGES + [
-            "//packages/linux/shells:dash",  # Smaller than bash
+            "//packages/linux/shells/dash:dash",  # Smaller than bash
             "//packages/linux/core/readline:readline",
-            "//packages/linux/network:dropbear",  # Smaller SSH
+            # "//packages/linux/network/dropbear:dropbear",  # TODO: Smaller SSH - not packaged yet
         ],
         "inherits": [],
         "use_profile": "minimal",
@@ -273,10 +273,10 @@ PROFILE_PACKAGE_SETS = {
     "container": {
         "description": "Minimal base for container images",
         "packages": SYSTEM_PACKAGES + [
-            "//packages/linux/shells:bash",
+            "//packages/linux/core/bash:bash",
             "//packages/linux/core/readline:readline",
             "//packages/linux/core/ncurses:ncurses",
-            "//packages/linux/network:curl",
+            "//packages/linux/network/curl:curl",
         ],
         "inherits": [],
         "use_profile": "minimal",
@@ -292,7 +292,7 @@ TASK_PACKAGE_SETS = {
     "web-server": {
         "description": "Packages for running a web server",
         "packages": [
-            "//packages/linux/www-servers:nginx",
+            "//packages/linux/www/servers/nginx:nginx",
         ],
         "inherits": ["server"],
     },
@@ -301,8 +301,8 @@ TASK_PACKAGE_SETS = {
     "database-server": {
         "description": "Database server packages",
         "packages": [
-            "//packages/linux/dev-db:postgresql",
-            "//packages/linux/dev-db:sqlite",
+            "//packages/linux/databases/postgresql:postgresql",
+            "//packages/linux/system/libs/database/sqlite:sqlite",
         ],
         "inherits": ["server"],
     },
@@ -311,9 +311,9 @@ TASK_PACKAGE_SETS = {
     "container-host": {
         "description": "Host system for running containers",
         "packages": [
-            "//packages/linux/system/containers:podman-full",
-            "//packages/linux/system/containers:buildah",
-            "//packages/linux/system/containers:skopeo",
+            "//packages/linux/emulation/containers:podman-full",
+            "//packages/linux/emulation/containers/podman:buildah",
+            "//packages/linux/emulation/containers/podman:skopeo",
         ],
         "inherits": ["server"],
     },
@@ -332,9 +332,9 @@ TASK_PACKAGE_SETS = {
     "vpn-server": {
         "description": "VPN server packages",
         "packages": [
-            "//packages/linux/net-vpn:wireguard-tools",
-            "//packages/linux/net-vpn:openvpn",
-            "//packages/linux/net-vpn:strongswan",
+            "//packages/linux/network/vpn/wireguard-tools:wireguard-tools",
+            "//packages/linux/network/vpn/openvpn:openvpn",
+            "//packages/linux/network/vpn/strongswan:strongswan",
         ],
         "inherits": ["server"],
     },
@@ -343,9 +343,9 @@ TASK_PACKAGE_SETS = {
     "monitoring": {
         "description": "System monitoring and observability tools",
         "packages": [
-            "//packages/linux/system/apps:htop",
-            "//packages/linux/system/apps:lsof",
-            "//packages/linux/system/apps:strace",
+            "//packages/linux/system/apps/htop:htop",
+            "//packages/linux/system/apps/lsof:lsof",
+            "//packages/linux/system/apps/strace:strace",
         ],
         "inherits": ["server"],
     },
@@ -354,12 +354,12 @@ TASK_PACKAGE_SETS = {
     "benchmarking": {
         "description": "Performance testing and benchmarking tools",
         "packages": [
-            "//packages/linux/benchmarks:stress-ng",
-            "//packages/linux/benchmarks:fio",
-            "//packages/linux/benchmarks:sysbench",
-            "//packages/linux/benchmarks:iperf3",
-            "//packages/linux/benchmarks:hackbench",
-            "//packages/linux/benchmarks:memtester",
+            "//packages/linux/benchmarks/stress-ng:stress-ng",
+            "//packages/linux/benchmarks/fio:fio",
+            "//packages/linux/benchmarks/sysbench:sysbench",
+            "//packages/linux/benchmarks/iperf3:iperf3",
+            "//packages/linux/benchmarks/hackbench:hackbench",
+            "//packages/linux/benchmarks/memtester:memtester",
         ],
         "inherits": ["server"],
     },
@@ -447,7 +447,7 @@ DESKTOP_ENVIRONMENT_SETS = {
     "gnome-desktop": {
         "description": "GNOME desktop environment",
         "packages": [
-            "//packages/linux/desktop:gnome",
+            "//packages/linux/desktop/gnome:gnome",
         ],
         "inherits": ["desktop"],
     },
@@ -456,7 +456,7 @@ DESKTOP_ENVIRONMENT_SETS = {
     "kde-desktop": {
         "description": "KDE Plasma desktop environment",
         "packages": [
-            "//packages/linux/desktop:kde-plasma",
+            "//packages/linux/desktop/kde:kde-plasma",
         ],
         "inherits": ["desktop"],
     },
@@ -465,7 +465,7 @@ DESKTOP_ENVIRONMENT_SETS = {
     "xfce-desktop": {
         "description": "XFCE lightweight desktop environment",
         "packages": [
-            "//packages/linux/desktop:xfce",
+            "//packages/linux/desktop/xfce:xfce",
         ],
         "inherits": ["desktop"],
     },
@@ -474,7 +474,7 @@ DESKTOP_ENVIRONMENT_SETS = {
     "sway-desktop": {
         "description": "Sway Wayland compositor with tiling",
         "packages": [
-            "//packages/linux/desktop:sway-desktop",
+            "//packages/linux/desktop/sway:sway-desktop",
         ],
         "inherits": ["desktop"],
     },
@@ -483,7 +483,7 @@ DESKTOP_ENVIRONMENT_SETS = {
     "hyprland-desktop": {
         "description": "Hyprland Wayland compositor",
         "packages": [
-            "//packages/linux/desktop:hyprland-desktop",
+            "//packages/linux/desktop/hyprland:hyprland-desktop",
         ],
         "inherits": ["desktop"],
     },
@@ -492,7 +492,7 @@ DESKTOP_ENVIRONMENT_SETS = {
     "i3-desktop": {
         "description": "i3 X11 tiling window manager",
         "packages": [
-            "//packages/linux/desktop:i3-desktop",
+            "//packages/linux/desktop/i3:i3-desktop",
         ],
         "inherits": ["desktop"],
     },
@@ -794,7 +794,7 @@ def package_set(
             name = "my-tools",
             packages = [
                 "//packages/linux/editors:vim",
-                "//packages/linux/system/apps:tmux",
+                "//packages/linux/system/apps/tmux:tmux",
             ],
             inherits = ["@base"],
             description = "My essential tools",
@@ -846,8 +846,8 @@ def system_set(
             name = "my-server",
             profile = "server",
             additions = [
-                "//packages/linux/net-vpn:wireguard-tools",
-                "//packages/linux/www-servers:nginx",
+                "//packages/linux/network/vpn/wireguard-tools:wireguard-tools",
+                "//packages/linux/www/servers/nginx:nginx",
             ],
             removals = [
                 "//packages/linux/editors:emacs",
@@ -905,7 +905,7 @@ def combined_set(
         combined_set(
             name = "full-stack-server",
             sets = ["@web-server", "@database-server", "@container-host"],
-            additions = ["//packages/linux/net-vpn:wireguard-tools"],
+            additions = ["//packages/linux/network/vpn/wireguard-tools:wireguard-tools"],
             description = "Complete server stack",
         )
     """
@@ -955,7 +955,7 @@ def task_set(
         task_set(
             name = "my-web-server",
             task = "web-server",
-            additions = ["//packages/linux/net-vpn:wireguard-tools"],
+            additions = ["//packages/linux/network/vpn/wireguard-tools:wireguard-tools"],
             description = "Web server with VPN",
         )
     """

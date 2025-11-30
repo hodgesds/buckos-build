@@ -3,8 +3,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "bcachefs-tools-src",
-    src_uri = "https://evilpiepirate.org/git/bcachefs-tools.git/snapshot/bcachefs-tools-1.4.1.tar.gz",
-    sha256 = "f5ea0de5b16cda1b16b8ed2927cfc102c72ab001b8148ca204d4922d07377889",
+    src_uri = "https://github.com/koverstreet/bcachefs-tools/archive/refs/tags/v1.4.1.tar.gz",
+    sha256 = "682777c2391a718c34a5b8992954eba38b5916bdc5fc33f036d55562f4c45d72",
 )
 
 autotools_package(

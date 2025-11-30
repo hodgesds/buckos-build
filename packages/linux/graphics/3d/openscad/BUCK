@@ -35,6 +35,6 @@ make INSTALL_ROOT=$OUT install
         "//packages/linux/system/libs/font/fontconfig:fontconfig",
         "//packages/linux/system/libs/font/harfbuzz:harfbuzz",
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

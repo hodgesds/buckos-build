@@ -14,7 +14,7 @@ autotools_package(
     description = "A code searching tool similar to ack, with a focus on speed",
     homepage = "https://geoff.greer.fm/ag/",
     license = "Apache-2.0",
-    build_deps = [
+    bdepend = [
         "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
     ],
     visibility = ["PUBLIC"],

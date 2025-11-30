@@ -1,7 +1,7 @@
-load("//defs:package_defs.bzl", "cmake_package", "autotools_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
-autotools_package(
+cmake_package(
     name = "libjpeg-turbo",
     version = "3.0.4",
     src_uri = "https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/3.0.4/libjpeg-turbo-3.0.4.tar.gz",
@@ -23,58 +23,26 @@ autotools_package(
     # Default USE flags
     use_defaults = ["jpeg8", "simd"],
 
-    # CMake-based build - use pre_configure to set cmake args
-    use_configure = {},
-
-    use_deps = {
-        "java": ["//packages/linux/lang/openjdk:openjdk"],
+    use_options = {
+        "static-libs": "ENABLE_STATIC=ON",
+        "-static-libs": "ENABLE_STATIC=OFF",
+        "jpeg7": "WITH_JPEG7=ON",
+        "jpeg8": "WITH_JPEG8=ON",
+        "java": "WITH_JAVA=ON",
+        "-java": "WITH_JAVA=OFF",
+        "simd": "WITH_SIMD=ON",
+        "-simd": "WITH_SIMD=OFF",
     },
 
-    configure_args = [],
+    # use_deps = {
+    #     "java": ["//packages/linux/lang/openjdk:openjdk"],  # TODO: not packaged yet
+    # },
+
+    cmake_args = [
+        "-DENABLE_SHARED=ON",
+    ],
+
     deps = [],
-
-    pre_configure = """
-# USE flags: static-libs, jpeg7, jpeg8, java, simd
-# This is a CMake-based package
-
-CMAKE_ARGS="-DCMAKE_INSTALL_PREFIX=/usr"
-
-if [ "${USE_static_libs}" = "1" ]; then
-    CMAKE_ARGS="$CMAKE_ARGS -DENABLE_STATIC=ON -DENABLE_SHARED=ON"
-else
-    CMAKE_ARGS="$CMAKE_ARGS -DENABLE_STATIC=OFF -DENABLE_SHARED=ON"
-fi
-
-if [ "${USE_jpeg7}" = "1" ]; then
-    CMAKE_ARGS="$CMAKE_ARGS -DWITH_JPEG7=ON"
-fi
-
-if [ "${USE_jpeg8}" = "1" ]; then
-    CMAKE_ARGS="$CMAKE_ARGS -DWITH_JPEG8=ON"
-fi
-
-if [ "${USE_java}" = "1" ]; then
-    CMAKE_ARGS="$CMAKE_ARGS -DWITH_JAVA=ON"
-else
-    CMAKE_ARGS="$CMAKE_ARGS -DWITH_JAVA=OFF"
-fi
-
-if [ "${USE_simd}" = "1" ]; then
-    CMAKE_ARGS="$CMAKE_ARGS -DWITH_SIMD=ON"
-else
-    CMAKE_ARGS="$CMAKE_ARGS -DWITH_SIMD=OFF"
-fi
-
-# Run cmake
-cmake $CMAKE_ARGS -B build -S .
-""",
-
-    # Override configure step since we're using cmake
-    configure_command = "true",  # Skip configure, we did it in pre_configure
-
-    # Use cmake build
-    make_command = "cmake --build build",
-    install_command = "cmake --install build --prefix $DESTDIR/usr",
 
     visibility = ["PUBLIC"],
 )

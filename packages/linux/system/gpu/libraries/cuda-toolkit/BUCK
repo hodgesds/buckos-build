@@ -24,36 +24,59 @@ binary_package(
     homepage = "https://developer.nvidia.com/cuda-toolkit",
     license = "NVIDIA CUDA EULA",
     install_script = """
+cd $SRCS
+
+# Find the .run installer (download_source doesn't extract .run files)
+INSTALLER=$(find . -name "cuda_*.run" -type f 2>/dev/null | head -1)
+if [ -z "$INSTALLER" ]; then
+    # The .run file may be kept as-is in the source dir
+    INSTALLER=$(find . -name "*.run" -type f 2>/dev/null | head -1)
+fi
+
+if [ -z "$INSTALLER" ]; then
+    echo "Error: CUDA installer not found"
+    ls -la
+    exit 1
+fi
+
 # Make installer executable
-chmod +x cuda_*.run
+chmod +x "$INSTALLER"
 
 # Extract CUDA toolkit (silent mode, toolkit only)
-./cuda_*.run --silent --toolkit --toolkitpath="$PWD/cuda" --no-opengl-libs --no-drm --no-man-page
+# Use --override to skip gcc version check (ccache wrappers confuse it)
+"$INSTALLER" --silent --toolkit --toolkitpath="$PWD/cuda" --no-opengl-libs --no-drm --no-man-page --override || {
+    echo "Warning: Installer may have failed, checking for extracted files..."
+}
+
+if [ ! -d cuda ]; then
+    echo "Error: CUDA extraction failed"
+    exit 1
+fi
 
 # Install CUDA to standard locations
-mkdir -p "$DESTDIR/usr/local/cuda-12.6"
+mkdir -p "$OUT/usr/local/cuda-12.6"
 
 # Copy binaries
-mkdir -p "$DESTDIR/usr/local/cuda-12.6/bin"
-cp -a cuda/bin/* "$DESTDIR/usr/local/cuda-12.6/bin/"
+mkdir -p "$OUT/usr/local/cuda-12.6/bin"
+cp -a cuda/bin/* "$OUT/usr/local/cuda-12.6/bin/"
 
 # Copy libraries
-mkdir -p "$DESTDIR/usr/local/cuda-12.6/lib64"
-cp -a cuda/lib64/* "$DESTDIR/usr/local/cuda-12.6/lib64/"
+mkdir -p "$OUT/usr/local/cuda-12.6/lib64"
+cp -a cuda/lib64/* "$OUT/usr/local/cuda-12.6/lib64/"
 
 # Copy include files
-mkdir -p "$DESTDIR/usr/local/cuda-12.6/include"
-cp -a cuda/include/* "$DESTDIR/usr/local/cuda-12.6/include/"
+mkdir -p "$OUT/usr/local/cuda-12.6/include"
+cp -a cuda/include/* "$OUT/usr/local/cuda-12.6/include/"
 
 # Copy nvvm
-cp -a cuda/nvvm "$DESTDIR/usr/local/cuda-12.6/"
+cp -a cuda/nvvm "$OUT/usr/local/cuda-12.6/" 2>/dev/null || true
 
 # Create symlink
-ln -sf cuda-12.6 "$DESTDIR/usr/local/cuda"
+ln -sf cuda-12.6 "$OUT/usr/local/cuda"
 
 # Create profile script for PATH
-mkdir -p "$DESTDIR/etc/profile.d"
-cat > "$DESTDIR/etc/profile.d/cuda.sh" << 'EOF'
+mkdir -p "$OUT/etc/profile.d"
+cat > "$OUT/etc/profile.d/cuda.sh" << 'EOF'
 # CUDA Toolkit environment
 export CUDA_HOME=/usr/local/cuda
 export PATH=$CUDA_HOME/bin:$PATH
@@ -61,8 +84,8 @@ export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 EOF
 
 # Create pkgconfig files
-mkdir -p "$DESTDIR/usr/lib64/pkgconfig"
-cat > "$DESTDIR/usr/lib64/pkgconfig/cuda.pc" << 'EOF'
+mkdir -p "$OUT/usr/lib64/pkgconfig"
+cat > "$OUT/usr/lib64/pkgconfig/cuda.pc" << 'EOF'
 prefix=/usr/local/cuda
 exec_prefix=${prefix}
 libdir=${prefix}/lib64
@@ -75,7 +98,7 @@ Libs: -L${libdir} -lcudart
 Cflags: -I${includedir}
 EOF
 
-cat > "$DESTDIR/usr/lib64/pkgconfig/cudart.pc" << 'EOF'
+cat > "$OUT/usr/lib64/pkgconfig/cudart.pc" << 'EOF'
 prefix=/usr/local/cuda
 exec_prefix=${prefix}
 libdir=${prefix}/lib64

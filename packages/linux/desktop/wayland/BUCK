@@ -7,9 +7,9 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 autotools_package(
     name = "wayland",
-    version = "1.22.0",
-    src_uri = "https://gitlab.freedesktop.org/wayland/wayland/-/releases/1.22.0/downloads/wayland-1.22.0.tar.xz",
-    sha256 = "1540af1ea698a471c2d8e9d288332c7e0fd360c8f1d12936ebb7e7cbc2425842",
+    version = "1.23.0",
+    src_uri = "https://github.com/wayland-mirror/wayland/archive/refs/tags/1.23.0.tar.gz",
+    sha256 = "7c5c28fa73f22d1c5021e17e1148f29ab17bf8b776a406f1c4489d3e2992ec3a",
     auto_detect_signature = False,
     description = "Wayland display protocol libraries",
     homepage = "https://wayland.freedesktop.org/",
@@ -36,8 +36,8 @@ meson setup .. --prefix=/usr $CONFIGURE_ARGS
 autotools_package(
     name = "wayland-protocols",
     version = "1.33",
-    src_uri = "https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/1.33/downloads/wayland-protocols-1.33.tar.xz",
-    sha256 = "94f0c50b090d6e61a03f62048467b19abbe851be4e11ae7b36f65f8b98c3963a",
+    src_uri = "https://github.com/wayland-mirror/wayland-protocols/archive/refs/tags/1.33.tar.gz",
+    sha256 = "71a7d2f062d463aa839497ddfac97e4bd3f00aa306e014f94529aa3a2be193a8",
     auto_detect_signature = False,
     description = "Wayland protocol extensions",
     homepage = "https://wayland.freedesktop.org/",

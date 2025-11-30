@@ -22,12 +22,12 @@ autotools_package(
 make DESTDIR=$OUT install
 """,
     deps = [
-        "//packages/linux/system/libs/graphics/imlib2:imlib2",
-        "//packages/linux/system/libs/x11/libxfixes:libxfixes",
-        "//packages/linux/system/libs/x11/libxcomposite:libxcomposite",
-        "//packages/linux/system/libs/x11/libxinerama:libxinerama",
-        "//packages/linux/system/libs/giblib:giblib",
+        # "//packages/linux/system/libs/graphics/imlib2:imlib2",  # TODO: not packaged yet
+        # "//packages/linux/system/libs/x11/libxfixes:libxfixes",  # TODO: X11 libs not packaged
+        # "//packages/linux/system/libs/x11/libxcomposite:libxcomposite",  # TODO: X11 libs not packaged
+        # "//packages/linux/system/libs/x11/libxinerama:libxinerama",  # TODO: X11 libs not packaged
+        # "//packages/linux/system/libs/giblib:giblib",  # TODO: not packaged yet
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

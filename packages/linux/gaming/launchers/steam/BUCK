@@ -21,12 +21,13 @@ binary_package(
 #!/bin/bash
 set -e
 
-# Extract Steam runtime
-tar -xzf steam_*.tar.gz -C "$DESTDIR/opt/"
+# Source is already extracted to $SRCS
+mkdir -p "$OUT/opt/"
+cp -r "$SRCS"/* "$OUT/opt/"
 
 # Create desktop entry
-mkdir -p "$DESTDIR/usr/share/applications"
-cat > "$DESTDIR/usr/share/applications/steam.desktop" << 'EOF'
+mkdir -p "$OUT/usr/share/applications"
+cat > "$OUT/usr/share/applications/steam.desktop" << 'EOF'
 [Desktop Entry]
 Name=Steam
 Comment=Application for managing and playing games on Steam
@@ -38,12 +39,12 @@ Categories=Game;
 EOF
 
 # Create symlink
-mkdir -p "$DESTDIR/usr/bin"
-ln -sf /opt/steam/steam "$DESTDIR/usr/bin/steam"
+mkdir -p "$OUT/usr/bin"
+ln -sf /opt/steam/steam "$OUT/usr/bin/steam"
 
 # Install udev rules for Steam controller support
-mkdir -p "$DESTDIR/usr/lib/udev/rules.d"
-cat > "$DESTDIR/usr/lib/udev/rules.d/70-steam-controller.rules" << 'EOF'
+mkdir -p "$OUT/usr/lib/udev/rules.d"
+cat > "$OUT/usr/lib/udev/rules.d/70-steam-controller.rules" << 'EOF'
 # Steam Controller
 KERNEL=="hidraw*", ATTRS{idVendor}=="28de", MODE="0660", TAG+="uaccess"
 # Steam Deck

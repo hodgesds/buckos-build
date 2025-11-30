@@ -59,21 +59,21 @@ autotools_package(
 make DESTDIR=$OUT install
 """,
     deps = [
-        "//packages/linux/system/libs/graphics/libpng:libpng",
-        "//packages/linux/system/libs/graphics/libjpeg-turbo:libjpeg-turbo",
+        "//packages/linux/system/libs/image/libpng:libpng",
+        "//packages/linux/system/libs/image/libjpeg-turbo:libjpeg-turbo",
         "//packages/linux/system/libs/image/libtiff:libtiff",
-        "//packages/linux/system/libs/graphics/libwebp:libwebp",
-        "//packages/linux/core/libheif:libheif",
-        "//packages/linux/core/libraw:libraw",
+        "//packages/linux/system/libs/image/libwebp:libwebp",
+        # "//packages/linux/core/libheif:libheif",  # TODO: not packaged yet
+        # "//packages/linux/core/libraw:libraw",  # TODO: not packaged yet
         "//packages/linux/dev-libs/openexr:openexr",
-        "//packages/linux/dev-libs/openjpeg:openjpeg",
+        "//packages/linux/system/libs/image/openjpeg:openjpeg",
         "//packages/linux/system/libs/graphics/lcms2:lcms2",
         "//packages/linux/system/libs/font/fontconfig:fontconfig",
         "//packages/linux/fonts/libraries/freetype:freetype",
-        "//packages/linux/system/libs/graphics/pango:pango",
-        "//packages/linux/core/librsvg:librsvg",
+        "//packages/linux/fonts/libraries/pango:pango",
+        # "//packages/linux/core/librsvg:librsvg",  # TODO: not packaged yet
         "//packages/linux/dev-libs/fftw:fftw",
-        "//packages/linux/dev-libs/libxml2:libxml2",
+        "//packages/linux/system/libs/data/libxml2:libxml2",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/system/libs/compression/zstd:zstd",
         "//packages/linux/core/xz:xz",

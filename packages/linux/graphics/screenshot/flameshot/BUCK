@@ -31,8 +31,8 @@ DESTDIR=$OUT make install
 """,
     deps = [
         "//packages/linux/desktop/qt:qt5",
-        "//packages/linux/desktop/kde/kguiaddons:kguiaddons",
+        # "//packages/linux/desktop/kde/kguiaddons:kguiaddons",  # TODO: KDE libs not packaged yet
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

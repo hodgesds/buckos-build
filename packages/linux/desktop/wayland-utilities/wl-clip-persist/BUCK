@@ -3,14 +3,14 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "wl-clip-persist-src",
-    src_uri = "https://github.com/Linus789/wl-clip-persist/archive/v0.3.1.tar.gz",
-    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
+    src_uri = "https://github.com/Linus789/wl-clip-persist/archive/refs/tags/v0.4.0.tar.gz",
+    sha256 = "6c18d7e388167f3a18271f0415b6636330b1858e485a57d4bfb6d3faa5300e7b",
 )
 
 autotools_package(
     name = "wl-clip-persist",
     source = ":wl-clip-persist-src",
-    version = "0.3.1",
+    version = "0.4.0",
     description = "Keep Wayland clipboard after program closes",
     homepage = "https://github.com/Linus789/wl-clip-persist",
     license = "MIT",

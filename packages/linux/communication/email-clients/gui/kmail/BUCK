@@ -5,7 +5,7 @@ download_source(
     name = "kmail-src",
     src_uri = "https://download.kde.org/stable/release-service/24.05.2/src/kmail-24.05.2.tar.xz",
     sha256 = "625e26ef6aac820327da8bf32851c5bef584ad4ce0583a70cfcba076cd50603c",
-    auto_detect_signature=False,
+    auto_detect_signature = False,
 )
 
 binary_package(
@@ -16,11 +16,27 @@ binary_package(
     homepage = "https://apps.kde.org/kmail2/",
     license = "GPL-2+ LGPL-2.1+ GFDL-1.2+",
     install_script = """
-        cd $SRCS/kmail-*
+        cd $SRCS
+
+        # Build CMAKE_PREFIX_PATH and find ECM from dependency directories
+        CMAKE_PREFIX=""
+        ECM_DIR=""
+        for dep in $DEPS; do
+            if [ -d "$dep/usr" ]; then
+                CMAKE_PREFIX="${CMAKE_PREFIX:+${CMAKE_PREFIX};}$dep/usr"
+            fi
+            # Find ECM cmake modules
+            if [ -d "$dep/usr/share/ECM/cmake" ]; then
+                ECM_DIR="$dep/usr/share/ECM/cmake"
+                echo "Found ECM at $ECM_DIR"
+            fi
+        done
 
         cmake -B build \
             -DCMAKE_INSTALL_PREFIX=/usr \
             -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_PREFIX_PATH="$CMAKE_PREFIX" \
+            -DECM_DIR="$ECM_DIR" \
             -DBUILD_TESTING=OFF \
             -DBUILD_QCH=OFF \
             -DKDE_INSTALL_USE_QT_SYS_PATHS=ON
@@ -30,6 +46,7 @@ binary_package(
     """,
     deps = [
         "//packages/linux/network/openssl:openssl",
+        "//packages/linux/desktop/kde/ecm:extra-cmake-modules",
     ],
     visibility = ["PUBLIC"],
 )

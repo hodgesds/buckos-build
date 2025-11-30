@@ -24,7 +24,7 @@ binary_package(
     homepage = "https://www.chromium.org/",
     license = "BSD-3-Clause",
     install_script = """
-        cd $SRCS/chromium-126.0.6478.126
+        cd $SRCS
 
         # Configure GN build
         mkdir -p out/Release
@@ -81,8 +81,9 @@ WRAPPER
             # "nspr": ["//packages/linux/network/nspr:nspr"],
             "python": ["//packages/linux/lang/python:python"],
             "nodejs": ["//packages/linux/lang/nodejs:nodejs"],
+            "gn": ["//packages/linux/dev-tools/build-systems/gn:gn"],
         },
-        ["glib", "gtk", "python", "nodejs"],
+        ["glib", "gtk", "python", "nodejs", "gn"],
     ),
     visibility = ["PUBLIC"],
 )

@@ -6,8 +6,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "pcsx2-src",
-    src_uri = "https://github.com/PCSX2/pcsx2/archive/refs/tags/v2.1.265.tar.gz",
-    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
+    src_uri = "https://github.com/PCSX2/pcsx2/archive/refs/tags/v2.3.193.tar.gz",
+    sha256 = "a685e188f8143ff423edaa3b400898610cad62b6a8821f6182e099f4de20cef4",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -15,7 +15,7 @@ download_source(
 autotools_package(
     name = "pcsx2",
     source = ":pcsx2-src",
-    version = "2.1.265",
+    version = "2.3.193",
     description = "PlayStation 2 emulator",
     homepage = "https://pcsx2.net/",
     license = "GPL-3.0",

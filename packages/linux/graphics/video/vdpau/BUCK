@@ -6,8 +6,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 meson_package(
     name = "vdpau",
     version = "1.5",
-    src_uri = "https://gitlab.freedesktop.org/vdpau/libvdpau/-/archive/1.5/libvdpau-1.5.tar.bz2",
-    sha256 = "a5d50a42b8c288febc07151ab643ac8de06a18446965c7241f89b4e810821913",
+    src_uri = "https://github.com/gitlab-freedesktop-mirrors/libvdpau/archive/refs/tags/1.5.tar.gz",
+    sha256 = "66490802f30426d30ff9e8af35263bbbbaa23b52d0a2d797d06959c3d19638fd",
     description = "Video Decode and Presentation API for Unix",
     homepage = "https://www.freedesktop.org/wiki/Software/VDPAU/",
     license = "MIT",
@@ -24,11 +24,11 @@ meson_package(
 # libvdpau-va-gl - VDPAU driver using OpenGL/VAAPI as backend
 meson_package(
     name = "libvdpau-va-gl",
-    version = "0.4.0",
-    src_uri = "https://github.com/nickel-oern/libvdpau-va-gl/archive/refs/tags/v0.4.0.tar.gz",
-    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+    version = "0.4.2",
+    src_uri = "https://github.com/i-rinat/libvdpau-va-gl/archive/refs/tags/v0.4.2.tar.gz",
+    sha256 = "7d9121540658eb0244859e63da171ca3869e784afbeaf202f44471275c784af4",
     description = "VDPAU driver using OpenGL/VAAPI as backend",
-    homepage = "https://github.com/nickel-oern/libvdpau-va-gl",
+    homepage = "https://github.com/i-rinat/libvdpau-va-gl",
     license = "MIT",
     meson_args = [],
     deps = [

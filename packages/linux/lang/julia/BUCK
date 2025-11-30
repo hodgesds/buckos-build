@@ -2,31 +2,28 @@ load("//defs:package_defs.bzl", "download_source", "autotools_package", "binary_
 load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 # =============================================================================
-# Julia - High-level, high-performance dynamic language
+# Julia - High-level, high-performance dynamic language (Pre-built binaries)
 # =============================================================================
+# Building Julia from source requires specific LLVM/GCC version combinations.
+# Using official pre-built binaries is recommended.
 
 download_source(
-    name = "julia-src",
-    src_uri = "https://github.com/JuliaLang/julia/releases/download/v1.10.0/julia-1.10.0.tar.gz",
-    sha256 = "a4136608265c5d9186ae4767e94ddc948b19b43f760aba3501a161290852054d",
+    name = "julia-bin-src",
+    src_uri = "https://julialang-s3.julialang.org/bin/linux/x64/1.11/julia-1.11.2-linux-x86_64.tar.gz",
+    sha256 = "8a372ad262d4d4d55a1044f4fe3bce7c9a4a3ce8c513d2470e58e8071eecd476",
     auto_detect_signature = False,
 )
 
 binary_package(
     name = "julia",
-    srcs = [":julia-src"],
-    version = "1.10.0",
+    srcs = [":julia-bin-src"],
+    version = "1.11.2",
     description = "Julia is a high-level, high-performance dynamic language for technical computing",
     homepage = "https://julialang.org/",
     license = "MIT",
     install_script = """
-        cd $SRCS/julia-1.10.0
-
-        # Build Julia
-        make
-
-        # Install
-        make install DESTDIR=$OUT prefix=/usr
+        mkdir -p $OUT/usr
+        cp -r $SRCS/* $OUT/usr/
     """,
     visibility = ["PUBLIC"],
 )

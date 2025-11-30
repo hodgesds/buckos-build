@@ -4,8 +4,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 autotools_package(
     name = "id3v2",
     version = "0.1.12",
-    src_uri = "https://downloads.sourceforge.net/id3v2/id3v2-0.1.12.tar.gz",
-    sha256 = "8105fad3189dbb0e4cb381862b4fa18744233c3bbe6def6f81ff64f5101722bf",
+    src_uri = "https://github.com/myers/id3v2/archive/refs/heads/master.tar.gz",
+    sha256 = "8a522c003d4d2855bb83e4a83f93502bceb22e7c4108c9ca5b0e5b417f213c09",
     description = "Command line editor for id3v2 tags",
     homepage = "https://id3v2.sourceforge.net/",
     license = "GPL-2",

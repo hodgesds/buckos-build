@@ -7,14 +7,14 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "budgie-desktop-src",
-    src_uri = "https://github.com/BuddiesOfBudgie/budgie-desktop/releases/download/v10.9.1/budgie-desktop-10.9.1.tar.xz",
-    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+    src_uri = "https://github.com/BuddiesOfBudgie/budgie-desktop/releases/download/v10.9.2/budgie-desktop-v10.9.2.tar.xz",
+    sha256 = "d45fff07a2d370c13c1c7610abe33ac02977c2f1521a26c5dbe8fb2594551b29",
 )
 
 autotools_package(
     name = "budgie-desktop",
     source = ":budgie-desktop-src",
-    version = "10.9.1",
+    version = "10.9.2",
     description = "Budgie Desktop Environment",
     homepage = "https://buddiesofbudgie.org/",
     license = "GPL-2.0",

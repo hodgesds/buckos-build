@@ -61,23 +61,28 @@ autotools_package(
     visibility = ["PUBLIC"],
 )
 
-# pam_ssh - SSH key-based authentication
+# pam_ssh_agent_auth - SSH agent-based authentication for sudo
 download_source(
-    name = "pam-ssh-src",
-    src_uri = "https://github.com/OpenSC/pam_ssh/archive/refs/tags/pam_ssh-2.3.tar.gz",
-    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+    name = "pam-ssh-agent-auth-src",
+    src_uri = "https://github.com/jbeverly/pam_ssh_agent_auth/archive/refs/tags/pam_ssh_agent_auth-0.10.4.tar.gz",
+    sha256 = "9d440de6627940c09eadc342cc7d8bc9823654fd1a2be11c4f5820dd073054e0",
+    auto_detect_signature = False,
 )
 
 autotools_package(
-    name = "pam-ssh",
-    source = ":pam-ssh-src",
-    version = "2.3",
-    description = "PAM module for SSH key authentication",
-    homepage = "https://pam-ssh.sourceforge.net/",
-    license = "BSD-3-Clause",
+    name = "pam-ssh-agent-auth",
+    source = ":pam-ssh-agent-auth-src",
+    version = "0.10.4",
+    description = "PAM module for SSH agent-based authentication",
+    homepage = "https://github.com/jbeverly/pam_ssh_agent_auth",
+    license = "BSD-2-Clause",
+    pre_configure = """
+        autoreconf -i
+    """,
     configure_args = [
         "--prefix=/usr",
-        "--with-pam-dir=/lib/security",
+        "--libexecdir=/lib/security",
+        "--with-mantype=man",
     ],
     deps = [
         "//packages/linux/system/security/encryption:linux-pam",

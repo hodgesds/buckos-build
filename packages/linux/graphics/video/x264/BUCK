@@ -28,8 +28,8 @@ autotools_package(
 DESTDIR=$OUT make install
 """,
     deps = [],
-    build_deps = [
-        "//packages/linux/lang/nasm:nasm",
+    bdepend = [
+        # "//packages/linux/lang/nasm:nasm",  # TODO: not packaged yet,
     ],
     visibility = ["PUBLIC"],
 )

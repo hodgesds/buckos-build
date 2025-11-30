@@ -4,20 +4,10 @@
 # similar to Gentoo's ebuild system.
 
 load("//defs:use_flags.bzl",
-     "use_package",
-     "use_ebuild_package",
-     "profile_package",
      "set_use_flags",
      "package_use",
      "USE_PROFILES",
      "GLOBAL_USE_FLAGS",
-)
-load("//defs:package_customize.bzl",
-     "package_config",
-     "apply_customizations",
-     "customized_package",
-     "server_config",
-     "get_env_preset",
 )
 load("//defs:package_defs.bzl",
      "download_source",
@@ -65,11 +55,11 @@ autotools_package(
 
     # Conditional dependencies based on USE flags
     use_deps = {
-        "ssl": ["//packages/linux/dev-libs/openssl:openssl"],
-        "gnutls": ["//packages/linux/net-libs/gnutls:gnutls"],
-        "http2": ["//packages/linux/net-libs/nghttp2:nghttp2"],
-        "zstd": ["//packages/linux/app-arch/zstd:zstd"],
-        "brotli": ["//packages/linux/app-arch/brotli:brotli"],
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "gnutls": ["//packages/linux/system/libs/crypto/gnutls:gnutls"],
+        "http2": ["//packages/linux/network/nghttp2:nghttp2"],
+        "zstd": ["//packages/linux/system/libs/compression/zstd:zstd"],
+        "brotli": ["//packages/linux/system/libs/compression/brotli:brotli"],
     },
 
     # Conditional configure arguments
@@ -127,10 +117,10 @@ autotools_package(
     iuse = ["ssl", "gnutls", "http2", "ipv6", "zstd", "brotli", "ldap", "debug"],
     use_defaults = ["ssl", "ipv6"],
     use_deps = {
-        "ssl": ["//packages/linux/dev-libs/openssl:openssl"],
-        "gnutls": ["//packages/linux/net-libs/gnutls:gnutls"],
-        "http2": ["//packages/linux/net-libs/nghttp2:nghttp2"],
-        "brotli": ["//packages/linux/app-arch/brotli:brotli"],
+        "ssl": ["//packages/linux/network/openssl:openssl"],
+        "gnutls": ["//packages/linux/system/libs/crypto/gnutls:gnutls"],
+        "http2": ["//packages/linux/network/nghttp2:nghttp2"],
+        "brotli": ["//packages/linux/system/libs/compression/brotli:brotli"],
     },
     use_configure = {
         "ssl": "--with-ssl=/usr",
@@ -146,172 +136,47 @@ autotools_package(
 )
 
 # =============================================================================
-# EXAMPLE 3: Profile-Based Package
-# =============================================================================
-#
-# Use predefined profiles (minimal, server, desktop, developer, hardened).
-# Profiles set reasonable USE flag defaults for common use cases.
-
-profile_package(
-    name = "nginx-server-example",
-    version = "1.25.3",
-    src_uri = "https://nginx.org/download/nginx-1.25.3.tar.gz",
-    sha256 = "64c5b975ca287939e828303fa857d22f142b251f17808dfe41733512d9cded86",
-
-    # USE flags nginx supports
-    iuse = [
-        "ssl",
-        "http2",
-        "pcre",
-        "pcre2",
-        "zlib",
-        "geoip",
-        "debug",
-        "threads",
-        "stream",
-    ],
-
-    # Use server profile - optimizes for headless server use
-    profile = "server",
-
-    # Conditional dependencies
-    use_deps = {
-        "ssl": ["//packages/linux/dev-libs/openssl:openssl"],
-        "pcre": ["//packages/linux/dev-libs/pcre:pcre"],
-        "pcre2": ["//packages/linux/dev-libs/pcre2:pcre2"],
-        "zlib": ["//packages/linux/sys-libs/zlib:zlib"],
-        "geoip": ["//packages/linux/dev-libs/geoip:geoip"],
-    },
-
-    # Conditional configure arguments
-    use_configure = {
-        "ssl": "--with-http_ssl_module",
-        "http2": "--with-http_v2_module",
-        "pcre": "--with-pcre",
-        "pcre2": "--with-pcre2",
-        "threads": "--with-threads",
-        "stream": "--with-stream",
-        "debug": "--with-debug",
-        "-debug": "",
-    },
-
-    description = "High-performance HTTP server (server profile)",
-)
-
-# =============================================================================
-# EXAMPLE 4: Full Customization Configuration
-# =============================================================================
-#
-# Comprehensive configuration similar to Gentoo's make.conf + /etc/portage/
-
-# Define a complete configuration
-MY_CONFIG = package_config(
-    # Global USE flags
-    use_flags = [
-        "ssl", "http2", "ipv6",
-        "zlib", "zstd",
-        "-debug", "-test",
-        "threads",
-    ],
-
-    # Base profile
-    profile = "server",
-
-    # Per-package USE flag overrides
-    package_use = {
-        "ffmpeg": ["x264", "x265", "opus", "vorbis", "-debug"],
-        "python": ["sqlite", "ssl", "readline", "ncurses"],
-        "nginx": ["http2", "ssl", "pcre2", "stream"],
-    },
-
-    # Per-package environment variables
-    package_env = {
-        "ffmpeg": {"CFLAGS": "-O3 -march=native"},
-        "gcc": {"MAKEOPTS": "-j8"},
-    },
-
-    # Package masks (prevent building)
-    package_mask = [
-        "//packages/linux/dev-libs/openssl:1.1",  # Block old OpenSSL
-    ],
-
-    # Global compiler flags
-    cflags = "-O2 -pipe -march=x86-64-v2",
-    cxxflags = "-O2 -pipe -march=x86-64-v2",
-    ldflags = "-Wl,-O1 -Wl,--as-needed",
-    makeopts = "-j$(nproc)",
-
-    # Build features
-    features = ["parallel-fetch", "ccache"],
-)
-
-# Use the configuration with customized_package
-# (Note: This would need the actual package definition to work)
-
-# =============================================================================
-# EXAMPLE 5: Ebuild-Style Package with USE Flags
+# EXAMPLE 3: Ebuild-Style Package with USE Flags
 # =============================================================================
 #
 # Maximum flexibility with custom phase functions.
 # USE flags are available via the use() shell function.
 
-use_ebuild_package(
-    name = "libxml2-example",
-    version = "2.12.3",
+download_source(
+    name = "libxml2-src",
     src_uri = "https://download.gnome.org/sources/libxml2/2.12/libxml2-2.12.3.tar.xz",
     sha256 = "8c8f1092340a89ff32bc44ad5c9693aff9bc8a7a3e161bb239666e5d15ac9aaa",
+)
 
-    # Package metadata
-    category = "dev-libs",
-    slot = "2",
+ebuild_package(
+    name = "libxml2-example",
+    version = "2.12.3",
+    source = ":libxml2-src",
 
     # USE flags
-    iuse = [
-        "debug",
-        "icu",
-        "lzma",
-        "python",
-        "readline",
-        "static-libs",
-    ],
-    use_defaults = ["readline"],
-
-    # Conditional dependencies
-    use_deps = {
-        "icu": ["//packages/linux/dev-libs/icu:icu"],
-        "lzma": ["//packages/linux/app-arch/xz-utils:xz-utils"],
-        "python": ["//packages/linux/lang/python:python"],
-        "readline": ["//packages/linux/sys-libs/readline:readline"],
-    },
+    use_flags = ["readline"],
 
     # Custom configure phase using USE flags
     src_configure = """
 # USE flags are available via the use() function
-./configure --prefix=/usr \\
-    $(use debug && echo --enable-debug || echo --disable-debug) \\
-    $(use icu && echo --with-icu || echo --without-icu) \\
-    $(use lzma && echo --with-lzma || echo --without-lzma) \\
-    $(use python && echo --with-python || echo --without-python) \\
-    $(use readline && echo --with-readline || echo --without-readline) \\
+./configure --prefix=/usr \
+    $(use debug && echo --enable-debug || echo --disable-debug) \
+    $(use icu && echo --with-icu || echo --without-icu) \
+    $(use lzma && echo --with-lzma || echo --without-lzma) \
+    $(use python && echo --with-python || echo --without-python) \
+    $(use readline && echo --with-readline || echo --without-readline) \
     $(use static-libs && echo --enable-static || echo --disable-static)
 """,
-
-    # Apply global USE flags
-    global_use = GLOBAL_USE,
 
     description = "XML C parser and toolkit",
     homepage = "https://gitlab.gnome.org/GNOME/libxml2",
     license = "MIT",
+    visibility = ["PUBLIC"],
 )
 
 # =============================================================================
-# EXAMPLE 6: Environment Preset Usage
+# EXAMPLE 4: Hardened OpenSSH
 # =============================================================================
-#
-# Use predefined environment presets for common build configurations.
-
-# Get hardened build environment
-HARDENED_ENV = get_env_preset("hardened")
 
 download_source(
     name = "openssh-src",
@@ -330,35 +195,12 @@ autotools_package(
         "--with-pam",
         "--with-privsep-path=/var/lib/sshd",
     ],
-    env = HARDENED_ENV,  # Apply hardened compiler flags
+    env = {
+        "CFLAGS": "-O2 -fstack-protector-strong -D_FORTIFY_SOURCE=2",
+        "LDFLAGS": "-Wl,-z,relro,-z,now",
+    },
     description = "OpenSSH with hardened build flags",
 )
-
-# =============================================================================
-# EXAMPLE 7: Showing Available USE Flags and Profiles
-# =============================================================================
-#
-# This is informational - showing what's available.
-
-# Available global USE flags can be seen in GLOBAL_USE_FLAGS
-# Key categories:
-# - Build: debug, doc, examples, static, test
-# - Security: caps, hardened, pie, seccomp, selinux, ssp
-# - Networking: ipv6, ssl, gnutls, http2, curl
-# - Compression: brotli, bzip2, lz4, lzma, zlib, zstd
-# - Graphics: X, wayland, opengl, vulkan, gtk, qt5, qt6
-# - Audio: alsa, pulseaudio, pipewire
-# - Languages: python, perl, ruby, lua, java
-# - Database: mysql, postgres, sqlite, ldap
-# - System: acl, attr, dbus, pam, systemd, udev
-
-# Available profiles:
-# - minimal: Bare essentials only
-# - server: Headless server optimizations
-# - desktop: Full desktop with multimedia
-# - developer: Development tools enabled
-# - hardened: Security-focused configuration
-# - default: Balanced defaults
 
 # =============================================================================
 # FILEGROUP for examples
@@ -369,7 +211,6 @@ filegroup(
     srcs = [
         ":curl-example",
         ":curl-gnutls-example",
-        ":nginx-server-example",
         ":libxml2-example",
         ":openssh-hardened-example",
     ],

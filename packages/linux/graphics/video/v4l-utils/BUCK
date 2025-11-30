@@ -25,8 +25,8 @@ meson_package(
         "-Dv4l-utils=true",
     ],
     deps = [
-        "//packages/linux/desktop/qt:qt6",
-        "//packages/linux/system/libs/graphics/libjpeg-turbo:libjpeg-turbo",
+        "//packages/linux/desktop/qt:qt5",
+        "//packages/linux/system/libs/image/libjpeg-turbo:libjpeg-turbo",
         "//packages/linux/system/init/eudev:eudev",
     ],
     maintainers = [],

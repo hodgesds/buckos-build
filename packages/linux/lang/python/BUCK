@@ -27,7 +27,8 @@ autotools_package(
     ],
 
     # Default USE flags
-    use_defaults = ["sqlite", "readline", "ncurses", "ssl", "pgo"],
+    # Note: PGO disabled due to linking issues with __gcov_* symbols during cross-compile
+    use_defaults = ["sqlite", "readline", "ncurses", "ssl"],
 
     # Conditional dependencies
     use_deps = {
@@ -59,6 +60,18 @@ autotools_package(
 
     deps = [
         "//packages/linux/core/zlib:zlib",
+        "//packages/linux/core/expat:expat",
+        "//packages/linux/core/libffi:libffi",
     ],
+
+    # Fix lib-dynload path: Python stdlib is in lib/python3.12 but lib-dynload is in lib64/python3.12
+    # Create a symlink so Python can find its C extensions
+    post_install = """
+        # Create lib-dynload symlink in lib/python3.12 pointing to lib64/python3.12/lib-dynload
+        if [ -d "$DESTDIR/usr/lib64/python3.12/lib-dynload" ] && [ ! -e "$DESTDIR/usr/lib/python3.12/lib-dynload" ]; then
+            ln -sf ../../lib64/python3.12/lib-dynload "$DESTDIR/usr/lib/python3.12/lib-dynload"
+        fi
+    """,
+
     visibility = ["PUBLIC"],
 )

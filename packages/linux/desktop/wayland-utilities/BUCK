@@ -50,7 +50,7 @@ filegroup(
         "//packages/linux/desktop/wayland-utilities/hyprpicker:hyprpicker",
         "//packages/linux/desktop/wayland-utilities/wlopm:wlopm",
         "//packages/linux/desktop/wayland-utilities/wayland-utils:wayland-utils",
-        "//packages/linux/desktop/wayland-utilities/wlprop:wlprop",
+        # wlprop disabled - repository no longer exists
     ],
     visibility = ["PUBLIC"],
 )
@@ -242,7 +242,7 @@ filegroup(
     srcs = [
         "//packages/linux/desktop/wayland-utilities/wlopm:wlopm",
         "//packages/linux/desktop/wayland-utilities/wayland-utils:wayland-utils",
-        "//packages/linux/desktop/wayland-utilities/wlprop:wlprop",
+        # wlprop disabled - repository no longer exists
     ],
     visibility = ["PUBLIC"],
 )

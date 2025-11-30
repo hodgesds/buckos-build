@@ -32,7 +32,7 @@ autotools_package(
     },
     use_deps = {
         "graphite": ["//packages/linux/system/libs/font/graphite2:graphite2"],
-        "glib": ["//packages/linux/system/libs/utility/glib:glib"],
+        "glib": ["//packages/linux/dev-libs/glib:glib"],
         "cairo": ["//packages/linux/system/libs/graphics/cairo:cairo"],
         "icu": ["//packages/linux/system/libs/utility/icu:icu"],
     },

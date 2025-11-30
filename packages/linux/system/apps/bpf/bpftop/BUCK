@@ -14,7 +14,7 @@ binary_package(
     homepage = "https://github.com/Netflix/bpftop",
     license = "Apache-2.0",
     install_script = """
-        cd $SRCS/bpftop-*
+        cd $SRCS
 
         # Build with Cargo (Rust)
         export CARGO_HOME=$PWD/.cargo

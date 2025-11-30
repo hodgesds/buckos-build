@@ -19,8 +19,10 @@ binary_package(
     homepage = "https://www.iozone.org/",
     license = "Freeware",
     install_script = """
-        cd $SRCS/iozone*/src/current
-        make linux
+        cd $SRCS/src/current
+        # Use gnu17 standard to fix K&R style declarations for GCC 14+
+        # -DHAVE_ANSIC_C is already in the makefile but -std=gnu17 is needed
+        make linux CFLAGS="-O3 -std=gnu17 -Dunix -DHAVE_ANSIC_C -DASYNC_IO -DHAVE_PREAD -DSHARED_MEM -Dlinux -D_LARGEFILE64_SOURCE"
         mkdir -p $OUT/usr/bin
         cp iozone $OUT/usr/bin/
     """,

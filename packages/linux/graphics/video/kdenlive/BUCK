@@ -3,8 +3,9 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "kdenlive-src",
-    src_uri = "https://download.kde.org/stable/kdenlive/24.02/kdenlive-24.02.0.tar.xz",
-    sha256 = "e0efff427b2155b09784851fa1645511ffb93629e557e887ec5dacff2fe223a0",
+    src_uri = "https://github.com/KDE/kdenlive/archive/refs/tags/v24.02.0.tar.gz",
+    sha256 = "b810a9ea91b95151fbe8cb078709c5bcf6a2295973f65f20daebc18b64b2636a",
+    auto_detect_signature = False,
 )
 
 autotools_package(
@@ -33,12 +34,12 @@ DESTDIR=$OUT make install
     deps = [
         "//packages/linux/desktop/kde:kf5",
         "//packages/linux/desktop/qt:qt5",
-        "//packages/linux/dev-libs/mlt:mlt",
+        # "//packages/linux/dev-libs/mlt:mlt",  # TODO: not packaged yet
         "//packages/linux/graphics/video/ffmpeg:ffmpeg",
-        "//packages/linux/core/frei0r:frei0r",
-        "//packages/linux/graphics/video/v4l-utils:libv4l",
-        "//packages/linux/core/rttr:rttr",
+        # "//packages/linux/core/frei0r:frei0r",  # TODO: not packaged yet,
+        "//packages/linux/graphics/video/v4l-utils:v4l-utils",
+        # "//packages/linux/core/rttr:rttr",  # TODO: not packaged yet,
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

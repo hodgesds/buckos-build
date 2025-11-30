@@ -37,8 +37,8 @@ DESTDIR=$OUT make install
 """,
     deps = [
         "//packages/linux/graphics/video/ffmpeg:ffmpeg",
-        "//packages/linux/core/jsoncpp:jsoncpp",
-        "//packages/linux/core/zeromq:zeromq",
+        # "//packages/linux/core/jsoncpp:jsoncpp",  # TODO: not packaged yet
+        # "//packages/linux/core/zeromq:zeromq",  # TODO: not packaged yet,
         "//packages/linux/desktop/qt:qt5",
         "//packages/linux/desktop/mesa:mesa",
     ],
@@ -63,9 +63,9 @@ python3 setup.py install --prefix=/usr --root=$OUT
     deps = [
         ":libopenshot",
         "//packages/linux/lang/python:python",
-        "//packages/linux/desktop/qt:pyqt5",
-        "//packages/linux/core/requests:requests",
+        "//packages/linux/desktop/qt:qt5",
+        # "//packages/linux/core/requests:requests",  # TODO: not packaged yet,
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

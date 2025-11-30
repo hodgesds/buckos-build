@@ -10,6 +10,7 @@ download_source(
     name = "caddy-src",
     src_uri = "https://github.com/caddyserver/caddy/releases/download/v2.8.4/caddy_2.8.4_linux_amd64.tar.gz",
     sha256 = "a7e8306c54138cf88e371c5ec0caf7baf142ecc1d60a30897dfb67d65d3748c8",
+    strip_components = 0,
 )
 
 binary_package(
@@ -22,16 +23,24 @@ binary_package(
     install_script = """
 cd $SRCS
 
-# Install binary
-install -Dm755 caddy "$DESTDIR/usr/bin/caddy"
+# Find and install binary (may be in current dir or extracted directly)
+if [ -f caddy ]; then
+    install -Dm755 caddy "$OUT/usr/bin/caddy"
+elif [ -f */caddy ]; then
+    install -Dm755 */caddy "$OUT/usr/bin/caddy"
+else
+    echo "Error: caddy binary not found"
+    ls -la
+    exit 1
+fi
 
 # Create configuration directories
-mkdir -p "$DESTDIR/etc/caddy"
-mkdir -p "$DESTDIR/var/lib/caddy"
-mkdir -p "$DESTDIR/var/log/caddy"
+mkdir -p "$OUT/etc/caddy"
+mkdir -p "$OUT/var/lib/caddy"
+mkdir -p "$OUT/var/log/caddy"
 
 # Create default Caddyfile
-cat > "$DESTDIR/etc/caddy/Caddyfile" << 'EOF'
+cat > "$OUT/etc/caddy/Caddyfile" << 'EOF'
 # Global options
 {
     admin off
@@ -45,7 +54,7 @@ cat > "$DESTDIR/etc/caddy/Caddyfile" << 'EOF'
 EOF
 
 # Create default web root
-mkdir -p "$DESTDIR/var/www/html"
+mkdir -p "$OUT/var/www/html"
 """,
     deps = [
     ],

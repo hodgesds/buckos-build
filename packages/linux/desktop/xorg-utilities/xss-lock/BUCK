@@ -3,14 +3,14 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "xss-lock-src",
-    src_uri = "https://github.com/xdbob/xss-lock/archive/v0.4.0.tar.gz",
-    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
+    src_uri = "https://github.com/xdbob/xss-lock/archive/refs/tags/v0.3.0.tar.gz",
+    sha256 = "2beb7d05991b4fba341dcdf2d8160253e694a7ee47eb2eb0eade59dd5ce7ca18",
 )
 
 autotools_package(
     name = "xss-lock",
     source = ":xss-lock-src",
-    version = "0.4.0",
+    version = "0.3.0",
     description = "Use external locker as X screen saver",
     homepage = "https://github.com/xdbob/xss-lock",
     license = "MIT",

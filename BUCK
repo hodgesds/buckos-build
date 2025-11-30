@@ -14,17 +14,17 @@ alias(
     visibility = ["PUBLIC"],
 )
 
-# Complete system with kernel
+# Complete system with kernel - points to the minimal profile with kernel
 alias(
     name = "complete",
-    actual = "//packages/linux/system:buckos-complete",
+    actual = "//:core-packages",
     visibility = ["PUBLIC"],
 )
 
 # Individual component aliases
 alias(
     name = "kernel",
-    actual = "//packages/linux/kernel:linux",
+    actual = "//packages/linux/kernel:default",
     visibility = ["PUBLIC"],
 )
 
@@ -37,21 +37,21 @@ alias(
 # Default shell
 alias(
     name = "shell",
-    actual = "//packages/linux/shells:bash",
+    actual = "//packages/linux/core/bash:bash",
     visibility = ["PUBLIC"],
 )
 
 # Default terminal
 alias(
     name = "terminal",
-    actual = "//packages/linux/terminals:st",
+    actual = "//packages/linux/terminals/st:st",
     visibility = ["PUBLIC"],
 )
 
 # Default cron
 alias(
     name = "cron",
-    actual = "//packages/linux/system/apps:cronie",
+    actual = "//packages/linux/system/apps/cronie:cronie",
     visibility = ["PUBLIC"],
 )
 
@@ -95,33 +95,33 @@ alias(
 # Default privilege escalation
 alias(
     name = "sudo",
-    actual = "//packages/linux/system/apps:sudo",
+    actual = "//packages/linux/system/apps/sudo:sudo",
     visibility = ["PUBLIC"],
 )
 
 # Default terminal multiplexer
 alias(
     name = "multiplexer",
-    actual = "//packages/linux/system/apps:tmux",
+    actual = "//packages/linux/system/apps/tmux:tmux",
     visibility = ["PUBLIC"],
 )
 
 # VPN solutions
 alias(
     name = "wireguard",
-    actual = "//packages/linux/net-vpn:wireguard-tools",
+    actual = "//packages/linux/network/vpn/wireguard-tools:wireguard-tools",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "openvpn",
-    actual = "//packages/linux/net-vpn:openvpn",
+    actual = "//packages/linux/network/vpn/openvpn:openvpn",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "strongswan",
-    actual = "//packages/linux/net-vpn:strongswan",
+    actual = "//packages/linux/network/vpn/strongswan:strongswan",
     visibility = ["PUBLIC"],
 )
 
@@ -192,10 +192,10 @@ filegroup(
     name = "net-packages",
     srcs = [
         "//packages/linux/network/openssl:openssl",
-        "//packages/linux/network:curl",
-        "//packages/linux/network:openssh",
-        "//packages/linux/network:iproute2",
-        "//packages/linux/network:dhcpcd",
+        "//packages/linux/network/curl:curl",
+        "//packages/linux/network/openssh:openssh",
+        "//packages/linux/network/iproute2:iproute2",
+        "//packages/linux/network/dhcpcd:dhcpcd",
     ],
     visibility = ["PUBLIC"],
 )
@@ -204,14 +204,14 @@ filegroup(
 filegroup(
     name = "vpn-packages",
     srcs = [
-        "//packages/linux/net-vpn:wireguard-tools",
-        "//packages/linux/net-vpn:openvpn",
-        "//packages/linux/net-vpn:strongswan",
-        "//packages/linux/net-vpn:libreswan",
-        "//packages/linux/net-vpn:openconnect",
-        "//packages/linux/net-vpn:tinc",
-        "//packages/linux/net-vpn:zerotier",
-        "//packages/linux/net-vpn:nebula",
+        "//packages/linux/network/vpn/wireguard-tools:wireguard-tools",
+        "//packages/linux/network/vpn/openvpn:openvpn",
+        "//packages/linux/network/vpn/strongswan:strongswan",
+        "//packages/linux/network/vpn/libreswan:libreswan",
+        "//packages/linux/network/vpn/openconnect:openconnect",
+        "//packages/linux/network/vpn/tinc:tinc",
+        "//packages/linux/network/vpn/zerotier:zerotier",
+        "//packages/linux/network/vpn/nebula:nebula",
     ],
     visibility = ["PUBLIC"],
 )
@@ -220,9 +220,9 @@ filegroup(
 filegroup(
     name = "vpn-modern",
     srcs = [
-        "//packages/linux/net-vpn:wireguard-tools",
-        "//packages/linux/net-vpn:openvpn",
-        "//packages/linux/net-vpn:strongswan",
+        "//packages/linux/network/vpn/wireguard-tools:wireguard-tools",
+        "//packages/linux/network/vpn/openvpn:openvpn",
+        "//packages/linux/network/vpn/strongswan:strongswan",
     ],
     visibility = ["PUBLIC"],
 )
@@ -231,10 +231,10 @@ filegroup(
 filegroup(
     name = "vpn-mesh",
     srcs = [
-        "//packages/linux/net-vpn:tinc",
-        "//packages/linux/net-vpn:zerotier",
-        "//packages/linux/net-vpn:nebula",
-        "//packages/linux/net-vpn:tailscale",
+        "//packages/linux/network/vpn/tinc:tinc",
+        "//packages/linux/network/vpn/zerotier:zerotier",
+        "//packages/linux/network/vpn/nebula:nebula",
+        "//packages/linux/network/vpn/tailscale:tailscale",
     ],
     visibility = ["PUBLIC"],
 )
@@ -253,9 +253,9 @@ filegroup(
 filegroup(
     name = "shell-packages",
     srcs = [
-        "//packages/linux/shells:bash",
-        "//packages/linux/shells:zsh",
-        "//packages/linux/shells:dash",
+        "//packages/linux/core/bash:bash",
+        "//packages/linux/shells/zsh:zsh",
+        "//packages/linux/shells/dash:dash",
     ],
     visibility = ["PUBLIC"],
 )
@@ -264,9 +264,9 @@ filegroup(
 filegroup(
     name = "terminal-packages",
     srcs = [
-        "//packages/linux/terminals:st",
-        "//packages/linux/terminals:alacritty",
-        "//packages/linux/terminals:foot",
+        "//packages/linux/terminals/st:st",
+        "//packages/linux/terminals/alacritty:alacritty",
+        "//packages/linux/terminals/foot:foot",
     ],
     visibility = ["PUBLIC"],
 )
@@ -274,14 +274,14 @@ filegroup(
 filegroup(
     name = "sys-apps-packages",
     srcs = [
-        "//packages/linux/system/apps:coreutils",
-        "//packages/linux/system/apps:findutils",
-        "//packages/linux/system/apps:cronie",
-        "//packages/linux/system/apps:sudo",
-        "//packages/linux/system/apps:tmux",
-        "//packages/linux/system/apps:htop",
-        "//packages/linux/system/apps:rsync",
-        "//packages/linux/system/apps:logrotate",
+        "//packages/linux/system/apps/coreutils:coreutils",
+        "//packages/linux/system/apps/findutils:findutils",
+        "//packages/linux/system/apps/cronie:cronie",
+        "//packages/linux/system/apps/sudo:sudo",
+        "//packages/linux/system/apps/tmux:tmux",
+        "//packages/linux/system/apps/htop:htop",
+        "//packages/linux/system/apps/rsync:rsync",
+        "//packages/linux/system/apps/logrotate:logrotate",
         "//packages/linux/system/apps/tar:tar",
         "//packages/linux/system/apps/shadow:shadow",
     ],
@@ -291,12 +291,12 @@ filegroup(
 filegroup(
     name = "benchmark-packages",
     srcs = [
-        "//packages/linux/benchmarks:stress-ng",
-        "//packages/linux/benchmarks:fio",
-        "//packages/linux/benchmarks:sysbench",
-        "//packages/linux/benchmarks:iperf3",
-        "//packages/linux/benchmarks:hackbench",
-        "//packages/linux/benchmarks:memtester",
+        "//packages/linux/benchmarks/stress-ng:stress-ng",
+        "//packages/linux/benchmarks/fio:fio",
+        "//packages/linux/benchmarks/sysbench:sysbench",
+        "//packages/linux/benchmarks/iperf3:iperf3",
+        "//packages/linux/benchmarks/hackbench:hackbench",
+        "//packages/linux/benchmarks/memtester:memtester",
     ],
     visibility = ["PUBLIC"],
 )
@@ -396,81 +396,81 @@ filegroup(
 # Full desktop environments
 alias(
     name = "gnome",
-    actual = "//packages/linux/desktop:gnome",
+    actual = "//packages/linux/desktop/gnome:gnome",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "kde-plasma",
-    actual = "//packages/linux/desktop:kde-plasma",
+    actual = "//packages/linux/desktop/kde:kde-plasma",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "xfce",
-    actual = "//packages/linux/desktop:xfce",
+    actual = "//packages/linux/desktop/xfce:xfce",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "lxqt",
-    actual = "//packages/linux/desktop:lxqt",
+    actual = "//packages/linux/desktop/lxqt:lxqt",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "cinnamon",
-    actual = "//packages/linux/desktop:cinnamon-desktop",
+    actual = "//packages/linux/desktop/cinnamon:cinnamon-desktop",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "mate",
-    actual = "//packages/linux/desktop:mate",
+    actual = "//packages/linux/desktop/mate:mate",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "budgie",
-    actual = "//packages/linux/desktop:budgie",
+    actual = "//packages/linux/desktop/budgie:budgie",
     visibility = ["PUBLIC"],
 )
 
 # Wayland compositors
 alias(
     name = "sway",
-    actual = "//packages/linux/desktop:sway-desktop",
+    actual = "//packages/linux/desktop/sway:sway-desktop",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "hyprland",
-    actual = "//packages/linux/desktop:hyprland-desktop",
+    actual = "//packages/linux/desktop/hyprland:hyprland-desktop",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "wayfire",
-    actual = "//packages/linux/desktop:wayfire-desktop",
+    actual = "//packages/linux/desktop/wayfire:wayfire-desktop",
     visibility = ["PUBLIC"],
 )
 
 # X11 window managers
 alias(
     name = "i3",
-    actual = "//packages/linux/desktop:i3-desktop",
+    actual = "//packages/linux/desktop/i3:i3-desktop",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "bspwm",
-    actual = "//packages/linux/desktop:bspwm-desktop",
+    actual = "//packages/linux/desktop/bspwm:bspwm-desktop",
     visibility = ["PUBLIC"],
 )
 
 alias(
     name = "openbox",
-    actual = "//packages/linux/desktop:openbox-desktop",
+    actual = "//packages/linux/desktop/openbox:openbox-desktop",
     visibility = ["PUBLIC"],
 )
 
@@ -519,10 +519,10 @@ filegroup(
 filegroup(
     name = "monitoring-packages",
     srcs = [
-        "//packages/linux/system/apps:htop",
-        "//packages/linux/system/apps:lsof",
-        "//packages/linux/system/apps:strace",
-        "//packages/linux/system/apps:procps-ng",
+        "//packages/linux/system/apps/htop:htop",
+        "//packages/linux/system/apps/lsof:lsof",
+        "//packages/linux/system/apps/strace:strace",
+        "//packages/linux/core/procps-ng:procps-ng",
     ],
     visibility = ["PUBLIC"],
 )
@@ -885,7 +885,7 @@ combined_set(
     name = "full-stack-server",
     sets = ["@web-server", "@database-server", "@monitoring"],
     additions = [
-        "//packages/linux/net-vpn:wireguard-tools",
+        "//packages/linux/network/vpn/wireguard-tools:wireguard-tools",
     ],
     description = "Complete web application server stack",
 )
@@ -902,8 +902,8 @@ system_set(
     name = "secure-server",
     profile = "hardened",
     additions = [
-        "//packages/linux/net-vpn:wireguard-tools",
-        "//packages/linux/net-vpn:openvpn",
+        "//packages/linux/network/vpn/wireguard-tools:wireguard-tools",
+        "//packages/linux/network/vpn/openvpn:openvpn",
     ],
     description = "Hardened server with VPN support",
 )
@@ -933,9 +933,9 @@ system_set(
     name = "lightweight-server",
     profile = "minimal",
     additions = [
-        "//packages/linux/network:openssh",
+        "//packages/linux/network/openssh:openssh",
         "//packages/linux/editors:vim",
-        "//packages/linux/system/apps:sudo",
+        "//packages/linux/system/apps/sudo:sudo",
     ],
     description = "Lightweight server with SSH access",
 )

@@ -77,14 +77,15 @@ autotools_package(
 # YAML - YAML Ain't Markup Language
 download_source(
     name = "yaml-src",
-    src_uri = "https://cpan.metacpan.org/authors/id/I/IN/INGY/YAML-1.30.tar.gz",
-    sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
+    src_uri = "https://cpan.metacpan.org/authors/id/I/IN/INGY/YAML-1.31.tar.gz",
+    sha256 = "a0ce30381657dce8e694df9a09e95d818d13beb03698fd2cf79d0c8d564a9b8e",
+    auto_detect_signature = False,
 )
 
 autotools_package(
     name = "yaml",
     source = ":yaml-src",
-    version = "1.30",
+    version = "1.31",
     description = "YAML Ain't Markup Language",
     homepage = "https://metacpan.org/pod/YAML",
     license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
@@ -101,14 +102,15 @@ autotools_package(
 # YAML::XS - Perl YAML Serialization using XS and libyaml
 download_source(
     name = "yaml-xs-src",
-    src_uri = "https://cpan.metacpan.org/authors/id/I/IN/INGY/YAML-LibYAML-0.89.tar.gz",
-    sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
+    src_uri = "https://cpan.metacpan.org/authors/id/I/IN/INGY/YAML-LibYAML-0.88.tar.gz",
+    sha256 = "a8a2738cccc332a8f7549c4c27f3e0090c9ab11eef0f6c856445177398135678",
+    auto_detect_signature = False,
 )
 
 autotools_package(
     name = "yaml-xs",
     source = ":yaml-xs-src",
-    version = "0.89",
+    version = "0.88",
     description = "Perl YAML Serialization using XS and libyaml",
     homepage = "https://metacpan.org/pod/YAML::XS",
     license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
@@ -247,14 +249,15 @@ autotools_package(
 # Data::Dumper - stringified perl data structures
 download_source(
     name = "data-dumper-src",
-    src_uri = "https://cpan.metacpan.org/authors/id/N/NW/NWCLARK/Data-Dumper-2.188.tar.gz",
-    sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
+    src_uri = "https://cpan.metacpan.org/authors/id/N/NW/NWCLARK/Data-Dumper-2.183.tar.gz",
+    sha256 = "e42736890b7dae1b37818d9c5efa1f1fdc52dec04f446a33a4819bf1d4ab5ad3",
+    auto_detect_signature = False,
 )
 
 autotools_package(
     name = "data-dumper",
     source = ":data-dumper-src",
-    version = "2.188",
+    version = "2.183",
     description = "Stringified perl data structures",
     homepage = "https://metacpan.org/pod/Data::Dumper",
     license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
@@ -318,14 +321,15 @@ autotools_package(
 # Storable - Persistence for Perl data structures
 download_source(
     name = "storable-src",
-    src_uri = "https://cpan.metacpan.org/authors/id/N/NW/NWCLARK/Storable-3.32.tar.gz",
-    sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
+    src_uri = "https://cpan.metacpan.org/authors/id/N/NW/NWCLARK/Storable-3.25.tar.gz",
+    sha256 = "e1e96b24a076792fde52154789fe4b76034b9ad39c8a1a819ead77d50d5f1817",
+    auto_detect_signature = False,
 )
 
 autotools_package(
     name = "storable",
     source = ":storable-src",
-    version = "3.32",
+    version = "3.25",
     description = "Persistence for Perl data structures",
     homepage = "https://metacpan.org/pod/Storable",
     license = "Artistic-1.0-Perl OR GPL-1.0-or-later",

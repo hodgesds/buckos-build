@@ -226,8 +226,9 @@ autotools_package(
 # Config::Tiny - Read/Write .ini style files with as little code as possible
 download_source(
     name = "config-tiny-src",
-    src_uri = "https://cpan.metacpan.org/authors/id/R/RS/RSAVAGE/Config-Tiny-2.30.tar.gz",
-    sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
+    src_uri = "https://cpan.metacpan.org/authors/id/R/RS/RSAVAGE/Config-Tiny-2.30.tgz",
+    sha256 = "b2f7345619b3b8e636dd39ea010731c9dc2bfb8f022bcbd86ae6ad17866e110d",
+    auto_detect_signature = False,
 )
 
 autotools_package(

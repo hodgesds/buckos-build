@@ -6,14 +6,14 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "acpica-tools-src",
-    src_uri = "https://github.com/acpica/acpica/archive/refs/tags/R03_22_24.tar.gz",
-    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
+    src_uri = "https://github.com/acpica/acpica/archive/refs/tags/R2024_12_12.tar.gz",
+    sha256 = "adde693d2486d77940bef81acb45fec1ca285266ecbc4d10c5cd058bca19dc07",
 )
 
 autotools_package(
     name = "acpica-tools",
     source = ":acpica-tools-src",
-    version = "20240322",
+    version = "20241212",
     description = "ACPI Component Architecture tools for debugging and development",
     homepage = "https://www.intel.com/content/www/us/en/developer/topic-technology/open/acpica/overview.html",
     license = "BSD-3-Clause",

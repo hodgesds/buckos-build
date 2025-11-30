@@ -3,8 +3,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "wlopm-src",
-    src_uri = "https://git.sr.ht/~leon_plickat/wlopm/refs/download/v0.1.0/wlopm-0.1.0.tar.gz",
-    sha256 = "6e517d3b9cb947565ff4d46aacf9dbc2bb7914b8cc615faecab126facef03f01",
+    src_uri = "https://git.sr.ht/~leon_plickat/wlopm/archive/v0.1.0.tar.gz",
+    sha256 = "f9a7ec03a412e602420ab11d0eea872f6d30dfe5cfee93cd3d0289e4fbbb3aa1",
 )
 
 autotools_package(

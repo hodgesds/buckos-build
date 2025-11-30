@@ -33,11 +33,11 @@ DESTDIR=$OUT meson install
         "//packages/linux/desktop/gtk:gtk3",
         "//packages/linux/dev-libs/exiv2:exiv2",
         "//packages/linux/system/libs/graphics/lcms2:lcms2",
-        "//packages/linux/system/libs/graphics/libjpeg-turbo:libjpeg-turbo",
-        "//packages/linux/core/libraw:libraw",
-        "//packages/linux/core/libheif:libheif",
-        "//packages/linux/core/djvulibre:djvulibre",
+        "//packages/linux/system/libs/image/libjpeg-turbo:libjpeg-turbo",
+        # "//packages/linux/core/libraw:libraw",  # TODO: not packaged yet
+        # "//packages/linux/core/libheif:libheif",  # TODO: not packaged yet,
+        # "//packages/linux/core/djvulibre:djvulibre",  # TODO: not packaged yet,
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

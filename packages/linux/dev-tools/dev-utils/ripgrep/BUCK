@@ -15,10 +15,11 @@ binary_package(
     homepage = "https://github.com/BurntSushi/ripgrep",
     license = "MIT",
     install_script = """
+        cd $SRCS
         mkdir -p "$OUT/usr/bin" "$OUT/usr/share/man/man1" "$OUT/usr/share/bash-completion/completions"
-        cp $SRCS/ripgrep-14.1.0-x86_64-unknown-linux-musl/rg "$OUT/usr/bin/"
-        cp $SRCS/ripgrep-14.1.0-x86_64-unknown-linux-musl/doc/rg.1 "$OUT/usr/share/man/man1/" || true
-        cp $SRCS/ripgrep-14.1.0-x86_64-unknown-linux-musl/complete/rg.bash "$OUT/usr/share/bash-completion/completions/rg" || true
+        cp rg "$OUT/usr/bin/"
+        cp doc/rg.1 "$OUT/usr/share/man/man1/" || true
+        cp complete/rg.bash "$OUT/usr/share/bash-completion/completions/rg" || true
         chmod +x "$OUT/usr/bin/rg"
     """,
     visibility = ["PUBLIC"],

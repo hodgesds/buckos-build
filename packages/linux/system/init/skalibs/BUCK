@@ -26,6 +26,6 @@ autotools_package(
     ],
     deps = [
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

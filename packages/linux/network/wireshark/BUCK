@@ -6,8 +6,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 autotools_package(
     name = "wireshark",
     version = "4.2.3",
-    src_uri = "https://www.wireshark.org/download/src/wireshark-4.2.3.tar.xz",
-    sha256 = "a692cd3d536cd9b11f57dfff26038a093d9061c810b8a501d89acde8a0f9d613",
+    src_uri = "https://www.wireshark.org/download/src/all-versions/wireshark-4.2.3.tar.xz",
+    sha256 = "958bd5996f543d91779b1a4e7e952dcd7b0245fe82194202c3333a8f78795811",
 
     iuse = ["ssl", "gnutls", "lua", "zlib", "pcre", "xml"],
     use_defaults = ["ssl", "gnutls", "zlib", "pcre", "xml"],

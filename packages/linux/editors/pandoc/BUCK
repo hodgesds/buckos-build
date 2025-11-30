@@ -16,12 +16,13 @@ binary_package(
     homepage = "https://pandoc.org/",
     license = "GPL-2.0",
     install_script = """
-mkdir -p "$DESTDIR/usr/bin"
-mkdir -p "$DESTDIR/usr/share/man/man1"
-cp bin/pandoc "$DESTDIR/usr/bin/"
-chmod 755 "$DESTDIR/usr/bin/pandoc"
+cd $SRCS
+mkdir -p "$OUT/usr/bin"
+mkdir -p "$OUT/usr/share/man/man1"
+cp bin/pandoc "$OUT/usr/bin/"
+chmod 755 "$OUT/usr/bin/pandoc"
 if [ -f share/man/man1/pandoc.1 ]; then
-    cp share/man/man1/pandoc.1 "$DESTDIR/usr/share/man/man1/"
+    cp share/man/man1/pandoc.1 "$OUT/usr/share/man/man1/"
 fi
 """,
     visibility = ["PUBLIC"],

@@ -4,14 +4,15 @@ load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 # DBI - Database independent interface for Perl
 download_source(
     name = "dbi-src",
-    src_uri = "https://cpan.metacpan.org/authors/id/H/HM/HMBRAND/DBI-1.643.tar.gz",
-    sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
+    src_uri = "https://cpan.metacpan.org/authors/id/H/HM/HMBRAND/DBI-1.646.tar.gz",
+    sha256 = "53ab32ac8c30295a776dde658df22be760936cdca5a3c003a23bda6d829fa184",
+    auto_detect_signature = False,
 )
 
 autotools_package(
     name = "dbi",
     source = ":dbi-src",
-    version = "1.643",
+    version = "1.646",
     description = "Database independent interface for Perl",
     homepage = "https://dbi.perl.org/",
     license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
@@ -284,14 +285,15 @@ autotools_package(
 # Cache::Memcached::Fast - Perl client for memcached
 download_source(
     name = "cache-memcached-fast-src",
-    src_uri = "https://cpan.metacpan.org/authors/id/K/KR/KROKI/Cache-Memcached-Fast-0.28.tar.gz",
-    sha256 = "014a70c6c4993d31bc7e150045b3ce8abcc9acfc01522eba6d48d9758d27a5ec",
+    src_uri = "https://cpan.metacpan.org/authors/id/K/KR/KROKI/Cache-Memcached-Fast-0.23.tar.gz",
+    sha256 = "df20beaebf85180154be5a99886686793cf1beee9081ed7de0ae66c4573d200f",
+    auto_detect_signature = False,
 )
 
 autotools_package(
     name = "cache-memcached-fast",
     source = ":cache-memcached-fast-src",
-    version = "0.28",
+    version = "0.23",
     description = "Perl client for memcached, in C language",
     homepage = "https://metacpan.org/pod/Cache::Memcached::Fast",
     license = "Artistic-1.0-Perl OR GPL-1.0-or-later",

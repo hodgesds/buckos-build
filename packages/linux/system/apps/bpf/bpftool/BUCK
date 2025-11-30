@@ -14,10 +14,10 @@ binary_package(
     homepage = "https://github.com/libbpf/bpftool",
     license = "GPL-2.0",
     install_script = """
-        cd $SRCS/bpftool-*/src
+        cd $SRCS/src
 
-        # Build bpftool with static linking
-        make -j$(nproc) EXTRA_CFLAGS="-I$DEPS/usr/include" EXTRA_LDFLAGS="-L$DEPS/usr/lib -static"
+        # Build bpftool with dynamic linking
+        make -j$(nproc) EXTRA_CFLAGS="-I$DEPS/usr/include" EXTRA_LDFLAGS="-L$DEPS/usr/lib"
 
         # Install
         mkdir -p $OUT/usr/sbin $OUT/usr/share/bash-completion/completions

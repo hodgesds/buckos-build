@@ -6,8 +6,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "acpid-src",
-    src_uri = "https://downloads.sourceforge.net/acpid2/acpid-2.0.34.tar.xz",
-    sha256 = "2d095c8cfcbc847caec746d62cdc8d0bff1ec1bc72ef7c674c721e04da6ab333",
+    src_uri = "https://github.com/sailfishos-mirror/acpid/archive/refs/tags/2.0.34.tar.gz",
+    sha256 = "9287f7c31beb249e40876f622cb9f917f831cd505f76dbd46cfe4d7475942640",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -17,7 +17,7 @@ autotools_package(
     source = ":acpid-src",
     version = "2.0.34",
     description = "ACPI event daemon for handling laptop power events",
-    homepage = "https://sourceforge.net/projects/acpid2/",
+    homepage = "https://github.com/sailfishos-mirror/acpid",
     license = "GPL-2.0",
     configure_args = [
         "--prefix=/usr",

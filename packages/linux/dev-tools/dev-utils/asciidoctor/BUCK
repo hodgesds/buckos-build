@@ -15,9 +15,24 @@ binary_package(
     homepage = "https://asciidoctor.org/",
     license = "MIT",
     install_script = """
-        cd $SRCS/asciidoctor-* || cd $SRCS
+        cd $SRCS
+
+        # gem should already be in PATH from Ruby dependency
+        if ! command -v gem >/dev/null 2>&1; then
+            echo "Error: Ruby gem command not found in PATH"
+            echo "PATH=$PATH"
+            exit 1
+        fi
+
+        export GEM_HOME="$OUT/usr/lib/ruby/gems"
+        mkdir -p "$GEM_HOME"
+        mkdir -p "$OUT/usr/bin"
+
         gem build asciidoctor.gemspec
-        gem install --install-dir "$OUT/usr/lib/ruby/gems" --bindir "$OUT/usr/bin" asciidoctor-*.gem
+        gem install --install-dir "$GEM_HOME" --bindir "$OUT/usr/bin" --no-document asciidoctor-*.gem
     """,
+    deps = [
+        "//packages/linux/lang/ruby:ruby",
+    ],
     visibility = ["PUBLIC"],
 )

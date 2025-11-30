@@ -39,7 +39,7 @@ mkdir -p "$DESTDIR/var/lib/softether"
         "//packages/linux/core/zlib:zlib",
     ],
 
-    build_deps = [
+    bdepend = [
         "//packages/linux/dev-tools/build-systems/cmake:cmake",
     ],
 

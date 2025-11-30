@@ -65,9 +65,9 @@ DESTDIR=$OUT make install
         "//packages/linux/fonts/libraries/freetype:freetype",
         "//packages/linux/system/libs/font/fontconfig:fontconfig",
     ],
-    build_deps = [
+    bdepend = [
         "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
-        "//packages/linux/lang/yasm:yasm",
+        # "//packages/linux/lang/yasm:yasm",  # TODO: not packaged yet,
     ],
     visibility = ["PUBLIC"],
 )

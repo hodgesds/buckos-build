@@ -5,6 +5,7 @@ download_source(
     name = "imv-src",
     src_uri = "https://git.sr.ht/~exec64/imv/archive/v4.5.0.tar.gz",
     sha256 = "3b11991a86942d757830015033b1c3a3cc915be2f0c20fee7bc7493be560cbcb",
+    auto_detect_signature = False,
 )
 
 autotools_package(
@@ -12,7 +13,7 @@ autotools_package(
     source = ":imv-src",
     version = "4.5.0",
     description = "Image viewer for X11 and Wayland",
-    homepage = "https://sr.ht/~exec64/imv/",
+    homepage = "https://codeberg.org/exec64/imv",
     license = "MIT",
     pre_configure = """
 mkdir -p build
@@ -36,14 +37,14 @@ DESTDIR=$OUT meson install
 """,
     deps = [
         "//packages/linux/desktop/wayland:wayland",
-        "//packages/linux/core/freeimage:freeimage",
-        "//packages/linux/system/libs/graphics/libpng:libpng",
-        "//packages/linux/system/libs/graphics/libjpeg-turbo:libjpeg-turbo",
+        # "//packages/linux/core/freeimage:freeimage",  # TODO: not packaged yet,
+        "//packages/linux/system/libs/image/libpng:libpng",
+        "//packages/linux/system/libs/image/libjpeg-turbo:libjpeg-turbo",
         "//packages/linux/system/libs/image/libtiff:libtiff",
-        "//packages/linux/core/libheif:libheif",
-        "//packages/linux/system/libs/graphics/pango:pango",
-        "//packages/linux/core/inih:inih",
+        # "//packages/linux/core/libheif:libheif",  # TODO: not packaged yet,
+        "//packages/linux/fonts/libraries/pango:pango",
+        # "//packages/linux/core/inih:inih",  # TODO: not packaged yet,
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

@@ -40,6 +40,6 @@ ln -sf ../usr/sbin/dinit $OUT/sbin/init
 """,
     deps = [
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

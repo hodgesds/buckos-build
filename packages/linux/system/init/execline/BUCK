@@ -30,6 +30,6 @@ autotools_package(
     deps = [
         "//packages/linux/system/init/skalibs:skalibs",
     ],
-    build_deps = [],
+    bdepend = [],
     visibility = ["PUBLIC"],
 )

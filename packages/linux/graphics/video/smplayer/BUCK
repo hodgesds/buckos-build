@@ -32,7 +32,7 @@ DESTDIR=$OUT PREFIX=/usr make install
         "//packages/linux/graphics/video/mpv:mpv",
         "//packages/linux/desktop/qt:qt5",
     ],
-    build_deps = [
+    bdepend = [
         "//packages/linux/desktop/qt:qt5",
     ],
     visibility = ["PUBLIC"],

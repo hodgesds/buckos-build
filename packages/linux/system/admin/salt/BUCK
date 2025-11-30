@@ -1,5 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "ebuild_package", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "binary_package")
 
 # salt - Infrastructure automation and configuration management
 download_source(
@@ -8,20 +7,41 @@ download_source(
     sha256 = "41bf84e71fc655bf8a4b52eb440d0621ae961096a086d20e132e1512e2eddff8",
 )
 
-ebuild_package(
+binary_package(
     name = "salt",
-    source = ":salt-src",
+    srcs = [":salt-src"],
     version = "3007.0",
     description = "Infrastructure automation and configuration management",
     homepage = "https://saltproject.io",
     license = "Apache-2.0",
-    src_compile = """
-# Python package build
-""",
-    src_install = """
-pip install --prefix=/usr --root="$DESTDIR" .
-""",
-    rdepend = [
+    install_script = """
+        cd $SRCS
+
+        # Find Python with pip from dependency
+        PYTHON_CMD=""
+        for dep in $DEPS; do
+            if [ -x "$dep/usr/bin/python3" ]; then
+                # Check if this Python has pip
+                if "$dep/usr/bin/python3" -m pip --version >/dev/null 2>&1; then
+                    PYTHON_CMD="$dep/usr/bin/python3"
+                    break
+                fi
+            fi
+        done
+
+        if [ -z "$PYTHON_CMD" ]; then
+            # Fall back to system python with pip
+            if python3 -m pip --version >/dev/null 2>&1; then
+                PYTHON_CMD="python3"
+            else
+                echo "Error: No Python with pip module found"
+                exit 1
+            fi
+        fi
+
+        $PYTHON_CMD -m pip install --prefix=/usr --root="$OUT" .
+    """,
+    deps = [
         "//packages/linux/lang/python:python",
     ],
     visibility = ["PUBLIC"],

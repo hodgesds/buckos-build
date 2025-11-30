@@ -20,8 +20,9 @@ binary_package(
     homepage = "https://www.swift.org/",
     license = "Apache-2.0",
     install_script = """
+        # Source is already extracted to $SRCS
         mkdir -p $OUT/usr/local/swift
-        tar -xzf $SRCS/swift-5.9.2-RELEASE-ubuntu22.04.tar.gz -C $OUT/usr/local/swift --strip-components=1
+        cp -r $SRCS/* $OUT/usr/local/swift/
         mkdir -p $OUT/usr/bin
         ln -s /usr/local/swift/usr/bin/swift $OUT/usr/bin/swift
         ln -s /usr/local/swift/usr/bin/swiftc $OUT/usr/bin/swiftc

@@ -34,7 +34,7 @@ autotools_package(
         "X": ["//packages/linux/desktop/xorg-server:libx11"],
         "xcb": ["//packages/linux/desktop/xorg-server:libxcb"],
         "png": ["//packages/linux/system/libs/image/libpng:libpng"],
-        "glib": ["//packages/linux/system/libs/utility/glib:glib"],
+        "glib": ["//packages/linux/dev-libs/glib:glib"],
         "opengl": ["//packages/linux/desktop/mesa:mesa"],
     },
     pre_configure = """

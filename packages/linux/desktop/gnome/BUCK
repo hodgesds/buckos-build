@@ -941,14 +941,14 @@ meson setup .. --prefix=/usr \\
 
 download_source(
     name = "gnome-terminal-src",
-    src_uri = "https://download.gnome.org/sources/gnome-terminal/3.50/gnome-terminal-3.50.1.tar.xz",
-    sha256 = "e96eee5c5a3286a89131289659d51f529a1bae38de8d039c30afd7f0bc3ac272",
+    src_uri = "https://download.gnome.org/sources/gnome-terminal/3.58/gnome-terminal-3.58.0.tar.xz",
+    sha256 = "07ebc7af13516be5b37777f520d2640b33120620e99bbb05deea5f8280fd69ce",
 )
 
 autotools_package(
     name = "gnome-terminal",
     source = ":gnome-terminal-src",
-    version = "3.50.1",
+    version = "3.58.0",
     description = "GNOME Terminal - Terminal emulator for GNOME",
     homepage = "https://wiki.gnome.org/Apps/Terminal",
     license = "GPL-3.0",
@@ -2139,14 +2139,14 @@ meson setup .. --prefix=/usr \\
 
 download_source(
     name = "gnome-user-docs-src",
-    src_uri = "https://download.gnome.org/sources/gnome-user-docs/45/gnome-user-docs-45.2.tar.xz",
-    sha256 = "40dc0e99e2bf0e79ddd66e1e6de36c49fb5b3d7c05e0d23ccf66ee3e66fbce89",
+    src_uri = "https://download.gnome.org/sources/gnome-user-docs/49/gnome-user-docs-49.1.tar.xz",
+    sha256 = "0e50b8bb4fceaa9128367cd3458e5edb861c96278c1aa9a73a6ec0402b7bc617",
 )
 
 autotools_package(
     name = "gnome-user-docs",
     source = ":gnome-user-docs-src",
-    version = "45.2",
+    version = "49.1",
     description = "GNOME User Docs - User documentation for GNOME",
     homepage = "https://wiki.gnome.org/DocumentationProject",
     license = "CC-BY-SA-3.0",
@@ -2291,33 +2291,34 @@ meson setup .. --prefix=/usr \\
     visibility = ["PUBLIC"],
 )
 
-download_source(
-    name = "newsflash-src",
-    src_uri = "https://gitlab.com/news-flash/news_flash_gtk/-/archive/v3.1.6/news_flash_gtk-v3.1.6.tar.gz",
-    sha256 = "6b70dd2f6c347d448c2d6140fdb70429d17135e6713ea6c095df1b34e4010e6a",
-)
-
-autotools_package(
-    name = "newsflash",
-    source = ":newsflash-src",
-    version = "3.1.6",
-    description = "NewsFlash - RSS/Atom feed reader",
-    homepage = "https://gitlab.com/news-flash/news_flash_gtk",
-    license = "GPL-3.0",
-    pre_configure = """
-mkdir -p build
-cd build
-meson setup .. --prefix=/usr \\
-    --buildtype=release
-""",
-    deps = [
-        ":glib",
-        ":gtk4",
-        ":libadwaita",
-        ":libsoup3",
-    ],
-    visibility = ["PUBLIC"],
-)
+# DISABLED: GitLab.com blocking downloads - needs GitHub mirror
+# download_source(
+#     name = "newsflash-src",
+#     src_uri = "https://gitlab.com/news-flash/news_flash_gtk/-/archive/v3.1.6/news_flash_gtk-v3.1.6.tar.gz",
+#     sha256 = "6b70dd2f6c347d448c2d6140fdb70429d17135e6713ea6c095df1b34e4010e6a",
+# )
+#
+# autotools_package(
+#     name = "newsflash",
+#     source = ":newsflash-src",
+#     version = "3.1.6",
+#     description = "NewsFlash - RSS/Atom feed reader",
+#     homepage = "https://gitlab.com/news-flash/news_flash_gtk",
+#     license = "GPL-3.0",
+#     pre_configure = """
+# mkdir -p build
+# cd build
+# meson setup .. --prefix=/usr \\
+#     --buildtype=release
+# """,
+#     deps = [
+#         ":glib",
+#         ":gtk4",
+#         ":libadwaita",
+#         ":libsoup3",
+#     ],
+#     visibility = ["PUBLIC"],
+# )
 
 download_source(
     name = "tangram-src",
@@ -2499,7 +2500,7 @@ filegroup(
         ":amberol",
         ":blanket",
         ":dialect",
-        ":newsflash",
+        # ":newsflash",  # DISABLED - GitLab.com blocking downloads
         ":tangram",
     ],
     visibility = ["PUBLIC"],

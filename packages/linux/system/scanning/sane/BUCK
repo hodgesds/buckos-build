@@ -33,9 +33,9 @@ autotools_package(
         mkdir -p "$OUT/var/lock/sane"
     """,
     deps = [
-        "//packages/linux/system/hardware/usbutils:libusb",
-        "//packages/linux/graphics/imagemagick:libtiff",
-        "//packages/linux/graphics/imagemagick:libjpeg-turbo",
+        "//packages/linux/system/libs/libusb:libusb",
+        "//packages/linux/system/libs/image/libtiff:libtiff",
+        "//packages/linux/system/libs/image/libjpeg-turbo:libjpeg-turbo",
     ],
     visibility = ["PUBLIC"],
 )
@@ -43,8 +43,8 @@ autotools_package(
 # Simple Scan - GTK scanning application
 download_source(
     name = "simple-scan-src",
-    src_uri = "https://download.gnome.org/sources/simple-scan/46/simple-scan-46.0.tar.xz",
-    sha256 = "c16e6590142fe563be5143122b3bbb53f6b00a7da9d952f61c47fa26f7b4f0a9",
+    src_uri = "https://github.com/GNOME/simple-scan/archive/refs/tags/46.0.tar.gz",
+    sha256 = "edeb254834fea2c0faacc49f924c626071c3519b71eaa65e41059f5250612da9",
 )
 
 autotools_package(
@@ -52,7 +52,7 @@ autotools_package(
     source = ":simple-scan-src",
     version = "46.0",
     description = "Simple Scan - easy to use scanning application",
-    homepage = "https://gitlab.gnome.org/GNOME/simple-scan",
+    homepage = "https://github.com/GNOME/simple-scan",
     license = "GPL-3.0-or-later",
     pre_configure = """
         meson setup build \

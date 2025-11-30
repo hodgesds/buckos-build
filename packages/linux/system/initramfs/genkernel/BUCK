@@ -9,14 +9,14 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "genkernel-src",
-    src_uri = "https://github.com/gentoo/genkernel/archive/refs/tags/v4.3.16.tar.gz",
-    sha256 = "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed",
+    src_uri = "https://github.com/gentoo/genkernel/archive/refs/tags/v4.3.5.tar.gz",
+    sha256 = "b3f2b8791ff031ec6d7adea21b873bcd57978565f216b5a224c8ef82db109236",
 )
 
 autotools_package(
     name = "genkernel",
     source = ":genkernel-src",
-    version = "4.3.16",
+    version = "4.3.5",
     description = "Gentoo automatic kernel/initramfs builder",
     homepage = "https://wiki.gentoo.org/wiki/Genkernel",
     license = "GPL-2.0",

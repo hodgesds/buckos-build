@@ -19,8 +19,8 @@ meson_package(
     ],
     deps = [
         "//packages/linux/dev-libs/glib:glib",
-        "//packages/linux/core:dbus",
-        "//packages/linux/core/polkit:polkit",
+        "//packages/linux/system/libs/ipc/dbus:dbus",
+        # "//packages/linux/core/polkit:polkit",  # TODO: not packaged yet
         "//packages/linux/laptop/battery/upower:upower",
     ],
     visibility = ["PUBLIC"],

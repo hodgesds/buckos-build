@@ -42,8 +42,7 @@ binary_package(
         fi
         ./bootstrap.sh --prefix=/usr --with-toolset=gcc
         ./b2 install \
-            --prefix=/usr \
-            destdir="$OUT" \
+            --prefix="$OUT/usr" \
             --without-python \
             --without-mpi \
             variant=release \

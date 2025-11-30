@@ -11,15 +11,9 @@ load("//defs:package_defs.bzl", "download_source", "binary_package", "autotools_
 load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
-    name = "amd-drivers-src",
-    src_uri = "https://repo.radeon.com/amdgpu/6.1.3/ubuntu/pool/main/a/amdgpu-dkms/amdgpu-dkms_6.7.0.60103-2069308.24.04_all.deb",
-    sha256 = "4e21d4ae5f8c9393937aaf76f55c06dae9a05e9c9bd9580fbe75967ce10c678c",
-)
-
-download_source(
     name = "amd-firmware-src",
-    src_uri = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-20241017.tar.gz",
-    sha256 = "7636fe4ee954256b530e242a03bae445dd87e4940f008d3d6f39422056bb2196",
+    src_uri = "https://cdn.kernel.org/pub/linux/kernel/firmware/linux-firmware-20241017.tar.gz",
+    sha256 = "830b66d0934d205969c472a4d5feb1ce2ed659ccebe81a78214098a982ac93cd",
 )
 
 binary_package(
@@ -30,20 +24,17 @@ binary_package(
     homepage = "https://www.amd.com/en/support/linux-drivers",
     license = "MIT AND proprietary",
     install_script = """
-# Extract firmware
-tar xf linux-firmware-*.tar.gz
-
-# Install AMD GPU firmware
-mkdir -p "$DESTDIR/usr/lib/firmware/amdgpu"
-cp -r linux-firmware-*/amdgpu/* "$DESTDIR/usr/lib/firmware/amdgpu/"
+# Install AMD GPU firmware (source is already extracted to $SRCS)
+mkdir -p "$OUT/usr/lib/firmware/amdgpu"
+cp -r $SRCS/amdgpu/* "$OUT/usr/lib/firmware/amdgpu/"
 
 # Install Radeon firmware (for older GPUs)
-mkdir -p "$DESTDIR/usr/lib/firmware/radeon"
-cp -r linux-firmware-*/radeon/* "$DESTDIR/usr/lib/firmware/radeon/"
+mkdir -p "$OUT/usr/lib/firmware/radeon"
+cp -r $SRCS/radeon/* "$OUT/usr/lib/firmware/radeon/"
 
 # Create modprobe configuration
-mkdir -p "$DESTDIR/etc/modprobe.d"
-cat > "$DESTDIR/etc/modprobe.d/amdgpu.conf" << 'EOF'
+mkdir -p "$OUT/etc/modprobe.d"
+cat > "$OUT/etc/modprobe.d/amdgpu.conf" << 'EOF'
 # Enable DC (Display Core) for better display support
 options amdgpu dc=1
 
@@ -55,8 +46,8 @@ options amdgpu gpu_recovery=1
 EOF
 
 # Create Vulkan ICD configuration
-mkdir -p "$DESTDIR/usr/share/vulkan/icd.d"
-cat > "$DESTDIR/usr/share/vulkan/icd.d/radeon_icd.x86_64.json" << 'EOF'
+mkdir -p "$OUT/usr/share/vulkan/icd.d"
+cat > "$OUT/usr/share/vulkan/icd.d/radeon_icd.x86_64.json" << 'EOF'
 {
     "file_format_version": "1.0.0",
     "ICD": {
@@ -67,8 +58,8 @@ cat > "$DESTDIR/usr/share/vulkan/icd.d/radeon_icd.x86_64.json" << 'EOF'
 EOF
 
 # Install helper scripts
-mkdir -p "$DESTDIR/usr/bin"
-cat > "$DESTDIR/usr/bin/amd-gpu-info" << 'EOF'
+mkdir -p "$OUT/usr/bin"
+cat > "$OUT/usr/bin/amd-gpu-info" << 'EOF'
 #!/bin/bash
 # Display AMD GPU information
 for card in /sys/class/drm/card*/device; do
@@ -80,7 +71,7 @@ for card in /sys/class/drm/card*/device; do
     fi
 done
 EOF
-chmod +x "$DESTDIR/usr/bin/amd-gpu-info"
+chmod +x "$OUT/usr/bin/amd-gpu-info"
 """,
     visibility = ["PUBLIC"],
 )

@@ -82,7 +82,7 @@ filegroup(
     srcs = [
         "//packages/linux/emulation/hypervisors/qemu:qemu",
         "//packages/linux/emulation/virtualization/libvirt:libvirt",
-        "//packages/linux/emulation/virtualization/virt-manager:virt-manager-full",
+        "//packages/linux/emulation/virtualization:virt-manager-full",
         "//packages/linux/emulation/virtualization/virtualbox:virtualbox-full",
         "//packages/linux/emulation/utilities/spice:spice-full",
     ],

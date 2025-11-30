@@ -1,7 +1,7 @@
-load("//defs:package_defs.bzl", "cmake_package", "autotools_package")
+load("//defs:package_defs.bzl", "cmake_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
-autotools_package(
+cmake_package(
     name = "snappy",
     version = "1.2.1",
     src_uri = "https://github.com/google/snappy/archive/refs/tags/1.2.1.tar.gz",
@@ -12,23 +12,15 @@ autotools_package(
     license = "BSD-3-Clause",
     iuse = ["static-libs", "test"],
     use_defaults = [],
-    use_configure = {
-        "static-libs": "-DBUILD_SHARED_LIBS=OFF",
-        "-static-libs": "-DBUILD_SHARED_LIBS=ON",
-        "test": "-DSNAPPY_BUILD_TESTS=ON",
-        "-test": "-DSNAPPY_BUILD_TESTS=OFF",
+    use_options = {
+        "static-libs": "BUILD_SHARED_LIBS=OFF",
+        "-static-libs": "BUILD_SHARED_LIBS=ON",
+        "test": "SNAPPY_BUILD_TESTS=ON",
+        "-test": "SNAPPY_BUILD_TESTS=OFF",
     },
-    use_deps = {},
-    configure_args = [
+    cmake_args = [
         "-DSNAPPY_BUILD_BENCHMARKS=OFF",
     ],
-    pre_configure = """
-# USE flags: static-libs, test
-# Snappy uses CMake build system
-# BUILD_SHARED_LIBS controls library type
-# SNAPPY_BUILD_TESTS enables/disables tests
-""",
-    build_system = "cmake",
     deps = [],
     visibility = ["PUBLIC"],
 )

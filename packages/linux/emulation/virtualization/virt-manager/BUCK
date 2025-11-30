@@ -34,8 +34,8 @@ update-desktop-database "$DESTDIR/usr/share/applications" 2>/dev/null || true
     deps = [
         "//packages/linux/lang/python:python",
         "//packages/linux/desktop/gtk:gtk3",
-        "//packages/linux/desktop/gtk:gtksourceview4",
-        "//packages/linux/desktop/gtk:libvte",
+        # gtksourceview4 - optional dependency for syntax highlighting
+        # "//packages/linux/desktop/gtk:libvte",  # TODO: add libvte package
         "//packages/linux/emulation/virtualization/libvirt:libvirt-python",
     ],
     visibility = ["PUBLIC"],
@@ -87,7 +87,7 @@ autotools_package(
     ],
     deps = [
         "//packages/linux/desktop/gtk:gtk3",
-        "//packages/linux/desktop/gtk:gtk-vnc",
+        # gtk-vnc - TODO: add gtk-vnc package
         "//packages/linux/emulation/utilities/spice:spice-gtk",
         "//packages/linux/emulation/virtualization/libvirt:libvirt",
     ],

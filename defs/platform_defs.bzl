@@ -17,12 +17,12 @@ ALL_PLATFORMS = [
     PLATFORM_WINDOWS,
 ]
 
-# Platform constraint targets
+# Platform constraint targets (using prelude OS constraints for host detection)
 PLATFORM_CONSTRAINTS = {
-    PLATFORM_LINUX: "//platforms:linux",
-    PLATFORM_BSD: "//platforms:bsd",
-    PLATFORM_MACOS: "//platforms:macos",
-    PLATFORM_WINDOWS: "//platforms:windows",
+    PLATFORM_LINUX: "prelude//os/constraints:linux",
+    PLATFORM_BSD: "prelude//os/constraints:freebsd",
+    PLATFORM_MACOS: "prelude//os/constraints:macos",
+    PLATFORM_WINDOWS: "prelude//os/constraints:windows",
 }
 
 # Platform target configurations

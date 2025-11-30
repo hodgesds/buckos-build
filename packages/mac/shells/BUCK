@@ -6,6 +6,6 @@ filegroup(
         "//packages/mac/shells/bash:bash",
         "//packages/mac/shells/zsh:zsh",
     ],
-    default_target_platform = "//platforms:macos-target",
+    target_compatible_with = ["prelude//os/constraints:macos"],
     visibility = ["PUBLIC"],
 )

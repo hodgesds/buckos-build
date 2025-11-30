@@ -19,6 +19,34 @@ load("//defs:use_flags.bzl",
 # Note: Uses toolchains// cell prefix per buck2 cell configuration
 BOOTSTRAP_TOOLCHAIN = "toolchains//bootstrap:bootstrap-toolchain"
 
+# Platform constraint values for target_compatible_with
+# Only macOS packages need constraints to prevent building on Linux
+# Linux packages don't need constraints since we're building on Linux
+_MACOS_CONSTRAINT = "prelude//os/constraints:macos"
+
+def _get_platform_constraints():
+    """
+    Detect the target platform from the package path and return appropriate
+    target_compatible_with constraints. Only macOS packages get constraints
+    to prevent them from building on Linux. Linux packages have no constraints.
+    """
+    pkg = native.package_name()
+    if pkg.startswith("packages/mac/"):
+        return [_MACOS_CONSTRAINT]
+    # Linux packages and others: no constraints (builds on Linux)
+    return []
+
+def _apply_platform_constraints(kwargs):
+    """
+    Apply platform constraints to kwargs if not already specified.
+    This should be called at the start of each package macro.
+    """
+    if "target_compatible_with" not in kwargs:
+        constraints = _get_platform_constraints()
+        if constraints:
+            kwargs["target_compatible_with"] = constraints
+    return kwargs
+
 # Package metadata structure
 PackageInfo = provider(fields = [
     "name",
@@ -3485,6 +3513,9 @@ def cmake_package(
             },
         )
     """
+    # Apply platform-specific constraints (Linux packages only build on Linux, etc.)
+    kwargs = _apply_platform_constraints(kwargs)
+
     # Handle source - either use provided source or create one from src_uri
     if source:
         src_target = source
@@ -3627,6 +3658,9 @@ def meson_package(
             },
         )
     """
+    # Apply platform-specific constraints (Linux packages only build on Linux, etc.)
+    kwargs = _apply_platform_constraints(kwargs)
+
     # Handle source - either use provided source or create one from src_uri
     if source:
         src_target = source
@@ -3777,6 +3811,9 @@ def autotools_package(
             },
         )
     """
+    # Apply platform-specific constraints (Linux packages only build on Linux, etc.)
+    kwargs = _apply_platform_constraints(kwargs)
+
     # Handle source - either use provided source or create one from src_uri
     if source:
         src_target = source
@@ -3945,6 +3982,9 @@ def cargo_package(
             },
         )
     """
+    # Apply platform-specific constraints (Linux packages only build on Linux, etc.)
+    kwargs = _apply_platform_constraints(kwargs)
+
     src_name = name + "-src"
 
     download_source(
@@ -4086,6 +4126,9 @@ def go_package(
             },
         )
     """
+    # Apply platform-specific constraints (Linux packages only build on Linux, etc.)
+    kwargs = _apply_platform_constraints(kwargs)
+
     src_name = name + "-src"
 
     download_source(

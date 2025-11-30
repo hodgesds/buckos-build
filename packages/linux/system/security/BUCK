@@ -169,16 +169,6 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
-# Antivirus and malware detection
-filegroup(
-    name = "antivirus-packages",
-    srcs = [
-        "//packages/linux/system/security/clamav:clamav",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
-
 # All security packages
 filegroup(
     name = "all-security",

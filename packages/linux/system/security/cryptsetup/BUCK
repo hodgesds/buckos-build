@@ -100,6 +100,7 @@ autotools_package(
         "--sbindir=/sbin",
         "--sysconfdir=/etc",
         "--localstatedir=/var",
+        "--disable-asciidoc",  # Don't build man pages (requires asciidoctor)
     ],
     post_install = """
         mkdir -p $OUT/etc/crypttab.d
@@ -108,6 +109,7 @@ autotools_package(
         ":popt",
         ":lvm2",
         "//packages/linux/core/util-linux:util-linux",
+        "//packages/linux/system/libs/data/json-c:json-c",
     ],
     visibility = ["PUBLIC"],
 )

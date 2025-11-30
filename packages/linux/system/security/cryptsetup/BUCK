@@ -79,6 +79,7 @@ autotools_package(
         "openssl": ["//packages/linux/network/openssl:openssl"],
         "gcrypt": ["//packages/linux/system/libs/crypto/libgcrypt:libgcrypt"],
         "nettle": ["//packages/linux/system/libs/crypto/nettle:nettle"],
+        "argon2": ["//packages/linux/system/libs/crypto/argon2:argon2"],
     },
     use_configure = {
         "openssl": "--with-crypto_backend=openssl",

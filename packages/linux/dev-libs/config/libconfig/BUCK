@@ -5,6 +5,7 @@ download_source(
     name = "libconfig-src",
     src_uri = "https://github.com/hyperrealm/libconfig/releases/download/v1.7.3/libconfig-1.7.3.tar.gz",
     sha256 = "545166d6cac037744381d1e9cc5a5405094e7bfad16a411699bcff40bbb31ee7",
+    signature_required = False,
 )
 
 autotools_package(
@@ -14,6 +15,14 @@ autotools_package(
     description = "C/C++ library for processing configuration files",
     homepage = "https://hyperrealm.github.io/libconfig/",
     license = "LGPL-2.1+",
+    # Prevent flex/bison from regenerating parser files - the pre-generated
+    # files in the tarball have incompatible function signatures with newer
+    # flex versions. Touch the .c files to make them newer than .y/.l files.
+    src_prepare = """
+cd lib
+touch scanner.c scanner.h grammar.c grammar.h
+cd ..
+""",
     configure_args = [
         "--disable-static",
         "--disable-examples",

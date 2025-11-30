@@ -21,8 +21,6 @@ filegroup(
     name = "3d",
     srcs = [
         "//packages/linux/graphics/3d/blender:blender",
-        "//packages/linux/graphics/3d/freecad:freecad",
-        "//packages/linux/graphics/3d/openscad:openscad",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

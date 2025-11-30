@@ -27,6 +27,7 @@ cmake_package(
     version = "master-377-2034588",
     src_uri = "https://github.com/leejet/stable-diffusion.cpp/archive/refs/tags/master-377-2034588.tar.gz",
     sha256 = "e973aa85f85a78f1d783b00f3c0d71b92aabce1ef85f4fb04d13870be8c942fa",
+    signature_required = False,
     description = "Stable Diffusion image generation in pure C/C++",
     homepage = "https://github.com/leejet/stable-diffusion.cpp",
     license = "MIT",

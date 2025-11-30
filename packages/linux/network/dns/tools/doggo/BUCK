@@ -4,6 +4,7 @@ download_source(
     name = "doggo-src",
     src_uri = "https://github.com/mr-karan/doggo/releases/download/v1.1.2/doggo_1.1.2_Linux_x86_64.tar.gz",
     sha256 = "187d2a23402427aed8ab7c6fa704ffc1534bd594535c64f318f8904229f00647",
+    signature_required = False,
 )
 
 binary_package(

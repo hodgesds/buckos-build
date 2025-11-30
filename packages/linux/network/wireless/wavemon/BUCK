@@ -6,6 +6,7 @@ autotools_package(
     version = "0.9.5",
     src_uri = "https://github.com/uoaerg/wavemon/archive/refs/tags/v0.9.5.tar.gz",
     sha256 = "f84c55a40b470f2b98908d20cd0b38ffef6f587daed23b50281c9592df3331c6",
+    signature_required = False,
 
     iuse = ["ncurses"],
     use_defaults = ["ncurses"],

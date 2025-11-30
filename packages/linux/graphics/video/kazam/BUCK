@@ -8,7 +8,7 @@ python_package(
     version = "2.0.0",
     src_uri = "https://github.com/henrywoo/kazam/archive/refs/tags/v2.0.0.tar.gz",
     sha256 = "4c42a0833225128b1214aae637861b2de50b3524b133f2276906d2b94cf59385",
-    auto_detect_signature = False,
+    signature_required = False,
     description = "Simple screen recording program",
     homepage = "https://github.com/henrywoo/kazam",
     license = "GPL-3.0-or-later",

@@ -54,7 +54,6 @@ filegroup(
         "//packages/linux/system/libs/audio/flac:flac",
         "//packages/linux/system/libs/audio/opus:opus",
         "//packages/linux/system/libs/audio/lame:lame",
-        "//packages/linux/system/libs/audio/libmad:libmad",
         "//packages/linux/system/libs/audio/mpg123:libmpg123",
         "//packages/linux/system/libs/audio/speex:speex",
         "//packages/linux/system/libs/audio/speex:speexdsp",
@@ -69,7 +68,6 @@ filegroup(
     name = "audio-io-libs",
     srcs = [
         "//packages/linux/system/libs/audio/alsa-lib:alsa-lib",
-        "//packages/linux/system/libs/audio/libsndfile:libsndfile",
         "//packages/linux/system/libs/audio/libsamplerate:libsamplerate",
     ],
     default_target_platform = "//platforms:linux-target",
@@ -96,9 +94,6 @@ filegroup(
     name = "multimedia-libs",
     srcs = [
         "//packages/linux/system/libs/multimedia/sdl2:sdl2",
-        "//packages/linux/system/libs/multimedia/sdl2-image:sdl2-image",
-        "//packages/linux/system/libs/multimedia/sdl2-mixer:sdl2-mixer",
-        "//packages/linux/system/libs/multimedia/sdl2-ttf:sdl2-ttf",
         "//packages/linux/system/libs/multimedia/openal-soft:openal-soft",
         "//packages/linux/system/libs/multimedia/portaudio:portaudio",
     ],
@@ -187,9 +182,6 @@ filegroup(
     name = "sdl2-dev",
     srcs = [
         "//packages/linux/system/libs/multimedia/sdl2:sdl2",
-        "//packages/linux/system/libs/multimedia/sdl2-image:sdl2-image",
-        "//packages/linux/system/libs/multimedia/sdl2-mixer:sdl2-mixer",
-        "//packages/linux/system/libs/multimedia/sdl2-ttf:sdl2-ttf",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

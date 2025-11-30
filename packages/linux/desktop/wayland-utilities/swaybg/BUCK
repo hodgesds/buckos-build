@@ -1,26 +1,23 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "meson_package")
 
 download_source(
     name = "swaybg-src",
     src_uri = "https://github.com/swaywm/swaybg/releases/download/v1.2.1/swaybg-1.2.1.tar.gz",
     sha256 = "6af1fdf0e57b1cc5345febed786b761fea0e170943a82639f94cfaed7df84f8f",
+    signature_sha256 = "b3cb63fb3c4b0df4c0940efb4b2d6fdd54b29bc3acec37a8d00e839e87acafd7",
 )
 
-autotools_package(
+meson_package(
     name = "swaybg",
     source = ":swaybg-src",
     version = "1.2.1",
     description = "Wallpaper tool for Wayland compositors",
     homepage = "https://github.com/swaywm/swaybg",
     license = "MIT",
-    pre_configure = """
-mkdir -p build
-cd build
-meson setup .. --prefix=/usr \\
-    -Dgdk-pixbuf=enabled \\
-    -Dman-pages=disabled
-""",
+    meson_args = [
+        "-Dgdk-pixbuf=enabled",
+        "-Dman-pages=disabled",
+    ],
     deps = [
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/wayland:wayland-protocols",

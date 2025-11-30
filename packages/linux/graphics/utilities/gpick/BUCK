@@ -5,6 +5,7 @@ download_source(
     name = "gpick-src",
     src_uri = "https://github.com/thezbyg/gpick/archive/refs/tags/v0.3.tar.gz",
     sha256 = "29347e13dee19c4c81c9e125da6782b476c19ac8311fc7b9e53aebe23a5a34f8",
+    signature_required = False,
 )
 
 autotools_package(

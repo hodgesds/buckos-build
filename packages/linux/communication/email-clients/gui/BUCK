@@ -8,7 +8,6 @@ filegroup(
         "//packages/linux/communication/email-clients/gui/claws-mail:claws-mail",
         "//packages/linux/communication/email-clients/gui/evolution:evolution",
         "//packages/linux/communication/email-clients/gui/geary:geary",
-        "//packages/linux/communication/email-clients/gui/kmail:kmail",
         "//packages/linux/communication/email-clients/gui/sylpheed:sylpheed",
         "//packages/linux/communication/email-clients/gui/thunderbird:thunderbird",
     ],
@@ -34,7 +33,6 @@ filegroup(
 filegroup(
     name = "kde-clients",
     srcs = [
-        "//packages/linux/communication/email-clients/gui/kmail:kmail",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -45,7 +43,6 @@ filegroup(
     name = "full-featured",
     srcs = [
         "//packages/linux/communication/email-clients/gui/evolution:evolution",
-        "//packages/linux/communication/email-clients/gui/kmail:kmail",
         "//packages/linux/communication/email-clients/gui/thunderbird:thunderbird",
     ],
     default_target_platform = "//platforms:linux-target",

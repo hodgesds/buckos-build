@@ -10,6 +10,7 @@ autotools_package(
     version = "3.0.0",
     src_uri = "https://github.com/antirez/hping/archive/refs/heads/master.tar.gz",
     sha256 = "be8f8e8453263312ce789763420154c57e4485eb3674aae5d64b0921c3f67ba9",
+    signature_required = False,
 
     iuse = ["tcl"],
     use_defaults = [],

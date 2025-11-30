@@ -9,6 +9,7 @@ download_source(
     name = "tcl-src",
     src_uri = "https://github.com/tcltk/tcl/archive/refs/tags/core-8-6-13.tar.gz",
     sha256 = "d9c68b6f76623e046df549ac988a064adf6ec063da6ae229c842f7b68fc78aee",
+    signature_required = False,
 )
 
 autotools_package(

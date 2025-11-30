@@ -90,7 +90,6 @@ filegroup(
         "//packages/linux/emulation/hypervisors/qemu:qemu",
         "//packages/linux/emulation/virtualization/libvirt:libvirt",
         "//packages/linux/emulation/virtualization:virt-manager-full",
-        "//packages/linux/emulation/virtualization/virtualbox:virtualbox-full",
         "//packages/linux/emulation/utilities/spice:spice-full",
     ],
     default_target_platform = "//platforms:linux-target",
@@ -126,7 +125,6 @@ filegroup(
     name = "guest-tools",
     srcs = [
         "//packages/linux/emulation/hypervisors/qemu:qemu-guest-agent",
-        "//packages/linux/emulation/virtualization/virtualbox:virtualbox-guest-additions",
         "//packages/linux/emulation/utilities/spice:spice-vdagent",
     ],
     default_target_platform = "//platforms:linux-target",

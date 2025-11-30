@@ -10,7 +10,8 @@ autotools_package(
     version = "1.10.4",
     src_uri = "https://www.tcpdump.org/release/libpcap-1.10.4.tar.gz",
     sha256 = "ed19a0383fad72e3ad435fd239d7cd80d64916b87269550159d20e47160ebe5f",
-    auto_detect_signature=False,
+    signature_sha256 = "d3f19087169bc823fad9a8a184372f8977d81b23edcdc6bc9dc9d874c99cab01",
+    signature_required=False,
 
     iuse = ["dbus", "bluetooth", "rdma", "usb", "static-libs"],
     use_defaults = [],

@@ -13,9 +13,6 @@ filegroup(
     name = "sdl2-all",
     srcs = [
         "//packages/linux/system/libs/multimedia/sdl2:sdl2",
-        "//packages/linux/system/libs/multimedia/sdl2-image:sdl2-image",
-        "//packages/linux/system/libs/multimedia/sdl2-mixer:sdl2-mixer",
-        "//packages/linux/system/libs/multimedia/sdl2-ttf:sdl2-ttf",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

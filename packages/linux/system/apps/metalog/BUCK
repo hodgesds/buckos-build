@@ -9,6 +9,7 @@ autotools_package(
     version = "20230719",
     src_uri = "https://github.com/hvisage/metalog/archive/metalog-20230719.tar.gz",
     sha256 = "563b41409ee9e396c3709f002b59ccd9aff901b7d7e3adee6344e4b599a02105",
+    signature_required = False,
     description = "Modern replacement for syslogd and klogd",
     homepage = "https://github.com/hvisage/metalog",
     license = "GPL-2.0",

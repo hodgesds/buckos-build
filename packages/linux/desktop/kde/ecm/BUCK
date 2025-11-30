@@ -4,7 +4,8 @@ download_source(
     name = "ecm-src",
     src_uri = "https://download.kde.org/stable/frameworks/6.18/extra-cmake-modules-6.18.0.tar.xz",
     sha256 = "b2d2222cfe5ace502c60bd8a77a79bc0230f48cee83265c89dcc2618b960e293",
-    auto_detect_signature = False,
+    signature_sha256 = "63e75dee6e068f46c166fb5935a0cf43e77f00962bc0c23df76a03cc51b6984b",
+    signature_required = False,
 )
 
 cmake_package(

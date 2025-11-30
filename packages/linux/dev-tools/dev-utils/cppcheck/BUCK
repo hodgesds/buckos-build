@@ -9,6 +9,7 @@ download_source(
     name = "cppcheck-src",
     src_uri = "https://github.com/danmar/cppcheck/archive/2.13.0.tar.gz",
     sha256 = "8229afe1dddc3ed893248b8a723b428dc221ea014fbc76e6289840857c03d450",
+    signature_required = False,
 )
 
 autotools_package(

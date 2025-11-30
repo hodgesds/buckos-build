@@ -76,8 +76,7 @@ filegroup(
 filegroup(
     name = "libraries",
     srcs = [
-        "//packages/linux/gaming/libraries/sdl2:sdl2",
-        "//packages/linux/gaming/libraries/vulkan-tools:vulkan-tools",
+        "//packages/linux/system/libs/multimedia/sdl2:sdl2",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

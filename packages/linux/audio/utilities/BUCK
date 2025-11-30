@@ -13,8 +13,6 @@ filegroup(
 filegroup(
     name = "info-tools",
     srcs = [
-        "//packages/linux/audio/utilities/mediainfo:mediainfo",
-        "//packages/linux/audio/utilities/id3v2:id3v2",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

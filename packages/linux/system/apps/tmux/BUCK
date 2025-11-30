@@ -9,6 +9,7 @@ autotools_package(
     version = "3.4",
     src_uri = "https://github.com/tmux/tmux/releases/download/3.4/tmux-3.4.tar.gz",
     sha256 = "551ab8dea0bf505c0ad6b7bb35ef567cdde0ccb84357df142c254f35a23e19aa",
+    signature_required = False,
     description = "Terminal multiplexer with client-server model",
     homepage = "https://tmux.github.io",
     license = "ISC",

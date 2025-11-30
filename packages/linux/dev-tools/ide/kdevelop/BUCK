@@ -9,6 +9,7 @@ cmake_package(
     version = "24.08.3",
     src_uri = "https://download.kde.org/stable/release-service/24.08.3/src/kdevelop-24.08.3.tar.xz",
     sha256 = "a1690c9672e08064510e4d9c422a214b6d11a54cea5656e29c9445701af4cf71",
+    signature_sha256 = "83ad70bfa3c089978d1878dacd12f7db0f6de972412bab689d3117648a1a80d9",
     description = "KDE integrated development environment",
     homepage = "https://www.kdevelop.org",
     license = "GPL-2+",

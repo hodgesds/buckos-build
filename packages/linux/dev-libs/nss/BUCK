@@ -6,6 +6,7 @@ download_source(
     name = "nss-src",
     src_uri = "https://archive.mozilla.org/pub/security/nss/releases/NSS_3_104_RTM/src/nss-3.104.tar.gz",
     sha256 = "e2763223622d1e76b98a43030873856f248af0a41b03b2fa2ca06a91bc50ac8e",
+    signature_required = False,
 )
 
 ebuild_package(
@@ -25,9 +26,16 @@ ebuild_package(
         export NSS_USE_SYSTEM_SQLITE=1
         export NSDISTMODE=copy
         export NSS_DISABLE_GTESTS=1
+        export USE_64=1
     """,
     src_compile = """
         cd nss
+        export BUILD_OPT=1
+        export NSS_ENABLE_WERROR=0
+        export NSS_USE_SYSTEM_SQLITE=1
+        export NSDISTMODE=copy
+        export NSS_DISABLE_GTESTS=1
+        export USE_64=1
         make -C coreconf
         make -C lib/dbm
         make -j$(nproc)

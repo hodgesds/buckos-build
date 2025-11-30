@@ -6,6 +6,7 @@ autotools_package(
     version = "2024.01.23",
     src_uri = "https://www.kernel.org/pub/software/network/wireless-regdb/wireless-regdb-2024.01.23.tar.xz",
     sha256 = "c8a61c9acf76fa7eb4239e89f640dee3e87098d9f69b4d3518c9c60fc6d20c55",
+    signature_required = False,
 
     iuse = [],
     use_defaults = [],

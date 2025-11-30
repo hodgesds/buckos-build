@@ -4,6 +4,7 @@ download_source(
     name = "coredns-src",
     src_uri = "https://github.com/coredns/coredns/releases/download/v1.11.1/coredns_1.11.1_linux_amd64.tgz",
     sha256 = "f96cdee0934c5c12a28bb0fb080bed688fdd7bfdeae2f64984f02bdec2d65498",
+    signature_required = False,
     strip_components = 0,
 )
 

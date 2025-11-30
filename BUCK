@@ -44,7 +44,7 @@ alias(
 # Default terminal
 alias(
     name = "terminal",
-    actual = "//packages/linux/terminals/st:st",
+    actual = "//packages/linux/terminals/foot:foot",
     visibility = ["PUBLIC"],
 )
 
@@ -139,28 +139,9 @@ alias(
     visibility = ["PUBLIC"],
 )
 
-# Alternative init systems
-alias(
-    name = "init-openrc",
-    actual = "//packages/linux/system/init:openrc",
-    visibility = ["PUBLIC"],
-)
-
 alias(
     name = "init-s6",
     actual = "//packages/linux/system/init:s6",
-    visibility = ["PUBLIC"],
-)
-
-alias(
-    name = "init-runit",
-    actual = "//packages/linux/system/init:runit",
-    visibility = ["PUBLIC"],
-)
-
-alias(
-    name = "init-dinit",
-    actual = "//packages/linux/system/init:dinit",
     visibility = ["PUBLIC"],
 )
 
@@ -264,7 +245,6 @@ filegroup(
 filegroup(
     name = "terminal-packages",
     srcs = [
-        "//packages/linux/terminals/st:st",
         "//packages/linux/terminals/alacritty:alacritty",
         "//packages/linux/terminals/foot:foot",
     ],
@@ -372,9 +352,6 @@ filegroup(
     name = "init-packages",
     srcs = [
         "//packages/linux/system/init:systemd",
-        "//packages/linux/system/init:openrc",
-        "//packages/linux/system/init:runit",
-        "//packages/linux/system/init:dinit",
     ],
     visibility = ["PUBLIC"],
 )
@@ -382,9 +359,6 @@ filegroup(
 filegroup(
     name = "init-lightweight",
     srcs = [
-        "//packages/linux/system/init:openrc",
-        "//packages/linux/system/init:runit",
-        "//packages/linux/system/init:dinit",
     ],
     visibility = ["PUBLIC"],
 )
@@ -394,12 +368,6 @@ filegroup(
 # =============================================================================
 
 # Full desktop environments
-alias(
-    name = "gnome",
-    actual = "//packages/linux/desktop/gnome:gnome",
-    visibility = ["PUBLIC"],
-)
-
 alias(
     name = "kde-plasma",
     actual = "//packages/linux/desktop/kde:kde-plasma",
@@ -560,12 +528,6 @@ alias(
     visibility = ["PUBLIC"],
 )
 
-# VirtualBox - Desktop virtualization
-alias(
-    name = "virtualbox",
-    actual = "//packages/linux/emulation/virtualization/virtualbox:virtualbox",
-    visibility = ["PUBLIC"],
-)
 
 # Docker
 alias(
@@ -841,12 +803,6 @@ task_set(
 # =============================================================================
 
 desktop_set(
-    name = "desktop-gnome",
-    environment = "gnome-desktop",
-    description = "GNOME desktop environment",
-)
-
-desktop_set(
     name = "desktop-kde",
     environment = "kde-desktop",
     description = "KDE Plasma desktop environment",
@@ -919,13 +875,6 @@ combined_set(
         "//packages/linux/system/docs:texinfo",
     ],
     description = "CI/CD runner with container support",
-)
-
-# Developer desktop with GNOME
-combined_set(
-    name = "developer-gnome",
-    sets = ["@developer", "@gnome-desktop"],
-    description = "GNOME desktop for developers",
 )
 
 # Lightweight server (minimal + SSH)

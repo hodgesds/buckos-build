@@ -6,7 +6,8 @@ autotools_package(
     version = "1.34.5",
     src_uri = "https://github.com/c-ares/c-ares/releases/download/v1.34.5/c-ares-1.34.5.tar.gz",
     sha256 = "7d935790e9af081c25c495fd13c2cfcda4792983418e96358ef6e7320ee06346",
-    auto_detect_signature = False,
+    signature_sha256 = "146fcf8ac828903521da52b76852843480a9ee0bdd5e145f81e6df0bb27c40bd",
+    signature_required = False,
 
     description = "C library for asynchronous DNS requests",
     homepage = "https://c-ares.org/",

@@ -14,6 +14,7 @@ autotools_package(
     version = "1.6.28",
     src_uri = "https://www.memcached.org/files/memcached-1.6.28.tar.gz",
     sha256 = "b1d02d7e9887d80f4885a024931c8bbe9c16d333200d2dcadde8597892c54855",
+    signature_required = False,
     description = "High-performance distributed memory object caching system",
     homepage = "https://memcached.org/",
     license = "BSD-3-Clause",

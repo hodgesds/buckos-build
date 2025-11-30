@@ -8,7 +8,8 @@ autotools_package(
     version = "2.0",
     src_uri = "https://download.geany.org/geany-2.0.tar.bz2",
     sha256 = "565b4cd2f0311c1e3a167ec71c4a32dba642e0fe554ae5bb6b8177b7a74ccc92",
-    auto_detect_signature=False,
+    signature_sha256 = "e69a2ee5e35a7532b4908715aee578befa3cb878483f95c3c0f12435dac6563b",
+    signature_required=False,
     description = "Lightweight IDE and text editor using GTK",
     homepage = "https://www.geany.org",
     license = "GPL-2+",
@@ -26,7 +27,6 @@ autotools_package(
 
     # Conditional dependencies
     use_deps = {
-        "vte": ["//packages/linux/desktop/gnome:vte"],
     },
 
     # Conditional configure arguments
@@ -48,7 +48,6 @@ autotools_package(
     ],
 
     deps = [
-        "//packages/linux/desktop/gnome:gtk3",
     ],
     visibility = ["PUBLIC"],
 )

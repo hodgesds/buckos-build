@@ -6,6 +6,7 @@ autotools_package(
     version = "3.0",
     src_uri = "https://github.com/ntop/n2n/archive/refs/tags/3.0.tar.gz",
     sha256 = "25fcabba7bfcf25f4c9cd7fecc7ce11de48beb0b0f3506053d8485604ea8f50d",
+    signature_required = False,
 
     iuse = ["ssl", "zlib"],
     use_defaults = ["ssl", "zlib"],

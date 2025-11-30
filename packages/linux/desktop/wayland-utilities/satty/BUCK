@@ -1,22 +1,15 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "cargo_package")
 
-download_source(
-    name = "satty-src",
+cargo_package(
+    name = "satty",
+    version = "0.12.0",
     src_uri = "https://github.com/gabm/Satty/archive/v0.12.0.tar.gz",
     sha256 = "42403b36e7babe245de2bebc78d4bebab68aeaa4594b28bb9d83f44808e52920",
-)
-
-autotools_package(
-    name = "satty",
-    source = ":satty-src",
-    version = "0.12.0",
+    signature_required = False,
     description = "A screenshot annotation tool inspired by Swappy",
     homepage = "https://github.com/gabm/Satty",
     license = "MPL-2.0",
-    pre_configure = """
-# Uses cargo
-""",
+    bins = ["satty"],
     deps = [
         "//packages/linux/desktop/wayland-utilities/grim:grim",
         "//packages/linux/desktop/wayland-utilities/slurp:slurp",

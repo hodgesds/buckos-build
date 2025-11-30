@@ -7,6 +7,7 @@ download_source(
     name = "libvpx-src",
     src_uri = "https://github.com/webmproject/libvpx/archive/refs/tags/v1.14.1.tar.gz",
     sha256 = "901747254d80a7937c933d03bd7c5d41e8e6c883e0665fadcb172542167c7977",
+    signature_required = False,
 )
 
 autotools_package(

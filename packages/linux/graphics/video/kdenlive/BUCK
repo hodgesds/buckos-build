@@ -5,7 +5,7 @@ download_source(
     name = "kdenlive-src",
     src_uri = "https://github.com/KDE/kdenlive/archive/refs/tags/v24.02.0.tar.gz",
     sha256 = "b810a9ea91b95151fbe8cb078709c5bcf6a2295973f65f20daebc18b64b2636a",
-    auto_detect_signature = False,
+    signature_required = False,
 )
 
 autotools_package(

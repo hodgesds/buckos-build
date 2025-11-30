@@ -7,7 +7,7 @@ autotools_package(
     version = "1.11.0",
     src_uri = "https://www.gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.11.0.tar.bz2",
     sha256 = "09120c9867ce7f2081d6aaa1775386b98c2f2f246135761aae47d81f58685b9c",
-    auto_detect_signature = False,
+    signature_required = False,
     description = "General purpose cryptographic library based on GnuPG",
     homepage = "https://www.gnupg.org/",
     license = "LGPL-2.1+",

@@ -5,6 +5,7 @@ download_source(
     name = "smartmontools-src",
     src_uri = "https://github.com/smartmontools/smartmontools/archive/refs/tags/RELEASE_7_4.tar.gz",
     sha256 = "790c843fbfb2e55142364a9dbc9adb19d26d2ed7e3de06e0dc0c0a606fa12a1f",
+    signature_required = False,
 )
 
 autotools_package(

@@ -5,7 +5,7 @@ download_source(
     name = "exim-src",
     src_uri = "https://github.com/Exim/exim/archive/refs/tags/exim-4.98.tar.gz",
     sha256 = "efc6648d6f5d5890bddd99c6e73b46d793e85e4958732e935fa28d964551862b",
-    auto_detect_signature = False,
+    signature_required = False,
 )
 
 binary_package(

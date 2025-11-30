@@ -6,7 +6,7 @@ autotools_package(
     version = "2.13.2",
     src_uri = "https://github.com/freetype/freetype/archive/refs/tags/VER-2-13-2.tar.gz",
     sha256 = "427201f5d5151670d05c1f5b45bef5dda1f2e7dd971ef54f0feaaa7ffd2ab90c",
-    auto_detect_signature = False,
+    signature_required = False,
     description = "High-quality font rendering engine",
     homepage = "https://www.freetype.org/",
     license = "FTL GPL-2.0",

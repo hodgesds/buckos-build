@@ -7,7 +7,7 @@ autotools_package(
     version = "1.24.5",
     src_uri = "https://github.com/mirror/wget/archive/refs/tags/v1.24.5.tar.gz",
     sha256 = "250eb79c73d5568c89a3221ae44c43727f817632a065d6c3300b206585b0ab2d",
-    auto_detect_signature = False,
+    signature_required = False,
     description = "Internet file retriever",
     homepage = "https://www.gnu.org/software/wget/",
     license = "GPL-3.0",

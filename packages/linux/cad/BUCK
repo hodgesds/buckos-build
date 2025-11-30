@@ -5,10 +5,7 @@
 filegroup(
     name = "eda-packages",
     srcs = [
-        "//packages/linux/cad/eda/kicad:kicad",
         "//packages/linux/cad/eda/ngspice:ngspice",
-        "//packages/linux/cad/eda/geda-gaf:geda-gaf",
-        "//packages/linux/cad/eda/pcb-rnd:pcb-rnd",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -18,8 +15,6 @@ filegroup(
 filegroup(
     name = "2d-cad-packages",
     srcs = [
-        "//packages/linux/cad/2d/librecad:librecad",
-        "//packages/linux/cad/2d/qcad:qcad",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -29,9 +24,6 @@ filegroup(
 filegroup(
     name = "3d-cad-packages",
     srcs = [
-        "//packages/linux/cad/3d/freecad:freecad",
-        "//packages/linux/cad/3d/openscad:openscad",
-        "//packages/linux/cad/3d/brlcad:brlcad",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -51,9 +43,6 @@ filegroup(
 filegroup(
     name = "pcb-packages",
     srcs = [
-        "//packages/linux/cad/eda/kicad:kicad",
-        "//packages/linux/cad/eda/geda-gaf:geda-gaf",
-        "//packages/linux/cad/eda/pcb-rnd:pcb-rnd",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -63,9 +52,6 @@ filegroup(
 filegroup(
     name = "parametric-packages",
     srcs = [
-        "//packages/linux/cad/3d/freecad:freecad",
-        "//packages/linux/cad/3d/openscad:openscad",
-        "//packages/linux/cad/3d/solvespace:solvespace",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

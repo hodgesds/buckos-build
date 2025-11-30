@@ -8,6 +8,7 @@ download_source(
     name = "ddcutil-src",
     src_uri = "https://github.com/rockowitz/ddcutil/archive/refs/tags/v2.1.4.tar.gz",
     sha256 = "cd8325d399399edba3df4ec58a4051c7c54fcf4fbc8f62937c6f19adb303f4ba",
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags

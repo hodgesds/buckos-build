@@ -1,25 +1,20 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "meson_package")
 
 download_source(
     name = "yambar-src",
     src_uri = "https://codeberg.org/dnkl/yambar/archive/1.11.0.tar.gz",
     sha256 = "3649878ae7282203b4ff2aa9f45afad32a6fc8c921d94b6abdac2a1d21045aaf",
+    signature_required = False,
 )
 
-autotools_package(
+meson_package(
     name = "yambar",
     source = ":yambar-src",
     version = "1.11.0",
     description = "Modular status panel for X11 and Wayland",
     homepage = "https://codeberg.org/dnkl/yambar",
     license = "MIT",
-    pre_configure = """
-mkdir -p build
-cd build
-meson setup .. --prefix=/usr \\
-    -Dman-pages=disabled
-""",
+    meson_args = ["-Dman-pages=disabled"],
     deps = [
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/wayland:wayland-protocols",

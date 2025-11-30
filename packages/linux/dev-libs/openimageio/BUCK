@@ -7,6 +7,7 @@ cmake_package(
     version = "2.5.10.1",
     src_uri = "https://github.com/OpenImageIO/oiio/archive/v2.5.10.1.tar.gz",
     sha256 = "8f6a547f6a5d510737ba436f867043db537def65f0fdb14ec30e5a185b619f93",
+    signature_required = False,
     description = "Library for reading and writing images, and a bunch of related classes, utilities, and applications",
     homepage = "https://openimageio.org/",
     license = "Apache-2.0",

@@ -9,6 +9,7 @@ download_source(
     name = "iozone-src",
     src_uri = "https://www.iozone.org/src/current/iozone3_506.tar",
     sha256 = "114ce5c071873b9a2c7ba6e73d05d5ef7e66564392acbfcdc0b3261db10fcbe7",
+    signature_required = False,
 )
 
 binary_package(

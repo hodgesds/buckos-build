@@ -8,6 +8,7 @@ download_source(
     name = "tlp-src",
     src_uri = "https://github.com/linrunner/TLP/archive/refs/tags/1.6.1.tar.gz",
     sha256 = "f7d013691a92ffcf42ef1648565dbc24a33202046d3c8138dad1963a3169a0f5",
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags

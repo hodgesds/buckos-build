@@ -6,7 +6,8 @@ autotools_package(
     version = "5.9.13",
     src_uri = "https://download.strongswan.org/strongswan-5.9.13.tar.bz2",
     sha256 = "56e30effb578fd9426d8457e3b76c8c3728cd8a5589594b55649b2719308ba55",
-    auto_detect_signature = False,
+    signature_sha256 = "f97bc52347c74abe336001e4ef49d6cdd89ca307c3e86166895681e8ec82423e",
+    signature_required = False,
 
     iuse = ["ssl", "curl", "eap", "dhcp", "systemd", "vici", "swanctl"],
     use_defaults = ["ssl", "curl", "eap", "dhcp", "systemd", "vici", "swanctl"],

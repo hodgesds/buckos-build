@@ -8,6 +8,7 @@ download_source(
     name = "usbutils-src",
     src_uri = "https://www.kernel.org/pub/linux/utils/usb/usbutils/usbutils-017.tar.xz",
     sha256 = "a6a25ffdcf9103e38d7a44732aca17073f4e602b92e4ae55625231a82702e05b",
+    signature_required = False,
 )
 
 autotools_package(

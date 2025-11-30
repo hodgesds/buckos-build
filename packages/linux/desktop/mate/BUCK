@@ -9,6 +9,7 @@ download_source(
     name = "mate-panel-src",
     src_uri = "https://pub.mate-desktop.org/releases/1.28/mate-panel-1.28.1.tar.xz",
     sha256 = "5133c64f5969ae8eeebe6e8bba450dea792cb0be06d9ae1c36e8569d2f8524ba",
+    signature_required = False,
 )
 
 autotools_package(
@@ -18,7 +19,6 @@ autotools_package(
     description = "MATE Panel",
     homepage = "https://mate-desktop.org/",
     license = "GPL-2.0",
-    deps = ["//packages/linux/desktop/xorg-server:xorg-server"],
     visibility = ["PUBLIC"],
 )
 
@@ -26,6 +26,7 @@ download_source(
     name = "marco-src",
     src_uri = "https://pub.mate-desktop.org/releases/1.28/marco-1.28.1.tar.xz",
     sha256 = "2496e5e40ee980cd6849493ac3e0f8fd0dec8b81c674da8d9ba19a577f0ac2e1",
+    signature_required = False,
 )
 
 autotools_package(
@@ -35,7 +36,6 @@ autotools_package(
     description = "Marco - MATE window manager",
     homepage = "https://mate-desktop.org/",
     license = "GPL-2.0",
-    deps = ["//packages/linux/desktop/xorg-server:xorg-server"],
     visibility = ["PUBLIC"],
 )
 
@@ -46,7 +46,6 @@ filegroup(
         ":mate-panel",
         ":marco",
         "//packages/linux/desktop/lightdm:lightdm",
-        "//packages/linux/desktop/xorg-server:xorg-server",
         "//packages/linux/desktop/mesa:mesa",
     ],
     default_target_platform = "//platforms:linux-target",

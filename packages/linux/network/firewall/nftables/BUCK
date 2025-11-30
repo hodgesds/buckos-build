@@ -10,7 +10,8 @@ autotools_package(
     version = "1.0.9",
     src_uri = "https://www.netfilter.org/projects/nftables/files/nftables-1.0.9.tar.xz",
     sha256 = "a3c304cd9ba061239ee0474f9afb938a9bb99d89b960246f66f0c3a0a85e14cd",
-    auto_detect_signature=False,
+    signature_sha256 = "d07c88a9b5e8510c4af787caabb108b69dd53885939c135ef8cfe12bab79fe2f",
+    signature_required=False,
 
     iuse = ["json", "python", "readline", "debug", "doc"],
     use_defaults = ["json", "readline"],

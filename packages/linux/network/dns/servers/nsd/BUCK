@@ -6,7 +6,8 @@ autotools_package(
     version = "4.8.0",
     src_uri = "https://nlnetlabs.nl/downloads/nsd/nsd-4.8.0.tar.gz",
     sha256 = "820da4e384721915f4bcaf7f2bed98519da563c6e4c130c742c724760ec02a0a",
-    auto_detect_signature=False,
+    signature_sha256 = "4b261bf58b8cfec2c6d0599278a097f14068b306a5acd9914189a82bde60bf78",
+    signature_required=False,
 
     iuse = ["ssl", "ratelimit"],
     use_defaults = ["ssl", "ratelimit"],

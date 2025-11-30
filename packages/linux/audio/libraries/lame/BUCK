@@ -6,6 +6,7 @@ autotools_package(
     version = "3.100",
     src_uri = "https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz",
     sha256 = "ddfe36cab873794038ae2c1210557ad34857a4b6bdc515785d1da9e175b1da1e",
+    signature_required = False,
     description = "High quality MP3 encoder",
     homepage = "https://lame.sourceforge.io/",
     license = "LGPL-2.1",

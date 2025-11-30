@@ -13,6 +13,7 @@ autotools_package(
     version = "1.0.20",
     src_uri = "https://github.com/akopytov/sysbench/archive/refs/tags/1.0.20.tar.gz",
     sha256 = "e8ee79b1f399b2d167e6a90de52ccc90e52408f7ade1b9b7135727efe181347f",
+    signature_required = False,
     description = "Multi-threaded benchmark tool for CPU, memory, threads, mutex, and database",
     homepage = "https://github.com/akopytov/sysbench",
     license = "GPL-2.0",
@@ -20,8 +21,6 @@ autotools_package(
     use_defaults = [],
     deps = [],
     use_deps = {
-        "mysql": ["//packages/linux/databases/mariadb:mariadb"],
-        "postgres": ["//packages/linux/databases/postgresql:postgresql"],
         "lua": ["//packages/linux/lang/lua:lua"],
     },
     pre_configure = """

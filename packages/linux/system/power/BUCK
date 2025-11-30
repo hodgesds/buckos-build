@@ -5,9 +5,7 @@
 filegroup(
     name = "intel-x86-tools",
     srcs = [
-        "//packages/linux/system/power/turbostat:turbostat",
         "//packages/linux/system/power/x86_energy_perf_policy:x86_energy_perf_policy",
-        "//packages/linux/system/power/intel-speed-select:intel-speed-select",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -84,7 +82,6 @@ filegroup(
 filegroup(
     name = "essential",
     srcs = [
-        "//packages/linux/system/power/turbostat:turbostat",
         "//packages/linux/system/power/cpufrequtils:cpufrequtils",
         "//packages/linux/system/power/hdparm:hdparm",
         "//packages/linux/system/power/irqbalance:irqbalance",

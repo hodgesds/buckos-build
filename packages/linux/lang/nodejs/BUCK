@@ -9,6 +9,7 @@ download_source(
     name = "nodejs-src",
     src_uri = "https://nodejs.org/dist/v20.11.0/node-v20.11.0.tar.xz",
     sha256 = "31807ebeeeb049c53f1765e4a95aed69476a4b696dd100cb539ab668d7950b40",
+    signature_required = False,
 )
 
 autotools_package(

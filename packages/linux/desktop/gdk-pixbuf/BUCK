@@ -7,6 +7,7 @@ meson_package(
     version = "2.42.12",
     src_uri = "https://download.gnome.org/sources/gdk-pixbuf/2.42/gdk-pixbuf-2.42.12.tar.xz",
     sha256 = "b9505b3445b9a7e48ced34760c3bcb73e966df3ac94c95a148cb669ab748e3c7",
+    signature_required = False,
     description = "Image loading library for GTK+",
     homepage = "https://gitlab.gnome.org/GNOME/gdk-pixbuf",
     license = "LGPL-2.1+",

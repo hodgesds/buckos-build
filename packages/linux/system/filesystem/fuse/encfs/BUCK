@@ -5,7 +5,8 @@ download_source(
     name = "encfs-src",
     src_uri = "https://github.com/vgough/encfs/releases/download/v1.9.5/encfs-1.9.5.tar.gz",
     sha256 = "4709f05395ccbad6c0a5b40a4619d60aafe3473b1a79bafb3aa700b1f756fd63",
-    auto_detect_signature = False,
+    signature_sha256 = "b0d4dcf25b78163b7a58e16f12d8ac72aa2723712895e0778d6f06606b516f1f",
+    signature_required = False,
 )
 
 autotools_package(

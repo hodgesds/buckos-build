@@ -6,6 +6,7 @@ cmake_package(
     version = "2.2.2",
     src_uri = "https://github.com/gflags/gflags/archive/refs/tags/v2.2.2.tar.gz",
     sha256 = "34af2f15cf7367513b352bdcd2493ab14ce43692d2dcd9dfc499492966c64dcf",
+    signature_required = False,
     description = "C++ library for commandline flags processing",
     homepage = "https://gflags.github.io/gflags/",
     license = "BSD-3-Clause",

@@ -14,6 +14,7 @@ download_source(
     name = "intel-firmware-src",
     src_uri = "https://cdn.kernel.org/pub/linux/kernel/firmware/linux-firmware-20241017.tar.gz",
     sha256 = "830b66d0934d205969c472a4d5feb1ce2ed659ccebe81a78214098a982ac93cd",
+    signature_required = False,
 )
 
 # Intel GPU firmware
@@ -42,6 +43,7 @@ meson_package(
     version = "1.28",
     src_uri = "https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/archive/v1.28/igt-gpu-tools-v1.28.tar.gz",
     sha256 = "ba15b321c5a90da629baf326912c9c0406a903719040eb4959e0af1197935133",
+    signature_required = False,
     description = "Intel GPU debugging and testing tools",
     homepage = "https://gitlab.freedesktop.org/drm/igt-gpu-tools",
     license = "MIT",

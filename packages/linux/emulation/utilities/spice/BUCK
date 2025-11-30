@@ -1,26 +1,22 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "autotools_package", "meson_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
-# SPICE protocol library
+# SPICE protocol library (uses meson)
 download_source(
     name = "spice-protocol-src",
     src_uri = "https://www.spice-space.org/download/releases/spice-protocol-0.14.4.tar.xz",
     sha256 = "04ffba610d9fd441cfc47dfaa135d70096e60b1046d2119d8db2f8ea0d17d912",
-    auto_detect_signature=False,
+    signature_sha256 = "d5416f50a49220967d9ef66c25e75b8b6c51d4d372dea48c5d55249f865a989e",
+    signature_required=False,
 )
 
-# USE flags: See use_flags.bzl for available flags
-
-autotools_package(
+meson_package(
     name = "spice-protocol",
     source = ":spice-protocol-src",
     version = "0.14.4",
     description = "SPICE protocol headers",
     homepage = "https://www.spice-space.org/",
     license = "BSD-3-Clause",
-    configure_args = [
-        "--prefix=/usr",
-    ],
     visibility = ["PUBLIC"],
 )
 
@@ -29,7 +25,8 @@ download_source(
     name = "spice-server-src",
     src_uri = "https://www.spice-space.org/download/releases/spice-0.15.2.tar.bz2",
     sha256 = "6d9eb6117f03917471c4bc10004abecff48a79fb85eb85a1c45f023377015b81",
-    auto_detect_signature=False,
+    signature_sha256 = "7b6b0c9a8db33312ed2ce56e71ef77a63a47a9aabd9a59af677a8091771a4313",
+    signature_required=False,
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -66,21 +63,19 @@ download_source(
     name = "spice-gtk-src",
     src_uri = "https://www.spice-space.org/download/gtk/spice-gtk-0.42.tar.xz",
     sha256 = "9380117f1811ad1faa1812cb6602479b6290d4a0d8cc442d44427f7f6c0e7a58",
-    auto_detect_signature=False,
+    signature_sha256 = "8b67370559cec304a26387c5f5c0f3592a1f0becb679b8f02c0df0f8888ce4f9",
+    signature_required=False,
 )
 
-# USE flags: See use_flags.bzl for available flags
-
-autotools_package(
+# spice-gtk uses meson
+meson_package(
     name = "spice-gtk",
     source = ":spice-gtk-src",
     version = "0.42",
     description = "GTK client library for SPICE protocol",
     homepage = "https://www.spice-space.org/",
     license = "LGPL-2.1",
-    configure_args = [
-        "--prefix=/usr",
-        "--sysconfdir=/etc",
+    meson_args = [
         "-Dgtk=enabled",
         "-Dwebdav=enabled",
         "-Dusbredir=enabled",
@@ -106,7 +101,8 @@ download_source(
     name = "spice-vdagent-src",
     src_uri = "https://www.spice-space.org/download/releases/spice-vdagent-0.22.1.tar.bz2",
     sha256 = "93b0d15aca4762cc7d379b179a7101149dbaed62b72112fffb2b3e90b11687a0",
-    auto_detect_signature=False,
+    signature_sha256 = "c0e36b84417243b673ef849ebefee765f740b8a195371997b00c9e143aa0e8c9",
+    signature_required=False,
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -139,9 +135,6 @@ install -m 0644 data/70-spice-vdagentd.rules "$DESTDIR/usr/lib/udev/rules.d/" 2>
     """,
     deps = [
         "//packages/linux/dev-libs/glib:glib",
-        "//packages/linux/desktop/xorg-server:libx11",
-        "//packages/linux/desktop/xorg-server:libxfixes",
-        "//packages/linux/desktop/xorg-server:libxrandr",
         "//packages/linux/system/init/systemd:systemd",
     ],
     visibility = ["PUBLIC"],

@@ -30,7 +30,7 @@ filegroup(
 )
 
 filegroup(
-    name = "essential",
+    name = "monitoring-essential",
     srcs = [
         "//packages/linux/laptop/monitoring/lm-sensors:lm-sensors",
         "//packages/linux/laptop/monitoring/acpi:acpi",

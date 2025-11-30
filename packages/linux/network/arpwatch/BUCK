@@ -7,13 +7,13 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 autotools_package(
     name = "arpwatch",
-    version = "3.3",
-    src_uri = "https://www.atoptool.nl/download/atop-2.12.1.tar.gz",
-    sha256 = "4fdbe67c5dfaf89405639e18599f4eae77978073ffa54f3c78c368ab54bd12f6",
+    version = "3.9",
+    src_uri = "https://ee.lbl.gov/downloads/arpwatch/arpwatch-3.9.tar.gz",
+    sha256 = "832d20a5a508d9694a84a17e2627de3b3aa8b42b19ebdd97e264c511168f6eb4",
+    signature_required = False,
 
     iuse = ["email"],
     use_defaults = ["email"],
-
 
     use_configure = {
         "email": "--with-sendmail",

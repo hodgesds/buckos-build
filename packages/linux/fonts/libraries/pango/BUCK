@@ -6,7 +6,7 @@ autotools_package(
     version = "1.52.2",
     src_uri = "https://download.gnome.org/sources/pango/1.52/pango-1.52.2.tar.xz",
     sha256 = "d0076afe01082814b853deec99f9349ece5f2ce83908b8e58ff736b41f78a96b",
-    auto_detect_signature = False,
+    signature_required = False,
     description = "Library for layout and rendering of text",
     homepage = "https://pango.gnome.org/",
     license = "LGPL-2.0-or-later",
@@ -30,7 +30,6 @@ autotools_package(
     },
     use_deps = {
         "cairo": ["//packages/linux/desktop/cairo:cairo"],
-        "X": ["//packages/linux/desktop/xorg-server:libx11"],
     },
     pre_configure = """
 mkdir -p build

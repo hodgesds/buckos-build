@@ -5,6 +5,7 @@ download_source(
     name = "claws-mail-src",
     src_uri = "https://www.claws-mail.org/download.php?file=releases/claws-mail-4.3.0.tar.xz",
     sha256 = "95dc1d888eb916f028467fa0c3cbf45baff6678793b7bfb35fabba029d581ce1",
+    signature_sha256 = "61ed5324aa5ae8343f211797cc806ace01bb5943da6146be23bb092d109d6a04",
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -41,7 +42,6 @@ mkdir -p "$DESTDIR/usr/share/applications"
 mkdir -p "$DESTDIR/etc/claws-mail"
 """,
     deps = [
-        "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/network/openssl:openssl",
     ],
     visibility = ["PUBLIC"],

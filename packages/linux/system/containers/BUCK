@@ -75,7 +75,6 @@ filegroup(
     name = "container-security",
     srcs = [
         "//packages/linux/system/containers/utils:trivy",
-        "//packages/linux/system/containers/utils:hadolint",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

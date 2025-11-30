@@ -10,6 +10,7 @@ autotools_package(
     version = "4.0",
     src_uri = "https://samba.org/ftp/tridge/dbench/dbench-4.0.tar.gz",
     sha256 = "6001893f34e68a3cfeb5d424e1f2bfef005df96a22d86f35dc770c5bccf3aa8a",
+    signature_required = False,
     description = "Database-style benchmark for filesystems",
     homepage = "https://samba.org/ftp/tridge/dbench/",
     license = "GPL-3.0",

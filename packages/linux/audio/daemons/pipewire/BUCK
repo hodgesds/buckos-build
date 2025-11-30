@@ -6,7 +6,7 @@ autotools_package(
     version = "1.0.7",
     src_uri = "https://github.com/PipeWire/pipewire/archive/refs/tags/1.0.7.tar.gz",
     sha256 = "9c45eef65e66224804ae8671849452a7f221e913813072b3aad346f20df666a8",
-    auto_detect_signature = False,
+    signature_required = False,
     description = "Low-latency audio/video router and processor",
     homepage = "https://pipewire.org/",
     license = "MIT",
@@ -47,8 +47,6 @@ autotools_package(
         "bluetooth": ["//packages/linux/system/bluetooth/bluez:bluez"],
         "gstreamer": ["//packages/linux/graphics/video/gstreamer:gstreamer"],
         "ffmpeg": ["//packages/linux/graphics/video/ffmpeg:ffmpeg"],
-        "vulkan": ["//packages/linux/gaming/libraries/vulkan-tools:vulkan-loader"],
-        "X": ["//packages/linux/desktop/xorg-server:libx11"],
         "systemd": ["//packages/linux/system/init/systemd:systemd"],
     },
     pre_configure = """
@@ -82,7 +80,6 @@ meson setup .. --prefix=/usr \
     $CONFIGURE_ARGS
 """,
     deps = [
-        "//packages/linux/audio/libraries/libsndfile:libsndfile",
         "//packages/linux/system/libs/ipc/dbus:dbus",
     ],
     visibility = ["PUBLIC"],

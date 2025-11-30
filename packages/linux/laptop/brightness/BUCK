@@ -20,7 +20,7 @@ filegroup(
 )
 
 filegroup(
-    name = "essential",
+    name = "brightness-essential",
     srcs = [
         "//packages/linux/laptop/brightness/brightnessctl:brightnessctl",
     ],

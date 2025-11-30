@@ -5,6 +5,7 @@ download_source(
     name = "synfig-src",
     src_uri = "https://github.com/synfig/synfig/releases/download/v1.5.1/synfig-1.5.1.tar.gz",
     sha256 = "aa91593c28a89f269be1be9c8bd9ecca6491f9e6af26744d1c160c6553ee2ced",
+    signature_required = False,
 )
 
 autotools_package(

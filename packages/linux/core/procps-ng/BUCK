@@ -7,7 +7,7 @@ autotools_package(
     # Use official release tarball which includes pre-generated configure
     src_uri = "https://sourceforge.net/projects/procps-ng/files/Production/procps-ng-4.0.4.tar.xz",
     sha256 = "22870d6feb2478adb617ce4f09a787addaf2d260c5a8aa7b17d889a962c5e42e",
-    auto_detect_signature=False,
+    signature_required = False,
     description = "Utilities for monitoring your system and its processes",
     homepage = "https://gitlab.com/procps-ng/procps",
     license = "GPL-2.0",

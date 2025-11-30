@@ -6,6 +6,7 @@ autotools_package(
     version = "2023.07.R1",
     src_uri = "https://www.kismetwireless.net/code/kismet-2023-07-R1.tar.xz",
     sha256 = "f08548e26ca65fa1e567b1debbea1ca4d0e7206bddb96a4f639c90171873e8f7",
+    signature_required = False,
 
     iuse = ["ssl", "python", "ncurses", "sqlite"],
     use_defaults = ["ssl", "ncurses", "sqlite"],

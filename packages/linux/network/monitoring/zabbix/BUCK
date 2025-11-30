@@ -8,8 +8,8 @@ autotools_package(
     version = "7.0.0",
     src_uri = "https://cdn.zabbix.com/zabbix/sources/stable/7.0/zabbix-7.0.0.tar.gz",
     sha256 = "520641483223f680ef6e685284b556ba34a496d886a38dc3bca085cde21031b1",
+    signature_required = False,
 
-    iuse = ["ssl", "sqlite", "mysql", "postgresql", "agent", "server", "proxy", "curl", "ipv6"],
     use_defaults = ["ssl", "sqlite", "agent", "server", "curl", "ipv6"],
 
     use_deps = {
@@ -29,8 +29,6 @@ autotools_package(
         "-sqlite": "--without-sqlite3",
         "mysql": "--with-mysql",
         "-mysql": "--without-mysql",
-        "postgresql": "--with-postgresql",
-        "-postgresql": "--without-postgresql",
         "ipv6": "--enable-ipv6",
         "-ipv6": "--disable-ipv6",
     },

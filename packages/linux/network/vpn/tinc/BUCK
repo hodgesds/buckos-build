@@ -6,7 +6,7 @@ autotools_package(
     version = "1.0.36",
     src_uri = "https://github.com/gsliepen/tinc/archive/refs/tags/release-1.0.36.tar.gz",
     sha256 = "04d87f81335ca32f00a5be1fc94d13fae9d8ae3a65452b76df259cb44a1afa78",
-    auto_detect_signature = False,
+    signature_required = False,
 
     iuse = ["ssl", "zlib", "lzo"],
     use_defaults = ["ssl", "zlib", "lzo"],

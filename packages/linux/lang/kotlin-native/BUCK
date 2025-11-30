@@ -9,6 +9,7 @@ download_source(
     name = "kotlin-native-src",
     src_uri = "https://github.com/JetBrains/kotlin/releases/download/v1.9.22/kotlin-native-linux-x86_64-1.9.22.tar.gz",
     sha256 = "c2b0a6481ced5401db4a7028661c039b7466996efaa554bbcc6a3d421ac5e7d4",
+    signature_required = False,
 )
 
 binary_package(

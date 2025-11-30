@@ -10,6 +10,7 @@ download_source(
     name = "intel-ucode-src",
     src_uri = "https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/archive/refs/tags/microcode-20241112.tar.gz",
     sha256 = "37246208ef68039be752438c72400a688a2238df13a7f5282497c80be2d8366d",
+    signature_required = False,
 )
 
 binary_package(
@@ -41,6 +42,7 @@ download_source(
     name = "amd-ucode-src",
     src_uri = "https://cdn.kernel.org/pub/linux/kernel/firmware/linux-firmware-20241017.tar.gz",
     sha256 = "830b66d0934d205969c472a4d5feb1ce2ed659ccebe81a78214098a982ac93cd",
+    signature_required = False,
 )
 
 binary_package(

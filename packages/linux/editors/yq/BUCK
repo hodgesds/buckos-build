@@ -6,6 +6,7 @@ go_package(
     version = "4.44.3",
     src_uri = "https://github.com/mikefarah/yq/archive/refs/tags/v4.44.3.tar.gz",
     sha256 = "ea950f5622480fc0ff3708c52589426a737cd4ec887a52922a74efa1be8f2fbf",
+    signature_required = False,
     description = "Command-line YAML/JSON/XML processor with jq-like syntax",
     homepage = "https://github.com/mikefarah/yq",
     license = "MIT",

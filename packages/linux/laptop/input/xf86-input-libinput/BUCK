@@ -8,7 +8,7 @@ download_source(
     name = "xf86-input-libinput-src",
     src_uri = "https://xorg.freedesktop.org/releases/individual/driver/xf86-input-libinput-1.4.0.tar.xz",
     sha256 = "3a3d14cd895dc75b59ae2783b888031956a0bac7a1eff16d240dbb9d5df3e398",
-    auto_detect_signature = False,
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags

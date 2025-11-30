@@ -10,6 +10,7 @@ autotools_package(
     version = "2.1.2",
     src_uri = "https://github.com/firewalld/firewalld/releases/download/v2.1.2/firewalld-2.1.2.tar.bz2",
     sha256 = "94323ebff87185721caa6bff80699132f15131af73b9bcedc45e60b1827c91c5",
+    signature_required = False,
 
     iuse = ["gui", "nftables", "iptables"],
     use_defaults = ["nftables"],

@@ -5,6 +5,7 @@ download_source(
     name = "babl-src",
     src_uri = "https://download.gimp.org/babl/0.1/babl-0.1.108.tar.xz",
     sha256 = "26defe9deaab7ac4d0e076cab49c2a0d6ebd0df0c31fd209925a5f07edee1475",
+    signature_required = False,
 )
 
 autotools_package(
@@ -34,7 +35,6 @@ DESTDIR=$OUT meson install
         "//packages/linux/system/libs/graphics/lcms2:lcms2",
     ],
     bdepend = [
-        "//packages/linux/desktop/gnome/libs:gobject-introspection",
         "//packages/linux/lang/vala:vala",
     ],
     visibility = ["PUBLIC"],

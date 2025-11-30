@@ -6,6 +6,7 @@ download_source(
     name = "pandoc-src",
     src_uri = "https://github.com/jgm/pandoc/releases/download/3.5/pandoc-3.5-linux-amd64.tar.gz",
     sha256 = "a46b448ad9e7e5bd898a0606a2a67acbf4bc7714b24dc68931e9a47d7b807015",
+    signature_required = False,
 )
 
 binary_package(

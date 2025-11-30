@@ -5,7 +5,6 @@ filegroup(
     srcs = [
         "//packages/linux/audio/players/cmus:cmus",
         "//packages/linux/audio/players/moc:moc",
-        "//packages/linux/audio/players/ncmpcpp:ncmpcpp",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

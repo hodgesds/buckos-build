@@ -13,6 +13,7 @@ cmake_package(
     version = "0.10.2",
     src_uri = "https://github.com/neovim/neovim/archive/v0.10.2.tar.gz",
     sha256 = "546cb2da9fffbb7e913261344bbf4cf1622721f6c5a67aa77609e976e78b8e89",
+    signature_required = False,
     description = "Hyperextensible Vim-based text editor",
     homepage = "https://neovim.io/",
     license = "Apache-2.0",

@@ -10,7 +10,6 @@ filegroup(
         "//packages/linux/communication/email-servers/maddy:maddy",
         "//packages/linux/communication/email-servers/opensmtpd:opensmtpd",
         "//packages/linux/communication/email-servers/postfix:postfix",
-        "//packages/linux/communication/email-servers/stalwart:stalwart",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -21,7 +20,6 @@ filegroup(
     name = "all-in-one",
     srcs = [
         "//packages/linux/communication/email-servers/maddy:maddy",
-        "//packages/linux/communication/email-servers/stalwart:stalwart",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -76,17 +74,6 @@ filegroup(
     name = "modern",
     srcs = [
         "//packages/linux/communication/email-servers/maddy:maddy",
-        "//packages/linux/communication/email-servers/stalwart:stalwart",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
-
-# Recommended for new deployments
-filegroup(
-    name = "recommended",
-    srcs = [
-        "//packages/linux/communication/email-servers/stalwart:stalwart",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

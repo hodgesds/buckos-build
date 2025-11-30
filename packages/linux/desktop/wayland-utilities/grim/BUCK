@@ -1,25 +1,20 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "meson_package")
 
 download_source(
     name = "grim-src",
     src_uri = "https://github.com/emersion/grim/archive/refs/tags/v1.4.0.tar.gz",
     sha256 = "b6786e889ed93568634189a59f6b6429c041bf74883c10e8b6e2ed6772ae7ffb",
+    signature_required = False,
 )
 
-autotools_package(
+meson_package(
     name = "grim",
     source = ":grim-src",
     version = "1.4.0",
     description = "Grab images from a Wayland compositor",
     homepage = "https://sr.ht/~emersion/grim/",
     license = "MIT",
-    pre_configure = """
-mkdir -p build
-cd build
-meson setup .. --prefix=/usr \\
-    -Dman-pages=disabled
-""",
+    meson_args = ["-Dman-pages=disabled"],
     deps = [
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/wayland:wayland-protocols",

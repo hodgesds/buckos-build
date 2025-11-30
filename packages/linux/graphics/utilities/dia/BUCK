@@ -5,7 +5,7 @@ download_source(
     name = "dia-src",
     src_uri = "https://github.com/GNOME/dia/archive/refs/tags/DIA_0_97_2.tar.gz",
     sha256 = "13437d52f2c5cfdae7ecde8bd5ed0a53a388b0331698236d0ec63453b8a13016",
-    auto_detect_signature = False,
+    signature_required = False,
 )
 
 autotools_package(

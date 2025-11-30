@@ -10,7 +10,8 @@ autotools_package(
     version = "1.9",
     src_uri = "https://github.com/swaywm/sway/releases/download/1.9/sway-1.9.tar.gz",
     sha256 = "a63b2df8722ee595695a0ec6c84bf29a055a9767e63d8e4c07ff568cb6ee0b51",
-    auto_detect_signature = False,
+    signature_sha256 = "204eaf82cf5ef2c3a68665ea47f2186b432bf644a91cf4cda20c581a889ae47b",
+    signature_required = False,
     description = "Sway - i3-compatible Wayland compositor",
     homepage = "https://swaywm.org/",
     license = "MIT",
@@ -50,7 +51,8 @@ download_source(
     name = "wlroots-src",
     src_uri = "https://gitlab.freedesktop.org/wlroots/wlroots/-/releases/0.17.1/downloads/wlroots-0.17.1.tar.gz",
     sha256 = "d58d68e3f90d92de4d49fa43b4d75dc78f8af1d920d090729331cefbdfcf361b",
-    auto_detect_signature=False,
+    signature_sha256 = "518e10decf47919f6a1b8f5795bd17b54786be2099cf9264fb63eea13b6f9f34",
+    signature_required=False,
 )
 
 autotools_package(

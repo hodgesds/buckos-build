@@ -10,7 +10,8 @@ autotools_package(
     version = "5.2",
     src_uri = "https://fping.org/dist/fping-5.2.tar.gz",
     sha256 = "a7692d10d73fb0bb76e1f7459aa7f19bbcdbfc5adbedef02f468974b18b0e42f",
-    auto_detect_signature=False,
+    signature_sha256 = "b5c64a0152c1b1aaf0aadd096b2430ca7ed8089e8f9bfd64d8eb4cb3d0436788",
+    signature_required=False,
 
     iuse = ["ipv6", "safe-limits"],
     use_defaults = ["ipv6"],

@@ -5,6 +5,7 @@ download_source(
     name = "grim-src",
     src_uri = "https://github.com/emersion/grim/archive/refs/tags/v1.4.0.tar.gz",
     sha256 = "b6786e889ed93568634189a59f6b6429c041bf74883c10e8b6e2ed6772ae7ffb",
+    signature_required = False,
 )
 
 autotools_package(

@@ -11,6 +11,7 @@ download_source(
     name = "mkinitcpio-src",
     src_uri = "https://github.com/archlinux/mkinitcpio/archive/refs/tags/v38.tar.gz",
     sha256 = "a5a6b6877fda57aaf26b7ebc738ef1dc510d54efb16ede58519b55a1a08028b4",
+    signature_required = False,
 )
 
 autotools_package(

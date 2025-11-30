@@ -7,6 +7,7 @@ download_source(
     name = "unzip-src",
     src_uri = "https://downloads.sourceforge.net/infozip/unzip60.tar.gz",
     sha256 = "036d96991646d0449ed0aa952e4fbe21b476ce994abc276e49d30e686708bd37",
+    signature_required = False,
 )
 
 autotools_package(

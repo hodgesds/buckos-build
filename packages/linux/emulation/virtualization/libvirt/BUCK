@@ -2,11 +2,12 @@ load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 # libvirt - Virtualization API
+# Use GitHub mirror since libvirt.org/download.libvirt.org often times out
 download_source(
     name = "libvirt-src",
-    src_uri = "https://libvirt.org/sources/libvirt-10.7.0.tar.xz",
-    sha256 = "ca757322eed998013b21f474c6c0c15dc08320ba6c8bae54aa16a93a1c3b7054",
-    auto_detect_signature = False,
+    src_uri = "https://github.com/libvirt/libvirt/archive/refs/tags/v10.7.0.tar.gz",
+    sha256 = "6a89c296c23ee204e35cc4a9dbc8da64033a5c8c8126d7c92184f65e00f4ef65",
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags

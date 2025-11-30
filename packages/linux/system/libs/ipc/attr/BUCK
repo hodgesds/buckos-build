@@ -5,7 +5,8 @@ download_source(
     name = "attr-src",
     src_uri = "https://download.savannah.gnu.org/releases/attr/attr-2.5.2.tar.xz",
     sha256 = "f2e97b0ab7ce293681ab701915766190d607a1dba7fae8a718138150b700a70b",
-    auto_detect_signature = False,
+    signature_sha256 = "70f1dece465a08abb91c44a969edba82408af3b44419d4c80808d6c6ac3b7645",
+    signature_required = False,
 )
 
 ebuild_package(

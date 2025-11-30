@@ -8,6 +8,7 @@ download_source(
     name = "pcsx2-src",
     src_uri = "https://github.com/PCSX2/pcsx2/archive/refs/tags/v2.3.193.tar.gz",
     sha256 = "a685e188f8143ff423edaa3b400898610cad62b6a8821f6182e099f4de20cef4",
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -70,8 +71,7 @@ EOF
 mkdir -p "$DESTDIR/usr/share/icons/hicolor/256x256/apps"
     """,
     deps = [
-        "//packages/linux/gaming/libraries/sdl2:sdl2",
-        "//packages/linux/gaming/libraries/vulkan-tools:vulkan-tools",
+        "//packages/linux/system/libs/multimedia/sdl2:sdl2",
     ],
     visibility = ["PUBLIC"],
 )

@@ -8,6 +8,7 @@ download_source(
     name = "rapl-read-ryzen-src",
     src_uri = "https://github.com/djselbeck/rapl-read-ryzen/archive/refs/heads/master.tar.gz",
     sha256 = "f2611e6c2290ff72714722beb6f8beb7a60f0954ca93101ba55e5b9d50ad1ce1",
+    signature_required = False,
 )
 
 autotools_package(
@@ -17,14 +18,17 @@ autotools_package(
     description = "Read power consumption from AMD Ryzen CPUs via RAPL",
     homepage = "https://github.com/djselbeck/rapl-read-ryzen",
     license = "GPL-2.0",
-    configure_args = [],
-    make_args = [
-        "PREFIX=/usr",
-    ],
-    post_install = """
-        install -Dm755 rapl-read-ryzen $OUT/usr/bin/rapl-read-ryzen
-    """,
-    deps = [
-    ],
+    # Single C file project - no Makefile
+    src_configure = """
+echo "rapl-read-ryzen: Single file project, no configure needed"
+""",
+    src_compile = """
+gcc -O2 -o rapl-read-ryzen ryzen.c -lm
+""",
+    src_install = """
+install -d "$DESTDIR/usr/bin"
+install -m 755 rapl-read-ryzen "$DESTDIR/usr/bin/"
+""",
+    deps = [],
     visibility = ["PUBLIC"],
 )

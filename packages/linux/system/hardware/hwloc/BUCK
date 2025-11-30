@@ -7,6 +7,7 @@ download_source(
     name = "hwloc-src",
     src_uri = "https://download.open-mpi.org/release/hwloc/v2.10/hwloc-2.10.0.tar.bz2",
     sha256 = "0305dd60c9de2fbe6519fe2a4e8fdc6d3db8de574a0ca7812b92e80c05ae1392",
+    signature_required = False,
 )
 
 autotools_package(
@@ -27,7 +28,6 @@ autotools_package(
     ],
     deps = [
         "//packages/linux/core/ncurses:ncurses",
-        "//packages/linux/system/hardware/pciutils:pciutils",
     ],
     visibility = ["PUBLIC"],
 )

@@ -10,6 +10,7 @@ autotools_package(
     version = "7.94",
     src_uri = "https://nmap.org/dist/nmap-7.94.tar.bz2",
     sha256 = "d71be189eec43d7e099bac8571509d316c4577ca79491832ac3e1217bc8f92cc",
+    signature_required = False,
 
     iuse = ["ssl", "ipv6", "ncat", "ndiff", "nping", "zenmap", "lua"],
     use_defaults = ["ssl", "ipv6"],

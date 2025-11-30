@@ -7,6 +7,7 @@ autotools_package(
     version = "1.7.1",
     src_uri = "https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-1.7.1.tar.gz",
     sha256 = "478c9ca129fd2e3443fe27314b455e211e0d8c60bc8ff7df703873deeee580c2",
+    signature_required = False,
     description = "Lightweight and flexible command-line JSON processor",
     homepage = "https://jqlang.github.io/jq/",
     license = "MIT",

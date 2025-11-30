@@ -8,6 +8,7 @@ download_source(
     name = "dxvk-src",
     src_uri = "https://github.com/doitsujin/dxvk/archive/refs/tags/v2.4.1.tar.gz",
     sha256 = "aa6b95f6c80dab704fa15df5b22b5f5a4931687c0bdab190f32fe666f6c0a707",
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -98,7 +99,6 @@ chmod +x "$DESTDIR/usr/bin/setup_dxvk"
     """,
     deps = [
         "//packages/linux/gaming/compatibility/wine:wine",
-        "//packages/linux/gaming/libraries/vulkan-tools:vulkan-tools",
     ],
     visibility = ["PUBLIC"],
 )

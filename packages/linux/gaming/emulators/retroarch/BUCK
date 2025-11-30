@@ -8,6 +8,7 @@ download_source(
     name = "retroarch-src",
     src_uri = "https://github.com/libretro/RetroArch/archive/refs/tags/v1.19.1.tar.gz",
     sha256 = "504a3a8a6e5861eb43a61be8339f61183e7ea940c1ff68ac2a2f57d35c67f8ff",
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -83,8 +84,7 @@ mkdir -p "$DESTDIR/usr/share/icons/hicolor/scalable/apps"
 cp media/retroarch.svg "$DESTDIR/usr/share/icons/hicolor/scalable/apps/" 2>/dev/null || true
     """,
     deps = [
-        "//packages/linux/gaming/libraries/sdl2:sdl2",
-        "//packages/linux/gaming/libraries/vulkan-tools:vulkan-tools",
+        "//packages/linux/system/libs/multimedia/sdl2:sdl2",
     ],
     visibility = ["PUBLIC"],
 )

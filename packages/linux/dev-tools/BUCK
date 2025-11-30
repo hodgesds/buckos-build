@@ -108,7 +108,6 @@ filegroup(
 filegroup(
     name = "profilers",
     srcs = [
-        "//packages/linux/dev-tools/profilers/valgrind:valgrind",
         "//packages/linux/dev-tools/profilers/binutils:binutils",
     ],
     default_target_platform = "//platforms:linux-target",
@@ -327,7 +326,6 @@ filegroup(
         "//packages/linux/dev-tools/build-systems/pkg-config:pkg-config",
         "//packages/linux/dev-tools/debuggers/gdb:gdb",
         "//packages/linux/dev-tools/debuggers/strace:strace",
-        "//packages/linux/dev-tools/profilers/valgrind:valgrind",
         "//packages/linux/dev-tools/profilers/binutils:binutils",
         "//packages/linux/dev-tools/dev-utils/ctags:ctags",
         "//packages/linux/dev-tools/dev-utils/cscope:cscope",

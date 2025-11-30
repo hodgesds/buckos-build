@@ -17,6 +17,7 @@ cmake_package(
     version = "1.2.2",
     src_uri = "https://github.com/LMMS/lmms/releases/download/v1.2.2/lmms_1.2.2.tar.xz",
     sha256 = "b185507fb64ecfd8e31145135b58ab244b637f9efc09c4176caf70aa3cbaae1e",
+    signature_required = False,
     description = "Linux MultiMedia Studio - music production software",
     homepage = "https://lmms.io/",
     license = "GPL-2",
@@ -42,7 +43,6 @@ cmake_package(
     ],
     deps = [
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
-        "//packages/linux/audio/libraries/libsndfile:libsndfile",
         "//packages/linux/audio/libraries/flac:flac",
         "//packages/linux/audio/libraries/libvorbis:libvorbis",
         "//packages/linux/audio/libraries/libogg:libogg",

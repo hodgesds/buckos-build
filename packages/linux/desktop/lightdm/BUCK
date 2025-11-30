@@ -9,7 +9,8 @@ download_source(
     name = "lightdm-src",
     src_uri = "https://github.com/canonical/lightdm/releases/download/1.32.0/lightdm-1.32.0.tar.xz",
     sha256 = "12f5ab432748f0387c7cf8b94430495a558a035a4f8465e5181af6faff133e4b",
-    auto_detect_signature=False,
+    signature_sha256 = "8ff9d803e6d19e6d4553ceeec0adaa31d068b4f86a90319a6f0899d63899fba3",
+    signature_required=False,
 )
 
 autotools_package(
@@ -23,6 +24,5 @@ autotools_package(
         "--disable-tests",
         "--with-greeter-session=lightdm-gtk-greeter",
     ],
-    deps = ["//packages/linux/desktop/xorg-server:xorg-server"],
     visibility = ["PUBLIC"],
 )

@@ -11,7 +11,8 @@ download_source(
     name = "rust-bin-src",
     src_uri = "https://static.rust-lang.org/dist/rust-1.91.0-x86_64-unknown-linux-gnu.tar.xz",
     sha256 = "5bea12c1911dda5c0a91cee4e9b617a65bcf23a21e2852a17b544936de1f83e3",
-    auto_detect_signature = False,
+    signature_sha256 = "7b056cbfbd4ebb7d92b33e837354fc8845ab61f0ec8a43ac6e4b74d22e29c6e3",
+    signature_required = False,
 )
 
 binary_package(

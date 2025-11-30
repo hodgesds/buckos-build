@@ -9,7 +9,8 @@ download_source(
     name = "awesome-src",
     src_uri = "https://github.com/awesomeWM/awesome/releases/download/v4.3/awesome-4.3.tar.xz",
     sha256 = "78264d6f012350b371e339127aca485260bc0aa935eff578ba75ce1a00e11753",
-    auto_detect_signature=False,
+    signature_sha256 = "6afb73289caed82173d56a8e496658fdd338a0dadc436fd074f1261d2cd229fd",
+    signature_required=False,
 )
 
 autotools_package(
@@ -27,8 +28,6 @@ cmake .. -DCMAKE_INSTALL_PREFIX=/usr \\
     -DGENERATE_DOC=OFF
 """,
     deps = [
-        "//packages/linux/desktop/xorg-server:xorg-server",
-        "//packages/linux/desktop/xorg-server:libx11",
     ],
     visibility = ["PUBLIC"],
 )
@@ -39,7 +38,6 @@ filegroup(
     srcs = [
         ":awesome",
         "//packages/linux/desktop/lightdm:lightdm",
-        "//packages/linux/desktop/xorg-server:xorg-server",
         "//packages/linux/desktop/mesa:mesa",
     ],
     default_target_platform = "//platforms:linux-target",

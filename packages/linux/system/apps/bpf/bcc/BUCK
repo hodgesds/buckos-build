@@ -4,6 +4,7 @@ download_source(
     name = "bcc-src",
     src_uri = "https://github.com/iovisor/bcc/releases/download/v0.35.0/bcc-src-with-submodule.tar.gz",
     sha256 = "a77c8dda4d0c0d93b5cad7b9c8539a7a180005b49ecfb0fbc3d902b5adb03ca2",
+    signature_required = False,
 )
 
 cmake_package(

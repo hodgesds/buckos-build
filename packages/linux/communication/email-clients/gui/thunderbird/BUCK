@@ -6,6 +6,7 @@ download_source(
     name = "thunderbird-src",
     src_uri = "https://archive.mozilla.org/pub/thunderbird/releases/128.5.0esr/linux-x86_64/en-US/thunderbird-128.5.0esr.tar.bz2",
     sha256 = "d612084b5e5f4005577171bc8c8bf8ee7e38fd7e16cbb2b7c32fb4148faf0e50",
+    signature_sha256 = "00c32369853305b0678b0598a989fa5a6cae9dc4275ba5937f3d433d70228ad9",
 )
 
 binary_package(

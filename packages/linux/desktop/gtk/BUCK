@@ -7,7 +7,7 @@ autotools_package(
     version = "3.24.41",
     src_uri = "https://download.gnome.org/sources/gtk+/3.24/gtk+-3.24.41.tar.xz",
     sha256 = "47da61487af3087a94bc49296fd025ca0bc02f96ef06c556e7c8988bd651b6fa",
-    auto_detect_signature = False,
+    signature_required = False,
     description = "Multi-platform toolkit for creating graphical user interfaces",
     homepage = "https://www.gtk.org/",
     license = "LGPL-2.1+",
@@ -38,7 +38,6 @@ autotools_package(
         "-demos": "-Ddemos=false",
     },
     use_deps = {
-        "X": ["//packages/linux/desktop/xorg-server:libx11"],
         "wayland": ["//packages/linux/desktop/wayland:wayland"],
         "cups": ["//packages/linux/system/printing/cups:cups"],
         "colord": ["//packages/linux/system/color/colord:colord"],
@@ -56,7 +55,6 @@ meson setup .. --prefix=/usr \
         "//packages/linux/fonts/libraries/pango:pango",
         "//packages/linux/desktop/cairo:cairo",
         "//packages/linux/desktop/gdk-pixbuf:gdk-pixbuf",
-        "//packages/linux/desktop/at-spi2-core:at-spi2-core",
     ],
     visibility = ["PUBLIC"],
 )
@@ -67,7 +65,7 @@ autotools_package(
     version = "4.14.1",
     src_uri = "https://download.gnome.org/sources/gtk/4.14/gtk-4.14.1.tar.xz",
     sha256 = "fcefb3f132f8cc4711a9efa5b353c9ae9bb5eeff0246fa74dbc2f2f839b9e308",
-    auto_detect_signature = False,
+    signature_required = False,
     description = "Multi-platform toolkit for creating graphical user interfaces (GTK4)",
     homepage = "https://www.gtk.org/",
     license = "LGPL-2.1+",
@@ -102,9 +100,7 @@ autotools_package(
         "-demos": "-Dbuild-demos=false",
     },
     use_deps = {
-        "X": ["//packages/linux/desktop/xorg-server:libx11"],
         "wayland": ["//packages/linux/desktop/wayland:wayland"],
-        "vulkan": ["//packages/linux/gaming/libraries/vulkan-tools:vulkan-loader"],
         "gstreamer": ["//packages/linux/graphics/video/gstreamer:gstreamer"],
         "colord": ["//packages/linux/system/color/colord:colord"],
         "cups": ["//packages/linux/system/printing/cups:cups"],

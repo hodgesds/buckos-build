@@ -7,6 +7,7 @@ autotools_package(
     version = "5.2.32",
     src_uri = "https://mirrors.kernel.org/gnu/bash/bash-5.2.32.tar.gz",
     sha256 = "d3ef80d2b67d8cbbe4d3265c63a72c46f9b278ead6e0e06d61801b58f23f50b5",
+    signature_required = False,
     description = "The GNU Bourne Again SHell",
     homepage = "https://www.gnu.org/software/bash/",
     license = "GPL-3.0",

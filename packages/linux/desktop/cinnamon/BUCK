@@ -9,6 +9,7 @@ download_source(
     name = "cinnamon-src",
     src_uri = "https://github.com/linuxmint/cinnamon/archive/refs/tags/6.0.4.tar.gz",
     sha256 = "6df5a3a5e1d11772f7c06af54f80840226396a47abbfb158f07a97174e489139",
+    signature_required = False,
 )
 
 autotools_package(
@@ -24,7 +25,6 @@ cd build
 meson setup .. --prefix=/usr
 """,
     deps = [
-        "//packages/linux/desktop/xorg-server:xorg-server",
         "//packages/linux/desktop/mesa:mesa",
     ],
     visibility = ["PUBLIC"],
@@ -34,6 +34,7 @@ download_source(
     name = "muffin-src",
     src_uri = "https://github.com/linuxmint/muffin/archive/refs/tags/6.0.1.tar.gz",
     sha256 = "3f305c345db72e8bf14f19e56a88e466029997ff41cbc091148d16dbf20b087e",
+    signature_required = False,
 )
 
 autotools_package(
@@ -49,7 +50,6 @@ cd build
 meson setup .. --prefix=/usr
 """,
     deps = [
-        "//packages/linux/desktop/xorg-server:xorg-server",
         "//packages/linux/desktop/mesa:mesa",
     ],
     visibility = ["PUBLIC"],
@@ -62,7 +62,6 @@ filegroup(
         ":cinnamon",
         ":muffin",
         "//packages/linux/desktop/lightdm:lightdm",
-        "//packages/linux/desktop/xorg-server:xorg-server",
         "//packages/linux/desktop/mesa:mesa",
     ],
     default_target_platform = "//platforms:linux-target",

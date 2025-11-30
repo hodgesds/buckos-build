@@ -8,7 +8,8 @@ download_source(
     name = "libtool-src",
     src_uri = "https://mirrors.kernel.org/gnu/libtool/libtool-2.4.7.tar.xz",
     sha256 = "4f7f217f057ce655ff22559ad221a0fd8ef84ad1fc5fcb6990cecc333aa1635d",
-    auto_detect_signature = False,
+    signature_sha256 = "595c23d4681ad6c5fc40ddbc0af85b54c008968000c902ebb216af44a71fe81d",
+    signature_required = False,
 )
 
 ebuild_package(

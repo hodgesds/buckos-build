@@ -12,7 +12,7 @@ autotools_package(
     version = "4.2.0",
     src_uri = "https://github.com/Kitware/CMake/releases/download/v4.2.0/cmake-4.2.0.tar.gz",
     sha256 = "4104e94657d247c811cb29985405a360b78130b5d51e7f6daceb2447830bd579",
-    auto_detect_signature = False,  # Signature key not in keyring
+    signature_required = False,
     description = "Cross-platform, open-source build system",
     homepage = "https://cmake.org/",
     license = "BSD-3-Clause",

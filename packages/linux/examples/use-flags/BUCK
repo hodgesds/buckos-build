@@ -37,6 +37,7 @@ autotools_package(
     version = "8.5.0",
     src_uri = "https://curl.se/download/curl-8.5.0.tar.xz",
     sha256 = "42ab8db9e20d8290a3b633e7fbb3cec15db34df65fd1015ef8ac1e4723750eeb",
+    signature_sha256 = "05a026c4551f8976a17c159c99c866e27533d34dceba70218db19d85726681cd",
 
     # USE flags this package supports
     iuse = [
@@ -114,6 +115,7 @@ autotools_package(
     version = "8.5.0",
     src_uri = "https://curl.se/download/curl-8.5.0.tar.xz",
     sha256 = "42ab8db9e20d8290a3b633e7fbb3cec15db34df65fd1015ef8ac1e4723750eeb",
+    signature_sha256 = "05a026c4551f8976a17c159c99c866e27533d34dceba70218db19d85726681cd",
     iuse = ["ssl", "gnutls", "http2", "ipv6", "zstd", "brotli", "ldap", "debug"],
     use_defaults = ["ssl", "ipv6"],
     use_deps = {
@@ -146,6 +148,7 @@ download_source(
     name = "libxml2-src",
     src_uri = "https://download.gnome.org/sources/libxml2/2.12/libxml2-2.12.3.tar.xz",
     sha256 = "8c8f1092340a89ff32bc44ad5c9693aff9bc8a7a3e161bb239666e5d15ac9aaa",
+    signature_required = False,
 )
 
 ebuild_package(
@@ -182,6 +185,7 @@ download_source(
     name = "openssh-src",
     src_uri = "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.6p1.tar.gz",
     sha256 = "910211c07255a8c5ad654391b40ee59800710dd8119dd5362de09385aa7a777c",
+    signature_sha256 = "9b1e931cbc811f02e91f7eacd55f8211cc45dade11975462f4b0dcdad29927aa",
 )
 
 autotools_package(

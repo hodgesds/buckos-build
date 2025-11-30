@@ -11,7 +11,6 @@ filegroup(
         "//packages/linux/system/filesystem/network/nfs-utils:nfs-utils",
         "//packages/linux/system/filesystem/network/cifs-utils:cifs-utils",
         "//packages/linux/system/filesystem/network/sshfs:sshfs",
-        "//packages/linux/system/filesystem/network/glusterfs:glusterfs",
         "//packages/linux/system/filesystem/network/davfs2:davfs2",
         "//packages/linux/system/filesystem/network/curlftpfs:curlftpfs",
     ],

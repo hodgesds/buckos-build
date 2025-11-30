@@ -1,61 +1,47 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package", "binary_package", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 
 # =============================================================================
 # Perl - Practical Extraction and Report Language
-# =============================================================================
-#
-# This directory contains the Perl interpreter and a comprehensive collection
-# of CPAN modules organized into the following categories:
-#
-# - core/       : Core build utilities (ExtUtils::MakeMaker, Module::Build, etc.)
-# - testing/    : Testing frameworks (Test::Simple, Test::Deep, Test::Most, etc.)
-# - oop/        : Object systems (Moose, Moo, Mouse, Type::Tiny, etc.)
-# - web/        : Web frameworks (Mojolicious, Dancer2, Catalyst, Plack, etc.)
-# - database/   : Database interfaces (DBI, DBD::*, DBIx::Class, etc.)
-# - text/       : Text processing (Text::CSV, Text::Diff, Regexp::Common, etc.)
-# - data/       : Data formats (JSON, YAML, XML::LibXML, Sereal, etc.)
-# - network/    : Networking (LWP, HTTP::Tiny, Net::DNS, Email::*, etc.)
-# - async/      : Async/event loops (AnyEvent, IO::Async, POE, Future, etc.)
-# - cli/        : CLI tools (Getopt::Long::Descriptive, Log::Log4perl, etc.)
-# - datetime/   : Date/time handling (DateTime, Time::Moment, Date::Calc, etc.)
-# - file/       : File operations (Path::Tiny, File::Slurp, Archive::*, etc.)
-#
 # =============================================================================
 
 download_source(
     name = "perl-src",
     src_uri = "https://www.cpan.org/src/5.0/perl-5.38.2.tar.xz",
     sha256 = "d91115e90b896520e83d4de6b52f8254ef2b70a8d545ffab33200ea9f1cf29e8",
+    signature_required = False,
 )
 
-autotools_package(
+ebuild_package(
     name = "perl",
     source = ":perl-src",
     version = "5.38.2",
     description = "Perl is a highly capable, feature-rich programming language",
     homepage = "https://www.perl.org/",
     license = "Artistic-1.0-Perl OR GPL-1.0-or-later",
-    pre_configure = """
-        # Perl uses its own Configure script (capital C)
-        chmod +x Configure
-    """,
-    configure_args = [
-        "-des",
-        "-Dprefix=/usr",
-        "-Dvendorprefix=/usr",
-        "-Dprivlib=/usr/lib/perl5/5.38/core_perl",
-        "-Darchlib=/usr/lib/perl5/5.38/core_perl",
-        "-Dsitelib=/usr/lib/perl5/5.38/site_perl",
-        "-Dsitearch=/usr/lib/perl5/5.38/site_perl",
-        "-Dvendorlib=/usr/lib/perl5/5.38/vendor_perl",
-        "-Dvendorarch=/usr/lib/perl5/5.38/vendor_perl",
-        "-Dman1dir=/usr/share/man/man1",
-        "-Dman3dir=/usr/share/man/man3",
-        "-Duseshrplib",
-        "-Dusethreads",
-    ],
-    deps = [
+    # Perl uses its own Configure script (capital C), not autotools
+    src_configure = """
+chmod +x Configure
+./Configure -des \\
+    -Dprefix=/usr \\
+    -Dvendorprefix=/usr \\
+    -Dprivlib=/usr/lib/perl5/5.38/core_perl \\
+    -Darchlib=/usr/lib/perl5/5.38/core_perl \\
+    -Dsitelib=/usr/lib/perl5/5.38/site_perl \\
+    -Dsitearch=/usr/lib/perl5/5.38/site_perl \\
+    -Dvendorlib=/usr/lib/perl5/5.38/vendor_perl \\
+    -Dvendorarch=/usr/lib/perl5/5.38/vendor_perl \\
+    -Dman1dir=/usr/share/man/man1 \\
+    -Dman3dir=/usr/share/man/man3 \\
+    -Duseshrplib \\
+    -Dusethreads
+""",
+    src_compile = """
+make -j$(nproc)
+""",
+    src_install = """
+make DESTDIR="$DESTDIR" install
+""",
+    bdepend = [
         "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],

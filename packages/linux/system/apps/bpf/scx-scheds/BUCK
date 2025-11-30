@@ -4,6 +4,7 @@ download_source(
     name = "scx-scheds-src",
     src_uri = "https://github.com/sched-ext/scx/archive/refs/tags/v1.0.7.tar.gz",
     sha256 = "379bc6adb99ea638f9452f2b735e3f4aae586c9a4b9c44cb0deec74de3f36a83",
+    signature_required = False,
 )
 
 binary_package(
@@ -54,7 +55,6 @@ binary_package(
         meson setup build \
             --prefix=/usr \
             -Dsystemd=disabled \
-            -Dopenrc=disabled \
             -Doffline=false \
             $LIBBPF_OPT
 

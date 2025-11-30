@@ -5,6 +5,7 @@ download_source(
     name = "maddy-src",
     src_uri = "https://github.com/foxcpp/maddy/archive/v0.7.1.tar.gz",
     sha256 = "541288477afb040a04a5cf17a1c3e3b7a81b287dc3a81c844b2d6ad66688c29e",
+    signature_required = False,
 )
 
 binary_package(

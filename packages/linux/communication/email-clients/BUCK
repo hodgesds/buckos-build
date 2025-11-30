@@ -36,7 +36,6 @@ filegroup(
 filegroup(
     name = "recommended",
     srcs = [
-        "//packages/linux/communication/email-clients/cli/neomutt:neomutt",
         "//packages/linux/communication/email-clients/gui/thunderbird:thunderbird",
     ],
     default_target_platform = "//platforms:linux-target",
@@ -48,7 +47,6 @@ filegroup(
     name = "lightweight",
     srcs = [
         "//packages/linux/communication/email-clients/cli/aerc:aerc",
-        "//packages/linux/communication/email-clients/cli/alpine:alpine",
         "//packages/linux/communication/email-clients/gui/balsa:balsa",
         "//packages/linux/communication/email-clients/gui/claws-mail:claws-mail",
         "//packages/linux/communication/email-clients/gui/sylpheed:sylpheed",
@@ -61,10 +59,7 @@ filegroup(
 filegroup(
     name = "power-user",
     srcs = [
-        "//packages/linux/communication/email-clients/cli/mutt:mutt",
-        "//packages/linux/communication/email-clients/cli/neomutt:neomutt",
         "//packages/linux/communication/email-clients/gui/evolution:evolution",
-        "//packages/linux/communication/email-clients/gui/kmail:kmail",
         "//packages/linux/communication/email-clients/gui/thunderbird:thunderbird",
     ],
     default_target_platform = "//platforms:linux-target",

@@ -6,7 +6,8 @@ autotools_package(
     version = "2.5.2",
     src_uri = "http://ftp.daper.net/pub/soft/moc/stable/moc-2.5.2.tar.bz2",
     sha256 = "f3a68115602a4788b7cfa9bbe9397a9d5e24c68cb61a57695d1c2c3ecf49db08",
-    auto_detect_signature=False,
+    signature_sha256 = "98d4bb9b3d8ceb9ff72bddf14f818f96002a48e5d620969172f859aaca27e067",
+    signature_required=False,
     description = "Music On Console - ncurses based console audio player",
     homepage = "https://moc.daper.net/",
     license = "GPL-2",
@@ -50,8 +51,6 @@ autotools_package(
         "alsa": ["//packages/linux/audio/daemons/alsa-lib:alsa-lib"],
         "flac": ["//packages/linux/audio/libraries/flac:flac"],
         "vorbis": ["//packages/linux/audio/libraries/libvorbis:libvorbis", "//packages/linux/audio/libraries/libogg:libogg"],
-        "mp3": ["//packages/linux/audio/libraries/libmad:libmad"],
-        "sndfile": ["//packages/linux/audio/libraries/libsndfile:libsndfile"],
         "curl": ["//packages/linux/network/curl:curl"],
     },
     deps = [

@@ -8,7 +8,7 @@ download_source(
     name = "crosvm-src",
     src_uri = "https://github.com/google/crosvm/archive/refs/heads/main.tar.gz",
     sha256 = "7a45edbadabc20132d45cfdfc0d83e5ca7ff7c70dee6f8f9a1c0e38d65d5cc8c",
-    auto_detect_signature = False,
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags

@@ -1,22 +1,18 @@
-load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "meson_package")
 
-download_source(
-    name = "fuse3-src",
+meson_package(
+    name = "fuse3",
+    version = "3.16.2",
     src_uri = "https://github.com/libfuse/libfuse/releases/download/fuse-3.16.2/fuse-3.16.2.tar.gz",
     sha256 = "f797055d9296b275e981f5f62d4e32e089614fc253d1ef2985851025b8a0ce87",
-)
-
-autotools_package(
-    name = "fuse3",
-    source = ":fuse3-src",
-    version = "3.16.2",
+    signature_required = False,
     description = "Filesystem in Userspace (FUSE) library and utilities",
     homepage = "https://github.com/libfuse/libfuse",
     license = "LGPL-2.1",
-    configure_args = [
-        "--disable-example",
+    meson_args = [
+        "-Dexamples=false",
+        "-Dtests=false",
+        "-Duseroot=false",
     ],
-    deps = [],
     visibility = ["PUBLIC"],
 )

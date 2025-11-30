@@ -1,26 +1,23 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "meson_package")
 
 download_source(
     name = "swaylock-effects-src",
     src_uri = "https://github.com/mortie/swaylock-effects/archive/refs/tags/v1.6-4.tar.gz",
     sha256 = "4f82c9d875ce20f1d58227ef65db60aacccb3fb29ce67c0f744849da68e82b20",
+    signature_required = False,
 )
 
-autotools_package(
+meson_package(
     name = "swaylock-effects",
     source = ":swaylock-effects-src",
     version = "1.6-4",
     description = "Swaylock with effects (screenshots, blur, etc.)",
     homepage = "https://github.com/mortie/swaylock-effects",
     license = "MIT",
-    pre_configure = """
-mkdir -p build
-cd build
-meson setup .. --prefix=/usr \\
-    -Dpam=enabled \\
-    -Dman-pages=disabled
-""",
+    meson_args = [
+        "-Dpam=enabled",
+        "-Dman-pages=disabled",
+    ],
     deps = [
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/wayland:wayland-protocols",

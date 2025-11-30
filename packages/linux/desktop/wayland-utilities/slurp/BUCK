@@ -1,25 +1,20 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "meson_package")
 
 download_source(
     name = "slurp-src",
     src_uri = "https://github.com/emersion/slurp/archive/v1.5.0.tar.gz",
     sha256 = "0fa880d4a93e1c795e3b5929fbea47546df0955bea34fc2f7ffeb1751678f663",
+    signature_required = False,
 )
 
-autotools_package(
+meson_package(
     name = "slurp",
     source = ":slurp-src",
     version = "1.5.0",
     description = "Select a region in a Wayland compositor",
     homepage = "https://github.com/emersion/slurp",
     license = "MIT",
-    pre_configure = """
-mkdir -p build
-cd build
-meson setup .. --prefix=/usr \\
-    -Dman-pages=disabled
-""",
+    meson_args = ["-Dman-pages=disabled"],
     deps = [
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/wayland:wayland-protocols",

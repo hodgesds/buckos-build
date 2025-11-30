@@ -24,7 +24,6 @@ filegroup(
     name = "composition-tools",
     srcs = [
         "//packages/linux/audio/production/hydrogen:hydrogen",
-        "//packages/linux/audio/production/sonic-pi:sonic-pi",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

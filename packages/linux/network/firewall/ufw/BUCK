@@ -10,7 +10,7 @@ autotools_package(
     version = "0.36.2",
     src_uri = "https://github.com/jbq/ufw/archive/237a7bb4e262ab65266b6c1d996eb71ec6d84954.tar.gz",
     sha256 = "7cb6917f76d2c1d5be41409ccaeae6477750bbce45fe92b8a83ccefbb21c4bda",
-    auto_detect_signature = False,
+    signature_required = False,
 
     iuse = ["ipv6"],
     use_defaults = ["ipv6"],

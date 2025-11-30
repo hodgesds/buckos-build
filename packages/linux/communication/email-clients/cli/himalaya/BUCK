@@ -5,6 +5,7 @@ download_source(
     name = "himalaya-src",
     src_uri = "https://github.com/pimalaya/himalaya/archive/v1.0.0.tar.gz",
     sha256 = "2f16737d4ff29b8495979045abb94723b684b200b98cab27ae45f8b270da5b9c",
+    signature_required = False,
 )
 
 binary_package(

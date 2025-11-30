@@ -7,6 +7,7 @@ cmake_package(
     version = "1.10.1",
     src_uri = "https://libzip.org/download/libzip-1.10.1.tar.xz",
     sha256 = "dc3c8d5b4c8bbd09626864f6bcf93de701540f761d76b85d7c7d710f4bd90318",
+    signature_required = False,
     description = "C library for reading, creating, and modifying zip archives",
     homepage = "https://libzip.org/",
     license = "BSD-3-Clause",

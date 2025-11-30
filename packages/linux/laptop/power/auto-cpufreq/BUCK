@@ -8,6 +8,7 @@ download_source(
     name = "auto-cpufreq-src",
     src_uri = "https://github.com/AdnanHodzic/auto-cpufreq/archive/refs/tags/v2.2.0.tar.gz",
     sha256 = "d84d45a1638f5bff72b5ce7c1653886143cdbb4c6b198e63e054b6a18f7ade68",
+    signature_required = False,
 )
 
 binary_package(

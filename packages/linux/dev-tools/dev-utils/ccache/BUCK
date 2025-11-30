@@ -6,15 +6,13 @@ autotools_package(
     version = "4.9.1",
     src_uri = "https://github.com/ccache/ccache/releases/download/v4.9.1/ccache-4.9.1.tar.xz",
     sha256 = "4c03bc840699127d16c3f0e6112e3f40ce6a230d5873daa78c60a59c7ef59d25",
-    auto_detect_signature = False,
+    signature_sha256 = "b64041507b7de4b0de700e7dbb15eb9b9f67b27700ccf5a45f90e9f29511ed54",
+    signature_required = False,
     description = "Fast C/C++ compiler cache",
     homepage = "https://ccache.dev/",
     license = "GPL-3+",
-    iuse = ["redis", "static-libs", "doc", "test"],
     use_defaults = [],
     use_configure = {
-        "redis": "-DREDIS_STORAGE_BACKEND=ON",
-        "-redis": "-DREDIS_STORAGE_BACKEND=OFF",
         "static-libs": "-DSTATIC_LINK=ON",
         "-static-libs": "-DSTATIC_LINK=OFF",
         "doc": "-DENABLE_DOCUMENTATION=ON",
@@ -23,12 +21,10 @@ autotools_package(
         "-test": "-DENABLE_TESTING=OFF",
     },
     use_deps = {
-        "redis": ["//packages/linux/databases/redis:redis"],
     },
     pre_configure = """
 mkdir -p build
 cd build
-# USE flags: redis, static-libs, doc, test
 cmake .. -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     $CONFIGURE_ARGS

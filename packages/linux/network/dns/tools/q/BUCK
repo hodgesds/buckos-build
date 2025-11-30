@@ -4,6 +4,7 @@ download_source(
     name = "q-src",
     src_uri = "https://github.com/natesales/q/releases/download/v0.19.2/q_0.19.2_linux_amd64.tar.gz",
     sha256 = "e3a0a960592d320eddbef8c4ce2f9df4651fbcb0d9648aa24fbf8f0d7b3aace1",
+    signature_required = False,
     strip_components = 0,
 )
 

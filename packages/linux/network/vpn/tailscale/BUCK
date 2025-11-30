@@ -6,6 +6,7 @@ autotools_package(
     version = "1.56.1",
     src_uri = "https://pkgs.tailscale.com/stable/tailscale_1.56.1_amd64.tgz",
     sha256 = "2434ec69d8a7a0372b37a1c9f0ac2f499c0614e483ff096eb4481cfb873445f9",
+    signature_required = False,
 
     iuse = [],
     use_defaults = [],

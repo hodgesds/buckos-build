@@ -40,7 +40,6 @@ filegroup(
         "//packages/linux/lang/nodejs:nodejs",
         "//packages/linux/lang/lua:lua",
         "//packages/linux/lang/tcl:tcl",
-        "//packages/linux/lang/php:php",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -55,9 +54,6 @@ filegroup(
     name = "functional-languages",
     srcs = [
         "//packages/linux/lang/ocaml:ocaml",
-        "//packages/linux/lang/erlang:erlang",
-        "//packages/linux/lang/elixir:elixir",
-        "//packages/linux/lang/racket:racket",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

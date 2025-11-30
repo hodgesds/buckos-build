@@ -8,6 +8,7 @@ download_source(
     name = "dmidecode-src",
     src_uri = "https://github.com/mirror/dmidecode/archive/refs/tags/dmidecode-3-5.tar.gz",
     sha256 = "5eb2cdca9b6b40b412b66231ac91ffa32baf2e3b27058c8cb2fd53d60844d04e",
+    signature_required = False,
 )
 
 autotools_package(

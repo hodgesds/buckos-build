@@ -301,7 +301,6 @@ TASK_PACKAGE_SETS = {
     "database-server": {
         "description": "Database server packages",
         "packages": [
-            "//packages/linux/databases/postgresql:postgresql",
             "//packages/linux/system/libs/database/sqlite:sqlite",
         ],
         "inherits": ["server"],
@@ -443,15 +442,6 @@ INIT_SYSTEM_SETS = {
 # =============================================================================
 
 DESKTOP_ENVIRONMENT_SETS = {
-    # GNOME
-    "gnome-desktop": {
-        "description": "GNOME desktop environment",
-        "packages": [
-            "//packages/linux/desktop/gnome:gnome",
-        ],
-        "inherits": ["desktop"],
-    },
-
     # KDE Plasma
     "kde-desktop": {
         "description": "KDE Plasma desktop environment",

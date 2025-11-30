@@ -13,7 +13,7 @@ go_package(
     version = "1.2.0",
     src_uri = "https://github.com/FiloSottile/age/archive/refs/tags/v1.2.0.tar.gz",
     sha256 = "cefe9e956401939ad86a9c9d7dcf843a43b6bcdf4ee7d8e4508864f227a3f6f0",
-    auto_detect_signature=False,
+    signature_required = False,
     description = "Simple, modern, secure file encryption tool with small explicit keys",
     homepage = "https://age-encryption.org/",
     license = "BSD-3-Clause",
@@ -34,12 +34,11 @@ cargo_package(
     version = "0.10.0",
     src_uri = "https://github.com/str4d/rage/archive/refs/tags/v0.10.0.tar.gz",
     sha256 = "34c39c28f8032c144a43aea96e58159fe69526f5ff91cb813083530adcaa6ea4",
-    auto_detect_signature=False,
+    signature_required = False,
     description = "Rust implementation of the age encryption tool",
     homepage = "https://github.com/str4d/rage",
     license = "Apache-2.0 OR MIT",
     cargo_args = [
-        "--release",
         "--all-features",
     ],
     bins = [
@@ -62,7 +61,7 @@ cmake_package(
     version = "0.11",
     src_uri = "https://github.com/jedisct1/minisign/archive/refs/tags/0.11.tar.gz",
     sha256 = "74c2c78a1cd51a43a6c98f46a4eabefbc8668074ca9aa14115544276b663fc55",
-    auto_detect_signature=False,
+    signature_required = False,
     description = "Dead simple tool to sign files and verify signatures",
     homepage = "https://jedisct1.github.io/minisign/",
     license = "ISC",
@@ -78,13 +77,14 @@ cmake_package(
 
 # =============================================================================
 # LIBSODIUM - Crypto library (dependency for minisign and others)
+# Use GitHub releases since download.libsodium.org often times out
 # =============================================================================
 
 download_source(
     name = "libsodium-src",
-    src_uri = "https://download.libsodium.org/libsodium/releases/libsodium-1.0.19.tar.gz",
+    src_uri = "https://github.com/jedisct1/libsodium/releases/download/1.0.19-RELEASE/libsodium-1.0.19.tar.gz",
     sha256 = "018d79fe0a045cca07331d37bd0cb57b2e838c51bc48fd837a1472e50068bbea",
-    auto_detect_signature=False,
+    signature_required = False,
 )
 
 autotools_package(
@@ -114,7 +114,7 @@ download_source(
     name = "signify-src",
     src_uri = "https://github.com/aperezdc/signify/archive/refs/tags/v31.tar.gz",
     sha256 = "8111af7424f4cc69dab5cd43a14ccd607ca2d171ac77dd3ae288264a53254e5f",
-    auto_detect_signature=False,
+    signature_required = False,
 )
 
 autotools_package(
@@ -147,7 +147,8 @@ download_source(
     name = "libbsd-src",
     src_uri = "https://libbsd.freedesktop.org/releases/libbsd-0.12.2.tar.xz",
     sha256 = "b88cc9163d0c652aaf39a99991d974ddba1c3a9711db8f1b5838af2a14731014",
-    auto_detect_signature=False,
+    signature_sha256 = "620dc92f158ebe0a650c0e92214a8121b927276895dc9a1dcaa38f627fa0fcb0",
+    signature_required=False,
 )
 
 autotools_package(
@@ -177,7 +178,8 @@ download_source(
     name = "libmd-src",
     src_uri = "https://archive.hadrons.org/software/libmd/libmd-1.1.0.tar.xz",
     sha256 = "1bd6aa42275313af3141c7cf2e5b964e8b1fd488025caf2f971f43b00776b332",
-    auto_detect_signature=False,
+    signature_sha256 = "402fd3024e43ab975733d09e661804a58ca58697194e4b15216b1217cfe1dadb",
+    signature_required=False,
 )
 
 autotools_package(
@@ -206,7 +208,7 @@ download_source(
     name = "ccrypt-src",
     src_uri = "https://ccrypt.sourceforge.net/download/1.11/ccrypt-1.11.tar.gz",
     sha256 = "b19c47500a96ee5fbd820f704c912f6efcc42b638c0a6aa7a4e3dc0a6b51a44f",
-    auto_detect_signature=False,
+    signature_required = False,
 )
 
 autotools_package(
@@ -240,7 +242,7 @@ download_source(
     name = "pass-src",
     src_uri = "https://github.com/zx2c4/password-store/archive/refs/tags/1.7.4.tar.gz",
     sha256 = "ff00bd2db86d8be722fc674f40abdc9b88701e47396378b15a4222c63c1d5243",
-    auto_detect_signature=False,
+    signature_required = False,
 )
 
 autotools_package(
@@ -276,7 +278,7 @@ download_source(
     name = "tomb-src",
     src_uri = "https://github.com/dyne/Tomb/archive/refs/tags/v2.10.tar.gz",
     sha256 = "6d714924fb929442990a9d47e3a8a729f443fcb67de7d190e8eb5a78942cd8f5",
-    auto_detect_signature=False,
+    signature_required = False,
 )
 
 autotools_package(
@@ -312,7 +314,7 @@ go_package(
     version = "2.4.0",
     src_uri = "https://github.com/rfjakob/gocryptfs/archive/refs/tags/v2.4.0.tar.gz",
     sha256 = "a36d47f546b7deb87e291066a09d324015dbada123de355f41d035ba7a9d6b2b",
-    auto_detect_signature=False,
+    signature_required = False,
     description = "Encrypted overlay filesystem written in Go",
     homepage = "https://nuetzlich.net/gocryptfs/",
     license = "MIT",
@@ -334,7 +336,7 @@ go_package(
     version = "0.3.5",
     src_uri = "https://github.com/google/fscrypt/archive/refs/tags/v0.3.5.tar.gz",
     sha256 = "368119b5e67c64bdc5f7872ffc7beed425e1401778003f4c7ae7c1062a45ebaf",
-    auto_detect_signature=False,
+    signature_required = False,
     description = "Tool for managing Linux native filesystem encryption",
     homepage = "https://github.com/google/fscrypt",
     license = "Apache-2.0",
@@ -355,7 +357,8 @@ download_source(
     name = "linux-pam-src",
     src_uri = "https://github.com/linux-pam/linux-pam/releases/download/v1.6.1/Linux-PAM-1.6.1.tar.xz",
     sha256 = "f8923c740159052d719dbfc2a2f81942d68dd34fcaf61c706a02c9b80feeef8e",
-    auto_detect_signature=False,
+    signature_sha256 = "ef0e0597974d988c9f25f5a155e001b9dcb972618a4a166b8acefac1f5357303",
+    signature_required=False,
 )
 
 autotools_package(
@@ -393,7 +396,7 @@ download_source(
     name = "ecryptfs-utils-src",
     src_uri = "https://github.com/dustinkirkland/ecryptfs-utils/archive/5e877f3747303096f7861863bac937be4328fa72.tar.gz",
     sha256 = "b91cd0a707f0b1d912297efb1019beca1cd973d199c4fd9f0bcdc1898bb66ebe",
-    auto_detect_signature=False,
+    signature_required = False,
 )
 
 autotools_package(
@@ -428,7 +431,7 @@ download_source(
     name = "keyutils-src",
     src_uri = "https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git/snapshot/keyutils-1.6.3.tar.gz",
     sha256 = "a61d5706136ae4c05bd48f86186bcfdbd88dd8bd5107e3e195c924cfc1b39bb4",
-    auto_detect_signature=False,
+    signature_required = False,
 )
 
 autotools_package(
@@ -467,7 +470,7 @@ go_package(
     version = "3.8.1",
     src_uri = "https://github.com/getsops/sops/archive/refs/tags/v3.8.1.tar.gz",
     sha256 = "5ca70fb4f96797d09012c705a5bb935835896de7bcd063b98d498912b0e645a0",
-    auto_detect_signature=False,
+    signature_required = False,
     description = "Simple and flexible tool for managing secrets",
     homepage = "https://github.com/getsops/sops",
     license = "MPL-2.0",
@@ -487,7 +490,7 @@ download_source(
     name = "veracrypt-src",
     src_uri = "https://launchpad.net/veracrypt/trunk/1.26.7/+download/VeraCrypt_1.26.7_Source.tar.bz2",
     sha256 = "f76d27b182414e0d4fd9b6b59fbea28b25db6fa69f2bbcffa2ec269b1a865f65",
-    auto_detect_signature=False,
+    signature_required = False,
 )
 
 autotools_package(
@@ -522,7 +525,7 @@ download_source(
     name = "fuse3-src",
     src_uri = "https://github.com/libfuse/libfuse/releases/download/fuse-3.16.2/fuse-3.16.2.tar.gz",
     sha256 = "f797055d9296b275e981f5f62d4e32e089614fc253d1ef2985851025b8a0ce87",
-    auto_detect_signature=False,
+    signature_required = False,
 )
 
 autotools_package(
@@ -555,7 +558,7 @@ cargo_package(
     version = "0.5.0",
     src_uri = "https://github.com/str4d/age-plugin-yubikey/archive/refs/tags/v0.5.0.tar.gz",
     sha256 = "65807403f0098569a473ffa76302b205da148a7f46b61fd331b8e323959978ba",
-    auto_detect_signature=False,
+    signature_required = False,
     description = "YubiKey plugin for age",
     homepage = "https://github.com/str4d/age-plugin-yubikey",
     license = "Apache-2.0 OR MIT",
@@ -580,7 +583,8 @@ download_source(
     name = "pcsc-lite-src",
     src_uri = "https://pcsclite.apdu.fr/files/pcsc-lite-2.0.3.tar.bz2",
     sha256 = "f42ee9efa489e9ff5d328baefa26f9c515be65021856e78d99ad1f0ead9ec85d",
-    auto_detect_signature=False,
+    signature_sha256 = "2100b77891116e0f7a8e449d63b22e7f2ef503a11d9e50b344a8678b369f8efd",
+    signature_required=False,
 )
 
 autotools_package(
@@ -616,7 +620,8 @@ download_source(
     name = "libusb-src",
     src_uri = "https://github.com/libusb/libusb/releases/download/v1.0.27/libusb-1.0.27.tar.bz2",
     sha256 = "ffaa41d741a8a3bee244ac8e54a72ea05bf2879663c098c82fc5757853441575",
-    auto_detect_signature=False,
+    signature_sha256 = "1cd22bbfe4ce382ca9b091e2a6275c48f1c776253815cbb615da295ae0bfe687",
+    signature_required=False,
 )
 
 autotools_package(
@@ -648,7 +653,7 @@ cargo_package(
     version = "0.35.0",
     src_uri = "https://gitlab.com/sequoia-pgp/sequoia-sq/-/archive/v0.35.0/sequoia-sq-v0.35.0.tar.gz",
     sha256 = "0b16bb4dcd7b85eb1292dfe4b22dfa3c0df44bae1e84859e91aadfee80b08bec",
-    auto_detect_signature=False,
+    signature_required = False,
     description = "Command-line frontend for Sequoia, a modern OpenPGP implementation",
     homepage = "https://sequoia-pgp.org/",
     license = "GPL-2.0+",
@@ -674,7 +679,8 @@ download_source(
     name = "nettle-src",
     src_uri = "https://mirrors.kernel.org/gnu/nettle/nettle-3.9.1.tar.gz",
     sha256 = "ccfeff981b0ca71bbd6fbcb054f407c60ffb644389a5be80d6716d5b550c6ce3",
-    auto_detect_signature=False,
+    signature_sha256 = "793b2f165f3527d0ae54d36f3c042908204bd8871598cdcd7c0ff2d3725eb8f5",
+    signature_required=False,
 )
 
 autotools_package(
@@ -704,7 +710,7 @@ download_source(
     name = "opensc-src",
     src_uri = "https://github.com/OpenSC/OpenSC/releases/download/0.25.1/opensc-0.25.1.tar.gz",
     sha256 = "23cbaae8bd7c8eb589b68c0a961dfb0d02007bea3165a3fc5efe2621d549b37b",
-    auto_detect_signature=False,
+    signature_required = False,
 )
 
 autotools_package(
@@ -740,7 +746,7 @@ download_source(
     name = "argon2-src",
     src_uri = "https://github.com/P-H-C/phc-winner-argon2/archive/refs/tags/20190702.tar.gz",
     sha256 = "daf972a89577f8772602bf2eb38b6a3dd3d922bf5724d45e7f9589b5e830442c",
-    auto_detect_signature=False,
+    signature_required = False,
 )
 
 autotools_package(
@@ -773,7 +779,8 @@ download_source(
     name = "libressl-src",
     src_uri = "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.9.2.tar.gz",
     sha256 = "7b031dac64a59eb6ee3304f7ffb75dad33ab8c9d279c847f92c89fb846068f97",
-    auto_detect_signature=False,
+    signature_sha256 = "22195457d9a79c5800f139c02578fa5b4d33e6898290fb40ae3fb3582f77220b",
+    signature_required=False,
 )
 
 autotools_package(
@@ -803,7 +810,8 @@ download_source(
     name = "botan-src",
     src_uri = "https://botan.randombit.net/releases/Botan-3.4.0.tar.xz",
     sha256 = "71843afcc0a2c585f8f33fa304f0b58ae4b9c5d8306f894667b3746044277557",
-    auto_detect_signature=False,
+    signature_sha256 = "fbfc23a6b01ce866f83bff2bdf538e973581ce911a7c617aff63f43e3c44fa90",
+    signature_required=False,
 )
 
 autotools_package(
@@ -836,7 +844,8 @@ download_source(
     name = "hashcat-src",
     src_uri = "https://hashcat.net/files/hashcat-6.2.6.tar.gz",
     sha256 = "b25e1077bcf34908cc8f18c1a69a2ec98b047b2cbcf0f51144dcf3ba1e0b7b2a",
-    auto_detect_signature=False,
+    signature_sha256 = "1e881eeff14a58557c767abe867fd06dc2895cb03934c5eee6f1cdd7fa9a18e8",
+    signature_required=False,
 )
 
 autotools_package(
@@ -869,7 +878,8 @@ download_source(
     name = "john-src",
     src_uri = "https://www.openwall.com/john/k/john-1.9.0.tar.xz",
     sha256 = "0b266adcfef8c11eed690187e71494baea539efbd632fe221181063ba09508df",
-    auto_detect_signature=False,
+    signature_sha256 = "9ca688129da714713d5c8b125d86e7a04232d07b336a62e83b7fba90716b9c88",
+    signature_required=False,
 )
 
 autotools_package(
@@ -909,7 +919,8 @@ download_source(
     name = "bcrypt-src",
     src_uri = "https://bcrypt.sourceforge.net/bcrypt-1.1.tar.gz",
     sha256 = "b9c1a7c0996a305465135b90123b0c63adbb5fa7c47a24b3f347deb2696d417d",
-    auto_detect_signature=False,
+    signature_sha256 = "0b9f6e1c0bca7be97c2bbf7e5445d6e95b996a99796b4be7b6fd55f60b318a89",
+    signature_required=False,
 )
 
 autotools_package(
@@ -944,7 +955,8 @@ download_source(
     name = "libp11-src",
     src_uri = "https://github.com/OpenSC/libp11/releases/download/libp11-0.4.12/libp11-0.4.12.tar.gz",
     sha256 = "1e1a2533b3fcc45fde4da64c9c00261b1047f14c3f911377ebd1b147b3321cfd",
-    auto_detect_signature=False,
+    signature_sha256 = "b0f124ad5db1344969438098a765a3fd884622a1a181facfad83c34868f7c776",
+    signature_required=False,
 )
 
 autotools_package(
@@ -975,7 +987,7 @@ download_source(
     name = "clevis-src",
     src_uri = "https://github.com/latchset/clevis/archive/refs/tags/v21.tar.gz",
     sha256 = "0ba38f0438337a799e98e1ab41ca30670cc8c13eb5f1f628b4680d46e2ef0013",
-    auto_detect_signature=False,
+    signature_required = False,
 )
 
 autotools_package(
@@ -1008,7 +1020,7 @@ download_source(
     name = "jose-src",
     src_uri = "https://github.com/latchset/jose/archive/refs/tags/v14.tar.gz",
     sha256 = "3ffb8ea9a0fa5194051499d96bfde957621fcd490ef7ed95effc699029d7ad3b",
-    auto_detect_signature=False,
+    signature_required = False,
 )
 
 autotools_package(
@@ -1042,7 +1054,8 @@ download_source(
     name = "jansson-src",
     src_uri = "https://github.com/akheron/jansson/releases/download/v2.14/jansson-2.14.tar.gz",
     sha256 = "5798d010e41cf8d76b66236cfb2f2543c8d082181d16bc3085ab49538d4b9929",
-    auto_detect_signature=False,
+    signature_sha256 = "a29cab18600e0439b5ef08cd71c9b8241c6467ec02a8af52a25ed3b95d109c1c",
+    signature_required=False,
 )
 
 autotools_package(

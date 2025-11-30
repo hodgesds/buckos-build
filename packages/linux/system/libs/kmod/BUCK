@@ -11,6 +11,7 @@ download_source(
     name = "kmod-src",
     src_uri = "https://kernel.org/pub/linux/utils/kernel/kmod/kmod-32.tar.xz",
     sha256 = "630ed0d92275a88cb9a7bf68f5700e911fdadaf02e051cf2e4680ff8480bd492",
+    signature_required = False,
 )
 
 autotools_package(

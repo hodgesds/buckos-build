@@ -5,6 +5,7 @@ download_source(
     name = "archivemount-src",
     src_uri = "https://github.com/cybernoid/archivemount/archive/refs/heads/master.tar.gz",
     sha256 = "01bc88bf1c345f8f626f67a3131bac33b94373884ee15865c980ea3f73f9f070",
+    signature_required = False,
 )
 
 autotools_package(

@@ -22,21 +22,9 @@ filegroup(
 )
 
 filegroup(
-    name = "xen-full",
-    srcs = [
-        "//packages/linux/emulation/hypervisors/xen:xen",
-        "//packages/linux/emulation/hypervisors/xen:xen-tools",
-        "//packages/linux/emulation/hypervisors/xen:xen-libs",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
-
-filegroup(
     name = "all-hypervisors",
     srcs = [
         ":qemu-full",
-        ":xen-full",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

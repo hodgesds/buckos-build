@@ -6,7 +6,7 @@ autotools_package(
     version = "1.0.20210914",
     src_uri = "https://github.com/WireGuard/wireguard-tools/archive/refs/tags/v1.0.20210914.tar.gz",
     sha256 = "acb8517eed8f352bbf0758a70573c665521a4300d0c4865afebd6b643738c640",
-    auto_detect_signature = False,
+    signature_required = False,
 
     iuse = ["bash-completion", "systemd"],
     use_defaults = ["bash-completion", "systemd"],

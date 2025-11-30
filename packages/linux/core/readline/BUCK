@@ -6,7 +6,7 @@ autotools_package(
     version = "8.3",
     src_uri = "https://mirrors.kernel.org/gnu/readline/readline-8.3.tar.gz",
     sha256 = "fe5383204467828cd495ee8d1d3c037a7eba1389c22bc6a041f627976f9061cc",
-    auto_detect_signature=False,
+    signature_required = False,
     description = "Library for editing typed command lines",
     homepage = "https://tiswww.case.edu/php/chet/readline/rltop.html",
     license = "GPL-3.0",

@@ -209,7 +209,6 @@ filegroup(
         ":common",
         "//packages/linux/system/filesystem/native/squashfs-tools:squashfs-tools",
         "//packages/linux/system/filesystem/network/nfs-utils:nfs-utils",
-        "//packages/linux/system/filesystem/network/glusterfs:glusterfs",
         "//packages/linux/system/filesystem/management/mdadm:mdadm",
         "//packages/linux/system/filesystem/management/multipath-tools:multipath-tools",
         "//packages/linux/system/filesystem/management/quota:quota",

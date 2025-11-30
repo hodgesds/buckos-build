@@ -6,7 +6,7 @@ autotools_package(
     version = "3.10",
     src_uri = "https://github.com/gnutls/nettle/archive/refs/tags/nettle_3.10_release_20240616.tar.gz",
     sha256 = "d34b632e709fb673120422bf7ef790edf8ffcc6f554b2158233b5c4f6968d1f5",
-    auto_detect_signature = False,
+    signature_required = False,
     description = "Low-level cryptographic library",
     homepage = "https://www.lysator.liu.se/~nisse/nettle/",
     license = "LGPL-3.0",

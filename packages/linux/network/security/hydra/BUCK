@@ -6,6 +6,7 @@ autotools_package(
     version = "9.5",
     src_uri = "https://github.com/vanhauser-thc/thc-hydra/archive/refs/tags/v9.5.tar.gz",
     sha256 = "9dd193b011fdb3c52a17b0da61a38a4148ffcad731557696819d4721d1bee76b",
+    signature_required = False,
 
     iuse = ["ssl", "ssh"],
     use_defaults = ["ssl", "ssh"],

@@ -5,6 +5,7 @@ download_source(
     name = "davfs2-src",
     src_uri = "https://github.com/alisarctl/davfs2/archive/refs/tags/rel-1-7-2.tar.gz",
     sha256 = "6511fd787315840ffa8bd365837126a116c854f5f060ac349734bdef7cde07a2",
+    signature_required = False,
 )
 
 autotools_package(

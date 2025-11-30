@@ -10,6 +10,7 @@ autotools_package(
     version = "2.24",
     src_uri = "https://github.com/ThomasHabets/arping/archive/refs/tags/arping-2.24.tar.gz",
     sha256 = "e443f65a44e247b27da8177decac31aa84336d5de87eab44fc02e33e7ba0b251",
+    signature_required = False,
 
     iuse = ["vlan"],
     use_defaults = [],

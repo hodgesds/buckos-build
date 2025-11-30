@@ -12,25 +12,6 @@ filegroup(
 )
 
 filegroup(
-    name = "virtualbox-full",
-    srcs = [
-        "//packages/linux/emulation/virtualization/virtualbox:virtualbox",
-        "//packages/linux/emulation/virtualization/virtualbox:virtualbox-modules",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
-
-filegroup(
-    name = "virtualbox-guest",
-    srcs = [
-        "//packages/linux/emulation/virtualization/virtualbox:virtualbox-guest-additions",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
-
-filegroup(
     name = "virt-manager-full",
     srcs = [
         "//packages/linux/emulation/virtualization/virt-manager:virt-manager",
@@ -55,7 +36,6 @@ filegroup(
     name = "all-virtualization",
     srcs = [
         ":libvirt-full",
-        ":virtualbox-full",
         ":virt-manager-full",
     ],
     default_target_platform = "//platforms:linux-target",

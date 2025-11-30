@@ -9,6 +9,7 @@ download_source(
     name = "bspwm-src",
     src_uri = "https://github.com/baskerville/bspwm/archive/refs/tags/0.9.10.tar.gz",
     sha256 = "0d0f5e465b9c27a5c2143c86189392fa297fad55253b9ed8f6854473d3928f8f",
+    signature_required = False,
 )
 
 autotools_package(
@@ -20,8 +21,6 @@ autotools_package(
     license = "BSD-2-Clause",
     make_args = ["PREFIX=/usr"],
     deps = [
-        "//packages/linux/desktop/xorg-server:xorg-server",
-        "//packages/linux/desktop/xorg-server:libx11",
     ],
     visibility = ["PUBLIC"],
 )
@@ -32,7 +31,6 @@ filegroup(
     srcs = [
         ":bspwm",
         "//packages/linux/desktop/lightdm:lightdm",
-        "//packages/linux/desktop/xorg-server:xorg-server",
         "//packages/linux/desktop/mesa:mesa",
     ],
     default_target_platform = "//platforms:linux-target",

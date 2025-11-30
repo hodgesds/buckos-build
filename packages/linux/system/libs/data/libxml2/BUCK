@@ -5,6 +5,7 @@ download_source(
     name = "libxml2-src",
     src_uri = "https://download.gnome.org/sources/libxml2/2.12/libxml2-2.12.9.tar.xz",
     sha256 = "59912db536ab56a3996489ea0299768c7bcffe57169f0235e7f962a91f483590",
+    signature_required = False,
 )
 
 autotools_package(
@@ -16,15 +17,13 @@ autotools_package(
     license = "MIT",
     configure_args = [
         "--disable-static",
-        "--with-history",
-        "--with-icu",
-        "--with-python=no",
+        "--without-icu",
+        "--without-python",
+        "--without-lzma",
+        "--with-zlib",
     ],
     deps = [
         "//packages/linux/core/zlib:zlib",
-        "//packages/linux/system/libs/compression/xz:xz",
-        "//packages/linux/core/readline:readline",
-        "//packages/linux/core/ncurses:ncurses",
     ],
     visibility = ["PUBLIC"],
 )

@@ -27,7 +27,7 @@ download_source(
     name = "binutils-src",
     src_uri = "https://mirrors.kernel.org/gnu/binutils/binutils-2.44.tar.xz",
     sha256 = "ce2017e059d63e67ddb9240e9d4ec49c2893605035cd60e92ad53177f4377237",
-    auto_detect_signature = False,
+    signature_required = False,
 )
 
 ebuild_package(
@@ -97,28 +97,28 @@ download_source(
     name = "gcc-src",
     src_uri = "https://github.com/gcc-mirror/gcc/archive/refs/tags/releases/gcc-14.2.0.tar.gz",
     sha256 = "201c92bf612ab0a357fdbb3db312f720eefaa49d6ce02825bbb5468d5ee1d07a",
-    auto_detect_signature = False,
+    signature_required = False,
 )
 
 download_source(
     name = "mpfr-src",
     src_uri = "https://mirrors.kernel.org/gnu/mpfr/mpfr-4.2.1.tar.xz",
     sha256 = "277807353a6726978996945af13e52829e3abd7a9a5b7fb2793894e18f1fcbb2",
-    auto_detect_signature = False,
+    signature_required = False,
 )
 
 download_source(
     name = "gmp-src",
     src_uri = "https://mirrors.kernel.org/gnu/gmp/gmp-6.3.0.tar.xz",
     sha256 = "a3c2b80201b89e68616f4ad30bc66aee4927c3ce50e33929ca819d5c43538898",
-    auto_detect_signature = False,
+    signature_required = False,
 )
 
 download_source(
     name = "mpc-src",
     src_uri = "https://mirrors.kernel.org/gnu/mpc/mpc-1.3.1.tar.gz",
     sha256 = "ab642492f5cf882b74aa0cb730cd410a81edcdbec895183ce930e706c1c759b8",
-    auto_detect_signature = False,
+    signature_required = False,
 )
 
 ebuild_package(
@@ -133,45 +133,53 @@ ebuild_package(
 
     src_prepare = '''
 # Link GMP, MPFR, MPC into the GCC source tree (in-tree build)
-# Dependencies are passed as positional arguments after DESTDIR and S
-# We use the DEP_DIRS array set by the build system setup
+# Dependencies are passed via DEP_BASE_DIRS environment variable (colon-separated)
 
-echo "Available dependency paths:"
-echo "$PATH" | tr ':' '\n' | grep buck-out || true
+echo "Available dependency paths via DEP_BASE_DIRS:"
+echo "$DEP_BASE_DIRS"
 
-# Find GMP, MPFR, MPC in buck-out structure
-# The paths follow pattern: buck-out/v2/gen/.../bootstrap/__XXX-src__/XXX-src
-BUCK_OUT="${S%/buck-out/*}/buck-out"
+# Parse DEP_BASE_DIRS to find GMP, MPFR, MPC
+GMP_DIR=""
+MPFR_DIR=""
+MPC_DIR=""
 
-# GMP - search for configure.ac in gmp-src directory
-GMP_DIR=$(find "$BUCK_OUT" -type d -path "*/__gmp-src__/gmp-src" 2>/dev/null | head -1)
-if [[ -n "$GMP_DIR" ]] && [[ -f "$GMP_DIR/configure.ac" ]]; then
+# Split by colon and iterate
+IFS=':' read -ra DEPS <<< "$DEP_BASE_DIRS"
+for dep_dir in "${DEPS[@]}"; do
+    if [[ "$dep_dir" == *"gmp-src"* ]] && [[ -f "$dep_dir/configure.ac" ]]; then
+        GMP_DIR="$dep_dir"
+    elif [[ "$dep_dir" == *"mpfr-src"* ]] && [[ -f "$dep_dir/configure.ac" ]]; then
+        MPFR_DIR="$dep_dir"
+    elif [[ "$dep_dir" == *"mpc-src"* ]] && [[ -f "$dep_dir/configure.ac" ]]; then
+        MPC_DIR="$dep_dir"
+    fi
+done
+
+# Link GMP
+if [[ -n "$GMP_DIR" ]]; then
     ln -sfn "$GMP_DIR" gmp
     echo "Linked GMP from $GMP_DIR"
 else
-    echo "ERROR: Could not find GMP source directory" >&2
-    echo "Searched in: $BUCK_OUT" >&2
-    find "$BUCK_OUT" -type d -name "*gmp*" 2>/dev/null | head -5
+    echo "ERROR: Could not find GMP source directory in DEP_BASE_DIRS" >&2
+    echo "DEP_BASE_DIRS: $DEP_BASE_DIRS" >&2
     exit 1
 fi
 
-# MPFR - search for configure.ac in mpfr-src directory
-MPFR_DIR=$(find "$BUCK_OUT" -type d -path "*/__mpfr-src__/mpfr-src" 2>/dev/null | head -1)
-if [[ -n "$MPFR_DIR" ]] && [[ -f "$MPFR_DIR/configure.ac" ]]; then
+# Link MPFR
+if [[ -n "$MPFR_DIR" ]]; then
     ln -sfn "$MPFR_DIR" mpfr
     echo "Linked MPFR from $MPFR_DIR"
 else
-    echo "ERROR: Could not find MPFR source directory" >&2
+    echo "ERROR: Could not find MPFR source directory in DEP_BASE_DIRS" >&2
     exit 1
 fi
 
-# MPC - search for configure.ac in mpc-src directory
-MPC_DIR=$(find "$BUCK_OUT" -type d -path "*/__mpc-src__/mpc-src" 2>/dev/null | head -1)
-if [[ -n "$MPC_DIR" ]] && [[ -f "$MPC_DIR/configure.ac" ]]; then
+# Link MPC
+if [[ -n "$MPC_DIR" ]]; then
     ln -sfn "$MPC_DIR" mpc
     echo "Linked MPC from $MPC_DIR"
 else
-    echo "ERROR: Could not find MPC source directory" >&2
+    echo "ERROR: Could not find MPC source directory in DEP_BASE_DIRS" >&2
     exit 1
 fi
 
@@ -181,6 +189,10 @@ ls -la gmp mpfr mpc
 
     src_configure = '''
 BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+
+# Clear stale config.cache files that break rebuilds with changed LDFLAGS
+find . -name 'config.cache' -delete 2>/dev/null || true
+
 mkdir -p build && cd build
 ../configure \
     --prefix=/tools \
@@ -238,7 +250,7 @@ download_source(
     name = "linux-headers-src",
     src_uri = "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.6.tar.xz",
     sha256 = "d450ab215de4e1f8bb85e0f4216760fa33fd024b4526b144f4ce0d9012b29c9e",
-    auto_detect_signature = False,
+    signature_required = False,
 )
 
 ebuild_package(
@@ -274,7 +286,7 @@ download_source(
     name = "glibc-src",
     src_uri = "https://github.com/bminor/glibc/archive/refs/tags/glibc-2.42.tar.gz",
     sha256 = "90267bbbcfb8f631021a6c3ecc898514958948f4f43d6178d40be2da437b192d",
-    auto_detect_signature = False,
+    signature_required = False,
     visibility = ["PUBLIC"],
 )
 

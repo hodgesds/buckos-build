@@ -16,6 +16,7 @@ cmake_package(
     version = "23.12",
     src_uri = "https://github.com/tedfelix/rosegarden-official/archive/refs/tags/23.12.tar.gz",
     sha256 = "ca85056d66cb603ea0f83856f5934a592ac323f8d455e9bfdbb5ed7f5d97ddd2",
+    signature_required = False,
     description = "MIDI sequencer, music notation editor and audio recorder",
     homepage = "https://www.rosegardenmusic.com/",
     license = "GPL-2",
@@ -26,7 +27,6 @@ cmake_package(
     ],
     deps = [
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
-        "//packages/linux/audio/libraries/libsndfile:libsndfile",
         "//packages/linux/audio/libraries/flac:flac",
         "//packages/linux/audio/libraries/libvorbis:libvorbis",
         "//packages/linux/audio/libraries/libogg:libogg",

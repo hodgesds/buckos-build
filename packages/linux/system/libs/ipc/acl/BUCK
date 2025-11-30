@@ -5,7 +5,8 @@ download_source(
     name = "acl-src",
     src_uri = "https://download.savannah.gnu.org/releases/acl/acl-2.3.2.tar.xz",
     sha256 = "97203a72cae99ab89a067fe2210c1cbf052bc492b479eca7d226d9830883b0bd",
-    auto_detect_signature = False,
+    signature_sha256 = "6456915e6704c1eb3dd2fc2de523276efbffdc93380df58f431962b38e3f641f",
+    signature_required = False,
 )
 
 ebuild_package(

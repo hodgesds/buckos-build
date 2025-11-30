@@ -5,7 +5,8 @@ download_source(
     name = "libunistring-src",
     src_uri = "https://mirrors.kernel.org/gnu/libunistring/libunistring-1.2.tar.xz",
     sha256 = "632bd65ed74a881ca8a0309a1001c428bd1cbd5cd7ddbf8cedcd2e65f4dcdc44",
-    auto_detect_signature = False,
+    signature_sha256 = "91da3f033231a635dae9e0161c834b74e890e1eba19d4e5972b26c5c312ac2cb",
+    signature_required = False,
 )
 
 autotools_package(

@@ -8,6 +8,7 @@ autotools_package(
     version = "4.2.3",
     src_uri = "https://www.wireshark.org/download/src/all-versions/wireshark-4.2.3.tar.xz",
     sha256 = "958bd5996f543d91779b1a4e7e952dcd7b0245fe82194202c3333a8f78795811",
+    signature_required = False,
 
     iuse = ["ssl", "gnutls", "lua", "zlib", "pcre", "xml"],
     use_defaults = ["ssl", "gnutls", "zlib", "pcre", "xml"],

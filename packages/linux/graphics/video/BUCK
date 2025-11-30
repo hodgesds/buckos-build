@@ -66,9 +66,6 @@ filegroup(
     name = "utilities",
     srcs = [
         "//packages/linux/graphics/video/handbrake:handbrake",
-        "//packages/linux/graphics/video/mediainfo:mediainfo",
-        "//packages/linux/graphics/video/mediainfo:libmediainfo",
-        "//packages/linux/graphics/video/mediainfo:mediainfo-gui",
         "//packages/linux/graphics/video/yt-dlp:yt-dlp",
         "//packages/linux/graphics/video/mkvtoolnix:mkvtoolnix",
         "//packages/linux/graphics/video/v4l-utils:v4l-utils",
@@ -155,7 +152,6 @@ filegroup(
         "//packages/linux/graphics/video/natron:natron",
         "//packages/linux/graphics/video/handbrake:handbrake",
         "//packages/linux/graphics/video/mkvtoolnix:mkvtoolnix",
-        "//packages/linux/graphics/video/mediainfo:mediainfo",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

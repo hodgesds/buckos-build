@@ -8,6 +8,7 @@ download_source(
     name = "mangohud-src",
     src_uri = "https://github.com/flightlessmango/MangoHud/archive/refs/tags/v0.7.2.tar.gz",
     sha256 = "67d2425c0cc634574d8bd8a924e0e1a2e909b47ed9b8c02029b5baffe46657fc",
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -65,7 +66,6 @@ position=top-left
 EOF
     """,
     deps = [
-        "//packages/linux/gaming/libraries/vulkan-tools:vulkan-tools",
     ],
     bdepend = [
         "//packages/linux/lang/python:python",

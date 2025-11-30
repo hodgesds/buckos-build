@@ -5,6 +5,7 @@ download_source(
     name = "obs-studio-src",
     src_uri = "https://github.com/obsproject/obs-studio/archive/refs/tags/30.1.2.tar.gz",
     sha256 = "490bae1c392b3b344b0270afd8cb887da4bc50bd92c0c426e96713c1ccb9701a",
+    signature_required = False,
 )
 
 autotools_package(

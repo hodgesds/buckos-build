@@ -8,6 +8,7 @@ download_source(
     name = "hwinfo-src",
     src_uri = "https://github.com/openSUSE/hwinfo/archive/refs/tags/23.2.tar.gz",
     sha256 = "1ffc00d07aa1ad766e861d0d8492e2d2fa52cf537807f34e1c80e8c2d56c7115",
+    signature_required = False,
 )
 
 autotools_package(

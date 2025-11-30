@@ -116,29 +116,33 @@ filegroup(
 )
 
 # =============================================================================
-# Convenience Aliases
+# Convenience Aliases (using filegroup for platform support)
 # =============================================================================
 
-alias(
+filegroup(
     name = "nvidia",
-    actual = ":nvidia-stack",
+    srcs = [":nvidia-stack"],
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
-alias(
+filegroup(
     name = "amd",
-    actual = ":amd-stack",
+    srcs = [":amd-stack"],
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
-alias(
+filegroup(
     name = "intel",
-    actual = ":intel-stack",
+    srcs = [":intel-stack"],
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
-alias(
+filegroup(
     name = "gpu",
-    actual = ":gpu-full",
+    srcs = [":gpu-full"],
+    default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )

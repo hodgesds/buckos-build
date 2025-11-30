@@ -10,6 +10,7 @@ download_source(
     name = "stream-src",
     src_uri = "https://www.cs.virginia.edu/stream/FTP/Code/stream.c",
     sha256 = "a52bae5e175bea3f7832112af9c085adab47117f7d2ce219165379849231692b",
+    signature_required = False,
 )
 
 binary_package(

@@ -1,21 +1,47 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 
 # bonnie++ - Filesystem and disk I/O benchmark
 #
-# USE flags: (minimal flags for this benchmark)
+# bonnie++ has a non-standard Makefile that requires explicit DESTDIR handling
 
-autotools_package(
-    name = "bonnie",
-    version = "2.00a",
+download_source(
+    name = "bonnie-src",
     src_uri = "https://www.coker.com.au/bonnie++/bonnie++-2.00a.tgz",
     sha256 = "a8d33bbd81bc7eb559ce5bf6e584b9b53faea39ccfb4ae92e58f27257e468f0e",
+    signature_required = False,
+)
+
+ebuild_package(
+    name = "bonnie",
+    source = ":bonnie-src",
+    version = "2.00a",
+    category = "benchmarks",
     description = "Filesystem and disk I/O benchmark suite",
     homepage = "https://www.coker.com.au/bonnie++/",
     license = "GPL-2.0",
-    iuse = [],
-    use_defaults = [],
-    deps = [],
-    configure_args = [],
+
+    src_configure = '''
+./configure --prefix=/usr
+''',
+
+    src_compile = '''
+make -j$(nproc)
+''',
+
+    src_install = '''
+# bonnie++ install target doesn't support DESTDIR well, install manually
+mkdir -p "$DESTDIR/usr/bin"
+mkdir -p "$DESTDIR/usr/sbin"
+mkdir -p "$DESTDIR/usr/share/man/man1"
+mkdir -p "$DESTDIR/usr/share/man/man8"
+
+cp bonnie++ "$DESTDIR/usr/sbin/"
+cp bon_csv2html bon_csv2txt "$DESTDIR/usr/bin/"
+cp zcav "$DESTDIR/usr/bin/"
+cp bonnie++.1 "$DESTDIR/usr/share/man/man1/"
+cp bon_csv2html.1 bon_csv2txt.1 "$DESTDIR/usr/share/man/man1/"
+cp zcav.8 "$DESTDIR/usr/share/man/man8/"
+''',
+
     visibility = ["PUBLIC"],
 )

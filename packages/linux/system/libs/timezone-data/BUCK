@@ -6,7 +6,8 @@ download_source(
     name = "timezone-data-src",
     src_uri = "https://data.iana.org/time-zones/releases/tzdata2024a.tar.gz",
     sha256 = "0d0434459acbd2059a7a8da1f3304a84a86591f6ed69c6248fffa502b6edffe3",
-    auto_detect_signature=False,
+    signature_sha256 = "f64725f9f65419e7b009e3b95b75ea9516382d0be64aef63d78654d9c569ed0d",
+    signature_required=False,
 )
 
 autotools_package(

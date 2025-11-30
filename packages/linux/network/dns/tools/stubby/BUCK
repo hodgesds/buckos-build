@@ -6,6 +6,7 @@ autotools_package(
     version = "0.4.3",
     src_uri = "https://github.com/getdnsapi/stubby/archive/refs/tags/v0.4.3.tar.gz",
     sha256 = "99291ab4f09bce3743000ed3ecbf58961648a35ca955889f1c41d36810cc4463",
+    signature_required = False,
 
     iuse = ["ssl", "dnssec"],
     use_defaults = ["ssl", "dnssec"],

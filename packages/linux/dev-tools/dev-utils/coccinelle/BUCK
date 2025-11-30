@@ -6,6 +6,7 @@ download_source(
     name = "coccinelle-src",
     src_uri = "https://gitlab.inria.fr/coccinelle/coccinelle/-/archive/1.3.0/coccinelle-1.3.0.tar.bz2",
     sha256 = "32e541430916ab6556e4f771439f64395b051d50ba346165833a5216e327d63b",
+    signature_required = False,
 )
 
 autotools_package(

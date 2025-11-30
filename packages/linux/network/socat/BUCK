@@ -10,6 +10,7 @@ autotools_package(
     version = "1.8.0.0",
     src_uri = "http://www.dest-unreach.org/socat/download/socat-1.8.0.0.tar.bz2",
     sha256 = "e1de683dd22ee0e3a6c6bbff269abe18ab0c9d7eb650204f125155b9005faca7",
+    signature_required = False,
 
     iuse = ["ssl", "readline", "ipv6", "tcpwrap"],
     use_defaults = ["ssl", "ipv6"],

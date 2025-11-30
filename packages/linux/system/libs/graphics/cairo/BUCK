@@ -6,7 +6,7 @@ autotools_package(
     version = "1.18.2",
     src_uri = "https://www.cairographics.org/releases/cairo-1.18.2.tar.xz",
     sha256 = "a62b9bb42425e844cc3d6ddde043ff39dbabedd1542eba57a2eb79f85889d45a",
-    auto_detect_signature = False,
+    signature_required = False,
     description = "2D graphics library with support for multiple output devices",
     homepage = "https://www.cairographics.org/",
     license = "LGPL-2.1-or-later",
@@ -31,8 +31,6 @@ autotools_package(
         "-opengl": "-Dgl-backend=disabled",
     },
     use_deps = {
-        "X": ["//packages/linux/desktop/xorg-server:libx11"],
-        "xcb": ["//packages/linux/desktop/xorg-server:libxcb"],
         "png": ["//packages/linux/system/libs/image/libpng:libpng"],
         "glib": ["//packages/linux/dev-libs/glib:glib"],
         "opengl": ["//packages/linux/desktop/mesa:mesa"],

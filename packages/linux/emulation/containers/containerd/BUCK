@@ -6,6 +6,7 @@ download_source(
     name = "containerd-src",
     src_uri = "https://github.com/containerd/containerd/archive/refs/tags/v1.7.23.tar.gz",
     sha256 = "393bfde8ca1766a0bca3441e18eddc3f5a5c8d97ef676bde0d6c9903e1b0ec0c",
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags

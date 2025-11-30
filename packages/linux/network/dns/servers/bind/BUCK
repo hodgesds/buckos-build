@@ -6,7 +6,8 @@ autotools_package(
     version = "9.18.24",
     src_uri = "https://downloads.isc.org/isc/bind9/9.18.24/bind-9.18.24.tar.xz",
     sha256 = "709d73023c9115ddad3bab65b6c8c79a590196d0d114f5d0ca2533dbd52ddf66",
-    auto_detect_signature=False,
+    signature_sha256 = "d69191fd021bd68280077f03f586942cf2027ae7683be08aeb244bc58530e625",
+    signature_required=False,
 
     iuse = ["ssl", "threads", "ipv6", "idn", "static-libs"],
     use_defaults = ["ssl", "threads", "ipv6", "idn"],

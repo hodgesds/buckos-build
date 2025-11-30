@@ -5,6 +5,7 @@ download_source(
     name = "nilfs-utils-src",
     src_uri = "https://github.com/nilfs-dev/nilfs-utils/archive/refs/tags/v2.2.9.tar.gz",
     sha256 = "c92bae9a48fc45e5053f15f4977f489df988fd0b9c1a8bfff21d83185609822e",
+    signature_required = False,
 )
 
 autotools_package(

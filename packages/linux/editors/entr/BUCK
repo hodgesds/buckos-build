@@ -5,7 +5,8 @@ download_source(
     name = "entr-src",
     src_uri = "https://eradman.com/entrproject/code/entr-5.6.tar.gz",
     sha256 = "0222b8df928d3b5a3b5194d63e7de098533e04190d9d9a154b926c6c1f9dd14e",
-    auto_detect_signature=False,
+    signature_sha256 = "f7f50247cc7936645a260a4bcff4da27607dbf5bc024004372a6559d801eaa83",
+    signature_required=False,
 )
 
 autotools_package(

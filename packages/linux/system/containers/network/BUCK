@@ -10,6 +10,7 @@ download_source(
     name = "cni-plugins-src",
     src_uri = "https://github.com/containernetworking/plugins/archive/refs/tags/v1.4.1.tar.gz",
     sha256 = "f8e7055bc77bbd1e978157c2dcb53836f5f4d9d582f7bc2dffdd78997a267f96",
+    signature_required = False,
 )
 
 ebuild_package(
@@ -38,6 +39,7 @@ download_source(
     name = "netavark-src",
     src_uri = "https://github.com/containers/netavark/archive/refs/tags/v1.14.0.tar.gz",
     sha256 = "d2ded5412e5037e84f79a28c774378c864aa6f6e43023dd88891c70cfaf963ef",
+    signature_required = False,
 )
 
 ebuild_package(
@@ -64,6 +66,7 @@ download_source(
     name = "aardvark-dns-src",
     src_uri = "https://github.com/containers/aardvark-dns/archive/refs/tags/v1.14.0.tar.gz",
     sha256 = "d46f170e0439fc97e15bb31d63b7464192f74809b0d54064383e6a0b592d8cfd",
+    signature_required = False,
 )
 
 ebuild_package(
@@ -88,6 +91,7 @@ download_source(
     name = "slirp4netns-src",
     src_uri = "https://github.com/rootless-containers/slirp4netns/archive/refs/tags/v1.2.3.tar.gz",
     sha256 = "acce648fab8fe5f113c41a8fd6d20177708519b4ddaa60f845e1998a17b22ca5",
+    signature_required = False,
 )
 
 ebuild_package(

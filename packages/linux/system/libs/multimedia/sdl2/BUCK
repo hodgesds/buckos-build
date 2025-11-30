@@ -6,7 +6,7 @@ autotools_package(
     version = "2.30.8",
     src_uri = "https://github.com/libsdl-org/SDL/releases/download/release-2.30.8/SDL2-2.30.8.tar.gz",
     sha256 = "380c295ea76b9bd72d90075793971c8bcb232ba0a69a9b14da4ae8f603350058",
-    auto_detect_signature = False,
+    signature_required = False,
     description = "Simple DirectMedia Layer - cross-platform multimedia library",
     homepage = "https://www.libsdl.org/",
     license = "Zlib",
@@ -32,7 +32,6 @@ autotools_package(
     },
     use_deps = {
         "alsa": ["//packages/linux/system/libs/audio/alsa-lib:alsa-lib"],
-        "X": ["//packages/linux/desktop/xorg-server:libx11"],
         "wayland": ["//packages/linux/desktop/wayland:wayland"],
         "opengl": ["//packages/linux/desktop/mesa:mesa"],
         "vulkan": ["//packages/linux/desktop/mesa:mesa"],

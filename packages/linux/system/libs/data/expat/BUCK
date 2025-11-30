@@ -5,7 +5,8 @@ download_source(
     name = "expat-src",
     src_uri = "https://github.com/libexpat/libexpat/releases/download/R_2_6_3/expat-2.6.3.tar.xz",
     sha256 = "274db254a6979bde5aad404763a704956940e465843f2a9bd9ed7af22e2c0efc",
-    auto_detect_signature = False,
+    signature_sha256 = "96bc5f146eb81a4d1a12b841788a88456b6a287c1143eb29ac7cf5c8f0c6a5b5",
+    signature_required = False,
 )
 
 autotools_package(

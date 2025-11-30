@@ -1,25 +1,20 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "meson_package")
 
 download_source(
     name = "fnott-src",
     src_uri = "https://codeberg.org/dnkl/fnott/archive/1.4.1.tar.gz",
     sha256 = "20da05357aa83b3541b6c02bb162af10c89519602bc91fdfaa190239ce303300",
+    signature_required = False,
 )
 
-autotools_package(
+meson_package(
     name = "fnott",
     source = ":fnott-src",
     version = "1.4.1",
     description = "Keyboard driven and lightweight Wayland notification daemon",
     homepage = "https://codeberg.org/dnkl/fnott",
     license = "MIT",
-    pre_configure = """
-mkdir -p build
-cd build
-meson setup .. --prefix=/usr \\
-    -Dman-pages=disabled
-""",
+    meson_args = ["-Dman-pages=disabled"],
     deps = [
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/wayland:wayland-protocols",

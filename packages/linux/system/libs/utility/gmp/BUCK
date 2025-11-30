@@ -5,7 +5,8 @@ download_source(
     name = "gmp-src",
     src_uri = "https://mirrors.kernel.org/gnu/gmp/gmp-6.3.0.tar.xz",
     sha256 = "a3c2b80201b89e68616f4ad30bc66aee4927c3ce50e33929ca819d5c43538898",
-    auto_detect_signature = False,
+    signature_sha256 = "94def8c1a731854de684689126046ec93589147abd4cd0025f12d741d323aa82",
+    signature_required = False,
 )
 
 autotools_package(

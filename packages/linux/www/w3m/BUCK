@@ -16,14 +16,14 @@ autotools_package(
     version = "0.5.3+git20230121",
     src_uri = "https://github.com/tats/w3m/archive/refs/tags/v0.5.3+git20230121.tar.gz",
     sha256 = "fdc7d55d3c0104db26aa9759db34f37e5eee03f44c868796e3bbfb8935c96e39",
+    signature_required = False,
     description = "Text-based web browser with support for tables, frames, and images",
     homepage = "https://w3m.sourceforge.net/",
     license = "MIT",
     iuse = ["ssl", "ipv6", "nls", "unicode", "image", "ncurses"],
     use_defaults = ["ssl", "ipv6", "nls", "unicode", "ncurses"],
-    # TODO: gc (Boehm garbage collector) package needs to be created
     deps = [
-        # "//packages/linux/core/gc:gc",
+        "//packages/linux/dev-libs/misc/boehm-gc:boehm-gc",
     ],
     use_deps = {
         "ssl": ["//packages/linux/network/openssl:openssl"],
@@ -33,6 +33,31 @@ autotools_package(
     configure_args = [
         "--disable-w3mmailer",
     ],
+    # w3m uses old K&R style function declarations that C23 rejects
+    # Force an older C standard to allow the legacy code to compile
+    env = {
+        "CFLAGS": "${CFLAGS:-} -std=gnu17",
+        "LDFLAGS": "${LDFLAGS:-} -lncurses -ltinfo",
+    },
+    # w3m's configure has a hardcoded search for gc.h that ignores CPPFLAGS.
+    # We need to find the boehm-gc dependency and pass --with-gc=PREFIX
+    pre_configure = """
+        # Find boehm-gc in our dependencies
+        for dep_dir in $(echo "$CPATH" | tr ':' ' '); do
+            base_dir="${dep_dir%/usr/include}"
+            base_dir="${base_dir%/include}"
+            if [ -f "$dep_dir/gc.h" ] || [ -f "$dep_dir/gc/gc.h" ]; then
+                echo "Found boehm-gc at: $base_dir"
+                export GC_PREFIX="$base_dir/usr"
+                break
+            fi
+        done
+        if [ -n "$GC_PREFIX" ]; then
+            # Append --with-gc to EXTRA_ECONF (used by autotools eclass)
+            export EXTRA_ECONF="${EXTRA_ECONF:-} --with-gc=$GC_PREFIX"
+            echo "EXTRA_ECONF=$EXTRA_ECONF"
+        fi
+    """,
     use_configure = {
         "ssl": "--with-ssl",
         "-ssl": "--without-ssl",

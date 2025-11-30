@@ -6,6 +6,7 @@ download_source(
     name = "test-simple-src",
     src_uri = "https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Simple-1.302199.tar.gz",
     sha256 = "7b4b03cee7f9e928fe10e8a3efef02b2a286f0877979694b2a9ef99250bd8c5c",
+    signature_required = False,
 )
 
 autotools_package(
@@ -30,6 +31,7 @@ download_source(
     name = "test-deep-src",
     src_uri = "https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Test-Deep-1.204.tar.gz",
     sha256 = "b6591f6ccdd853c7efc9ff3c5756370403211cffe46047f082b1cd1611a84e5f",
+    signature_required = False,
 )
 
 autotools_package(
@@ -54,6 +56,7 @@ download_source(
     name = "test-exception-src",
     src_uri = "https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Exception-0.43.tar.gz",
     sha256 = "156b13f07764f766d8b45a43728f2439af81a3512625438deab783b7883eb533",
+    signature_required = False,
 )
 
 autotools_package(
@@ -79,6 +82,7 @@ download_source(
     name = "test-warn-src",
     src_uri = "https://cpan.metacpan.org/authors/id/B/BI/BIGJ/Test-Warn-0.37.tar.gz",
     sha256 = "98ca32e7f2f5ea89b8bfb9a0609977f3d153e242e2e51705126cb954f1a06b57",
+    signature_required = False,
 )
 
 autotools_package(
@@ -104,6 +108,7 @@ download_source(
     name = "test-mockobject-src",
     src_uri = "https://cpan.metacpan.org/authors/id/C/CH/CHROMATIC/Test-MockObject-1.20200122.tar.gz",
     sha256 = "2b7f80da87f5a6fe0360d9ee521051053017442c3a26e85db68dfac9f8307623",
+    signature_required = False,
 )
 
 autotools_package(
@@ -129,6 +134,7 @@ download_source(
     name = "test-mock-time-src",
     src_uri = "https://cpan.metacpan.org/authors/id/P/PO/POWERMAN/Test-Mock-Time-v0.1.0.tar.gz",
     sha256 = "48283ae04ea63e83cf9b35c713d6c249c832f17927fbf8427d43c6631d32e0be",
+    signature_required = False,
 )
 
 autotools_package(
@@ -153,6 +159,7 @@ download_source(
     name = "test-nowarnings-src",
     src_uri = "https://cpan.metacpan.org/authors/id/A/AD/ADAMK/Test-NoWarnings-1.04.tar.gz",
     sha256 = "638a57658cb119af1fe5b15e73d47c2544dcfef84af0c6b1b2e97f08202b686c",
+    signature_required = False,
 )
 
 autotools_package(
@@ -178,6 +185,7 @@ download_source(
     name = "test-differences-src",
     src_uri = "https://cpan.metacpan.org/authors/id/D/DC/DCANTRELL/Test-Differences-0.71.tar.gz",
     sha256 = "cac16a56cd843b0809e5b49199d60d75a8dbad7ca9a08380dbf3f5cc3aaa38d9",
+    signature_required = False,
 )
 
 autotools_package(
@@ -204,6 +212,7 @@ download_source(
     name = "test-most-src",
     src_uri = "https://cpan.metacpan.org/authors/id/O/OV/OVID/Test-Most-0.38.tar.gz",
     sha256 = "089eb894f7bace4c37c6334e0e290eb20338ee10223af0c82cbe7281c78382df",
+    signature_required = False,
 )
 
 autotools_package(
@@ -233,6 +242,7 @@ download_source(
     name = "test-fatal-src",
     src_uri = "https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Test-Fatal-0.017.tar.gz",
     sha256 = "37dfffdafb84b762efe96b02fb2aa41f37026c73e6b83590db76229697f3c4a6",
+    signature_required = False,
 )
 
 autotools_package(
@@ -258,6 +268,7 @@ download_source(
     name = "test-requires-src",
     src_uri = "https://cpan.metacpan.org/authors/id/T/TO/TOKUHIROM/Test-Requires-0.11.tar.gz",
     sha256 = "4b88de549597eecddf7c3c38a4d0204a16f59ad804577b671896ac04e24e040f",
+    signature_required = False,
 )
 
 autotools_package(
@@ -282,6 +293,7 @@ download_source(
     name = "test-output-src",
     src_uri = "https://cpan.metacpan.org/authors/id/B/BD/BDFOY/Test-Output-1.033.tar.gz",
     sha256 = "f6a8482740b075fad22aaf4d987d38ef927c6d2b452d4ae0d0bd8f779830556e",
+    signature_required = False,
 )
 
 autotools_package(
@@ -306,6 +318,7 @@ download_source(
     name = "test-pod-src",
     src_uri = "https://cpan.metacpan.org/authors/id/E/ET/ETHER/Test-Pod-1.52.tar.gz",
     sha256 = "60a8dbcc60168bf1daa5cc2350236df9343e9878f4ab9830970a5dde6fe8e5fc",
+    signature_required = False,
 )
 
 autotools_package(
@@ -330,6 +343,7 @@ download_source(
     name = "test-pod-coverage-src",
     src_uri = "https://cpan.metacpan.org/authors/id/N/NE/NEILB/Test-Pod-Coverage-1.10.tar.gz",
     sha256 = "48c9cca9f7d99eee741176445b431adf09c029e1aa57c4703c9f46f7601d40d4",
+    signature_required = False,
 )
 
 autotools_package(
@@ -355,6 +369,7 @@ download_source(
     name = "devel-cover-src",
     src_uri = "https://cpan.metacpan.org/authors/id/P/PJ/PJCJ/Devel-Cover-1.44.tar.gz",
     sha256 = "f40c1543992e5d65a6f78003d462d59acd79ae6d30d38047b1c69d999d2b1fd8",
+    signature_required = False,
 )
 
 autotools_package(

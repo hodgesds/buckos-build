@@ -1,24 +1,20 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "meson_package")
 
 download_source(
     name = "wofi-src",
     src_uri = "https://github.com/SimplyCEO/wofi/archive/refs/tags/v1.4.1.tar.gz",
     sha256 = "815da56e9085e336bb31fbe7137f7db7a6c95db57274a93f6eeea995dee62656",
+    signature_required = False,
 )
 
-autotools_package(
+meson_package(
     name = "wofi",
     source = ":wofi-src",
     version = "1.4.1",
     description = "Launcher/menu program for Wayland",
     homepage = "https://hg.sr.ht/~scoopta/wofi",
     license = "GPL-3.0",
-    pre_configure = """
-mkdir -p build
-cd build
-meson setup .. --prefix=/usr
-""",
+    meson_args = [],
     deps = [
         "//packages/linux/desktop/wayland:wayland",
     ],

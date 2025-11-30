@@ -1,25 +1,21 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "cmake_package")
 
 download_source(
     name = "bemenu-src",
     src_uri = "https://github.com/Cloudef/bemenu/releases/download/0.6.18/bemenu-0.6.18.tar.gz",
     sha256 = "66e0fafc198937ffbff47513bf79742126f1f674c74c0a95a878582a2f2cb0de",
-    auto_detect_signature=False,
+    signature_sha256 = "a281441780fa857c86d13a185b65ddaa1037bbac3b59cdcbc6cf4bda3a60e5a4",
+    signature_required = False,
 )
 
-autotools_package(
+cmake_package(
     name = "bemenu",
     source = ":bemenu-src",
     version = "0.6.18",
     description = "Dynamic menu library and client program inspired by dmenu",
     homepage = "https://github.com/Cloudef/bemenu",
     license = "GPL-3.0",
-    pre_configure = """
-mkdir -p build
-cd build
-cmake .. -DCMAKE_INSTALL_PREFIX=/usr
-""",
+    cmake_args = [],
     deps = [
         "//packages/linux/desktop/wayland:wayland",
     ],

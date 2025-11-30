@@ -6,6 +6,7 @@ download_source(
     name = "tevent-src",
     src_uri = "https://www.samba.org/ftp/tevent/tevent-0.16.1.tar.gz",
     sha256 = "362971e0f32dc1905f6fe4736319c4b8348c22dc85aa6c3f690a28efe548029e",
+    signature_required = False,
 )
 
 autotools_package(

@@ -4,7 +4,7 @@ download_source(
     name = "efibootmgr-src",
     src_uri = "https://github.com/rhboot/efibootmgr/archive/18.tar.gz",
     sha256 = "442867d12f8525034a404fc8af3036dba8e1fc970998af2486c3b940dfad0874",
-    auto_detect_signature = False,
+    signature_required = False,
 )
 
 autotools_package(
@@ -28,7 +28,6 @@ make DESTDIR=$DESTDIR prefix=/usr EFIDIR=BuckOS install
 """,
     deps = [
         "//packages/linux/system/libs/ipc/popt:popt",
-        "//packages/linux/system/hardware/pciutils:pciutils",
         "//packages/linux/system/libs/efivar:efivar",
     ],
     visibility = ["PUBLIC"],

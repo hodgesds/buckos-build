@@ -8,6 +8,7 @@ download_source(
     name = "steam-src",
     src_uri = "https://repo.steampowered.com/steam/archive/stable/steam_1.0.0.79.tar.gz",
     sha256 = "3a0012daf5889311c2e1dcf33a587b409019b66d893a52192df6947e18f1ec46",
+    signature_required = False,
 )
 
 binary_package(

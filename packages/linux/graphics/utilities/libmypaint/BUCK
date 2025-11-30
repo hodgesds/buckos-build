@@ -5,6 +5,7 @@ download_source(
     name = "libmypaint-src",
     src_uri = "https://github.com/mypaint/libmypaint/releases/download/v1.6.1/libmypaint-1.6.1.tar.xz",
     sha256 = "741754f293f6b7668f941506da07cd7725629a793108bb31633fb6c3eae5315f",
+    signature_required = False,
 )
 
 autotools_package(
@@ -29,7 +30,6 @@ make DESTDIR=$OUT install
         "//packages/linux/graphics/utilities/gegl:gegl",
     ],
     bdepend = [
-        "//packages/linux/desktop/gnome/libs:gobject-introspection",
     ],
     visibility = ["PUBLIC"],
 )

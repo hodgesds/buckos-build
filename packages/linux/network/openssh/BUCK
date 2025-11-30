@@ -10,7 +10,7 @@ autotools_package(
     version = "9.9p1",
     src_uri = "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.9p1.tar.gz",
     sha256 = "b343fbcdbff87f15b1986e6e15d6d4fc9a7d36066be6b7fb507087ba8f966c02",
-    auto_detect_signature=False,
+    signature_required = False,
 
     iuse = ["ssl", "pam", "kerberos", "ldap", "libedit"],
     use_defaults = ["ssl"],

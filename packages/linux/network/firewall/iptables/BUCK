@@ -10,7 +10,8 @@ autotools_package(
     version = "1.8.10",
     src_uri = "https://www.netfilter.org/projects/iptables/files/iptables-1.8.10.tar.xz",
     sha256 = "5cc255c189356e317d070755ce9371eb63a1b783c34498fb8c30264f3cc59c9c",
-    auto_detect_signature=False,
+    signature_sha256 = "b73295a18ab65070cb5e6c31ec11dcfc13a50b1f67888976cc0b708cd7fc5151",
+    signature_required=False,
 
     iuse = ["ipv6", "bpf", "nfsynproxy", "connlabel", "static-libs"],
     use_defaults = ["ipv6", "bpf", "nfsynproxy"],

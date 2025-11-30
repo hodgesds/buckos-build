@@ -1,112 +1,66 @@
 # =============================================================================
 # CUDA Toolkit - NVIDIA CUDA development toolkit
 # =============================================================================
-#
-# The CUDA Toolkit provides a development environment for creating
-# high-performance GPU-accelerated applications.
-#
-# =============================================================================
 
-load("//defs:package_defs.bzl", "download_source", "binary_package", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "binary_package")
 
 download_source(
     name = "cuda-toolkit-src",
-    src_uri = "https://developer.download.nvidia.com/compute/cuda/12.6.2/local_installers/cuda_12.6.2_560.35.03_linux.run",
-    sha256 = "3729a89cb58f7ca6a46719cff110d6292aec7577585a8d71340f0dbac54fb237",
+    src_uri = "https://developer.download.nvidia.com/compute/cuda/13.0.2/local_installers/cuda_13.0.2_580.95.05_linux.run",
+    sha256 = "81a5d0d0870ba2022efb0a531dcc60adbdc2bbff7b3ef19d6fd6d8105406c775",
+    signature_required = False,
+    extract = False,
 )
 
 binary_package(
     name = "cuda-toolkit",
     srcs = [":cuda-toolkit-src"],
-    version = "12.6.2",
+    version = "13.0.2",
     description = "NVIDIA CUDA Toolkit for GPU computing",
     homepage = "https://developer.nvidia.com/cuda-toolkit",
     license = "NVIDIA CUDA EULA",
     install_script = """
 cd $SRCS
+INSTALLER=$(find . -name "*.run" -type f | head -1)
+[ -z "$INSTALLER" ] && { echo "Error: CUDA installer not found"; ls -la; exit 1; }
 
-# Find the .run installer (download_source doesn't extract .run files)
-INSTALLER=$(find . -name "cuda_*.run" -type f 2>/dev/null | head -1)
-if [ -z "$INSTALLER" ]; then
-    # The .run file may be kept as-is in the source dir
-    INSTALLER=$(find . -name "*.run" -type f 2>/dev/null | head -1)
-fi
-
-if [ -z "$INSTALLER" ]; then
-    echo "Error: CUDA installer not found"
-    ls -la
-    exit 1
-fi
-
-# Make installer executable
 chmod +x "$INSTALLER"
 
-# Extract CUDA toolkit (silent mode, toolkit only)
-# Use --override to skip gcc version check (ccache wrappers confuse it)
-"$INSTALLER" --silent --toolkit --toolkitpath="$PWD/cuda" --no-opengl-libs --no-drm --no-man-page --override || {
-    echo "Warning: Installer may have failed, checking for extracted files..."
-}
+# Extract toolkit (silent mode, toolkit only, skip driver)
+"$INSTALLER" --silent --toolkit --toolkitpath="$PWD/cuda" --no-opengl-libs --no-drm --no-man-page --override 2>/dev/null || true
 
-if [ ! -d cuda ]; then
-    echo "Error: CUDA extraction failed"
-    exit 1
-fi
+[ ! -d cuda ] && { echo "Error: CUDA extraction failed"; exit 1; }
 
-# Install CUDA to standard locations
-mkdir -p "$OUT/usr/local/cuda-12.6"
+# Install to standard location
+CUDA_DIR="$OUT/usr/local/cuda-13.0"
+mkdir -p "$CUDA_DIR"
 
-# Copy binaries
-mkdir -p "$OUT/usr/local/cuda-12.6/bin"
-cp -a cuda/bin/* "$OUT/usr/local/cuda-12.6/bin/"
+# Copy essential directories
+for dir in bin lib64 include nvvm targets; do
+    [ -d "cuda/$dir" ] && cp -a "cuda/$dir" "$CUDA_DIR/"
+done
 
-# Copy libraries
-mkdir -p "$OUT/usr/local/cuda-12.6/lib64"
-cp -a cuda/lib64/* "$OUT/usr/local/cuda-12.6/lib64/"
+# Create version symlink
+ln -sf cuda-13.0 "$OUT/usr/local/cuda"
 
-# Copy include files
-mkdir -p "$OUT/usr/local/cuda-12.6/include"
-cp -a cuda/include/* "$OUT/usr/local/cuda-12.6/include/"
-
-# Copy nvvm
-cp -a cuda/nvvm "$OUT/usr/local/cuda-12.6/" 2>/dev/null || true
-
-# Create symlink
-ln -sf cuda-12.6 "$OUT/usr/local/cuda"
-
-# Create profile script for PATH
+# Profile script
 mkdir -p "$OUT/etc/profile.d"
 cat > "$OUT/etc/profile.d/cuda.sh" << 'EOF'
-# CUDA Toolkit environment
 export CUDA_HOME=/usr/local/cuda
 export PATH=$CUDA_HOME/bin:$PATH
-export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$CUDA_HOME/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 EOF
 
-# Create pkgconfig files
+# pkg-config
 mkdir -p "$OUT/usr/lib64/pkgconfig"
 cat > "$OUT/usr/lib64/pkgconfig/cuda.pc" << 'EOF'
 prefix=/usr/local/cuda
-exec_prefix=${prefix}
 libdir=${prefix}/lib64
 includedir=${prefix}/include
 
 Name: CUDA
 Description: NVIDIA CUDA Toolkit
-Version: 12.6.2
-Libs: -L${libdir} -lcudart
-Cflags: -I${includedir}
-EOF
-
-cat > "$OUT/usr/lib64/pkgconfig/cudart.pc" << 'EOF'
-prefix=/usr/local/cuda
-exec_prefix=${prefix}
-libdir=${prefix}/lib64
-includedir=${prefix}/include
-
-Name: CUDA Runtime
-Description: NVIDIA CUDA Runtime Library
-Version: 12.6.2
+Version: 13.0.2
 Libs: -L${libdir} -lcudart
 Cflags: -I${includedir}
 EOF

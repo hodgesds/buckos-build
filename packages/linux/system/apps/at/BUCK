@@ -9,6 +9,7 @@ autotools_package(
     version = "3.2.5",
     src_uri = "https://salsa.debian.org/debian/at/-/archive/release/3.2.5/at-release-3.2.5.tar.gz",
     sha256 = "bd72b2e0666323f4a9d25613880b7a4d5761c8c2fefbf2fac7d5e9564a9d0da4",
+    signature_required = False,
     description = "Delayed job execution and batch processing",
     homepage = "https://salsa.debian.org/debian/at",
     license = "GPL-2+",

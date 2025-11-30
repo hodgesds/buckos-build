@@ -6,6 +6,7 @@ download_source(
     name = "tmux-bash-completion-src",
     src_uri = "https://github.com/imomaliev/tmux-bash-completion/archive/refs/heads/master.tar.gz",
     sha256 = "e19ab4070ff99fcbb8969c9cfb85a984b775567eff6495ce58ee242723e72ca1",
+    signature_required = False,
 )
 
 ebuild_package(

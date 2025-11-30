@@ -16,7 +16,8 @@ autotools_package(
     version = "1.4.76",
     src_uri = "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.76.tar.xz",
     sha256 = "8cbf4296e373cfd0cedfe9d978760b5b05c58fdc4048b4e2bcaf0a61ac8f5011",
-    auto_detect_signature = False,
+    signature_sha256 = "df94919524b9c47e7349cc66bb401fbcba4f6a7a5377b5fba93885e717e9e429",
+    signature_required = False,
     description = "Lightweight, fast web server optimized for high-performance environments",
     homepage = "https://www.lighttpd.net/",
     license = "BSD-3-Clause",
@@ -29,7 +30,6 @@ autotools_package(
         "zlib": ["//packages/linux/core/zlib:zlib"],
         "bzip2": ["//packages/linux/core/bzip2:bzip2"],
         "pcre2": ["//packages/linux/system/libs/utility/pcre2:pcre2"],
-        "mysql": ["//packages/linux/databases/mariadb:mariadb"],
         "ldap": ["//packages/linux/network/openldap:openldap"],
     },
     configure_args = [

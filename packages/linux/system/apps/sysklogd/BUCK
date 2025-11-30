@@ -9,6 +9,7 @@ autotools_package(
     version = "2.5.2",
     src_uri = "https://github.com/troglobit/sysklogd/releases/download/v2.5.2/sysklogd-2.5.2.tar.gz",
     sha256 = "9da4444285772ce2bfc9c687be8f978b7a9fe7d3937347cd4938eda0c4545e05",
+    signature_required = False,
     description = "System logging daemons",
     homepage = "https://github.com/troglobit/sysklogd",
     license = "BSD-3-Clause",

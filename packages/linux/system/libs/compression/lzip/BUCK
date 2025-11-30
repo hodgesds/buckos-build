@@ -7,7 +7,7 @@ autotools_package(
     version = "1.24",
     src_uri = "https://github.com/fenix-soft/lzip/archive/refs/tags/1.24.tar.gz",
     sha256 = "fa5e662738389b4297fc196a760287bbce6d7693b3f5ef98be53e782c923d8c8",
-    auto_detect_signature = False,
+    signature_required = False,
     description = "Lossless data compressor based on LZMA algorithm",
     homepage = "https://www.nongnu.org/lzip/",
     license = "GPL-2.0-or-later",

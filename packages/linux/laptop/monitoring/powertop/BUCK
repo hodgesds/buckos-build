@@ -8,6 +8,7 @@ download_source(
     name = "powertop-src",
     src_uri = "https://github.com/fenrus75/powertop/archive/refs/tags/v2.15.tar.gz",
     sha256 = "e58ab3fd7b8ff5f4dd0d17f11848817e7d83c0a6918145ac81de03b5dccf8f49",
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -26,7 +27,6 @@ autotools_package(
     ],
     deps = [
         "//packages/linux/core/ncurses:ncurses",
-        "//packages/linux/system/hardware/pciutils:pciutils",
         "//packages/linux/core/libnl:libnl",
     ],
     visibility = ["PUBLIC"],

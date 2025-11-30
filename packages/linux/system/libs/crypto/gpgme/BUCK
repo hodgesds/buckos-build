@@ -6,7 +6,7 @@ autotools_package(
     version = "1.23.2",
     src_uri = "https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-1.23.2.tar.bz2",
     sha256 = "9499e8b1f33cccb6815527a1bc16049d35a6198a6c5fae0185f2bd561bce5224",
-    auto_detect_signature = False,
+    signature_required = False,
     description = "GnuPG Made Easy - library for accessing GnuPG",
     homepage = "https://www.gnupg.org/related_software/gpgme/",
     license = "LGPL-2.1",

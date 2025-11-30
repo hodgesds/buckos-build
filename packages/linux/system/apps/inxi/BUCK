@@ -9,6 +9,7 @@ autotools_package(
     version = "3.3.31",
     src_uri = "https://github.com/smxi/inxi/archive/refs/tags/3.3.31-1.tar.gz",
     sha256 = "5e2cce705a1dc865e8d90e63d4668f7a946b1349bf8bad141ddb69718fd46b60",
+    signature_required = False,
     description = "Full featured CLI system information tool",
     homepage = "https://github.com/smxi/inxi",
     license = "GPL-3.0-or-later",

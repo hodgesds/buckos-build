@@ -12,6 +12,7 @@ autotools_package(
     version = "2.7.0",
     src_uri = "https://github.com/HewlettPackard/netperf/archive/refs/tags/netperf-2.7.0.tar.gz",
     sha256 = "4569bafa4cca3d548eb96a486755af40bd9ceb6ab7c6abd81cc6aa4875007c4e",
+    signature_required = False,
     description = "Network performance benchmark - measures various network metrics",
     homepage = "https://github.com/HewlettPackard/netperf",
     license = "HP",

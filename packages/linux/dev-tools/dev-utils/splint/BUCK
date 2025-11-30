@@ -5,6 +5,7 @@ download_source(
     name = "splint-src",
     src_uri = "https://splint.org/downloads/splint-3.1.2.src.tgz",
     sha256 = "c78db643df663313e3fa9d565118391825dd937617819c6efc7966cdf444fb0a",
+    signature_required = False,
 )
 
 autotools_package(

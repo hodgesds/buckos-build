@@ -9,7 +9,8 @@ download_source(
     name = "i3-src",
     src_uri = "https://i3wm.org/downloads/i3-4.23.tar.xz",
     sha256 = "61026a7196c9139d0f3aadd27197e8b320c576e3a450e01d74c1aca484044c46",
-    auto_detect_signature=False,
+    signature_sha256 = "afb593a129563c985ae20d1cc4753ff448476569e049b074cde4a69cdc989948",
+    signature_required=False,
 )
 
 autotools_package(
@@ -27,8 +28,6 @@ meson setup .. --prefix=/usr \\
     -Dmans=false
 """,
     deps = [
-        "//packages/linux/desktop/xorg-server:xorg-server",
-        "//packages/linux/desktop/xorg-server:libx11",
     ],
     visibility = ["PUBLIC"],
 )
@@ -39,7 +38,6 @@ filegroup(
     srcs = [
         ":i3",
         "//packages/linux/desktop/lightdm:lightdm",
-        "//packages/linux/desktop/xorg-server:xorg-server",
         "//packages/linux/desktop/mesa:mesa",
     ],
     default_target_platform = "//platforms:linux-target",

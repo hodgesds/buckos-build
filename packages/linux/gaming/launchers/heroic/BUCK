@@ -8,6 +8,7 @@ download_source(
     name = "heroic-src",
     src_uri = "https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/download/v2.15.2/heroic-2.15.2.tar.xz",
     sha256 = "974c03d22d11f8a761c089629557370b8f3f2258b9ad957443bdad26409ab128",
+    signature_required = False,
 )
 
 binary_package(

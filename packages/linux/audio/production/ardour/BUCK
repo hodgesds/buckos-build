@@ -13,6 +13,7 @@ download_source(
     name = "ardour-src",
     src_uri = "https://github.com/Ardour/ardour/archive/refs/tags/8.6.tar.gz",
     sha256 = "84d79d73d749cf05a223feb74d5fdfcacfef520e185169752e33fb9bfcbce7b3",
+    signature_required = False,
 )
 
 # Ardour uses waf build system
@@ -59,11 +60,9 @@ binary_package(
     deps = [
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
         "//packages/linux/audio/daemons/jack2:jack2",
-        "//packages/linux/audio/libraries/libsndfile:libsndfile",
         "//packages/linux/audio/libraries/flac:flac",
         "//packages/linux/audio/libraries/libvorbis:libvorbis",
         "//packages/linux/audio/libraries/libogg:libogg",
-        "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/lang/python:python",
     ],
     visibility = ["PUBLIC"],

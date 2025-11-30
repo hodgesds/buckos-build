@@ -10,6 +10,7 @@ autotools_package(
     version = "6.6.0",
     src_uri = "https://mirrors.edge.kernel.org/pub/linux/utils/net/iproute2/iproute2-6.6.0.tar.xz",
     sha256 = "8738c804afd09f0bf756937f0c3de23117832a98d8cbbf50386cf5005cd613ce",
+    signature_required = False,
 
     iuse = ["caps", "elf", "selinux", "atm", "iptables"],
     use_defaults = ["caps"],

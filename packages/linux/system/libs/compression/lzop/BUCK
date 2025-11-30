@@ -7,7 +7,7 @@ autotools_package(
     version = "1.04",
     src_uri = "https://www.lzop.org/download/lzop-1.04.tar.gz",
     sha256 = "7e72b62a8a60aff5200a047eea0773a8fb205caf7acbe1774d95147f305a2f41",
-    auto_detect_signature = False,
+    signature_required = False,
     description = "Very fast file compressor using the LZO compression library",
     homepage = "http://www.lzop.org/",
     license = "GPL-2.0",

@@ -8,6 +8,7 @@ download_source(
     name = "vkd3d-proton-src",
     src_uri = "https://github.com/HansKristian-Work/vkd3d-proton/archive/refs/tags/v2.13.tar.gz",
     sha256 = "b0af3e1ece3094fcb26e677bad1932475f1fdccb019aab06a7c4a8cb23542a4d",
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -98,7 +99,6 @@ chmod +x "$DESTDIR/usr/bin/setup_vkd3d_proton"
     """,
     deps = [
         "//packages/linux/gaming/compatibility/wine:wine",
-        "//packages/linux/gaming/libraries/vulkan-tools:vulkan-tools",
     ],
     visibility = ["PUBLIC"],
 )

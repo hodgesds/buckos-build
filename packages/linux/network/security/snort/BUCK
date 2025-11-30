@@ -6,6 +6,7 @@ autotools_package(
     version = "2.9.20",
     src_uri = "https://www.snort.org/downloads/snort/snort-2.9.20.tar.gz",
     sha256 = "29400e13f53b1831e0b8b10ec1224a1cbaa6dc1533a5322a20dd80bb84b4981c",
+    signature_required = False,
 
     iuse = ["sourcefire", "threads"],
     use_defaults = ["sourcefire", "threads"],

@@ -11,6 +11,7 @@ download_source(
     name = "initramfs-tools-src",
     src_uri = "https://salsa.debian.org/kernel-team/initramfs-tools/-/archive/v0.142/initramfs-tools-v0.142.tar.gz",
     sha256 = "27a78cc25acc3ca3d9c78deca165bf001b09b260ce25a3f3756e47a0e7bc0554",
+    signature_required = False,
 )
 
 autotools_package(

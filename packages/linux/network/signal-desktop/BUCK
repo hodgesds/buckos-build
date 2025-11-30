@@ -4,6 +4,7 @@ download_source(
     name = "signal-desktop-src",
     src_uri = "https://updates.signal.org/desktop/apt/pool/s/signal-desktop/signal-desktop_7.36.0_amd64.deb",
     sha256 = "7b14d1c7d47e9bea92a5cc3d536d1ab805cb4d22e2acf6896b5ae8be84b04047",
+    signature_required = False,
 )
 
 binary_package(
@@ -63,7 +64,6 @@ DESKTOP
     """,
     deps = [
         "//packages/linux/dev-libs/glib:glib",
-        "//packages/linux/desktop/gnome:gtk3",
         "//packages/linux/system/security/auth/biometric:nss",
         "//packages/linux/system/security/auth/biometric:nspr",
         "//packages/linux/audio/daemons/pulseaudio:pulseaudio",

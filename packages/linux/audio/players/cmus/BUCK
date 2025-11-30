@@ -6,6 +6,7 @@ autotools_package(
     version = "2.11.0",
     src_uri = "https://github.com/cmus/cmus/archive/refs/tags/v2.11.0.tar.gz",
     sha256 = "2bbdcd6bbbae301d734214eab791e3755baf4d16db24a44626961a489aa5e0f7",
+    signature_required = False,
     description = "Small, fast and powerful console music player",
     homepage = "https://cmus.github.io/",
     license = "GPL-2",
@@ -59,7 +60,6 @@ autotools_package(
         "flac": ["//packages/linux/audio/libraries/flac:flac"],
         "vorbis": ["//packages/linux/audio/libraries/libvorbis:libvorbis", "//packages/linux/audio/libraries/libogg:libogg"],
         "opus": ["//packages/linux/audio/libraries/opus:opus"],
-        "mp3": ["//packages/linux/audio/libraries/libmad:libmad"],
     },
     deps = [
         "//packages/linux/core/ncurses:ncurses",

@@ -6,6 +6,7 @@ download_source(
     name = "kvmtool-src",
     src_uri = "https://git.kernel.org/pub/scm/linux/kernel/git/will/kvmtool.git/snapshot/kvmtool-master.tar.gz",
     sha256 = "9296eb605e0b63a9997fab68750f4d21daaaa7d641382bc981e2a3f3cd5f23ee",
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags

@@ -1,25 +1,20 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "meson_package")
 
 download_source(
     name = "kanshi-src",
     src_uri = "https://github.com/emersion/kanshi/archive/refs/tags/v1.2.0.tar.gz",
     sha256 = "144428b9e79209b853c4b38a5efb6f16d581a2b9cb96e419b3b0a0f5914bcad4",
+    signature_required = False,
 )
 
-autotools_package(
+meson_package(
     name = "kanshi",
     source = ":kanshi-src",
     version = "1.2.0",
     description = "Dynamic display configuration for Wayland",
     homepage = "https://sr.ht/~emersion/kanshi/",
     license = "MIT",
-    pre_configure = """
-mkdir -p build
-cd build
-meson setup .. --prefix=/usr \\
-    -Dman-pages=disabled
-""",
+    meson_args = ["-Dman-pages=disabled"],
     deps = [
         "//packages/linux/desktop/wayland:wayland",
     ],

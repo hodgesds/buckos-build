@@ -10,7 +10,8 @@ autotools_package(
     version = "3.6.1",
     src_uri = "http://openbox.org/dist/openbox/openbox-3.6.1.tar.xz",
     sha256 = "abe75855cc5616554ffd47134ad15291fe37ebbebf1a80b69cbde9d670f0e26d",
-    auto_detect_signature = False,
+    signature_sha256 = "4350d205c9e06e9423525b4b059940d8024013d41ef78c06ff82730adaf77a65",
+    signature_required = False,
     description = "Openbox - Highly configurable window manager",
     homepage = "http://openbox.org/",
     license = "GPL-2.0",
@@ -22,8 +23,6 @@ autotools_package(
     },
     configure_args = [],
     deps = [
-        "//packages/linux/desktop/xorg-server:xorg-server",
-        "//packages/linux/desktop/xorg-server:libx11",
     ],
     visibility = ["PUBLIC"],
 )
@@ -34,7 +33,6 @@ filegroup(
     srcs = [
         ":openbox",
         "//packages/linux/desktop/lightdm:lightdm",
-        "//packages/linux/desktop/xorg-server:xorg-server",
         "//packages/linux/desktop/mesa:mesa",
     ],
     default_target_platform = "//platforms:linux-target",

@@ -5,6 +5,7 @@ download_source(
     name = "e2fsprogs-src",
     src_uri = "https://mirrors.edge.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.47.0/e2fsprogs-1.47.0.tar.xz",
     sha256 = "144af53f2bbd921cef6f8bea88bb9faddca865da3fbc657cc9b4d2001097d5db",
+    signature_required = False,
 )
 
 autotools_package(

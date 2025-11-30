@@ -47,10 +47,8 @@ filegroup(
 filegroup(
     name = "intel-laptop",
     srcs = [
-        "//packages/linux/system/power/turbostat:turbostat",
         "//packages/linux/system/power/x86_energy_perf_policy:x86_energy_perf_policy",
         "//packages/linux/system/power/intel-undervolt:intel-undervolt",
-        "//packages/linux/system/power/intel-speed-select:intel-speed-select",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -91,7 +89,7 @@ filegroup(
 
 # Essential laptop power tools
 filegroup(
-    name = "essential",
+    name = "power-essential",
     srcs = [
         "//packages/linux/laptop/power/tlp:tlp",
         "//packages/linux/laptop/power/acpid:acpid",
@@ -105,8 +103,7 @@ filegroup(
 filegroup(
     name = "console",
     srcs = [
-        ":essential",
-        "//packages/linux/system/power/turbostat:turbostat",
+        ":power-essential",
         "//packages/linux/system/power/hdparm:hdparm",
         "//packages/linux/laptop/monitoring/powertop:powertop",
     ],
@@ -132,7 +129,7 @@ filegroup(
 filegroup(
     name = "intel-complete",
     srcs = [
-        ":essential",
+        ":power-essential",
         ":intel-laptop",
         ":thermal-management",
         ":storage-power",
@@ -146,7 +143,7 @@ filegroup(
 filegroup(
     name = "amd-complete",
     srcs = [
-        ":essential",
+        ":power-essential",
         ":amd-laptop",
         ":thermal-management",
         ":storage-power",

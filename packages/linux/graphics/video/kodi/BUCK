@@ -8,6 +8,7 @@ cmake_package(
     version = "21.0",
     src_uri = "https://github.com/xbmc/xbmc/archive/refs/tags/21.0-Omega.tar.gz",
     sha256 = "7f54c1fd8456ac46221fbc85e447362bdc209163c6cb19fca98d106560071b7c",
+    signature_required = False,
     description = "Open source home theater/media center application",
     homepage = "https://kodi.tv/",
     license = "GPL-2.0-only",

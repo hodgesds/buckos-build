@@ -9,6 +9,7 @@ autotools_package(
     version = "12.7.5",
     src_uri = "https://github.com/sysstat/sysstat/archive/refs/tags/v12.7.5.tar.gz",
     sha256 = "a4d30e37c0c894214b941b51184723e19d492118c946cfdeac74b6d1f0068016",
+    signature_required = False,
     description = "System performance monitoring tools",
     homepage = "https://github.com/sysstat/sysstat",
     license = "GPL-2.0-or-later",

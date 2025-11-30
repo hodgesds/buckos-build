@@ -8,6 +8,7 @@ download_source(
     name = "hdparm-src",
     src_uri = "https://downloads.sourceforge.net/project/hdparm/hdparm/hdparm-9.65.tar.gz",
     sha256 = "d14929f910d060932e717e9382425d47c2e7144235a53713d55a94f7de535a4b",
+    signature_required = False,
 )
 
 autotools_package(

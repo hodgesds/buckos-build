@@ -5,7 +5,8 @@ download_source(
     name = "pcre2-src",
     src_uri = "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.44/pcre2-10.44.tar.bz2",
     sha256 = "d34f02e113cf7193a1ebf2770d3ac527088d485d4e047ed10e5d217c6ef5de96",
-    auto_detect_signature=False,
+    signature_sha256 = "df418f44905d5df54783a19724dce2355062a3eb75ee17aaae32bcb61aa26bde",
+    signature_required=False,
 )
 
 autotools_package(

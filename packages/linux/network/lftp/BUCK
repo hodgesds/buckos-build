@@ -10,7 +10,8 @@ autotools_package(
     version = "4.9.2",
     src_uri = "https://lftp.yar.ru/ftp/lftp-4.9.2.tar.xz",
     sha256 = "c517c4f4f9c39bd415d7313088a2b1e313b2d386867fe40b7692b83a20f0670d",
-    auto_detect_signature=False,
+    signature_sha256 = "e04caf868c807d0c411bb9505a11f4d6b358baf8b0bb9519c282e213cee582ca",
+    signature_required=False,
 
     iuse = ["ssl", "gnutls", "nls", "idn"],
     use_defaults = ["ssl"],

@@ -14,7 +14,8 @@ download_source(
     name = "firefox-src",
     src_uri = "https://archive.mozilla.org/pub/firefox/releases/128.0/source/firefox-128.0.source.tar.xz",
     sha256 = "65271ffefb235ea1e162a081f2074a0f06fce27b2f613f573c126ba8eef95172",
-    auto_detect_signature=False,
+    signature_sha256 = "5059489e128bd00646476d68784e49558998afc5a14d75f3efe00901b48b69d4",
+    signature_required=False,
 )
 
 binary_package(

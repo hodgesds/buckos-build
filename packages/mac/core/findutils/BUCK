@@ -7,6 +7,7 @@ autotools_package(
     version = "4.10.0",
     src_uri = "https://mirrors.kernel.org/gnu/findutils/findutils-4.10.0.tar.xz",
     sha256 = "1387e0b67ff247d2abde998f90dfbf70c1491391a59ddfecb8ae698789f0a4f5",
+    signature_sha256 = "7f53670eea6bd114e014571221eb652855c1129a3ed99f2a9257c2a313cc216f",
     description = "GNU find utilities (macOS)",
     homepage = "https://www.gnu.org/software/findutils/",
     license = "GPL-3.0",

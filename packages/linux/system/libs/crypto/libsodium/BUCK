@@ -1,12 +1,13 @@
 load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
+# Use GitHub releases since download.libsodium.org often times out
 autotools_package(
     name = "libsodium",
     version = "1.0.20",
-    src_uri = "https://download.libsodium.org/libsodium/releases/libsodium-1.0.20.tar.gz",
+    src_uri = "https://github.com/jedisct1/libsodium/releases/download/1.0.20-RELEASE/libsodium-1.0.20.tar.gz",
     sha256 = "ebb65ef6ca439333c2bb41a0c1990587288da07f6c7fd07cb3a18cc18d30ce19",
-    auto_detect_signature = False,
+    signature_required = False,
     description = "Modern, portable, easy to use crypto library",
     homepage = "https://libsodium.org/",
     license = "ISC",

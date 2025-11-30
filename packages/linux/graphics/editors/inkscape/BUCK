@@ -10,6 +10,7 @@ download_source(
     name = "inkscape-src",
     src_uri = "https://media.inkscape.org/dl/resources/file/inkscape-1.3.2.tar.xz",
     sha256 = "dbd1844dc443fe5e10d3e9a887144e5fb7223852fff191cfb5ef7adeab0e086b",
+    signature_required = False,
 )
 
 autotools_package(

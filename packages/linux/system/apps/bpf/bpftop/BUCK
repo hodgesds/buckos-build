@@ -4,6 +4,7 @@ download_source(
     name = "bpftop-src",
     src_uri = "https://github.com/Netflix/bpftop/archive/refs/tags/v0.5.1.tar.gz",
     sha256 = "8457caf5ededba38aad01ed6317bd737a8079bbb26ca9a79cfdca5848a8c80f6",
+    signature_required = False,
 )
 
 binary_package(

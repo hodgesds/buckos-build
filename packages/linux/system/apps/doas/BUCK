@@ -9,6 +9,7 @@ autotools_package(
     version = "6.8.2",
     src_uri = "https://github.com/Duncaen/OpenDoas/archive/v6.8.2.tar.gz",
     sha256 = "6da058a0e70b7543bc60624389b0b00b686189ec933828c522bf8b2600495a67",
+    signature_required = False,
     description = "Simple sudo alternative from OpenBSD",
     homepage = "https://github.com/Duncaen/OpenDoas",
     license = "ISC",

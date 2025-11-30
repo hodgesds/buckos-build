@@ -10,7 +10,8 @@ autotools_package(
     version = "24.0.1",
     src_uri = "https://archive.mesa3d.org/mesa-24.0.1.tar.xz",
     sha256 = "f387192b08c471c545590dd12230a2a343244804b5fe866fec6aea02eab57613",
-    auto_detect_signature = False,
+    signature_sha256 = "e2bfe7507058ab0737293a335d29f9e9478cc2b5715c741b2b6a57e511a6cf4f",
+    signature_required = False,
     description = "Mesa 3D Graphics Library - OpenGL and Vulkan",
     homepage = "https://www.mesa3d.org/",
     license = "MIT",
@@ -39,7 +40,6 @@ autotools_package(
         "-opencl": "-Dgallium-opencl=disabled",
     },
     use_deps = {
-        "X": ["//packages/linux/desktop/xorg-server:libx11"],
         "wayland": ["//packages/linux/desktop/wayland:wayland"],
     },
     pre_configure = """
@@ -106,7 +106,7 @@ autotools_package(
     version = "1.2.0",
     src_uri = "https://gitlab.freedesktop.org/virgl/virglrenderer/-/archive/virglrenderer-1.2.0/virglrenderer-virglrenderer-1.2.0.tar.bz2",
     sha256 = "47a64189492a754685a430c713ac6700f4b1c3e7b871e87889ddb96e4d65e8ab",
-    auto_detect_signature = False,
+    signature_required = False,
     description = "Library to implement a virtual 3D GPU used by qemu",
     homepage = "https://virgil3d.github.io/",
     license = "MIT",

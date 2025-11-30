@@ -5,6 +5,7 @@ download_source(
     name = "gegl-src",
     src_uri = "https://download.gimp.org/gegl/0.4/gegl-0.4.48.tar.xz",
     sha256 = "418c26d94be8805d7d98f6de0c6825ca26bd74fcacb6c188da47533d9ee28247",
+    signature_required = False,
 )
 
 autotools_package(
@@ -33,7 +34,6 @@ DESTDIR=$OUT meson install
     deps = [
         "//packages/linux/graphics/utilities/babl:babl",
         "//packages/linux/dev-libs/glib:glib",
-        "//packages/linux/desktop/gnome:json-glib",
         "//packages/linux/system/libs/image/libpng:libpng",
         "//packages/linux/system/libs/image/libjpeg-turbo:libjpeg-turbo",
         "//packages/linux/system/libs/graphics/cairo:cairo",
@@ -46,7 +46,6 @@ DESTDIR=$OUT meson install
         "//packages/linux/graphics/video/ffmpeg:ffmpeg",
     ],
     bdepend = [
-        "//packages/linux/desktop/gnome/libs:gobject-introspection",
         "//packages/linux/lang/vala:vala",
     ],
     visibility = ["PUBLIC"],

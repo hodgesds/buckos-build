@@ -8,6 +8,7 @@ download_source(
     name = "acpica-tools-src",
     src_uri = "https://github.com/acpica/acpica/archive/refs/tags/R2024_12_12.tar.gz",
     sha256 = "adde693d2486d77940bef81acb45fec1ca285266ecbc4d10c5cd058bca19dc07",
+    signature_required = False,
 )
 
 autotools_package(

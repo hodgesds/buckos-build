@@ -6,6 +6,7 @@ autotools_package(
     version = "master",
     src_uri = "https://github.com/streambinder/vpnc/archive/refs/heads/master.tar.gz",
     sha256 = "e18632389974b44dfd13f283fd43b6932811b335d94a4ed571e6c1eca81c11da",
+    signature_required = False,
 
     iuse = ["hybrid"],
     use_defaults = [],

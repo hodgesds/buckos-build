@@ -9,6 +9,7 @@ meson_package(
     version = "0.21",
     src_uri = "https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/archive/0.21/power-profiles-daemon-0.21.tar.gz",
     sha256 = "c15a368a59f2cae1474bdfccdd9357f06b0abc9eb7638a87f68c091aaf570349",
+    signature_required = False,
     description = "D-Bus daemon for power profile handling",
     homepage = "https://gitlab.freedesktop.org/upower/power-profiles-daemon",
     license = "GPL-3.0",

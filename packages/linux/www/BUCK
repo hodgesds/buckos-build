@@ -5,7 +5,6 @@ filegroup(
     srcs = [
         "//packages/linux/www/firefox:firefox",
         "//packages/linux/www/chromium:chromium",
-        "//packages/linux/www/ladybird:ladybird",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

@@ -8,6 +8,7 @@ meson_package(
     version = "0.5.4",
     src_uri = "https://pwmt.org/projects/zathura/download/zathura-0.5.4.tar.xz",
     sha256 = "a3037f7aa94d4096bfd97069f62ffcdca9f06431e8663548c1cd6b945c556f32",
+    signature_required = False,
     description = "Document viewer with vim-like interface",
     homepage = "https://pwmt.org/projects/zathura",
     license = "Zlib",

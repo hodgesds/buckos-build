@@ -8,6 +8,7 @@ download_source(
     name = "libinput-src",
     src_uri = "https://gitlab.freedesktop.org/libinput/libinput/-/archive/1.25.0/libinput-1.25.0.tar.gz",
     sha256 = "f7e8425f185cadba5761d0a1dae6be041750d351163ffa04adc5b9a79a13c0ec",
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags

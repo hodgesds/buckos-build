@@ -8,7 +8,8 @@ download_source(
     name = "automake-src",
     src_uri = "https://mirrors.kernel.org/gnu/automake/automake-1.16.5.tar.xz",
     sha256 = "f01d58cd6d9d77fbdca9eb4bbd5ead1988228fdb73d6f7a201f5f8d6b118b469",
-    auto_detect_signature = False,
+    signature_sha256 = "3a161ab65921eed55e1a94251d97c8451d4ba3431b55ca560e95a951b5f1d73a",
+    signature_required = False,
 )
 
 ebuild_package(

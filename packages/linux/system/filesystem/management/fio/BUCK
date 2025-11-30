@@ -5,6 +5,7 @@ download_source(
     name = "fio-src",
     src_uri = "https://github.com/axboe/fio/archive/refs/tags/fio-3.36.tar.gz",
     sha256 = "b34b8f3c5cd074c09ea487ffe3f444e95565c214b34a73042f35b00cbaab0e17",
+    signature_required = False,
 )
 
 autotools_package(

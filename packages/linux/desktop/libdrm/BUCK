@@ -1,58 +1,33 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "meson_package")
 
 # =============================================================================
 # libdrm - Direct Rendering Manager library
 # =============================================================================
 
-autotools_package(
+meson_package(
     name = "libdrm",
     version = "2.4.120",
     src_uri = "https://dri.freedesktop.org/libdrm/libdrm-2.4.120.tar.xz",
     sha256 = "3bf55363f76c7250946441ab51d3a6cc0ae518055c0ff017324ab76cdefb327a",
-    auto_detect_signature = False,
+    signature_sha256 = "67a6b2740e2b7fc358b196c721c26a8fabe45fabb0fb737b44933016b7d46ed1",
+    signature_required = False,
     description = "Direct Rendering Manager library",
     homepage = "https://dri.freedesktop.org/",
     license = "MIT",
-    iuse = ["static-libs", "valgrind", "intel", "radeon", "amdgpu", "nouveau", "vmwgfx", "omap", "exynos", "freedreno", "tegra", "vc4", "etnaviv"],
-    use_defaults = ["intel", "radeon", "amdgpu", "nouveau"],
-    use_configure = {
-        "static-libs": "-Ddefault_library=static",
-        "-static-libs": "-Ddefault_library=shared",
-        "valgrind": "-Dvalgrind=enabled",
-        "-valgrind": "-Dvalgrind=disabled",
-        "intel": "-Dintel=enabled",
-        "-intel": "-Dintel=disabled",
-        "radeon": "-Dradeon=enabled",
-        "-radeon": "-Dradeon=disabled",
-        "amdgpu": "-Damdgpu=enabled",
-        "-amdgpu": "-Damdgpu=disabled",
-        "nouveau": "-Dnouveau=enabled",
-        "-nouveau": "-Dnouveau=disabled",
-        "vmwgfx": "-Dvmwgfx=enabled",
-        "-vmwgfx": "-Dvmwgfx=disabled",
-        "omap": "-Domap=enabled",
-        "-omap": "-Domap=disabled",
-        "exynos": "-Dexynos=enabled",
-        "-exynos": "-Dexynos=disabled",
-        "freedreno": "-Dfreedreno=enabled",
-        "-freedreno": "-Dfreedreno=disabled",
-        "tegra": "-Dtegra=enabled",
-        "-tegra": "-Dtegra=disabled",
-        "vc4": "-Dvc4=enabled",
-        "-vc4": "-Dvc4=disabled",
-        "etnaviv": "-Detnaviv=enabled",
-        "-etnaviv": "-Detnaviv=disabled",
-    },
-    use_deps = {},
-    pre_configure = """
-mkdir -p build
-cd build
-# USE flags: static-libs, valgrind, intel, radeon, amdgpu, nouveau, vmwgfx, omap, exynos, freedreno, tegra, vc4, etnaviv
-meson setup .. --prefix=/usr \\
-    -Dudev=true \\
-    $CONFIGURE_ARGS
-""",
-    deps = [],
+    meson_args = [
+        "-Dudev=true",
+        "-Dvalgrind=disabled",
+        "-Dintel=disabled",
+        "-Dradeon=enabled",
+        "-Damdgpu=enabled",
+        "-Dnouveau=enabled",
+        "-Dvmwgfx=enabled",
+        "-Domap=disabled",
+        "-Dexynos=disabled",
+        "-Dfreed" + "reno=disabled",
+        "-Dtegra=disabled",
+        "-Dvc4=disabled",
+        "-Detnaviv=disabled",
+    ],
     visibility = ["PUBLIC"],
 )

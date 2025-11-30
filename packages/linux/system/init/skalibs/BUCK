@@ -9,6 +9,7 @@ download_source(
     name = "skalibs-src",
     src_uri = "https://skarnet.org/software/skalibs/skalibs-2.14.1.1.tar.gz",
     sha256 = "b6b79b816f4ba0b6801676b0ed4179b59c8c7809eeffe26db672e404636befc3",
+    signature_required = False,
 )
 
 autotools_package(

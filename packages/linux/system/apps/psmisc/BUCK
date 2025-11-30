@@ -9,6 +9,7 @@ autotools_package(
     version = "23.7",
     src_uri = "https://gitlab.com/psmisc/psmisc/-/archive/v23.7/psmisc-v23.7.tar.gz",
     sha256 = "8f2526ce7ac6ef4976454cd63095fa10e467ef745cf33dc4f91df0bd7b10b905",
+    signature_required = False,
     description = "Miscellaneous utilities using /proc (fuser, killall, pstree)",
     homepage = "https://gitlab.com/psmisc/psmisc",
     license = "GPL-2",

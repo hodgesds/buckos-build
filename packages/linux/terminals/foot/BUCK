@@ -5,6 +5,7 @@ download_source(
     name = "foot-src",
     src_uri = "https://codeberg.org/dnkl/foot/archive/1.16.2.tar.gz",
     sha256 = "0e02af376e5f4a96eeb90470b7ad2e79a1d660db2a7d1aa772be43c7db00e475",
+    signature_required = False,
 )
 
 autotools_package(

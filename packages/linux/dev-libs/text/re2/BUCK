@@ -6,6 +6,7 @@ cmake_package(
     version = "2024.04.01",
     src_uri = "https://github.com/google/re2/releases/download/2024-04-01/re2-2024-04-01.tar.gz",
     sha256 = "3f6690c3393a613c3a0b566309cf04dc381d61470079b653afc47c67fb898198",
+    signature_required = False,
     description = "Fast, safe, thread-friendly regular expression library",
     homepage = "https://github.com/google/re2",
     license = "BSD-3-Clause",

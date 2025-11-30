@@ -29,7 +29,7 @@ filegroup(
 )
 
 filegroup(
-    name = "essential",
+    name = "battery-essential",
     srcs = [
         "//packages/linux/laptop/battery/upower:upower",
     ],

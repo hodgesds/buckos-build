@@ -1,77 +1,56 @@
 # =============================================================================
 # NVIDIA Drivers - Proprietary NVIDIA GPU drivers
 # =============================================================================
-#
-# The NVIDIA driver provides hardware acceleration for NVIDIA GPUs.
-# Includes nvidia-smi for GPU monitoring and management.
-#
-# =============================================================================
 
-load("//defs:package_defs.bzl", "download_source", "binary_package", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "binary_package")
 
 download_source(
     name = "nvidia-drivers-src",
-    src_uri = "https://us.download.nvidia.com/XFree86/Linux-x86_64/560.35.03/NVIDIA-Linux-x86_64-560.35.03.run",
-    sha256 = "f2932c92fadd43c5b2341be453fc4f73f0ad7185c26bb7a43fbde81ae29f1fe3",
+    src_uri = "https://us.download.nvidia.com/XFree86/Linux-x86_64/580.105.08/NVIDIA-Linux-x86_64-580.105.08.run",
+    sha256 = "d9c6e8188672f3eb74dd04cfa69dd58479fa1d0162c8c28c8d17625763293475",
+    signature_required = False,
+    extract = False,
 )
 
 binary_package(
     name = "nvidia-drivers",
     srcs = [":nvidia-drivers-src"],
-    version = "560.35.03",
+    version = "580.105.08",
     description = "NVIDIA proprietary GPU drivers for Linux",
     homepage = "https://www.nvidia.com/",
     license = "NVIDIA",
     install_script = """
 cd $SRCS
-# The .run file needs to be found and made executable
-RUN_FILE=$(find . -name "*.run" 2>/dev/null | head -1)
-if [ -z "$RUN_FILE" ]; then
-    echo "Error: NVIDIA .run file not found" >&2
-    ls -la
-    exit 1
-fi
+RUN_FILE=$(find . -name "*.run" -type f | head -1)
+[ -z "$RUN_FILE" ] && { echo "Error: NVIDIA .run not found"; ls -la; exit 1; }
+
 chmod +x "$RUN_FILE"
-"$RUN_FILE" --extract-only
+rm -rf nvidia-extract
+"$RUN_FILE" --extract-only --target nvidia-extract
 
-# Find extracted directory
-NVIDIA_DIR=$(find . -maxdepth 1 -type d -name "NVIDIA-Linux-x86_64-*" | head -1)
-
-# Install kernel modules
-mkdir -p "$OUT/usr/lib/modules"
-cp -r "$NVIDIA_DIR/kernel" "$OUT/usr/lib/nvidia-modules"
+cd nvidia-extract
 
 # Install libraries
 mkdir -p "$OUT/usr/lib64"
-cp -a "$NVIDIA_DIR"/lib*.so* "$OUT/usr/lib64/"
+cp -a lib*.so* "$OUT/usr/lib64/" 2>/dev/null || true
 
 # Install binaries
 mkdir -p "$OUT/usr/bin"
-install -m 755 "$NVIDIA_DIR/nvidia-smi" "$OUT/usr/bin/"
-install -m 755 "$NVIDIA_DIR/nvidia-settings" "$OUT/usr/bin/"
-install -m 755 "$NVIDIA_DIR/nvidia-xconfig" "$OUT/usr/bin/"
+for bin in nvidia-smi nvidia-settings nvidia-xconfig nvidia-modprobe nvidia-persistenced; do
+    [ -f "$bin" ] && install -m 755 "$bin" "$OUT/usr/bin/"
+done
 
-# Install Vulkan ICD
+# Install kernel module sources
+mkdir -p "$OUT/usr/src/nvidia-580.105.08"
+cp -r kernel "$OUT/usr/src/nvidia-580.105.08/" 2>/dev/null || true
+
+# Vulkan ICD
 mkdir -p "$OUT/usr/share/vulkan/icd.d"
-cp "$NVIDIA_DIR/nvidia_icd.json" "$OUT/usr/share/vulkan/icd.d/"
+[ -f nvidia_icd.json ] && cp nvidia_icd.json "$OUT/usr/share/vulkan/icd.d/"
 
-# Create modprobe configuration
+# Modprobe config
 mkdir -p "$OUT/etc/modprobe.d"
-cat > "$OUT/etc/modprobe.d/nvidia.conf" << 'EOF'
-# Enable DRM kernel mode setting
-options nvidia-drm modeset=1
-EOF
-
-# Create udev rules
-mkdir -p "$OUT/etc/udev/rules.d"
-cat > "$OUT/etc/udev/rules.d/70-nvidia.rules" << 'EOF'
-# Create nvidia device nodes
-KERNEL=="nvidia", RUN+="/usr/bin/bash -c '/usr/bin/mknod -m 666 /dev/nvidiactl c $(grep nvidia-frontend /proc/devices | cut -d \\  -f 1) 255'"
-KERNEL=="nvidia", RUN+="/usr/bin/bash -c 'for i in $(seq 0 $(/usr/bin/nvidia-smi -L | wc -l)); do /usr/bin/mknod -m 666 /dev/nvidia$i c $(grep nvidia-frontend /proc/devices | cut -d \\  -f 1) $i; done'"
-KERNEL=="nvidia_modeset", RUN+="/usr/bin/mknod -m 666 /dev/nvidia-modeset c $(grep nvidia-frontend /proc/devices | cut -d \\  -f 1) 254"
-KERNEL=="nvidia_uvm", RUN+="/usr/bin/mknod -m 666 /dev/nvidia-uvm c $(grep nvidia-uvm /proc/devices | cut -d \\  -f 1) 0"
-EOF
+echo "options nvidia-drm modeset=1" > "$OUT/etc/modprobe.d/nvidia.conf"
 """,
     visibility = ["PUBLIC"],
 )

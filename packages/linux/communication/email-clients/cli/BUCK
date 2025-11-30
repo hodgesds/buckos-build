@@ -5,21 +5,15 @@ filegroup(
     name = "cli-email-clients",
     srcs = [
         "//packages/linux/communication/email-clients/cli/aerc:aerc",
-        "//packages/linux/communication/email-clients/cli/alpine:alpine",
         "//packages/linux/communication/email-clients/cli/himalaya:himalaya",
-        "//packages/linux/communication/email-clients/cli/mutt:mutt",
-        "//packages/linux/communication/email-clients/cli/neomutt:neomutt",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
-# Mutt-based clients (mutt and its modern fork neomutt)
 filegroup(
     name = "mutt-family",
     srcs = [
-        "//packages/linux/communication/email-clients/cli/mutt:mutt",
-        "//packages/linux/communication/email-clients/cli/neomutt:neomutt",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -40,7 +34,6 @@ filegroup(
 filegroup(
     name = "lightweight-cli",
     srcs = [
-        "//packages/linux/communication/email-clients/cli/alpine:alpine",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

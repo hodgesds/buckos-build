@@ -5,7 +5,7 @@ download_source(
     name = "vscodium-src",
     src_uri = "https://github.com/VSCodium/vscodium/releases/download/1.106.37943/VSCodium-linux-x64-1.106.37943.tar.gz",
     sha256 = "3fbd5a7885626aa4a83297e0b4a3d902c725b1674122f33d0ef02863c726e4ec",
-    auto_detect_signature = False,
+    signature_required = False,
 )
 
 binary_package(
@@ -201,13 +201,11 @@ ZSH
     deps = [
         "//packages/linux/dev-libs/glib:glib",
         "//packages/linux/desktop/gtk:gtk3",
-        "//packages/linux/desktop/xorg-server:libxcb",
         "//packages/linux/system/libs/input/libxkbcommon:libxkbcommon",
         "//packages/linux/dev-libs/nss:nss",
         "//packages/linux/dev-libs/nspr:nspr",
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
         "//packages/linux/audio/daemons/pulseaudio:pulseaudio",
-        "//packages/linux/desktop/at-spi2-core:at-spi2-core",
         "//packages/linux/system/libs/ipc/dbus:dbus",
         "//packages/linux/system/libs/data/expat:expat",
         "//packages/linux/desktop/libdrm:libdrm",

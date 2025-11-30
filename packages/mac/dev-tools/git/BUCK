@@ -7,6 +7,7 @@ autotools_package(
     version = "2.47.0",
     src_uri = "https://github.com/git/git/archive/refs/tags/v2.47.0.tar.gz",
     sha256 = "0af590d52972741b8787c35ce6e204127b04feb50ee078434cb159dcc13fd7cf",
+    signature_required = False,
     description = "Fast, scalable, distributed revision control system",
     homepage = "https://git-scm.com/",
     license = "GPL-2",

@@ -8,7 +8,8 @@ download_source(
     name = "wine-src",
     src_uri = "https://dl.winehq.org/wine/source/9.x/wine-9.21.tar.xz",
     sha256 = "4442b47ffd9b2ea457100e36ed5fd4e6f4d829d9db79a25e605175a988ca2fff",
-    auto_detect_signature = False,
+    signature_sha256 = "1840856805c3be19c6bf8d700a20f6016d39b4605919e934db7937c4ad9d6193",
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -78,7 +79,6 @@ EOF
     """,
     deps = [
         "//packages/linux/core/glibc:glibc",
-        "//packages/linux/gaming/libraries/vulkan-tools:vulkan-tools",
     ],
     visibility = ["PUBLIC"],
 )

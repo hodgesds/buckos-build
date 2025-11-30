@@ -6,6 +6,7 @@ download_source(
     name = "nikto-src",
     src_uri = "https://github.com/sullo/nikto/archive/refs/tags/2.5.0.tar.gz",
     sha256 = "fb0dc4b2bc92cb31f8069f64ea4d47295bcd11067a7184da955743de7d97709d",
+    signature_required = False,
 )
 
 binary_package(

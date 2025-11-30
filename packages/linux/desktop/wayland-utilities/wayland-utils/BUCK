@@ -1,25 +1,20 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "download_source", "meson_package")
 
 download_source(
     name = "wayland-utils-src",
     src_uri = "https://gitlab.freedesktop.org/wayland/wayland-utils/-/releases/1.2.0/downloads/wayland-utils-1.2.0.tar.xz",
     sha256 = "d9278c22554586881802540751bcc42569262bf80cd9ac9b0fd12ff4bd09a9e4",
-    auto_detect_signature = False,
+    signature_required = False,
 )
 
-autotools_package(
+meson_package(
     name = "wayland-utils",
     source = ":wayland-utils-src",
     version = "1.2.0",
     description = "Wayland utilities (wayland-info)",
     homepage = "https://gitlab.freedesktop.org/wayland/wayland-utils",
     license = "MIT",
-    pre_configure = """
-mkdir -p build
-cd build
-meson setup .. --prefix=/usr
-""",
+    meson_args = [],
     deps = [
         "//packages/linux/desktop/wayland:wayland",
         "//packages/linux/desktop/wayland:wayland-protocols",

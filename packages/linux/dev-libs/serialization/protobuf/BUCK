@@ -10,6 +10,7 @@ cmake_package(
     version = "26.1",
     src_uri = "https://github.com/protocolbuffers/protobuf/releases/download/v26.1/protobuf-26.1.tar.gz",
     sha256 = "4fc5ff1b2c339fb86cd3a25f0b5311478ab081e65ad258c6789359cd84d421f8",
+    signature_required = False,
     description = "Google's language-neutral, platform-neutral protocol buffers",
     homepage = "https://protobuf.dev/",
     license = "BSD-3-Clause",

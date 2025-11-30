@@ -10,7 +10,8 @@ download_source(
     name = "man-db-src",
     src_uri = "https://download.savannah.nongnu.org/releases/man-db/man-db-2.12.0.tar.xz",
     sha256 = "415a6284a22764ad22ff0f66710d853be7790dd451cd71436e3d25c74d996a95",
-    auto_detect_signature=False,
+    signature_sha256 = "3545558c85d4bd30d880e604e622efdff1d4b3b5e139474b667fc2c6f3c7ad06",
+    signature_required=False,
 )
 
 autotools_package(
@@ -46,7 +47,7 @@ download_source(
     name = "man-pages-src",
     src_uri = "https://mirrors.edge.kernel.org/pub/linux/docs/man-pages/man-pages-6.06.tar.xz",
     sha256 = "bd6f89cf26d2262567dac41d2640fc3667f240cb658079530141e372c8581928",
-    auto_detect_signature=False,
+    signature_required = False,
 )
 
 autotools_package(
@@ -71,7 +72,8 @@ download_source(
     name = "groff-src",
     src_uri = "https://mirrors.kernel.org/gnu/groff/groff-1.23.0.tar.gz",
     sha256 = "6b9757f592b7518b4902eb6af7e54570bdccba37a871fddb2d30ae3863511c13",
-    auto_detect_signature=False,
+    signature_sha256 = "7ec23a8550fba8d942da06b1f84a090d80538ac062e8c73de6a4ad7a4f69e09f",
+    signature_required=False,
 )
 
 autotools_package(
@@ -95,7 +97,8 @@ download_source(
     name = "gdbm-src",
     src_uri = "https://mirrors.kernel.org/gnu/gdbm/gdbm-1.23.tar.gz",
     sha256 = "74b1081d21fff13ae4bd7c16e5d6e504a4c26f7cde1dca0d963a484174bbcacd",
-    auto_detect_signature=False,
+    signature_sha256 = "64ebb68cc68e8915d62cb20ea40323c00b56051f844589ee0a52169fff34cecb",
+    signature_required=False,
 )
 
 autotools_package(
@@ -120,7 +123,8 @@ download_source(
     name = "texinfo-src",
     src_uri = "https://mirrors.kernel.org/gnu/texinfo/texinfo-7.2.tar.xz",
     sha256 = "0329d7788fbef113fa82cb80889ca197a344ce0df7646fe000974c5d714363a6",
-    auto_detect_signature=False,
+    signature_sha256 = "cf6f6f6ef68734657f333b33afcc7bbaf47efd2d8fd2d732669d8af4fbc2e2c5",
+    signature_required=False,
 )
 
 autotools_package(

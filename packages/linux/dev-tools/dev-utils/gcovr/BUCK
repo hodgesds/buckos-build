@@ -6,6 +6,7 @@ python_package(
     version = "7.2",
     src_uri = "https://github.com/gcovr/gcovr/archive/refs/tags/7.2.tar.gz",
     sha256 = "17d3014b2dcfdfd155a8c38ef808ad6da11502cbb156e58172af259631e9b4ad",
+    signature_required = False,
     description = "Python script to summarize code coverage results",
     homepage = "https://gcovr.com/",
     license = "BSD",

@@ -1,0 +1,44 @@
+# Build system scripts - changes to these will invalidate cached builds
+# These are tracked by Buck2 for proper cache invalidation when scripts change.
+
+export_file(
+    name = "download",
+    src = "download.sh",
+    visibility = ["PUBLIC"],
+)
+
+export_file(
+    name = "pkg-config-wrapper",
+    src = "pkg-config-wrapper.sh",
+    visibility = ["PUBLIC"],
+)
+
+export_file(
+    name = "ebuild",
+    src = "ebuild.sh",
+    visibility = ["PUBLIC"],
+)
+
+export_file(
+    name = "install-binary",
+    src = "install_binary.sh",
+    visibility = ["PUBLIC"],
+)
+
+export_file(
+    name = "install-precompiled",
+    src = "install_precompiled.sh",
+    visibility = ["PUBLIC"],
+)
+
+export_file(
+    name = "extract-source",
+    src = "extract_source.sh",
+    visibility = ["PUBLIC"],
+)
+
+export_file(
+    name = "download-signature",
+    src = "download_signature.sh",
+    visibility = ["PUBLIC"],
+)

@@ -7,7 +7,8 @@ autotools_package(
     version = "8.10.1",
     src_uri = "https://curl.se/download/curl-8.10.1.tar.xz",
     sha256 = "73a4b0e99596a09fa5924a4fb7e4b995a85fda0d18a2c02ab9cf134bebce04ee",
-    auto_detect_signature = False,
+    signature_sha256 = "44d87a6355d2363ce66891bb4b9ca943d3f96d2f00cbe7f70bcca79606e641ce",
+    signature_required = False,
 
     iuse = ["ssl", "http2", "ipv6", "zstd", "brotli", "idn", "static-libs", "libressl", "rtmp", "ssh"],
     use_defaults = ["ssl", "http2", "ipv6"],

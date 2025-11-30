@@ -5,6 +5,7 @@ download_source(
     name = "ngspice-src",
     src_uri = "https://downloads.sourceforge.net/ngspice/ngspice-43.tar.gz",
     sha256 = "14dd6a6f08531f2051c13ae63790a45708bd43f3e77886a6a84898c297b13699",
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags

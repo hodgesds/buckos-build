@@ -3,7 +3,6 @@ filegroup(
     name = "all-bootloaders",
     srcs = [
         "//packages/linux/boot/grub:grub",
-        "//packages/linux/boot/syslinux:syslinux",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -24,7 +23,6 @@ filegroup(
     name = "bios-bootloaders",
     srcs = [
         "//packages/linux/boot/grub:grub",
-        "//packages/linux/boot/syslinux:syslinux",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

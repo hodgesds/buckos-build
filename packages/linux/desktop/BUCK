@@ -18,8 +18,6 @@ filegroup(
         "//packages/linux/desktop/mesa:mesa",
         "//packages/linux/desktop/libdrm:libdrm",
         "//packages/linux/desktop/libinput:libinput",
-        "//packages/linux/desktop/xorg-server:xorg-server",
-        "//packages/linux/desktop/xorg-server:libx11",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -41,7 +39,6 @@ filegroup(
 filegroup(
     name = "all-desktops",
     srcs = [
-        "//packages/linux/desktop/gnome:gnome",
         "//packages/linux/desktop/kde:kde-plasma",
         "//packages/linux/desktop/xfce:xfce",
         "//packages/linux/desktop/lxqt:lxqt",
@@ -95,7 +92,6 @@ filegroup(
 filegroup(
     name = "modern-wayland-desktops",
     srcs = [
-        "//packages/linux/desktop/gnome:gnome",
         "//packages/linux/desktop/kde:kde-plasma",
         "//packages/linux/desktop/sway:sway-desktop",
         "//packages/linux/desktop/hyprland:hyprland-desktop",
@@ -122,32 +118,11 @@ filegroup(
 # UTILITY PACKAGES
 # =============================================================================
 
-# All X.Org utilities
-filegroup(
-    name = "xorg-utilities",
-    srcs = [
-        "//packages/linux/desktop/xorg-utilities:all",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
-
 # All Wayland utilities
 filegroup(
     name = "wayland-utilities",
     srcs = [
         "//packages/linux/desktop/wayland-utilities:all",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
-
-
-# Essential X11 utilities
-filegroup(
-    name = "xorg-utilities-essential",
-    srcs = [
-        "//packages/linux/desktop/xorg-utilities:essential",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -165,36 +140,11 @@ filegroup(
 
 
 
-# Notification utilities (both X11 and Wayland)
-# Note: Commented out due to duplicate artifact names in Buck2
-# Use xorg-utilities:notification or wayland-utilities:notification directly instead
-# filegroup(
-#     name = "notification-utilities",
-#     srcs = [
-#         "//packages/linux/desktop/xorg-utilities:notification",
-#         "//packages/linux/desktop/wayland-utilities:notification",
-#     ],
-#     visibility = ["PUBLIC"],
-# )
-
-
-# Status bar utilities (both X11 and Wayland)
-filegroup(
-    name = "statusbar-utilities",
-    srcs = [
-        "//packages/linux/desktop/xorg-utilities:xorg-bars",
-        "//packages/linux/desktop/wayland-utilities:wayland-bars",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
-
-# i3 complete desktop with utilities
+# i3 complete desktop
 filegroup(
     name = "i3-complete",
     srcs = [
         "//packages/linux/desktop/i3:i3-desktop",
-        "//packages/linux/desktop/xorg-utilities:i3-companions",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

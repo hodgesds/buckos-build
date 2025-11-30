@@ -10,6 +10,7 @@ download_source(
     name = "caddy-src",
     src_uri = "https://github.com/caddyserver/caddy/releases/download/v2.8.4/caddy_2.8.4_linux_amd64.tar.gz",
     sha256 = "a7e8306c54138cf88e371c5ec0caf7baf142ecc1d60a30897dfb67d65d3748c8",
+    signature_required = False,
     strip_components = 0,
 )
 

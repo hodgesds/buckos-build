@@ -6,7 +6,8 @@ autotools_package(
     version = "4.12",
     src_uri = "https://download.libreswan.org/libreswan-4.12.tar.gz",
     sha256 = "ae85abe415f7becf4b6a2b9897e1712f27e5aac9c35dfbdddbcce0ad7dfd99f7",
-    auto_detect_signature = False,
+    signature_sha256 = "a6a339ea32c7fc504f5cd6ad08bcfa54e3c0aba0f329643961015ac2a94b668e",
+    signature_required = False,
 
     iuse = ["ssl", "curl", "systemd", "dnssec", "labeled-ipsec"],
     use_defaults = ["ssl", "curl", "systemd"],

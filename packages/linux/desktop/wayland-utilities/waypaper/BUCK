@@ -1,22 +1,14 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "python_package")
 
-download_source(
-    name = "waypaper-src",
+python_package(
+    name = "waypaper",
+    version = "2.1",
     src_uri = "https://github.com/anufrievroman/waypaper/archive/refs/tags/2.1.tar.gz",
     sha256 = "5cbd30057d94ca48e723e7716922868ae4efe3a8a1a77b459249212833bb7fdc",
-)
-
-autotools_package(
-    name = "waypaper",
-    source = ":waypaper-src",
-    version = "2.1",
+    signature_required = False,
     description = "GUI wallpaper setter for Wayland and X11",
     homepage = "https://github.com/anufrievroman/waypaper",
     license = "GPL-3.0",
-    pre_configure = """
-# Uses pip/python setup
-""",
     deps = [
         "//packages/linux/desktop/wayland-utilities/swaybg:swaybg",
     ],

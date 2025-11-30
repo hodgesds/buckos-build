@@ -7,7 +7,7 @@ autotools_package(
     version = "3.1.5",
     src_uri = "https://people.redhat.com/sgrubb/audit/audit-3.1.5.tar.gz",
     sha256 = "660213bac2baebabfc32be4d84a4aeb94effbd3e076b1014b78678b4502cf6ba",
-    auto_detect_signature = False,
+    signature_required = False,
     description = "Linux Audit Framework userspace utilities",
     homepage = "https://github.com/linux-audit/audit-userspace",
     license = "LGPL-2.1+",

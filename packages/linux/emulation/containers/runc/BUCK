@@ -6,6 +6,7 @@ download_source(
     name = "runc-src",
     src_uri = "https://github.com/opencontainers/runc/archive/refs/tags/v1.2.2.tar.gz",
     sha256 = "0eabc936d481d123be92c429588f9d1de7cafd36b37a8a5085b1412e758796a1",
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags

@@ -6,6 +6,7 @@ download_source(
     name = "firecracker-src",
     src_uri = "https://github.com/firecracker-microvm/firecracker/archive/refs/tags/v1.9.1.tar.gz",
     sha256 = "5bad7b003b080b50ea5e9fa5e4bed4b17792b3f6c9e2fefb4f9a4c4b86b3c11c",
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags

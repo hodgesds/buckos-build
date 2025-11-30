@@ -9,6 +9,7 @@ download_source(
     name = "kitty-src",
     src_uri = "https://github.com/kovidgoyal/kitty/releases/download/v0.31.0/kitty-0.31.0.tar.xz",
     sha256 = "d122497134abab8e25dfcb6b127af40cfe641980e007f696732f70ed298198f5",
+    signature_sha256 = "97b5ed492a19e4b034c9e124d31b48c686cce303a43e44523a46976a61548f38",
 )
 
 autotools_package(

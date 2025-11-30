@@ -8,6 +8,7 @@ download_source(
     name = "gamescope-src",
     src_uri = "https://github.com/ValveSoftware/gamescope/archive/refs/tags/3.14.24.tar.gz",
     sha256 = "429ef04aab9b3ca5cac76752f59e2219d8326010c0cd9533ad580f65f5bfd3a3",
+    signature_required = False,
 )
 
 # USE flags: See use_flags.bzl for available flags
@@ -53,8 +54,7 @@ EOF
     """,
     deps = [
         "//packages/linux/desktop/wayland:wayland",
-        "//packages/linux/gaming/libraries/vulkan-tools:vulkan-tools",
-        "//packages/linux/gaming/libraries/sdl2:sdl2",
+        "//packages/linux/system/libs/multimedia/sdl2:sdl2",
     ],
     visibility = ["PUBLIC"],
 )

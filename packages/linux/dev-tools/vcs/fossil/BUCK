@@ -6,6 +6,7 @@ autotools_package(
     version = "2.23",
     src_uri = "https://fossil-scm.org/home/tarball/version-2.23/fossil-2.23.tar.gz",
     sha256 = "2ac7eb0f298bc46ee80c8f563546ae1a28f4cb035c7cd094a4465b5706e0390c",
+    signature_required = False,
     description = "Simple, high-reliability, distributed software configuration management",
     homepage = "https://fossil-scm.org/",
     license = "BSD-2-Clause",

@@ -1,44 +1,45 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "ebuild_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
-autotools_package(
-    name = "openssl",
-    version = "3.3.2",
+download_source(
+    name = "openssl-src",
     src_uri = "https://www.openssl.org/source/openssl-3.3.2.tar.gz",
     sha256 = "2e8a40b01979afe8be0bbfb3de5dc1c6709fedb46d6c89c10da114ab5fc3d281",
-    auto_detect_signature=False,
+    signature_sha256 = "8a9ba21af0d770b3f9ee098269cfeb220a8b296639e6ad5d0593ffb7a15a742b",
+    signature_required = False,
+)
 
-    iuse = ["zlib", "static-libs", "threads", "test"],
-    use_defaults = ["zlib", "threads"],
-
-    use_deps = {
-        "zlib": ["//packages/linux/core/zlib:zlib"],
-    },
-
-    use_configure = {
-        "zlib": "zlib-dynamic",
-        "-zlib": "no-zlib",
-        "static-libs": "no-shared",
-        "-static-libs": "shared",
-        "threads": "threads",
-        "-threads": "no-threads",
-        "test": "enable-tests",
-        "-test": "no-tests",
-    },
-
-    configure_args = [
-        "--prefix=/usr",
-        "--openssldir=/etc/ssl",
-        "--libdir=lib",
-    ],
-
-    pre_configure = """
-# OpenSSL uses ./config instead of ./configure
-# The use_package macro will handle this
-""",
-
+ebuild_package(
+    name = "openssl",
+    source = ":openssl-src",
+    version = "3.3.2",
     description = "TLS/SSL and crypto library",
     homepage = "https://www.openssl.org/",
     license = "Apache-2.0",
+
+    src_configure = """
+# OpenSSL uses ./config not ./configure
+./config \\
+    --prefix=/usr \\
+    --openssldir=/etc/ssl \\
+    --libdir=lib64 \\
+    shared \\
+    zlib-dynamic \\
+    threads
+""",
+
+    src_compile = """
+make -j$(nproc)
+""",
+
+    src_install = """
+make DESTDIR="$DESTDIR" install_sw install_ssldirs
+# Remove static libraries
+find "$DESTDIR" -name '*.a' -delete
+""",
+
+    bdepend = [
+        "//packages/linux/core/zlib:zlib",
+    ],
     visibility = ["PUBLIC"],
 )

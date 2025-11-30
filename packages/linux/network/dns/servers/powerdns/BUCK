@@ -6,7 +6,8 @@ autotools_package(
     version = "4.8.4",
     src_uri = "https://downloads.powerdns.com/releases/pdns-4.8.4.tar.bz2",
     sha256 = "7f40c8cbc4650d06fe49abba79902ebabb384363dabbd5cef271964a07c3645c",
-    auto_detect_signature=False,
+    signature_sha256 = "b166cd3f40c61077c86e07cd2eb137873bcd98718d2bd7bbb31eb750b5496f5b",
+    signature_required=False,
 
     iuse = ["ssl", "tools", "ixfrdist", "sqlite"],
     use_defaults = ["ssl", "tools", "ixfrdist", "sqlite"],

@@ -10,6 +10,7 @@ autotools_package(
     version = "20231222",
     src_uri = "https://github.com/iputils/iputils/archive/refs/tags/20231222.tar.gz",
     sha256 = "18d51e7b416da0ecbc0ae18a2cba76407ca0b5b3f32c356034f258a0cb56793f",
+    signature_required = False,
 
     iuse = ["caps", "idn", "nls"],
     use_defaults = ["caps"],

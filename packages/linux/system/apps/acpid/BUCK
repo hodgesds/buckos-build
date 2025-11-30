@@ -9,6 +9,7 @@ autotools_package(
     version = "2.0.34",
     src_uri = "https://sourceforge.net/projects/acpid2/files/acpid-2.0.34.tar.xz",
     sha256 = "2d095c8cfcbc847caec746d62cdc8d0bff1ec1bc72ef7c674c721e04da6ab333",
+    signature_required = False,
     description = "ACPI event daemon for handling power management events",
     homepage = "https://sourceforge.net/projects/acpid2",
     license = "GPL-2+",

@@ -9,6 +9,7 @@ autotools_package(
     version = "5.34.3",
     src_uri = "https://mmonit.com/monit/dist/monit-5.34.3.tar.gz",
     sha256 = "669d8b95ddec124d1444ba5264f67fdeae8e90e53b2929719f4750fc5ff3ba60",
+    signature_required = False,
     description = "Utility for monitoring and managing Unix systems",
     homepage = "https://mmonit.com/monit/",
     license = "GPL-3.0",

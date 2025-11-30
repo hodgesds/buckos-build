@@ -8,6 +8,7 @@ cmake_package(
     version = "24.06.26",
     src_uri = "https://github.com/mltframework/shotcut/archive/refs/tags/v24.06.26.tar.gz",
     sha256 = "cd7a90228df954ad1e706940795abf9aff657c7686ce82092f009f9befec7e0b",
+    signature_required = False,
     description = "Free, open source, cross-platform video editor",
     homepage = "https://www.shotcut.org/",
     license = "GPL-3.0-or-later",

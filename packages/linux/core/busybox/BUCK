@@ -7,7 +7,7 @@ download_source(
     name = "busybox-src",
     src_uri = "https://github.com/mirror/busybox/archive/refs/tags/1_36_1.tar.gz",
     sha256 = "ea5494846c51d946e5e801d1c099b438f683af8147e0be24ca4001073143110f",
-    auto_detect_signature=False,
+    signature_required = False,
     visibility = ["PUBLIC"],
 )
 
@@ -29,8 +29,7 @@ sed -i 's/# CONFIG_CPIO is not set/CONFIG_CPIO=y/' .config
 sed -i 's/# CONFIG_FEATURE_CPIO_O is not set/CONFIG_FEATURE_CPIO_O=y/' .config
 sed -i 's/# CONFIG_FEATURE_CPIO_P is not set/CONFIG_FEATURE_CPIO_P=y/' .config
 
-# Enable static linking
-sed -i 's/# CONFIG_STATIC is not set/CONFIG_STATIC=y/' .config
+# Note: Static linking disabled - requires glibc-static or musl
 
 # Ensure we have the install applet to create busybox symlink
 sed -i 's/# CONFIG_INSTALL is not set/CONFIG_INSTALL=y/' .config

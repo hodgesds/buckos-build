@@ -32,7 +32,6 @@ filegroup(
         "//packages/linux/cad/3d/freecad:freecad",
         "//packages/linux/cad/3d/openscad:openscad",
         "//packages/linux/cad/3d/brlcad:brlcad",
-        "//packages/linux/cad/3d/solvespace:solvespace",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

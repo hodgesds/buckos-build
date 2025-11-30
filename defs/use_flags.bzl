@@ -273,7 +273,13 @@ USE_PROFILES = {
 # =============================================================================
 
 # Load installer-generated USE flag configuration
-load("//config:use_config.bzl", "INSTALL_USE_FLAGS", "INSTALL_PACKAGE_USE")
+load(
+    "//config:use_config.bzl",
+    "INSTALL_INPUT_DEVICES",
+    "INSTALL_PACKAGE_USE",
+    "INSTALL_USE_FLAGS",
+    "INSTALL_VIDEO_CARDS",
+)
 
 # =============================================================================
 # GLOBAL STATE
@@ -284,6 +290,10 @@ _GLOBAL_USE = INSTALL_USE_FLAGS
 
 # Per-package USE flag overrides (initialized from install config)
 _PACKAGE_USE = INSTALL_PACKAGE_USE
+
+# USE_EXPAND variables (hardware-specific)
+VIDEO_CARDS = INSTALL_VIDEO_CARDS
+INPUT_DEVICES = INSTALL_INPUT_DEVICES
 
 # Current profile
 _CURRENT_PROFILE = "default"

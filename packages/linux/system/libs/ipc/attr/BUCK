@@ -3,9 +3,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "attr-src",
-    src_uri = "https://download.savannah.gnu.org/releases/attr/attr-2.5.2.tar.xz",
-    sha256 = "f2e97b0ab7ce293681ab701915766190d607a1dba7fae8a718138150b700a70b",
-    signature_sha256 = "70f1dece465a08abb91c44a969edba82408af3b44419d4c80808d6c6ac3b7645",
+    src_uri = "https://github.com/sailfishos-mirror/attr/archive/refs/tags/v2.5.2.tar.gz",
+    sha256 = "b266cf45e2256b4d85a86554b42c0218abce40356f5c3026f88e15dcf73df775",
     signature_required = False,
 )
 
@@ -18,6 +17,14 @@ ebuild_package(
     description = "Extended attribute support library",
     homepage = "https://github.com/sailfishos-mirror/attr",
     license = "LGPL-2.1",
+
+    src_prepare = '''
+# GitHub archive doesn't include pre-generated configure script
+# Remove po directory to avoid NLS build issues
+rm -rf po
+sed -i '/^SUBDIRS/s/po//' Makefile.am
+autoreconf -fiv
+''',
 
     src_configure = '''
 ./configure \\

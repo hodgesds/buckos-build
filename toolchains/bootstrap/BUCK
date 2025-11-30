@@ -736,9 +736,11 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 ''',
 
     src_compile = '''
-# CC_FOR_BUILD is needed for host tools like mkbuiltins that run during compilation
-# These must be compiled with the HOST compiler, not the cross-compiler
-make -j$(nproc) CC_FOR_BUILD=gcc
+# Clear environment variables that would pollute the host compiler when building
+# host tools like mkbuiltins. These tools run on the build machine, not the target.
+# The C*_INCLUDE_PATH and CPATH variables would make GCC include cross-compiled headers.
+unset CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH
+make -j$(nproc)
 ''',
 
     src_install = '''

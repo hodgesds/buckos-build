@@ -466,49 +466,45 @@ if [ -n "$4" ]; then
     fi
 fi
 
-# Check if we need to force GNU11 standard for GCC 15+ (C23 conflicts with kernel's bool/true/false)
-CC_BIN="${CC:-gcc}"
-CC_VER=$($CC_BIN --version 2>/dev/null | head -1)
-echo "Compiler version: $CC_VER"
-GCC15_COMPAT=""
-if echo "$CC_VER" | grep -iq gcc; then
-    # Extract version number - handles "gcc (GCC) 15.2.1" format using awk
-    GCC_MAJOR=$(echo "$CC_VER" | awk '{for(i=1;i<=NF;i++) if($i ~ /^[0-9]+[.][0-9]/) {split($i,a,"."); print a[1]; exit}}')
-    echo "Detected GCC major version: $GCC_MAJOR"
-    if [ -n "$GCC_MAJOR" ] && [ "$GCC_MAJOR" -ge 15 ] 2>/dev/null; then
-        echo "GCC 15+ detected, will use -std=gnu11 for C23 compatibility"
-        GCC15_COMPAT="-std=gnu11"
-    fi
-fi
-
 # Copy source to writable build directory (buck2 inputs are read-only)
 # BUILD_DIR is passed as $3 from Buck2 for hermetic, deterministic builds
 mkdir -p "$BUILD_DIR"
+
+# Check if we need to force GNU11 standard for GCC 14+ (C23 conflicts with kernel's bool/true/false)
+# GCC 14+ defaults to C23 where bool/true/false are keywords, breaking older kernel code
+CC_BIN="${CC:-gcc}"
+CC_VER=$($CC_BIN --version 2>/dev/null | head -1)
+echo "Compiler version: $CC_VER"
+MAKE_CC_OVERRIDE=""
+if echo "$CC_VER" | grep -iq gcc; then
+    # Extract version number - handles "gcc (GCC) 15.2.1" or "gcc (Fedora 14.2.1-6) 14.2.1" formats
+    GCC_MAJOR=$(echo "$CC_VER" | grep -oE '[0-9]+\.[0-9]+' | head -1 | cut -d. -f1)
+    echo "Detected GCC major version: $GCC_MAJOR"
+    if [ -n "$GCC_MAJOR" ] && [ "$GCC_MAJOR" -ge 14 ] 2>/dev/null; then
+        echo "GCC 14+ detected, creating wrapper to append -std=gnu11"
+        # Create a gcc wrapper that appends -std=gnu11 as the LAST argument
+        # This ensures it overrides any -std= flags set by kernel Makefiles
+        WRAPPER_DIR="$(cd "$BUILD_DIR" && pwd)/.cc-wrapper"
+        mkdir -p "$WRAPPER_DIR"
+        cat > "$WRAPPER_DIR/gcc" << 'WRAPPER'
+#!/bin/bash
+exec /usr/bin/gcc "$@" -std=gnu11
+WRAPPER
+        chmod +x "$WRAPPER_DIR/gcc"
+        # Pass CC explicitly on make command line with absolute path
+        MAKE_CC_OVERRIDE="CC=$WRAPPER_DIR/gcc HOSTCC=$WRAPPER_DIR/gcc"
+        echo "Will use: $MAKE_CC_OVERRIDE"
+    fi
+fi
 echo "Copying kernel source to build directory: $BUILD_DIR"
 cp -a "$SRC_DIR"/. "$BUILD_DIR/"
 cd "$BUILD_DIR"
-
-# Apply GCC 15 compatibility patches if needed
-if [ -n "$GCC15_COMPAT" ]; then
-    echo "Patching Makefiles for C23 compatibility..."
-    # The compressed Makefile sets KBUILD_CFLAGS := (overwriting), so we need to append after that line
-    if [ -f arch/x86/boot/compressed/Makefile ]; then
-        # Find and patch after the KBUILD_CFLAGS := line
-        sed -i '/^KBUILD_CFLAGS[[:space:]]*:=/a KBUILD_CFLAGS += '"$GCC15_COMPAT" arch/x86/boot/compressed/Makefile
-        echo "Patched arch/x86/boot/compressed/Makefile"
-    fi
-    # Also patch arch/x86/boot/Makefile similarly
-    if [ -f arch/x86/boot/Makefile ]; then
-        sed -i '/^KBUILD_CFLAGS[[:space:]]*:=/a KBUILD_CFLAGS += '"$GCC15_COMPAT" arch/x86/boot/Makefile
-        echo "Patched arch/x86/boot/Makefile"
-    fi
-fi
 
 # Apply config
 if [ -n "$CONFIG_PATH" ]; then
     cp "$CONFIG_PATH" .config
     # Ensure config is complete with olddefconfig (non-interactive)
-    make olddefconfig
+    make $MAKE_CC_OVERRIDE olddefconfig
 
     # If hardware-specific config fragment exists, merge it
     HARDWARE_CONFIG="$(dirname "$SRC_DIR")/../../hardware-kernel.config"
@@ -517,24 +513,20 @@ if [ -n "$CONFIG_PATH" ]; then
         # Use kernel's merge script to combine base config with hardware fragment
         scripts/kconfig/merge_config.sh -m .config "$HARDWARE_CONFIG"
         # Update config with new options (non-interactive)
-        make olddefconfig
+        make $MAKE_CC_OVERRIDE olddefconfig
     fi
 else
-    make defconfig
+    make $MAKE_CC_OVERRIDE defconfig
 fi
 
 # Build kernel
-# Disable -Werror for GCC 15+ which has stricter warnings that older kernel code doesn't satisfy
-# Add extra CFLAGS to suppress GCC 15 specific warnings that the kernel doesn't handle yet
-EXTRA_CFLAGS=""
-if [ -n "$GCC15_COMPAT" ]; then
-    EXTRA_CFLAGS="-Wno-error=unterminated-string-initialization"
-fi
-make -j$(nproc) WERROR=0 KCFLAGS="$EXTRA_CFLAGS"
+# -Wno-unterminated-string-initialization: suppresses ACPI driver warnings about truncated strings
+# GCC wrapper (if GCC 14+) appends -std=gnu11 to all compilations via CC override
+make $MAKE_CC_OVERRIDE -j$(nproc) WERROR=0 KCFLAGS="-Wno-unterminated-string-initialization"
 
 # Manual install to avoid system kernel-install scripts that try to write to /boot, run dracut, etc.
 # Get kernel release version
-KRELEASE=$(make -s kernelrelease)
+KRELEASE=$(make $MAKE_CC_OVERRIDE -s kernelrelease)
 echo "Installing kernel version: $KRELEASE"
 
 # Install kernel image
@@ -544,11 +536,11 @@ cp System.map "$INSTALL_PATH/System.map-$KRELEASE"
 cp .config "$INSTALL_PATH/config-$KRELEASE"
 
 # Install modules
-make INSTALL_MOD_PATH="$INSTALL_BASE" modules_install
+make $MAKE_CC_OVERRIDE INSTALL_MOD_PATH="$INSTALL_BASE" modules_install
 
 # Install headers (useful for out-of-tree modules)
 mkdir -p "$INSTALL_BASE/usr/src/linux-$KRELEASE"
-make INSTALL_HDR_PATH="$INSTALL_BASE/usr" headers_install
+make $MAKE_CC_OVERRIDE INSTALL_HDR_PATH="$INSTALL_BASE/usr" headers_install
 """,
         is_executable = True,
     )

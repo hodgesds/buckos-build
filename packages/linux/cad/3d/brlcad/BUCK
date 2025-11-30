@@ -17,6 +17,7 @@ ebuild_package(
         "-DBRLCAD_ENABLE_STRICT=OFF",
         "-DBRLCAD_BUNDLED_LIBS=BUNDLED",
         "-DBRLCAD_FLAGS_DEBUG=OFF",
+        "-DBRLCAD_ALLOW_INSTALL_TO_USR=ON",
     ]),
     src_compile = cmake_src_compile(),
     src_install = cmake_src_install(),

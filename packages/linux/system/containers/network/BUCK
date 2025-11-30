@@ -36,14 +36,14 @@ install -m 755 bin/* "$DESTDIR/usr/lib/cni/"
 # netavark - Container network stack
 download_source(
     name = "netavark-src",
-    src_uri = "https://github.com/containers/netavark/archive/refs/tags/v1.10.3.tar.gz",
-    sha256 = "fdc3010cb221f0fcef0302f57ef6f4d9168a61f9606238a3e1ed4d2e348257b7",
+    src_uri = "https://github.com/containers/netavark/archive/refs/tags/v1.14.0.tar.gz",
+    sha256 = "d2ded5412e5037e84f79a28c774378c864aa6f6e43023dd88891c70cfaf963ef",
 )
 
 ebuild_package(
     name = "netavark",
     source = ":netavark-src",
-    version = "1.10.3",
+    version = "1.14.0",
     description = "Container network stack for Podman",
     homepage = "https://github.com/containers/netavark",
     license = "Apache-2.0",
@@ -53,21 +53,23 @@ ebuild_package(
 mkdir -p "$DESTDIR/usr/libexec/podman"
 install -m 755 target/release/netavark "$DESTDIR/usr/libexec/podman/"
 """,
-    bdepend = inherit(["cargo"])["bdepend"],
+    bdepend = inherit(["cargo"])["bdepend"] + [
+        "//packages/linux/dev-libs/google/protobuf:protobuf",
+    ],
     visibility = ["PUBLIC"],
 )
 
 # aardvark-dns - DNS server for container networks
 download_source(
     name = "aardvark-dns-src",
-    src_uri = "https://github.com/containers/aardvark-dns/archive/refs/tags/v1.10.0.tar.gz",
-    sha256 = "b3e77b3ff4eb40f010c78ca00762761e8c639c47e1cb67686d1eb7f522fbc81e",
+    src_uri = "https://github.com/containers/aardvark-dns/archive/refs/tags/v1.14.0.tar.gz",
+    sha256 = "d46f170e0439fc97e15bb31d63b7464192f74809b0d54064383e6a0b592d8cfd",
 )
 
 ebuild_package(
     name = "aardvark-dns",
     source = ":aardvark-dns-src",
-    version = "1.10.0",
+    version = "1.14.0",
     description = "Authoritative DNS server for container records",
     homepage = "https://github.com/containers/aardvark-dns",
     license = "Apache-2.0",

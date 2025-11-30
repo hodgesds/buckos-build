@@ -33,39 +33,40 @@ cmake_package(
     visibility = ["PUBLIC"],
 )
 
-# gpu-burn - GPU stress testing
-download_source(
-    name = "gpu-burn-src",
-    src_uri = "https://github.com/wilicc/gpu-burn/archive/refs/heads/master.tar.gz",
-    sha256 = "3d2e53753c8917c99f09bf40ab1141667775d5a1cc073ccad9039c3bbeb2a445",
-)
-
-ebuild_package(
-    name = "gpu-burn",
-    source = ":gpu-burn-src",
-    version = "master",
-    description = "GPU stress testing and burn-in tool",
-    homepage = "https://github.com/wilicc/gpu-burn",
-    license = "BSD-2-Clause",
-    src_compile = """
-make
-""",
-    src_install = """
-make install DESTDIR="$DESTDIR"
-""",
-    env = {
-        "CFLAGS": "-O2 -march=x86-64 -pipe",
-        "CUDA_PATH": "/usr/local/cuda",
-    },
-    visibility = ["PUBLIC"],
-)
+# gpu-burn - GPU stress testing (requires CUDA toolkit - disabled until CUDA is packaged)
+# download_source(
+#     name = "gpu-burn-src",
+#     src_uri = "https://github.com/wilicc/gpu-burn/archive/refs/heads/master.tar.gz",
+#     sha256 = "3d2e53753c8917c99f09bf40ab1141667775d5a1cc073ccad9039c3bbeb2a445",
+# )
+#
+# ebuild_package(
+#     name = "gpu-burn",
+#     source = ":gpu-burn-src",
+#     version = "master",
+#     description = "GPU stress testing and burn-in tool",
+#     homepage = "https://github.com/wilicc/gpu-burn",
+#     license = "BSD-2-Clause",
+#     bdepend = ["//packages/linux/system/gpu/cuda:cuda-toolkit"],  # TODO: add CUDA package
+#     src_compile = """
+# make
+# """,
+#     src_install = """
+# make install DESTDIR="$DESTDIR"
+# """,
+#     env = {
+#         "CFLAGS": "-O2 -march=x86-64 -pipe",
+#         "CUDA_PATH": "/usr/local/cuda",
+#     },
+#     visibility = ["PUBLIC"],
+# )
 
 # Combined GPU monitoring package
 filegroup(
     name = "gpu-monitoring",
     srcs = [
         ":nvtop",
-        ":gpu-burn",
+        # ":gpu-burn",  # Disabled - requires CUDA toolkit
     ],
     visibility = ["PUBLIC"],
 )

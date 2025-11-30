@@ -24,7 +24,7 @@ make
 """,
     src_install = """
 mkdir -p "$DESTDIR/usr/bin"
-install -m 755 umoci "$DESTDIR/usr/bin/umoci"
+install -m 755 build/umoci "$DESTDIR/usr/bin/umoci"
 """,
     bdepend = [
         "//packages/linux/lang/go:go",
@@ -49,11 +49,12 @@ ebuild_package(
     license = "MIT",
     src_compile = """
 export CGO_ENABLED=0
-go build -o dive -ldflags="-s -w -X main.version=0.12.0" .
+export GOFLAGS="-buildvcs=false"
+go build -o dive-bin -ldflags="-s -w -X main.version=0.12.0" .
 """,
     src_install = """
 mkdir -p "$DESTDIR/usr/bin"
-install -m 755 dive "$DESTDIR/usr/bin/dive"
+install -m 755 dive-bin "$DESTDIR/usr/bin/dive"
 """,
     bdepend = [
         "//packages/linux/lang/go:go",
@@ -152,12 +153,13 @@ mkdir -p "$DESTDIR/usr/share/bash-completion/completions"
     visibility = ["PUBLIC"],
 )
 
-# hadolint - Dockerfile linter
+# hadolint - Dockerfile linter (prebuilt binary - Haskell is complex to build)
 download_source(
     name = "hadolint-src",
-    src_uri = "https://github.com/hadolint/hadolint/archive/refs/tags/v2.12.0.tar.gz",
-    sha256 = "1f972f070fa068a8a18b62016c9cbd00df994006e069647038694fc6cde45545",
-    auto_detect_signature=False,
+    src_uri = "https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64",
+    sha256 = "56de6d5e5ec427e17b74fa48d51271c7fc0d61571e98f47cec6b2ecbed4d1fb0",
+    auto_detect_signature = False,
+    extract = False,
 )
 
 ebuild_package(
@@ -168,13 +170,13 @@ ebuild_package(
     homepage = "https://github.com/hadolint/hadolint",
     license = "GPL-3.0",
     src_compile = """
-# Hadolint is written in Haskell, use prebuilt binary or build with cabal
-# Build using stack/cabal if available
-stack build --copy-bins --local-bin-path=. || true
+# Prebuilt binary, nothing to compile
+true
 """,
     src_install = """
 mkdir -p "$DESTDIR/usr/bin"
-install -m 755 hadolint "$DESTDIR/usr/bin/hadolint" || true
+# The downloaded file is the binary itself
+install -m 755 "$SRCS" "$DESTDIR/usr/bin/hadolint"
 """,
     visibility = ["PUBLIC"],
 )

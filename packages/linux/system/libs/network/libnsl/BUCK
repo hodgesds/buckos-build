@@ -18,12 +18,26 @@ ebuild_package(
     homepage = "https://github.com/thkukuk/libnsl",
     license = "LGPL-2.1+",
 
+    pre_configure = '''
+# Find libtirpc headers from dependencies
+for dep in $DEPS; do
+    if [ -d "$dep/usr/include/tirpc" ]; then
+        export CFLAGS="-I$dep/usr/include/tirpc $CFLAGS"
+        export CPPFLAGS="-I$dep/usr/include/tirpc $CPPFLAGS"
+        export PKG_CONFIG_PATH="$dep/usr/lib/pkgconfig:$dep/usr/lib64/pkgconfig:$PKG_CONFIG_PATH"
+        echo "Found tirpc at $dep/usr/include/tirpc"
+    fi
+done
+''',
+
     src_configure = '''
 ./configure \\
     --prefix=/usr \\
     --libdir=/usr/lib64 \\
     --enable-shared \\
-    --disable-static
+    --disable-static \\
+    CFLAGS="$CFLAGS" \\
+    CPPFLAGS="$CPPFLAGS"
 ''',
 
     src_compile = '''

@@ -16,7 +16,7 @@ rootfs(
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/core/xz:xz",
         "//packages/linux/core/glibc:glibc",
-        "//packages/linux/kernel/buckos-kernel:buckos-kernel-server",
+        "//packages/linux/kernel/buckos-kernel:buckos-kernel",
         "//packages/linux/system/firmware/linux-firmware:linux-firmware",
         "//packages/linux/system/initramfs/dracut:dracut",
         "//packages/linux/system/libs/compression/lz4:lz4",
@@ -29,6 +29,156 @@ rootfs(
         "//packages/linux/network:iproute2",
         "//packages/linux/network:openssh",
         "//packages/linux/editors:vim",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Install Package Sets - Used by the installer to build package groups
+# =============================================================================
+
+# Desktop foundation packages (X11/Wayland, Mesa, input)
+filegroup(
+    name = "desktop-packages",
+    srcs = [
+        "//packages/linux/desktop:desktop-foundation",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Audio packages (ALSA, PipeWire)
+filegroup(
+    name = "audio-packages",
+    srcs = [
+        "//packages/linux/audio:essential",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Network packages (essential networking tools)
+filegroup(
+    name = "network-packages",
+    srcs = [
+        "//packages/linux/network:crypto-libs",
+        "//packages/linux/network:transfer-utils",
+        "//packages/linux/network/openssh:openssh",
+        "//packages/linux/network/iproute2:iproute2",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Server packages (headless server essentials)
+filegroup(
+    name = "server-packages",
+    srcs = [
+        "//packages/linux/network/openssh:openssh",
+        "//packages/linux/network:crypto-libs",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Gaming packages
+filegroup(
+    name = "gaming-packages",
+    srcs = [
+        "//packages/linux/gaming:gaming-minimal",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Steam/Proton packages
+filegroup(
+    name = "steam-packages",
+    srcs = [
+        "//packages/linux/gaming:launchers",
+        "//packages/linux/gaming:compatibility",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# GNOME desktop
+filegroup(
+    name = "gnome-packages",
+    srcs = [
+        "//packages/linux/desktop/gnome:gnome",
+        "//packages/linux/desktop/gdm:gdm",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# KDE Plasma desktop
+filegroup(
+    name = "kde-packages",
+    srcs = [
+        "//packages/linux/desktop/kde:kde-plasma",
+        "//packages/linux/desktop/sddm:sddm",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# XFCE desktop
+filegroup(
+    name = "xfce-packages",
+    srcs = [
+        "//packages/linux/desktop/xfce:xfce",
+        "//packages/linux/desktop/lightdm:lightdm",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# MATE desktop
+filegroup(
+    name = "mate-packages",
+    srcs = [
+        "//packages/linux/desktop/mate:mate",
+        "//packages/linux/desktop/lightdm:lightdm",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Cinnamon desktop
+filegroup(
+    name = "cinnamon-packages",
+    srcs = [
+        "//packages/linux/desktop/cinnamon:cinnamon-desktop",
+        "//packages/linux/desktop/lightdm:lightdm",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# LXQt desktop
+filegroup(
+    name = "lxqt-packages",
+    srcs = [
+        "//packages/linux/desktop/lxqt:lxqt",
+        "//packages/linux/desktop/sddm:sddm",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# i3 window manager
+filegroup(
+    name = "i3-packages",
+    srcs = [
+        "//packages/linux/desktop:i3-complete",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Sway compositor
+filegroup(
+    name = "sway-packages",
+    srcs = [
+        "//packages/linux/desktop:sway-complete",
+    ],
+    visibility = ["PUBLIC"],
+)
+
+# Hyprland compositor
+filegroup(
+    name = "hyprland-packages",
+    srcs = [
+        "//packages/linux/desktop:hyprland-complete",
     ],
     visibility = ["PUBLIC"],
 )

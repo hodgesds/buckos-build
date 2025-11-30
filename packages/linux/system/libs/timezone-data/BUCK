@@ -10,6 +10,7 @@ download_source(
     signature_required=False,
 )
 
+# timezone-data uses Makefile, not autotools
 autotools_package(
     name = "timezone-data",
     source = ":timezone-data-src",
@@ -17,11 +18,13 @@ autotools_package(
     description = "Timezone database and utilities",
     homepage = "https://www.iana.org/time-zones",
     license = "public-domain",
-    configure_args = [],
-    make_args = [
-        "TOPDIR=/usr",
-        "TZDIR=/usr/share/zoneinfo",
-    ],
+    src_configure = "true",
+    src_compile = """
+make -j$(nproc) TOPDIR=/usr TZDIR=/usr/share/zoneinfo
+""",
+    src_install = """
+make install DESTDIR="$DESTDIR" TOPDIR=/usr TZDIR=/usr/share/zoneinfo
+""",
     deps = [
     ],
     visibility = ["PUBLIC"],

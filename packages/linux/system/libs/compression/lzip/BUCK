@@ -2,6 +2,7 @@ load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 # lzip - Lossless data compressor based on LZMA algorithm
+# Uses non-autoconf configure script
 autotools_package(
     name = "lzip",
     version = "1.24",
@@ -11,18 +12,11 @@ autotools_package(
     description = "Lossless data compressor based on LZMA algorithm",
     homepage = "https://www.nongnu.org/lzip/",
     license = "GPL-2.0-or-later",
-    iuse = [],
-    use_defaults = [],
-    use_configure = {},
-    use_deps = {},
-    configure_args = [
-        "--prefix=/usr",
-        "CC=gcc",
-        "CXX=g++",
-    ],
-    pre_configure = """
-# lzip is a command-line utility (no library), so no static-libs flag needed
-# Uses configure script (not autotools) build system
+    # lzip uses a custom configure script that takes CC/CXX as env vars
+    # GitHub tarballs may not have execute permission on configure
+    src_configure = """
+chmod +x configure
+./configure --prefix=/usr CXX=g++
 """,
     deps = [],
     visibility = ["PUBLIC"],

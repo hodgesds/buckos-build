@@ -6,7 +6,6 @@ filegroup(
     name = "all-email-clients",
     srcs = [
         "//packages/linux/communication/email-clients/cli:cli-email-clients",
-        "//packages/linux/communication/email-clients/gui:gui-email-clients",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -22,46 +21,13 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
-# GUI email clients only
-filegroup(
-    name = "gui-clients",
-    srcs = [
-        "//packages/linux/communication/email-clients/gui:gui-email-clients",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
-
-# Recommended minimal set for most users
-filegroup(
-    name = "recommended",
-    srcs = [
-        "//packages/linux/communication/email-clients/gui/thunderbird:thunderbird",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
-
 # Lightweight email client collection
 filegroup(
     name = "lightweight",
     srcs = [
         "//packages/linux/communication/email-clients/cli/aerc:aerc",
-        "//packages/linux/communication/email-clients/gui/balsa:balsa",
-        "//packages/linux/communication/email-clients/gui/claws-mail:claws-mail",
-        "//packages/linux/communication/email-clients/gui/sylpheed:sylpheed",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
 )
 
-# Power-user email clients
-filegroup(
-    name = "power-user",
-    srcs = [
-        "//packages/linux/communication/email-clients/gui/evolution:evolution",
-        "//packages/linux/communication/email-clients/gui/thunderbird:thunderbird",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)

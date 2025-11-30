@@ -32,16 +32,6 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
-# GUI email clients
-filegroup(
-    name = "gui-email",
-    srcs = [
-        "//packages/linux/communication/email-clients:gui-clients",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
-
 # Email servers - all
 filegroup(
     name = "email-servers",

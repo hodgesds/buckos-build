@@ -16,6 +16,7 @@ meson_package(
         "-Denable_tools=false",
         "-Denable_tests=false",
         "-Denable_docs=false",
+        "-Denable_asm=false",
     ],
     deps = [],
     maintainers = [],

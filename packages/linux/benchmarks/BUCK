@@ -4,7 +4,6 @@ filegroup(
     srcs = [
         "//packages/linux/benchmarks/stress-ng:stress-ng",
         "//packages/linux/benchmarks/fio:fio",
-        "//packages/linux/benchmarks/sysbench:sysbench",
         "//packages/linux/benchmarks/iperf3:iperf3",
         "//packages/linux/benchmarks/hackbench:hackbench",
         "//packages/linux/benchmarks/memtester:memtester",
@@ -24,7 +23,6 @@ filegroup(
     name = "cpu-memory-benchmarks",
     srcs = [
         "//packages/linux/benchmarks/stress-ng:stress-ng",
-        "//packages/linux/benchmarks/sysbench:sysbench",
         "//packages/linux/benchmarks/memtester:memtester",
         "//packages/linux/benchmarks/stream:stream",
     ],

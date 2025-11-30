@@ -22,7 +22,8 @@ BOOTSTRAP_TOOLCHAIN = "toolchains//bootstrap:bootstrap-toolchain"
 # Platform constraint values for target_compatible_with
 # Only macOS packages need constraints to prevent building on Linux
 # Linux packages don't need constraints since we're building on Linux
-_MACOS_CONSTRAINT = "prelude//os/constraints:macos"
+# Uses root//platforms:macos which is defined in platforms/BUCK
+_MACOS_CONSTRAINT = "root//platforms:macos"
 
 def _get_platform_constraints():
     """

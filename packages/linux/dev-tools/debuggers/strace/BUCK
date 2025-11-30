@@ -3,10 +3,9 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 autotools_package(
     name = "strace",
-    version = "6.7",
-    src_uri = "https://strace.io/files/6.7/strace-6.7.tar.xz",
-    sha256 = "2090201e1a3ff32846f4fe421c1163b15f440bb38e31355d09f82d3949922af7",
-    signature_sha256 = "5ab7ab5bc3326d15f3d538c292650be007586e66ade43033df1fc0a8b80fad65",
+    version = "6.17",
+    src_uri = "https://strace.io/files/6.17/strace-6.17.tar.xz",
+    sha256 = "0a7c7bedc7efc076f3242a0310af2ae63c292a36dd4236f079e88a93e98cb9c0",
     signature_required = False,
     description = "System call tracer for Linux",
     homepage = "https://strace.io/",
@@ -33,6 +32,9 @@ autotools_package(
         "static": "--enable-static",
         "-static": "--disable-static",
     },
+
+    # Fix GCC 15+ warning for unterminated string initialization
+    env = {"CFLAGS": "-std=gnu17 -O2 -Wno-error=unterminated-string-initialization"},
 
     visibility = ["PUBLIC"],
 )

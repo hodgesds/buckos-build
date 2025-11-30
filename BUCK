@@ -236,7 +236,6 @@ filegroup(
     srcs = [
         "//packages/linux/core/bash:bash",
         "//packages/linux/shells/zsh:zsh",
-        "//packages/linux/shells/dash:dash",
     ],
     visibility = ["PUBLIC"],
 )
@@ -273,7 +272,6 @@ filegroup(
     srcs = [
         "//packages/linux/benchmarks/stress-ng:stress-ng",
         "//packages/linux/benchmarks/fio:fio",
-        "//packages/linux/benchmarks/sysbench:sysbench",
         "//packages/linux/benchmarks/iperf3:iperf3",
         "//packages/linux/benchmarks/hackbench:hackbench",
         "//packages/linux/benchmarks/memtester:memtester",
@@ -433,12 +431,6 @@ alias(
 alias(
     name = "bspwm",
     actual = "//packages/linux/desktop/bspwm:bspwm-desktop",
-    visibility = ["PUBLIC"],
-)
-
-alias(
-    name = "openbox",
-    actual = "//packages/linux/desktop/openbox:openbox-desktop",
     visibility = ["PUBLIC"],
 )
 

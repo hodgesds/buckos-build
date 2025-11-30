@@ -34,6 +34,7 @@ autotools_package(
         "--prefix=/usr",
         "--sysconfdir=/etc",
     ],
+    env = {"CFLAGS": "-std=gnu17 -O2"},
     deps = [
         "//packages/linux/core/ncurses:ncurses",
     ],

@@ -13,9 +13,9 @@ meson_package(
     homepage = "https://github.com/intel/libva",
     license = "MIT",
     meson_args = [
-        "-Dwith_x11=yes",
-        "-Dwith_wayland=yes",
-        "-Dwith_glx=yes",
+        "-Dwith_x11=no",
+        "-Dwith_wayland=no",
+        "-Dwith_glx=no",
         "-Denable_docs=false",
     ],
     deps = [

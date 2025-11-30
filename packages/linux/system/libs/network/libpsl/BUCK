@@ -21,9 +21,8 @@ meson_package(
     iuse = ["static-libs", "builtin", "idn", "icu"],
     use_defaults = ["builtin"],
 
-    use_options = {
-        "builtin": "builtin",
-    },
+    # Use meson_args instead of use_options for boolean options
+    # use_options generates enabled/disabled but builtin needs true/false
 
     use_deps = {
         "idn": ["//packages/linux/network/dns/libraries/libidn2:libidn2"],
@@ -32,6 +31,7 @@ meson_package(
 
     meson_args = [
         "-Dtests=false",
+        "-Dbuiltin=true",  # Use built-in PSL data
     ],
 
     deps = [],

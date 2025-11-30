@@ -20,6 +20,7 @@ autotools_package(
 
     make_args = [
         "PREFIX=/usr",
+        "NCURSES_LIBS=-lncursesw -ltinfow -lstdc++",
     ],
 
     deps = [

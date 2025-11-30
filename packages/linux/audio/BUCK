@@ -82,7 +82,6 @@ filegroup(
     name = "desktop",
     srcs = [
         ":essential",
-        "//packages/linux/audio/players/audacious:audacious",
         "//packages/linux/audio/utilities/pavucontrol:pavucontrol",
     ],
     default_target_platform = "//platforms:linux-target",

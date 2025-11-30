@@ -15,6 +15,9 @@ autotools_package(
     description = "Unprivileged sandboxing tool using user namespaces",
     homepage = "https://github.com/containers/bubblewrap",
     license = "LGPL-2.0+",
+    deps = [
+        "//packages/linux/system/libs/ipc/libcap:libcap",
+    ],
     pre_configure = """
         # Use meson build system
         mkdir -p build

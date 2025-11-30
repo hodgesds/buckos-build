@@ -1,11 +1,11 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package", "binary_package", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "meson_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
 # iputils - Network monitoring tools (ping, tracepath, etc.)
 # =============================================================================
 
-autotools_package(
+meson_package(
     name = "iputils",
     version = "20231222",
     src_uri = "https://github.com/iputils/iputils/archive/refs/tags/20231222.tar.gz",
@@ -19,36 +19,9 @@ autotools_package(
         "caps": ["//packages/linux/system/libs/ipc/libcap:libcap"],
     },
 
-    use_configure = {
-        "idn": "--with-idn",
-        "-idn": "--without-idn",
-        "nls": "--enable-nls",
-        "-nls": "--disable-nls",
-    },
+    meson_args = [],
 
     deps = [],
-
-    pre_configure = """
-# iputils uses meson, we'll use a simplified make approach
-cat > Makefile << 'MAKEFILE'
-CC ?= gcc
-CFLAGS ?= -O2 -Wall
-PREFIX ?= /usr
-
-all: ping tracepath
-
-ping: ping/ping.c ping/ping_common.c ping/ping6_common.c
-    $(CC) $(CFLAGS) -o ping ping/ping.c ping/ping_common.c -lm -lcap
-
-tracepath: tracepath.c
-    $(CC) $(CFLAGS) -o tracepath tracepath.c
-
-install: all
-    install -d $(DESTDIR)$(PREFIX)/bin
-    install -m 4755 ping $(DESTDIR)$(PREFIX)/bin/
-    install -m 755 tracepath $(DESTDIR)$(PREFIX)/bin/
-MAKEFILE
-""",
 
     description = "Network monitoring tools including ping",
     homepage = "https://github.com/iputils/iputils",

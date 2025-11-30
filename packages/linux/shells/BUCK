@@ -2,6 +2,4 @@
 # To build shells, use:
 #   buck2 build //packages/linux/core/bash:bash
 #   buck2 build //packages/linux/shells/zsh:zsh
-#   buck2 build //packages/linux/shells/dash:dash
-#   buck2 build //packages/linux/shells/fish:fish
 #   buck2 build //packages/linux/shells/mksh:mksh

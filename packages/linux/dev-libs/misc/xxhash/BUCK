@@ -1,7 +1,8 @@
 load("//defs:package_defs.bzl", "cmake_package", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
-cmake_package(
+# xxhash uses a Makefile build system (cmake is unofficial)
+autotools_package(
     name = "xxhash",
     version = "0.8.2",
     src_uri = "https://github.com/Cyan4973/xxHash/archive/refs/tags/v0.8.2.tar.gz",
@@ -10,15 +11,12 @@ cmake_package(
     description = "Extremely fast non-cryptographic hash algorithm",
     homepage = "https://cyan4973.github.io/xxHash/",
     license = "BSD-2-Clause",
-    pre_configure = """
-        if [ -d cmake_unofficial ]; then
-            mv cmake_unofficial/* . || true
-            [ -f cmake_unofficial/.gitignore ] && mv cmake_unofficial/.gitignore . || true
-            rmdir cmake_unofficial || true
-        fi
-    """,
-    cmake_args = [
-        "-DBUILD_SHARED_LIBS=ON",
-    ],
+    src_configure = "true",
+    src_compile = """
+make -j$(nproc) PREFIX=/usr LIBDIR=/usr/lib lib
+""",
+    src_install = """
+make install DESTDIR="$DESTDIR" PREFIX=/usr LIBDIR=/usr/lib
+""",
     visibility = ["PUBLIC"],
 )

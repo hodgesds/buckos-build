@@ -31,6 +31,21 @@ autotools_package(
         "--disable-docs",
         "--disable-unit-tests",
     ],
+    src_configure = """
+./configure \\
+    --prefix=/usr \\
+    --enable-shared \\
+    --enable-pic \\
+    --enable-vp8 \\
+    --enable-vp9 \\
+    --enable-vp9-highbitdepth \\
+    --enable-postproc \\
+    --enable-runtime-cpu-detect \\
+    --disable-static \\
+    --disable-examples \\
+    --disable-docs \\
+    --disable-unit-tests
+""",
     make_args = [],
     post_install = """
 DESTDIR=$OUT make install

@@ -13,6 +13,7 @@ cmake_package(
     cmake_args = [
         "-DCMAKE_INSTALL_PREFIX=/usr",
         "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_POLICY_DEFAULT_CMP0026=OLD",  # Allow GET_TARGET_PROPERTY LOCATION usage
     ],
     visibility = ["PUBLIC"],
 )

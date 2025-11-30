@@ -180,7 +180,6 @@ filegroup(
         ":encryption-tools",
         ":encryption-libs",
         ":sandbox-packages",
-        ":antivirus-packages",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -208,12 +207,6 @@ alias(
 alias(
     name = "firejail",
     actual = "//packages/linux/system/security/firejail:firejail",
-    visibility = ["PUBLIC"],
-)
-
-alias(
-    name = "clamav",
-    actual = "//packages/linux/system/security/clamav:clamav",
     visibility = ["PUBLIC"],
 )
 

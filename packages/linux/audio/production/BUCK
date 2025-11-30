@@ -1,18 +1,8 @@
 # Music production and audio editing tools
 
 filegroup(
-    name = "audio-editors",
-    srcs = [
-        "//packages/linux/audio/production/audacity:audacity",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
-
-filegroup(
     name = "daws",
     srcs = [
-        "//packages/linux/audio/production/ardour:ardour",
         "//packages/linux/audio/production/lmms:lmms",
         "//packages/linux/audio/production/rosegarden:rosegarden",
     ],
@@ -21,20 +11,9 @@ filegroup(
 )
 
 filegroup(
-    name = "composition-tools",
-    srcs = [
-        "//packages/linux/audio/production/hydrogen:hydrogen",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
-
-filegroup(
     name = "all-production",
     srcs = [
-        ":audio-editors",
         ":daws",
-        ":composition-tools",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],

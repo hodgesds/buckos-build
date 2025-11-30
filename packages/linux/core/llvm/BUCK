@@ -84,23 +84,3 @@ cmake_package(
     visibility = ["PUBLIC"],
 )
 
-# =============================================================================
-# LLVM 18.1.8 (LTS)
-# =============================================================================
-cmake_package(
-    name = "llvm-18",
-    version = "18.1.8",
-    src_uri = "https://github.com/llvm/llvm-project/releases/download/llvmorg-18.1.8/llvm-project-18.1.8.src.tar.xz",
-    sha256 = "0b58557a6d32ceee97c8d533a59b9212d87e0fc4d2833924eb6c611247db2f2a",
-    signature_sha256 = "f8875c5b5e01ce4a672ce48fd1559764cc91e037fa35203dbceaadeb5ad51978",
-    signature_required = False,
-    description = "Low Level Virtual Machine - compiler infrastructure (LTS 18.x)",
-    homepage = "https://llvm.org/",
-    license = "Apache-2.0 WITH LLVM-exception",
-    pre_configure = LLVM_PRE_CONFIGURE,
-    cmake_args = LLVM_CMAKE_ARGS,
-    deps = use_dep(LLVM_USE_DEPS, _effective_use) + [
-        "//packages/linux/core/ncurses:ncurses",
-    ],
-    visibility = ["PUBLIC"],
-)

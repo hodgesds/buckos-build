@@ -14,7 +14,6 @@ filegroup(
     srcs = [
         "//packages/linux/terminals/alacritty:alacritty",
         "//packages/linux/terminals/foot:foot",
-        "//packages/linux/terminals/kitty:kitty",
         "//packages/linux/terminals/xterm:xterm",
         "//packages/linux/terminals/rxvt-unicode:rxvt-unicode",
     ],

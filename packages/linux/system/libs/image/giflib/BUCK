@@ -1,6 +1,7 @@
 load("//defs:package_defs.bzl", "download_source", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
+# giflib uses a simple Makefile (no configure script)
 autotools_package(
     name = "giflib",
     version = "5.2.2",
@@ -10,41 +11,23 @@ autotools_package(
     description = "Library for reading and writing GIF images",
     homepage = "https://giflib.sourceforge.net/",
     license = "MIT",
-
-    # USE flags this package supports
-    iuse = [
-        "static-libs",  # Build static libraries
-        "doc",          # Install documentation
-        "utils",        # Build and install utilities
-    ],
-
-    # Default USE flags
-    use_defaults = ["utils"],
-
-    # Conditional configure arguments
-    use_configure = {},
-
-    use_deps = {},
-    configure_args = ["--prefix=/usr"],
-    deps = [],
-
-    pre_configure = """
-# USE flags: static-libs, doc, utils
-# Note: giflib uses a simple Makefile build system
-# Static libs control is done via post_install
+    src_configure = "true",
+    src_compile = """
+# Build library and utils, skip docs (requires xmlto)
+make -j$(nproc) libgif.so libgif.a
+make -j$(nproc) gif2rgb gifbuild gifclrmp giffix giftext giftool
 """,
+    src_install = """
+# Install manually since Makefile install tries to build docs
+install -d "$DESTDIR/usr/lib"
+install -d "$DESTDIR/usr/include"
+install -d "$DESTDIR/usr/bin"
 
-    post_install = """
-if [ "${USE_static_libs}" != "1" ]; then
-    rm -f "$DESTDIR/usr/lib/libgif.a"
-fi
-if [ "${USE_doc}" != "1" ]; then
-    rm -rf "$DESTDIR/usr/share/doc/giflib"
-fi
-if [ "${USE_utils}" != "1" ]; then
-    rm -rf "$DESTDIR/usr/bin"
-fi
+install -m644 libgif.a "$DESTDIR/usr/lib/"
+install -m755 libgif.so.* "$DESTDIR/usr/lib/"
+ln -sf libgif.so.5 "$DESTDIR/usr/lib/libgif.so"
+install -m644 gif_lib.h "$DESTDIR/usr/include/"
+install -m755 gif2rgb gifbuild gifclrmp giffix giftext giftool "$DESTDIR/usr/bin/"
 """,
-
     visibility = ["PUBLIC"],
 )

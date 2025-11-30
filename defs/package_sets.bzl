@@ -261,7 +261,6 @@ PROFILE_PACKAGE_SETS = {
     "embedded": {
         "description": "Minimal footprint for embedded and IoT systems",
         "packages": SYSTEM_PACKAGES + [
-            "//packages/linux/shells/dash:dash",  # Smaller than bash
             "//packages/linux/core/readline:readline",
             # "//packages/linux/network/dropbear:dropbear",  # TODO: Smaller SSH - not packaged yet
         ],
@@ -355,7 +354,6 @@ TASK_PACKAGE_SETS = {
         "packages": [
             "//packages/linux/benchmarks/stress-ng:stress-ng",
             "//packages/linux/benchmarks/fio:fio",
-            "//packages/linux/benchmarks/sysbench:sysbench",
             "//packages/linux/benchmarks/iperf3:iperf3",
             "//packages/linux/benchmarks/hackbench:hackbench",
             "//packages/linux/benchmarks/memtester:memtester",

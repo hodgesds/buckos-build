@@ -68,7 +68,6 @@ filegroup(
     srcs = [
         "//packages/linux/desktop/i3:i3-desktop",
         "//packages/linux/desktop/bspwm:bspwm-desktop",
-        "//packages/linux/desktop/openbox:openbox-desktop",
         "//packages/linux/desktop/awesome:awesome-desktop",
     ],
     default_target_platform = "//platforms:linux-target",
@@ -81,7 +80,6 @@ filegroup(
     srcs = [
         "//packages/linux/desktop/xfce:xfce",
         "//packages/linux/desktop/lxqt:lxqt",
-        "//packages/linux/desktop/openbox:openbox-desktop",
         "//packages/linux/desktop/i3:i3-desktop",
     ],
     default_target_platform = "//platforms:linux-target",

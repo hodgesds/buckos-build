@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
+load("//defs:package_defs.bzl", "download_source", "meson_package")
 load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 
 download_source(
@@ -8,19 +8,20 @@ download_source(
     signature_required = False,
 )
 
-autotools_package(
+meson_package(
     name = "foot",
     source = ":foot-src",
     version = "1.16.2",
     description = "Fast, lightweight and minimalistic Wayland terminal emulator",
     homepage = "https://codeberg.org/dnkl/foot",
     license = "MIT",
-    pre_configure = """
-# Foot uses meson
-if command -v meson >/dev/null 2>&1; then
-    meson setup build --prefix=/usr
-fi
-""",
-    configure_args = [],
+    meson_args = [
+        "-Ddocs=disabled",
+        "-Dterminfo=disabled",
+    ],
+    deps = [
+        "//packages/linux/system/libs/graphics/pixman:pixman",
+        "//packages/linux/desktop/wayland:wayland-protocols",
+    ],
     visibility = ["PUBLIC"],
 )

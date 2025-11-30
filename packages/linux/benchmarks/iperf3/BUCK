@@ -16,19 +16,18 @@ autotools_package(
     description = "Network bandwidth measurement tool - TCP, UDP, and SCTP",
     homepage = "https://software.es.net/iperf/",
     license = "BSD-3-Clause",
-    iuse = ["ssl", "sctp"],
-    use_defaults = ["ssl"],
+    iuse = ["sctp"],
     deps = [],
+    # Fix GCC strict function pointer type checking
+    env = {"CFLAGS": "-O2 -Wno-incompatible-pointer-types"},
     use_deps = {
-        "ssl": ["//packages/linux/network/openssl:openssl"],
         "sctp": ["//packages/linux/network/lksctp-tools:lksctp-tools"],
     },
     configure_args = [
         "--disable-static",
+        "--without-openssl",  # iperf3 configure is picky about --with-openssl format
     ],
     use_configure = {
-        "ssl": "--with-openssl",
-        "-ssl": "--without-openssl",
         "sctp": "--enable-sctp",
         "-sctp": "--disable-sctp",
     },

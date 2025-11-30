@@ -34,6 +34,10 @@ autotools_package(
         "--sysconfdir=/etc",
         "--localstatedir=/var",
     ],
+    # C23 has stricter function pointer type checking
+    env = {
+        "CFLAGS": "-std=gnu17 -O2",
+    },
     deps = [],
     visibility = ["PUBLIC"],
 )

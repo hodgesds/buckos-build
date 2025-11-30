@@ -52,6 +52,7 @@ autotools_package(
     ],
     deps = [
         "//packages/linux/core/zlib:zlib",
+        "//packages/linux/system/libs/network/libpsl:libpsl",
     ],
     visibility = ["PUBLIC"],
 )

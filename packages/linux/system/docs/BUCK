@@ -34,10 +34,10 @@ autotools_package(
     ],
     deps = [
         "//packages/linux/core/less:less",
-        # TODO: gdbm package needs to be created
-        # "//packages/linux/dev-libs/gdbm:gdbm",
+        "//packages/linux/system/docs:libpipeline",
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/system/docs:groff",
+        "//packages/linux/system/docs:gdbm",
     ],
     visibility = ["PUBLIC"],
 )
@@ -92,6 +92,29 @@ autotools_package(
     visibility = ["PUBLIC"],
 )
 
+# libpipeline - Pipeline manipulation library
+download_source(
+    name = "libpipeline-src",
+    src_uri = "https://download.savannah.nongnu.org/releases/libpipeline/libpipeline-1.5.7.tar.gz",
+    sha256 = "b8b45194989022a79ec1317f64a2a75b1551b2a55bea06f67704cb2a2e4690b0",
+    signature_required=False,
+)
+
+autotools_package(
+    name = "libpipeline",
+    source = ":libpipeline-src",
+    version = "1.5.7",
+    description = "C library for manipulating pipelines of processes",
+    homepage = "https://libpipeline.nongnu.org/",
+    license = "GPL-2.0-or-later",
+    configure_args = [
+        "--prefix=/usr",
+        "--disable-static",
+    ],
+    deps = [],
+    visibility = ["PUBLIC"],
+)
+
 # gdbm - GNU database manager
 download_source(
     name = "gdbm-src",
@@ -114,6 +137,7 @@ autotools_package(
     ],
     deps = [
         "//packages/linux/core/readline:readline",
+        "//packages/linux/core/ncurses:ncurses",
     ],
     visibility = ["PUBLIC"],
 )

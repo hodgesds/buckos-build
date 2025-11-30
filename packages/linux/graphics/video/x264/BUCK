@@ -17,20 +17,24 @@ autotools_package(
     description = "Free library for encoding H264/AVC video streams",
     homepage = "https://www.videolan.org/developers/x264.html",
     license = "GPL-2.0-or-later",
-    configure_args = [
-        "--prefix=/usr",
-        "--enable-shared",
-        "--enable-pic",
-        "--enable-lto",
-        "--disable-cli",
-    ],
+    # x264 uses custom configure script, not autotools
+    # Override src_configure to call ./configure directly
+    src_configure = """
+./configure \\
+    --prefix=/usr \\
+    --enable-shared \\
+    --enable-pic \\
+    --enable-lto \\
+    --disable-cli \\
+    --disable-asm
+""",
     make_args = [],
     post_install = """
 DESTDIR=$OUT make install
 """,
     deps = [],
     bdepend = [
-        # "//packages/linux/lang/nasm:nasm",  # TODO: not packaged yet,
+        # "//packages/linux/lang/nasm:nasm",  # TODO: not packaged yet, using --disable-asm
     ],
     visibility = ["PUBLIC"],
 )

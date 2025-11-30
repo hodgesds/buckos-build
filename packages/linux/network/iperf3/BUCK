@@ -12,16 +12,10 @@ autotools_package(
     sha256 = "cc740c6bbea104398cc3e466befc515a25896ec85e44a662d5f4a767b9cf713e",
     signature_required = False,
 
-    iuse = ["ssl", "static-libs", "sctp"],
-    use_defaults = ["ssl"],
-
-    use_deps = {
-        "ssl": ["//packages/linux/network/openssl:openssl"],
-    },
-
+    iuse = ["static-libs", "sctp"],
+    # Fix GCC strict function pointer type checking
+    env = {"CFLAGS": "-O2 -Wno-incompatible-pointer-types"},
     use_configure = {
-        "ssl": "--with-openssl",
-        "-ssl": "--without-openssl",
         "static-libs": "--enable-static",
         "-static-libs": "--disable-static",
         "sctp": "--enable-sctp",
@@ -30,6 +24,7 @@ autotools_package(
 
     configure_args = [
         "--enable-shared",
+        "--without-openssl",  # iperf3 configure is picky about --with-openssl format
     ],
 
     deps = [

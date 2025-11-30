@@ -5,10 +5,11 @@ load("//defs:use_flags.bzl", "set_use_flags", "use_dep")
 # Tcl - Tool Command Language
 # =============================================================================
 
+# Use official release tarball which includes generated configure script
 download_source(
     name = "tcl-src",
-    src_uri = "https://github.com/tcltk/tcl/archive/refs/tags/core-8-6-13.tar.gz",
-    sha256 = "d9c68b6f76623e046df549ac988a064adf6ec063da6ae229c842f7b68fc78aee",
+    src_uri = "https://prdownloads.sourceforge.net/tcl/tcl8.6.13-src.tar.gz",
+    sha256 = "43a1fae7412f61ff11de2cfd05d28cfc3a73762f354a417c62370a54e2caf066",
     signature_required = False,
 )
 

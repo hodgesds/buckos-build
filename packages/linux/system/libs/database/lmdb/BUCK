@@ -8,6 +8,7 @@ download_source(
     signature_required = False,
 )
 
+# LMDB is a makefile-only project in libraries/liblmdb subdirectory
 autotools_package(
     name = "lmdb",
     source = ":lmdb-src",
@@ -15,16 +16,15 @@ autotools_package(
     description = "Lightning Memory-Mapped Database",
     homepage = "https://symas.com/lmdb/",
     license = "OLDAP-2.8",
-    pre_configure = """
+    # No configure script - just Makefile
+    src_configure = "true",
+    src_compile = """
 cd libraries/liblmdb
+make -j$(nproc) prefix=/usr
 """,
-    configure_args = [],
-    make_args = [
-        "prefix=/usr",
-    ],
-    post_install = """
-# Install shared library
-install -Dm755 liblmdb.so "$DESTDIR/usr/lib/liblmdb.so"
+    src_install = """
+cd libraries/liblmdb
+make install DESTDIR="$DESTDIR" prefix=/usr
 """,
     visibility = ["PUBLIC"],
 )

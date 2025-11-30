@@ -19,6 +19,9 @@ autotools_package(
     iuse = ["histogram", "demo"],
     use_defaults = ["histogram", "demo"],
     deps = [],
+    env = {
+        "CFLAGS": "-O2 -std=gnu89 -fcommon -Wno-error -Wno-strict-prototypes -Wno-function-conversion",
+    },
     configure_args = [],
     use_configure = {
         "histogram": "--enable-histogram",

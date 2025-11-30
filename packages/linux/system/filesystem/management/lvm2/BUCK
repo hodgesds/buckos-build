@@ -27,6 +27,7 @@ autotools_package(
     deps = [
         "//packages/linux/core/util-linux:util-linux",
         "//packages/linux/system/init/eudev:eudev",
+        "//packages/linux/system/libs/io/libaio:libaio",
     ],
     visibility = ["PUBLIC"],
 )

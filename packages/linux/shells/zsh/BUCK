@@ -47,12 +47,24 @@ autotools_package(
         "--enable-zlogout=/etc/zsh/zlogout",
         "--enable-zprofile=/etc/zsh/zprofile",
         "--enable-zshrc=/etc/zsh/zshrc",
+        "--disable-zsh-debug",
+        "--enable-function-subdirs",
     ],
 
     # ncurses is required for terminal handling
     deps = [
         "//packages/linux/core/ncurses:ncurses",
     ],
+
+    # Remove termcap module to avoid conflicts with modern ncurses headers
+    # The termcap module tries to declare boolcodes as non-const while ncurses declares it const
+    src_prepare = """
+# Remove the problematic termcap module that conflicts with ncurses
+rm -f Src/Modules/termcap.c
+rm -f Src/Modules/termcap.mdd
+# GitHub tarball doesn't include configure, need to generate it
+./Util/preconfig
+""",
 
     visibility = ["PUBLIC"],
 )

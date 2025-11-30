@@ -12,23 +12,30 @@ autotools_package(
     sha256 = "02fdc312b8ceeb5786b28bf905f54328f414040ff42f45c83007f24b76cc9f7a",
     signature_required = False,
 
-    iuse = ["ncurses", "ascii"],
-    use_defaults = ["ncurses"],
+    iuse = ["ascii"],
+    use_defaults = [],
 
-    use_deps = {
-        "ncurses": ["//packages/linux/core/ncurses:ncurses"],
-    },
+    configure_args = [
+        "--with-ncurses",
+    ],
 
     use_configure = {
-        "ncurses": "--with-ncurses",
-        "-ncurses": "--without-ncurses",
         "ascii": "--enable-ascii",
         "-ascii": "--disable-ascii",
     },
 
     deps = [
         "//packages/linux/core/libnl:libnl",
+        "//packages/linux/core/ncurses:ncurses",
     ],
+
+    env = {
+        "CURSES_LIB": "-lncursesw -ltinfow",
+        "CONFUSE_CFLAGS": "-I/tmp/confuse-install/include",
+        "CONFUSE_LIBS": "-L/tmp/confuse-install/lib -lconfuse",
+        "PKG_CONFIG_PATH": "/tmp/confuse-install/lib/pkgconfig:$PKG_CONFIG_PATH",
+        "LD_LIBRARY_PATH": "/tmp/confuse-install/lib:$LD_LIBRARY_PATH",
+    },
 
     description = "Bandwidth monitor and rate estimator",
     homepage = "https://github.com/tgraf/bmon",

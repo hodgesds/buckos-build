@@ -9,7 +9,6 @@ filegroup(
         "//packages/linux/dev-tools/vcs/subversion:subversion",
         "//packages/linux/dev-tools/vcs/mercurial:mercurial",
         "//packages/linux/dev-tools/vcs/cvs:cvs",
-        "//packages/linux/dev-tools/vcs/fossil:fossil",
     ],
     default_target_platform = "//platforms:linux-target",
     visibility = ["PUBLIC"],
@@ -213,16 +212,6 @@ filegroup(
     visibility = ["PUBLIC"],
 )
 
-# Compilation Database Tools
-filegroup(
-    name = "compdb-tools",
-    srcs = [
-        "//packages/linux/dev-tools/dev-utils/bear:bear",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
-
 # Parser Generators
 filegroup(
     name = "parser-generators",
@@ -284,7 +273,6 @@ filegroup(
         ":coverage-tools",
         ":code-search",
         ":build-acceleration",
-        ":compdb-tools",
         ":parser-generators",
         ":elf-tools",
         ":hex-editors",
@@ -332,7 +320,6 @@ filegroup(
         "//packages/linux/dev-tools/dev-utils/doxygen:doxygen",
         "//packages/linux/dev-tools/dev-utils/cppcheck:cppcheck",
         "//packages/linux/dev-tools/dev-utils/ccache:ccache",
-        "//packages/linux/dev-tools/dev-utils/bear:bear",
         "//packages/linux/dev-tools/dev-utils/flex:flex",
         "//packages/linux/dev-tools/dev-utils/bison:bison",
         "//packages/linux/dev-tools/dev-utils/lcov:lcov",

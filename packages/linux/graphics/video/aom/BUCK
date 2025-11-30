@@ -21,6 +21,7 @@ cmake_package(
         "-DENABLE_EXAMPLES=OFF",
         "-DENABLE_TOOLS=OFF",
         "-DENABLE_NASM=ON",
+        "-DAOM_TARGET_CPU=generic",
     ],
     deps = [],
     maintainers = [],

@@ -189,13 +189,15 @@ autotools_package(
     description = "Lightning Memory-Mapped Database",
     homepage = "https://symas.com/lmdb/",
     license = "OLDAP-2.8",
-    pre_configure = """
+    src_configure = "true",
+    src_compile = """
         cd libraries/liblmdb
+        make -j$(nproc) prefix=/usr
     """,
-    configure_args = [],
-    make_args = [
-        "prefix=/usr",
-    ],
+    src_install = """
+        cd libraries/liblmdb
+        make install DESTDIR="$DESTDIR" prefix=/usr
+    """,
     deps = [
     ],
     visibility = ["PUBLIC"],

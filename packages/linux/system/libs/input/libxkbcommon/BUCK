@@ -1,30 +1,21 @@
-load("//defs:package_defs.bzl", "download_source", "autotools_package")
-load("//defs:use_flags.bzl", "set_use_flags")
+load("//defs:package_defs.bzl", "meson_package")
 
-download_source(
-    name = "libxkbcommon-src",
+meson_package(
+    name = "libxkbcommon",
+    version = "1.7.0",
     src_uri = "https://xkbcommon.org/download/libxkbcommon-1.7.0.tar.xz",
     sha256 = "65782f0a10a4b455af9c6baab7040e2f537520caa2ec2092805cdfd36863b247",
-    signature_required = False,
-)
-
-autotools_package(
-    name = "libxkbcommon",
-    source = ":libxkbcommon-src",
-    version = "1.7.0",
     description = "Keymap handling library for toolkits and window systems",
     homepage = "https://xkbcommon.org/",
     license = "MIT",
-    pre_configure = """
-mkdir -p build
-cd build
-meson setup .. --prefix=/usr \
-    -Ddefault_library=shared \
-    -Denable-x11=true \
-    -Denable-wayland=true \
-    -Denable-docs=false
-""",
+    signature_required = False,
+    meson_args = [
+        "-Denable-x11=false",
+        "-Denable-wayland=false",
+        "-Denable-docs=false",
+    ],
     deps = [
+        "//packages/linux/core/zlib:zlib",
         "//packages/linux/system/libs/data/libxml2:libxml2",
     ],
     visibility = ["PUBLIC"],

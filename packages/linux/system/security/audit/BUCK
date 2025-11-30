@@ -29,6 +29,7 @@ autotools_package(
         "--without-python3",
         "--enable-shared",
         "--disable-static",
+        "--disable-zos-remote",  # Requires openldap
     ],
     visibility = ["PUBLIC"],
 )

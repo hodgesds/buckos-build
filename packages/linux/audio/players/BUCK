@@ -11,15 +11,6 @@ filegroup(
 )
 
 filegroup(
-    name = "gui-players",
-    srcs = [
-        "//packages/linux/audio/players/audacious:audacious",
-    ],
-    default_target_platform = "//platforms:linux-target",
-    visibility = ["PUBLIC"],
-)
-
-filegroup(
     name = "daemon-players",
     srcs = [
         "//packages/linux/audio/players/mpd:mpd",
@@ -32,7 +23,6 @@ filegroup(
     name = "all-players",
     srcs = [
         ":console-players",
-        ":gui-players",
         ":daemon-players",
     ],
     default_target_platform = "//platforms:linux-target",

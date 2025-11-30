@@ -27,10 +27,10 @@ sed -i 's/system-systemd\\\\\\\\x2dveritysetup.slice/system-systemd-veritysetup.
     meson_args = [
         "-Dsysconfdir=/etc",
         "-Dmode=release",
-        # Disable features not needed for installer (feature type: enabled/disabled/auto)
+        # Disable features not needed (feature type: enabled/disabled/auto)
         "-Dselinux=disabled",
         "-Daudit=disabled",
-        "-Dlibcryptsetup=disabled",
+        "-Dlibcryptsetup=enabled",
         "-Dgcrypt=disabled",
         "-Dp11kit=disabled",
         "-Dlibfido2=disabled",
@@ -39,12 +39,15 @@ sed -i 's/system-systemd\\\\\\\\x2dveritysetup.slice/system-systemd-veritysetup.
         "-Dmicrohttpd=disabled",
         "-Dlibcurl=disabled",
         "-Delfutils=disabled",
+        # Compression support
         "-Dzlib=enabled",
         "-Dbzip2=disabled",
         "-Dxz=enabled",
         "-Dlz4=enabled",
         "-Dzstd=enabled",
         "-Ddefault-compression=zstd",
+        # Enable kmod support for systemd-modules-load (required for initramfs)
+        "-Dkmod=enabled",
         # Minimal components
         "-Dstandalone-binaries=true",
         "-Dstatic-libsystemd=false",
@@ -57,25 +60,34 @@ sed -i 's/system-systemd\\\\\\\\x2dveritysetup.slice/system-systemd-veritysetup.
         "-Dinstall-tests=false",
         "-Dslow-tests=false",
         "-Dfuzz-tests=false",
-        # Disable network components not needed for installer (boolean type: true/false)
+        # Disable network components not needed for base install
         "-Dresolve=false",
         "-Dtimesyncd=false",
         "-Dnetworkd=false",
+        # Essential boot/init components (required for initramfs and system boot)
+        "-Dtmpfiles=true",       # systemd-tmpfiles (required for initramfs)
+        "-Dsysusers=true",       # systemd-sysusers (user/group setup)
+        "-Drandomseed=true",     # systemd-random-seed (entropy)
+        "-Dvconsole=true",       # vconsole configuration
+        "-Dhibernate=true",      # hibernate/suspend support
+        "-Dldconfig=true",       # ldconfig support
+        "-Defi=true",            # EFI support
+        "-Dkernel-install=true", # kernel-install helper
         # Keep essential components (boolean type: true/false)
         "-Dlogind=true",
         "-Dhostnamed=true",
         "-Dlocaled=true",
         "-Dtimedated=true",
+        "-Dfirstboot=true",
         # Disable optional services (mixed types)
-        "-Dcoredump=false",      # boolean
-        "-Dpstore=false",        # boolean
-        "-Doomd=false",          # boolean
-        "-Dimportd=disabled",    # feature
-        "-Dhomed=disabled",      # feature
-        "-Dportabled=false",     # boolean
-        "-Dsysext=false",        # boolean
-        "-Duserdb=false",        # boolean
-        "-Dfirstboot=true",      # boolean
+        "-Dcoredump=false",
+        "-Dpstore=false",
+        "-Doomd=false",
+        "-Dimportd=disabled",
+        "-Dhomed=disabled",
+        "-Dportabled=false",
+        "-Dsysext=false",
+        "-Duserdb=false",
         # Use PAM and ACL if enabled (feature type: enabled/disabled/auto)
         "-Dpam=auto",
         "-Dacl=auto",
@@ -88,6 +100,8 @@ sed -i 's/system-systemd\\\\\\\\x2dveritysetup.slice/system-systemd-veritysetup.
         "//packages/linux/system/libs/compression/xz:xz",  # For liblzma (xz compression)
         "//packages/linux/system/libs/compression/zstd:zstd",  # For zstd compression
         "//packages/linux/system/libs/ipc/libcap:libcap",  # Required - POSIX capabilities
+        "//packages/linux/system/libs/kmod:kmod",  # For systemd-modules-load
+        "//packages/linux/system/security/cryptsetup:cryptsetup",  # For LUKS/dm-crypt support
     ],
     visibility = ["PUBLIC"],
 )

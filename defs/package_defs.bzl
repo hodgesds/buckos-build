@@ -694,6 +694,17 @@ if [ -n "$PYTHON_LIB64" ] && [ -d "$PYTHON_LIB64/lib-dynload" ]; then
     export PYTHONPATH="$PYTHON_LIB64/lib-dynload${{PYTHONPATH:+:$PYTHONPATH}}"
     echo "PYTHONPATH=$PYTHONPATH"
 fi
+# Also add site-packages directories from dependencies to PYTHONPATH
+for dep_dir in $DEP_BASE_DIRS; do
+    for sp_dir in "$dep_dir"/usr/lib/python*/site-packages "$dep_dir"/usr/lib64/python*/site-packages; do
+        if [ -d "$sp_dir" ]; then
+            export PYTHONPATH="${{PYTHONPATH:+$PYTHONPATH:}}$sp_dir"
+        fi
+    done
+done
+if [ -n "$PYTHONPATH" ]; then
+    echo "PYTHONPATH=$PYTHONPATH"
+fi
 # CRITICAL: Use PKG_CONFIG_LIBDIR instead of PKG_CONFIG_PATH
 # PKG_CONFIG_PATH *appends* to the default search (still finds /usr/lib64/pkgconfig)
 # PKG_CONFIG_LIBDIR *replaces* the default search (only finds our dependencies)

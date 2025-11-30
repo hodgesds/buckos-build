@@ -10,8 +10,23 @@ meson_package(
     src_uri = "https://github.com/systemd/systemd/archive/refs/tags/v256.7.tar.gz",
     sha256 = "896d76ff65c88f5fd9e42f90d152b0579049158a163431dd77cdc57748b1d7b0",
     signature_required = False,
-    # Exclude files with escaped characters (\\x2d) that Buck2 can't handle
-    exclude_patterns = ["*/units/system-*", "*/test/fuzz/*"],
+    # Exclude test/fuzz files (have escaped characters in names)
+    # Note: units/system-* files are now renamed in extract_source.sh
+    exclude_patterns = ["*/test/fuzz/*"],
+    # Create stub meson.build for excluded test/fuzz directory
+    # Also create escaped-name copies of unit files (meson expects \x2d names)
+    src_prepare = """
+        mkdir -p test/fuzz
+        cat > test/fuzz/meson.build << 'FUZZ_STUB'
+# Stub - fuzz tests excluded from build
+fuzz_sanitizers = []
+fuzz_testsdir = 'test/fuzz'
+FUZZ_STUB
+
+        # Patch meson.build to use safe filenames (without \\x2d escape sequences)
+        # File has \\x2d (double backslash), need 8 backslashes in Starlark -> 4 in shell -> 2 for sed
+        sed -i 's/systemd\\\\\\\\x2d/systemd-/g' units/meson.build
+    """,
     description = "System and service manager",
     homepage = "https://systemd.io/",
     license = "GPL-2.0-or-later LGPL-2.1-or-later",
@@ -88,6 +103,12 @@ meson_package(
         # Use PAM and ACL if enabled (feature type: enabled/disabled/auto)
         "-Dpam=auto",
         "-Dacl=auto",
+    ],
+    bdepend = [
+        "//packages/linux/dev-tools/dev-utils/gperf:gperf",  # Perfect hash generator (build-time)
+        "//packages/linux/lang/python:python",  # Python for meson
+        "//packages/linux/lang/python/jinja2:jinja2",  # Jinja2 templating (required by meson)
+        "//packages/linux/lang/python/jinja2:markupsafe",  # Required by jinja2
     ],
     deps = [
         "//packages/linux/core/util-linux:util-linux",  # libmount, libblkid

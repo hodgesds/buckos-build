@@ -58,10 +58,20 @@ LLVM_CMAKE_ARGS = [
     "-DLLVM_INSTALL_UTILS=ON",
 ]
 
-LLVM_PRE_CONFIGURE = """
-# LLVM project structure has sources in llvm/ subdirectory
-export S="$S/llvm"
-cd "$S"
+# Custom configure that handles llvm/ subdirectory
+LLVM_SRC_CONFIGURE = """
+# LLVM has CMakeLists.txt in llvm/ subdirectory
+mkdir -p "$S/build"
+cmake \\
+    -S "$S/llvm" \\
+    -B "$S/build" \\
+    -DCMAKE_INSTALL_PREFIX="${EPREFIX:-/usr}" \\
+    -DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE:-Release}" \\
+    -DCMAKE_INSTALL_LIBDIR="${LIBDIR:-lib64}" \\
+    -DCMAKE_C_FLAGS="${CFLAGS:-}" \\
+    -DCMAKE_CXX_FLAGS="${CXXFLAGS:-}" \\
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \\
+    ${CMAKE_EXTRA_ARGS:-}
 """
 
 # =============================================================================
@@ -76,7 +86,7 @@ cmake_package(
     description = "Low Level Virtual Machine - compiler infrastructure",
     homepage = "https://llvm.org/",
     license = "Apache-2.0 WITH LLVM-exception",
-    pre_configure = LLVM_PRE_CONFIGURE,
+    src_configure = LLVM_SRC_CONFIGURE,
     cmake_args = LLVM_CMAKE_ARGS,
     deps = use_dep(LLVM_USE_DEPS, _effective_use) + [
         "//packages/linux/core/ncurses:ncurses",

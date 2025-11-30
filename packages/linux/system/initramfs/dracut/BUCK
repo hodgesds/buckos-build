@@ -21,6 +21,12 @@ autotools_package(
     description = "Event-driven initramfs infrastructure (Fedora/RHEL default)",
     homepage = "https://github.com/dracut-ng/dracut-ng",
     license = "GPL-2.0-or-later",
+    iuse = ["systemd", "cryptsetup"],
+    use_defaults = ["systemd"],
+    use_deps = {
+        "systemd": ["//packages/linux/system/init/systemd:systemd"],
+        "cryptsetup": ["//packages/linux/system/security/cryptsetup:cryptsetup"],
+    },
     pre_configure = """
 # dracut uses a custom configure script (not autotools)
 ./configure \
@@ -116,8 +122,8 @@ if [ -d shell-completion/bash ]; then
     cp shell-completion/bash/* "$DESTDIR/usr/share/bash-completion/completions/" 2>/dev/null || true
 fi
 
-# Create BuckOS-specific configuration
-cat > "$DESTDIR/etc/dracut.conf.d/buckos.conf" << 'EOF'
+# Create BuckOS-specific configuration based on USE flags
+cat > "$DESTDIR/etc/dracut.conf.d/buckos.conf" << 'EOFBASE'
 # BuckOS dracut configuration
 
 # Compression algorithm
@@ -133,9 +139,37 @@ firmware_dirs+=" /lib/firmware "
 # Essential modules
 add_dracutmodules+=" base rootfs-block "
 
+# Include essential binaries for emergency shell
+install_items+=" /sbin/sulogin "
+
+# Include virtio drivers for VM support
+add_drivers+=" virtio virtio_pci virtio_blk virtio_scsi virtio_net "
+
 # Omit modules that may not be present or needed
-omit_dracutmodules+=" bluetooth crypt crypt-gpg crypt-loop nfs iscsi fcoe "
-EOF
+omit_dracutmodules+=" bluetooth crypt-gpg crypt-loop nfs iscsi fcoe "
+EOFBASE
+
+# Add systemd modules if USE=systemd
+if echo "$USE" | grep -q "systemd"; then
+    cat >> "$DESTDIR/etc/dracut.conf.d/buckos.conf" << 'EOFSYSTEMD'
+
+# systemd support for initramfs
+add_dracutmodules+=" systemd systemd-initrd "
+EOFSYSTEMD
+    echo "Added systemd modules to dracut config"
+fi
+
+# Add cryptsetup modules if USE=cryptsetup
+if echo "$USE" | grep -q "cryptsetup"; then
+    cat >> "$DESTDIR/etc/dracut.conf.d/buckos.conf" << 'EOFCRYPT'
+
+# LUKS/dm-crypt support
+add_dracutmodules+=" crypt dm "
+EOFCRYPT
+    # Remove crypt from omit list
+    sed -i 's/ crypt / /g' "$DESTDIR/etc/dracut.conf.d/buckos.conf"
+    echo "Added cryptsetup modules to dracut config"
+fi
 
 echo "Dracut installation complete"
 ls -la "$DESTDIR/usr/bin/"

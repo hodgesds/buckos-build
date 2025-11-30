@@ -8,6 +8,9 @@ Similar to Gentoo's USE flags, this provides:
 - Build configuration profiles (minimal, default, full)
 - USE flag expansion and inheritance
 
+Configuration is loaded from //config:use_config.bzl if it exists.
+The installer generates this file based on installation options.
+
 Example usage:
     # Define package with USE flags (in defs/package_defs.bzl)
     autotools_package(
@@ -266,14 +269,21 @@ USE_PROFILES = {
 }
 
 # =============================================================================
+# LOAD INSTALL CONFIGURATION
+# =============================================================================
+
+# Load installer-generated USE flag configuration
+load("//config:use_config.bzl", "INSTALL_USE_FLAGS", "INSTALL_PACKAGE_USE")
+
+# =============================================================================
 # GLOBAL STATE
 # =============================================================================
 
-# Current global USE flags (set by profile or manually)
-_GLOBAL_USE = []
+# Current global USE flags (initialized from install config)
+_GLOBAL_USE = INSTALL_USE_FLAGS
 
-# Per-package USE flag overrides
-_PACKAGE_USE = {}
+# Per-package USE flag overrides (initialized from install config)
+_PACKAGE_USE = INSTALL_PACKAGE_USE
 
 # Current profile
 _CURRENT_PROFILE = "default"

@@ -2544,9 +2544,9 @@ def _ebuild_package_impl(ctx: AnalysisContext) -> list[Provider]:
     # Get source directory from dependency
     src_dir = ctx.attrs.source[DefaultInfo].default_outputs[0]
 
-    # Collect all dependency directories (bdepend + rdepend) for PATH setup
+    # Collect all dependency directories (depend + bdepend + rdepend) for PATH setup
     dep_dirs = []
-    for dep in ctx.attrs.bdepend + ctx.attrs.rdepend:
+    for dep in ctx.attrs.depend + ctx.attrs.bdepend + ctx.attrs.rdepend:
         outputs = dep[DefaultInfo].default_outputs
         for output in outputs:
             dep_dirs.append(output)
@@ -2573,631 +2573,107 @@ def _ebuild_package_impl(ctx: AnalysisContext) -> list[Provider]:
     use_bootstrap = ctx.attrs.use_bootstrap if hasattr(ctx.attrs, "use_bootstrap") else False
     bootstrap_sysroot = ctx.attrs.bootstrap_sysroot if hasattr(ctx.attrs, "bootstrap_sysroot") else ""
 
+    # Get external scripts (tracked by Buck2 for proper cache invalidation)
+    pkg_config_wrapper = ctx.attrs._pkg_config_wrapper[DefaultInfo].default_outputs[0]
+    ebuild_script = ctx.attrs._ebuild_script[DefaultInfo].default_outputs[0]
+
+    # Write wrapper script that sources external framework and defines phases
+    # This approach works because Buck2 tracks both the written script AND the sourced framework
     script = ctx.actions.write(
-        "ebuild.sh",
+        "ebuild_wrapper.sh",
         '''#!/bin/bash
 set -e
 
-# Package variables
+# Arguments: DESTDIR, SRC_DIR, PKG_CONFIG_WRAPPER, FRAMEWORK_SCRIPT, dep_dirs...
+# Save these before shifting
+export _EBUILD_DESTDIR="$1"
+export _EBUILD_SRCDIR="$2"
+export _EBUILD_PKG_CONFIG_WRAPPER="$3"
+FRAMEWORK_SCRIPT="$4"
+shift 4
+# Remaining args ($@) are: dep_dirs...
+export _EBUILD_DEP_DIRS="$@"
+
+# Export package variables
 export PN="{name}"
 export PV="{version}"
 export PACKAGE_NAME="{name}"
 export CATEGORY="{category}"
 export SLOT="{slot}"
 export USE="{use_flags}"
+export USE_BOOTSTRAP="{use_bootstrap}"
+export BOOTSTRAP_SYSROOT="{bootstrap_sysroot}"
 
-# Bootstrap toolchain configuration
-USE_BOOTSTRAP="{use_bootstrap}"
-BUCKOS_TARGET="x86_64-buckos-linux-gnu"
-BOOTSTRAP_SYSROOT="{bootstrap_sysroot}"
-
-# Installation directories
-mkdir -p "$1"
-export DESTDIR="$(cd "$1" && pwd)"
-export OUT="$DESTDIR"  # Alias for compatibility with simple_package/post_install scripts
-export S="$(cd "$2" && pwd)"
-export WORKDIR="$(dirname "$S")"
-export T="$WORKDIR/temp"
-mkdir -p "$T"
-shift 2  # Remove DESTDIR and S from args, remaining args are dependency dirs
-
-# Set up PATH from dependency directories
-# Convert relative paths to absolute to ensure they work after cd "$S" in phases.sh
-DEP_PATH=""
-DEP_PYTHONPATH=""
-DEP_PERL5LIB=""
-TOOLCHAIN_PATH=""
-TOOLCHAIN_INCLUDE=""
-TOOLCHAIN_ROOT=""
-for dep_dir in "$@"; do
-    # Convert to absolute path if relative
-    if [[ "$dep_dir" != /* ]]; then
-        dep_dir="$(cd "$dep_dir" 2>/dev/null && pwd)" || continue
-    fi
-    # Check if this is the bootstrap toolchain or has tools dir
-    if [ -d "$dep_dir/tools/bin" ]; then
-        TOOLCHAIN_PATH="${{TOOLCHAIN_PATH:+$TOOLCHAIN_PATH:}}$dep_dir/tools/bin"
-        # Set sysroot from toolchain if not explicitly provided
-        if [ -z "$BOOTSTRAP_SYSROOT" ] && [ -d "$dep_dir/tools" ]; then
-            BOOTSTRAP_SYSROOT="$dep_dir/tools"
-        fi
-    fi
-    # Capture the full toolchain root directory (for glibc, etc)
-    if [ -d "$dep_dir/usr/lib64" ] || [ -d "$dep_dir/usr/lib" ]; then
-        TOOLCHAIN_ROOT="${{TOOLCHAIN_ROOT:+$TOOLCHAIN_ROOT:}}$dep_dir"
-    fi
-    # Capture include directory from toolchain dependencies (for linux-headers, etc)
-    if [ -d "$dep_dir/usr/include" ]; then
-        TOOLCHAIN_INCLUDE="${{TOOLCHAIN_INCLUDE:+$TOOLCHAIN_INCLUDE:}}$dep_dir"
-    fi
-    if [ -d "$dep_dir/usr/bin" ]; then
-        DEP_PATH="${{DEP_PATH:+$DEP_PATH:}}$dep_dir/usr/bin"
-    fi
-    if [ -d "$dep_dir/bin" ]; then
-        DEP_PATH="${{DEP_PATH:+$DEP_PATH:}}$dep_dir/bin"
-    fi
-    if [ -d "$dep_dir/usr/sbin" ]; then
-        DEP_PATH="${{DEP_PATH:+$DEP_PATH:}}$dep_dir/usr/sbin"
-    fi
-    if [ -d "$dep_dir/sbin" ]; then
-        DEP_PATH="${{DEP_PATH:+$DEP_PATH:}}$dep_dir/sbin"
-    fi
-    # Add Python package paths for tools like meson that need Python modules
-    for pypath in "$dep_dir/usr/lib/python"*/dist-packages "$dep_dir/usr/lib/python"*/site-packages; do
-        if [ -d "$pypath" ]; then
-            DEP_PYTHONPATH="${{DEP_PYTHONPATH:+$DEP_PYTHONPATH:}}$pypath"
-        fi
-    done
-    # Add Perl library paths for tools like automake/aclocal
-    for perlpath in "$dep_dir/usr/share/automake"* "$dep_dir/usr/share/autoconf"* "$dep_dir/usr/lib/perl5" "$dep_dir/usr/share/perl5"; do
-        if [ -d "$perlpath" ]; then
-            DEP_PERL5LIB="${{DEP_PERL5LIB:+$DEP_PERL5LIB:}}$perlpath"
-        fi
-    done
-done
-
-# Export toolchain paths for scripts that need them
-export TOOLCHAIN_INCLUDE  # For --with-headers etc
-export TOOLCHAIN_ROOT     # For copying toolchain files
-
-# Toolchain path goes first, then dependency paths, then host PATH
-if [ -n "$TOOLCHAIN_PATH" ]; then
-    export PATH="$TOOLCHAIN_PATH:$DEP_PATH:$PATH"
-elif [ -n "$DEP_PATH" ]; then
-    export PATH="$DEP_PATH:$PATH"
-fi
-
-# Set up PYTHONPATH for Python-based build tools (meson, etc)
-if [ -n "$DEP_PYTHONPATH" ]; then
-    export PYTHONPATH="${{DEP_PYTHONPATH}}${{PYTHONPATH:+:$PYTHONPATH}}"
-fi
-
-# Set up PERL5LIB for Perl-based build tools (automake/aclocal, etc)
-if [ -n "$DEP_PERL5LIB" ]; then
-    export PERL5LIB="${{DEP_PERL5LIB}}${{PERL5LIB:+:$PERL5LIB}}"
-fi
-
-# IMPORTANT: Clear host library paths to prevent host glibc/libraries from leaking
-# into the build. This ensures packages link against buckos-provided libraries only.
-# Without this, packages built on newer hosts (e.g., glibc 2.42) would require that
-# version at runtime, breaking portability.
-unset LD_LIBRARY_PATH
-unset LIBRARY_PATH
-unset CPATH
-unset C_INCLUDE_PATH
-unset CPLUS_INCLUDE_PATH
-unset PKG_CONFIG_PATH
-
-# =============================================================================
-# Bootstrap Toolchain Setup
-# =============================================================================
-# Only configure cross-compilation if USE_BOOTSTRAP is explicitly set to "true"
-# The presence of /tools/bin in PATH is NOT sufficient - it must be explicitly requested
-# This allows bootstrap packages to be built with the host compiler
-if [ "$USE_BOOTSTRAP" = "true" ]; then
-    # Verify the cross-compiler actually exists
-    if [ -n "$TOOLCHAIN_PATH" ] && command -v ${{BUCKOS_TARGET}}-gcc >/dev/null 2>&1; then
-        echo "=== Using Bootstrap Toolchain ==="
-        echo "Target: $BUCKOS_TARGET"
-        echo "Sysroot: $BOOTSTRAP_SYSROOT"
-        echo "Toolchain PATH: $TOOLCHAIN_PATH"
-
-        # Set cross-compilation environment variables
-        export CC="${{BUCKOS_TARGET}}-gcc"
-        export CXX="${{BUCKOS_TARGET}}-g++"
-        export AR="${{BUCKOS_TARGET}}-ar"
-        export AS="${{BUCKOS_TARGET}}-as"
-        export LD="${{BUCKOS_TARGET}}-ld"
-        export NM="${{BUCKOS_TARGET}}-nm"
-        export RANLIB="${{BUCKOS_TARGET}}-ranlib"
-        export STRIP="${{BUCKOS_TARGET}}-strip"
-        export OBJCOPY="${{BUCKOS_TARGET}}-objcopy"
-        export OBJDUMP="${{BUCKOS_TARGET}}-objdump"
-        export READELF="${{BUCKOS_TARGET}}-readelf"
-
-        # Set sysroot for all compilation
-        if [ -n "$BOOTSTRAP_SYSROOT" ]; then
-            SYSROOT_FLAGS="--sysroot=$BOOTSTRAP_SYSROOT"
-            export CFLAGS="${{CFLAGS:-}} $SYSROOT_FLAGS"
-            export CXXFLAGS="${{CXXFLAGS:-}} $SYSROOT_FLAGS"
-            export LDFLAGS="${{LDFLAGS:-}} $SYSROOT_FLAGS"
-
-            # Set pkg-config to use sysroot
-            export PKG_CONFIG_SYSROOT_DIR="$BOOTSTRAP_SYSROOT"
-            export PKG_CONFIG_PATH="$BOOTSTRAP_SYSROOT/usr/lib/pkgconfig:$BOOTSTRAP_SYSROOT/usr/share/pkgconfig"
-        fi
-
-        # For autotools, set build/host triplets
-        export BUILD_TRIPLET="$(gcc -dumpmachine)"
-        export HOST_TRIPLET="$BUCKOS_TARGET"
-
-        echo "CC=$CC"
-        echo "CXX=$CXX"
-        echo "CFLAGS=$CFLAGS"
-        echo "==================================="
-    else
-        echo "=== Bootstrap toolchain requested but not available ==="
-        echo "Cross-compiler not found, using host compiler"
-        echo "This is expected for bootstrap stage 1 packages"
-    fi
-fi
-
-# Set up library paths from dependencies for pkg-config and linking
-# Convert all paths to absolute to avoid libtool issues with relative paths
-DEP_LIBPATH=""
-DEP_PKG_CONFIG_PATH=""
-for dep_dir_raw in "$@"; do
-    # Convert to absolute path - crucial for libtool which cds during install
-    if [[ "$dep_dir_raw" = /* ]]; then
-        dep_dir="$dep_dir_raw"
-    else
-        dep_dir="$(cd "$dep_dir_raw" 2>/dev/null && pwd)" || dep_dir="$(pwd)/$dep_dir_raw"
-    fi
-    if [ -d "$dep_dir/usr/lib64" ]; then
-        DEP_LIBPATH="${{DEP_LIBPATH:+$DEP_LIBPATH:}}$dep_dir/usr/lib64"
-    fi
-    if [ -d "$dep_dir/usr/lib" ]; then
-        DEP_LIBPATH="${{DEP_LIBPATH:+$DEP_LIBPATH:}}$dep_dir/usr/lib"
-    fi
-    if [ -d "$dep_dir/lib64" ]; then
-        DEP_LIBPATH="${{DEP_LIBPATH:+$DEP_LIBPATH:}}$dep_dir/lib64"
-    fi
-    if [ -d "$dep_dir/lib" ]; then
-        DEP_LIBPATH="${{DEP_LIBPATH:+$DEP_LIBPATH:}}$dep_dir/lib"
-    fi
-    if [ -d "$dep_dir/usr/lib64/pkgconfig" ]; then
-        DEP_PKG_CONFIG_PATH="${{DEP_PKG_CONFIG_PATH:+$DEP_PKG_CONFIG_PATH:}}$dep_dir/usr/lib64/pkgconfig"
-    fi
-    if [ -d "$dep_dir/usr/lib/pkgconfig" ]; then
-        DEP_PKG_CONFIG_PATH="${{DEP_PKG_CONFIG_PATH:+$DEP_PKG_CONFIG_PATH:}}$dep_dir/usr/lib/pkgconfig"
-    fi
-    if [ -d "$dep_dir/usr/share/pkgconfig" ]; then
-        DEP_PKG_CONFIG_PATH="${{DEP_PKG_CONFIG_PATH:+$DEP_PKG_CONFIG_PATH:}}$dep_dir/usr/share/pkgconfig"
-    fi
-done
-if [ -n "$DEP_LIBPATH" ]; then
-    # Only use dependency paths - do NOT inherit from host environment
-    export LD_LIBRARY_PATH="${{DEP_LIBPATH}}"
-    export LIBRARY_PATH="${{DEP_LIBPATH}}"
-    # Add library paths to linker flags so the linker finds our built deps
-    # This is critical because pkg-config returns /usr/lib64 but libs are in buck-out
-    DEP_LDFLAGS=""
-    IFS=':' read -ra LIB_DIRS <<< "$DEP_LIBPATH"
-    for lib_dir in "${{LIB_DIRS[@]}}"; do
-        DEP_LDFLAGS="${{DEP_LDFLAGS}} -L$lib_dir -Wl,-rpath,$lib_dir"
-    done
-    export LDFLAGS="${{LDFLAGS:-}} $DEP_LDFLAGS"
-fi
-if [ -n "$DEP_PKG_CONFIG_PATH" ]; then
-    # CRITICAL: Use PKG_CONFIG_LIBDIR instead of PKG_CONFIG_PATH
-    # PKG_CONFIG_PATH *appends* to the default search path (still finds /usr/lib64/pkgconfig)
-    # PKG_CONFIG_LIBDIR *replaces* the default search path (only finds our dependencies)
-    # This prevents pkg-config from finding host system .pc files
-    export PKG_CONFIG_LIBDIR="${{DEP_PKG_CONFIG_PATH}}"
-    unset PKG_CONFIG_PATH
-    # When using dependencies from buck-out, don't use sysroot prefix for pkg-config
-    # as the .pc files have /usr paths but the actual files are in buck-out
-    unset PKG_CONFIG_SYSROOT_DIR
-fi
-
-# =============================================================================
-# pkg-config Wrapper for Build Isolation
-# =============================================================================
-# Even with PKG_CONFIG_LIBDIR pointing to our dependencies, the .pc files contain
-# hardcoded paths like -I/usr/include and -L/usr/lib64. When pkg-config returns
-# these paths, the build system finds host headers/libraries instead of ours.
-#
-# This wrapper intercepts pkg-config calls and rewrites the output paths to point
-# to the actual dependency locations in buck-out.
-
-# Build a mapping of pkgconfig dirs to their dependency roots
-declare -A PKGCONFIG_PREFIX_MAP
-for dep_dir_raw in "$@"; do
-    if [[ "$dep_dir_raw" = /* ]]; then
-        dep_dir="$dep_dir_raw"
-    else
-        dep_dir="$(cd "$dep_dir_raw" 2>/dev/null && pwd)" || continue
-    fi
-    # Map each pkgconfig directory to its dependency root
-    for pc_subdir in usr/lib64/pkgconfig usr/lib/pkgconfig usr/share/pkgconfig lib64/pkgconfig lib/pkgconfig; do
-        if [ -d "$dep_dir/$pc_subdir" ]; then
-            PKGCONFIG_PREFIX_MAP["$dep_dir/$pc_subdir"]="$dep_dir"
-        fi
-    done
-done
-export PKGCONFIG_PREFIX_MAP
-
-# Create pkg-config wrapper in temp directory
-mkdir -p "$T/bin"
-cat > "$T/bin/pkg-config" << 'PKGCONFIG_WRAPPER_EOF'
-#!/bin/bash
-# pkg-config wrapper that rewrites paths from .pc files to actual dependency locations
-#
-# Problem: .pc files contain prefix=/usr, so pkg-config --cflags returns -I/usr/include
-# which finds host headers instead of our dependency headers in buck-out.
-#
-# Solution: Find which dependency provided the .pc file and rewrite /usr paths to
-# point to that dependency's actual location.
-
-REAL_PKGCONFIG=""
-# Find the real pkg-config (skip ourselves)
-for p in $(type -ap pkg-config); do
-    if [ "$p" != "$0" ] && [ "$p" != "$T/bin/pkg-config" ]; then
-        REAL_PKGCONFIG="$p"
-        break
-    fi
-done
-
-if [ -z "$REAL_PKGCONFIG" ]; then
-    # Fallback: try common locations
-    for p in /usr/bin/pkg-config /bin/pkg-config; do
-        if [ -x "$p" ]; then
-            REAL_PKGCONFIG="$p"
-            break
-        fi
-    done
-fi
-
-if [ -z "$REAL_PKGCONFIG" ]; then
-    echo "pkg-config wrapper: cannot find real pkg-config" >&2
-    exit 1
-fi
-
-# Get the output from real pkg-config
-OUTPUT=$("$REAL_PKGCONFIG" "$@")
-RC=$?
-
-if [ $RC -ne 0 ]; then
-    exit $RC
-fi
-
-# If no output or not a flag query, pass through unchanged
-if [ -z "$OUTPUT" ]; then
-    exit 0
-fi
-
-# For --cflags, --libs, --cflags-only-I, --libs-only-L queries, rewrite paths
-case "$*" in
-    *--cflags*|*--libs*|*--variable*)
-        # Determine which package we're querying
-        PKG_NAME=""
-        for arg in "$@"; do
-            case "$arg" in
-                --*) ;;
-                *) PKG_NAME="$arg"; break ;;
-            esac
-        done
-
-        if [ -n "$PKG_NAME" ] && [ -n "$PKG_CONFIG_LIBDIR" ]; then
-            # Find which pkgconfig directory has this package's .pc file
-            IFS=':' read -ra PC_DIRS <<< "$PKG_CONFIG_LIBDIR"
-            for pc_dir in "${{PC_DIRS[@]}}"; do
-                if [ -f "$pc_dir/$PKG_NAME.pc" ]; then
-                    # Extract the dependency root from the pkgconfig path
-                    # e.g., /path/to/buck-out/.../pkg/usr/lib64/pkgconfig -> /path/to/buck-out/.../pkg
-                    DEP_ROOT="${{pc_dir%/usr/lib64/pkgconfig}}"
-                    DEP_ROOT="${{DEP_ROOT%/usr/lib/pkgconfig}}"
-                    DEP_ROOT="${{DEP_ROOT%/usr/share/pkgconfig}}"
-                    DEP_ROOT="${{DEP_ROOT%/lib64/pkgconfig}}"
-                    DEP_ROOT="${{DEP_ROOT%/lib/pkgconfig}}"
-
-                    if [ "$DEP_ROOT" != "$pc_dir" ]; then
-                        # Rewrite /usr paths to point to dependency root
-                        # -I/usr/include -> -I$DEP_ROOT/usr/include
-                        # -L/usr/lib64 -> -L$DEP_ROOT/usr/lib64
-                        OUTPUT=$(echo "$OUTPUT" | sed -e "s|-I/usr/include|-I$DEP_ROOT/usr/include|g" \
-                                                      -e "s|-L/usr/lib64|-L$DEP_ROOT/usr/lib64|g" \
-                                                      -e "s|-L/usr/lib|-L$DEP_ROOT/usr/lib|g" \
-                                                      -e "s| /usr/include| $DEP_ROOT/usr/include|g" \
-                                                      -e "s| /usr/lib| $DEP_ROOT/usr/lib|g")
-                    fi
-                    break
-                fi
-            done
-        fi
-        ;;
-esac
-
-echo "$OUTPUT"
-PKGCONFIG_WRAPPER_EOF
-chmod +x "$T/bin/pkg-config"
-
-# Put our wrapper first in PATH
-export PATH="$T/bin:$PATH"
-
-# Set up include paths from dependencies
-DEP_CPATH=""
-for dep_dir_raw in "$@"; do
-    # Convert to absolute path for consistency
-    if [[ "$dep_dir_raw" = /* ]]; then
-        dep_dir="$dep_dir_raw"
-    else
-        dep_dir="$(cd "$dep_dir_raw" 2>/dev/null && pwd)" || dep_dir="$(pwd)/$dep_dir_raw"
-    fi
-    if [ -d "$dep_dir/usr/include" ]; then
-        DEP_CPATH="${{DEP_CPATH:+$DEP_CPATH:}}$dep_dir/usr/include"
-    fi
-    if [ -d "$dep_dir/include" ]; then
-        DEP_CPATH="${{DEP_CPATH:+$DEP_CPATH:}}$dep_dir/include"
-    fi
-done
-if [ -n "$DEP_CPATH" ]; then
-    # Only use dependency paths - do NOT inherit from host environment
-    export CPATH="${{DEP_CPATH}}"
-    export C_INCLUDE_PATH="${{DEP_CPATH}}"
-    export CPLUS_INCLUDE_PATH="${{DEP_CPATH}}"
-
-    # CRITICAL: Use -isystem instead of -I for dependency includes
-    # -I paths are searched AFTER the compiler's built-in system paths
-    # -isystem paths are searched BEFORE built-in system paths but after -I
-    # This ensures our dependency headers (e.g., pcre2.h) are found before
-    # the host system's headers (e.g., /usr/include/pcre2.h), preventing
-    # version mismatches where code compiles against host headers but links
-    # against our libraries.
-    DEP_ISYSTEM_FLAGS=""
-    IFS=':' read -ra INC_DIRS <<< "$DEP_CPATH"
-    for inc_dir in "${{INC_DIRS[@]}}"; do
-        DEP_ISYSTEM_FLAGS="${{DEP_ISYSTEM_FLAGS}} -isystem $inc_dir"
-    done
-    export CFLAGS="${{DEP_ISYSTEM_FLAGS}} ${{CFLAGS:-}}"
-    export CXXFLAGS="${{DEP_ISYSTEM_FLAGS}} ${{CXXFLAGS:-}}"
-fi
-
-# Set up linker flags to prevent searching host library paths
-# This is critical for build isolation - without this, the linker will still
-# find and link against host libraries (like glibc 2.42 on newer systems)
-if [ -n "$DEP_LIBPATH" ]; then
-    # Build -L flags for each dependency library path
-    LDFLAGS_LIBPATH=""
-    RPATH_LINK=""
-    IFS=':' read -ra LIBPATH_ARRAY <<< "$DEP_LIBPATH"
-    for libpath in "${{LIBPATH_ARRAY[@]}}"; do
-        LDFLAGS_LIBPATH="${{LDFLAGS_LIBPATH}} -L$libpath"
-        RPATH_LINK="${{RPATH_LINK}} -Wl,-rpath-link,$libpath"
-    done
-    # Append to LDFLAGS - dependency paths first, then allow fallback to system
-    export LDFLAGS="${{LDFLAGS_LIBPATH}}${{RPATH_LINK}}${{LDFLAGS:+ $LDFLAGS}}"
-fi
-
-export EPREFIX="${{EPREFIX:-}}"
-export PREFIX="${{PREFIX:-/usr}}"
-export LIBDIR="${{LIBDIR:-lib64}}"
-export LIBDIR_SUFFIX="${{LIBDIR_SUFFIX:-64}}"
-
-# Build directories
-export BUILD_DIR="${{BUILD_DIR:-$S/build}}"
-# WORKDIR and T already defined at script start
-export FILESDIR="${{FILESDIR:-}}"
-
-# Clean and recreate temp directory to ensure fresh phases.sh
-# Note: preserve $T/bin which contains our pkg-config wrapper
-rm -rf "$T/phases.sh" "$T/phases-run.sh" 2>/dev/null || true
-mkdir -p "$T"
-
-# Custom environment
-{env}
-
-# USE flag helper
-use() {{
-    [[ " $USE " == *" $1 "* ]]
-}}
-
-cd "$S"
-
-# Phase: src_unpack (already done by download_source)
-{src_unpack}
-
-# Generate phases script
-cat > "$T/phases.sh" << 'PHASES_EOF'
+# Define the phases script content using heredoc (avoids single-quote escaping issues)
+# Note: read -d '' returns non-zero on EOF, so we use || true to prevent set -e from exiting
+read -r -d '' PHASES_CONTENT << 'PHASES_EOF' || true
 #!/bin/bash
 set -e
 
-# Variables will be inherited from parent environment
-export PN='{name}'
-export PV='{version}'
-export PACKAGE_NAME='{name}'
-export CATEGORY='{category}'
-export SLOT='{slot}'
-export USE='{use_flags}'
-
-# These are passed via environment
-cd "$S"
-
-# Custom environment
-{env}
-
 # USE flag helper
 use() {{
     [[ " $USE " == *" $1 "* ]]
 }}
 
-# Error handler for build phases
+# Error handler
 handle_phase_error() {{
     local phase=$1
     local exit_code=$2
-    local log_file=$T/${{phase}}.log
-
-    echo "" >&2
     echo "✗ Build phase $phase FAILED (exit code: $exit_code)" >&2
-    echo "  Package: {name}-{version}" >&2
-    echo "  Category: {category}" >&2
-    echo "  Phase: $phase" >&2
-    echo "  Working directory: $PWD" >&2
-    echo "" >&2
-
-    # Detect common error patterns (for automation)
-    if [ -f "$log_file" ]; then
-        echo "Analyzing error log..." >&2
-
-        # Check for missing dependencies (pkg-config)
-        if grep -q "Package .* was not found" "$log_file" 2>/dev/null; then
-            echo "" >&2
-            echo "DETECTED: Missing pkg-config dependencies" >&2
-            grep "Package .* was not found" "$log_file" | while read line; do
-                echo "  $line" >&2
-            done
-            echo "  Fix: Add missing dependencies to deps=[] in BUCK file" >&2
-        fi
-
-        # Check for CMake compatibility errors
-        if grep -q "Compatibility with CMake" "$log_file" 2>/dev/null; then
-            echo "" >&2
-            echo "DETECTED: CMake compatibility issue" >&2
-            echo "  Fix: Add -DCMAKE_MINIMUM_REQUIRED_VERSION=3.5 to cmake_args" >&2
-        fi
-
-        # Check for Meson unknown options
-        if grep -q "ERROR: Unknown options" "$log_file" 2>/dev/null; then
-            echo "" >&2
-            echo "DETECTED: Meson unknown options" >&2
-            grep "ERROR: Unknown options" "$log_file" | while read line; do
-                echo "  $line" >&2
-            done
-            echo "  Fix: Remove obsolete options from meson_args in BUCK file" >&2
-        fi
-
-        # Check for Meson boolean format errors
-        if grep -q "not one of the choices.*enabled.*disabled" "$log_file" 2>/dev/null; then
-            echo "" >&2
-            echo "DETECTED: Meson boolean format error (Meson 1.0+)" >&2
-            echo "  Fix: Replace true/false with enabled/disabled/auto in meson_args" >&2
-        fi
-    fi
-
-    echo "" >&2
-    echo "Common fixes for $phase:" >&2
-    case "$phase" in
-        src_configure)
-            echo "  - Check if all dependencies are installed" >&2
-            echo "  - Review configure_args in BUCK file" >&2
-            echo "  - For CMake: Check cmake_args" >&2
-            echo "  - For Meson: Ensure options use enabled/disabled/auto format" >&2
-            ;;
-        src_compile)
-            echo "  - Check for missing build dependencies" >&2
-            echo "  - Review compiler errors in build log" >&2
-            echo "  - May need additional USE flags or dependencies" >&2
-            ;;
-        src_install)
-            echo "  - Check if DESTDIR is respected" >&2
-            echo "  - Review install paths in configure_args" >&2
-            ;;
-    esac
+    echo "  Package: $PN-$PV" >&2
     exit $exit_code
 }}
 
+# Custom environment
+{env}
+
+cd "$S"
+
+# Phase: src_unpack
+{src_unpack}
+
+# Phase: src_prepare
 echo "📦 Phase: src_prepare"
 if ! ( {src_prepare} ) 2>&1 | tee "$T/src_prepare.log"; then
     handle_phase_error "src_prepare" ${{PIPESTATUS[0]}}
 fi
 
+# Phase: pre_configure
 echo "📦 Phase: pre_configure"
 if ! ( {pre_configure} ) 2>&1 | tee "$T/pre_configure.log"; then
     handle_phase_error "pre_configure" ${{PIPESTATUS[0]}}
 fi
 
+# Phase: src_configure
 echo "📦 Phase: src_configure"
 if ! ( {src_configure} ) 2>&1 | tee "$T/src_configure.log"; then
     handle_phase_error "src_configure" ${{PIPESTATUS[0]}}
 fi
 
+# Phase: src_compile
 echo "📦 Phase: src_compile"
 if ! ( {src_compile} ) 2>&1 | tee "$T/src_compile.log"; then
     handle_phase_error "src_compile" ${{PIPESTATUS[0]}}
 fi
 
-echo "📦 Phase: src_test"
+# Phase: src_test
 if [ -n "{run_tests}" ]; then
+    echo "📦 Phase: src_test"
     if ! ( {src_test} ) 2>&1 | tee "$T/src_test.log"; then
         handle_phase_error "src_test" ${{PIPESTATUS[0]}}
     fi
 fi
 
+# Phase: src_install
 echo "📦 Phase: src_install"
 if ! ( {src_install} ) 2>&1 | tee "$T/src_install.log"; then
     handle_phase_error "src_install" ${{PIPESTATUS[0]}}
 fi
 PHASES_EOF
+export PHASES_CONTENT
 
-# Make phases script executable
-chmod +x "$T/phases.sh"
-
-# Run phases with network isolation
-# Export all critical environment variables so phases.sh can inherit them
-export DESTDIR S EPREFIX PREFIX LIBDIR LIBDIR_SUFFIX BUILD_DIR WORKDIR T FILESDIR
-export PATH PYTHONPATH PKG_CONFIG_PATH
-# Export cross-compilation variables if set
-if [ -n "$CC" ]; then
-    export CC CXX AR AS LD NM RANLIB STRIP OBJCOPY OBJDUMP READELF
-    export CFLAGS CXXFLAGS LDFLAGS
-    export CHOST CBUILD
-fi
-
-if command -v unshare >/dev/null 2>&1 && unshare --net true 2>/dev/null; then
-    echo "🔒 Running build phases in network-isolated environment (no internet access)"
-    unshare --net -- "$T/phases.sh"
-else
-    echo "⚠ Warning: unshare not available or insufficient permissions, building without network isolation"
-    "$T/phases.sh"
-fi
-
-# =============================================================================
-# Post-build verification: Ensure package produced output
-# =============================================================================
-echo ""
-echo "📋 Verifying build output..."
-
-# Check if DESTDIR has any files
-FILE_COUNT=$(find "$DESTDIR" -type f 2>/dev/null | wc -l)
-DIR_COUNT=$(find "$DESTDIR" -type d 2>/dev/null | wc -l)
-
-if [ "$FILE_COUNT" -eq 0 ]; then
-    echo "" >&2
-    echo "✗ BUILD VERIFICATION FAILED: No files were installed" >&2
-    echo "  Package: {name}-{version}" >&2
-    echo "  DESTDIR: $DESTDIR" >&2
-    echo "" >&2
-    echo "  This usually means:" >&2
-    echo "  1. The build succeeded but 'make install' didn't use DESTDIR" >&2
-    echo "  2. The install phase has incorrect paths" >&2
-    echo "  3. The package installed to the wrong location" >&2
-    echo "" >&2
-    echo "  Check the src_install phase in the BUCK file" >&2
-    exit 1
-fi
-
-echo "✓ Build verification passed: $FILE_COUNT files in $DIR_COUNT directories"
-
-# Show summary of installed files for debugging
-echo ""
-echo "📂 Installed files summary:"
-find "$DESTDIR" -type d -name "bin" -exec sh -c 'echo "  Binaries: $(ls "$1" 2>/dev/null | wc -l) files in $1"' _ {{}} \;
-find "$DESTDIR" -type d -name "lib" -o -name "lib64" 2>/dev/null | head -2 | while read d; do
-    echo "  Libraries: $(find "$d" -maxdepth 1 -name "*.so*" -o -name "*.a" 2>/dev/null | wc -l) files in $d"
-done
-find "$DESTDIR" -type d -name "include" 2>/dev/null | head -1 | while read d; do
-    echo "  Headers: $(find "$d" -name "*.h" 2>/dev/null | wc -l) files in $d"
-done
+# Source the external framework (provides PATH setup, dependency handling, etc.)
+source "$FRAMEWORK_SCRIPT"
 '''.format(
             name = ctx.attrs.name,
             version = ctx.attrs.version,
@@ -3219,14 +2695,16 @@ done
         is_executable = True,
     )
 
-    # Build command with dependency directories as additional arguments
+    # Build command - wrapper sources the external framework
     cmd = cmd_args([
         "bash",
         script,
         install_dir.as_output(),
         src_dir,
+        pkg_config_wrapper,
+        ebuild_script,  # Framework script to be sourced
     ])
-    # Add all dependency directories as arguments (will be available as $3, $4, etc. in script)
+    # Add all dependency directories as arguments
     for dep_dir in dep_dirs:
         cmd.add(dep_dir)
 
@@ -3251,6 +2729,7 @@ done
             maintainers = ctx.attrs.maintainers,
         ),
     ]
+
 
 ebuild_package = rule(
     impl = _ebuild_package_impl,
@@ -3280,6 +2759,9 @@ ebuild_package = rule(
         # Bootstrap toolchain support
         "use_bootstrap": attrs.bool(default = False),
         "bootstrap_sysroot": attrs.string(default = ""),
+        # External scripts for proper cache invalidation
+        "_pkg_config_wrapper": attrs.dep(default = "//defs/scripts:pkg-config-wrapper"),
+        "_ebuild_script": attrs.dep(default = "//defs/scripts:ebuild"),
     },
 )
 

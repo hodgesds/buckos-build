@@ -50,6 +50,7 @@ filegroup(
         "//packages/linux/desktop/xorg-utilities/xcolor:xcolor",
         "//packages/linux/desktop/xorg-utilities/gpick:gpick",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -60,6 +61,7 @@ filegroup(
         "//packages/linux/desktop/xorg-utilities/xclip:xclip",
         "//packages/linux/desktop/xorg-utilities/xsel:xsel",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -71,6 +73,7 @@ filegroup(
         "//packages/linux/desktop/xorg-utilities/wmctrl:wmctrl",
         "//packages/linux/desktop/xorg-utilities/xbindkeys:xbindkeys",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -82,6 +85,7 @@ filegroup(
         "//packages/linux/desktop/xorg-utilities/arandr:arandr",
         "//packages/linux/desktop/xorg-utilities/autorandr:autorandr",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -95,6 +99,7 @@ filegroup(
         "//packages/linux/desktop/xorg-utilities/setxkbmap:setxkbmap",
         "//packages/linux/desktop/xorg-utilities/xmodmap:xmodmap",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -108,6 +113,7 @@ filegroup(
         "//packages/linux/desktop/xorg-utilities/xev:xev",
         "//packages/linux/desktop/xorg-utilities/xlsclients:xlsclients",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -118,6 +124,7 @@ filegroup(
         "//packages/linux/desktop/xorg-utilities/dmenu:dmenu",
         "//packages/linux/desktop/xorg-utilities/rofi:rofi",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -129,6 +136,7 @@ filegroup(
         "//packages/linux/desktop/xorg-utilities/slock:slock",
         "//packages/linux/desktop/xorg-utilities/xss-lock:xss-lock",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -140,6 +148,7 @@ filegroup(
         "//packages/linux/desktop/xorg-utilities/maim:maim",
         "//packages/linux/desktop/xorg-utilities/slop:slop",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -150,6 +159,7 @@ filegroup(
         "//packages/linux/desktop/xorg-utilities/dunst:dunst",
         "//packages/linux/desktop/xorg-utilities/libnotify:libnotify",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -160,6 +170,7 @@ filegroup(
         "//packages/linux/desktop/xorg-utilities/feh:feh",
         "//packages/linux/desktop/xorg-utilities/nitrogen:nitrogen",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -170,6 +181,7 @@ filegroup(
         "//packages/linux/desktop/xorg-utilities/polybar:polybar",
         "//packages/linux/desktop/xorg-utilities/xmobar:xmobar",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -181,6 +193,7 @@ filegroup(
         "//packages/linux/desktop/xorg-utilities/xcolor:xcolor",
         "//packages/linux/desktop/xorg-utilities/gpick:gpick",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -197,6 +210,7 @@ filegroup(
         "//packages/linux/desktop/xorg-utilities/dunst:dunst",
         "//packages/linux/desktop/xorg-utilities/libnotify:libnotify",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -215,5 +229,6 @@ filegroup(
         "//packages/linux/desktop/xorg-utilities/xclip:xclip",
         "//packages/linux/desktop/xorg-utilities/maim:maim",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

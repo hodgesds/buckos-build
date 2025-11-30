@@ -17,6 +17,7 @@ filegroup(
         "//packages/linux/benchmarks/dbench:dbench",
         "//packages/linux/benchmarks/perf:perf",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -30,6 +31,7 @@ filegroup(
         "//packages/linux/benchmarks/stream:stream",
         "//packages/linux/benchmarks/lmbench:lmbench",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -42,6 +44,7 @@ filegroup(
         "//packages/linux/benchmarks/iozone:iozone",
         "//packages/linux/benchmarks/dbench:dbench",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -52,6 +55,7 @@ filegroup(
         "//packages/linux/benchmarks/iperf3:iperf3",
         "//packages/linux/benchmarks/netperf:netperf",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -63,5 +67,6 @@ filegroup(
         "//packages/linux/benchmarks/cyclictest:cyclictest",
         "//packages/linux/benchmarks/perf:perf",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

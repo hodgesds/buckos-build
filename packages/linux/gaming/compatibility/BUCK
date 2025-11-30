@@ -10,6 +10,7 @@ filegroup(
         "//packages/linux/gaming/compatibility/dxvk:dxvk",
         "//packages/linux/gaming/compatibility/vkd3d-proton:vkd3d-proton",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -21,5 +22,6 @@ filegroup(
         "//packages/linux/gaming/compatibility/dxvk:dxvk",
         "//packages/linux/gaming/compatibility/vkd3d-proton:vkd3d-proton",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

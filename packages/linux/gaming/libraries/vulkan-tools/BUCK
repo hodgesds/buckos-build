@@ -178,5 +178,6 @@ filegroup(
         ":vulkan-tools",
         ":vulkan-validation-layers",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

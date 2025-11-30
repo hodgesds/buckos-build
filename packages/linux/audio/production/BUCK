@@ -5,6 +5,7 @@ filegroup(
     srcs = [
         "//packages/linux/audio/production/audacity:audacity",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -15,6 +16,7 @@ filegroup(
         "//packages/linux/audio/production/lmms:lmms",
         "//packages/linux/audio/production/rosegarden:rosegarden",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -24,6 +26,7 @@ filegroup(
         "//packages/linux/audio/production/hydrogen:hydrogen",
         "//packages/linux/audio/production/sonic-pi:sonic-pi",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -34,5 +37,6 @@ filegroup(
         ":daws",
         ":composition-tools",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

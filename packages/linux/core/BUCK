@@ -18,6 +18,7 @@ filegroup(
         "//packages/linux/core/file:file",
         "//packages/linux/core/less:less",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -29,6 +30,7 @@ filegroup(
         "//packages/linux/core/bzip2:bzip2",
         "//packages/linux/core/xz:xz",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -39,5 +41,6 @@ filegroup(
         "//packages/linux/core/ncurses:ncurses",
         "//packages/linux/core/readline:readline",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

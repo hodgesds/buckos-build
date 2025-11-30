@@ -8,6 +8,7 @@ filegroup(
         "//packages/linux/communication/email-clients/cli:cli-email-clients",
         "//packages/linux/communication/email-clients/gui:gui-email-clients",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -17,6 +18,7 @@ filegroup(
     srcs = [
         "//packages/linux/communication/email-clients/cli:cli-email-clients",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -26,6 +28,7 @@ filegroup(
     srcs = [
         "//packages/linux/communication/email-clients/gui:gui-email-clients",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -36,6 +39,7 @@ filegroup(
         "//packages/linux/communication/email-clients/cli/neomutt:neomutt",
         "//packages/linux/communication/email-clients/gui/thunderbird:thunderbird",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -49,6 +53,7 @@ filegroup(
         "//packages/linux/communication/email-clients/gui/claws-mail:claws-mail",
         "//packages/linux/communication/email-clients/gui/sylpheed:sylpheed",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -62,5 +67,6 @@ filegroup(
         "//packages/linux/communication/email-clients/gui/kmail:kmail",
         "//packages/linux/communication/email-clients/gui/thunderbird:thunderbird",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

@@ -4,6 +4,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/firmware/linux-firmware:linux-firmware",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 

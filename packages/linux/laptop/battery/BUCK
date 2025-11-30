@@ -5,6 +5,7 @@ filegroup(
     srcs = [
         "//packages/linux/laptop/battery/upower:upower",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -14,6 +15,7 @@ filegroup(
         "//packages/linux/laptop/battery/acpi_call:acpi_call",
         "//packages/linux/laptop/battery/tp_smapi:tp_smapi",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -22,6 +24,7 @@ filegroup(
     srcs = [
         "//packages/linux/laptop/battery/laptop-mode-tools:laptop-mode-tools",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -30,6 +33,7 @@ filegroup(
     srcs = [
         "//packages/linux/laptop/battery/upower:upower",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -39,6 +43,7 @@ filegroup(
         "//packages/linux/laptop/battery/tp_smapi:tp_smapi",
         "//packages/linux/laptop/battery/acpi_call:acpi_call",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -50,5 +55,6 @@ filegroup(
         "//packages/linux/laptop/battery/tp_smapi:tp_smapi",
         "//packages/linux/laptop/battery/laptop-mode-tools:laptop-mode-tools",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

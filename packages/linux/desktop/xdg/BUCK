@@ -164,5 +164,6 @@ filegroup(
         ":xdg-desktop-portal",
         ":xdg-desktop-portal-gtk",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

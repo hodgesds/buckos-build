@@ -6,6 +6,7 @@ filegroup(
     srcs = [
         "//packages/linux/audio/daemons:all-daemons",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -15,6 +16,7 @@ filegroup(
     srcs = [
         "//packages/linux/audio/players:all-players",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -24,6 +26,7 @@ filegroup(
     srcs = [
         "//packages/linux/audio/production:all-production",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -33,6 +36,7 @@ filegroup(
     srcs = [
         "//packages/linux/audio/libraries:all-libraries",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -42,6 +46,7 @@ filegroup(
     srcs = [
         "//packages/linux/audio/utilities:all-utilities",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -53,6 +58,7 @@ filegroup(
         "//packages/linux/audio/daemons/alsa-utils:alsa-utils",
         "//packages/linux/audio/daemons/pipewire:pipewire",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -68,6 +74,7 @@ filegroup(
         "//packages/linux/audio/players/ncmpcpp:ncmpcpp",
         "//packages/linux/audio/utilities/sox:sox",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -79,6 +86,7 @@ filegroup(
         "//packages/linux/audio/players/audacious:audacious",
         "//packages/linux/audio/utilities/pavucontrol:pavucontrol",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -92,6 +100,7 @@ filegroup(
         "//packages/linux/audio/libraries:all-libraries",
         "//packages/linux/audio/utilities/sox:sox",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -105,5 +114,6 @@ filegroup(
         ":libraries",
         ":utilities",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

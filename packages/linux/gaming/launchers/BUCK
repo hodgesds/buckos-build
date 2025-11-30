@@ -10,5 +10,6 @@ filegroup(
         "//packages/linux/gaming/launchers/lutris:lutris",
         "//packages/linux/gaming/launchers/heroic:heroic",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

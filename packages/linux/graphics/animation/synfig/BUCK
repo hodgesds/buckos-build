@@ -79,5 +79,6 @@ filegroup(
         ":synfig-core",
         ":synfig-studio",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

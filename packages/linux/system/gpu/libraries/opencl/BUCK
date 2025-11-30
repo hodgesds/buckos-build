@@ -56,5 +56,6 @@ filegroup(
         ":opencl-headers",
         ":opencl-icd-loader",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

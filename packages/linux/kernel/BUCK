@@ -19,8 +19,8 @@
 export_file(
     name = "kernel.config",
     src = "kernel.config",
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
-    default_target_platform = "root//platforms:linux-x86_64",
 )
 
 # Convenience alias for the default BuckOS kernel

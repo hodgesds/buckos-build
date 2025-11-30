@@ -64,5 +64,6 @@ filegroup(
         ":intel-firmware",
         ":intel-gpu-tools",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

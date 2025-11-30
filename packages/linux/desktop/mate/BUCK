@@ -49,5 +49,6 @@ filegroup(
         "//packages/linux/desktop/xorg-server:xorg-server",
         "//packages/linux/desktop/mesa:mesa",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

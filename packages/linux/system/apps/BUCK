@@ -30,6 +30,7 @@ filegroup(
         "//packages/linux/system/apps/cronie:cronie",
         "//packages/linux/system/apps/dcron:dcron",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -42,6 +43,7 @@ filegroup(
         "//packages/linux/system/apps/psmisc:psmisc",
         "//packages/linux/core/procps-ng:procps-ng",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -51,6 +53,7 @@ filegroup(
         "//packages/linux/system/apps/sudo:sudo",
         "//packages/linux/system/apps/doas:doas",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -61,6 +64,7 @@ filegroup(
         "//packages/linux/system/apps/screen:screen",
         "//packages/linux/system/apps/mosh:mosh",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -71,6 +75,7 @@ filegroup(
         "//packages/linux/system/apps/logrotate:logrotate",
         "//packages/linux/system/apps/lnav:lnav",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -79,6 +84,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/apps/haveged:haveged",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -87,6 +93,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/apps/monit:monit",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -99,6 +106,7 @@ filegroup(
         "//packages/linux/system/apps/bpf/bpftop:bpftop",
         "//packages/linux/system/apps/bpf/scx-scheds:scx-scheds",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -113,6 +121,7 @@ filegroup(
         "//packages/linux/system/apps/coreutils:coreutils",
         "//packages/linux/system/apps/tar:tar",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -121,6 +130,7 @@ filegroup(
     srcs = [
         "//packages/linux/system/apps/shadow:shadow",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -141,5 +151,6 @@ filegroup(
         "//packages/linux/system/apps/acpid:acpid",
         "//packages/linux/system/apps/at:at",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

@@ -12,6 +12,7 @@ filegroup(
         "//packages/linux/graphics/editors/rawtherapee:rawtherapee",
         "//packages/linux/graphics/editors/mypaint:mypaint",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -23,6 +24,7 @@ filegroup(
         "//packages/linux/graphics/3d/freecad:freecad",
         "//packages/linux/graphics/3d/openscad:openscad",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -34,6 +36,7 @@ filegroup(
         "//packages/linux/graphics/viewers/imv:imv",
         "//packages/linux/graphics/viewers/geeqie:geeqie",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -46,6 +49,7 @@ filegroup(
         "//packages/linux/graphics/screenshot/grim:grim",
         "//packages/linux/graphics/screenshot/maim:maim",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -55,6 +59,7 @@ filegroup(
     srcs = [
         "//packages/linux/graphics/video:all",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -64,6 +69,7 @@ filegroup(
     srcs = [
         "//packages/linux/graphics/video:libraries",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -73,6 +79,7 @@ filegroup(
     srcs = [
         "//packages/linux/graphics/video:players",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -82,6 +89,7 @@ filegroup(
     srcs = [
         "//packages/linux/graphics/video:editors",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -91,6 +99,7 @@ filegroup(
     srcs = [
         "//packages/linux/graphics/video:utilities",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -100,6 +109,7 @@ filegroup(
     srcs = [
         "//packages/linux/graphics/video:recording",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -109,6 +119,7 @@ filegroup(
     srcs = [
         "//packages/linux/graphics/video:streaming",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -118,6 +129,7 @@ filegroup(
     srcs = [
         "//packages/linux/graphics/animation/synfig:synfig",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -134,6 +146,7 @@ filegroup(
         "//packages/linux/graphics/utilities/libmypaint:libmypaint",
         "//packages/linux/graphics/utilities/slop:slop",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -147,6 +160,7 @@ filegroup(
         "//packages/linux/graphics/3d/blender:blender",
         "//packages/linux/graphics/video/kdenlive:kdenlive",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -160,6 +174,7 @@ filegroup(
         "//packages/linux/graphics/viewers/geeqie:geeqie",
         "//packages/linux/graphics/utilities/imagemagick:imagemagick",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -171,6 +186,7 @@ filegroup(
         "//packages/linux/graphics/screenshot/scrot:scrot",
         "//packages/linux/graphics/utilities/imagemagick:imagemagick",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -182,6 +198,7 @@ filegroup(
         "//packages/linux/graphics/screenshot/grim:grim",
         "//packages/linux/graphics/screenshot/flameshot:flameshot",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -197,5 +214,6 @@ filegroup(
         ":animation",
         ":utilities",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

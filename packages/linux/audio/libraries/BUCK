@@ -10,6 +10,7 @@ filegroup(
         "//packages/linux/audio/libraries/lame:lame",
         "//packages/linux/audio/libraries/libmad:libmad",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -19,6 +20,7 @@ filegroup(
         "//packages/linux/audio/libraries/libsndfile:libsndfile",
         "//packages/linux/audio/libraries/libao:libao",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -28,5 +30,6 @@ filegroup(
         ":codec-libraries",
         ":audio-io-libraries",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

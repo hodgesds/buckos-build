@@ -203,5 +203,6 @@ filegroup(
         ":caribou",
         ":libcanberra",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

@@ -786,5 +786,6 @@ filegroup(
         ":libgnome-games-support",
         ":yelp-xsl",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

@@ -9,6 +9,7 @@ filegroup(
         "//packages/linux/network/firewall/nftables:nftables",
         "//packages/linux/network/firewall/firewalld:firewalld",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -19,6 +20,7 @@ filegroup(
         "//packages/linux/network/firewall/iptables:iptables",
         "//packages/linux/network/firewall/ipset:ipset",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -30,6 +32,7 @@ filegroup(
         "//packages/linux/network/firewall/firewalld:firewalld",
         "//packages/linux/network/firewall/ferm:ferm",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -40,6 +43,7 @@ filegroup(
         "//packages/linux/network/firewall/ferm:ferm",
         "//packages/linux/network/firewall/ipset:ipset",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -51,6 +55,7 @@ filegroup(
         "//packages/linux/network/firewall/iptables:iptables",
         "//packages/linux/network/firewall/ipset:ipset",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -60,6 +65,7 @@ filegroup(
     srcs = [
         "//packages/linux/network/firewall/nftables:nftables",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -74,5 +80,6 @@ filegroup(
         "//packages/linux/network/firewall/ipset:ipset",
         "//packages/linux/network/firewall/ferm:ferm",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

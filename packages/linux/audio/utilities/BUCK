@@ -6,6 +6,7 @@ filegroup(
         "//packages/linux/audio/utilities/sox:sox",
         "//packages/linux/audio/utilities/abcde:abcde",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -15,6 +16,7 @@ filegroup(
         "//packages/linux/audio/utilities/mediainfo:mediainfo",
         "//packages/linux/audio/utilities/id3v2:id3v2",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -23,6 +25,7 @@ filegroup(
     srcs = [
         "//packages/linux/audio/utilities/pavucontrol:pavucontrol",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -33,5 +36,6 @@ filegroup(
         ":info-tools",
         ":control-tools",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

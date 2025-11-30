@@ -6,6 +6,7 @@ filegroup(
         "//packages/linux/audio/daemons/alsa-lib:alsa-lib",
         "//packages/linux/audio/daemons/alsa-utils:alsa-utils",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -16,6 +17,7 @@ filegroup(
         "//packages/linux/audio/daemons/pipewire:pipewire",
         "//packages/linux/audio/daemons/jack2:jack2",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -25,5 +27,6 @@ filegroup(
         ":alsa-packages",
         ":sound-servers",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

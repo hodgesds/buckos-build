@@ -163,5 +163,6 @@ ls -la "$DESTDIR/usr/lib/dracut/" | head -20
 filegroup(
     name = "dracut-modules",
     srcs = [":dracut"],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

@@ -10,6 +10,7 @@ filegroup(
         "//packages/linux/network/vpn/openvpn:openvpn",
         "//packages/linux/network/vpn/strongswan:strongswan",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -20,6 +21,7 @@ filegroup(
         "//packages/linux/network/vpn/strongswan:strongswan",
         "//packages/linux/network/vpn/libreswan:libreswan",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -32,6 +34,7 @@ filegroup(
         "//packages/linux/network/vpn/ocproxy:ocproxy",
         "//packages/linux/network/vpn/vpnc-scripts:vpnc-scripts",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -45,6 +48,7 @@ filegroup(
         "//packages/linux/network/vpn/n2n:n2n",
         "//packages/linux/network/vpn/tailscale:tailscale",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -56,6 +60,7 @@ filegroup(
         "//packages/linux/network/vpn/strongswan:strongswan",
         "//packages/linux/network/vpn/softether:softether",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -67,6 +72,7 @@ filegroup(
         "//packages/linux/network/vpn/tinc:tinc",
         "//packages/linux/network/vpn/n2n:n2n",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -77,6 +83,7 @@ filegroup(
         "//packages/linux/network/vpn/pptp-linux:pptp-linux",
         "//packages/linux/network/vpn/vpnc:vpnc",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -100,5 +107,6 @@ filegroup(
         "//packages/linux/network/vpn/ocproxy:ocproxy",
         "//packages/linux/network/vpn/vpnc-scripts:vpnc-scripts",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

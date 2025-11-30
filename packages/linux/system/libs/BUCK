@@ -16,6 +16,7 @@ filegroup(
         "//packages/linux/system/libs/image/giflib:giflib",
         "//packages/linux/system/libs/image/openjpeg:openjpeg",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -29,6 +30,7 @@ filegroup(
         "//packages/linux/system/libs/font/fribidi:fribidi",
         "//packages/linux/system/libs/font/graphite2:graphite2",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -39,6 +41,7 @@ filegroup(
         "//packages/linux/system/libs/graphics/pixman:pixman",
         "//packages/linux/system/libs/graphics/cairo:cairo",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -57,6 +60,7 @@ filegroup(
         "//packages/linux/system/libs/audio/speex:speexdsp",
         "//packages/linux/system/libs/audio/wavpack:wavpack",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -68,6 +72,7 @@ filegroup(
         "//packages/linux/system/libs/audio/libsndfile:libsndfile",
         "//packages/linux/system/libs/audio/libsamplerate:libsamplerate",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -82,6 +87,7 @@ filegroup(
         "//packages/linux/system/libs/video/libdvdnav:libdvdnav",
         "//packages/linux/system/libs/video/libbluray:libbluray",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -96,6 +102,7 @@ filegroup(
         "//packages/linux/system/libs/multimedia/openal-soft:openal-soft",
         "//packages/linux/system/libs/multimedia/portaudio:portaudio",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -108,6 +115,7 @@ filegroup(
         "//packages/linux/system/libs/input/libinput:libinput",
         "//packages/linux/system/libs/input/libxkbcommon:libxkbcommon",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -122,6 +130,7 @@ filegroup(
         "//packages/linux/system/libs/video/libdvdnav:libdvdnav",
         "//packages/linux/system/libs/video/libbluray:libbluray",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -141,6 +150,7 @@ filegroup(
         "//packages/linux/system/libs/audio/libvorbis:libvorbis",
         "//packages/linux/system/libs/audio/opus:opus",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -156,6 +166,7 @@ filegroup(
         ":video-libs",
         ":input-libs",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -167,6 +178,7 @@ filegroup(
         ":multimedia-libs",
         ":disc-libs",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -179,6 +191,7 @@ filegroup(
         "//packages/linux/system/libs/multimedia/sdl2-mixer:sdl2-mixer",
         "//packages/linux/system/libs/multimedia/sdl2-ttf:sdl2-ttf",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -191,6 +204,7 @@ filegroup(
         "//packages/linux/system/libs/multimedia/openal-soft:openal-soft",
         "//packages/linux/system/libs/multimedia/portaudio:portaudio",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -208,6 +222,7 @@ filegroup(
         "//packages/linux/system/libs/compression/bzip2:bzip2",
         "//packages/linux/system/libs/compression/xz:xz",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -221,6 +236,7 @@ filegroup(
         "//packages/linux/system/libs/crypto/gnutls:gnutls",
         "//packages/linux/system/libs/crypto/nettle:nettle",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -235,6 +251,7 @@ filegroup(
         "//packages/linux/system/libs/data/expat:expat",
         "//packages/linux/system/libs/data/yaml:yaml",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -245,6 +262,7 @@ filegroup(
         "//packages/linux/system/libs/database/sqlite:sqlite",
         "//packages/linux/system/libs/database/lmdb:lmdb",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -257,6 +275,7 @@ filegroup(
         "//packages/linux/system/libs/network/nghttp2:nghttp2",
         "//packages/linux/system/libs/network/c-ares:c-ares",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -268,6 +287,7 @@ filegroup(
         "//packages/linux/system/libs/ipc/libcap:libcap",
         "//packages/linux/system/libs/ipc/libseccomp:libseccomp",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -283,6 +303,7 @@ filegroup(
         "//packages/linux/system/libs/utility/libuv:libuv",
         "//packages/linux/system/libs/compression/libarchive:libarchive",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -309,5 +330,6 @@ filegroup(
         ":ipc-libs",
         ":utility-libs",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

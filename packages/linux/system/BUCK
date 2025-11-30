@@ -134,6 +134,7 @@ ISSUE
 filegroup(
     name = "init-scripts",
     srcs = [":init-scripts-gen"],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -183,6 +184,7 @@ chmod 700 $OUT/root
 filegroup(
     name = "baselayout",
     srcs = [":baselayout-gen"],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 

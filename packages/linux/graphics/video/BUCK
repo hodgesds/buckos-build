@@ -23,6 +23,7 @@ filegroup(
         "//packages/linux/graphics/video/vdpau:vdpau",
         "//packages/linux/graphics/video/vdpau:libvdpau-va-gl",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -37,6 +38,7 @@ filegroup(
         "//packages/linux/graphics/video/celluloid:celluloid",
         "//packages/linux/graphics/video/kodi:kodi",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -55,6 +57,7 @@ filegroup(
         "//packages/linux/graphics/video/natron:natron",
         "//packages/linux/graphics/video/olive:olive",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -71,6 +74,7 @@ filegroup(
         "//packages/linux/graphics/video/v4l-utils:v4l-utils",
         "//packages/linux/graphics/video/dvdauthor:dvdauthor",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -85,6 +89,7 @@ filegroup(
         "//packages/linux/graphics/video/kazam:kazam",
         "//packages/linux/graphics/video/gpu-screen-recorder:gpu-screen-recorder",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -99,6 +104,7 @@ filegroup(
         "//packages/linux/graphics/video/dav1d:dav1d",
         "//packages/linux/graphics/video/aom:aom",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -112,6 +118,7 @@ filegroup(
         "//packages/linux/graphics/video/vdpau:vdpau",
         "//packages/linux/graphics/video/vdpau:libvdpau-va-gl",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -123,6 +130,7 @@ filegroup(
         "//packages/linux/graphics/video/mpv:mpv",
         "//packages/linux/graphics/video/yt-dlp:yt-dlp",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -134,6 +142,7 @@ filegroup(
         ":players",
         ":utilities",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -148,6 +157,7 @@ filegroup(
         "//packages/linux/graphics/video/mkvtoolnix:mkvtoolnix",
         "//packages/linux/graphics/video/mediainfo:mediainfo",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -160,6 +170,7 @@ filegroup(
         "//packages/linux/graphics/video/gstreamer:gstreamer",
         "//packages/linux/graphics/video/v4l-utils:v4l-utils",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -173,5 +184,6 @@ filegroup(
         ":utilities",
         ":recording",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

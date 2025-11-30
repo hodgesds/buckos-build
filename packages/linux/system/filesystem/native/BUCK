@@ -21,6 +21,7 @@ filegroup(
         "//packages/linux/system/filesystem/native/nilfs-utils:nilfs-utils",
         "//packages/linux/system/filesystem/native/bcachefs-tools:bcachefs-tools",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -33,5 +34,6 @@ filegroup(
         "//packages/linux/system/filesystem/native/xfsprogs:xfsprogs",
         "//packages/linux/system/filesystem/native/dosfstools:dosfstools",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

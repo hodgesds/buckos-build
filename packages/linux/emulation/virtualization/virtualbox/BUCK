@@ -141,5 +141,6 @@ filegroup(
         ":virtualbox-guest-additions",
         ":virtualbox-modules",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

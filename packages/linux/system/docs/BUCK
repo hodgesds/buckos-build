@@ -150,5 +150,6 @@ filegroup(
         ":gdbm",
         ":texinfo",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

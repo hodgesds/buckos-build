@@ -68,5 +68,6 @@ filegroup(
         ":nvtop",
         # ":gpu-burn",  # Disabled - requires CUDA toolkit
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

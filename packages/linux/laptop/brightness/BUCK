@@ -6,6 +6,7 @@ filegroup(
         "//packages/linux/laptop/brightness/brightnessctl:brightnessctl",
         "//packages/linux/laptop/brightness/light:light",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -14,6 +15,7 @@ filegroup(
     srcs = [
         "//packages/linux/laptop/brightness/ddcutil:ddcutil",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -22,6 +24,7 @@ filegroup(
     srcs = [
         "//packages/linux/laptop/brightness/brightnessctl:brightnessctl",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -32,5 +35,6 @@ filegroup(
         "//packages/linux/laptop/brightness/light:light",
         "//packages/linux/laptop/brightness/ddcutil:ddcutil",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

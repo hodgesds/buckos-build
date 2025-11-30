@@ -5,6 +5,7 @@ filegroup(
         "//packages/linux/boot/grub:grub",
         "//packages/linux/boot/syslinux:syslinux",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -14,6 +15,7 @@ filegroup(
     srcs = [
         "//packages/linux/boot/grub:grub",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -24,5 +26,6 @@ filegroup(
         "//packages/linux/boot/grub:grub",
         "//packages/linux/boot/syslinux:syslinux",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

@@ -5,6 +5,7 @@ filegroup(
     srcs = [
         "//packages/linux/emulation/kernel/virtme-ng:virtme-ng",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -13,6 +14,7 @@ filegroup(
     srcs = [
         "//packages/linux/emulation/kernel/kvmtool:kvmtool",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -22,5 +24,6 @@ filegroup(
         ":virtme-tools",
         ":kvm-tools",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

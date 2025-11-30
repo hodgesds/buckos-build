@@ -159,7 +159,6 @@ download_source(
     src_uri = "https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64",
     sha256 = "56de6d5e5ec427e17b74fa48d51271c7fc0d61571e98f47cec6b2ecbed4d1fb0",
     auto_detect_signature = False,
-    extract = False,
 )
 
 ebuild_package(

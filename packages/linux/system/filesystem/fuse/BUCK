@@ -17,6 +17,7 @@ filegroup(
         "//packages/linux/system/filesystem/fuse/encfs:encfs",
         "//packages/linux/system/filesystem/fuse/gocryptfs:gocryptfs",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -27,6 +28,7 @@ filegroup(
         "//packages/linux/system/filesystem/fuse/fuse3:fuse3",
         "//packages/linux/system/filesystem/fuse/ntfs-3g:ntfs-3g",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -37,5 +39,6 @@ filegroup(
         "//packages/linux/system/filesystem/fuse/encfs:encfs",
         "//packages/linux/system/filesystem/fuse/gocryptfs:gocryptfs",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

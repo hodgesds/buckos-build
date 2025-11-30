@@ -6,6 +6,7 @@ filegroup(
         "//packages/linux/fonts/libraries/freetype:freetype",
         "//packages/linux/fonts/libraries/fontconfig:fontconfig",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -15,6 +16,7 @@ filegroup(
         "//packages/linux/fonts/libraries/harfbuzz:harfbuzz",
         "//packages/linux/fonts/libraries/pango:pango",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )
 
@@ -24,5 +26,6 @@ filegroup(
         ":rendering-libraries",
         ":text-shaping-libraries",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

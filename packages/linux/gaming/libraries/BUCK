@@ -9,5 +9,6 @@ filegroup(
         "//packages/linux/gaming/libraries/sdl2:sdl2",
         "//packages/linux/gaming/libraries/vulkan-tools:vulkan-tools",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

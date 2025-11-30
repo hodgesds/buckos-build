@@ -155,5 +155,6 @@ filegroup(
         ":sdl2-mixer",
         ":sdl2-ttf",
     ],
+    default_target_platform = "//platforms:default",
     visibility = ["PUBLIC"],
 )

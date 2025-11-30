@@ -62,6 +62,9 @@ autotools_package(
         "--enable-cmdlib",
         "--enable-pkgconfig",
     ],
+    deps = [
+        "//packages/linux/system/libs/io/libaio:libaio",
+    ],
     visibility = ["PUBLIC"],
 )
 

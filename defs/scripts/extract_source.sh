@@ -176,4 +176,17 @@ fi
 # Re-enable glob expansion
 set +f
 
+# Fix filenames with escape sequences (e.g., \x2d -> -)
+# Buck2 cannot handle files with escape sequences in their names
+# These are literal backslash-x sequences in the filenames, not actual escape chars
+find . -name '*\\x*' 2>/dev/null | while read -r file; do
+    # Decode \x2d (hyphen), \x40 (@), etc. to their actual characters
+    newname=$(echo "$file" | sed 's/\\x2d/-/g; s/\\x40/@/g; s/\\x2e/./g')
+    if [ "$file" != "$newname" ]; then
+        mkdir -p "$(dirname "$newname")"
+        mv "$file" "$newname"
+        echo "Renamed: $file -> $newname"
+    fi
+done
+
 echo "Extraction complete: $(find . -type f | wc -l) files"

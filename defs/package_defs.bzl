@@ -514,11 +514,30 @@ fi
 
 # Build kernel
 # Disable -Werror for GCC 15+ which has stricter warnings that older kernel code doesn't satisfy
-make -j$(nproc) WERROR=0
+# Add extra CFLAGS to suppress GCC 15 specific warnings that the kernel doesn't handle yet
+EXTRA_CFLAGS=""
+if [ -n "$GCC15_COMPAT" ]; then
+    EXTRA_CFLAGS="-Wno-error=unterminated-string-initialization"
+fi
+make -j$(nproc) WERROR=0 KCFLAGS="$EXTRA_CFLAGS"
 
-# Install
-make install
-make modules_install
+# Manual install to avoid system kernel-install scripts that try to write to /boot, run dracut, etc.
+# Get kernel release version
+KRELEASE=$(make -s kernelrelease)
+echo "Installing kernel version: $KRELEASE"
+
+# Install kernel image
+mkdir -p "$INSTALL_PATH"
+cp arch/x86/boot/bzImage "$INSTALL_PATH/vmlinuz-$KRELEASE"
+cp System.map "$INSTALL_PATH/System.map-$KRELEASE"
+cp .config "$INSTALL_PATH/config-$KRELEASE"
+
+# Install modules
+make INSTALL_MOD_PATH="$INSTALL_BASE" modules_install
+
+# Install headers (useful for out-of-tree modules)
+mkdir -p "$INSTALL_BASE/usr/src/linux-$KRELEASE"
+make INSTALL_HDR_PATH="$INSTALL_BASE/usr" headers_install
 """,
     )
 
@@ -818,22 +837,45 @@ fi
 BUILD_END=$(date +%s)
 echo "[TIMING] Total build time: $((BUILD_END - BUILD_START)) seconds"
 
+# =============================================================================
+# Post-build verification: Ensure package produced output
+# =============================================================================
+echo ""
+echo "📋 Verifying build output..."
+
+# Check if OUT has any files
+FILE_COUNT=$(find "$OUT" -type f 2>/dev/null | wc -l)
+DIR_COUNT=$(find "$OUT" -type d 2>/dev/null | wc -l)
+
+if [ "$FILE_COUNT" -eq 0 ]; then
+    echo "" >&2
+    echo "✗ BUILD VERIFICATION FAILED: No files were installed" >&2
+    echo "  Package: {name}-{version}" >&2
+    echo "  Output directory: $OUT" >&2
+    echo "" >&2
+    echo "  This usually means:" >&2
+    echo "  1. The install_script didn't copy files to \$OUT" >&2
+    echo "  2. The build succeeded but installation paths are wrong" >&2
+    echo "  3. DESTDIR or prefix wasn't set correctly" >&2
+    echo "" >&2
+    echo "  Check the install_script in the BUCK file" >&2
+    exit 1
+fi
+
+echo "✓ Build verification passed: $FILE_COUNT files in $DIR_COUNT directories"
+
 # Post-build summary
 echo ""
 echo "=== Build summary for {name} {version} ==="
 echo "Output directory: $OUT"
-if [ -d "$OUT" ]; then
-    echo "Installed directories:"
-    find "$OUT" -type d -maxdepth 3 | head -20
-    echo ""
-    echo "Installed binaries (first 10):"
-    find "$OUT" -type f -executable -name "*" | head -10
-    echo ""
-    echo "Total files: $(find "$OUT" -type f | wc -l)"
-    echo "Total size: $(du -sh "$OUT" 2>/dev/null | cut -f1)"
-else
-    echo "ERROR: Output directory does not exist!"
-fi
+echo "Installed directories:"
+find "$OUT" -type d -maxdepth 3 | head -20
+echo ""
+echo "Installed binaries (first 10):"
+find "$OUT" -type f -executable -name "*" | head -10
+echo ""
+echo "Total files: $FILE_COUNT"
+echo "Total size: $(du -sh "$OUT" 2>/dev/null | cut -f1)"
 echo "=== End build summary ($(date '+%Y-%m-%d %H:%M:%S')) ==="
 """.format(
             name = ctx.attrs.name,
@@ -2924,6 +2966,44 @@ else
     echo "⚠ Warning: unshare not available or insufficient permissions, building without network isolation"
     "$T/phases.sh"
 fi
+
+# =============================================================================
+# Post-build verification: Ensure package produced output
+# =============================================================================
+echo ""
+echo "📋 Verifying build output..."
+
+# Check if DESTDIR has any files
+FILE_COUNT=$(find "$DESTDIR" -type f 2>/dev/null | wc -l)
+DIR_COUNT=$(find "$DESTDIR" -type d 2>/dev/null | wc -l)
+
+if [ "$FILE_COUNT" -eq 0 ]; then
+    echo "" >&2
+    echo "✗ BUILD VERIFICATION FAILED: No files were installed" >&2
+    echo "  Package: {name}-{version}" >&2
+    echo "  DESTDIR: $DESTDIR" >&2
+    echo "" >&2
+    echo "  This usually means:" >&2
+    echo "  1. The build succeeded but 'make install' didn't use DESTDIR" >&2
+    echo "  2. The install phase has incorrect paths" >&2
+    echo "  3. The package installed to the wrong location" >&2
+    echo "" >&2
+    echo "  Check the src_install phase in the BUCK file" >&2
+    exit 1
+fi
+
+echo "✓ Build verification passed: $FILE_COUNT files in $DIR_COUNT directories"
+
+# Show summary of installed files for debugging
+echo ""
+echo "📂 Installed files summary:"
+find "$DESTDIR" -type d -name "bin" -exec sh -c 'echo "  Binaries: $(ls "$1" 2>/dev/null | wc -l) files in $1"' _ {{}} \;
+find "$DESTDIR" -type d -name "lib" -o -name "lib64" 2>/dev/null | head -2 | while read d; do
+    echo "  Libraries: $(find "$d" -maxdepth 1 -name "*.so*" -o -name "*.a" 2>/dev/null | wc -l) files in $d"
+done
+find "$DESTDIR" -type d -name "include" 2>/dev/null | head -1 | while read d; do
+    echo "  Headers: $(find "$d" -name "*.h" 2>/dev/null | wc -l) files in $d"
+done
 '''.format(
             name = ctx.attrs.name,
             version = ctx.attrs.version,

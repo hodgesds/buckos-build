@@ -16,6 +16,17 @@ binary_package(
     install_script = """
         cd $SRCS
 
+        # Add Rust/Cargo to PATH from dependencies
+        for dep in $DEPS; do
+            if [ -x "$dep/usr/bin/cargo" ]; then
+                export PATH="$dep/usr/bin:$PATH"
+                echo "Found Cargo at $dep/usr/bin"
+            fi
+        done
+
+        echo "PATH=$PATH"
+        echo "Using cargo: $(which cargo || echo 'NOT FOUND')"
+
         # Find libbpf.a in dependency paths
         LIBBPF_A=""
         for dep in $DEPS; do
@@ -78,6 +89,7 @@ binary_package(
         "//packages/linux/core/zlib:zlib",
         "//packages/linux/dev-tools/dev-utils/elfutils:elfutils",
         "//packages/linux/system/libs/bpf/libbpf:libbpf",
+        "//packages/linux/lang/rust:rust",
     ],
     visibility = ["PUBLIC"],
 )

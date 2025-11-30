@@ -3,8 +3,8 @@ load("//defs:use_flags.bzl", "set_use_flags")
 
 download_source(
     name = "claws-mail-src",
-    src_uri = "https://github.com/claws-mail/claws-mail/archive/refs/tags/4.3.0.tar.gz",
-    sha256 = "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+    src_uri = "https://www.claws-mail.org/download.php?file=releases/claws-mail-4.3.0.tar.xz",
+    sha256 = "95dc1d888eb916f028467fa0c3cbf45baff6678793b7bfb35fabba029d581ce1",
 )
 
 # USE flags: See use_flags.bzl for available flags

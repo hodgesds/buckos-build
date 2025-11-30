@@ -23,10 +23,33 @@ binary_package(
     ],
     install_script = """
         cd $SRCS
+
+        # Find libtirpc in build deps
+        TIRPC_INC=""
+        TIRPC_LIB=""
+        for dep in $BUILD_DEPS; do
+            if [ -d "$dep/usr/include/tirpc" ]; then
+                TIRPC_INC="$dep/usr/include/tirpc"
+                echo "Found tirpc includes at $TIRPC_INC"
+            fi
+            if [ -d "$dep/usr/lib" ]; then
+                TIRPC_LIB="$dep/usr/lib"
+            fi
+        done
+
         # Fix for GCC 14+ stricter C standards and add libtirpc headers for rpc/rpc.h
-        export CFLAGS="-Wno-error=implicit-function-declaration -Wno-error=implicit-int -Wno-error=int-conversion -I$BUILD_DEPS/usr/include/tirpc"
-        export LDFLAGS="-L$BUILD_DEPS/usr/lib -ltirpc"
-        make build
+        # lmbench's Makefile doesn't honor CFLAGS well, so patch the source
+        sed -i 's|#include.*<rpc/rpc.h>|#include <tirpc/rpc/rpc.h>|g' src/bench.h
+
+        export CFLAGS="-Wno-error=implicit-function-declaration -Wno-error=implicit-int -Wno-error=int-conversion -I$TIRPC_INC"
+        export LDFLAGS="-L$TIRPC_LIB -ltirpc"
+
+        # Also set CC with the flags since lmbench's makefile is old
+        export CC="gcc $CFLAGS"
+        export LDLIBS="-ltirpc"
+
+        make build CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" LDLIBS="$LDLIBS"
+
         mkdir -p $OUT/usr/bin
         cp bin/*/lmbench $OUT/usr/bin/ 2>/dev/null || true
         cp bin/*/lat_* $OUT/usr/bin/ 2>/dev/null || true

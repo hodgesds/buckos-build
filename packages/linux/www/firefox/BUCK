@@ -27,6 +27,9 @@ binary_package(
     install_script = """
         cd $SRCS
 
+        # Clear RUSTFLAGS as Firefox's configure is sensitive to its format
+        unset RUSTFLAGS
+
         # Create mozconfig
         cat > mozconfig << 'MOZCONFIG'
 ac_add_options --enable-application=browser

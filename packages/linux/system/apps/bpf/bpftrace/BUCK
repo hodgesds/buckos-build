@@ -16,35 +16,33 @@ binary_package(
     install_script = """
         cd $SRCS
 
-        # Find dependencies in dep paths
-        ZLIB_LIB=""
-        ZLIB_INC=""
-        LIBBPF_A=""
-        LIBBPF_INC=""
-        for dep in $DEPS; do
-            if [ -f "$dep/usr/lib/libz.so" ]; then
-                ZLIB_LIB="$dep/usr/lib/libz.so"
-                ZLIB_INC="$dep/usr/include"
-            elif [ -f "$dep/usr/lib64/libz.so" ]; then
-                ZLIB_LIB="$dep/usr/lib64/libz.so"
-                ZLIB_INC="$dep/usr/include"
+        # Find dependency paths from DEP_BASE_DIRS
+        BCC_PREFIX=""
+        LIBBPF_PREFIX=""
+        IFS=':' read -ra DEP_ARRAY <<< "$DEP_BASE_DIRS"
+        for dep in "${DEP_ARRAY[@]}"; do
+            if [ -f "$dep/usr/include/bcc/libbpf.h" ] || [ -f "$dep/usr/include/bcc/bcc_version.h" ]; then
+                BCC_PREFIX="$dep/usr"
+                echo "Found BCC at: $BCC_PREFIX"
             fi
-            if [ -f "$dep/usr/lib/libbpf.a" ]; then
-                LIBBPF_A="$dep/usr/lib/libbpf.a"
-                LIBBPF_INC="$dep/usr/include"
+            if [ -f "$dep/usr/include/bpf/libbpf.h" ]; then
+                LIBBPF_PREFIX="$dep/usr"
+                echo "Found libbpf at: $LIBBPF_PREFIX"
             fi
         done
 
         # Create build directory
         mkdir -p build && cd build
 
-        # Configure with CMake - use dynamic linking to avoid issues
+        # Configure with CMake
         CMAKE_OPTS="-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_TESTING=OFF"
-        if [ -n "$ZLIB_LIB" ]; then
-            CMAKE_OPTS="$CMAKE_OPTS -DZLIB_LIBRARY=$ZLIB_LIB -DZLIB_INCLUDE_DIR=$ZLIB_INC"
+        if [ -n "$BCC_PREFIX" ]; then
+            CMAKE_OPTS="$CMAKE_OPTS -DLIBBCC_INCLUDE_DIRS=$BCC_PREFIX/include"
+            CMAKE_OPTS="$CMAKE_OPTS -DLIBBCC_LIBRARIES=$BCC_PREFIX/lib64/libbcc.so"
         fi
-        if [ -n "$LIBBPF_A" ]; then
-            CMAKE_OPTS="$CMAKE_OPTS -DLIBBPF_INCLUDE_DIRS=$LIBBPF_INC -DLIBBPF_LIBRARIES=$LIBBPF_A"
+        if [ -n "$LIBBPF_PREFIX" ]; then
+            CMAKE_OPTS="$CMAKE_OPTS -DLIBBPF_INCLUDE_DIRS=$LIBBPF_PREFIX/include"
+            CMAKE_OPTS="$CMAKE_OPTS -DLIBBPF_LIBRARIES=$LIBBPF_PREFIX/lib64/libbpf.so"
         fi
 
         cmake .. $CMAKE_OPTS
@@ -60,9 +58,10 @@ binary_package(
         cp ../man/man8/*.8 $OUT/usr/share/man/man8/ 2>/dev/null || true
     """,
     deps = [
-        "//packages/linux/core/zlib:zlib",
-        "//packages/linux/dev-tools/dev-utils/elfutils:elfutils",
+        "//packages/linux/system/apps/bpf/bcc:bcc",
         "//packages/linux/system/libs/bpf/libbpf:libbpf",
+        "//packages/linux/dev-tools/dev-utils/elfutils:elfutils",
+        "//packages/linux/core/zlib:zlib",
     ],
     visibility = ["PUBLIC"],
 )

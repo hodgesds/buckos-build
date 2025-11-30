@@ -940,3 +940,22 @@ system_set(
     description = "Lightweight server with SSH access",
 )
 
+# =============================================================================
+# Validation Target
+# =============================================================================
+# Use this target to validate all dependencies exist without building:
+#   buck2 uquery 'deps("//:validate")' > /dev/null && echo "All deps valid"
+# Or build it to do a full dependency graph check:
+#   buck2 build //:validate
+
+genrule(
+    name = "validate",
+    out = "validate.txt",
+    cmd = "echo 'All dependencies validated successfully' > $OUT",
+    # This depends on ALL targets in the repo via //...
+    # When buck2 builds or queries this target, it must resolve the entire dep graph
+    deps = [
+        "//...",
+    ],
+    visibility = ["PUBLIC"],
+)

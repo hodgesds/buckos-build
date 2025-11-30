@@ -44,8 +44,9 @@ binary_package(
             # "qt6": ["//packages/linux/desktop/qt6-base:qt6-base"],
             "clang": ["//packages/linux/lang/clang:clang"],
             "curl": ["//packages/linux/network/curl:curl"],
+            "simdutf": ["//packages/linux/dev-libs/simdutf:simdutf"],
         },
-        ["zlib", "clang", "curl"],
+        ["zlib", "clang", "curl", "simdutf"],
     ),
     visibility = ["PUBLIC"],
 )

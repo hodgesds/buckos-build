@@ -52,7 +52,6 @@ filegroup(
 filegroup(
     name = "functional-languages",
     srcs = [
-        "//packages/linux/lang/ghc:ghc",
         "//packages/linux/lang/ocaml:ocaml",
         "//packages/linux/lang/erlang:erlang",
         "//packages/linux/lang/elixir:elixir",

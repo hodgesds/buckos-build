@@ -22,7 +22,9 @@ binary_package(
         cd $SRCS
 
         # Find Erlang in dependencies and add to PATH
-        for dep in $DEPS; do
+        # DEP_BASE_DIRS is colon-separated, convert to iterate
+        IFS=':' read -ra DEP_ARRAY <<< "$DEP_BASE_DIRS"
+        for dep in "${DEP_ARRAY[@]}"; do
             if [ -d "$dep/usr/lib/erlang/bin" ]; then
                 export PATH="$dep/usr/lib/erlang/bin:$PATH"
                 echo "Found Erlang bin at $dep/usr/lib/erlang/bin"

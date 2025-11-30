@@ -15,7 +15,8 @@ binary_package(
     license = "MIT",
     install_script = """
         cd $SRCS
-        make PREFIX=/usr
+        # Override LDFLAGS to avoid static linking (requires glibc-static)
+        make PREFIX=/usr LDFLAGS=""
         make PREFIX=/usr DESTDIR="$OUT" install
     """,
     visibility = ["PUBLIC"],

@@ -24,13 +24,12 @@ binary_package(
     install_script = """
         cd "$SRCS"
 
-        # Find dependency prefixes from DEP_BASE_DIRS
+        # Find dependency prefixes from DEPS_DIRS
         GMP_PREFIX=""
         MPFR_PREFIX=""
         MPC_PREFIX=""
         ISL_PREFIX=""
-        IFS=':' read -ra DEP_ARRAY <<< "$DEP_BASE_DIRS"
-        for dep in "${DEP_ARRAY[@]}"; do
+        for dep in $DEPS_DIRS; do
             if [ -f "$dep/usr/include/gmp.h" ]; then
                 GMP_PREFIX="$dep/usr"
                 echo "Found GMP at: $GMP_PREFIX"

@@ -7,7 +7,7 @@
 #   $4  - Signature URI (optional)
 #   $5  - GPG key (optional)
 #   $6  - GPG keyring (optional)
-#   $7  - Auto-detect signature (1 or empty)
+#   $7  - Signature required (1 or empty)
 #   $8  - Exclude args for tar (e.g., --exclude='pattern')
 #   $9  - Strip components (default: 1)
 #   $10 - Do extract (1 or 0)
@@ -56,7 +56,7 @@ fi
 SIGNATURE_URI="$4"
 GPG_KEY="$5"
 GPG_KEYRING="$6"
-AUTO_DETECT="$7"
+SIG_REQUIRED="$7"
 EXCLUDE_ARGS="$8"
 
 # Function to try signature verification
@@ -121,7 +121,7 @@ verify_signature() {
             echo "$GPG_OUTPUT" >&2
             echo "" >&2
             echo "Fix options:" >&2
-            echo "  1. Disable GPG verification: Set auto_detect_signature=False in BUCK file" >&2
+            echo "  1. Disable GPG verification: Set signature_required=False in BUCK file" >&2
             echo "  2. Import the correct key: gpg --recv-keys <KEY_ID>" >&2
             echo "  3. Check if signature URL is correct" >&2
             rm "$SIG_FILENAME"
@@ -134,9 +134,9 @@ verify_signature() {
 # Check for global USE flag override via environment variable
 if [ -n "$BUCKOS_VERIFY_SIGNATURES" ]; then
     if [ "$BUCKOS_VERIFY_SIGNATURES" = "1" ] || [ "$BUCKOS_VERIFY_SIGNATURES" = "true" ]; then
-        AUTO_DETECT="1"
+        SIG_REQUIRED="1"
     elif [ "$BUCKOS_VERIFY_SIGNATURES" = "0" ] || [ "$BUCKOS_VERIFY_SIGNATURES" = "false" ]; then
-        AUTO_DETECT=""
+        SIG_REQUIRED=""
         SIGNATURE_URI=""
     fi
 fi
@@ -144,7 +144,7 @@ fi
 # Try signature verification
 if [ -n "$SIGNATURE_URI" ]; then
     verify_signature "$SIGNATURE_URI" || exit 1
-elif [ -n "$AUTO_DETECT" ]; then
+elif [ -n "$SIG_REQUIRED" ]; then
     echo "Auto-detecting signature file..."
     TRIED=0
     for ext in .asc .sig .sign; do

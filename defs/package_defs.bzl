@@ -62,330 +62,214 @@ PackageInfo = provider(fields = [
     "maintainers",  # List of maintainer IDs for package support contacts
 ])
 
-def _download_source_impl(ctx: AnalysisContext) -> list[Provider]:
-    """Download and extract source tarball."""
+# -----------------------------------------------------------------------------
+# Signature Download Rule (tries .sig, .asc, .sign extensions)
+# -----------------------------------------------------------------------------
+
+def _download_signature_impl(ctx: AnalysisContext) -> list[Provider]:
+    """Download GPG signature, trying multiple extensions."""
+    out_file = ctx.actions.declare_output(ctx.attrs.out)
+
+    script = ctx.attrs._download_script[DefaultInfo].default_outputs[0]
+
+    cmd = cmd_args([
+        "bash",
+        script,
+        out_file.as_output(),
+        ctx.attrs.src_uri,
+        ctx.attrs.sha256,
+    ])
+
+    ctx.actions.run(
+        cmd,
+        category = "download_signature",
+        identifier = ctx.attrs.name,
+        local_only = True,  # Network access needed
+    )
+
+    return [DefaultInfo(default_output = out_file)]
+
+_download_signature = rule(
+    impl = _download_signature_impl,
+    attrs = {
+        "src_uri": attrs.string(doc = "Base URL of the source archive (extension will be appended)"),
+        "sha256": attrs.string(doc = "Expected SHA256 of the signature file"),
+        "out": attrs.string(doc = "Output filename"),
+        "_download_script": attrs.dep(default = "//defs/scripts:download-signature"),
+    },
+)
+
+# Source Extraction Rule (used with http_file for downloads)
+# -----------------------------------------------------------------------------
+
+def _extract_source_impl(ctx: AnalysisContext) -> list[Provider]:
+    """Extract archive and optionally verify GPG signature."""
     out_dir = ctx.actions.declare_output(ctx.attrs.name, dir = True)
 
-    # Build signature verification parameters
-    sig_uri = ctx.attrs.signature_uri if ctx.attrs.signature_uri else ""
+    # Get the archive file from http_file dependency
+    archive_file = ctx.attrs.archive[DefaultInfo].default_outputs[0]
+
+    # Get optional signature file from http_file dependency
+    sig_file = ""
+    if ctx.attrs.signature:
+        sig_file = ctx.attrs.signature[DefaultInfo].default_outputs[0]
+
+    # GPG verification parameters
     gpg_key = ctx.attrs.gpg_key if ctx.attrs.gpg_key else ""
     gpg_keyring = ctx.attrs.gpg_keyring if ctx.attrs.gpg_keyring else ""
-    auto_detect = "1" if ctx.attrs.auto_detect_signature else ""
 
-    # Build exclude patterns for tar
-    exclude_args = " ".join(["--exclude='{}'".format(pattern) for pattern in ctx.attrs.exclude_patterns])
+    # Build exclude patterns for tar (no quotes - the script handles glob protection)
+    exclude_args = " ".join(["--exclude={}".format(pattern) for pattern in ctx.attrs.exclude_patterns])
 
     # Get strip_components value (default is 1 for backward compatibility)
     strip_components = ctx.attrs.strip_components
 
     # Get extract setting (default True)
-    do_extract = "1" if ctx.attrs.extract else ""
+    do_extract = "1" if ctx.attrs.extract else "0"
 
-    # Normalize sha256 to space-separated string (handles both single string and list)
-    sha256_value = ctx.attrs.sha256
-    if type(sha256_value) == "list":
-        sha256_checksums = " ".join(sha256_value)
+    # Get the external extraction script
+    script = ctx.attrs._extract_script[DefaultInfo].default_outputs[0]
+
+    cmd = cmd_args([
+        "bash",
+        script,
+        out_dir.as_output(),
+        archive_file,
+    ])
+
+    # Add optional arguments
+    if sig_file:
+        cmd.add(sig_file)
     else:
-        sha256_checksums = sha256_value
+        cmd.add("")
 
-    # Script to download and extract
-    script = ctx.actions.write(
-        "download.sh",
-        """#!/bin/bash
-set -e
-mkdir -p "$1"
-cd "$1"
-
-# Download with original filename
-URL="$2"
-FILENAME="${URL##*/}"
-curl -L -o "$FILENAME" "$URL"
-
-# Strip components setting (passed as $9)
-STRIP_COMPONENTS="${9:-1}"
-
-# Verify checksum
-EXPECTED_CHECKSUMS="$3"
-if [ -z "$EXPECTED_CHECKSUMS" ]; then
-    echo "✗ ERROR: No checksum provided" >&2
-    exit 1
-fi
-
-# Compute actual checksum
-ACTUAL_CHECKSUM=$(sha256sum "$FILENAME" | awk '{print $1}')
-
-# Compare against list of valid checksums (space-separated)
-CHECKSUM_MATCHED=false
-for EXPECTED in $EXPECTED_CHECKSUMS; do
-    if [ "$EXPECTED" = "$ACTUAL_CHECKSUM" ]; then
-        CHECKSUM_MATCHED=true
-        echo "✓ Checksum verification passed: $ACTUAL_CHECKSUM"
-        break
-    fi
-done
-
-if [ "$CHECKSUM_MATCHED" = false ]; then
-    echo "✗ Checksum verification FAILED" >&2
-    echo "  Expected: $EXPECTED_CHECKSUMS" >&2
-    echo "  Actual:   $ACTUAL_CHECKSUM" >&2
-    echo "  File:     $FILENAME" >&2
-    exit 1
-fi
-
-# Verify GPG signature if provided
-SIGNATURE_URI="$4"
-GPG_KEY="$5"
-GPG_KEYRING="$6"
-AUTO_DETECT="$7"
-EXCLUDE_ARGS="$8"
-
-# Function to try signature verification
-verify_signature() {
-    local SIG_URL="$1"
-    local SIG_FILENAME="${SIG_URL##*/}"
-
-    # Try to download signature file
-    if curl -L -f -o "$SIG_FILENAME" "$SIG_URL" 2>/dev/null; then
-        echo "Found signature file: $SIG_URL"
-
-        # Check if the downloaded file is actually a GPG signature
-        # GPG signatures start with specific bytes or patterns
-        FILETYPE=$(file -b "$SIG_FILENAME")
-        if [[ "$FILETYPE" == *"HTML"* ]] || [[ "$FILETYPE" == *"ASCII text"* && ! "$FILETYPE" =~ "PGP" ]]; then
-            # Check if it's HTML or non-PGP text (likely an error page)
-            if head -1 "$SIG_FILENAME" | grep -q -i '<!DOCTYPE\|<html\|<head'; then
-                echo "ℹ Signature file is HTML (likely 404/redirect), skipping verification"
-                rm "$SIG_FILENAME"
-                return 1
-            fi
-        fi
-
-        # Verify the signature is valid OpenPGP data
-        if ! gpg --batch --list-packets "$SIG_FILENAME" >/dev/null 2>&1; then
-            echo "ℹ Downloaded file is not a valid GPG signature, skipping verification"
-            rm "$SIG_FILENAME"
-            return 1
-        fi
-
-        # Setup GPG options
-        GPG_OPTS="--batch --no-default-keyring"
-
-        if [ -n "$GPG_KEYRING" ]; then
-            echo "Using keyring: $GPG_KEYRING"
-            GPG_OPTS="$GPG_OPTS --keyring $GPG_KEYRING"
-        fi
-
-        # Import key if specified
-        if [ -n "$GPG_KEY" ]; then
-            echo "Importing GPG key: $GPG_KEY"
-            # Try to import from keyserver (will fail gracefully if key already exists)
-            gpg $GPG_OPTS --keyserver hkps://keys.openpgp.org --recv-keys "$GPG_KEY" 2>&1 | grep -v "already in keyring" || true
-        fi
-
-        # Verify the signature
-        echo "Verifying GPG signature..."
-        GPG_OUTPUT=$(gpg $GPG_OPTS --verify "$SIG_FILENAME" "$FILENAME" 2>&1)
-        GPG_EXIT=$?
-
-        if [ $GPG_EXIT -eq 0 ]; then
-            echo "✓ Signature verification PASSED"
-            rm "$SIG_FILENAME"
-            return 0
-        else
-            echo "✗ Signature verification FAILED" >&2
-            echo "  File:         $FILENAME" >&2
-            echo "  Signature:    $SIG_FILENAME" >&2
-            echo "  Signature URL: $SIG_URL" >&2
-            if [ -n "$GPG_KEY" ]; then
-                echo "  Expected Key: $GPG_KEY" >&2
-            fi
-            echo "" >&2
-            echo "GPG output:" >&2
-            echo "$GPG_OUTPUT" >&2
-            echo "" >&2
-            echo "Fix options:" >&2
-            echo "  1. Disable GPG verification: Set auto_detect_signature=False in BUCK file" >&2
-            echo "  2. Import the correct key: gpg --recv-keys <KEY_ID>" >&2
-            echo "  3. Check if signature URL is correct" >&2
-            rm "$SIG_FILENAME"
-            exit 1
-        fi
-    fi
-    return 1
-}
-
-# Check for global USE flag override via environment variable
-# BUCKOS_VERIFY_SIGNATURES=1 enables verification globally
-# BUCKOS_VERIFY_SIGNATURES=0 disables verification globally
-# If not set, falls back to per-package auto_detect setting
-if [ -n "$BUCKOS_VERIFY_SIGNATURES" ]; then
-    if [ "$BUCKOS_VERIFY_SIGNATURES" = "1" ] || [ "$BUCKOS_VERIFY_SIGNATURES" = "true" ]; then
-        AUTO_DETECT="1"
-    elif [ "$BUCKOS_VERIFY_SIGNATURES" = "0" ] || [ "$BUCKOS_VERIFY_SIGNATURES" = "false" ]; then
-        AUTO_DETECT=""
-        SIGNATURE_URI=""
-    fi
-fi
-
-# Try signature verification
-if [ -n "$SIGNATURE_URI" ]; then
-    # Explicit signature URI provided
-    verify_signature "$SIGNATURE_URI" || exit 1
-elif [ -n "$AUTO_DETECT" ]; then
-    # Auto-detect: try common signature file extensions
-    echo "Auto-detecting signature file..."
-    TRIED=0
-    for ext in .asc .sig .sign; do
-        if verify_signature "${URL}${ext}"; then
-            TRIED=1
-            break
-        fi
-    done
-    if [ $TRIED -eq 0 ]; then
-        echo "ℹ No signature file found (tried .asc, .sig, .sign extensions)"
-    fi
-fi
-
-# Check if extraction is disabled (arg $10)
-DO_EXTRACT="${10}"
-if [ -z "$DO_EXTRACT" ]; then
-    echo "Extraction disabled - keeping file as-is: $FILENAME"
-    exit 0
-fi
-
-# Detect actual file type (not just extension)
-FILETYPE=$(file -b "$FILENAME")
-
-# Extract based on actual file type
-# Use --transform to decode hex escapes in filenames (Buck2 doesn't allow backslashes)
-# Replace \x2d with - (dash), \x5c with nothing (backslash itself), etc.
-if [[ "$FILETYPE" == *"gzip compressed"* ]]; then
-    echo "Detected: gzip compressed tarball (strip-components=$STRIP_COMPONENTS)"
-    tar xzf "$FILENAME" --strip-components=$STRIP_COMPONENTS --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
-    rm "$FILENAME"
-elif [[ "$FILETYPE" == *"XZ compressed"* ]]; then
-    echo "Detected: XZ compressed tarball (strip-components=$STRIP_COMPONENTS)"
-    tar xJf "$FILENAME" --strip-components=$STRIP_COMPONENTS --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
-    rm "$FILENAME"
-elif [[ "$FILETYPE" == *"bzip2 compressed"* ]]; then
-    echo "Detected: bzip2 compressed tarball (strip-components=$STRIP_COMPONENTS)"
-    tar xjf "$FILENAME" --strip-components=$STRIP_COMPONENTS --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
-    rm "$FILENAME"
-elif [[ "$FILETYPE" == *"POSIX tar archive"* ]]; then
-    echo "Detected: uncompressed tar archive (strip-components=$STRIP_COMPONENTS)"
-    tar xf "$FILENAME" --strip-components=$STRIP_COMPONENTS --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
-    rm "$FILENAME"
-elif [[ "$FILETYPE" == *"lzip compressed"* ]]; then
-    echo "Detected: lzip compressed tarball (strip-components=$STRIP_COMPONENTS)"
-    lzip -dc "$FILENAME" | tar xf - --strip-components=$STRIP_COMPONENTS --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' $EXCLUDE_ARGS
-    rm "$FILENAME"
-elif [[ "$FILETYPE" == *"Zip archive"* ]]; then
-    echo "Detected: Zip archive"
-    unzip -q "$FILENAME"
-    # For zip files, find the top-level dir and move contents up
-    if [ $(ls -1 | wc -l) -eq 1 ] && [ -d "$(ls -1)" ]; then
-        mv "$(ls -1)"/* . && rmdir "$(ls -1)"
-    fi
-    rm "$FILENAME"
-elif [[ "$FILETYPE" == *"Debian binary package"* ]]; then
-    echo "Detected: Debian binary package (.deb)"
-    echo "Keeping file as-is for binary_package extraction"
-    # Don't extract - binary_package will use ar to extract
-elif [[ "$FILETYPE" == *"POSIX shell script"* ]] || [[ "$FILETYPE" == *"shell script"* ]] || [[ "$FILENAME" == *.run ]]; then
-    echo "Detected: Self-extracting shell script (.run)"
-    echo "Keeping file as-is for binary_package extraction"
-    # Don't extract - binary_package install_script will handle extraction (e.g., NVIDIA drivers)
-elif [[ "$FILETYPE" == *"HTML"* ]]; then
-    echo "Error: Downloaded file appears to be HTML, not an archive!" >&2
-    echo "File type: $FILETYPE" >&2
-    echo "This usually means the URL returned an error page instead of the file." >&2
-    head -20 "$FILENAME" >&2
-    exit 1
-elif [[ "$FILETYPE" == *"ASCII text"* ]] || [[ "$FILETYPE" == *"C source"* ]] || [[ "$FILETYPE" == *"source"* ]] || [[ "$FILETYPE" == *"Unicode text"* ]]; then
-    # Check if this is a valid source file (not an error page)
-    # Valid source files have common extensions like .c, .h, .cpp, .py, .sh, etc.
-    # Also handle certificate and key files like .pem, .crt, .key
-    if [[ "$FILENAME" =~ \.(c|h|cpp|hpp|cc|cxx|py|sh|pl|rb|java|rs|go|js|ts|pem|crt|key)$ ]]; then
-        echo "Detected: Single source file - $FILENAME"
-        echo "Keeping file as-is (no extraction needed)"
-        # Don't remove the file - we need to keep it
-    else
-        echo "Error: Downloaded file appears to be ASCII text, not an archive!" >&2
-        echo "File type: $FILETYPE" >&2
-        echo "Filename: $FILENAME" >&2
-        echo "This usually means the URL returned an error page instead of the file." >&2
-        head -20 "$FILENAME" >&2
-        exit 1
-    fi
-else
-    # Fallback: try to detect by filename extension or try unzip for .zip files
-    echo "Unknown file type: $FILETYPE"
-    if [[ "$FILENAME" == *.zip ]]; then
-        echo "Attempting unzip based on filename extension..."
-        if unzip -q "$FILENAME" 2>/dev/null; then
-            # For zip files, find the top-level dir and move contents up
-            if [ $(ls -1 | wc -l) -eq 1 ] && [ -d "$(ls -1)" ]; then
-                mv "$(ls -1)"/* . && rmdir "$(ls -1)"
-            fi
-            echo "Successfully extracted with unzip"
-            rm "$FILENAME"
-        else
-            echo "Error: Could not extract zip archive" >&2
-            echo "File type: $FILETYPE" >&2
-            exit 1
-        fi
-    else
-        echo "Attempting tar with auto-compression detection..."
-        if tar xaf "$FILENAME" --strip-components=$STRIP_COMPONENTS --transform 's/\\\\x2d/-/g' --transform 's/\\\\x5c//g' --transform 's/\\\\/-/g' 2>/dev/null; then
-            echo "Successfully extracted with tar auto-detect"
-            rm "$FILENAME"
-        else
-            echo "Error: Could not extract archive" >&2
-            echo "File type: $FILETYPE" >&2
-            exit 1
-        fi
-    fi
-fi
-""",
-        is_executable = True,
-    )
+    cmd.add([
+        gpg_key,
+        gpg_keyring,
+        exclude_args,
+        str(strip_components),
+        do_extract,
+    ])
 
     ctx.actions.run(
-        cmd_args([
-            "bash",
-            script,
-            out_dir.as_output(),
-            ctx.attrs.src_uri,
-            sha256_checksums,
-            sig_uri,
-            gpg_key,
-            gpg_keyring,
-            auto_detect,
-            exclude_args,
-            str(strip_components),
-            do_extract,
-        ]),
-        category = "download",
+        cmd,
+        category = "extract",
         identifier = ctx.attrs.name,
+        local_only = True,  # http_file outputs may need local execution
     )
 
     return [DefaultInfo(default_output = out_dir)]
 
-download_source = rule(
-    impl = _download_source_impl,
+_extract_source = rule(
+    impl = _extract_source_impl,
     attrs = {
-        "src_uri": attrs.string(),
-        "sha256": attrs.one_of(attrs.string(), attrs.list(attrs.string())),
-        "signature_uri": attrs.option(attrs.string(), default = None),
+        "archive": attrs.dep(doc = "http_file dependency for the archive"),
+        "signature": attrs.option(attrs.dep(), default = None, doc = "http_file dependency for GPG signature"),
         "gpg_key": attrs.option(attrs.string(), default = None),
         "gpg_keyring": attrs.option(attrs.string(), default = None),
-        "auto_detect_signature": attrs.bool(default = True),
         "exclude_patterns": attrs.list(attrs.string(), default = []),
         "strip_components": attrs.int(default = 1),
         "extract": attrs.bool(default = True),
+        "_extract_script": attrs.dep(default = "//defs/scripts:extract-source"),
     },
 )
 
+def download_source(
+        name: str,
+        src_uri: str,
+        sha256: str,
+        signature_sha256: str | None = None,
+        signature_required: bool = False,
+        gpg_key: str | None = None,
+        gpg_keyring: str | None = None,
+        exclude_patterns: list[str] = [],
+        strip_components: int = 1,
+        extract: bool = True,
+        visibility: list[str] = ["PUBLIC"]):
+    """
+    Download and extract source archives using Buck2's native http_file.
+
+    This macro creates:
+    1. An http_file target for the main archive
+    2. An http_file target for the GPG signature (if signature_sha256 provided)
+    3. An _extract_source rule that extracts and optionally verifies GPG
+
+    Signature verification workflow:
+    - Set signature_required=True (default) to require signature verification
+    - Run `./tools/update_checksums.py --populate-signatures` to auto-discover signatures
+      and populate signature_sha256 values
+    - Build will fail if signature_required=True but signature_sha256 is missing
+
+    Args:
+        name: Target name for the extracted source
+        src_uri: URL to download the source archive from
+        sha256: SHA256 checksum of the archive
+        signature_sha256: SHA256 checksum of the signature file. Use update_checksums.py
+                         to populate. When provided, tries .asc/.sig/.sign extensions.
+        signature_required: If True (default), fails when signature_sha256 is missing.
+                           Set to False to disable signature verification entirely.
+        gpg_key: GPG key ID to verify against
+        gpg_keyring: Path to GPG keyring file
+        exclude_patterns: Patterns to exclude from extraction
+        strip_components: Number of leading path components to strip (default: 1)
+        extract: Whether to extract the archive (default: True)
+        visibility: Target visibility
+    """
+    # Extract filename from URL to preserve extension
+    # Handle URLs with query params like gitweb (?p=...) or GitHub (/archive/...)
+    url_path = src_uri.split("?")[0]  # Remove query string
+    archive_filename = url_path.split("/")[-1]
+
+    # If filename is empty or doesn't look like an archive, derive from name
+    if not archive_filename or "." not in archive_filename:
+        # Try to detect extension from URL params (e.g., sf=tgz)
+        ext = ".tar.gz"  # Default
+        if "sf=tgz" in src_uri or ".tgz" in src_uri:
+            ext = ".tar.gz"
+        elif "sf=tbz2" in src_uri or ".tar.bz2" in src_uri:
+            ext = ".tar.bz2"
+        elif "sf=txz" in src_uri or ".tar.xz" in src_uri:
+            ext = ".tar.xz"
+        elif ".zip" in src_uri:
+            ext = ".zip"
+        archive_filename = name + ext
+
+    # Create http_file for the main archive
+    archive_target = name + "-archive"
+    native.http_file(
+        name = archive_target,
+        urls = [src_uri],
+        sha256 = sha256,
+        out = archive_filename,  # Preserve original filename with extension
+        visibility = ["PUBLIC"],
+    )
+
+    # Create signature download rule if signature_required and signature_sha256 provided
+    # This rule tries .sig, .asc, .sign extensions automatically
+    sig_target = None
+    if signature_required and not signature_sha256:
+        fail("signature_required=True but signature_sha256 not provided for {}. Run ./tools/update_checksums.py".format(name))
+    if signature_required and signature_sha256:
+        sig_target = name + "-sig"
+        _download_signature(
+            name = sig_target,
+            src_uri = src_uri,
+            sha256 = signature_sha256,
+            out = archive_filename + ".sig",
+        )
+
+    # Create extraction rule
+    _extract_source(
+        name = name,
+        archive = ":" + archive_target,
+        signature = (":" + sig_target) if sig_target else None,
+        gpg_key = gpg_key,
+        gpg_keyring = gpg_keyring,
+        exclude_patterns = exclude_patterns,
+        strip_components = strip_components,
+        extract = extract,
+        visibility = visibility,
+    )
 
 def _kernel_config_impl(ctx: AnalysisContext) -> list[Provider]:
     """Merge kernel configuration fragments into a single .config file."""
@@ -3412,10 +3296,9 @@ def simple_package(
         make_args: list[str] = [],
         deps: list[str] = [],
         maintainers: list[str] = [],
-        signature_uri: str | None = None,
+        signature_sha256: str | None = None,
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
-        auto_detect_signature: bool = True,
         exclude_patterns: list[str] = [],
         **kwargs):
     """
@@ -3423,10 +3306,9 @@ def simple_package(
     This is a simplified wrapper around autotools_package() for basic packages.
 
     Args:
-        signature_uri: Optional URL to GPG signature file (.asc or .sig)
+        signature_sha256: SHA256 of GPG signature file (use update_checksums.py to populate)
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
-        auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
         exclude_patterns: List of patterns to exclude from source extraction (passed to tar --exclude)
     """
     # Forward to autotools_package() which supports both USE flags and simple builds
@@ -3439,10 +3321,9 @@ def simple_package(
         make_args = make_args,
         deps = deps,
         maintainers = maintainers,
-        signature_uri = signature_uri,
+        signature_sha256 = signature_sha256,
         gpg_key = gpg_key,
         gpg_keyring = gpg_keyring,
-        auto_detect_signature = auto_detect_signature,
         exclude_patterns = exclude_patterns,
         **kwargs
     )
@@ -3464,10 +3345,10 @@ def cmake_package(
         use_deps: dict = {},
         global_use: dict | None = None,
         package_overrides: dict | None = None,
-        signature_uri: str | None = None,
+        signature_sha256: str | None = None,
+        signature_required: bool = False,
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
-        auto_detect_signature: bool = True,
         exclude_patterns: list[str] = [],
         **kwargs):
     """
@@ -3490,10 +3371,9 @@ def cmake_package(
         use_deps: Dict mapping USE flag to conditional dependencies
         global_use: Global USE flag configuration
         package_overrides: Package-specific USE overrides
-        signature_uri: Optional URL to GPG signature file (.asc or .sig)
+        signature_sha256: SHA256 of GPG signature file (use update_checksums.py to populate)
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
-        auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
         exclude_patterns: List of patterns to exclude from source extraction (passed to tar --exclude)
 
     Example:
@@ -3528,10 +3408,10 @@ def cmake_package(
             name = src_name,
             src_uri = src_uri,
             sha256 = sha256,
-            signature_uri = signature_uri,
+            signature_sha256 = signature_sha256,
+            signature_required = signature_required,
             gpg_key = gpg_key,
             gpg_keyring = gpg_keyring,
-            auto_detect_signature = auto_detect_signature,
             exclude_patterns = exclude_patterns,
         )
         src_target = ":" + src_name
@@ -3610,10 +3490,10 @@ def meson_package(
         use_deps: dict = {},
         global_use: dict | None = None,
         package_overrides: dict | None = None,
-        signature_uri: str | None = None,
+        signature_sha256: str | None = None,
+        signature_required: bool = False,
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
-        auto_detect_signature: bool = True,
         exclude_patterns: list[str] = [],
         **kwargs):
     """
@@ -3635,10 +3515,9 @@ def meson_package(
         use_deps: Dict mapping USE flag to conditional dependencies
         global_use: Global USE flag configuration
         package_overrides: Package-specific USE overrides
-        signature_uri: Optional URL to GPG signature file (.asc or .sig)
+        signature_sha256: SHA256 of GPG signature file (use update_checksums.py to populate)
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
-        auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
         exclude_patterns: List of patterns to exclude from source extraction (passed to tar --exclude)
 
     Example:
@@ -3673,10 +3552,10 @@ def meson_package(
             name = src_name,
             src_uri = src_uri,
             sha256 = sha256,
-            signature_uri = signature_uri,
+            signature_sha256 = signature_sha256,
+            signature_required = signature_required,
             gpg_key = gpg_key,
             gpg_keyring = gpg_keyring,
-            auto_detect_signature = auto_detect_signature,
             exclude_patterns = exclude_patterns,
         )
         src_target = ":" + src_name
@@ -3722,13 +3601,18 @@ def meson_package(
     if use_bootstrap and BOOTSTRAP_TOOLCHAIN not in bdepend:
         bdepend.append(BOOTSTRAP_TOOLCHAIN)
 
+    # Pop phase overrides from kwargs if provided
+    custom_src_configure = kwargs.pop("src_configure", None)
+    custom_src_compile = kwargs.pop("src_compile", None)
+    custom_src_install = kwargs.pop("src_install", None)
+
     ebuild_package(
         name = name,
         source = src_target,
         version = version,
-        src_configure = eclass_config["src_configure"],
-        src_compile = eclass_config["src_compile"],
-        src_install = eclass_config["src_install"],
+        src_configure = custom_src_configure if custom_src_configure else eclass_config["src_configure"],
+        src_compile = custom_src_compile if custom_src_compile else eclass_config["src_compile"],
+        src_install = custom_src_install if custom_src_install else eclass_config["src_install"],
         rdepend = resolved_deps,
         bdepend = bdepend,
         env = env,
@@ -3755,10 +3639,10 @@ def autotools_package(
         use_deps: dict = {},
         global_use: dict | None = None,
         package_overrides: dict | None = None,
-        signature_uri: str | None = None,
+        signature_sha256: str | None = None,
+        signature_required: bool = False,
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
-        auto_detect_signature: bool = True,
         exclude_patterns: list[str] = [],
         **kwargs):
     """
@@ -3785,10 +3669,9 @@ def autotools_package(
         use_deps: Dict mapping USE flag to conditional dependencies
         global_use: Global USE flag configuration
         package_overrides: Package-specific USE overrides
-        signature_uri: Optional URL to GPG signature file (.asc or .sig)
+        signature_sha256: SHA256 of GPG signature file (use update_checksums.py to populate)
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
-        auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
         exclude_patterns: List of patterns to exclude from source extraction (passed to tar --exclude)
 
     Example:
@@ -3826,10 +3709,10 @@ def autotools_package(
             name = src_name,
             src_uri = src_uri,
             sha256 = sha256,
-            signature_uri = signature_uri,
+            signature_sha256 = signature_sha256,
+            signature_required = signature_required,
             gpg_key = gpg_key,
             gpg_keyring = gpg_keyring,
-            auto_detect_signature = auto_detect_signature,
             exclude_patterns = exclude_patterns,
         )
         src_target = ":" + src_name
@@ -3883,12 +3766,13 @@ def autotools_package(
     post_install = kwargs.pop("post_install", "")
 
     # Allow overriding eclass phases for non-autotools packages
+    custom_src_prepare = kwargs.pop("src_prepare", None)
     custom_src_configure = kwargs.pop("src_configure", None)
     custom_src_compile = kwargs.pop("src_compile", None)
     custom_src_install = kwargs.pop("src_install", None)
 
     # Combine with eclass phases
-    src_prepare = eclass_config.get("src_prepare", "")
+    src_prepare = custom_src_prepare if custom_src_prepare else eclass_config.get("src_prepare", "")
     if pre_configure:
         src_prepare += "\n" + pre_configure
 
@@ -3934,10 +3818,10 @@ def cargo_package(
         use_deps: dict = {},
         global_use: dict | None = None,
         package_overrides: dict | None = None,
-        signature_uri: str | None = None,
+        signature_sha256: str | None = None,
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
-        auto_detect_signature: bool = True,
+        signature_required: bool = False,
         exclude_patterns: list[str] = [],
         **kwargs):
     """
@@ -3960,10 +3844,9 @@ def cargo_package(
         use_deps: Dict mapping USE flag to conditional dependencies
         global_use: Global USE flag configuration
         package_overrides: Package-specific USE overrides
-        signature_uri: Optional URL to GPG signature file (.asc or .sig)
+        signature_sha256: SHA256 of GPG signature file (use update_checksums.py to populate)
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
-        auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
         exclude_patterns: List of patterns to exclude from source extraction (passed to tar --exclude)
 
     Example:
@@ -3992,10 +3875,10 @@ def cargo_package(
         name = src_name,
         src_uri = src_uri,
         sha256 = sha256,
-        signature_uri = signature_uri,
+        signature_sha256 = signature_sha256,
+        signature_required = signature_required,
         gpg_key = gpg_key,
         gpg_keyring = gpg_keyring,
-        auto_detect_signature = auto_detect_signature,
         exclude_patterns = exclude_patterns,
     )
 
@@ -4077,10 +3960,10 @@ def go_package(
         use_deps: dict = {},
         global_use: dict | None = None,
         package_overrides: dict | None = None,
-        signature_uri: str | None = None,
+        signature_sha256: str | None = None,
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
-        auto_detect_signature: bool = True,
+        signature_required: bool = False,
         exclude_patterns: list[str] = [],
         **kwargs):
     """
@@ -4103,10 +3986,9 @@ def go_package(
         use_deps: Dict mapping USE flag to conditional dependencies
         global_use: Global USE flag configuration
         package_overrides: Package-specific USE overrides
-        signature_uri: Optional URL to GPG signature file (.asc or .sig)
+        signature_sha256: SHA256 of GPG signature file (use update_checksums.py to populate)
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
-        auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
         exclude_patterns: List of patterns to exclude from source extraction (passed to tar --exclude)
 
     Example:
@@ -4136,10 +4018,10 @@ def go_package(
         name = src_name,
         src_uri = src_uri,
         sha256 = sha256,
-        signature_uri = signature_uri,
+        signature_sha256 = signature_sha256,
+        signature_required = signature_required,
         gpg_key = gpg_key,
         gpg_keyring = gpg_keyring,
-        auto_detect_signature = auto_detect_signature,
         exclude_patterns = exclude_patterns,
     )
 
@@ -4221,10 +4103,10 @@ def python_package(
         use_deps: dict = {},
         global_use: dict | None = None,
         package_overrides: dict | None = None,
-        signature_uri: str | None = None,
+        signature_sha256: str | None = None,
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
-        auto_detect_signature: bool = True,
+        signature_required: bool = False,
         exclude_patterns: list[str] = [],
         **kwargs):
     """
@@ -4246,10 +4128,9 @@ def python_package(
         use_deps: Dict mapping USE flag to conditional dependencies
         global_use: Global USE flag configuration
         package_overrides: Package-specific USE overrides
-        signature_uri: Optional URL to GPG signature file (.asc or .sig)
+        signature_sha256: SHA256 of GPG signature file (use update_checksums.py to populate)
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
-        auto_detect_signature: Auto-detect signature files (.asc, .sig, .sign) (default: True)
         exclude_patterns: List of patterns to exclude from source extraction (passed to tar --exclude)
 
     Example:
@@ -4275,10 +4156,10 @@ def python_package(
         name = src_name,
         src_uri = src_uri,
         sha256 = sha256,
-        signature_uri = signature_uri,
+        signature_sha256 = signature_sha256,
+        signature_required = signature_required,
         gpg_key = gpg_key,
         gpg_keyring = gpg_keyring,
-        auto_detect_signature = auto_detect_signature,
         exclude_patterns = exclude_patterns,
     )
 

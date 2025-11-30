@@ -134,7 +134,7 @@ def parse_download_sources(buck_file: Path) -> list[DownloadSource]:
                 src_uri=src_uri.group(1),
                 sha256=sha256.group(1),
                 signature_sha256=sig_sha256.group(1) if sig_sha256 else None,
-                signature_required=sig_req.group(1) != 'False' if sig_req else True,
+                signature_required=sig_req.group(1) == 'True' if sig_req else False,
                 buck_file=buck_file,
                 content=match.group(0),
             ))

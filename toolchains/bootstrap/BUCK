@@ -611,15 +611,15 @@ ls -la gcc g++ cc c++ cpp
 
 download_source(
     name = "ncurses-src",
-    src_uri = "https://mirrors.kernel.org/gnu/ncurses/ncurses-6.4.tar.gz",
-    sha256 = "6931283d9ac87c5073f30b6290c4c75f21632bb4fc3603ac8100812bed248159",
+    src_uri = "https://mirrors.kernel.org/gnu/ncurses/ncurses-6.5.tar.gz",
+    sha256 = "136d91bc269a9a5785e5f9e980bc76ab57428f604ce3e5a5a90cebc767971cc6",
     signature_required = False,
 )
 
 ebuild_package(
     name = "bootstrap-ncurses",
     source = ":ncurses-src",
-    version = "6.4",
+    version = "6.5",
     category = "toolchain/bootstrap",
     slot = "0",
     description = "Terminal handling library for bootstrap",
@@ -670,15 +670,15 @@ ln -sf libncursesw.so libtinfow.so 2>/dev/null || true
 
 download_source(
     name = "readline-src",
-    src_uri = "https://mirrors.kernel.org/gnu/readline/readline-8.2.tar.gz",
-    sha256 = "3feb7171f16a84ee82ca18a36d7b9be109a52c04f492a053331d7d1095007c35",
+    src_uri = "https://mirrors.kernel.org/gnu/readline/readline-8.3.tar.gz",
+    sha256 = "fe5383204467828cd495ee8d1d3c037a7eba1389c22bc6a041f627976f9061cc",
     signature_required = False,
 )
 
 ebuild_package(
     name = "bootstrap-readline",
     source = ":readline-src",
-    version = "8.2",
+    version = "8.3",
     category = "toolchain/bootstrap",
     slot = "0",
     description = "Command line editing library for bootstrap",

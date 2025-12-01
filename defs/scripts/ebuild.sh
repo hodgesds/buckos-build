@@ -206,13 +206,16 @@ for dep_dir_raw in "${DEP_DIRS_ARRAY[@]}"; do
         DEP_PKG_CONFIG_PATH="${DEP_PKG_CONFIG_PATH:+$DEP_PKG_CONFIG_PATH:}$dep_dir/usr/share/pkgconfig"
     fi
 done
-# NOTE: We intentionally DO NOT set LD_LIBRARY_PATH here.
-# Setting LD_LIBRARY_PATH would pollute the host shell (e.g., /bin/bash) that runs
-# these build scripts, causing symbol lookup errors when the host bash tries to
-# load bootstrap libraries (like libreadline.so.8) that were built against different
-# dependencies. The cross-compiled binaries will find their libraries via -L and
-# -rpath flags at link time instead.
+# LD_LIBRARY_PATH handling depends on whether we're cross-compiling (bootstrap) or not:
+# - For bootstrap/cross-compilation: DON'T set LD_LIBRARY_PATH because it pollutes the
+#   host shell (e.g., /bin/bash) causing symbol lookup errors when host tools try to
+#   load cross-compiled libraries.
+# - For regular builds: DO set LD_LIBRARY_PATH so that build tools (python3, etc.)
+#   from dependencies can find their shared libraries at runtime.
 if [ -n "$DEP_LIBPATH" ]; then
+    if [ "$USE_BOOTSTRAP" != "true" ]; then
+        export LD_LIBRARY_PATH="${DEP_LIBPATH}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+    fi
     export LIBRARY_PATH="${DEP_LIBPATH}"
     DEP_LDFLAGS=""
     IFS=':' read -ra LIB_DIRS <<< "$DEP_LIBPATH"

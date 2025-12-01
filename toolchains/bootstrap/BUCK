@@ -710,15 +710,15 @@ make DESTDIR="$DESTDIR" install SHLIB_LIBS="-lncursesw"
 
 download_source(
     name = "bash-src",
-    src_uri = "https://mirrors.kernel.org/gnu/bash/bash-5.2.tar.gz",
-    sha256 = "a139c166df7ff4471c5e0733051642ee5556c1cc8a4a78f145583c5c81ab32fb",
+    src_uri = "https://mirrors.kernel.org/gnu/bash/bash-5.3.tar.gz",
+    sha256 = "0d5cd86965f869a26cf64f4b71be7b96f90a3ba8b3d74e27e8e9d9d5550f31ba",
     signature_required = False,
 )
 
 ebuild_package(
     name = "bootstrap-bash",
     source = ":bash-src",
-    version = "5.2",
+    version = "5.3",
     category = "toolchain/bootstrap",
     slot = "0",
     description = "Bourne Again SHell for bootstrap",
@@ -736,10 +736,6 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 ''',
 
     src_compile = '''
-# Clear environment variables that would pollute the host compiler when building
-# host tools like mkbuiltins. These tools run on the build machine, not the target.
-# The C*_INCLUDE_PATH and CPATH variables would make GCC include cross-compiled headers.
-unset CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH
 make -j$(nproc)
 ''',
 

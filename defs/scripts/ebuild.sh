@@ -35,6 +35,7 @@ DEP_PATH=""
 DEP_PYTHONPATH=""
 DEP_BASE_DIRS=""
 TOOLCHAIN_PATH=""
+TOOLCHAIN_LIBPATH=""
 TOOLCHAIN_INCLUDE=""
 TOOLCHAIN_ROOT=""
 for dep_dir in "${DEP_DIRS_ARRAY[@]}"; do
@@ -51,6 +52,10 @@ for dep_dir in "${DEP_DIRS_ARRAY[@]}"; do
         if [ -z "$BOOTSTRAP_SYSROOT" ] && [ -d "$dep_dir/tools" ]; then
             BOOTSTRAP_SYSROOT="$dep_dir/tools"
         fi
+    fi
+    # Collect toolchain library paths for bootstrap tools (bash, etc)
+    if [ -d "$dep_dir/tools/lib" ]; then
+        TOOLCHAIN_LIBPATH="${TOOLCHAIN_LIBPATH:+$TOOLCHAIN_LIBPATH:}$dep_dir/tools/lib"
     fi
     # Capture the full toolchain root directory (for glibc, etc)
     if [ -d "$dep_dir/usr/lib64" ] || [ -d "$dep_dir/usr/lib" ]; then
@@ -108,9 +113,12 @@ unset PKG_CONFIG_PATH
 # =============================================================================
 # Bootstrap Toolchain Setup
 # =============================================================================
+# Track whether cross-compilation is actually active (not just requested)
+CROSS_COMPILING="false"
 if [ "$USE_BOOTSTRAP" = "true" ]; then
     # Verify the cross-compiler actually exists
     if [ -n "$TOOLCHAIN_PATH" ] && command -v ${BUCKOS_TARGET}-gcc >/dev/null 2>&1; then
+        CROSS_COMPILING="true"
         echo "=== Using Bootstrap Toolchain ==="
         echo "Target: $BUCKOS_TARGET"
         echo "Sysroot: $BOOTSTRAP_SYSROOT"
@@ -206,15 +214,25 @@ for dep_dir_raw in "${DEP_DIRS_ARRAY[@]}"; do
         DEP_PKG_CONFIG_PATH="${DEP_PKG_CONFIG_PATH:+$DEP_PKG_CONFIG_PATH:}$dep_dir/usr/share/pkgconfig"
     fi
 done
-# LD_LIBRARY_PATH handling depends on whether we're cross-compiling (bootstrap) or not:
-# - For bootstrap/cross-compilation: DON'T set LD_LIBRARY_PATH because it pollutes the
-#   host shell (e.g., /bin/bash) causing symbol lookup errors when host tools try to
-#   load cross-compiled libraries.
-# - For regular builds: DO set LD_LIBRARY_PATH so that build tools (python3, etc.)
-#   from dependencies can find their shared libraries at runtime.
+# LD_LIBRARY_PATH handling:
+# - Never include /tools/lib paths (bootstrap toolchain) as those are cross-compiled
+#   libraries that will break the host shell and tools.
+# - For active cross-compilation: DON'T set LD_LIBRARY_PATH at all.
+# - For regular builds: Set LD_LIBRARY_PATH with non-toolchain library paths so that
+#   build tools (python3, etc.) from dependencies can find their shared libraries.
 if [ -n "$DEP_LIBPATH" ]; then
-    if [ "$USE_BOOTSTRAP" != "true" ]; then
-        export LD_LIBRARY_PATH="${DEP_LIBPATH}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+    if [ "$CROSS_COMPILING" != "true" ]; then
+        # Filter out /tools/lib paths which are cross-compiled and break host tools
+        HOST_LIBPATH=""
+        IFS=':' read -ra LIBPATH_PARTS <<< "$DEP_LIBPATH"
+        for libpath in "${LIBPATH_PARTS[@]}"; do
+            if [[ "$libpath" != */tools/lib* ]]; then
+                HOST_LIBPATH="${HOST_LIBPATH:+$HOST_LIBPATH:}$libpath"
+            fi
+        done
+        if [ -n "$HOST_LIBPATH" ]; then
+            export LD_LIBRARY_PATH="${HOST_LIBPATH}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+        fi
     fi
     export LIBRARY_PATH="${DEP_LIBPATH}"
     DEP_LDFLAGS=""
@@ -340,12 +358,35 @@ if [ -n "$PHASES_CONTENT" ]; then
     echo "$PHASES_CONTENT" > "$T/phases.sh"
     chmod +x "$T/phases.sh"
 
+    # If bootstrap toolchain is available, set LD_LIBRARY_PATH to include its libraries
+    # so that the bootstrap bash and other tools can find their dependencies.
+    # This is set just before running phases so it doesn't affect the host ebuild.sh execution.
+    if [ -n "$TOOLCHAIN_LIBPATH" ]; then
+        export LD_LIBRARY_PATH="${TOOLCHAIN_LIBPATH}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+    fi
+
+    # Determine which bash to use for phases - prefer bootstrap bash if available
+    # We need to explicitly invoke bash rather than rely on shebang because
+    # the shebang invokes /bin/bash before LD_LIBRARY_PATH is available
+    PHASES_BASH="bash"
+    if [ -n "$TOOLCHAIN_PATH" ]; then
+        # Try to find bootstrap bash in the toolchain path
+        IFS=':' read -ra TOOLCHAIN_PATH_PARTS <<< "$TOOLCHAIN_PATH"
+        for toolpath in "${TOOLCHAIN_PATH_PARTS[@]}"; do
+            if [ -x "$toolpath/bash" ]; then
+                PHASES_BASH="$toolpath/bash"
+                echo "🔧 Using bootstrap bash: $PHASES_BASH"
+                break
+            fi
+        done
+    fi
+
     if command -v unshare >/dev/null 2>&1 && unshare --net true 2>/dev/null; then
         echo "🔒 Running build phases in network-isolated environment (no internet access)"
-        unshare --net -- "$T/phases.sh"
+        unshare --net -- "$PHASES_BASH" "$T/phases.sh"
     else
         echo "⚠ Warning: unshare not available or insufficient permissions, building without network isolation"
-        "$T/phases.sh"
+        "$PHASES_BASH" "$T/phases.sh"
     fi
 else
     echo "ERROR: PHASES_CONTENT not set" >&2

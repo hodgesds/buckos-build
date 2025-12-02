@@ -1162,8 +1162,33 @@ ebuild_package(
     src_compile = "true",
 
     src_install = '''
-# Create a marker file and symlinks to indicate this is the toolchain root
-mkdir -p "$DESTDIR/tools"
+# Create the tools directory structure by copying/symlinking from all bdepends
+mkdir -p "$DESTDIR/tools/bin" "$DESTDIR/tools/lib" "$DESTDIR/tools/include"
+
+# Copy tools from each dependency's tools directory
+# DEP_BASE_DIRS is set by ebuild.sh and contains all dependency directories
+IFS=':' read -ra DEP_ARRAY <<< "$DEP_BASE_DIRS"
+for dep_dir in "${DEP_ARRAY[@]}"; do
+    # Copy binaries
+    if [ -d "$dep_dir/tools/bin" ]; then
+        cp -a "$dep_dir/tools/bin/"* "$DESTDIR/tools/bin/" 2>/dev/null || true
+    fi
+    # Copy libraries (preserving symlinks)
+    if [ -d "$dep_dir/tools/lib" ]; then
+        cp -a "$dep_dir/tools/lib/"* "$DESTDIR/tools/lib/" 2>/dev/null || true
+    fi
+    # Copy includes
+    if [ -d "$dep_dir/tools/include" ]; then
+        cp -a "$dep_dir/tools/include/"* "$DESTDIR/tools/include/" 2>/dev/null || true
+    fi
+    # Copy share directory (terminfo, etc)
+    if [ -d "$dep_dir/tools/share" ]; then
+        mkdir -p "$DESTDIR/tools/share"
+        cp -a "$dep_dir/tools/share/"* "$DESTDIR/tools/share/" 2>/dev/null || true
+    fi
+done
+
+# Create a marker file
 cat > "$DESTDIR/tools/.bootstrap-toolchain" << 'EOF'
 BuckOS Bootstrap Toolchain v2.0
 Target: x86_64-buckos-linux-gnu
@@ -1177,6 +1202,8 @@ Core utilities included:
 - tar, gzip, xz
 - ncurses, readline
 EOF
+
+echo "Bootstrap toolchain assembled: $(ls -1 $DESTDIR/tools/bin | wc -l) binaries, $(ls -1 $DESTDIR/tools/lib/*.so* 2>/dev/null | wc -l) libraries"
 ''',
 
     bdepend = [

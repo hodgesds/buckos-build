@@ -2605,6 +2605,18 @@ shift 4
 # Remaining args ($@) are: dep_dirs...
 export _EBUILD_DEP_DIRS="$@"
 
+# Set up LD_LIBRARY_PATH early so bootstrap bash can find its libraries
+# This must happen before any bash subprocesses are spawned
+_TOOLCHAIN_LIBPATH=""
+for dep_dir in "$@"; do
+    if [ -d "$dep_dir/tools/lib" ]; then
+        _TOOLCHAIN_LIBPATH="${{_TOOLCHAIN_LIBPATH:+$_TOOLCHAIN_LIBPATH:}}$dep_dir/tools/lib"
+    fi
+done
+if [ -n "$_TOOLCHAIN_LIBPATH" ]; then
+    export LD_LIBRARY_PATH="${{_TOOLCHAIN_LIBPATH}}${{LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}}"
+fi
+
 # Export package variables
 export PN="{name}"
 export PV="{version}"
@@ -2719,10 +2731,22 @@ source "$FRAMEWORK_SCRIPT"
     for dep_dir in dep_dirs:
         cmd.add(dep_dir)
 
+    # Determine if this action should be local-only:
+    # - Bootstrap packages (use_bootstrap=true) use the host compiler and tools,
+    #   so they must run locally to ensure host compatibility
+    # - Packages can explicitly override with local_only attribute
+    local_only_attr = ctx.attrs.local_only if hasattr(ctx.attrs, "local_only") else None
+    if local_only_attr != None:
+        is_local_only = local_only_attr
+    else:
+        # Default: local_only=True for bootstrap packages
+        is_local_only = use_bootstrap
+
     ctx.actions.run(
         cmd,
         category = "ebuild",
         identifier = ctx.attrs.name,
+        local_only = is_local_only,
     )
 
     return [
@@ -2770,6 +2794,9 @@ ebuild_package = rule(
         # Bootstrap toolchain support
         "use_bootstrap": attrs.bool(default = False),
         "bootstrap_sysroot": attrs.string(default = ""),
+        # Remote execution control - set to True for packages that must run locally
+        # (e.g., bootstrap packages that depend on host-specific tools)
+        "local_only": attrs.bool(default = False),
         # External scripts for proper cache invalidation
         "_pkg_config_wrapper": attrs.dep(default = "//defs/scripts:pkg-config-wrapper"),
         "_ebuild_script": attrs.dep(default = "//defs/scripts:ebuild"),

@@ -18,6 +18,8 @@ autotools_package(
     license = "BSD-3-Clause",
 
     # CMAKE uses its own bootstrap script, not autotools configure
+    # NOTE: --no-system-cppdap avoids needing to build cppdap separately
+    # NOTE: Disable ccmake (curses GUI) to avoid NCURSES_BOOL/std::function conflict with GCC 15
     src_configure = """
 echo "=== Configuring cmake with bootstrap ==="
 ./bootstrap \\
@@ -27,7 +29,8 @@ echo "=== Configuring cmake with bootstrap ==="
     --system-expat \\
     --parallel=$(nproc) \\
     --no-qt-gui \\
-    -- -DCMAKE_USE_OPENSSL=ON
+    -- -DCMAKE_USE_OPENSSL=ON \\
+       -DBUILD_CursesDialog=OFF
 """,
 
     src_compile = """

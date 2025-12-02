@@ -26,6 +26,8 @@ meson_package(
     ],
     deps = [
         "//packages/linux/system/init/eudev:eudev",
+        "//packages/linux/system/libs/input/mtdev:mtdev",
+        "//packages/linux/system/libs/input/libevdev:libevdev",
     ],
     visibility = ["PUBLIC"],
 )

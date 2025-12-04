@@ -10,11 +10,15 @@ meson_package(
     src_uri = "https://github.com/systemd/systemd/archive/refs/tags/v256.7.tar.gz",
     sha256 = "896d76ff65c88f5fd9e42f90d152b0579049158a163431dd77cdc57748b1d7b0",
     signature_required = False,
-    # Exclude test/fuzz files (have escaped characters in names)
-    # Note: units/system-* files are now renamed in extract_source.sh
-    exclude_patterns = ["*/test/fuzz/*"],
+    # Exclude test/fuzz files and unit files with escaped characters in names
+    # The \x2d in filenames causes Buck2 path relativization errors
+    # Note: The backslash in filenames needs to be matched literally
+    exclude_patterns = [
+        "*/test/fuzz/*",
+        "*system-systemd?x2d*",  # Match system-systemd\x2d* (? matches the backslash)
+    ],
     # Create stub meson.build for excluded test/fuzz directory
-    # Also create escaped-name copies of unit files (meson expects \x2d names)
+    # Remove references to excluded unit files with escaped names
     src_prepare = """
         mkdir -p test/fuzz
         cat > test/fuzz/meson.build << 'FUZZ_STUB'
@@ -23,9 +27,12 @@ fuzz_sanitizers = []
 fuzz_testsdir = 'test/fuzz'
 FUZZ_STUB
 
-        # Patch meson.build to use safe filenames (without \\x2d escape sequences)
-        # File has \\x2d (double backslash), need 8 backslashes in Starlark -> 4 in shell -> 2 for sed
-        sed -i 's/systemd\\\\\\\\x2d/systemd-/g' units/meson.build
+        # Remove multi-line dict entries referencing excluded unit files with \\x2d in names
+        # These files are excluded from extraction because Buck2 can't handle the escaped paths
+        # The entries look like: { 'file' : 'system-systemd\\x2dcryptsetup.slice', 'conditions' : [...], },
+        # Use perl for multi-line regex to delete entire dict blocks
+        perl -i -0777 -pe "s/\\{[^{}]*x2dcryptsetup[^{}]*\\},?\\s*//gs" units/meson.build
+        perl -i -0777 -pe "s/\\{[^{}]*x2dveritysetup[^{}]*\\},?\\s*//gs" units/meson.build
     """,
     description = "System and service manager",
     homepage = "https://systemd.io/",

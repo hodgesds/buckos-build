@@ -179,14 +179,46 @@ set +f
 # Fix filenames with escape sequences (e.g., \x2d -> -)
 # Buck2 cannot handle files with escape sequences in their names
 # These are literal backslash-x sequences in the filenames, not actual escape chars
-find . -name '*\\x*' 2>/dev/null | while read -r file; do
+# First try find with -name pattern, then try grep-based approach as fallback
+RENAMED_COUNT=0
+
+# Method 1: Find files with \x in name using -name (may not work on all systems)
+find . -name '*\x*' 2>/dev/null | while read -r file; do
     # Decode \x2d (hyphen), \x40 (@), etc. to their actual characters
     newname=$(echo "$file" | sed 's/\\x2d/-/g; s/\\x40/@/g; s/\\x2e/./g')
     if [ "$file" != "$newname" ]; then
         mkdir -p "$(dirname "$newname")"
-        mv "$file" "$newname"
-        echo "Renamed: $file -> $newname"
+        mv "$file" "$newname" 2>/dev/null && echo "Renamed: $file -> $newname" && RENAMED_COUNT=$((RENAMED_COUNT+1))
     fi
+done
+
+# Method 2: Use find with -print0 and grep to catch files the -name pattern missed
+find . -print0 2>/dev/null | tr '\0' '\n' | grep '\\x' | while read -r file; do
+    if [ -e "$file" ]; then
+        # Decode \x2d (hyphen), \x40 (@), etc. to their actual characters
+        newname=$(echo "$file" | sed 's/\\x2d/-/g; s/\\x40/@/g; s/\\x2e/./g')
+        if [ "$file" != "$newname" ]; then
+            mkdir -p "$(dirname "$newname")"
+            mv "$file" "$newname" 2>/dev/null && echo "Renamed: $file -> $newname"
+        fi
+    fi
+done
+
+# Method 3: Brute force - list all files and check each one
+# This handles cases where the filesystem represents the backslash differently
+for file in $(find . -type f -o -type d 2>/dev/null); do
+    case "$file" in
+        *x2d*|*x40*|*x2e*)
+            # Check if it's a literal \x sequence (4-char sequence with backslash)
+            if echo "$file" | grep -q '\\x[0-9a-fA-F][0-9a-fA-F]'; then
+                newname=$(echo "$file" | sed 's/\\x2d/-/g; s/\\x40/@/g; s/\\x2e/./g')
+                if [ "$file" != "$newname" ] && [ -e "$file" ]; then
+                    mkdir -p "$(dirname "$newname")"
+                    mv "$file" "$newname" 2>/dev/null && echo "Renamed: $file -> $newname"
+                fi
+            fi
+            ;;
+    esac
 done
 
 echo "Extraction complete: $(find . -type f | wc -l) files"

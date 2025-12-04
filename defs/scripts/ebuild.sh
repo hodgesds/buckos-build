@@ -238,7 +238,10 @@ if [ -n "$DEP_LIBPATH" ]; then
     DEP_LDFLAGS=""
     IFS=':' read -ra LIB_DIRS <<< "$DEP_LIBPATH"
     for lib_dir in "${LIB_DIRS[@]}"; do
-        DEP_LDFLAGS="${DEP_LDFLAGS} -L$lib_dir -Wl,-rpath,$lib_dir"
+        # Use -rpath-link for build-time linking, NOT -rpath
+        # -rpath embeds build paths in binaries causing runtime issues
+        # Libraries should be found via ld.so.conf and standard paths
+        DEP_LDFLAGS="${DEP_LDFLAGS} -L$lib_dir -Wl,-rpath-link,$lib_dir"
     done
     export LDFLAGS="${LDFLAGS:-} $DEP_LDFLAGS"
 fi

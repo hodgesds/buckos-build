@@ -23,6 +23,7 @@ meson_package(
         "-Ddocumentation=false",
         "-Dtests=false",
         "-Ddebug-gui=false",
+        "-Dlibwacom=false",
     ],
     deps = [
         "//packages/linux/system/init/eudev:eudev",

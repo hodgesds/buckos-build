@@ -48,7 +48,11 @@ autotools_package(
         "--with-shared",
         "--enable-pc-files",
         "--with-pkg-config-libdir=/usr/lib/pkgconfig",
-        "--with-termlib",  # Build libtinfo as a separate library
+        # NOTE: --with-termlib is disabled because it causes library dependency issues
+        # when RPATH is not used. Applications linking against libncursesw also need
+        # to explicitly link against libtinfow, which many build systems don't handle.
+        # Instead, we include all symbols in libncursesw for simplicity.
+        # "--with-termlib",
     ],
 
     post_install = """
@@ -60,10 +64,14 @@ for lib in ncurses form panel menu; do
 done
 ln -sf libncursesw.so libcurses.so
 
+# Create libtinfo symlinks pointing to libncurses (since we don't use --with-termlib)
+ln -sf libncursesw.so libtinfo.so
+ln -sf libncursesw.so libtinfow.so
+
 # Also create symlinks in lib64 if it exists
 if [ -d "$DESTDIR/usr/lib64" ]; then
     cd "$DESTDIR/usr/lib64"
-    for lib in ncurses form panel menu tinfo; do
+    for lib in ncurses form panel menu; do
         if [ -f "lib${lib}w.so" ]; then
             ln -sf lib${lib}w.so lib${lib}.so
         fi
@@ -75,6 +83,12 @@ if [ -d "$DESTDIR/usr/lib64" ]; then
         fi
     done
     [ -f libncursesw.so ] && ln -sf libncursesw.so libcurses.so
+
+    # Create libtinfo symlinks (compatibility)
+    ln -sf libncursesw.so libtinfo.so
+    ln -sf libncursesw.so libtinfow.so
+    [ -f libncursesw.so.6 ] && ln -sf libncursesw.so.6 libtinfo.so.6
+    [ -f libncursesw.so.6 ] && ln -sf libncursesw.so.6 libtinfow.so.6
 fi
 """,
     visibility = ["PUBLIC"],

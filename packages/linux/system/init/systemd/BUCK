@@ -117,6 +117,16 @@ FUZZ_STUB
         "//packages/linux/lang/python/jinja2:jinja2",  # Jinja2 templating (required by meson)
         "//packages/linux/lang/python/jinja2:markupsafe",  # Required by jinja2
     ],
+    src_install = """
+# Install with meson
+meson install -C build --destdir "$DESTDIR"
+
+# Fix hardcoded build paths in systemd unit files
+# Meson's find_program() finds dependencies at build paths, which don't exist at runtime
+echo "Fixing hardcoded build paths in systemd unit files..."
+find "$DESTDIR/usr/lib/systemd/system" -name "*.service" -type f -exec sed -i 's|/home/daniel/git/buckos-build/buck-out/[^/]*/[^/]*/[^/]*/[^/]*/packages/linux/system/libs/kmod/__kmod__/kmod/usr/bin/kmod|/usr/bin/kmod|g' {} \;
+echo "Fixed kmod paths in systemd unit files"
+""",
     deps = [
         "//packages/linux/core/util-linux:util-linux",  # libmount, libblkid
         "//packages/linux/core/zlib:zlib",

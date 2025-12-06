@@ -3253,9 +3253,10 @@ def autotools_package(
         print("Warning in {}: {}".format(name, warning))
 
     # Store compat tags in metadata for later use
+    # Buck2 metadata keys must contain exactly one dot (e.g., "custom.key")
     if "metadata" not in kwargs:
         kwargs["metadata"] = {}
-    kwargs["metadata"]["compat_tags"] = compat_tags
+    kwargs["metadata"]["custom.compat_tags"] = compat_tags
 
     # Handle source - either use provided source or create one from src_uri
     if source:

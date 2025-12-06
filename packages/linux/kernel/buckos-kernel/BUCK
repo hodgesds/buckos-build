@@ -6,7 +6,7 @@ load("//defs:package_defs.bzl", "kernel_build")
 # configuration that supports most common hardware and use cases.
 #
 # Features:
-# - Linux 6.12 LTS kernel
+# - Linux 6.17.10 Stable kernel
 # - Broad hardware support (x86_64)
 # - Multiple filesystems (ext4, XFS, Btrfs, NTFS, etc.)
 # - Full networking stack with modern features (BBR, nftables)
@@ -16,11 +16,16 @@ load("//defs:package_defs.bzl", "kernel_build")
 #
 # For custom kernel configurations, see the examples or create your own
 # kernel_config with specific fragments.
+#
+# Available kernel versions:
+# - Mainline: 6.18 (//packages/linux/kernel/src:linux-mainline-src)
+# - Stable: 6.17.10 (default, //packages/linux/kernel/src:linux-stable-src)
+# - LTS: 6.12.60 (//packages/linux/kernel/src:linux-lts-src)
 
 kernel_build(
     name = "buckos-kernel",
     source = "//packages/linux/kernel/src:linux-src",
-    version = "6.12.6",
+    version = "6.17.10",
     config_dep = "//packages/linux/kernel/configs:buckos-default",
     visibility = ["PUBLIC"],
 )
@@ -30,7 +35,7 @@ kernel_build(
 kernel_build(
     name = "buckos-kernel-minimal",
     source = "//packages/linux/kernel/src:linux-src",
-    version = "6.12.6",
+    version = "6.17.10",
     config_dep = "//packages/linux/kernel/configs:buckos-minimal",
     visibility = ["PUBLIC"],
 )
@@ -40,7 +45,7 @@ kernel_build(
 kernel_build(
     name = "buckos-kernel-server",
     source = "//packages/linux/kernel/src:linux-src",
-    version = "6.12.6",
+    version = "6.17.10",
     config_dep = "//packages/linux/kernel/configs:buckos-server",
     visibility = ["PUBLIC"],
 )
@@ -50,7 +55,7 @@ kernel_build(
 kernel_build(
     name = "buckos-kernel-vm",
     source = "//packages/linux/kernel/src:linux-src",
-    version = "6.12.6",
+    version = "6.17.10",
     config_dep = "//packages/linux/kernel/configs:buckos-vm-guest",
     visibility = ["PUBLIC"],
 )
@@ -59,6 +64,6 @@ kernel_build(
 kernel_build(
     name = "buckos-kernel-defconfig",
     source = "//packages/linux/kernel/src:linux-src",
-    version = "6.12.6",
+    version = "6.17.10",
     visibility = ["PUBLIC"],
 )

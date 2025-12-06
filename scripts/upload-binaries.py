@@ -10,13 +10,13 @@ This script:
 
 Usage:
     # Upload all packages in directory
-    ./scripts/upload-binaries.py --source ./binaries --mirror user@mirror.buckos.org:/var/www/buckos-mirror/binaries
+    ./scripts/upload-binaries.py --source ./binaries --mirror user@mirror.buckos.org:/var/www/buckos-mirror
 
     # Upload to local mirror
-    ./scripts/upload-binaries.py --source ./binaries --mirror /var/www/buckos-mirror/binaries
+    ./scripts/upload-binaries.py --source ./binaries --mirror /var/www/buckos-mirror
 
     # Upload with rsync (faster for updates)
-    ./scripts/upload-binaries.py --source ./binaries --mirror user@mirror.buckos.org:/var/www/buckos-mirror/binaries --use-rsync
+    ./scripts/upload-binaries.py --source ./binaries --mirror user@mirror.buckos.org:/var/www/buckos-mirror --use-rsync
 
     # Generate index only (no upload)
     ./scripts/upload-binaries.py --source ./binaries --generate-index-only
@@ -217,9 +217,10 @@ def upload_directory(source_dir: Path, mirror_url: str, use_rsync: bool = False)
         print(f"✓ Copied to {dest}")
     elif use_rsync:
         # Rsync upload (faster for updates)
+        # -L flag follows symlinks and copies the actual files
         cmd = [
             "rsync",
-            "-avz",
+            "-avzL",
             "--progress",
             str(source_dir) + "/",
             mirror_url + "/"

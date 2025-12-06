@@ -2626,6 +2626,7 @@ shift 5
 
 # Try to download binary package from mirror before building from source
 # Enabled when BUCKOS_BINARY_MIRROR environment variable is set
+# Mirror structure: $MIRROR/index.json and $MIRROR/<first-letter>/<package>.tar.gz
 # Example: export BUCKOS_BINARY_MIRROR=file:///tmp/buckos-mirror
 # Example: export BUCKOS_BINARY_MIRROR=https://mirror.buckos.org
 # Set BUCKOS_PREFER_BINARIES=false to disable binary downloads
@@ -2634,7 +2635,7 @@ if [ -n "$BUCKOS_BINARY_MIRROR" ] && [ "${{BUCKOS_PREFER_BINARIES:-true}}" = "tr
 
     # Simple binary download logic without complex config hash calculation
     # Query index.json and find matching package by name/version
-    INDEX_URL="$BUCKOS_BINARY_MIRROR/binaries/index.json"
+    INDEX_URL="$BUCKOS_BINARY_MIRROR/index.json"
 
     if curl -f -s "$INDEX_URL" -o /tmp/mirror-index-$$.json 2>/dev/null || wget -q "$INDEX_URL" -O /tmp/mirror-index-$$.json 2>/dev/null; then
         # Find package in index using python3 or fallback to grep
@@ -2660,7 +2661,7 @@ except: pass
 
                 if [ -n "$FILENAME" ]; then
                     FIRST_LETTER=$(echo "{name}" | cut -c1 | tr '[:upper:]' '[:lower:]')
-                    PACKAGE_URL="$BUCKOS_BINARY_MIRROR/binaries/$FIRST_LETTER/$FILENAME"
+                    PACKAGE_URL="$BUCKOS_BINARY_MIRROR/$FIRST_LETTER/$FILENAME"
                     HASH_URL="$PACKAGE_URL.sha256"
 
                     echo "Downloading binary: $FILENAME..."

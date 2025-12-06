@@ -1,4 +1,4 @@
-load("//defs:package_defs.bzl", "autotools_package", "download_source", "autotools_package")
+load("//defs:package_defs.bzl", "autotools_package")
 load("//defs:use_flags.bzl", "set_use_flags")
 
 # =============================================================================
@@ -6,25 +6,16 @@ load("//defs:use_flags.bzl", "set_use_flags")
 # =============================================================================
 # Essential for creating and extracting initramfs images.
 
-download_source(
-    name = "cpio-src",
-    src_uri = "https://mirrors.kernel.org/gnu/cpio/cpio-2.14.tar.gz",
-    sha256 = "145a340fd9d55f0b84779a44a12d5f79d77c99663967f8cfa168d7905ca52454",
-    signature_required = False,
-)
-
 autotools_package(
     name = "cpio",
-    source = ":cpio-src",
-    version = "2.14",
+    version = "2.15",
+    src_uri = "https://mirrors.kernel.org/gnu/cpio/cpio-2.15.tar.gz",
+    sha256 = "efa50ef983137eefc0a02fdb51509d624b5e3295c980aa127ceee4183455499e",
+    signature_required = False,
     description = "GNU cpio - copy files to and from archives",
     homepage = "https://www.gnu.org/software/cpio/",
     license = "GPL-3.0",
-    # sys/sysmacros.h needed for major/minor macros (moved from sys/types.h in glibc 2.28)
-    env = {
-        "CFLAGS": "-O2 -include sys/sysmacros.h",
-        "CPPFLAGS": "-include sys/sysmacros.h",
-    },
+    patches = ["0001-Fix-c23-conformity.patch"],
     configure_args = [
         "--enable-mt",
     ],

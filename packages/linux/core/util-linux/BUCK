@@ -74,6 +74,7 @@ autotools_package(
         "--disable-login",
         "--disable-newgrp",
         "--enable-nologin",  # Required by dracut
+        "--enable-sulogin",  # Required by dracut for emergency shell
         "--disable-pylibmount",
         "--disable-raw",
         "--disable-vipw",

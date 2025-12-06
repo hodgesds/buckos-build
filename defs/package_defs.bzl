@@ -12,6 +12,14 @@ load("//defs:use_flags.bzl",
      "use_configure_args",
      "use_cargo_args",
      "use_go_build_args")
+load("//defs:distro_constraints.bzl",
+     "validate_compat_tags",
+     "get_distro_constraints",
+     "DISTRO_BUCKOS")
+load("//defs:fhs_mapping.bzl",
+     "get_configure_args_for_layout")
+load("//config:fedora_build_flags.bzl",
+     "get_fedora_build_env")
 
 # Bootstrap toolchain target path (for use in package definitions)
 # All packages will use this by default to ensure they link against BuckOS glibc
@@ -2865,6 +2873,8 @@ def cmake_package(
         use_deps: dict = {},
         global_use: dict | None = None,
         package_overrides: dict | None = None,
+        # Distribution compatibility
+        compat_tags: list[str] | None = None,
         signature_sha256: str | None = None,
         signature_required: bool = False,
         gpg_key: str | None = None,
@@ -3017,6 +3027,8 @@ def meson_package(
         use_deps: dict = {},
         global_use: dict | None = None,
         package_overrides: dict | None = None,
+        # Distribution compatibility
+        compat_tags: list[str] | None = None,
         signature_sha256: str | None = None,
         signature_required: bool = False,
         gpg_key: str | None = None,
@@ -3168,6 +3180,8 @@ def autotools_package(
         use_deps: dict = {},
         global_use: dict | None = None,
         package_overrides: dict | None = None,
+        # Distribution compatibility
+        compat_tags: list[str] | None = None,
         signature_sha256: str | None = None,
         signature_required: bool = False,
         gpg_key: str | None = None,
@@ -3198,6 +3212,8 @@ def autotools_package(
         use_deps: Dict mapping USE flag to conditional dependencies
         global_use: Global USE flag configuration
         package_overrides: Package-specific USE overrides
+        compat_tags: Distribution compatibility tags (e.g., ["buckos-native", "fedora"])
+                    Defaults to ["buckos-native"] if not specified
         signature_sha256: SHA256 of GPG signature file (use update_checksums.py to populate)
         gpg_key: Optional GPG key ID or fingerprint to import and verify against
         gpg_keyring: Optional path to GPG keyring file with trusted keys
@@ -3226,6 +3242,20 @@ def autotools_package(
     """
     # Apply platform-specific constraints (Linux packages only build on Linux, etc.)
     kwargs = _apply_platform_constraints(kwargs)
+
+    # Handle distribution compatibility tags
+    if compat_tags == None:
+        compat_tags = [DISTRO_BUCKOS]  # Default to BuckOS-native only
+
+    # Validate compat tags
+    warnings = validate_compat_tags(compat_tags)
+    for warning in warnings:
+        print("Warning in {}: {}".format(name, warning))
+
+    # Store compat tags in metadata for later use
+    if "metadata" not in kwargs:
+        kwargs["metadata"] = {}
+    kwargs["metadata"]["compat_tags"] = compat_tags
 
     # Handle source - either use provided source or create one from src_uri
     if source:

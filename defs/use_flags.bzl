@@ -145,6 +145,9 @@ GLOBAL_USE_FLAGS = {
     "systemd": "Enable systemd integration",
     "udev": "Enable udev device management",
 
+    # Distribution compatibility
+    "fedora": "Enable Fedora compatibility mode (FHS layout, RPM support, Fedora build flags)",
+
     # Text & Localization
     "icu": "Enable ICU library for Unicode",
     "idn": "Enable IDN (internationalized domain names)",

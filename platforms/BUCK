@@ -79,6 +79,26 @@ constraint_value(
     visibility = ["PUBLIC"],
 )
 
+# Distribution compatibility constraint setting
+# Used to tag packages by their distribution compatibility
+constraint_setting(
+    name = "distro_compat",
+    visibility = ["PUBLIC"],
+)
+
+# Distribution compatibility values
+constraint_value(
+    name = "buckos-native",
+    constraint_setting = ":distro_compat",
+    visibility = ["PUBLIC"],
+)
+
+constraint_value(
+    name = "fedora",
+    constraint_setting = ":distro_compat",
+    visibility = ["PUBLIC"],
+)
+
 # Multi-platform target platforms
 platform(
     name = "linux-target",

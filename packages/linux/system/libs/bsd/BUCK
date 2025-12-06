@@ -6,7 +6,7 @@ load("//defs:package_defs.bzl", "download_source", "autotools_package")
 autotools_package(
     name = "libbsd",
     version = "0.12.2",
-    src_uri = "https://libbsd.freedesktop.org/releases/libbsd-0.12.2.tar.xz",
+    src_uri = "https://deb.debian.org/debian/pool/main/libb/libbsd/libbsd_0.12.2.orig.tar.xz",
     sha256 = "b88cc9163d0c652aaf39a99991d974ddba1c3a9711db8f1b5838af2a14731014",
     signature_sha256 = "620dc92f158ebe0a650c0e92214a8121b927276895dc9a1dcaa38f627fa0fcb0",
     gpg_key = "B972BF3EA4AE57A3",  # Guillem Jover

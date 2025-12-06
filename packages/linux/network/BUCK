@@ -171,7 +171,6 @@ filegroup(
         "//packages/linux/network/iftop:iftop",
         "//packages/linux/network/bmon:bmon",
         "//packages/linux/network/vnstat:vnstat",
-        "//packages/linux/network/bandwhich:bandwhich",
         "//packages/linux/network/darkstat:darkstat",
     ],
     default_target_platform = "//platforms:linux-target",

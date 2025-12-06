@@ -2596,20 +2596,41 @@ def _ebuild_package_impl(ctx: AnalysisContext) -> list[Provider]:
     pkg_config_wrapper = ctx.attrs._pkg_config_wrapper[DefaultInfo].default_outputs[0]
     ebuild_script = ctx.attrs._ebuild_script[DefaultInfo].default_outputs[0]
 
+    # Generate patch application commands if patches are provided
+    # We'll pass patch files via command line arguments and copy them to the build dir
+    patch_file_list = []
+    if ctx.attrs.patches:
+        for patch in ctx.attrs.patches:
+            patch_file_list.append(patch)
+
+    # Prepend patch commands to src_prepare if present
+    # Patches will be applied in the wrapper script before src_prepare runs
+    src_prepare_with_patches = src_prepare if src_prepare else "true"
+
     # Write wrapper script that sources external framework and defines phases
     # This approach works because Buck2 tracks both the written script AND the sourced framework
+    patch_count = len(patch_file_list)
     script = ctx.actions.write(
         "ebuild_wrapper.sh",
         '''#!/bin/bash
 set -e
 
-# Arguments: DESTDIR, SRC_DIR, PKG_CONFIG_WRAPPER, FRAMEWORK_SCRIPT, dep_dirs...
+# Arguments: DESTDIR, SRC_DIR, PKG_CONFIG_WRAPPER, FRAMEWORK_SCRIPT, PATCH_COUNT, patches..., dep_dirs...
 # Save these before shifting
 export _EBUILD_DESTDIR="$1"
 export _EBUILD_SRCDIR="$2"
 export _EBUILD_PKG_CONFIG_WRAPPER="$3"
 FRAMEWORK_SCRIPT="$4"
-shift 4
+PATCH_COUNT="$5"
+shift 5
+
+# Extract patch files
+PATCHES=()
+for ((i=0; i<$PATCH_COUNT; i++)); do
+    PATCHES+=("$1")
+    shift
+done
+
 # Remaining args ($@) are: dep_dirs...
 export _EBUILD_DEP_DIRS="$@"
 
@@ -2640,6 +2661,7 @@ export BOOTSTRAP_SYSROOT="{bootstrap_sysroot}"
 read -r -d '' PHASES_CONTENT << 'PHASES_EOF' || true
 #!/bin/bash
 set -e
+set -o pipefail
 
 # USE flag helper
 use() {{
@@ -2665,7 +2687,16 @@ cd "$S"
 
 # Phase: src_prepare
 echo "📦 Phase: src_prepare"
-if ! ( {src_prepare} ) 2>&1 | tee "$T/src_prepare.log"; then
+if ! (
+    # Apply patches
+    for patch_file in "${{PATCHES[@]}}"; do
+        if [ -n "$patch_file" ]; then
+            echo -e "\\033[32m * \\033[0mApplying $(basename "$patch_file")..."
+            patch -p1 < "$patch_file" || {{ echo "Patch failed: $patch_file"; exit 1; }}
+        fi
+    done
+    {src_prepare_with_patches}
+) 2>&1 | tee "$T/src_prepare.log"; then
     handle_phase_error "src_prepare" ${{PIPESTATUS[0]}}
 fi
 
@@ -2715,7 +2746,7 @@ source "$FRAMEWORK_SCRIPT"
             bootstrap_sysroot = bootstrap_sysroot,
             env = env_str,
             src_unpack = src_unpack,
-            src_prepare = src_prepare,
+            src_prepare_with_patches = src_prepare_with_patches,
             pre_configure = pre_configure,
             src_configure = src_configure,
             src_compile = src_compile,
@@ -2734,7 +2765,11 @@ source "$FRAMEWORK_SCRIPT"
         src_dir,
         pkg_config_wrapper,
         ebuild_script,  # Framework script to be sourced
+        str(patch_count),  # Number of patch files
     ])
+    # Add patch files as arguments
+    for patch_file in patch_file_list:
+        cmd.add(patch_file)
     # Add all dependency directories as arguments
     for dep_dir in dep_dirs:
         cmd.add(dep_dir)
@@ -2799,6 +2834,7 @@ ebuild_package = rule(
         "bdepend": attrs.list(attrs.dep(), default = []),
         "pdepend": attrs.list(attrs.dep(), default = []),
         "maintainers": attrs.list(attrs.string(), default = []),
+        "patches": attrs.list(attrs.source(), default = []),
         # Bootstrap toolchain support
         "use_bootstrap": attrs.bool(default = False),
         "bootstrap_sysroot": attrs.string(default = ""),
@@ -2824,6 +2860,7 @@ def simple_package(
         make_args: list[str] = [],
         deps: list[str] = [],
         maintainers: list[str] = [],
+        patches: list[str] = [],
         signature_sha256: str | None = None,
         gpg_key: str | None = None,
         gpg_keyring: str | None = None,
@@ -2849,6 +2886,7 @@ def simple_package(
         make_args = make_args,
         deps = deps,
         maintainers = maintainers,
+        patches = patches,
         signature_sha256 = signature_sha256,
         gpg_key = gpg_key,
         gpg_keyring = gpg_keyring,
@@ -2866,6 +2904,7 @@ def cmake_package(
         pre_configure: str = "",
         deps: list[str] = [],
         maintainers: list[str] = [],
+        patches: list[str] = [],
         # USE flag support
         iuse: list[str] = [],
         use_defaults: list[str] = [],
@@ -2993,12 +3032,16 @@ def cmake_package(
     custom_src_compile = kwargs.pop("src_compile", None)
     custom_src_install = kwargs.pop("src_install", None)
 
+    # Combine with eclass phases
+    src_prepare = custom_src_prepare if custom_src_prepare else eclass_config.get("src_prepare", "")
+
     ebuild_package(
         name = name,
         source = src_target,
         version = version,
         pre_configure = pre_configure,
-        src_prepare = custom_src_prepare if custom_src_prepare else eclass_config.get("src_prepare", ""),
+        src_prepare = src_prepare,
+        patches = patches,
         src_configure = custom_src_configure if custom_src_configure else eclass_config["src_configure"],
         src_compile = custom_src_compile if custom_src_compile else eclass_config["src_compile"],
         src_install = custom_src_install if custom_src_install else eclass_config["src_install"],
@@ -3020,6 +3063,7 @@ def meson_package(
         meson_args: list[str] = [],
         deps: list[str] = [],
         maintainers: list[str] = [],
+        patches: list[str] = [],
         # USE flag support
         iuse: list[str] = [],
         use_defaults: list[str] = [],
@@ -3146,11 +3190,15 @@ def meson_package(
     custom_src_compile = kwargs.pop("src_compile", None)
     custom_src_install = kwargs.pop("src_install", None)
 
+    # Combine with eclass phases
+    src_prepare = custom_src_prepare if custom_src_prepare else eclass_config.get("src_prepare", "")
+
+
     ebuild_package(
         name = name,
         source = src_target,
         version = version,
-        src_prepare = custom_src_prepare if custom_src_prepare else eclass_config.get("src_prepare", ""),
+        src_prepare = src_prepare,
         src_configure = custom_src_configure if custom_src_configure else eclass_config["src_configure"],
         src_compile = custom_src_compile if custom_src_compile else eclass_config["src_compile"],
         src_install = custom_src_install if custom_src_install else eclass_config["src_install"],
@@ -3173,6 +3221,7 @@ def autotools_package(
         make_args: list[str] = [],
         deps: list[str] = [],
         maintainers: list[str] = [],
+        patches: list[str] = [],
         # USE flag support
         iuse: list[str] = [],
         use_defaults: list[str] = [],
@@ -3333,6 +3382,8 @@ def autotools_package(
 
     # Combine with eclass phases
     src_prepare = custom_src_prepare if custom_src_prepare else eclass_config.get("src_prepare", "")
+
+
     if pre_configure:
         src_prepare += "\n" + pre_configure
 
@@ -3349,6 +3400,7 @@ def autotools_package(
         name = name,
         source = src_target,
         version = version,
+        patches = patches,
         src_prepare = src_prepare,
         src_configure = src_configure,
         src_compile = src_compile,
@@ -3371,6 +3423,7 @@ def cargo_package(
         cargo_args: list[str] = [],
         deps: list[str] = [],
         maintainers: list[str] = [],
+        patches: list[str] = [],
         # USE flag support
         iuse: list[str] = [],
         use_defaults: list[str] = [],
@@ -3485,6 +3538,13 @@ def cargo_package(
     # Filter out rdepend from kwargs since we pass it explicitly as deps
     kwargs.pop("rdepend", None)
 
+    # Allow overriding eclass phases via kwargs
+    custom_src_prepare = kwargs.pop("src_prepare", None)
+
+    # Combine with eclass phases
+    src_prepare = custom_src_prepare if custom_src_prepare else eclass_config.get("src_prepare", "")
+
+
     # Use custom install if bins specified, otherwise use eclass default
     src_install = cargo_src_install(bins) if bins else eclass_config["src_install"]
 
@@ -3492,6 +3552,7 @@ def cargo_package(
         name = name,
         source = ":" + src_name,
         version = version,
+        src_prepare = src_prepare,
         src_configure = eclass_config["src_configure"],
         src_compile = eclass_config["src_compile"],
         src_install = src_install,
@@ -3513,6 +3574,7 @@ def go_package(
         packages: list[str] = ["."],
         deps: list[str] = [],
         maintainers: list[str] = [],
+        patches: list[str] = [],
         # USE flag support
         iuse: list[str] = [],
         use_defaults: list[str] = [],
@@ -3629,6 +3691,13 @@ def go_package(
     if use_bootstrap and BOOTSTRAP_TOOLCHAIN not in bdepend:
         bdepend.append(BOOTSTRAP_TOOLCHAIN)
 
+    # Allow overriding eclass phases via kwargs
+    custom_src_prepare = kwargs.pop("src_prepare", None)
+
+    # Combine with eclass phases
+    src_prepare = custom_src_prepare if custom_src_prepare else eclass_config.get("src_prepare", "")
+
+
     # Use custom install if bins specified, otherwise use eclass default
     src_install = go_src_install(bins) if bins else eclass_config["src_install"]
 
@@ -3636,6 +3705,7 @@ def go_package(
         name = name,
         source = ":" + src_name,
         version = version,
+        src_prepare = src_prepare,
         src_configure = eclass_config["src_configure"],
         src_compile = eclass_config["src_compile"],
         src_install = src_install,
@@ -3656,6 +3726,7 @@ def python_package(
         python: str = "python3",
         deps: list[str] = [],
         maintainers: list[str] = [],
+        patches: list[str] = [],
         # USE flag support
         iuse: list[str] = [],
         use_defaults: list[str] = [],
@@ -3784,10 +3855,18 @@ def python_package(
     filtered_kwargs.pop("extras", None)
     filtered_kwargs.pop("build_deps", None)
 
+    # Allow overriding eclass phases via kwargs
+    custom_src_prepare = filtered_kwargs.pop("src_prepare", None)
+
+    # Combine with eclass phases
+    src_prepare = custom_src_prepare if custom_src_prepare else eclass_config.get("src_prepare", "")
+
+
     ebuild_package(
         name = name,
         source = ":" + src_name,
         version = version,
+        src_prepare = src_prepare,
         src_configure = eclass_config["src_configure"],
         src_compile = eclass_config["src_compile"],
         src_install = eclass_config["src_install"],
@@ -3965,6 +4044,7 @@ def simple_binary_package(
         symlinks: dict[str, str] = {},
         deps: list[str] = [],
         maintainers: list[str] = [],
+        patches: list[str] = [],
         exclude_patterns: list[str] = [],
         **kwargs):
     """
@@ -4024,6 +4104,7 @@ def bootstrap_package(
         bins: list[str] = [],
         deps: list[str] = [],
         maintainers: list[str] = [],
+        patches: list[str] = [],
         exclude_patterns: list[str] = [],
         bootstrap_exclude_patterns: list[str] = [],
         **kwargs):

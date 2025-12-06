@@ -2624,6 +2624,80 @@ FRAMEWORK_SCRIPT="$4"
 PATCH_COUNT="$5"
 shift 5
 
+# Try to download binary package from mirror before building from source
+# Enabled when BUCKOS_BINARY_MIRROR environment variable is set
+# Example: export BUCKOS_BINARY_MIRROR=file:///tmp/buckos-mirror
+# Example: export BUCKOS_BINARY_MIRROR=https://mirror.buckos.org
+# Set BUCKOS_PREFER_BINARIES=false to disable binary downloads
+if [ -n "$BUCKOS_BINARY_MIRROR" ] && [ "${{BUCKOS_PREFER_BINARIES:-true}}" = "true" ]; then
+    echo "Checking binary mirror ($BUCKOS_BINARY_MIRROR) for {name}-{version}..."
+
+    # Simple binary download logic without complex config hash calculation
+    # Query index.json and find matching package by name/version
+    INDEX_URL="$BUCKOS_BINARY_MIRROR/binaries/index.json"
+
+    if curl -f -s "$INDEX_URL" -o /tmp/mirror-index-$$.json 2>/dev/null || wget -q "$INDEX_URL" -O /tmp/mirror-index-$$.json 2>/dev/null; then
+        # Find package in index using python3 or fallback to grep
+        if command -v python3 &>/dev/null; then
+            PACKAGE_INFO=$(python3 -c "
+import json, sys
+try:
+    with open('/tmp/mirror-index-$$.json') as f:
+        index = json.load(f)
+    packages = index.get('by_name', {{}}).get('{name}', [])
+    # Find matching version
+    for pkg in packages:
+        if pkg.get('version') == '{version}':
+            print(pkg.get('filename', ''))
+            print(pkg.get('config_hash', ''))
+            break
+except: pass
+" 2>/dev/null)
+
+            if [ -n "$PACKAGE_INFO" ]; then
+                FILENAME=$(echo "$PACKAGE_INFO" | head -1)
+                CONFIG_HASH=$(echo "$PACKAGE_INFO" | tail -1)
+
+                if [ -n "$FILENAME" ]; then
+                    FIRST_LETTER=$(echo "{name}" | cut -c1 | tr '[:upper:]' '[:lower:]')
+                    PACKAGE_URL="$BUCKOS_BINARY_MIRROR/binaries/$FIRST_LETTER/$FILENAME"
+                    HASH_URL="$PACKAGE_URL.sha256"
+
+                    echo "Downloading binary: $FILENAME..."
+
+                    # Download package and hash
+                    if (curl -f -s "$PACKAGE_URL" -o /tmp/pkg-$$.tar.gz && curl -f -s "$HASH_URL" -o /tmp/pkg-$$.tar.gz.sha256) || \
+                       (wget -q "$PACKAGE_URL" -O /tmp/pkg-$$.tar.gz && wget -q "$HASH_URL" -O /tmp/pkg-$$.tar.gz.sha256); then
+
+                        # Verify SHA256
+                        EXPECTED_HASH=$(head -1 /tmp/pkg-$$.tar.gz.sha256 | awk '{{print $1}}')
+                        if command -v sha256sum &>/dev/null; then
+                            ACTUAL_HASH=$(sha256sum /tmp/pkg-$$.tar.gz | awk '{{print $1}}')
+                        elif command -v shasum &>/dev/null; then
+                            ACTUAL_HASH=$(shasum -a 256 /tmp/pkg-$$.tar.gz | awk '{{print $1}}')
+                        fi
+
+                        if [ "$EXPECTED_HASH" = "$ACTUAL_HASH" ]; then
+                            echo "Binary verified, extracting to $_EBUILD_DESTDIR..."
+                            mkdir -p "$_EBUILD_DESTDIR"
+                            tar -xzf /tmp/pkg-$$.tar.gz -C "$_EBUILD_DESTDIR" --strip-components=0
+                            rm -f /tmp/pkg-$$.tar.gz /tmp/pkg-$$.tar.gz.sha256 /tmp/mirror-index-$$.json
+                            echo "Binary package installed successfully from mirror"
+                            exit 0
+                        else
+                            echo "Warning: SHA256 mismatch, falling back to source build"
+                        fi
+                    fi
+                fi
+            fi
+        fi
+        rm -f /tmp/mirror-index-$$.json /tmp/pkg-$$.tar.gz /tmp/pkg-$$.tar.gz.sha256 2>/dev/null || true
+    fi
+fi
+
+# No binary available or download failed - continue with source build
+echo "Building {name}-{version} from source..."
+
 # Extract patch files
 PATCHES=()
 for ((i=0; i<$PATCH_COUNT; i++)); do

@@ -165,6 +165,46 @@ def calculate_config_hash(target: str, skip_build: bool = False) -> str:
     except:
         pass
 
+    # Get target-specific env variables and USE flags
+    # Use uquery to avoid triggering builds
+    try:
+        env_result = run_command([
+            "buck2", "uquery",
+            f"{target}",
+            "--output-attribute", "env",
+            "--output-attribute", "use_flags",
+            "--json"
+        ])
+
+        # Parse JSON to extract env and use_flags
+        stdout = env_result.stdout
+        json_start = stdout.find('{')
+        if json_start != -1:
+            stdout = stdout[json_start:]
+            env_data = json.loads(stdout)
+
+            # Find the target in the result
+            target_key = target
+            if target not in env_data and f"root//{target.lstrip('//')}" in env_data:
+                target_key = f"root//{target.lstrip('//')}"
+
+            # Get env attribute - include ALL env variables in sorted order
+            env_attr = env_data.get(target_key, {}).get("env", {})
+            if env_attr:
+                # Sort keys for consistent hashing
+                for key in sorted(env_attr.keys()):
+                    value = env_attr[key]
+                    # Include all env vars, even empty ones
+                    config_parts.append(f"env.{key}:{value}")
+
+            # Get use_flags attribute
+            use_flags = env_data.get(target_key, {}).get("use_flags", [])
+            if use_flags:
+                config_parts.append(f"target_use:{','.join(sorted(use_flags))}")
+    except Exception as e:
+        # If query fails, try to continue without flags
+        print(f"Warning: Failed to query target env/use_flags: {e}")
+
     # Get target dependencies (skip if skip_build to avoid triggering Buck)
     if not skip_build:
         try:

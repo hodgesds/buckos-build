@@ -2591,10 +2591,21 @@ def _ebuild_package_impl(ctx: AnalysisContext) -> list[Provider]:
     # Check if bootstrap toolchain is being used
     use_bootstrap = ctx.attrs.use_bootstrap if hasattr(ctx.attrs, "use_bootstrap") else False
     bootstrap_sysroot = ctx.attrs.bootstrap_sysroot if hasattr(ctx.attrs, "bootstrap_sysroot") else ""
+    bootstrap_stage = ctx.attrs.bootstrap_stage if hasattr(ctx.attrs, "bootstrap_stage") else ""
 
     # Get external scripts (tracked by Buck2 for proper cache invalidation)
     pkg_config_wrapper = ctx.attrs._pkg_config_wrapper[DefaultInfo].default_outputs[0]
-    ebuild_script = ctx.attrs._ebuild_script[DefaultInfo].default_outputs[0]
+
+    # Select appropriate ebuild script based on bootstrap stage
+    if bootstrap_stage == "stage1":
+        ebuild_script = ctx.attrs._ebuild_bootstrap_stage1_script[DefaultInfo].default_outputs[0]
+    elif bootstrap_stage == "stage2":
+        ebuild_script = ctx.attrs._ebuild_bootstrap_stage2_script[DefaultInfo].default_outputs[0]
+    elif bootstrap_stage == "stage3":
+        ebuild_script = ctx.attrs._ebuild_bootstrap_stage3_script[DefaultInfo].default_outputs[0]
+    else:
+        # Default: use regular ebuild script
+        ebuild_script = ctx.attrs._ebuild_script[DefaultInfo].default_outputs[0]
 
     # Generate patch application commands if patches are provided
     # We'll pass patch files via command line arguments and copy them to the build dir
@@ -2603,12 +2614,9 @@ def _ebuild_package_impl(ctx: AnalysisContext) -> list[Provider]:
         for patch in ctx.attrs.patches:
             patch_file_list.append(patch)
 
-    # Prepend patch commands to src_prepare if present
-    # Patches will be applied in the wrapper script before src_prepare runs
-    src_prepare_with_patches = src_prepare if src_prepare else "true"
-
     # Write wrapper script that sources external framework and defines phases
     # This approach works because Buck2 tracks both the written script AND the sourced framework
+    # Patches will be applied in the wrapper script before phases run
     patch_count = len(patch_file_list)
     script = ctx.actions.write(
         "ebuild_wrapper.sh",
@@ -2699,10 +2707,11 @@ fi
 # No binary available or download failed - continue with source build
 echo "Building {name}-{version} from source..."
 
-# Extract patch files
-PATCHES=()
+# Extract patch files from command line arguments
+# Patches will be applied before building, so we can use relative paths
+PATCH_FILES=()
 for ((i=0; i<$PATCH_COUNT; i++)); do
-    PATCHES+=("$1")
+    PATCH_FILES+=("$1")
     shift
 done
 
@@ -2730,6 +2739,25 @@ export SLOT="{slot}"
 export USE="{use_flags}"
 export USE_BOOTSTRAP="{use_bootstrap}"
 export BOOTSTRAP_SYSROOT="{bootstrap_sysroot}"
+
+# Apply patches BEFORE running phases (in original working directory)
+# This way we can use relative patch paths without conversion
+if [ ${{#PATCH_FILES[@]}} -gt 0 ]; then
+    echo "📦 Applying patches to source..."
+    cd "$_EBUILD_SRCDIR"
+    for patch_file in "${{PATCH_FILES[@]}}"; do
+        if [ -n "$patch_file" ]; then
+            echo -e "\\033[32m * \\033[0mApplying $(basename "$patch_file")..."
+            # Use absolute path from original directory for patch file
+            if [[ "$patch_file" != /* ]]; then
+                patch_file="$OLDPWD/$patch_file"
+            fi
+            patch -p1 < "$patch_file" || {{ echo "✗ Patch failed: $patch_file"; exit 1; }}
+        fi
+    done
+    cd "$OLDPWD"
+    echo "✓ Patches applied successfully"
+fi
 
 # Define the phases script content using heredoc (avoids single-quote escaping issues)
 # Note: read -d '' returns non-zero on EOF, so we use || true to prevent set -e from exiting
@@ -2762,16 +2790,7 @@ cd "$S"
 
 # Phase: src_prepare
 echo "📦 Phase: src_prepare"
-if ! (
-    # Apply patches
-    for patch_file in "${{PATCHES[@]}}"; do
-        if [ -n "$patch_file" ]; then
-            echo -e "\\033[32m * \\033[0mApplying $(basename "$patch_file")..."
-            patch -p1 < "$patch_file" || {{ echo "Patch failed: $patch_file"; exit 1; }}
-        fi
-    done
-    {src_prepare_with_patches}
-) 2>&1 | tee "$T/src_prepare.log"; then
+if ! ( {src_prepare} ) 2>&1 | tee "$T/src_prepare.log"; then
     handle_phase_error "src_prepare" ${{PIPESTATUS[0]}}
 fi
 
@@ -2821,7 +2840,7 @@ source "$FRAMEWORK_SCRIPT"
             bootstrap_sysroot = bootstrap_sysroot,
             env = env_str,
             src_unpack = src_unpack,
-            src_prepare_with_patches = src_prepare_with_patches,
+            src_prepare = src_prepare,
             pre_configure = pre_configure,
             src_configure = src_configure,
             src_compile = src_compile,
@@ -2913,12 +2932,20 @@ ebuild_package = rule(
         # Bootstrap toolchain support
         "use_bootstrap": attrs.bool(default = False),
         "bootstrap_sysroot": attrs.string(default = ""),
+        # Bootstrap stage selection (stage1, stage2, stage3, or empty for regular builds)
+        # stage1: Uses host compiler to build cross-toolchain (partial isolation)
+        # stage2: Uses cross-compiler to build core utilities (strong isolation)
+        # stage3: Uses bootstrap toolchain to rebuild itself (complete isolation, verification)
+        "bootstrap_stage": attrs.string(default = ""),
         # Remote execution control - set to True for packages that must run locally
         # (e.g., bootstrap packages that depend on host-specific tools)
         "local_only": attrs.bool(default = False),
         # External scripts for proper cache invalidation
         "_pkg_config_wrapper": attrs.dep(default = "//defs/scripts:pkg-config-wrapper"),
         "_ebuild_script": attrs.dep(default = "//defs/scripts:ebuild"),
+        "_ebuild_bootstrap_stage1_script": attrs.dep(default = "//defs/scripts:ebuild-bootstrap-stage1"),
+        "_ebuild_bootstrap_stage2_script": attrs.dep(default = "//defs/scripts:ebuild-bootstrap-stage2"),
+        "_ebuild_bootstrap_stage3_script": attrs.dep(default = "//defs/scripts:ebuild-bootstrap-stage3"),
     },
 )
 
@@ -3110,13 +3137,29 @@ def cmake_package(
     # Combine with eclass phases
     src_prepare = custom_src_prepare if custom_src_prepare else eclass_config.get("src_prepare", "")
 
+    # Export patch files and create references
+    patch_refs = []
+    for i, patch in enumerate(patches):
+        if patch.startswith(":") or patch.startswith("//"):
+            # Already a target reference
+            patch_refs.append(patch)
+        else:
+            # Create an export_file target for this patch
+            patch_target_name = "{}-patch-{}".format(name, i)
+            native.export_file(
+                name = patch_target_name,
+                src = patch,
+                visibility = [],  # Private to this package
+            )
+            patch_refs.append(":" + patch_target_name)
+
     ebuild_package(
         name = name,
         source = src_target,
         version = version,
         pre_configure = pre_configure,
         src_prepare = src_prepare,
-        patches = patches,
+        patches = patch_refs,  # Buck2 target references
         src_configure = custom_src_configure if custom_src_configure else eclass_config["src_configure"],
         src_compile = custom_src_compile if custom_src_compile else eclass_config["src_compile"],
         src_install = custom_src_install if custom_src_install else eclass_config["src_install"],
@@ -3471,11 +3514,27 @@ def autotools_package(
     if post_install:
         src_install += "\n" + post_install
 
+    # Export patch files and create references
+    patch_refs = []
+    for i, patch in enumerate(patches):
+        if patch.startswith(":") or patch.startswith("//"):
+            # Already a target reference
+            patch_refs.append(patch)
+        else:
+            # Create an export_file target for this patch
+            patch_target_name = "{}-patch-{}".format(name, i)
+            native.export_file(
+                name = patch_target_name,
+                src = patch,
+                visibility = [],  # Private to this package
+            )
+            patch_refs.append(":" + patch_target_name)
+
     ebuild_package(
         name = name,
         source = src_target,
         version = version,
-        patches = patches,
+        patches = patch_refs,  # Buck2 target references
         src_prepare = src_prepare,
         src_configure = src_configure,
         src_compile = src_compile,

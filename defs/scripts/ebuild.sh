@@ -171,10 +171,13 @@ fi
 # for bash). These tools must be compiled with the HOST compiler using clean
 # flags, not the cross-compiler or cross-compilation flags.
 # Export *_FOR_BUILD variables that packages can use in their Makefiles.
-export CC_FOR_BUILD="${CC_FOR_BUILD:-gcc}"
-export CXX_FOR_BUILD="${CXX_FOR_BUILD:-g++}"
-export CFLAGS_FOR_BUILD="${CFLAGS_FOR_BUILD:--O2}"
-export CXXFLAGS_FOR_BUILD="${CXXFLAGS_FOR_BUILD:--O2}"
+#
+# GCC 15 C23 compatibility fix: GCC 15 defaults to C23 which breaks GCC's own
+# libiberty/obstack.c when bootstrapping. Force C17 for host compiler.
+export CC_FOR_BUILD="${CC_FOR_BUILD:-gcc -std=gnu17}"
+export CXX_FOR_BUILD="${CXX_FOR_BUILD:-g++ -std=gnu++17}"
+export CFLAGS_FOR_BUILD="${CFLAGS_FOR_BUILD:--O2 -std=gnu17}"
+export CXXFLAGS_FOR_BUILD="${CXXFLAGS_FOR_BUILD:--O2 -std=gnu++17}"
 export LDFLAGS_FOR_BUILD="${LDFLAGS_FOR_BUILD:-}"
 export CPPFLAGS_FOR_BUILD="${CPPFLAGS_FOR_BUILD:-}"
 

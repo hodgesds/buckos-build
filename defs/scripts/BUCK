@@ -20,6 +20,24 @@ export_file(
 )
 
 export_file(
+    name = "ebuild-bootstrap-stage1",
+    src = "ebuild-bootstrap-stage1.sh",
+    visibility = ["PUBLIC"],
+)
+
+export_file(
+    name = "ebuild-bootstrap-stage2",
+    src = "ebuild-bootstrap-stage2.sh",
+    visibility = ["PUBLIC"],
+)
+
+export_file(
+    name = "ebuild-bootstrap-stage3",
+    src = "ebuild-bootstrap-stage3.sh",
+    visibility = ["PUBLIC"],
+)
+
+export_file(
     name = "install-binary",
     src = "install_binary.sh",
     visibility = ["PUBLIC"],

@@ -57,7 +57,15 @@ export S="$(cd "$_EBUILD_SRCDIR" && pwd)"
 export WORKDIR="$(dirname "$S")"
 export T="$WORKDIR/temp"
 mkdir -p "$T"
-PKG_CONFIG_WRAPPER_SCRIPT="$_EBUILD_PKG_CONFIG_WRAPPER"
+
+# Convert pkg-config wrapper to absolute path (needed for configure scripts)
+if [[ "$_EBUILD_PKG_CONFIG_WRAPPER" = /* ]]; then
+    PKG_CONFIG_WRAPPER_SCRIPT="$_EBUILD_PKG_CONFIG_WRAPPER"
+else
+    # Get project root (everything before /buck-out/)
+    PROJECT_ROOT="${S%/buck-out/*}"
+    PKG_CONFIG_WRAPPER_SCRIPT="$PROJECT_ROOT/$_EBUILD_PKG_CONFIG_WRAPPER"
+fi
 
 # Convert dep dirs from space-separated to array
 read -ra DEP_DIRS_ARRAY <<< "$_EBUILD_DEP_DIRS"
@@ -218,6 +226,7 @@ echo "Cross-compiler found at: $(command -v ${BUCKOS_TARGET}-gcc)"
 # Set cross-compilation toolchain
 export CC="${BUCKOS_TARGET}-gcc"
 export CXX="${BUCKOS_TARGET}-g++"
+export CPP="${BUCKOS_TARGET}-gcc -E"
 export AR="${BUCKOS_TARGET}-ar"
 export AS="${BUCKOS_TARGET}-as"
 export LD="${BUCKOS_TARGET}-ld"
@@ -272,10 +281,14 @@ echo "HOST_TRIPLET=$HOST_TRIPLET (target system)"
 
 export CC_FOR_BUILD="${CC_FOR_BUILD:-gcc -std=gnu17}"
 export CXX_FOR_BUILD="${CXX_FOR_BUILD:-g++ -std=gnu++17}"
+export CPP_FOR_BUILD="${CPP_FOR_BUILD:-gcc -E}"
 export CFLAGS_FOR_BUILD="${CFLAGS_FOR_BUILD:--O2 -std=gnu17}"
 export CXXFLAGS_FOR_BUILD="${CXXFLAGS_FOR_BUILD:--O2 -std=gnu++17}"
-export LDFLAGS_FOR_BUILD="${LDFLAGS_FOR_BUILD:-}"
 export CPPFLAGS_FOR_BUILD="${CPPFLAGS_FOR_BUILD:-}"
+# CRITICAL: Force LDFLAGS_FOR_BUILD to empty string for Stage 2
+# Stage 2 uses cross-compiler to build target utilities, but build-time helper
+# tools must run on the host without cross-compilation linker flags
+export LDFLAGS_FOR_BUILD=""
 
 echo "CC_FOR_BUILD=$CC_FOR_BUILD (for build-time helper tools)"
 echo "CXX_FOR_BUILD=$CXX_FOR_BUILD"
@@ -361,25 +374,8 @@ echo ""
 # =============================================================================
 cd "$S"
 
-# Source the phases content
+# Source and execute the phases content (runs src_prepare, src_configure, src_compile, src_install)
 eval "$PHASES_CONTENT"
-
-# Run the phases in order
-echo ""
-echo "=== Running src_prepare ==="
-src_prepare || true  # Optional phase
-
-echo ""
-echo "=== Running src_configure ==="
-src_configure
-
-echo ""
-echo "=== Running src_compile ==="
-src_compile
-
-echo ""
-echo "=== Running src_install ==="
-src_install
 
 # =============================================================================
 # Stage 2: Post-Install Verification
@@ -397,7 +393,7 @@ echo "Installed: $BINARY_COUNT executables, $LIBRARY_COUNT shared libraries"
 if command -v ldd >/dev/null 2>&1; then
     echo ""
     echo "Checking for host library dependencies (sample)..."
-    SAMPLE_BINARY=$(find "$DESTDIR" -type f -executable | head -1)
+    SAMPLE_BINARY=$(find "$DESTDIR" -type f -executable | head -1 || true)
     if [ -n "$SAMPLE_BINARY" ] && file "$SAMPLE_BINARY" 2>/dev/null | grep -q "ELF"; then
         echo "Sample binary: $SAMPLE_BINARY"
         if ldd "$SAMPLE_BINARY" 2>/dev/null | grep -E "(/lib64/|/usr/lib/)" | grep -v "buckos" | grep -v "/tools/"; then

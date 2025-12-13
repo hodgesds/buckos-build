@@ -127,6 +127,7 @@ if [ "$USE_BOOTSTRAP" = "true" ]; then
         # Set cross-compilation environment variables
         export CC="${BUCKOS_TARGET}-gcc"
         export CXX="${BUCKOS_TARGET}-g++"
+        export CPP="${BUCKOS_TARGET}-gcc -E"
         export AR="${BUCKOS_TARGET}-ar"
         export AS="${BUCKOS_TARGET}-as"
         export LD="${BUCKOS_TARGET}-ld"
@@ -176,6 +177,7 @@ fi
 # libiberty/obstack.c when bootstrapping. Force C17 for host compiler.
 export CC_FOR_BUILD="${CC_FOR_BUILD:-gcc -std=gnu17}"
 export CXX_FOR_BUILD="${CXX_FOR_BUILD:-g++ -std=gnu++17}"
+export CPP_FOR_BUILD="${CPP_FOR_BUILD:-gcc -E}"
 export CFLAGS_FOR_BUILD="${CFLAGS_FOR_BUILD:--O2 -std=gnu17}"
 export CXXFLAGS_FOR_BUILD="${CXXFLAGS_FOR_BUILD:--O2 -std=gnu++17}"
 export LDFLAGS_FOR_BUILD="${LDFLAGS_FOR_BUILD:-}"

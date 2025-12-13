@@ -251,6 +251,7 @@ echo ""
 # Use native compiler (unprefixed), but it's from our toolchain
 export CC="${CC:-gcc}"
 export CXX="${CXX:-g++}"
+export CPP="${CPP:-gcc -E}"
 export AR="${AR:-ar}"
 export AS="${AS:-as}"
 export LD="${LD:-ld}"
@@ -362,6 +363,7 @@ fi
 
 export CC_FOR_BUILD="$CC"
 export CXX_FOR_BUILD="$CXX"
+export CPP_FOR_BUILD="${CPP:-gcc -E}"
 export CFLAGS_FOR_BUILD="$CFLAGS"
 export CXXFLAGS_FOR_BUILD="$CXXFLAGS"
 export LDFLAGS_FOR_BUILD="$LDFLAGS"
@@ -378,25 +380,8 @@ echo ""
 # =============================================================================
 cd "$S"
 
-# Source the phases content
+# Source and execute the phases content (runs src_prepare, src_configure, src_compile, src_install)
 eval "$PHASES_CONTENT"
-
-# Run the phases in order
-echo ""
-echo "=== Running src_prepare ==="
-src_prepare || true  # Optional phase
-
-echo ""
-echo "=== Running src_configure ==="
-src_configure
-
-echo ""
-echo "=== Running src_compile ==="
-src_compile
-
-echo ""
-echo "=== Running src_install ==="
-src_install
 
 # =============================================================================
 # Stage 3: Post-Install Verification
@@ -419,7 +404,8 @@ CONTAMINATED_BINARIES=""
 CHECKED_COUNT=0
 MAX_CHECK=10  # Check first 10 binaries as sample
 
-find "$DESTDIR" -type f -executable 2>/dev/null | head -$MAX_CHECK | while read binary; do
+# Use process substitution to avoid subshell issue with pipe
+while read -r binary; do
     if file "$binary" 2>/dev/null | grep -q "ELF"; then
         CHECKED_COUNT=$((CHECKED_COUNT + 1))
 
@@ -452,7 +438,7 @@ find "$DESTDIR" -type f -executable 2>/dev/null | head -$MAX_CHECK | while read 
             fi
         fi
     fi
-done
+done < <(find "$DESTDIR" -type f -executable 2>/dev/null | head -$MAX_CHECK)
 
 echo ""
 if [ -n "$CONTAMINATED_BINARIES" ]; then

@@ -53,7 +53,15 @@ export S="$(cd "$_EBUILD_SRCDIR" && pwd)"
 export WORKDIR="$(dirname "$S")"
 export T="$WORKDIR/temp"
 mkdir -p "$T"
-PKG_CONFIG_WRAPPER_SCRIPT="$_EBUILD_PKG_CONFIG_WRAPPER"
+
+# Convert pkg-config wrapper to absolute path (needed for configure scripts)
+if [[ "$_EBUILD_PKG_CONFIG_WRAPPER" = /* ]]; then
+    PKG_CONFIG_WRAPPER_SCRIPT="$_EBUILD_PKG_CONFIG_WRAPPER"
+else
+    # Get project root (everything before /buck-out/)
+    PROJECT_ROOT="${S%/buck-out/*}"
+    PKG_CONFIG_WRAPPER_SCRIPT="$PROJECT_ROOT/$_EBUILD_PKG_CONFIG_WRAPPER"
+fi
 
 # Convert dep dirs from space-separated to array
 read -ra DEP_DIRS_ARRAY <<< "$_EBUILD_DEP_DIRS"
@@ -185,6 +193,7 @@ echo "Using HOST system compiler to build cross-toolchain"
 # Use host compiler with C17/C++17 standards for GCC 15 compatibility
 export CC="${CC:-gcc -std=gnu17}"
 export CXX="${CXX:-g++ -std=gnu++17}"
+export CPP="${CPP:-gcc -E}"
 export CFLAGS="${CFLAGS:--O2 -std=gnu17}"
 export CXXFLAGS="${CXXFLAGS:--O2 -std=gnu++17}"
 
@@ -214,12 +223,16 @@ export READELF="${READELF:-readelf}"
 #
 # GCC 15 C23 compatibility: Force C17/C++17 for host compiler builds
 
-export CC_FOR_BUILD="${CC_FOR_BUILD:-gcc -std=gnu17}"
-export CXX_FOR_BUILD="${CXX_FOR_BUILD:-g++ -std=gnu++17}"
+export CC_FOR_BUILD="${CC_FOR_BUILD:-gcc}"
+export CXX_FOR_BUILD="${CXX_FOR_BUILD:-g++}"
+export CPP_FOR_BUILD="${CPP_FOR_BUILD:-gcc -E}"
 export CFLAGS_FOR_BUILD="${CFLAGS_FOR_BUILD:--O2 -std=gnu17}"
 export CXXFLAGS_FOR_BUILD="${CXXFLAGS_FOR_BUILD:--O2 -std=gnu++17}"
-export LDFLAGS_FOR_BUILD="${LDFLAGS_FOR_BUILD:-}"
 export CPPFLAGS_FOR_BUILD="${CPPFLAGS_FOR_BUILD:-}"
+# CRITICAL: Force LDFLAGS_FOR_BUILD to empty string for Stage 1
+# Stage 1 builds cross-toolchain, and build-time helper tools must run on the
+# host without cross-compilation linker flags (--sysroot, -static-libstdc++, etc.)
+export LDFLAGS_FOR_BUILD=""
 
 echo "CC_FOR_BUILD=$CC_FOR_BUILD"
 echo "CXX_FOR_BUILD=$CXX_FOR_BUILD"
@@ -269,10 +282,14 @@ for dep_dir_raw in "${DEP_DIRS_ARRAY[@]}"; do
     fi
 done
 
-# Only use dependency library paths - do NOT inherit from host
-if [ -n "$DEP_LIBPATH" ]; then
-    export LDFLAGS="${LDFLAGS:--L}${DEP_LIBPATH//:/ -L}"
-fi
+# CRITICAL: Do NOT accumulate LDFLAGS from all dependencies for Stage 1
+# Stage 1 builds the cross-compiler using the HOST compiler, which should
+# use host library paths naturally. Adding -L flags for all dependencies
+# causes "Argument list too long" errors when the command line exceeds ARG_MAX.
+# The cross-compiler doesn't need explicit -L flags; it links against host
+# libraries via the host compiler's default search paths.
+# Set LDFLAGS to empty string (not unset) so configure scripts work correctly.
+export LDFLAGS=""
 
 # Set up pkg-config
 if [ -n "$DEP_PKG_CONFIG_PATH" ]; then
@@ -293,25 +310,8 @@ echo ""
 # =============================================================================
 cd "$S"
 
-# Source the phases content (src_prepare, src_configure, src_compile, src_install)
+# Source and execute the phases content (runs src_prepare, src_configure, src_compile, src_install)
 eval "$PHASES_CONTENT"
-
-# Run the phases in order
-echo ""
-echo "=== Running src_prepare ==="
-src_prepare || true  # Optional phase
-
-echo ""
-echo "=== Running src_configure ==="
-src_configure
-
-echo ""
-echo "=== Running src_compile ==="
-src_compile
-
-echo ""
-echo "=== Running src_install ==="
-src_install
 
 # Verify output
 echo ""
@@ -319,7 +319,7 @@ echo "=== Stage 1 Build Complete ==="
 echo "Output directory: $DESTDIR"
 if [ -d "$DESTDIR/tools" ]; then
     echo "Tools installed:"
-    find "$DESTDIR/tools" -type f -name '*.so*' -o -type f -executable | head -20
+    find "$DESTDIR/tools" -type f -name '*.so*' -o -type f -executable | head -20 || true
 else
     echo "Warning: No /tools directory created"
 fi

@@ -41,6 +41,12 @@ ebuild_package(
     license = "GPL-3.0",
     bootstrap_stage = "stage1",  # STAGE 1: Uses host compiler to build cross-toolchain
 
+    src_prepare = '''
+# Clean any stale config.cache files that might have old PKG_CONFIG paths
+find . -name 'config.cache' -delete 2>/dev/null || true
+echo "Cleaned stale config.cache files"
+''',
+
     src_configure = '''
 BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 mkdir -p build && cd build
@@ -372,6 +378,11 @@ fi
 
 echo "GCC source dependencies linked successfully"
 ls -la gmp mpfr mpc
+
+# Disable c++tools and libcody to avoid GCC 15 C++26 configure compatibility issues
+# These are not needed for cross-compiler bootstrap pass 1 (C only)
+sed -i 's|c++tools ||g' Makefile.in || true
+sed -i 's|libcody ||g' Makefile.in || true
 ''',
 
     src_configure = '''
@@ -387,7 +398,7 @@ mkdir -p build && cd build
     --with-sysroot=/tools \
     --with-newlib \
     --without-headers \
-    --enable-languages=c,c++ \
+    --enable-languages=c \
     --disable-nls \
     --disable-shared \
     --disable-multilib \
@@ -398,12 +409,32 @@ mkdir -p build && cd build
     --disable-libssp \
     --disable-libvtv \
     --disable-libstdcxx \
+    --disable-libcody \
+    --disable-c++tools \
     --disable-decimal-float \
     --disable-bootstrap
+
+# Fix Makefiles to remove libcody and c++tools dependencies
+sed -i 's/all-libcody//g' Makefile
+sed -i 's/configure-libcody//g' Makefile
+sed -i 's/all-c++tools//g' Makefile
+sed -i 's/configure-c++tools//g' Makefile
+# Also fix gcc/Makefile which has libcody dependencies (may not exist yet)
+sed -i 's|../libcody/libcody.a||g' gcc/Makefile 2>/dev/null || true
+sed -i 's|libcody.a||g' gcc/Makefile 2>/dev/null || true
 ''',
 
     src_compile = '''
 cd build
+# First configure gcc to create gcc/Makefile
+make configure-gcc || true
+
+# Now remove all libcody references from gcc/Makefile
+if [ -f gcc/Makefile ]; then
+    sed -i '/libcody\.a/d' gcc/Makefile
+    sed -i 's|\.\./libcody/[^ ]*||g' gcc/Makefile
+fi
+
 make -j$(nproc)
 ''',
 
@@ -595,6 +626,24 @@ ebuild_package(
     license = "GPL-3.0",
     bootstrap_stage = "stage1",  # STAGE 1: C++ library built with cross-gcc-pass1
 
+    # Use same environment as cross-gcc-pass2 to avoid dependency contamination
+    # Force C++17 for GCC 15 compatibility
+    env = {
+        "LDFLAGS": "",
+        "CFLAGS": "",
+        "CXX": "g++ -std=gnu++17",
+        "CXXFLAGS": "-O2 -std=gnu++17",
+        "CPATH": "",
+        "C_INCLUDE_PATH": "",
+        "CPLUS_INCLUDE_PATH": "",
+    },
+
+    src_prepare = '''
+# Fix thread_header for glibc-2.39+ compatibility
+sed '/thread_header =/s/@.*@/gthr-posix.h/' \
+    -i libstdc++-v3/include/Makefile.in || true
+''',
+
     src_configure = '''
 BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 
@@ -613,6 +662,7 @@ export PATH="$DESTDIR/tools/bin:$PATH"
     --disable-multilib \
     --disable-nls \
     --disable-libstdcxx-pch \
+    --disable-libstdcxx-visibility \
     --with-gxx-include-dir=/usr/$BUCKOS_TARGET/include/c++/15.2.0
 ''',
 
@@ -672,6 +722,11 @@ sed '/thread_header =/s/@.*@/gthr-posix.h/' \
 # Disable c++tools to avoid GCC 15 C++26 configure compatibility issues
 # c++tools is not needed for cross-compiler bootstrap
 sed -i 's|c++tools ||g' Makefile.in || true
+
+# Fix libcody's C++ version check to accept C++17 (not just C++11)
+# libcody/configure checks for __cplusplus == 201103, but we use C++17
+# Change the check to accept C++11 or higher
+sed -i 's/__cplusplus != 201103/__cplusplus < 201103/' libcody/configure || true
 
 # Link GMP, MPFR, MPC into the GCC source tree (in-tree build)
 # This approach works better with GCC 15's C++26 default because ebuild.sh
@@ -733,13 +788,12 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 # TOOLCHAIN_ROOT is set by the build system from bdepend directories
 BUILD_SYSROOT=""
 if [ -n "$TOOLCHAIN_ROOT" ]; then
-    # Use the first directory that has usr/lib64 (glibc)
     IFS=':' read -ra SYSROOT_DIRS <<< "$TOOLCHAIN_ROOT"
     for dir in "${SYSROOT_DIRS[@]}"; do
-        if [ -d "$dir/usr/lib64" ] && [ -f "$dir/usr/lib64/libc.so.6" ]; then
+        # Find glibc sysroot
+        if [ -z "$BUILD_SYSROOT" ] && [ -d "$dir/usr/lib64" ] && [ -f "$dir/usr/lib64/libc.so.6" ]; then
             BUILD_SYSROOT="$dir"
             echo "Found glibc sysroot: $BUILD_SYSROOT"
-            break
         fi
     done
 fi
@@ -750,17 +804,62 @@ if [ -z "$BUILD_SYSROOT" ]; then
     exit 1
 fi
 
+# Find cross-binutils ar/ranlib from TOOLCHAIN_PATH
+# Search for x86_64-buckos-linux-gnu-ar in the PATH
+CROSS_AR=$(which x86_64-buckos-linux-gnu-ar 2>/dev/null || true)
+CROSS_RANLIB=$(which x86_64-buckos-linux-gnu-ranlib 2>/dev/null || true)
+
+if [ -z "$CROSS_AR" ] || [ -z "$CROSS_RANLIB" ]; then
+    echo "ERROR: Could not find cross-binutils ar/ranlib in PATH" >&2
+    echo "PATH=$PATH" >&2
+    echo "Looked for: x86_64-buckos-linux-gnu-ar and x86_64-buckos-linux-gnu-ranlib" >&2
+    exit 1
+fi
+
+echo "Found cross-binutils ar: $CROSS_AR"
+echo "Found cross-binutils ranlib: $CROSS_RANLIB"
+
 # Need the cross-compiler from pass1 in PATH
 if [ -n "$TOOLCHAIN_PATH" ]; then
     # TOOLCHAIN_PATH is already exported by ebuild.sh
     echo "Using toolchain PATH: $TOOLCHAIN_PATH"
 fi
 
+# Remove any old config.cache files from previous builds to prevent configure flag mismatch errors
+find . -name "config.cache" -delete 2>/dev/null || true
+echo "Cleaned old config.cache files"
+
 mkdir -p build && cd build
 
 # Configure with in-tree math libraries (gmp/mpfr/mpc symlinked in src_prepare)
-# ebuild.sh already sets CC_FOR_BUILD="gcc -std=gnu17" and CXX_FOR_BUILD="g++ -std=gnu++17"
-../configure \
+# ebuild.sh already sets CC_FOR_BUILD, CXX_FOR_BUILD, CFLAGS_FOR_BUILD, CXXFLAGS_FOR_BUILD,
+# and LDFLAGS_FOR_BUILD="" to prevent cross-compilation LDFLAGS contamination
+#
+# CRITICAL: Prevent GCC from using -static-libstdc++/static-libgcc for build-time subdirectory components
+# GCC's configure detects static library support and sets stage1_ldflags and poststage1_ldflags
+# These flags are then passed to subdirectories (gmp, libiberty, fixincludes, libcody, etc.)
+# This causes link failures when the host compiler tries to statically link.
+# We must override these variables to prevent the static flags from being used.
+#
+# Additionally:
+# - Set CFLAGS_FOR_BUILD and CXXFLAGS_FOR_BUILD with CET enabled (-fcf-protection)
+#   BUILD binaries run on the CET-enabled host and must have CET support
+# - Set CET_FLAGS to disable CET for TARGET binaries (which will run on buckos)
+# - Set AR_FOR_BUILD and RANLIB_FOR_BUILD without LTO plugin to avoid plugin duplication errors
+#   The host's ar/ranlib auto-detect with --plugin flag, but this causes "ar --plugin --plugin" errors
+#   during configure tests, leading to "C compiler cannot create executables" failures
+# - Set LDFLAGS_FOR_BUILD="" to prevent cross-compilation LDFLAGS from contaminating BUILD binaries
+#   during configure (subdirectory configure scripts inherit this and fail with duplicate static flags)
+
+# CRITICAL: Pass AR_FOR_BUILD and RANLIB_FOR_BUILD as configure arguments (not just exports)
+# GCC's configure must bake these into Makefile so subdirectories inherit the correct values
+# Use cross-binutils' ar/ranlib instead of host tools to avoid LTO plugin auto-detection issues
+# The host's ar auto-detects with --plugin flag, causing subdirectory configure failures
+AR_FOR_BUILD="$CROSS_AR" \
+RANLIB_FOR_BUILD="$CROSS_RANLIB" \
+CFLAGS_FOR_BUILD="-std=gnu17 -O2" CXXFLAGS_FOR_BUILD="-std=gnu++17 -O2" \
+LDFLAGS_FOR_BUILD="" \
+stage1_ldflags="" poststage1_ldflags="" BOOT_LDFLAGS="" CET_FLAGS="-fcf-protection=none" ../configure \
     --prefix=/tools \
     --target=$BUCKOS_TARGET \
     --build=$(../config.guess) \
@@ -779,18 +878,47 @@ mkdir -p build && cd build
     --enable-libstdcxx \
     --disable-bootstrap \
     --disable-c++tools \
-    --disable-libcody \
+    --disable-libbacktrace \
+    --disable-cet \
     --with-system-zlib
+
+# Fix Makefiles to remove c++tools dependencies (libcody is kept and will be built)
+sed -i 's/all-c++tools//g' Makefile
+sed -i 's/configure-c++tools//g' Makefile
 ''',
 
     src_compile = '''
 cd build
+
+# Find cross-binutils ar/ranlib from PATH (same logic as src_configure)
+CROSS_AR=$(which x86_64-buckos-linux-gnu-ar 2>/dev/null || true)
+CROSS_RANLIB=$(which x86_64-buckos-linux-gnu-ranlib 2>/dev/null || true)
+
+if [ -z "$CROSS_AR" ] || [ -z "$CROSS_RANLIB" ]; then
+    echo "ERROR: Could not find cross-binutils ar/ranlib in PATH" >&2
+    exit 1
+fi
+
 # Build without bootstrap (following Gentoo's cross-compilation best practice)
 # Bootstrap is disabled for cross-compilation as it's redundant - we already have
 # 2-stage verification via cross-gcc-pass1 -> cross-gcc-pass2
 # ebuild.sh already sets CC_FOR_BUILD, CXX_FOR_BUILD with C++17 flags
 # Also need to set CFLAGS_FOR_BUILD to use C17 for libiberty (GCC 15 defaults to C23)
-make -j$(nproc) CFLAGS_FOR_BUILD="-std=gnu17 -O2"
+# CRITICAL: Set LDFLAGS_FOR_BUILD="" to prevent cross-compilation LDFLAGS from
+# contaminating host component builds (gmp, libiberty, fixincludes, etc.)
+# CRITICAL: Pass GCC-specific flags AND AR_FOR_BUILD/RANLIB_FOR_BUILD to make
+# GCC's build system runs configure for subdirectories (GMP, libiberty, etc.) during make phase
+# Use cross-binutils' ar/ranlib to avoid LTO plugin auto-detection issues
+make -j$(nproc) \
+    AR_FOR_BUILD="$CROSS_AR" \
+    RANLIB_FOR_BUILD="$CROSS_RANLIB" \
+    CFLAGS_FOR_BUILD="-std=gnu17 -O2" \
+    CXXFLAGS_FOR_BUILD="-std=gnu++17 -O2" \
+    LDFLAGS_FOR_BUILD="" \
+    CET_FLAGS="-fcf-protection=none" \
+    stage1_ldflags="" \
+    poststage1_ldflags="" \
+    BOOT_LDFLAGS=""
 ''',
 
     src_install = '''
@@ -821,9 +949,11 @@ ls -la gcc g++ cc c++ cpp
 ''',
 
     bdepend = [
+        ":cross-binutils",  # For AR_FOR_BUILD/RANLIB_FOR_BUILD without LTO plugin issues
         ":cross-gcc-pass1",
         ":cross-glibc",
-        ":cross-libstdcxx",
+        ":linux-headers",  # Kernel headers needed for libgcc compilation (sys/mman.h, etc.)
+        # NOTE: cross-libstdcxx removed - cross-gcc-pass2 builds its own libstdc++ (--enable-libstdcxx)
         ":gmp-src",
         ":mpfr-src",
         ":mpc-src",

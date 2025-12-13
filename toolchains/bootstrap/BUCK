@@ -445,6 +445,7 @@ mkdir -p build && cd build
     --disable-libcody \
     --disable-c++tools \
     --disable-decimal-float \
+    --disable-libgcov \
     --disable-bootstrap
 
 # Fix Makefiles to remove libcody and c++tools dependencies

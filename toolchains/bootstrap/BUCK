@@ -455,7 +455,13 @@ done
 rm -f cc c++ 2>/dev/null || true
 ''',
 
-    bdepend = [":cross-binutils", ":gmp-src", ":mpfr-src", ":mpc-src"],
+    bdepend = [
+        ":cross-binutils",  # For AR/AS/LD tools
+        ":linux-headers",   # Kernel headers needed for libgcc compilation (sys/mman.h, etc.) - even with --without-headers
+        ":gmp-src",
+        ":mpfr-src",
+        ":mpc-src",
+    ],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -803,6 +809,37 @@ if [ -z "$BUILD_SYSROOT" ]; then
     echo "TOOLCHAIN_ROOT=$TOOLCHAIN_ROOT" >&2
     exit 1
 fi
+
+# Find linux-headers dependency and copy kernel headers into BUILD_SYSROOT
+# The linux-headers package installs to usr/include, but it's in a separate
+# Buck2 output directory from cross-glibc. We need to merge them into BUILD_SYSROOT.
+LINUX_HEADERS_DIR=""
+if [ -n "$DEP_BASE_DIRS" ]; then
+    IFS=':' read -ra DEP_DIRS <<< "$DEP_BASE_DIRS"
+    for dep_dir in "${DEP_DIRS[@]}"; do
+        # Look for linux-headers output (has usr/include with asm/ and linux/ subdirs)
+        if [ -d "$dep_dir/usr/include/linux" ] && [ -d "$dep_dir/usr/include/asm" ]; then
+            LINUX_HEADERS_DIR="$dep_dir"
+            echo "Found linux-headers at: $LINUX_HEADERS_DIR"
+            break
+        fi
+    done
+fi
+
+if [ -z "$LINUX_HEADERS_DIR" ]; then
+    echo "ERROR: Could not find linux-headers in dependencies" >&2
+    echo "DEP_BASE_DIRS=$DEP_BASE_DIRS" >&2
+    exit 1
+fi
+
+# Copy kernel headers into BUILD_SYSROOT so GCC can find them during libgcc compilation
+echo "Copying kernel headers from $LINUX_HEADERS_DIR/usr/include to $BUILD_SYSROOT/usr/include"
+mkdir -p "$BUILD_SYSROOT/usr/include"
+cp -rv "$LINUX_HEADERS_DIR/usr/include/"* "$BUILD_SYSROOT/usr/include/" || {
+    echo "ERROR: Failed to copy linux-headers" >&2
+    exit 1
+}
+echo "Kernel headers copied successfully"
 
 # Find cross-binutils ar/ranlib from TOOLCHAIN_PATH
 # Search for x86_64-buckos-linux-gnu-ar in the PATH

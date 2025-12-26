@@ -239,6 +239,24 @@ unset LDFLAGS
 unset CPPFLAGS
 
 # =============================================================================
+# Build Threads Configuration
+# =============================================================================
+# Set MAKE_JOBS based on BUILD_THREADS (if not already set by wrapper)
+# 0 or empty = auto-detect with nproc, otherwise use specified value
+if [ -z "$MAKE_JOBS" ]; then
+    if [ -z "$BUILD_THREADS" ] || [ "$BUILD_THREADS" = "0" ]; then
+        if command -v nproc >/dev/null 2>&1; then
+            export MAKE_JOBS="$(nproc)"
+        else
+            # nproc not available, use unlimited parallelism
+            export MAKE_JOBS=""
+        fi
+    else
+        export MAKE_JOBS="$BUILD_THREADS"
+    fi
+fi
+
+# =============================================================================
 # Stage 3: Native Compilation Setup
 # =============================================================================
 # We're now doing NATIVE compilation (not cross), but still isolated from host

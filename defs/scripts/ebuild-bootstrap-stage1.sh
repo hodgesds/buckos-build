@@ -181,6 +181,24 @@ unset CPLUS_INCLUDE_PATH
 unset PKG_CONFIG_PATH
 
 # =============================================================================
+# Build Threads Configuration
+# =============================================================================
+# Set MAKE_JOBS based on BUILD_THREADS (if not already set by wrapper)
+# 0 or empty = auto-detect with nproc, otherwise use specified value
+if [ -z "$MAKE_JOBS" ]; then
+    if [ -z "$BUILD_THREADS" ] || [ "$BUILD_THREADS" = "0" ]; then
+        if command -v nproc >/dev/null 2>&1; then
+            export MAKE_JOBS="$(nproc)"
+        else
+            # nproc not available, use unlimited parallelism
+            export MAKE_JOBS=""
+        fi
+    else
+        export MAKE_JOBS="$BUILD_THREADS"
+    fi
+fi
+
+# =============================================================================
 # Stage 1: Compiler Setup
 # =============================================================================
 # CRITICAL: Stage 1 uses HOST compiler to build cross-compilation toolchain

@@ -43,5 +43,3 @@ index 66686f2..5c6ab16 100644
 +void (*copy_function) (void) = 0;
 
  char *change_directory_option;
---
-2.34.1

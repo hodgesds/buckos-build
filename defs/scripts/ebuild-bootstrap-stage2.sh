@@ -102,9 +102,8 @@ for dep_dir in "${DEP_DIRS_ARRAY[@]}"; do
     # Check if this is the bootstrap toolchain from Stage 1
     if [ -d "$dep_dir/tools/bin" ]; then
         TOOLCHAIN_PATH="${TOOLCHAIN_PATH:+$TOOLCHAIN_PATH:}$dep_dir/tools/bin"
-        if [ -z "$BOOTSTRAP_SYSROOT" ] && [ -d "$dep_dir/tools" ]; then
-            BOOTSTRAP_SYSROOT="$dep_dir/tools"
-        fi
+        # NOTE: We don't set BOOTSTRAP_SYSROOT in Stage 2 because libraries
+        # are spread across multiple dependencies. We use -L paths instead.
     fi
 
     # Collect toolchain library paths for runtime (bash, etc)
@@ -162,25 +161,57 @@ if [ -z "$TOOLCHAIN_PATH" ]; then
 fi
 
 # Verify cross-compiler exists before continuing
+# Set PATH to include toolchain and dependencies
+export PATH="$TOOLCHAIN_PATH:$DEP_PATH"
+
+# Verify cross-compiler is available
 if ! command -v ${BUCKOS_TARGET}-gcc >/dev/null 2>&1; then
-    # Try looking in TOOLCHAIN_PATH explicitly
-    if [ -f "$TOOLCHAIN_PATH/${BUCKOS_TARGET}-gcc" ]; then
-        export PATH="$TOOLCHAIN_PATH:$DEP_PATH"
-    else
-        echo "========================================================================="
-        echo "ERROR: Cross-compiler ${BUCKOS_TARGET}-gcc not found!"
-        echo "TOOLCHAIN_PATH: $TOOLCHAIN_PATH"
-        echo "Available in TOOLCHAIN_PATH:"
-        ls -la "$TOOLCHAIN_PATH" 2>/dev/null || echo "(directory not found)"
-        echo "========================================================================="
-        exit 1
-    fi
-else
-    # STRICT: Only toolchain and dep paths, NO host PATH
-    export PATH="$TOOLCHAIN_PATH:$DEP_PATH"
+    echo "========================================================================="
+    echo "ERROR: Cross-compiler ${BUCKOS_TARGET}-gcc not found!"
+    echo "TOOLCHAIN_PATH: $TOOLCHAIN_PATH"
+    echo "DEP_PATH: $DEP_PATH"
+    echo "PATH: $PATH"
+    echo "Searching for compiler in TOOLCHAIN_PATH:"
+    for toolchain_dir in ${TOOLCHAIN_PATH//:/ }; do
+        if [ -d "$toolchain_dir" ]; then
+            echo "  $toolchain_dir:"
+            ls -1 "$toolchain_dir" | grep -E '^(x86_64|gcc|cc)' || echo "    (no compiler found)"
+        else
+            echo "  $toolchain_dir: (directory not found)"
+        fi
+    done
+    echo "========================================================================="
+    exit 1
 fi
 
-echo "PATH (STRICT, no host): $PATH"
+# =============================================================================
+# Stage 2: Allow Host Build Tools for Bootstrap
+# =============================================================================
+# For the initial Stage 2 packages (make, bash, coreutils, etc.), we need
+# to allow fallback to host build tools since we haven't built our own yet.
+# This is necessary to break the circular dependency (make needs make to build).
+#
+# We add /usr/bin and /bin to PATH ONLY if essential tools are missing.
+# The cross-compiler is always used (from TOOLCHAIN_PATH), but build
+# tools like make, bash, sed, awk can come from host if not yet available.
+
+ESSENTIAL_TOOLS="make bash sh sed awk grep find"
+MISSING_TOOLS=""
+
+for tool in $ESSENTIAL_TOOLS; do
+    if ! command -v $tool >/dev/null 2>&1; then
+        MISSING_TOOLS="$MISSING_TOOLS $tool"
+    fi
+done
+
+if [ -n "$MISSING_TOOLS" ]; then
+    echo "NOTE: Missing essential build tools:$MISSING_TOOLS"
+    echo "      Adding host /usr/bin and /bin to PATH for bootstrap"
+    export PATH="$TOOLCHAIN_PATH:$DEP_PATH:/usr/bin:/bin"
+    echo "PATH (with host fallback): $PATH"
+else
+    echo "PATH (STRICT, no host fallback needed): $PATH"
+fi
 
 # Set up PYTHONPATH for Python-based build tools
 if [ -n "$DEP_PYTHONPATH" ]; then
@@ -204,6 +235,24 @@ unset CFLAGS
 unset CXXFLAGS
 unset LDFLAGS
 unset CPPFLAGS
+
+# =============================================================================
+# Build Threads Configuration
+# =============================================================================
+# Set MAKE_JOBS based on BUILD_THREADS (if not already set by wrapper)
+# 0 or empty = auto-detect with nproc, otherwise use specified value
+if [ -z "$MAKE_JOBS" ]; then
+    if [ -z "$BUILD_THREADS" ] || [ "$BUILD_THREADS" = "0" ]; then
+        if command -v nproc >/dev/null 2>&1; then
+            export MAKE_JOBS="$(nproc)"
+        else
+            # nproc not available (early bootstrap), use unlimited parallelism
+            export MAKE_JOBS=""
+        fi
+    else
+        export MAKE_JOBS="$BUILD_THREADS"
+    fi
+fi
 
 # =============================================================================
 # Stage 2: Cross-Compilation Setup
@@ -237,22 +286,21 @@ export OBJCOPY="${BUCKOS_TARGET}-objcopy"
 export OBJDUMP="${BUCKOS_TARGET}-objdump"
 export READELF="${BUCKOS_TARGET}-readelf"
 
-# Set sysroot for compilation if available
-if [ -n "$BOOTSTRAP_SYSROOT" ]; then
-    SYSROOT_FLAGS="--sysroot=$BOOTSTRAP_SYSROOT"
-    export CFLAGS="-O2 $SYSROOT_FLAGS"
-    export CXXFLAGS="-O2 $SYSROOT_FLAGS"
-    export LDFLAGS="$SYSROOT_FLAGS"
+# Stage 2: Set up compilation flags without sysroot
+# We use explicit -I and -L paths instead of --sysroot because libraries
+# and headers are spread across multiple dependencies (cross-gcc, cross-glibc).
+export CFLAGS="-O2"
+export CXXFLAGS="-O2"
+export LDFLAGS=""
 
-    echo "Using sysroot: $BOOTSTRAP_SYSROOT"
-
-    # Set pkg-config to use sysroot
-    export PKG_CONFIG_SYSROOT_DIR="$BOOTSTRAP_SYSROOT"
-    export PKG_CONFIG_PATH="$BOOTSTRAP_SYSROOT/usr/lib/pkgconfig:$BOOTSTRAP_SYSROOT/usr/share/pkgconfig"
-else
-    export CFLAGS="-O2"
-    export CXXFLAGS="-O2"
-    export LDFLAGS=""
+# Add include paths from dependencies
+if [ -n "$TOOLCHAIN_INCLUDE" ]; then
+    for inc_dir in ${TOOLCHAIN_INCLUDE//:/ }; do
+        if [ -d "$inc_dir/usr/include" ]; then
+            export CFLAGS="$CFLAGS -I$inc_dir/usr/include"
+            export CXXFLAGS="$CXXFLAGS -I$inc_dir/usr/include"
+        fi
+    done
 fi
 
 echo "CC=$CC"
@@ -384,10 +432,19 @@ echo ""
 echo "=== Stage 2 Post-Install Verification ==="
 
 # Check that binaries were actually built
-BINARY_COUNT=$(find "$DESTDIR" -type f -executable 2>/dev/null | wc -l)
-LIBRARY_COUNT=$(find "$DESTDIR" -type f -name '*.so*' 2>/dev/null | wc -l)
-
-echo "Installed: $BINARY_COUNT executables, $LIBRARY_COUNT shared libraries"
+if command -v wc >/dev/null 2>&1; then
+    BINARY_COUNT=$(find "$DESTDIR" -type f -executable 2>/dev/null | wc -l)
+    LIBRARY_COUNT=$(find "$DESTDIR" -type f -name '*.so*' 2>/dev/null | wc -l)
+    echo "Installed: $BINARY_COUNT executables, $LIBRARY_COUNT shared libraries"
+else
+    # wc not available during early bootstrap, just check if files exist
+    if find "$DESTDIR" -type f -executable 2>/dev/null | head -1 | grep -q .; then
+        echo "Installed: executables found (count unavailable, wc not built yet)"
+    fi
+    if find "$DESTDIR" -type f -name '*.so*' 2>/dev/null | head -1 | grep -q .; then
+        echo "Installed: shared libraries found (count unavailable, wc not built yet)"
+    fi
+fi
 
 # Sample check for host library contamination (quick check)
 if command -v ldd >/dev/null 2>&1; then

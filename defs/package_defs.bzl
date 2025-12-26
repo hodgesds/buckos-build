@@ -2560,6 +2560,11 @@ def _ebuild_package_impl(ctx: AnalysisContext) -> list[Provider]:
     """
     install_dir = ctx.actions.declare_output(ctx.attrs.name, dir = True)
 
+    # Read build threads from Buck2 config (default 0 = auto-detect with nproc)
+    build_threads = read_config("buckos", "build_threads", "0")
+    if not build_threads:
+        build_threads = read_config("build", "threads", "0")
+
     # Get source directory from dependency
     src_dir = ctx.attrs.source[DefaultInfo].default_outputs[0]
 
@@ -2739,6 +2744,20 @@ export SLOT="{slot}"
 export USE="{use_flags}"
 export USE_BOOTSTRAP="{use_bootstrap}"
 export BOOTSTRAP_SYSROOT="{bootstrap_sysroot}"
+export BUILD_THREADS="{build_threads}"
+
+# Set MAKE_JOBS based on BUILD_THREADS
+# 0 = auto-detect with nproc, otherwise use specified value
+if [ "$BUILD_THREADS" = "0" ]; then
+    if command -v nproc >/dev/null 2>&1; then
+        export MAKE_JOBS="$(nproc)"
+    else
+        # nproc not available (early bootstrap), use unlimited parallelism
+        export MAKE_JOBS=""
+    fi
+else
+    export MAKE_JOBS="$BUILD_THREADS"
+fi
 
 # Apply patches BEFORE running phases (in original working directory)
 # This way we can use relative patch paths without conversion
@@ -2790,40 +2809,52 @@ cd "$S"
 
 # Phase: src_prepare
 echo "📦 Phase: src_prepare"
-if ! ( {src_prepare} ) 2>&1 | tee "$T/src_prepare.log"; then
-    handle_phase_error "src_prepare" ${{PIPESTATUS[0]}}
+if command -v tee >/dev/null 2>&1; then
+    ( {src_prepare} ) 2>&1 | tee "$T/src_prepare.log" || handle_phase_error "src_prepare" ${{PIPESTATUS[0]}}
+else
+    ( {src_prepare} ) > "$T/src_prepare.log" 2>&1 || handle_phase_error "src_prepare" $?
 fi
 
 # Phase: pre_configure
 echo "📦 Phase: pre_configure"
-if ! ( {pre_configure} ) 2>&1 | tee "$T/pre_configure.log"; then
-    handle_phase_error "pre_configure" ${{PIPESTATUS[0]}}
+if command -v tee >/dev/null 2>&1; then
+    ( {pre_configure} ) 2>&1 | tee "$T/pre_configure.log" || handle_phase_error "pre_configure" ${{PIPESTATUS[0]}}
+else
+    ( {pre_configure} ) > "$T/pre_configure.log" 2>&1 || handle_phase_error "pre_configure" $?
 fi
 
 # Phase: src_configure
 echo "📦 Phase: src_configure"
-if ! ( {src_configure} ) 2>&1 | tee "$T/src_configure.log"; then
-    handle_phase_error "src_configure" ${{PIPESTATUS[0]}}
+if command -v tee >/dev/null 2>&1; then
+    ( {src_configure} ) 2>&1 | tee "$T/src_configure.log" || handle_phase_error "src_configure" ${{PIPESTATUS[0]}}
+else
+    ( {src_configure} ) > "$T/src_configure.log" 2>&1 || handle_phase_error "src_configure" $?
 fi
 
 # Phase: src_compile
 echo "📦 Phase: src_compile"
-if ! ( {src_compile} ) 2>&1 | tee "$T/src_compile.log"; then
-    handle_phase_error "src_compile" ${{PIPESTATUS[0]}}
+if command -v tee >/dev/null 2>&1; then
+    ( {src_compile} ) 2>&1 | tee "$T/src_compile.log" || handle_phase_error "src_compile" ${{PIPESTATUS[0]}}
+else
+    ( {src_compile} ) > "$T/src_compile.log" 2>&1 || handle_phase_error "src_compile" $?
 fi
 
 # Phase: src_test
 if [ -n "{run_tests}" ]; then
     echo "📦 Phase: src_test"
-    if ! ( {src_test} ) 2>&1 | tee "$T/src_test.log"; then
-        handle_phase_error "src_test" ${{PIPESTATUS[0]}}
+    if command -v tee >/dev/null 2>&1; then
+        ( {src_test} ) 2>&1 | tee "$T/src_test.log" || handle_phase_error "src_test" ${{PIPESTATUS[0]}}
+    else
+        ( {src_test} ) > "$T/src_test.log" 2>&1 || handle_phase_error "src_test" $?
     fi
 fi
 
 # Phase: src_install
 echo "📦 Phase: src_install"
-if ! ( {src_install} ) 2>&1 | tee "$T/src_install.log"; then
-    handle_phase_error "src_install" ${{PIPESTATUS[0]}}
+if command -v tee >/dev/null 2>&1; then
+    ( {src_install} ) 2>&1 | tee "$T/src_install.log" || handle_phase_error "src_install" ${{PIPESTATUS[0]}}
+else
+    ( {src_install} ) > "$T/src_install.log" 2>&1 || handle_phase_error "src_install" $?
 fi
 PHASES_EOF
 export PHASES_CONTENT
@@ -2838,6 +2869,7 @@ source "$FRAMEWORK_SCRIPT"
             use_flags = use_flags,
             use_bootstrap = "true" if use_bootstrap else "false",
             bootstrap_sysroot = bootstrap_sysroot,
+            build_threads = build_threads,
             env = env_str,
             src_unpack = src_unpack,
             src_prepare = src_prepare,

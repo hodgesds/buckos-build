@@ -68,7 +68,7 @@ mkdir -p build && cd build
 
     src_compile = '''
 cd build
-make -j$(nproc) MAKEINFO=true all-binutils all-gas all-ld
+make -j$MAKE_JOBS MAKEINFO=true all-binutils all-gas all-ld
 ''',
 
     src_install = '''
@@ -102,7 +102,8 @@ done
 
 download_source(
     name = "gcc-src",
-    # Use official GNU release (not GitHub mirror) - official releases have C23 compatibility fixes
+    # Use official GNU FTP site (https for security)
+    # Official GCC mirrors list: https://gcc.gnu.org/mirrors.html
     src_uri = "https://ftp.gnu.org/gnu/gcc/gcc-15.2.0/gcc-15.2.0.tar.xz",
     sha256 = "438fd996826b0c82485a29da03a72d71d6e3541a83ec702df4271f6fe025d24e",
     signature_required = False,
@@ -166,7 +167,7 @@ mkdir -p build && cd build
 
     src_compile = '''
 cd build
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
@@ -225,7 +226,7 @@ mkdir -p build && cd build
 
     src_compile = '''
 cd build
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
@@ -293,7 +294,7 @@ mkdir -p build && cd build
 
     src_compile = '''
 cd build
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
@@ -323,6 +324,16 @@ ebuild_package(
     homepage = "https://gcc.gnu.org/",
     license = "GPL-3.0",
     bootstrap_stage = "stage1",  # STAGE 1: Minimal cross-compiler built with host GCC
+
+    # GCC 15 C23/C++26 compatibility: Force host compiler to use C11/C++17
+    # C11 is more permissive with implicit function declarations than C17/C23
+    # Downgrade implicit-function-declaration from error to warning for libiberty
+    env = {
+        "CC": "gcc -std=gnu11 -Wno-error=implicit-function-declaration",
+        "CFLAGS": "-O2 -std=gnu11 -Wno-error=implicit-function-declaration",
+        "CXX": "g++ -std=gnu++17",
+        "CXXFLAGS": "-O2 -std=gnu++17",
+    },
 
     src_prepare = '''
 # Link GMP, MPFR, MPC into the GCC source tree (in-tree build)
@@ -460,16 +471,25 @@ sed -i 's|libcody.a||g' gcc/Makefile 2>/dev/null || true
 
     src_compile = '''
 cd build
-# First configure gcc to create gcc/Makefile
-make configure-gcc || true
 
-# Now remove all libcody references from gcc/Makefile
+# Fix libcody references after configure
 if [ -f gcc/Makefile ]; then
     sed -i '/libcody\.a/d' gcc/Makefile
     sed -i 's|\.\./libcody/[^ ]*||g' gcc/Makefile
 fi
 
-make -j$(nproc)
+# Build GCC compiler only
+# Following OSDev wiki recommendation to build specific targets
+echo "Building GCC compiler..."
+make -j$MAKE_JOBS all-gcc
+
+# Build libgcc.a static library (without libgcov profiling library)
+# libgcc.a is the core runtime library and doesn't need glibc headers
+# libgcov needs sys/mman.h from glibc which we don't have yet
+echo "Building libgcc static library..."
+cd x86_64-buckos-linux-gnu/libgcc
+make -j$MAKE_JOBS libgcc.a
+cd ../..
 ''',
 
     src_install = '''
@@ -624,7 +644,7 @@ echo "Using kernel headers from: $HEADERS_PATH"
 
     src_compile = '''
 cd build
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
@@ -708,7 +728,7 @@ export PATH="$DESTDIR/tools/bin:$PATH"
 
     src_compile = '''
 cd build
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
@@ -743,10 +763,13 @@ ebuild_package(
     # GCC's build system manages flags for HOST and TARGET separately.
     # The HOST side (cc1, etc.) must link against HOST libraries, not cross-glibc.
     # The --with-build-sysroot configure option handles TARGET libraries.
-    # GCC 15 C23/C++26 compatibility: Force host compiler to use C17/C++17
+    # GCC 15 C23/C++26 compatibility: Force host compiler to use C11/C++17
+    # C11 is more permissive with implicit function declarations than C17/C23
+    # Downgrade implicit-function-declaration from error to warning for libiberty
     env = {
         "LDFLAGS": "",
-        "CFLAGS": "",
+        "CC": "gcc -std=gnu11 -Wno-error=implicit-function-declaration",
+        "CFLAGS": "-O2 -std=gnu11 -Wno-error=implicit-function-declaration",
         "CXX": "g++ -std=gnu++17",
         "CXXFLAGS": "-O2 -std=gnu++17",
         "CPATH": "",
@@ -844,9 +867,9 @@ if [ -z "$BUILD_SYSROOT" ]; then
     exit 1
 fi
 
-# Find linux-headers dependency and copy kernel headers into BUILD_SYSROOT
+# Find linux-headers dependency
 # The linux-headers package installs to usr/include, but it's in a separate
-# Buck2 output directory from cross-glibc. We need to merge them into BUILD_SYSROOT.
+# Buck2 output directory from cross-glibc. We need to create a merged sysroot.
 LINUX_HEADERS_DIR=""
 if [ -n "$DEP_BASE_DIRS" ]; then
     IFS=':' read -ra DEP_DIRS <<< "$DEP_BASE_DIRS"
@@ -866,14 +889,31 @@ if [ -z "$LINUX_HEADERS_DIR" ]; then
     exit 1
 fi
 
-# Copy kernel headers into BUILD_SYSROOT so GCC can find them during libgcc compilation
-echo "Copying kernel headers from $LINUX_HEADERS_DIR/usr/include to $BUILD_SYSROOT/usr/include"
-mkdir -p "$BUILD_SYSROOT/usr/include"
-cp -rv "$LINUX_HEADERS_DIR/usr/include/"* "$BUILD_SYSROOT/usr/include/" || {
-    echo "ERROR: Failed to copy linux-headers" >&2
+# Create a writable merged sysroot combining glibc and linux-headers BEFORE configure
+# Buck2 output directories are read-only, so we must create a new writeable sysroot
+# NOTE: Must create this BEFORE mkdir build, so it's in the source directory
+MERGED_SYSROOT="$PWD/sysroot"
+echo "Creating merged sysroot at: $MERGED_SYSROOT"
+mkdir -p "$MERGED_SYSROOT"
+
+# Copy glibc files (libraries and headers)
+echo "Copying glibc from $BUILD_SYSROOT to $MERGED_SYSROOT"
+cp -a "$BUILD_SYSROOT/"* "$MERGED_SYSROOT/" || {
+    echo "ERROR: Failed to copy glibc sysroot" >&2
     exit 1
 }
-echo "Kernel headers copied successfully"
+
+# Merge in linux-headers (overwrite glibc's kernel headers if present)
+echo "Merging linux-headers from $LINUX_HEADERS_DIR to $MERGED_SYSROOT"
+cp -a "$LINUX_HEADERS_DIR/"* "$MERGED_SYSROOT/" || {
+    echo "ERROR: Failed to merge linux-headers" >&2
+    exit 1
+}
+
+# Use the merged sysroot for GCC build - this must be set BEFORE configure runs
+BUILD_SYSROOT="$MERGED_SYSROOT"
+echo "Using merged sysroot: $BUILD_SYSROOT"
+echo "Contents check: usr/include/stdio.h exists: $(test -f "$BUILD_SYSROOT/usr/include/stdio.h" && echo YES || echo NO)"
 
 # Find cross-binutils ar/ranlib from TOOLCHAIN_PATH
 # Search for x86_64-buckos-linux-gnu-ar in the PATH
@@ -934,8 +974,10 @@ stage1_ldflags="" poststage1_ldflags="" BOOT_LDFLAGS="" CET_FLAGS="-fcf-protecti
     --prefix=/tools \
     --target=$BUCKOS_TARGET \
     --build=$(../config.guess) \
+    --with-sysroot="$BUILD_SYSROOT" \
     --with-build-sysroot="$BUILD_SYSROOT" \
-    --enable-languages=c,c++ \
+    --with-native-system-header-dir=/usr/include \
+    --enable-languages=c \
     --enable-default-pie \
     --enable-default-ssp \
     --disable-nls \
@@ -946,16 +988,19 @@ stage1_ldflags="" poststage1_ldflags="" BOOT_LDFLAGS="" CET_FLAGS="-fcf-protecti
     --disable-libsanitizer \
     --disable-libssp \
     --disable-libvtv \
-    --enable-libstdcxx \
+    --disable-libstdcxx \
     --disable-bootstrap \
     --disable-c++tools \
+    --disable-libcody \
     --disable-libbacktrace \
     --disable-cet \
     --with-system-zlib
 
-# Fix Makefiles to remove c++tools dependencies (libcody is kept and will be built)
-sed -i 's/all-c++tools//g' Makefile
-sed -i 's/configure-c++tools//g' Makefile
+# GCC 15.2 bug: Even with --disable-libcody and --enable-languages=c,
+# the top-level Makefile still has all-gcc depend on all-libcody
+# Remove these phantom dependencies
+sed -i 's/all-libcody//g' Makefile
+sed -i 's/configure-libcody//g' Makefile
 ''',
 
     src_compile = '''
@@ -980,7 +1025,9 @@ fi
 # CRITICAL: Pass GCC-specific flags AND AR_FOR_BUILD/RANLIB_FOR_BUILD to make
 # GCC's build system runs configure for subdirectories (GMP, libiberty, etc.) during make phase
 # Use cross-binutils' ar/ranlib to avoid LTO plugin auto-detection issues
-make -j$(nproc) \
+# Build GCC C compiler only (C++ disabled - not needed for bootstrap)
+echo "Building GCC C compiler..."
+make -j$MAKE_JOBS \
     AR_FOR_BUILD="$CROSS_AR" \
     RANLIB_FOR_BUILD="$CROSS_RANLIB" \
     CFLAGS_FOR_BUILD="-std=gnu17 -O2" \
@@ -989,13 +1036,27 @@ make -j$(nproc) \
     CET_FLAGS="-fcf-protection=none" \
     stage1_ldflags="" \
     poststage1_ldflags="" \
-    BOOT_LDFLAGS=""
+    BOOT_LDFLAGS="" \
+    all-gcc
+
+# Build libgcc runtime library
+echo "Building libgcc runtime library..."
+make -j$MAKE_JOBS \
+    AR_FOR_BUILD="$CROSS_AR" \
+    RANLIB_FOR_BUILD="$CROSS_RANLIB" \
+    CFLAGS_FOR_BUILD="-std=gnu17 -O2" \
+    CXXFLAGS_FOR_BUILD="-std=gnu++17 -O2" \
+    LDFLAGS_FOR_BUILD="" \
+    all-target-libgcc
+
+# NOTE: Skipping libstdc++ - not needed for bootstrap (all stage 2 utilities are C programs)
 ''',
 
     src_install = '''
 cd build
 BUCKOS_TARGET="x86_64-buckos-linux-gnu"
-make DESTDIR="$DESTDIR" install
+# Install GCC and libgcc explicitly
+make DESTDIR="$DESTDIR" install-gcc install-target-libgcc
 
 # For cross-gcc-pass2 (the final cross-compiler), we DO want unprefixed symlinks
 # so that build systems looking for 'cc' or 'gcc' in /tools/bin find our cross-compiler.
@@ -1057,14 +1118,12 @@ ebuild_package(
     license = "MIT",
     bootstrap_stage = "stage2",  # STAGE 2: Built with cross-compiler, strong isolation
 
-    # Force C17 standard to avoid GCC 15 C23 bool keyword conflict
-    env = {
-        "CFLAGS": "-std=gnu17",
-        "CXXFLAGS": "-std=gnu++17",
-    },
-
     src_configure = '''
 BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+# Force C17 standard to avoid GCC 15 C23 bool keyword conflict
+export CFLAGS="$CFLAGS -std=gnu17"
+export CXXFLAGS="$CXXFLAGS -std=gnu++17"
+
 mkdir -p build && cd build
 ../configure \
     --prefix=/tools \
@@ -1082,7 +1141,7 @@ mkdir -p build && cd build
 
     src_compile = '''
 cd build
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
@@ -1100,7 +1159,7 @@ ln -sf libncursesw.so libtinfo.so 2>/dev/null || true
 ln -sf libncursesw.so libtinfow.so 2>/dev/null || true
 ''',
 
-    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    bdepend = [":cross-gcc-pass2", ":cross-binutils", ":cross-glibc"],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -1134,14 +1193,14 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 ''',
 
     src_compile = '''
-make -j$(nproc) SHLIB_LIBS="-lncursesw"
+make -j$MAKE_JOBS SHLIB_LIBS="-lncursesw"
 ''',
 
     src_install = '''
 make DESTDIR="$DESTDIR" install SHLIB_LIBS="-lncursesw"
 ''',
 
-    bdepend = [":cross-gcc-pass2", ":cross-glibc", ":bootstrap-ncurses"],
+    bdepend = [":cross-gcc-pass2", ":cross-binutils", ":cross-glibc", ":bootstrap-ncurses"],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -1175,7 +1234,7 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 ''',
 
     src_compile = '''
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
@@ -1183,7 +1242,7 @@ make DESTDIR="$DESTDIR" install
 ln -sf bash "$DESTDIR/tools/bin/sh"
 ''',
 
-    bdepend = [":cross-gcc-pass2", ":cross-glibc", ":bootstrap-readline", ":bootstrap-ncurses"],
+    bdepend = [":cross-gcc-pass2", ":cross-binutils", ":cross-glibc", ":bootstrap-readline", ":bootstrap-ncurses"],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -1217,14 +1276,14 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 ''',
 
     src_compile = '''
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
 make DESTDIR="$DESTDIR" install
 ''',
 
-    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    bdepend = [":cross-gcc-pass2", ":cross-binutils", ":cross-glibc"],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -1257,14 +1316,14 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 ''',
 
     src_compile = '''
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
 make DESTDIR="$DESTDIR" install
 ''',
 
-    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    bdepend = [":cross-gcc-pass2", ":cross-binutils", ":cross-glibc"],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -1296,14 +1355,14 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 ''',
 
     src_compile = '''
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
 make DESTDIR="$DESTDIR" install
 ''',
 
-    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    bdepend = [":cross-gcc-pass2", ":cross-binutils", ":cross-glibc"],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -1335,7 +1394,7 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 ''',
 
     src_compile = '''
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
@@ -1343,7 +1402,7 @@ make DESTDIR="$DESTDIR" install
 ln -sf gawk "$DESTDIR/tools/bin/awk"
 ''',
 
-    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    bdepend = [":cross-gcc-pass2", ":cross-binutils", ":cross-glibc"],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -1375,14 +1434,14 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 ''',
 
     src_compile = '''
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
 make DESTDIR="$DESTDIR" install
 ''',
 
-    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    bdepend = [":cross-gcc-pass2", ":cross-binutils", ":cross-glibc"],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -1415,14 +1474,14 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 ''',
 
     src_compile = '''
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
 make DESTDIR="$DESTDIR" install
 ''',
 
-    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    bdepend = [":cross-gcc-pass2", ":cross-binutils", ":cross-glibc"],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -1454,14 +1513,14 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 ''',
 
     src_compile = '''
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
 make DESTDIR="$DESTDIR" install
 ''',
 
-    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    bdepend = [":cross-gcc-pass2", ":cross-binutils", ":cross-glibc"],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -1493,14 +1552,14 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 ''',
 
     src_compile = '''
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
 make DESTDIR="$DESTDIR" install
 ''',
 
-    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    bdepend = [":cross-gcc-pass2", ":cross-binutils", ":cross-glibc"],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -1532,14 +1591,14 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 ''',
 
     src_compile = '''
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
 make DESTDIR="$DESTDIR" install
 ''',
 
-    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    bdepend = [":cross-gcc-pass2", ":cross-binutils", ":cross-glibc"],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -1572,14 +1631,14 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 ''',
 
     src_compile = '''
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
 make DESTDIR="$DESTDIR" install
 ''',
 
-    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    bdepend = [":cross-gcc-pass2", ":cross-binutils", ":cross-glibc"],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -1611,13 +1670,13 @@ ebuild_package(
     src_compile = '''
 # bzip2 Makefile hardcodes gcc - override for cross-compilation
 BUCKOS_TARGET="x86_64-buckos-linux-gnu"
-make -j$(nproc) \
+make -j$MAKE_JOBS \
     CC="${BUCKOS_TARGET}-gcc" \
     AR="${BUCKOS_TARGET}-ar" \
     RANLIB="${BUCKOS_TARGET}-ranlib" \
     PREFIX=/tools \
     -f Makefile-libbz2_so
-make -j$(nproc) \
+make -j$MAKE_JOBS \
     CC="${BUCKOS_TARGET}-gcc" \
     AR="${BUCKOS_TARGET}-ar" \
     RANLIB="${BUCKOS_TARGET}-ranlib" \
@@ -1652,7 +1711,7 @@ ln -sf bzip2.1 "$DESTDIR/tools/share/man/man1/bzcat.1"
 ln -sf bzip2.1 "$DESTDIR/tools/share/man/man1/bunzip2.1"
 ''',
 
-    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    bdepend = [":cross-gcc-pass2", ":cross-binutils", ":cross-glibc", ":bootstrap-make"],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -1677,6 +1736,7 @@ ebuild_package(
 
     src_configure = '''
 BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+CFLAGS="$CFLAGS -std=gnu17"  # Force C17 for old glib code compatibility
 ./configure \
     --prefix=/tools \
     --host=$BUCKOS_TARGET \
@@ -1686,7 +1746,7 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 ''',
 
     src_compile = '''
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
@@ -1695,7 +1755,7 @@ make DESTDIR="$DESTDIR" install
 ln -sf pkg-config "$DESTDIR/tools/bin/${BUCKOS_TARGET}-pkg-config" || true
 ''',
 
-    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    bdepend = [":cross-gcc-pass2", ":cross-binutils", ":cross-glibc"],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -1727,14 +1787,14 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 ''',
 
     src_compile = '''
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
 make DESTDIR="$DESTDIR" install
 ''',
 
-    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    bdepend = [":cross-gcc-pass2", ":cross-binutils", ":cross-glibc"],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -1766,14 +1826,164 @@ BUCKOS_TARGET="x86_64-buckos-linux-gnu"
 ''',
 
     src_compile = '''
-make -j$(nproc)
+make -j$MAKE_JOBS
 ''',
 
     src_install = '''
 make DESTDIR="$DESTDIR" install
 ''',
 
-    bdepend = [":cross-gcc-pass2", ":cross-glibc"],
+    bdepend = [":cross-gcc-pass2", ":cross-binutils", ":cross-glibc"],
+    depend = [],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Stage 2: Native GCC (built with cross-compiler)
+# =============================================================================
+# This builds a native (not cross) GCC using the Stage 1 cross-compiler.
+# This native GCC provides gcc/g++/ar/as/ld for Stage 3 builds.
+
+ebuild_package(
+    name = "bootstrap-gcc",
+    source = ":gcc-src",
+    version = "15.2.0",
+    category = "toolchain/bootstrap",
+    slot = "0",
+    description = "Native GCC for bootstrap (built with cross-compiler)",
+    homepage = "https://gcc.gnu.org/",
+    license = "GPL-3.0",
+    bootstrap_stage = "stage2",  # STAGE 2: Native compiler built with cross-compiler
+
+    env = {
+        "CFLAGS": "-O2 -g",
+        "CXXFLAGS": "-O2 -g",
+        "LDFLAGS": "",
+    },
+
+    src_prepare = '''
+# Link GMP, MPFR, MPC into source tree
+GMP_DIR=""
+MPFR_DIR=""
+MPC_DIR=""
+
+IFS=':' read -ra DEPS <<< "$DEP_BASE_DIRS"
+for dep_dir in "${DEPS[@]}"; do
+    if [[ "$dep_dir" == *"gmp-src"* ]] && [[ -f "$dep_dir/configure.ac" ]]; then
+        GMP_DIR="$dep_dir"
+    elif [[ "$dep_dir" == *"mpfr-src"* ]] && [[ -f "$dep_dir/configure.ac" ]]; then
+        MPFR_DIR="$dep_dir"
+    elif [[ "$dep_dir" == *"mpc-src"* ]] && [[ -f "$dep_dir/configure.ac" ]]; then
+        MPC_DIR="$dep_dir"
+    fi
+done
+
+if [ -z "$GMP_DIR" ] || [ -z "$MPFR_DIR" ] || [ -z "$MPC_DIR" ]; then
+    echo "ERROR: Could not find math library sources" >&2
+    exit 1
+fi
+
+ln -sfn "$GMP_DIR" gmp
+ln -sfn "$MPFR_DIR" mpfr
+ln -sfn "$MPC_DIR" mpc
+
+# Fix thread header compatibility
+sed '/thread_header =/s/@.*@/gthr-posix.h/' \
+    -i libgcc/Makefile.in libstdc++-v3/include/Makefile.in || true
+
+# Disable c++tools
+sed -i 's|c++tools ||g' Makefile.in || true
+
+# Fix libcody C++ version check
+sed -i 's/__cplusplus != 201103/__cplusplus < 201103/' libcody/configure || true
+
+echo "Source prepared for Stage 2 native GCC build"
+''',
+
+    src_configure = '''
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+
+mkdir -p build && cd build
+
+# Native build (build == host == target), built with cross-compiler
+../configure \
+    --prefix=/tools \
+    --libdir=/tools/lib64 \
+    --libexecdir=/tools/lib \
+    --build=$BUCKOS_TARGET \
+    --host=$BUCKOS_TARGET \
+    --target=$BUCKOS_TARGET \
+    --enable-languages=c,c++ \
+    --enable-default-pie \
+    --enable-default-ssp \
+    --disable-nls \
+    --disable-multilib \
+    --disable-libatomic \
+    --disable-libgomp \
+    --disable-libquadmath \
+    --disable-libsanitizer \
+    --disable-libssp \
+    --disable-libvtv \
+    --enable-libstdcxx \
+    --disable-bootstrap \
+    --disable-c++tools \
+    --disable-libbacktrace \
+    --disable-cet \
+    --with-system-zlib \
+    --enable-shared \
+    --enable-threads=posix \
+    --enable-__cxa_atexit \
+    --enable-clocale=gnu \
+    --enable-gnu-indirect-function \
+    --enable-linker-build-id \
+    --enable-lto \
+    --enable-plugin \
+    --with-linker-hash-style=gnu
+
+# Remove c++tools from Makefiles
+sed -i 's/all-c++tools//g' Makefile || true
+sed -i 's/configure-c++tools//g' Makefile || true
+
+echo "Native GCC Stage 2 configured"
+''',
+
+    src_compile = '''
+cd build
+make -j$MAKE_JOBS
+echo "Native GCC Stage 2 compilation complete"
+''',
+
+    src_install = '''
+cd build
+make DESTDIR="$DESTDIR" install
+
+# Create marker
+cat > "$DESTDIR/tools/lib/gcc/x86_64-buckos-linux-gnu/15.2.0/.stage2-marker" << 'EOF'
+GCC 15.2.0 Stage 2
+Native build with Stage 1 cross-compiler
+Provides native gcc/g++ for Stage 3 builds
+EOF
+
+echo "Native GCC Stage 2 installed to /tools"
+''',
+
+    bdepend = [
+        ":cross-gcc-pass2",
+        ":cross-binutils",
+        ":cross-glibc",
+        ":linux-headers",
+        ":bootstrap-bash",
+        ":bootstrap-make",
+        ":bootstrap-sed",
+        ":bootstrap-gawk",
+        ":bootstrap-grep",
+        ":bootstrap-findutils",
+        ":bootstrap-diffutils",
+        ":bootstrap-coreutils",
+        ":gmp-src",
+        ":mpfr-src",
+        ":mpc-src",
+    ],
     depend = [],
     visibility = ["PUBLIC"],
 )
@@ -1786,7 +1996,7 @@ make DESTDIR="$DESTDIR" install
 # Packages depending on this will have access to the full cross-compilation
 # environment with:
 #   - Cross binutils (as, ld, ar, etc.)
-#   - Cross GCC (gcc, g++)
+#   - Native GCC (gcc, g++) from Stage 2
 #   - Glibc and headers
 #   - Libstdc++
 #   - Core utilities (bash, coreutils, make, sed, awk, grep, etc.)
@@ -1831,12 +2041,35 @@ for dep_dir in "${DEP_ARRAY[@]}"; do
     fi
 done
 
+# Create symlinks for cross-compiler tools so they can be used as native tools
+# Stage 3 expects gcc, g++, ar, as, ld, etc. but we only have x86_64-buckos-linux-gnu-* versions
+BUCKOS_TARGET="x86_64-buckos-linux-gnu"
+cd "$DESTDIR/tools/bin"
+
+# Create symlinks for GCC toolchain
+for tool in gcc g++ cpp c++ cc; do
+    if [ -f "${BUCKOS_TARGET}-${tool}" ] && [ ! -e "$tool" ]; then
+        ln -s "${BUCKOS_TARGET}-${tool}" "$tool"
+        echo "Created symlink: $tool -> ${BUCKOS_TARGET}-${tool}"
+    fi
+done
+
+# Create symlinks for binutils
+for tool in ar as ld nm objcopy objdump ranlib readelf size strings strip; do
+    if [ -f "${BUCKOS_TARGET}-${tool}" ] && [ ! -e "$tool" ]; then
+        ln -s "${BUCKOS_TARGET}-${tool}" "$tool"
+        echo "Created symlink: $tool -> ${BUCKOS_TARGET}-${tool}"
+    fi
+done
+
+cd -
+
 # Create a marker file
 cat > "$DESTDIR/tools/.bootstrap-toolchain" << 'EOF'
 BuckOS Bootstrap Toolchain v2.0
 Target: x86_64-buckos-linux-gnu
 Glibc: 2.42
-GCC: 15.2.0
+GCC: 15.2.0 (cross-compiler with native symlinks)
 
 Core utilities included:
 - bash, coreutils, make
@@ -1844,6 +2077,9 @@ Core utilities included:
 - findutils, diffutils
 - tar, gzip, xz
 - ncurses, readline
+
+Compiler tools:
+- gcc, g++, ar, as, ld (symlinks to cross-compiler)
 EOF
 
 echo "Bootstrap toolchain assembled: $(ls -1 $DESTDIR/tools/bin | wc -l) binaries, $(ls -1 $DESTDIR/tools/lib/*.so* 2>/dev/null | wc -l) libraries"
@@ -1874,6 +2110,8 @@ echo "Bootstrap toolchain assembled: $(ls -1 $DESTDIR/tools/bin | wc -l) binarie
         ":bootstrap-pkg-config",
         ":bootstrap-file",
         ":bootstrap-patch",
+        # Stage 2: Native compiler (for build ordering and Stage 3)
+        ":bootstrap-gcc",
     ],
     depend = [],
     visibility = ["PUBLIC"],
@@ -2012,7 +2250,7 @@ echo "GCC Stage 3 configured for native build"
 
     src_compile = '''
 cd build
-make -j$(nproc) \
+make -j$MAKE_JOBS \
     CFLAGS_FOR_BUILD="-std=gnu17 -O2" \
     CXXFLAGS_FOR_BUILD="-std=gnu++17 -O2" \
     CET_FLAGS="-fcf-protection=none"
@@ -2041,6 +2279,16 @@ echo "GCC Stage 3 installed to /usr"
         ":mpfr-src",
         ":mpc-src",
         ":linux-headers",
+        # Explicit Stage 2 dependencies to ensure they're built
+        ":bootstrap-bash",
+        ":bootstrap-make",
+        ":bootstrap-sed",
+        ":bootstrap-gawk",
+        ":bootstrap-grep",
+        ":bootstrap-findutils",
+        ":bootstrap-diffutils",
+        ":bootstrap-coreutils",
+        ":bootstrap-gcc",
     ],
     depend = [],
     visibility = ["PUBLIC"],
@@ -2112,7 +2360,7 @@ echo "Glibc Stage 3 configured for native build"
 
     src_compile = '''
 cd build
-make -j$(nproc)
+make -j$MAKE_JOBS
 
 echo "Glibc Stage 3 compilation complete"
 ''',
@@ -2148,6 +2396,16 @@ echo "Glibc Stage 3 installed to /usr"
     bdepend = [
         ":bootstrap-toolchain",
         ":linux-headers",
+        # Explicit Stage 2 dependencies to ensure they're built
+        ":bootstrap-bash",
+        ":bootstrap-make",
+        ":bootstrap-sed",
+        ":bootstrap-gawk",
+        ":bootstrap-grep",
+        ":bootstrap-findutils",
+        ":bootstrap-diffutils",
+        ":bootstrap-coreutils",
+        ":bootstrap-gcc",
     ],
     depend = [],
     visibility = ["PUBLIC"],

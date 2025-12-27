@@ -1,4 +1,51 @@
-# Multi-Version Package Management System
+---
+id: "SPEC-003"
+title: "Package Versioning and Slot System"
+status: "approved"
+version: "1.0.0"
+created: "2025-11-19"
+updated: "2025-11-19"
+
+authors:
+  - name: "BuckOS Team"
+    email: "team@buckos.org"
+
+maintainers:
+  - "team@buckos.org"
+
+category: "core"
+tags:
+  - "versioning"
+  - "slots"
+  - "subslots"
+  - "multi-version"
+  - "abi-tracking"
+
+related:
+  - "SPEC-001"
+
+implementation:
+  status: "complete"
+  completeness: 85
+
+compatibility:
+  buck2_version: ">=2024.11.01"
+  buckos_version: ">=1.0.0"
+  breaking_changes: false
+
+changelog:
+  - version: "1.0.0"
+    date: "2025-12-27"
+    changes: "Migrated to formal specification system with lifecycle management"
+---
+
+# Package Versioning and Slot System
+
+**Status**: approved | **Version**: 1.0.0 | **Last Updated**: 2025-11-19
+
+## Abstract
+
+This specification defines the versioning, slot, and subslot system for BuckOS packages. It enables parallel installation of multiple versions, ABI compatibility tracking, and automated dependency rebuilds when ABI changes occur. The system is compatible with Gentoo's slot system but extended with Buck2-specific features.
 
 This document describes BuckOs Linux's multi-version package management system, inspired by Gentoo's ebuild slot system but implemented using Buck2.
 

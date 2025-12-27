@@ -1,4 +1,51 @@
-# BuckOs Package Sets
+---
+id: "SPEC-004"
+title: "Package Sets and System Profiles"
+status: "approved"
+version: "1.0.0"
+created: "2025-11-20"
+updated: "2025-11-20"
+
+authors:
+  - name: "BuckOS Team"
+    email: "team@buckos.org"
+
+maintainers:
+  - "team@buckos.org"
+
+category: "core"
+tags:
+  - "package-sets"
+  - "profiles"
+  - "system-sets"
+  - "collections"
+
+related:
+  - "SPEC-001"
+  - "SPEC-002"
+
+implementation:
+  status: "complete"
+  completeness: 80
+
+compatibility:
+  buck2_version: ">=2024.11.01"
+  buckos_version: ">=1.0.0"
+  breaking_changes: false
+
+changelog:
+  - version: "1.0.0"
+    date: "2025-12-27"
+    changes: "Migrated to formal specification system with lifecycle management"
+---
+
+# Package Sets and System Profiles
+
+**Status**: approved | **Version**: 1.0.0 | **Last Updated**: 2025-11-20
+
+## Abstract
+
+This specification defines the package set system for BuckOS, which organizes packages into logical collections for different use cases. Package sets enable building complete systems (minimal, server, desktop) and task-specific collections, with support for set operations, inheritance, and customization.
 
 Package sets provide a way to define and manage collections of packages for different use cases, similar to Gentoo's system profiles and sets. This document explains how to use and create package sets in BuckOs.
 

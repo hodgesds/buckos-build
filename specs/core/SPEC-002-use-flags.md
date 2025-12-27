@@ -1,4 +1,51 @@
-# BuckOs USE Flag System
+---
+id: "SPEC-002"
+title: "USE Flag System"
+status: "approved"
+version: "1.0.0"
+created: "2025-11-20"
+updated: "2025-11-27"
+
+authors:
+  - name: "BuckOS Team"
+    email: "team@buckos.org"
+
+maintainers:
+  - "team@buckos.org"
+
+category: "core"
+tags:
+  - "use-flags"
+  - "configuration"
+  - "features"
+  - "build-system"
+
+related:
+  - "SPEC-001"
+  - "SPEC-004"
+
+implementation:
+  status: "complete"
+  completeness: 90
+
+compatibility:
+  buck2_version: ">=2024.11.01"
+  buckos_version: ">=1.0.0"
+  breaking_changes: false
+
+changelog:
+  - version: "1.0.0"
+    date: "2025-12-27"
+    changes: "Migrated to formal specification system with lifecycle management"
+---
+
+# USE Flag System
+
+**Status**: approved | **Version**: 1.0.0 | **Last Updated**: 2025-11-27
+
+## Abstract
+
+The USE flag system provides fine-grained control over package features, dependencies, and build configuration in BuckOS. Similar to Gentoo's USE flags but implemented for Buck2, this system enables conditional compilation, optional feature toggling, and dependency management based on user preferences and system profiles.
 
 BuckOs implements a USE flag system similar to Gentoo's, allowing fine-grained control over package features, dependencies, and build configuration.
 

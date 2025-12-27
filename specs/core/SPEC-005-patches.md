@@ -1,4 +1,51 @@
-# Patch System for BuckOs
+---
+id: "SPEC-005"
+title: "Patch System"
+status: "approved"
+version: "1.0.0"
+created: "2025-11-20"
+updated: "2025-11-20"
+
+authors:
+  - name: "BuckOS Team"
+    email: "team@buckos.org"
+
+maintainers:
+  - "team@buckos.org"
+
+category: "core"
+tags:
+  - "patches"
+  - "customization"
+  - "build-system"
+  - "source-modification"
+
+related:
+  - "SPEC-001"
+  - "SPEC-002"
+
+implementation:
+  status: "complete"
+  completeness: 75
+
+compatibility:
+  buck2_version: ">=2024.11.01"
+  buckos_version: ">=1.0.0"
+  breaking_changes: false
+
+changelog:
+  - version: "1.0.0"
+    date: "2025-12-27"
+    changes: "Migrated to formal specification system with lifecycle management"
+---
+
+# Patch System
+
+**Status**: approved | **Version**: 1.0.0 | **Last Updated**: 2025-11-20
+
+## Abstract
+
+This specification defines the patch system for BuckOS, which allows users and distributions to customize package builds through multiple patch sources with clear precedence ordering. The system supports package patches, distribution patches, profile patches, USE flag conditional patches, and user patches.
 
 BuckOs provides a comprehensive patch system that allows users and distributions to customize package builds. This document describes the design and usage of the patch system.
 

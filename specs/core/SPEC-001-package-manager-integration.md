@@ -1,6 +1,54 @@
-# Package Manager Integration Specification
+---
+id: "SPEC-001"
+title: "Package Manager Integration"
+status: "approved"
+version: "1.0.0"
+created: "2025-11-20"
+updated: "2025-12-27"
 
-This document specifies how package managers should interact with the BuckOS Buck2 build system. It serves as a complete specification for implementing package manager tooling that integrates with BuckOS.
+authors:
+  - name: "BuckOS Team"
+    email: "team@buckos.org"
+
+maintainers:
+  - "team@buckos.org"
+
+category: "core"
+tags:
+  - "package-manager"
+  - "buck2"
+  - "build-system"
+  - "integration"
+
+related:
+  - "SPEC-002"
+  - "SPEC-003"
+  - "SPEC-004"
+  - "SPEC-005"
+
+implementation:
+  status: "complete"
+  completeness: 95
+
+compatibility:
+  buck2_version: ">=2024.11.01"
+  buckos_version: ">=1.0.0"
+  breaking_changes: false
+
+changelog:
+  - version: "1.0.0"
+    date: "2025-12-27"
+    changes: "Migrated to formal specification system with lifecycle management"
+---
+
+# Package Manager Integration
+
+**Status**: approved | **Version**: 1.0.0 | **Last Updated**: 2025-12-27
+
+## Abstract
+
+This specification defines how package managers should interact with the BuckOS Buck2 build system. It provides a complete specification for implementing package manager tooling that integrates with BuckOS, covering package definitions, metadata structures, query interfaces, configuration generation, build integration, dependency resolution, and all aspects of package management integration.
+
 
 ## Table of Contents
 

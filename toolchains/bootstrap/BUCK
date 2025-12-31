@@ -100,12 +100,21 @@ done
 # Stage 1.2: GCC Pass 1 (C compiler only, no libc)
 # =============================================================================
 
+# GCC 14.3.0 - Used for bootstrap (Stages 1-2)
+# Stable, proven bootstrap toolchain without libcody complications
 download_source(
-    name = "gcc-src",
-    # Use official GNU FTP site (https for security)
-    # Official GCC mirrors list: https://gcc.gnu.org/mirrors.html
-    src_uri = "https://ftp.gnu.org/gnu/gcc/gcc-15.2.0/gcc-15.2.0.tar.xz",
-    sha256 = "438fd996826b0c82485a29da03a72d71d6e3541a83ec702df4271f6fe025d24e",
+    name = "gcc-14-src",
+    src_uri = "https://mirror.buckos.org/g/gcc-14.3.0.tar.gz",
+    sha256 = "ace8b8b0dbfe6abfc22f821cb093e195aa5498b7ccf7cd23e4424b9f14afed22",
+    signature_required = False,
+)
+
+# GCC 15.2.0 - Used for Stage 3 verification only
+# See docs/gcc-15.2-bootstrap-issues.md for why not used in bootstrap
+download_source(
+    name = "gcc-15-src",
+    src_uri = "https://mirror.buckos.org/g/gcc-15.2.0.tar.gz",
+    sha256 = "7294d65cc1a0558cb815af0ca8c7763d86f7a31199794ede3f630c0d1b0a5723",
     signature_required = False,
 )
 
@@ -316,8 +325,8 @@ find "$DESTDIR" -name '*.la' -delete
 
 ebuild_package(
     name = "cross-gcc-pass1",
-    source = ":gcc-src",
-    version = "15.2.0",
+    source = ":gcc-14-src",
+    version = "14.3.0",
     category = "toolchain/bootstrap",
     slot = "0",
     description = "Cross GCC pass 1 - C compiler only for bootstrap",
@@ -334,6 +343,8 @@ ebuild_package(
         "CXX": "g++ -std=gnu++17",
         "CXXFLAGS": "-O2 -std=gnu++17",
     },
+
+    patches = [],
 
     src_prepare = '''
 # Link GMP, MPFR, MPC into the GCC source tree (in-tree build)
@@ -453,20 +464,10 @@ mkdir -p build && cd build
     --disable-libssp \
     --disable-libvtv \
     --disable-libstdcxx \
-    --disable-libcody \
     --disable-c++tools \
     --disable-decimal-float \
     --disable-libgcov \
     --disable-bootstrap
-
-# Fix Makefiles to remove libcody and c++tools dependencies
-sed -i 's/all-libcody//g' Makefile
-sed -i 's/configure-libcody//g' Makefile
-sed -i 's/all-c++tools//g' Makefile
-sed -i 's/configure-c++tools//g' Makefile
-# Also fix gcc/Makefile which has libcody dependencies (may not exist yet)
-sed -i 's|../libcody/libcody.a||g' gcc/Makefile 2>/dev/null || true
-sed -i 's|libcody.a||g' gcc/Makefile 2>/dev/null || true
 ''',
 
     src_compile = '''
@@ -677,8 +678,8 @@ LDCONF
 
 ebuild_package(
     name = "cross-libstdcxx",
-    source = ":gcc-src",
-    version = "15.2.0",
+    source = ":gcc-14-src",
+    version = "14.3.0",
     category = "toolchain/bootstrap",
     slot = "0",
     description = "C++ standard library for bootstrap",
@@ -750,11 +751,11 @@ rm -vf "$DESTDIR"/usr/lib64/lib{stdc++{,exp,fs},supc++}.la || true
 
 ebuild_package(
     name = "cross-gcc-pass2",
-    source = ":gcc-src",
-    version = "15.2.0",
+    source = ":gcc-14-src",
+    version = "14.3.0",
     category = "toolchain/bootstrap",
     slot = "0",
-    description = "Cross GCC pass 2 - full compiler with libc support",
+    description = "Cross GCC pass 2 - full compiler with libc support (C-only)",
     homepage = "https://gcc.gnu.org/",
     license = "GPL-3.0",
     bootstrap_stage = "stage1",  # STAGE 1: Full cross-compiler built with host GCC
@@ -763,38 +764,45 @@ ebuild_package(
     # GCC's build system manages flags for HOST and TARGET separately.
     # The HOST side (cc1, etc.) must link against HOST libraries, not cross-glibc.
     # The --with-build-sysroot configure option handles TARGET libraries.
-    # GCC 15 C23/C++26 compatibility: Force host compiler to use C11/C++17
-    # C11 is more permissive with implicit function declarations than C17/C23
-    # Downgrade implicit-function-declaration from error to warning for libiberty
+    # GCC 14.3.0 built with GCC 15.2.1 host: Need permissive flags
+    # -Wno-error=implicit-function-declaration allows old code patterns in libiberty
+    # -fcf-protection=none disables Intel CET to avoid configure errors
     env = {
         "LDFLAGS": "",
-        "CC": "gcc -std=gnu11 -Wno-error=implicit-function-declaration",
-        "CFLAGS": "-O2 -std=gnu11 -Wno-error=implicit-function-declaration",
-        "CXX": "g++ -std=gnu++17",
-        "CXXFLAGS": "-O2 -std=gnu++17",
+        "CC": "gcc -std=gnu11 -Wno-error=implicit-function-declaration -fcf-protection=none",
+        "CFLAGS": "-O2 -std=gnu11 -Wno-error=implicit-function-declaration -fcf-protection=none",
+        "CXX": "g++ -std=gnu++11 -fcf-protection=none",
+        "CXXFLAGS": "-O2 -std=gnu++11 -fcf-protection=none",
         "CPATH": "",
         "C_INCLUDE_PATH": "",
         "CPLUS_INCLUDE_PATH": "",
     },
+
+    patches = [],
 
     src_prepare = '''
 # Fix file that causes issues with glibc-2.39+
 sed '/thread_header =/s/@.*@/gthr-posix.h/' \
     -i libgcc/Makefile.in libstdc++-v3/include/Makefile.in || true
 
-# Disable c++tools to avoid GCC 15 C++26 configure compatibility issues
-# c++tools is not needed for cross-compiler bootstrap
-sed -i 's|c++tools ||g' Makefile.in || true
+# FIX: Patch libcody's configure to force uint64_t detection in cross-compilation
+# The configure script's AC_CHECK_TYPE fails in cross-env, but uint64_t is guaranteed (C++11)
+# We patch the generated configure script to skip the check and assume yes
+if [ -f libcody/configure ]; then
+    echo "Patching libcody/configure to fix uint64_t detection in cross-compilation..."
+    sed -i 's/as_fn_error \$? "uint64_t not found" "\$LINENO" 5/echo "uint64_t found (forced for cross-compilation)"/g' libcody/configure
+    echo "Libcody configure patched successfully"
+fi
 
-# Fix libcody's C++ version check to accept C++17 (not just C++11)
-# libcody/configure checks for __cplusplus == 201103, but we use C++17
-# Change the check to accept C++11 or higher
-sed -i 's/__cplusplus != 201103/__cplusplus < 201103/' libcody/configure || true
+# FIX: Patch libcpp's configure to force uint64_t detection in cross-compilation
+# Same issue as libcody - AC_CHECK_TYPE fails in cross-compilation environments
+if [ -f libcpp/configure ]; then
+    echo "Patching libcpp/configure to fix uint64_t detection in cross-compilation..."
+    sed -i 's/as_fn_error \$? "uint64_t not found" "\$LINENO" 5/echo "uint64_t found (forced for cross-compilation)"/g' libcpp/configure
+    echo "Libcpp configure patched successfully"
+fi
 
 # Link GMP, MPFR, MPC into the GCC source tree (in-tree build)
-# This approach works better with GCC 15's C++26 default because ebuild.sh
-# sets CC_FOR_BUILD and CXX_FOR_BUILD with C++17 flags which will be used
-# when building these in-tree libraries
 echo "Linking math libraries for in-tree build..."
 
 GMP_DIR=""
@@ -968,7 +976,8 @@ mkdir -p build && cd build
 # The host's ar auto-detects with --plugin flag, causing subdirectory configure failures
 AR_FOR_BUILD="$CROSS_AR" \
 RANLIB_FOR_BUILD="$CROSS_RANLIB" \
-CFLAGS_FOR_BUILD="-std=gnu17 -O2" CXXFLAGS_FOR_BUILD="-std=gnu++17 -O2" \
+CFLAGS_FOR_BUILD="-std=gnu11 -O2 -Wno-error=implicit-function-declaration -fcf-protection=none -D_GNU_SOURCE -include /usr/include/sys/types.h -include /usr/include/limits.h" \
+CXXFLAGS_FOR_BUILD="-std=gnu++11 -O2 -fcf-protection=none -D_GNU_SOURCE" \
 LDFLAGS_FOR_BUILD="" \
 stage1_ldflags="" poststage1_ldflags="" BOOT_LDFLAGS="" CET_FLAGS="-fcf-protection=none" ../configure \
     --prefix=/tools \
@@ -977,7 +986,7 @@ stage1_ldflags="" poststage1_ldflags="" BOOT_LDFLAGS="" CET_FLAGS="-fcf-protecti
     --with-sysroot="$BUILD_SYSROOT" \
     --with-build-sysroot="$BUILD_SYSROOT" \
     --with-native-system-header-dir=/usr/include \
-    --enable-languages=c \
+    --enable-languages=c,c++ \
     --enable-default-pie \
     --enable-default-ssp \
     --disable-nls \
@@ -988,19 +997,12 @@ stage1_ldflags="" poststage1_ldflags="" BOOT_LDFLAGS="" CET_FLAGS="-fcf-protecti
     --disable-libsanitizer \
     --disable-libssp \
     --disable-libvtv \
-    --disable-libstdcxx \
+    --enable-libstdcxx \
     --disable-bootstrap \
     --disable-c++tools \
-    --disable-libcody \
-    --disable-libbacktrace \
     --disable-cet \
     --with-system-zlib
 
-# GCC 15.2 bug: Even with --disable-libcody and --enable-languages=c,
-# the top-level Makefile still has all-gcc depend on all-libcody
-# Remove these phantom dependencies
-sed -i 's/all-libcody//g' Makefile
-sed -i 's/configure-libcody//g' Makefile
 ''',
 
     src_compile = '''
@@ -1027,25 +1029,27 @@ fi
 # Use cross-binutils' ar/ranlib to avoid LTO plugin auto-detection issues
 # Build GCC C compiler only (C++ disabled - not needed for bootstrap)
 echo "Building GCC C compiler..."
+set -x  # Enable verbose output to see commands
 make -j$MAKE_JOBS \
     AR_FOR_BUILD="$CROSS_AR" \
     RANLIB_FOR_BUILD="$CROSS_RANLIB" \
-    CFLAGS_FOR_BUILD="-std=gnu17 -O2" \
-    CXXFLAGS_FOR_BUILD="-std=gnu++17 -O2" \
+    CFLAGS_FOR_BUILD="-std=gnu11 -O2 -Wno-error=implicit-function-declaration -fcf-protection=none -D_GNU_SOURCE -include /usr/include/sys/types.h -include /usr/include/limits.h" \
+    CXXFLAGS_FOR_BUILD="-std=gnu++11 -O2 -fcf-protection=none -D_GNU_SOURCE" \
     LDFLAGS_FOR_BUILD="" \
     CET_FLAGS="-fcf-protection=none" \
     stage1_ldflags="" \
     poststage1_ldflags="" \
     BOOT_LDFLAGS="" \
     all-gcc
+set +x
 
 # Build libgcc runtime library
 echo "Building libgcc runtime library..."
 make -j$MAKE_JOBS \
     AR_FOR_BUILD="$CROSS_AR" \
     RANLIB_FOR_BUILD="$CROSS_RANLIB" \
-    CFLAGS_FOR_BUILD="-std=gnu17 -O2" \
-    CXXFLAGS_FOR_BUILD="-std=gnu++17 -O2" \
+    CFLAGS_FOR_BUILD="-std=gnu11 -O2 -Wno-error=implicit-function-declaration -fcf-protection=none -D_GNU_SOURCE -include /usr/include/sys/types.h -include /usr/include/limits.h" \
+    CXXFLAGS_FOR_BUILD="-std=gnu++11 -O2 -fcf-protection=none -D_GNU_SOURCE" \
     LDFLAGS_FOR_BUILD="" \
     all-target-libgcc
 
@@ -1132,6 +1136,8 @@ mkdir -p build && cd build
     --with-shared \
     --without-debug \
     --without-ada \
+    --without-cxx \
+    --without-cxx-binding \
     --enable-widec \
     --enable-overwrite \
     --without-manpages \
@@ -1649,7 +1655,7 @@ make DESTDIR="$DESTDIR" install
 
 download_source(
     name = "bzip2-src",
-    src_uri = "https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
+    src_uri = "https://mirror.buckos.org/b/bzip2-1.0.8.tar.gz",
     sha256 = "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269",
     signature_required = False,
 )
@@ -1718,7 +1724,7 @@ ln -sf bzip2.1 "$DESTDIR/tools/share/man/man1/bunzip2.1"
 
 download_source(
     name = "pkg-config-src",
-    src_uri = "https://pkg-config.freedesktop.org/releases/pkg-config-0.29.2.tar.gz",
+    src_uri = "https://mirror.buckos.org/p/pkg-config-0.29.2.tar.gz",
     sha256 = "6fc69c01688c9458a57eb9a1664c9aba372ccda420a02bf4429fe610e7e7d591",
     signature_required = False,
 )
@@ -1846,11 +1852,11 @@ make DESTDIR="$DESTDIR" install
 
 ebuild_package(
     name = "bootstrap-gcc",
-    source = ":gcc-src",
-    version = "15.2.0",
+    source = ":gcc-14-src",
+    version = "14.3.0",
     category = "toolchain/bootstrap",
     slot = "0",
-    description = "Native GCC for bootstrap (built with cross-compiler)",
+    description = "Native GCC for bootstrap (built with cross-compiler, C/C++)",
     homepage = "https://gcc.gnu.org/",
     license = "GPL-3.0",
     bootstrap_stage = "stage2",  # STAGE 2: Native compiler built with cross-compiler
@@ -1927,7 +1933,6 @@ mkdir -p build && cd build
     --enable-libstdcxx \
     --disable-bootstrap \
     --disable-c++tools \
-    --disable-libbacktrace \
     --disable-cet \
     --with-system-zlib \
     --enable-shared \
@@ -2003,7 +2008,7 @@ echo "Native GCC Stage 2 installed to /tools"
 
 ebuild_package(
     name = "bootstrap-toolchain",
-    source = ":gcc-src",  # Dummy source, we just aggregate deps
+    source = ":gcc-14-src",  # Dummy source, we just aggregate deps
     version = "2.0",
     category = "toolchain/bootstrap",
     slot = "0",
@@ -2128,7 +2133,7 @@ echo "Bootstrap toolchain assembled: $(ls -1 $DESTDIR/tools/bin | wc -l) binarie
 # -----------------------------------------------------------------------------
 ebuild_package(
     name = "bootstrap-gcc-stage3",
-    source = ":gcc-src",
+    source = ":gcc-15-src",
     version = "15.2.0",
     category = "toolchain/bootstrap",
     slot = "0",
@@ -2225,7 +2230,6 @@ mkdir -p build && cd build
     --enable-libstdcxx \
     --disable-bootstrap \
     --disable-c++tools \
-    --disable-libbacktrace \
     --disable-cet \
     --with-system-zlib \
     --enable-shared \
@@ -2416,7 +2420,7 @@ echo "Glibc Stage 3 installed to /usr"
 # -----------------------------------------------------------------------------
 ebuild_package(
     name = "bootstrap-stage3-system",
-    source = ":gcc-src",  # Dummy source
+    source = ":gcc-14-src",  # Dummy source
     version = "3.0",
     category = "toolchain/bootstrap",
     slot = "0",
@@ -2709,5 +2713,17 @@ fi
         ":bootstrap-gcc-stage3",
         ":bootstrap-glibc-stage3",
     ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# Null/Stub Host Toolchain
+# =============================================================================
+# This is a placeholder target used when host toolchain mode is enabled.
+# It provides no actual toolchain - packages will use the host system's GCC/clang.
+
+filegroup(
+    name = "host-toolchain-stub",
+    srcs = [],
     visibility = ["PUBLIC"],
 )

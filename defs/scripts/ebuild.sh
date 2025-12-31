@@ -133,7 +133,19 @@ fi
 # =============================================================================
 # Track whether cross-compilation is actually active (not just requested)
 CROSS_COMPILING="false"
-if [ "$USE_BOOTSTRAP" = "true" ]; then
+
+# Skip bootstrap toolchain setup if host toolchain is configured
+if [ "$USE_HOST_TOOLCHAIN" = "true" ]; then
+    echo "=== Using Host System Toolchain ==="
+    echo "Bootstrap toolchain: DISABLED"
+    echo "Compiler: $(gcc --version 2>/dev/null | head -1 || echo 'gcc (not found)')"
+    echo "====================================="
+    # Use system compiler as-is
+    export CC="${CC:-gcc}"
+    export CXX="${CXX:-g++}"
+    export CPP="${CPP:-gcc -E}"
+    # Standard tools (AR, AS, etc.) are in PATH and will be auto-detected
+elif [ "$USE_BOOTSTRAP" = "true" ]; then
     # Verify the cross-compiler actually exists
     if [ -n "$TOOLCHAIN_PATH" ] && command -v ${BUCKOS_TARGET}-gcc >/dev/null 2>&1; then
         CROSS_COMPILING="true"

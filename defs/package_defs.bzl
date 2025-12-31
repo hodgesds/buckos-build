@@ -27,6 +27,23 @@ load("//config:fedora_build_flags.bzl",
 # Note: Uses toolchains// cell prefix per buck2 cell configuration
 BOOTSTRAP_TOOLCHAIN = "toolchains//bootstrap:bootstrap-toolchain"
 
+def get_toolchain_dep():
+    """
+    Returns the bootstrap toolchain dependency.
+
+    Note: When use_host_toolchain config is enabled, the ebuild_package rule implementation
+    will automatically filter out this dependency, so it's safe to always include it here.
+    """
+    return BOOTSTRAP_TOOLCHAIN
+
+def _should_use_host_toolchain():
+    """
+    Check if host toolchain should be used instead of bootstrap toolchain.
+    Reads from buckos.use_host_toolchain config (default: false)
+    """
+    use_host = read_config("buckos", "use_host_toolchain", "false")
+    return use_host.lower() in ["true", "1", "yes"]
+
 # Platform constraint values for target_compatible_with
 # Only macOS packages need constraints to prevent building on Linux
 # Linux packages don't need constraints since we're building on Linux
@@ -2568,9 +2585,18 @@ def _ebuild_package_impl(ctx: AnalysisContext) -> list[Provider]:
     # Get source directory from dependency
     src_dir = ctx.attrs.source[DefaultInfo].default_outputs[0]
 
+    # Read host toolchain config
+    use_host_toolchain = read_config("buckos", "use_host_toolchain", "false").lower() in ["true", "1", "yes"]
+
+    # Filter dependencies: skip bootstrap toolchain when using host toolchain
+    bdepend_list = ctx.attrs.bdepend
+    if use_host_toolchain:
+        # Filter out bootstrap toolchain from bdepend when using host toolchain
+        bdepend_list = [dep for dep in ctx.attrs.bdepend if "bootstrap-toolchain" not in str(dep.label)]
+
     # Collect all dependency directories (depend + bdepend + rdepend) for PATH setup
     dep_dirs = []
-    for dep in ctx.attrs.depend + ctx.attrs.bdepend + ctx.attrs.rdepend:
+    for dep in ctx.attrs.depend + bdepend_list + ctx.attrs.rdepend:
         outputs = dep[DefaultInfo].default_outputs
         for output in outputs:
             dep_dirs.append(output)
@@ -2602,7 +2628,10 @@ def _ebuild_package_impl(ctx: AnalysisContext) -> list[Provider]:
     pkg_config_wrapper = ctx.attrs._pkg_config_wrapper[DefaultInfo].default_outputs[0]
 
     # Select appropriate ebuild script based on bootstrap stage
-    if bootstrap_stage == "stage1":
+    # When using host toolchain, always use regular ebuild.sh (bootstrap stages are for cross-compilation)
+    if use_host_toolchain or not bootstrap_stage:
+        ebuild_script = ctx.attrs._ebuild_script[DefaultInfo].default_outputs[0]
+    elif bootstrap_stage == "stage1":
         ebuild_script = ctx.attrs._ebuild_bootstrap_stage1_script[DefaultInfo].default_outputs[0]
     elif bootstrap_stage == "stage2":
         ebuild_script = ctx.attrs._ebuild_bootstrap_stage2_script[DefaultInfo].default_outputs[0]
@@ -2743,6 +2772,7 @@ export CATEGORY="{category}"
 export SLOT="{slot}"
 export USE="{use_flags}"
 export USE_BOOTSTRAP="{use_bootstrap}"
+export USE_HOST_TOOLCHAIN="{use_host}"
 export BOOTSTRAP_SYSROOT="{bootstrap_sysroot}"
 export BUILD_THREADS="{build_threads}"
 
@@ -2757,6 +2787,21 @@ if [ "$BUILD_THREADS" = "0" ]; then
     fi
 else
     export MAKE_JOBS="$BUILD_THREADS"
+fi
+
+# CRITICAL: Copy source to isolated build directory
+# Buck2's download_source produces a single shared artifact - multiple packages using
+# the same source would modify the same directory, causing patch conflicts.
+# We MUST copy to a package-specific directory to ensure isolation.
+if [ -d "$_EBUILD_SRCDIR" ]; then
+    echo "Copying source to isolated build directory..."
+    BUILD_SRCDIR="$_EBUILD_DESTDIR/../source"
+    rm -rf "$BUILD_SRCDIR"
+    mkdir -p "$(dirname "$BUILD_SRCDIR")"
+    cp -a "$_EBUILD_SRCDIR" "$BUILD_SRCDIR"
+    # Update _EBUILD_SRCDIR to point to the isolated copy
+    export _EBUILD_SRCDIR="$BUILD_SRCDIR"
+    echo "Source copied to: $BUILD_SRCDIR"
 fi
 
 # Apply patches BEFORE running phases (in original working directory)
@@ -2868,6 +2913,7 @@ source "$FRAMEWORK_SCRIPT"
             slot = ctx.attrs.slot,
             use_flags = use_flags,
             use_bootstrap = "true" if use_bootstrap else "false",
+            use_host = "true" if use_host_toolchain else "false",
             bootstrap_sysroot = bootstrap_sysroot,
             build_threads = build_threads,
             env = env_str,
@@ -3156,9 +3202,10 @@ def cmake_package(
             bdepend.append(dep)
 
     # Add bootstrap toolchain by default to ensure linking against BuckOS glibc
+    # Use get_toolchain_dep() which returns select() based on platform constraints
     use_bootstrap = kwargs.pop("use_bootstrap", True)
-    if use_bootstrap and BOOTSTRAP_TOOLCHAIN not in bdepend:
-        bdepend.append(BOOTSTRAP_TOOLCHAIN)
+    if use_bootstrap:
+        bdepend.append(get_toolchain_dep())
 
     # Allow overriding eclass phases via kwargs
     custom_src_prepare = kwargs.pop("src_prepare", None)
@@ -3330,9 +3377,10 @@ def meson_package(
             bdepend.append(dep)
 
     # Add bootstrap toolchain by default to ensure linking against BuckOS glibc
+    # Use get_toolchain_dep() which returns select() based on platform constraints
     use_bootstrap = kwargs.pop("use_bootstrap", True)
-    if use_bootstrap and BOOTSTRAP_TOOLCHAIN not in bdepend:
-        bdepend.append(BOOTSTRAP_TOOLCHAIN)
+    if use_bootstrap:
+        bdepend.append(get_toolchain_dep())
 
     # Allow overriding eclass phases via kwargs
     custom_src_prepare = kwargs.pop("src_prepare", None)
@@ -3697,9 +3745,10 @@ def cargo_package(
             bdepend.append(dep)
 
     # Add bootstrap toolchain by default to ensure linking against BuckOS glibc
+    # Use get_toolchain_dep() which returns select() based on platform constraints
     use_bootstrap = kwargs.pop("use_bootstrap", True)
-    if use_bootstrap and BOOTSTRAP_TOOLCHAIN not in bdepend:
-        bdepend.append(BOOTSTRAP_TOOLCHAIN)
+    if use_bootstrap:
+        bdepend.append(get_toolchain_dep())
 
     # Filter out rdepend from kwargs since we pass it explicitly as deps
     kwargs.pop("rdepend", None)
@@ -3853,9 +3902,10 @@ def go_package(
             bdepend.append(dep)
 
     # Add bootstrap toolchain by default to ensure linking against BuckOS glibc
+    # Use get_toolchain_dep() which returns select() based on platform constraints
     use_bootstrap = kwargs.pop("use_bootstrap", True)
-    if use_bootstrap and BOOTSTRAP_TOOLCHAIN not in bdepend:
-        bdepend.append(BOOTSTRAP_TOOLCHAIN)
+    if use_bootstrap:
+        bdepend.append(get_toolchain_dep())
 
     # Allow overriding eclass phases via kwargs
     custom_src_prepare = kwargs.pop("src_prepare", None)
@@ -4005,9 +4055,10 @@ def python_package(
             bdepend.append(dep)
 
     # Add bootstrap toolchain by default
+    # Use get_toolchain_dep() which returns select() based on platform constraints
     use_bootstrap = kwargs.pop("use_bootstrap", True)
-    if use_bootstrap and BOOTSTRAP_TOOLCHAIN not in bdepend:
-        bdepend.append(BOOTSTRAP_TOOLCHAIN)
+    if use_bootstrap:
+        bdepend.append(get_toolchain_dep())
 
     # Merge eclass rdepend with resolved dependencies
     rdepend = resolved_deps

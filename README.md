@@ -91,6 +91,85 @@ buck2 build //:complete
 buck2 targets //...
 ```
 
+## Toolchain Modes
+
+BuckOS supports two toolchain modes for building packages: **Bootstrap Mode** (default) and **Host Toolchain Mode**.
+
+### Bootstrap Mode (Default - Recommended for Production)
+
+Uses a self-hosted 3-stage bootstrap process to build a complete, isolated toolchain:
+- **Stage 1**: Cross-compilation toolchain (uses host compiler minimally)
+- **Stage 2**: Core utilities built with cross-compiler (strict isolation)
+- **Stage 3**: Self-hosting verification
+
+**Benefits:**
+- Complete isolation from host system
+- Reproducible builds across different hosts
+- Portable binaries
+- ABI consistency
+
+**Usage:**
+```bash
+# Default - uses bootstrap toolchain
+buck2 build //packages/linux/editors/entr:entr --target-platforms //platforms:linux-target
+```
+
+### Host Toolchain Mode (Optional - For Development)
+
+Uses the host system's GCC/clang and libraries directly, skipping the bootstrap toolchain build.
+
+**Benefits:**
+- Faster builds (no toolchain compilation)
+- Less disk space
+- Useful for rapid iteration
+
+**Drawbacks:**
+- Not reproducible across hosts
+- Host library dependencies
+- Not suitable for production
+
+**Usage:**
+
+**Method 1: Platform Selection (Recommended)**
+```bash
+# Use host toolchain platform for fast development builds
+buck2 build //packages/linux/editors/entr:entr --target-platforms //platforms:linux-target-host
+```
+
+**Method 2: Configuration File**
+
+Edit `.buckconfig`:
+```ini
+[buckos]
+use_host_toolchain = true
+```
+
+Then build normally:
+```bash
+buck2 build //packages/linux/editors/entr:entr --target-platforms //platforms:linux-target
+```
+
+**Method 3: Package Manager Config**
+
+Edit `/etc/buckos/buckos.toml` (when using the package manager):
+```toml
+[toolchain]
+use_host_toolchain = true
+```
+
+**When to use each mode:**
+
+| Use Case | Recommended Mode |
+|----------|------------------|
+| Production builds | Bootstrap |
+| Development/testing | Host |
+| Creating distributable binaries | Bootstrap |
+| Quick prototyping | Host |
+| CI/CD builds | Bootstrap |
+| Local iteration | Host |
+
+See [docs/TOOLCHAIN_MODES.md](docs/TOOLCHAIN_MODES.md) for complete documentation including migration guides and troubleshooting.
+
 ## Package System
 
 ### Package Types

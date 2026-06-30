@@ -195,13 +195,104 @@ def _copy_and_relocate_toolchain(bin_dir, ld_linux, scratch_dir):
         # rename them into place.
         subprocess.run(["chmod", "-R", "u+w", dst_root], check=True)
 
-        _fix_subprogram_paths(dst_bin, ld_linux)
+        # The toolchain is built locally (local_only), so rewrite_interps bakes
+        # the *local* build root (e.g. /data/users/<u>/fbsource/...) into every
+        # PT_INTERP/DT_RPATH.  On a remote-execution worker the tree lives under
+        # a different root (/re_cwd/...), and that prefix differs in length from
+        # the local one, so the length-preserving byte substitution in
+        # _fix_subprogram_paths() can't fix it (it only swaps the equal-length
+        # `output_artifacts`->content-hash component) -> the interp stays dead
+        # and gcc fails with exit 127 "cannot execute: required file not found".
+        # patchelf rewrites the interp/RPATH to the copy's *own* self-contained
+        # ld-linux and lib dirs with no length constraint, which is valid on any
+        # worker.  Fall back to the byte-sub if patchelf isn't available.
+        if not _patchelf_relocate(dst_root, ld_linux, scratch_dir):
+            _fix_subprogram_paths(dst_bin, ld_linux)
 
         print(f"portabilize: copied toolchain to {dst_root}", file=sys.stderr)
         with open(done_marker, "w") as f:
             f.write("ok\n")
 
     return dst_bin
+
+
+def _patchelf_relocate(dst_root, ld_linux, scratch_dir):
+    """Relocate a copied gcc toolchain's interp + RPATH with patchelf.
+
+    Points every exec'd binary (bin/*, libexec/gcc/.../{cc1,cc1plus,collect2,
+    lto1,...}, and the cross binutils in <triple>/bin/*) at the copy's *own*
+    ld-linux and lib dirs, so the toolchain is fully self-contained at whatever
+    absolute path the copy lives -- no dependency on the build-time root.
+
+    patchelf is one of the hermetic host tools, which portabilize_toolchain
+    wraps into scratch (".ld-wrap-...") before the compiler toolchain is
+    copied, so a worker-runnable wrapped patchelf is already present.  Returns
+    True on success, False if patchelf or the copy's ld-linux can't be found
+    (caller falls back to the byte-substitution relocation).
+    """
+    import glob as _glob_mod
+
+    patchelf = None
+    for _cand in _glob_mod.glob(
+        os.path.join(scratch_dir, ".ld-wrap-*", "bin", "patchelf")
+    ):
+        if os.path.isfile(_cand):
+            patchelf = _cand
+            break
+    if not patchelf:
+        return False
+
+    # The copy's own ld-linux, mirroring ld_linux's path under <root>/tools/.
+    if "/tools/" not in ld_linux:
+        return False
+    suffix = ld_linux.split("/tools/", 1)[1]  # <triple>/sys-root/lib64/ld-linux
+    copy_ld = os.path.join(dst_root, suffix)
+    if not os.path.isfile(copy_ld):
+        return False
+    triple = suffix.split("/", 1)[0]
+
+    # DT_RPATH (transitive, matching the toolchain's --disable-new-dtags) over
+    # the copy's lib dirs so cc1/collect2 find libstdc++/libgcc_s/libisl/libc.
+    rpath_dirs = [
+        d
+        for d in (
+            os.path.join(dst_root, triple, "lib64"),
+            os.path.join(dst_root, triple, "lib"),
+            os.path.join(dst_root, "lib64"),
+            os.path.join(dst_root, "lib"),
+            os.path.join(dst_root, triple, "sys-root", "usr", "lib64"),
+            os.path.join(dst_root, triple, "sys-root", "lib64"),
+            os.path.join(dst_root, triple, "sys-root", "usr", "lib"),
+        )
+        if os.path.isdir(d)
+    ]
+    rpath = ":".join(rpath_dirs)
+
+    exec_dirs = [os.path.join(dst_root, "bin"), os.path.join(dst_root, "libexec")]
+    exec_dirs += _glob_mod.glob(os.path.join(dst_root, "*", "bin"))
+    count = 0
+    seen = set()
+    for d in exec_dirs:
+        if not os.path.isdir(d) or d in seen:
+            continue
+        seen.add(d)
+        for root, _dirs, files in os.walk(d):
+            for name in files:
+                p = os.path.join(root, name)
+                if os.path.islink(p) or not _is_elf(p) or not _has_pt_interp(p):
+                    continue
+                cmd = [patchelf, "--set-interpreter", copy_ld]
+                if rpath:
+                    cmd += ["--force-rpath", "--set-rpath", rpath]
+                cmd.append(p)
+                if subprocess.run(cmd).returncode == 0:
+                    count += 1
+    print(
+        f"portabilize: patchelf-relocated {count} toolchain binaries "
+        f"(interp={copy_ld})",
+        file=sys.stderr,
+    )
+    return count > 0
 
 
 def _fix_subprogram_paths(bin_dir, ld_linux):

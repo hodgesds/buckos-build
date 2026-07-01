@@ -324,6 +324,13 @@ def _patchelf_relocate(dst_root, ld_linux, scratch_dir):
         cand = os.path.join(dst_root, ld_linux.split("/tools/", 1)[1])
         if os.path.isfile(cand):
             copy_ld = cand
+    # A gcc toolchain ships its sysroot inside the copy (internal ld-linux) and
+    # its binaries carry an absolute, build-root-baked (dead-on-RE) RPATH that
+    # must be rewritten.  A host-tool bundle (external ld-linux) already uses an
+    # $ORIGIN-relative RPATH + LD_LIBRARY_PATH, so we must ONLY fix its interp --
+    # overwriting its RPATH drops the sysroot lib dirs and libpython/libperl then
+    # pick up the host's too-old libc (GLIBC_2.xx not found).
+    _internal = bool(copy_ld)
     if not copy_ld:
         copy_ld = abs_ld
     if not os.path.isfile(copy_ld):
@@ -371,7 +378,7 @@ def _patchelf_relocate(dst_root, ld_linux, scratch_dir):
                 if os.path.islink(p) or not _is_elf(p) or not _has_pt_interp(p):
                     continue
                 cmd = [patchelf, "--set-interpreter", copy_ld]
-                if rpath:
+                if _internal and rpath:
                     cmd += ["--force-rpath", "--set-rpath", rpath]
                 cmd.append(p)
                 if subprocess.run(cmd).returncode == 0:

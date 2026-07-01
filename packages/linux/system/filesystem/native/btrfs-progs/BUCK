@@ -2,16 +2,18 @@ load("//defs/packages:autotools.bzl", "autotools_package")
 
 autotools_package(
     name = "btrfs-progs",
-    url = "https://mirrors.edge.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v6.7.tar.xz",
+    # v7.0+ for reproducible mkfs.btrfs --rootdir (SOURCE_DATE_EPOCH support);
+    # v6.7 --rootdir is not byte-reproducible, which broke verity_image root hashes.
+    url = "https://mirrors.edge.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v7.0.tar.xz",
 
-    sha256 = "c27f755185b9f2dab31f42e8a303d36bed2a3f3341cc6d75ee68a0a650a24767",
+    sha256 = "c286d6876cbcd72327a0b417e4cfd280353ec23e37b549fdbcd7800a832d9a99",
     use_configure = {
         "convert": ("--enable-convert", "--disable-convert"),
         "experimental": ("--enable-experimental", "--disable-experimental"),
         "static": ("--enable-static", "--disable-static"),
         "static-libs": ("--enable-static", "--disable-static"),
     },
-    version = "6.7",
+    version = "7.0",
     description = "Btrfs filesystem utilities (mkfs.btrfs, btrfs-check, etc.)",
     homepage = "https://btrfs.wiki.kernel.org/",
     license = "GPL-2.0",

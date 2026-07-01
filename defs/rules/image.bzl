@@ -7,6 +7,8 @@ Assembly rules that take rootfs/kernel/initramfs deps and produce images.
 load("//defs:providers.bzl", "IsoImageInfo", "KernelInfo", "PackageInfo", "Stage3Info", "get_kernel_image")
 load("//defs:host_tools.bzl", "host_tool_path_args")
 load("//defs:toolchain_helpers.bzl", "TOOLCHAIN_ATTRS", "toolchain_ld_linux_args", "toolchain_path_args")
+load("//defs/rules:_common.bzl", "add_flag_file", "write_lib_dirs")
+load("//defs:tsets.bzl", "PathInfoTSet")
 
 # =============================================================================
 # RAW DISK IMAGE
@@ -58,6 +60,127 @@ _raw_disk_image_rule = rule(
 
 def raw_disk_image(labels = [], **kwargs):
     _raw_disk_image_rule(
+        labels = labels,
+        **kwargs
+    )
+
+# =============================================================================
+# DM-VERITY MEASURED IMAGE
+# =============================================================================
+# Build a dm-verity bound image set from a rootfs, in the hatch-image style:
+# a measured root filesystem image, its verity hash tree, the root hash, and a
+# kernel cmdline carrying `roothash=<hex>`.  The root hash binds every byte of
+# the rootfs to the boot measurement — the anchor of the attestation / verified
+# boot story.  Plays to buckos's strength: the rootfs is built hermetically
+# from source, so the measured image is reproducible by third parties.
+#
+# mkfs comes from the toolchain host PATH (like raw_disk_image); veritysetup is
+# a buckos-built PIE launched through the seed loader with its dep lib closure
+# (like ostree_commit).  `veritysetup format` is pure userspace — no root.
+
+def _verity_image_impl(ctx: AnalysisContext) -> list[Provider]:
+    rootfs_dir = ctx.attrs.rootfs[DefaultInfo].default_outputs[0]
+    cryptsetup = ctx.attrs.cryptsetup[PackageInfo]
+
+    name = ctx.attrs.name
+    root_img = ctx.actions.declare_output(name + ".root.img")
+    hash_img = ctx.actions.declare_output(name + ".hash.img")
+    roothash = ctx.actions.declare_output(name + ".roothash")
+    cmdline = ctx.actions.declare_output(name + ".cmdline")
+
+    label = ctx.attrs.label if ctx.attrs.label else name
+
+    cmd = cmd_args(ctx.attrs._verity_tool[RunInfo])
+    cmd.add("--rootfs", rootfs_dir)
+    cmd.add("--root-output", root_img.as_output())
+    cmd.add("--hash-output", hash_img.as_output())
+    cmd.add("--roothash-output", roothash.as_output())
+    cmd.add("--cmdline-output", cmdline.as_output())
+    cmd.add("--filesystem", ctx.attrs.filesystem)
+    cmd.add("--label", label)
+    cmd.add("--size", ctx.attrs.size)
+    cmd.add("--base-cmdline", ctx.attrs.base_cmdline)
+
+    # mkfs is a buckos PIE too (not on the toolchain host PATH), so it is
+    # launched like veritysetup: pick the package + binary for the filesystem.
+    if ctx.attrs.filesystem == "btrfs":
+        mkfs_pkg = ctx.attrs.btrfs_progs[PackageInfo]
+        mkfs_bin = mkfs_pkg.prefix.project("usr/bin/mkfs.btrfs")
+    elif ctx.attrs.filesystem == "ext4":
+        mkfs_pkg = ctx.attrs.e2fsprogs[PackageInfo]
+        mkfs_bin = mkfs_pkg.prefix.project("usr/sbin/mke2fs")
+    else:
+        fail("verity_image: unsupported filesystem {}".format(ctx.attrs.filesystem))
+
+    # Both mkfs and veritysetup are buckos PIEs launched via the seed loader
+    # with a dep lib closure on --library-path.  Merge both packages' closures
+    # into one tset and write it once (two write_lib_dirs calls would collide on
+    # the same output name); extra dirs on a --library-path are harmless.
+    combined = ctx.actions.tset(
+        PathInfoTSet,
+        children = [cryptsetup.path_info, mkfs_pkg.path_info],
+    )
+    libs = write_lib_dirs(ctx, combined)
+
+    cmd.add("--veritysetup", cryptsetup.prefix.project("usr/sbin/veritysetup"))
+    add_flag_file(cmd, "--lib-dirs-file", libs)
+    cmd.add("--mkfs", mkfs_bin)
+    add_flag_file(cmd, "--mkfs-lib-dirs-file", libs)
+    cmd.add(cmd_args(hidden = [cryptsetup.prefix, mkfs_pkg.prefix]))
+
+    # PATH (mke2fs/mkfs.btrfs from toolchain) + ld-linux for the PIE.
+    for arg in toolchain_path_args(ctx):
+        cmd.add(arg)
+    for arg in toolchain_ld_linux_args(ctx):
+        cmd.add(arg)
+
+    ctx.actions.run(
+        cmd,
+        category = "verity_image",
+        identifier = name,
+        allow_cache_upload = True,
+    )
+
+    return [DefaultInfo(
+        default_output = root_img,
+        other_outputs = [hash_img, roothash, cmdline],
+        sub_targets = {
+            "cmdline": [DefaultInfo(default_output = cmdline)],
+            "hash": [DefaultInfo(default_output = hash_img)],
+            "roothash": [DefaultInfo(default_output = roothash)],
+        },
+    )]
+
+_verity_image_rule = rule(
+    impl = _verity_image_impl,
+    attrs = {
+        "rootfs": attrs.dep(),
+        "cryptsetup": attrs.dep(
+            providers = [PackageInfo],
+            default = "//packages/linux/system/filesystem/management/cryptsetup:cryptsetup",
+        ),
+        # mkfs providers; only the one matching `filesystem` is actually built.
+        "btrfs_progs": attrs.dep(
+            providers = [PackageInfo],
+            default = "//packages/linux/system/filesystem/native/btrfs-progs:btrfs-progs",
+        ),
+        "e2fsprogs": attrs.dep(
+            providers = [PackageInfo],
+            default = "//packages/linux/system/filesystem/native/e2fsprogs:e2fsprogs",
+        ),
+        "filesystem": attrs.string(default = "btrfs"),  # btrfs (hatch parity) or ext4
+        "size": attrs.string(default = "4G"),
+        "label": attrs.option(attrs.string(), default = None),
+        "base_cmdline": attrs.string(default = "noresume"),
+        "labels": attrs.list(attrs.string(), default = []),
+        "_verity_tool": attrs.default_only(
+            attrs.exec_dep(default = "//tools:verity_image_helper"),
+        ),
+    } | TOOLCHAIN_ATTRS,
+)
+
+def verity_image(labels = [], **kwargs):
+    _verity_image_rule(
         labels = labels,
         **kwargs
     )

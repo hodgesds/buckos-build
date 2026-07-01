@@ -175,6 +175,19 @@ kernel_config(
     labels = ["buckos:config"],
 )
 
+# Live config + dm-verity built-in (measured-boot test). verity.config is last
+# so its CONFIG_DM_VERITY=y / CONFIG_BLK_DEV_DM=y override live's =m.
+kernel_config(
+    name = "buckos-verity",
+    source = "//packages/linux/kernel/src:linux-src",
+    version = "6.18",
+    fragments = [
+        "live.config",
+        "verity.config",
+    ],
+    labels = ["buckos:config"],
+)
+
 kernel_config(
     name = "buckos-ch-guest",
     source = "//packages/linux/kernel/src:linux-src",

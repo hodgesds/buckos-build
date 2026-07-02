@@ -378,14 +378,37 @@ def _patchelf_relocate(dst_root, ld_linux, scratch_dir):
                 if os.path.islink(p) or not _is_elf(p) or not _has_pt_interp(p):
                     continue
                 cmd = [patchelf, "--set-interpreter", copy_ld]
-                if _internal and rpath:
-                    cmd += ["--force-rpath", "--set-rpath", rpath]
+                if rpath:
+                    if _internal:
+                        # gcc toolchain: its build-baked RPATH is dead-absolute
+                        # (points at the build root, gone on RE), so replace it
+                        # outright with the copy's own lib dirs.
+                        cmd += ["--force-rpath", "--set-rpath", rpath]
+                    else:
+                        # Host-tool bundle: it uses the external ld-linux and an
+                        # $ORIGIN-relative RPATH for its package libs (libreadline
+                        # for bash, libperl, ...).  We must NOT drop that RPATH, or
+                        # the tool loses its own libs; but interp-only leaves libc
+                        # unresolved on RE (the tool's $ORIGIN dirs don't ship
+                        # glibc, so the loader falls back to the worker's too-old
+                        # /lib64/libc.so.6 -> "GLIBC_2.xx not found").  Preserve the
+                        # existing RPATH and APPEND the sysroot lib dirs so buckos
+                        # libc resolves while $ORIGIN still finds package libs.
+                        _cur = subprocess.run(
+                            [patchelf, "--print-rpath", p],
+                            capture_output=True,
+                            text=True,
+                        )
+                        _existing = _cur.stdout.strip() if _cur.returncode == 0 else ""
+                        _merged = ":".join(x for x in (_existing, rpath) if x)
+                        if _merged:
+                            cmd += ["--force-rpath", "--set-rpath", _merged]
                 cmd.append(p)
                 if subprocess.run(cmd).returncode == 0:
                     count += 1
     print(
         f"portabilize: patchelf-relocated {count} toolchain binaries "
-        f"(interp={copy_ld})",
+        f"(interp={copy_ld}, internal={_internal}, rpath={'set' if rpath else 'none'})",
         file=sys.stderr,
     )
     return count > 0

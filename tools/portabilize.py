@@ -362,7 +362,13 @@ def _patchelf_relocate(dst_root, ld_linux, scratch_dir):
         os.path.join(ext_sysroot, "usr", "lib"),
         os.path.join(ext_sysroot, "lib"),
     ]
-    rpath = ":".join(d for d in _cand_dirs if os.path.isdir(d))
+    # NOTE: do NOT os.path.isdir()-filter these.  On RE with deferred
+    # materialization the sysroot dir may not be stat-able as a directory when
+    # portabilize runs, which would silently drop the external sysroot (libc)
+    # from the rpath and make relocated binaries load the worker's too-old
+    # /lib64/libc.so.6.  Non-existent rpath entries are harmless (the loader
+    # just skips them), so keep them all.
+    rpath = ":".join(_cand_dirs)
 
     exec_dirs = [os.path.join(dst_root, "bin"), os.path.join(dst_root, "libexec")]
     exec_dirs += _glob_mod.glob(os.path.join(dst_root, "*", "bin"))
@@ -408,7 +414,7 @@ def _patchelf_relocate(dst_root, ld_linux, scratch_dir):
                     count += 1
     print(
         f"portabilize: patchelf-relocated {count} toolchain binaries "
-        f"(interp={copy_ld}, internal={_internal}, rpath={'set' if rpath else 'none'})",
+        f"(interp={copy_ld}, internal={_internal}, rpath={rpath})",
         file=sys.stderr,
     )
     return count > 0

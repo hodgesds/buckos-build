@@ -370,45 +370,65 @@ def _patchelf_relocate(dst_root, ld_linux, scratch_dir):
     # just skips them), so keep them all.
     rpath = ":".join(_cand_dirs)
 
+    # Executables (bin/libexec/<triple>/bin) get their interp repointed AND
+    # their rpath fixed.  Shared libraries (lib/lib64/...), which have no
+    # PT_INTERP, get ONLY their rpath fixed -- a .so like libpython3.12.so
+    # needs libc, and relying on the loading executable's *transitive* rpath is
+    # not reliable on RE, so give the .so the sysroot in its own rpath too.
     exec_dirs = [os.path.join(dst_root, "bin"), os.path.join(dst_root, "libexec")]
     exec_dirs += _glob_mod.glob(os.path.join(dst_root, "*", "bin"))
+    lib_dirs = [os.path.join(dst_root, "lib"), os.path.join(dst_root, "lib64")]
+    lib_dirs += _glob_mod.glob(os.path.join(dst_root, "*", "lib"))
+    lib_dirs += _glob_mod.glob(os.path.join(dst_root, "*", "lib64"))
+
+    def _rpath_args(binary):
+        """patchelf rpath flags for one binary (empty list if nothing to do)."""
+        if not rpath:
+            return []
+        if _internal:
+            # gcc toolchain: its build-baked RPATH is dead-absolute (points at
+            # the build root, gone on RE), so replace it with the copy's dirs.
+            return ["--force-rpath", "--set-rpath", rpath]
+        # Host-tool bundle: it uses the external ld-linux and an $ORIGIN-relative
+        # RPATH for its package libs (libreadline for bash, libpython for
+        # python3, ...).  We must NOT drop that RPATH, or the binary loses its
+        # own libs; but interp-only leaves libc unresolved on RE (the $ORIGIN
+        # dirs don't ship glibc, so the loader falls back to the worker's
+        # too-old /lib64/libc.so.6 -> "GLIBC_2.xx not found").  Preserve the
+        # existing RPATH and APPEND the sysroot lib dirs so buckos libc resolves
+        # while $ORIGIN still finds package libs.
+        _cur = subprocess.run(
+            [patchelf, "--print-rpath", binary], capture_output=True, text=True
+        )
+        _existing = _cur.stdout.strip() if _cur.returncode == 0 else ""
+        _merged = ":".join(x for x in (_existing, rpath) if x)
+        return ["--force-rpath", "--set-rpath", _merged] if _merged else []
+
     count = 0
     seen = set()
-    for d in exec_dirs:
+    for d in exec_dirs + lib_dirs:
         if not os.path.isdir(d) or d in seen:
             continue
         seen.add(d)
+        is_lib_dir = d not in exec_dirs
         for root, _dirs, files in os.walk(d):
             for name in files:
                 p = os.path.join(root, name)
-                if os.path.islink(p) or not _is_elf(p) or not _has_pt_interp(p):
+                if os.path.islink(p) or not _is_elf(p):
                     continue
-                cmd = [patchelf, "--set-interpreter", copy_ld]
-                if rpath:
-                    if _internal:
-                        # gcc toolchain: its build-baked RPATH is dead-absolute
-                        # (points at the build root, gone on RE), so replace it
-                        # outright with the copy's own lib dirs.
-                        cmd += ["--force-rpath", "--set-rpath", rpath]
-                    else:
-                        # Host-tool bundle: it uses the external ld-linux and an
-                        # $ORIGIN-relative RPATH for its package libs (libreadline
-                        # for bash, libperl, ...).  We must NOT drop that RPATH, or
-                        # the tool loses its own libs; but interp-only leaves libc
-                        # unresolved on RE (the tool's $ORIGIN dirs don't ship
-                        # glibc, so the loader falls back to the worker's too-old
-                        # /lib64/libc.so.6 -> "GLIBC_2.xx not found").  Preserve the
-                        # existing RPATH and APPEND the sysroot lib dirs so buckos
-                        # libc resolves while $ORIGIN still finds package libs.
-                        _cur = subprocess.run(
-                            [patchelf, "--print-rpath", p],
-                            capture_output=True,
-                            text=True,
-                        )
-                        _existing = _cur.stdout.strip() if _cur.returncode == 0 else ""
-                        _merged = ":".join(x for x in (_existing, rpath) if x)
-                        if _merged:
-                            cmd += ["--force-rpath", "--set-rpath", _merged]
+                has_interp = _has_pt_interp(p)
+                # In exec dirs, only touch things with an interp (executables);
+                # in lib dirs, only touch things without one (shared libs).
+                if is_lib_dir and has_interp:
+                    continue
+                if not is_lib_dir and not has_interp:
+                    continue
+                cmd = [patchelf]
+                if has_interp:
+                    cmd += ["--set-interpreter", copy_ld]
+                cmd += _rpath_args(p)
+                if len(cmd) == 1:  # nothing to change
+                    continue
                 cmd.append(p)
                 if subprocess.run(cmd).returncode == 0:
                     count += 1

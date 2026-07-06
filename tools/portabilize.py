@@ -257,11 +257,16 @@ def _copy_and_relocate_toolchain(bin_dir, ld_linux, scratch_dir):
             shutil.rmtree(container_dir)
         os.makedirs(container_dir)
 
-        # --reflink=auto makes this a near-free copy-on-write clone on
-        # filesystems that support it (btrfs/xfs), falling back to a full copy
-        # elsewhere.  -a preserves the symlinks and layout gcc resolves its
+        # NOTE: do NOT use --reflink=auto here.  On a remote-execution worker
+        # the source tree is a CAS-backed input that may be materialized
+        # on-access; a reflink (copy-on-write) clone can silently skip entries
+        # whose bytes aren't materialized yet, producing an INCOMPLETE copy
+        # (e.g. missing libpython3.12.so.1.0) while cp still exits 0 -- the
+        # action then fails much later at python startup.  A plain `cp -a`
+        # reads every byte, forcing full materialization and a complete copy.
+        # -a preserves the symlinks and layout gcc resolves its
         # sysroot/libexec/fixed-includes through relative to the driver.
-        subprocess.run(["cp", "-a", "--reflink=auto", src_root, dst_root], check=True)
+        subprocess.run(["cp", "-a", src_root, dst_root], check=True)
         # cp -a preserves the read-only input permissions; make the copy
         # writable so the in-place rewrite below can create its temp files and
         # rename them into place.
@@ -418,8 +423,11 @@ def _patchelf_relocate(dst_root, ld_linux, scratch_dir):
                     continue
                 has_interp = _has_pt_interp(p)
                 # In exec dirs, only touch things with an interp (executables);
-                # in lib dirs, only touch things without one (shared libs).
-                if is_lib_dir and has_interp:
+                # in lib dirs, only touch shared libraries (ET_DYN=3).  Skipping
+                # non-DYN ELF in lib dirs avoids running patchelf on relocatable
+                # objects (.o / .syso, ET_REL=1) -- patchelf aborts on those with
+                # "wrong ELF type" (harmless but noisy and wasteful).
+                if is_lib_dir and (has_interp or _elf_type(p) != 3):
                     continue
                 if not is_lib_dir and not has_interp:
                     continue
@@ -763,6 +771,18 @@ def _is_elf(path):
         return hdr[:4] == b"\x7fELF" and hdr[4] == 2
     except (OSError, PermissionError):
         return False
+
+
+def _elf_type(path):
+    """Return the ELF e_type (1=REL/.o, 2=EXEC, 3=DYN/.so) or None."""
+    try:
+        with open(path, "rb") as f:
+            hdr = f.read(18)
+        if hdr[:4] != b"\x7fELF":
+            return None
+        return int.from_bytes(hdr[16:18], "little")
+    except (OSError, PermissionError):
+        return None
 
 
 def _has_pt_interp(path):

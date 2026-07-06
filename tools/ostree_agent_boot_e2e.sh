@@ -21,7 +21,7 @@
 # slice/kernel/initramfs targets already produced; self-skips (exit 0) when KVM
 # or userns is unavailable.
 set -eu
-cd "$(git rev-parse --show-toplevel 2>/dev/null || echo /home/hodgesd/buckos-build)"
+cd "$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
 BB=$PWD
 BUCK2=${BUCK2:-./buck2}
 GEN=buck-out/v2/gen/buckos

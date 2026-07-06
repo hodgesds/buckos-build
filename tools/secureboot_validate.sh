@@ -25,7 +25,7 @@
 # (/usr/share/edk2/ovmf/OVMF_CODE.secboot.fd + OVMF_VARS.fd).  Self-skips
 # (exit 0) when those are unavailable.
 set -eu
-cd "$(git rev-parse --show-toplevel 2>/dev/null || echo /home/hodgesd/buckos-build)"
+cd "$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
 BB=$PWD
 GEN=$BB/buck-out/v2/gen/buckos
 QEMU=${QEMU:-/opt/fb-qemu/bin/qemu-system-x86_64}

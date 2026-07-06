@@ -113,7 +113,7 @@ features per flag). It expands them via `use_feature()` and merges into
 
 ### Minimal — vendor from mirror
 
-See `/home/hodgesd/buckos-build/packages/linux/dev-tools/dev-utils/ripgrep/BUCK`:
+See `packages/linux/dev-tools/dev-utils/ripgrep/BUCK`:
 
 ```python
 load("//defs/packages:cargo.bzl", "cargo_package")
@@ -129,7 +129,7 @@ cargo_package(
 
 ### Custom features + cargo_args
 
-See `/home/hodgesd/buckos-build/packages/linux/dev-tools/dev-utils/sccache/BUCK`:
+See `packages/linux/dev-tools/dev-utils/sccache/BUCK`:
 
 ```python
 cargo_package(
@@ -149,7 +149,7 @@ cargo_package(
 
 ### USE-flag-gated cargo features
 
-See `/home/hodgesd/buckos-build/packages/linux/emulation/utilities/cloud-hypervisor/BUCK`:
+See `packages/linux/emulation/utilities/cloud-hypervisor/BUCK`:
 
 ```python
 cargo_package(
@@ -172,7 +172,7 @@ cargo_package(
 
 ### Single-binary install
 
-See `/home/hodgesd/buckos-build/packages/linux/dev-tools/build-systems/cbindgen/BUCK`
+See `packages/linux/dev-tools/build-systems/cbindgen/BUCK`
 for a `bins = ["cbindgen"]` package.
 
 ## USE Flag Integration

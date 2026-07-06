@@ -18,7 +18,7 @@
 #
 # Requires: KVM + a QEMU with -cpu host (buckos userspace is x86-64-v3).
 set -eu
-cd "$(git rev-parse --show-toplevel 2>/dev/null || echo /home/hodgesd/buckos-build)"
+cd "$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
 
 GEN=buck-out/v2/gen/buckos
 find1() { find "$GEN" -path "$1" 2>/dev/null | head -1; }

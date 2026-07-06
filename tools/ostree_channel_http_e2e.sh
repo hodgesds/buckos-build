@@ -13,7 +13,7 @@
 set -eu
 
 if [ "${1:-}" != "--inner" ]; then
-  cd "$(git rev-parse --show-toplevel 2>/dev/null || echo /home/hodgesd/buckos-build)"
+  cd "$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
   BB=$PWD
   BUCK2=${BUCK2:-./buck2}
   if ! unshare -r true 2>/dev/null; then echo "SKIP: no unprivileged user namespaces"; exit 0; fi

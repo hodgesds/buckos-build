@@ -31,7 +31,7 @@ set -eu
 
 if [ "${1:-}" != "--inner" ]; then
   # ---- outer: build inputs, then re-exec in a userns ------------------------
-  cd "$(git rev-parse --show-toplevel 2>/dev/null || echo /home/hodgesd/buckos-build)"
+  cd "$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
   BB=$PWD
   # buck2 binary: ./buck2 (the working repo-root binary) locally; CI puts buck2
   # on PATH and the repo-root ./buck2 dotslash stub does not resolve there, so CI

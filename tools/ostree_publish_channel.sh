@@ -24,7 +24,7 @@ set -eu
 [ -n "${CHANNEL_REPO:-}" ] || { echo "ERROR: CHANNEL_REPO not set"; exit 2; }
 [ -d "$CHANNEL_REPO/objects" ] || { echo "ERROR: $CHANNEL_REPO is not an ostree repo"; exit 2; }
 
-cd "$(git rev-parse --show-toplevel 2>/dev/null || echo /home/hodgesd/buckos-build)"
+cd "$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
 BB=$PWD
 BUCK2=${BUCK2:-./buck2}
 

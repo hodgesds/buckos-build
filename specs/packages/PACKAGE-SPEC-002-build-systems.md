@@ -122,7 +122,7 @@ without needing explicit `host_deps` (see `defs/package.bzl:440-444`).
 
 ### CMake — minimal
 
-See `/home/hodgesd/buckos-build/packages/linux/ai/llama-cpp/BUCK`:
+See `packages/linux/ai/llama-cpp/BUCK`:
 
 ```python
 load("//defs/packages:cmake.bzl", "cmake_package")
@@ -144,13 +144,13 @@ cmake_package(
 
 ### CMake — `source_subdir`
 
-See `/home/hodgesd/buckos-build/packages/linux/ai/benchmarks/mlcommons/BUCK`
+See `packages/linux/ai/benchmarks/mlcommons/BUCK`
 (the `mlcommons-loadgen` target) for a tarball where the CMake project lives
 in a subdirectory.
 
 ### Meson with USE flags
 
-See `/home/hodgesd/buckos-build/packages/linux/dev-libs/glib/BUCK`:
+See `packages/linux/dev-libs/glib/BUCK`:
 
 ```python
 load("//defs/packages:meson.bzl", "meson_package")

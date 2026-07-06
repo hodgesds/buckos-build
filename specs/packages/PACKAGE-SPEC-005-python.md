@@ -100,7 +100,7 @@ the implementation packages.
 
 ### Pure-Python package
 
-See `/home/hodgesd/buckos-build/packages/linux/ai/whisper/BUCK`:
+See `packages/linux/ai/whisper/BUCK`:
 
 ```python
 load("//defs/packages:python.bzl", "python_package")
@@ -122,7 +122,7 @@ python_package(
 
 ### Legacy `setup.py` install with pre-build patch
 
-See `/home/hodgesd/buckos-build/packages/linux/dev-libs/python/grako/BUCK`
+See `packages/linux/dev-libs/python/grako/BUCK`
 for `use_setup_py = True` combined with a `pre_configure_cmds` snippet
 that patches the source before install.
 

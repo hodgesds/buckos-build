@@ -147,7 +147,7 @@ the three snippets joined into one `install_script`. See
 
 ### Autotools with USE flags
 
-See `/home/hodgesd/buckos-build/packages/linux/core/bash/BUCK`:
+See `packages/linux/core/bash/BUCK`:
 
 ```python
 load("//defs/packages:autotools.bzl", "autotools_package")
@@ -176,13 +176,13 @@ autotools_package(
 
 ### Raw Makefile (`make_package`)
 
-See `/home/hodgesd/buckos-build/packages/linux/dev-libs/crypto/monocypher/BUCK`
+See `packages/linux/dev-libs/crypto/monocypher/BUCK`
 for a `make_package` that builds via inline `src_compile` / `src_install`
 (which auto-converts to `binary_build`).
 
 ### Binary package
 
-See `/home/hodgesd/buckos-build/packages/linux/dev-tools/lsp/gopls/BUCK`
+See `packages/linux/dev-tools/lsp/gopls/BUCK`
 for `binary_package` invoking `go build` inside a custom install script.
 
 ## USE Flag Integration

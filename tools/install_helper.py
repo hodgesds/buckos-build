@@ -1262,17 +1262,21 @@ def main():
                 except OSError:
                     pass
 
-    # Reset all file timestamps in the build tree to a uniform instant.
-    # Buck2 normalises artifact timestamps after the build phase, so make
-    # install can see stale dependencies and try to regenerate files.
-    _epoch = float(env.get("SOURCE_DATE_EPOCH", "315576000"))
-    _stamp = (_epoch, _epoch)
-    for dirpath, _dirnames, filenames in os.walk(make_dir):
-        for fname in filenames:
-            try:
-                os.utime(os.path.join(dirpath, fname), _stamp)
-            except (PermissionError, OSError):
-                pass
+    # Normalise build-tree timestamps so make install doesn't regenerate
+    # stale-looking outputs.  Buck2 materialises the build tree with
+    # normalized mtimes, and the path/file rewrites above touch some files.
+    #
+    # Re-run the *tiered* stabilizer (not a uniform SOURCE_DATE_EPOCH reset)
+    # as the LAST mtime operation before make.  A blunt uniform reset to the
+    # far-past epoch is fatal for glibc: make regenerates an included
+    # fragment (sysd-sorted, ...) at wall-clock time, which is then newer
+    # than the whole 1980 tree, so make RESTARTS and finds it stale again --
+    # an endless `make install` restart loop.  It also loses the relink
+    # protection the tiering provides for gcc (compiled artifacts must stay
+    # newest or `make install` relinks xgcc mid-run).  _stabilize keeps
+    # compiled artifacts + glibc's generated makefile fragments in the newest
+    # tier, so make regenerates nothing during install.
+    _stabilize_autotools_timestamps(build_dir)
 
     # Suppress Makefile-level reconfiguration.  Build systems like QEMU
     # wrap meson inside autotools; their Makefile re-runs config.status

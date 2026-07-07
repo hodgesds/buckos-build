@@ -304,6 +304,14 @@ def _stabilize_autotools_timestamps(root):
         ".lai",
         ".al",
         ".gch",
+        # Tool-compiled data outputs that get installed as-is.  These are
+        # produced by a freshly-built tool during the compile phase and must
+        # stay newest, or `make install` regenerates them by re-running that
+        # tool -- which can fail (e.g. file's magic.mgc: the rebuild runs the
+        # 5.45 `file` against the host's 5.39 libmagic and rejects all magic).
+        ".mgc",  # file(1) compiled magic database
+        ".mo",   # gettext compiled message catalog
+        ".gmo",  # gettext compiled message catalog (build-tree name)
     )
 
     def _tier(name):
@@ -350,6 +358,16 @@ def _stabilize_autotools_timestamps(root):
     # all generated artifacts -- doc .stamp/.texi, lex/yacc output, etc.,
     # not just the autotools chain).  Then bump the autotools remake chain
     # so config.status/Makefile stay newest and their rules never fire.
+    #
+    # Two mtime bands, and the split matters -- a uniform reset breaks one side
+    # or the other: source/config files (base band) must be OLDER than the
+    # generated files that depend on them (else make reconfigures/regenerates
+    # during install -- e.g. glibc re-runs per-subdir ../configure), while
+    # compiled OUTPUTS (tier 5, future band) must be NEWER than their tool and
+    # source prerequisites (else make rebuilds them -- e.g. file's magic.mgc,
+    # whose install-time rebuild runs the fresh `file` against the host's older
+    # libmagic and fails).  tier 5 therefore includes not just .o/.so but any
+    # tool-compiled data output that gets installed (.mgc, .mo/.gmo, ...).
     for dirpath, _dirs, files in os.walk(root):
         for name in files:
             p = os.path.join(dirpath, name)

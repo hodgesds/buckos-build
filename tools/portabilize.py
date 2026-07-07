@@ -151,13 +151,30 @@ def portabilize_toolchain(
 
 
 def _is_gcc_toolchain(bin_dir):
-    """True if bin_dir is a gcc toolchain's bin/ (has a sibling libexec/gcc).
+    """True if bin_dir is a *pure* gcc cross-toolchain's bin/.
 
-    gcc keeps its exec'd subprograms under libexec/gcc/<triple>/<ver>/, so its
-    presence cleanly distinguishes the compiler toolchain (which needs the
-    copy-and-relocate path) from ordinary host-tool bin/ directories.
+    A pure gcc toolchain keeps its exec'd subprograms under
+    libexec/gcc/<triple>/<ver>/, so a sibling libexec/gcc distinguishes the
+    compiler toolchain from ordinary host-tool bin/ directories.
+
+    A host-tool *bundle* (host-tools-exec) also contains gcc -- and therefore
+    a libexec/gcc -- but it additionally ships general host tools (bash, sh,
+    make, python3, ...) whose OWN interps must be relocated on a remote worker.
+    The gcc-only path deliberately skips wrapper creation (a compiler doesn't
+    need PATH wrappers), which means it never materializes the patchelf wrapper
+    and never repoints bash/sh's dead build-tree interp -- so `sh` fails with
+    "No such file or directory" (a dead ELF interpreter reads as ENOENT) on RE.
+    Exclude any bin/ that carries a shell: that marks a host-tool bundle, which
+    _needs_copy_relocation() handles instead (wrappers + patchelf interp fix).
     """
-    return os.path.isdir(os.path.join(os.path.dirname(bin_dir), "libexec", "gcc"))
+    parent = os.path.dirname(bin_dir)
+    if not os.path.isdir(os.path.join(parent, "libexec", "gcc")):
+        return False
+    # A host-tool bundle ships bash/sh in bin/; a pure cross toolchain does not.
+    for shell in ("bash", "sh"):
+        if os.path.exists(os.path.join(bin_dir, shell)):
+            return False
+    return True
 
 
 def _read_pt_interp(path):

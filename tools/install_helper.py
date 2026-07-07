@@ -319,6 +319,19 @@ def _stabilize_autotools_timestamps(root):
             return 4
         if name.endswith(".in"):
             return 2
+        # glibc's generated, make-included makefile fragments: sysd-sorted,
+        # sysd-versions, sysd-rules, sysd-dirs, ... and the per-test
+        # *.generated-makefile files under elf/, etc.  With a past-relative
+        # baseline they end up OLDER than their prerequisites (config.make/
+        # Makefile, tier 4), so make regenerates them (e.g. gen-sorted.awk ->
+        # sysd-sorted) and RESTARTS.  Because the whole tree was mtime-
+        # normalized, every restart finds them stale again -> an endless
+        # `make install` restart loop that never installs.  Pin them to the
+        # newest (future) tier so make treats them as up-to-date and never
+        # regenerates during install.  Harmless for non-glibc packages (they
+        # have no such files).
+        if name.startswith("sysd-") or name.endswith(".generated-makefile"):
+            return 5
         if name.endswith(_compiled_exts) or ".so." in name:
             return 5
         return None

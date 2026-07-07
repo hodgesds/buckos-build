@@ -104,6 +104,14 @@ export_file(
     visibility = ["PUBLIC"],
 )
 
+# /init for the dm-verity boot test: veritysetup open the measured rootfs from
+# the cmdline roothash, mount + read it, print VERITY-BOOT-OK/FAIL.
+export_file(
+    name = "verity-initramfs-init",
+    src = "verity-initramfs-init.sh",
+    visibility = ["PUBLIC"],
+)
+
 # Dracut initramfs creation script - creates initramfs with dmsquash-live module
 export_file(
     name = "create-dracut-initramfs",

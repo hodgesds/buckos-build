@@ -599,19 +599,19 @@ def main():
     else:
         derive_lib_paths(all_path_prepend, env, skip_ld_library_path=True)
 
-    # Pin PYTHON/PYTHON3 and PERL to buckos binaries so build scripts
-    # use the wrapped buckos tools rather than host or $^X paths.
-    for _bp in list(args.hermetic_path) + list(all_path_prepend):
-        _candidate = os.path.join(os.path.abspath(_bp), "python3")
-        if os.path.isfile(_candidate):
-            env.setdefault("PYTHON", _candidate)
-            env.setdefault("PYTHON3", _candidate)
-            break
-    for _bp in list(args.hermetic_path) + list(all_path_prepend):
-        _candidate = os.path.join(os.path.abspath(_bp), "perl")
-        if os.path.isfile(_candidate):
-            env.setdefault("PERL", _candidate)
-            break
+    # Pin PYTHON/PYTHON3 and PERL to buckos binaries so build scripts use the
+    # buckos tools rather than host or $^X paths.  Resolve them from the
+    # already-portabilized PATH (relocated copy), NOT the raw hermetic dirs:
+    # the raw host-tool binaries carry build-root-baked interps that are dead
+    # on remote-execution workers, so pinning a raw path makes configure's
+    # `python3 --version` fail ("Python interpreter is too old").
+    _py3 = shutil.which("python3", path=env.get("PATH", ""))
+    if _py3:
+        env.setdefault("PYTHON", _py3)
+        env.setdefault("PYTHON3", _py3)
+    _perl = shutil.which("perl", path=env.get("PATH", ""))
+    if _perl:
+        env.setdefault("PERL", _perl)
 
     # Auto-detect automake Perl modules and aclocal dirs from dep
     # prefixes.  The Buck2-installed automake hardcodes /usr/share/...

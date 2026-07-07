@@ -321,6 +321,13 @@ python_binary(
 )
 
 python_binary(
+    name = "verity_image_helper",
+    main = "verity_image_helper.py",
+    deps = [":_env"],
+    visibility = ["PUBLIC"],
+)
+
+python_binary(
     name = "stage3_helper",
     main = "stage3_helper.py",
     deps = [":_env"],

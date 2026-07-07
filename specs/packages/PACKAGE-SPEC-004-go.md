@@ -131,7 +131,7 @@ env = {
 
 ### Minimal library
 
-See `/home/hodgesd/buckos-build/packages/linux/dev-libs/cloud/finnhub-go/BUCK`:
+See `packages/linux/dev-libs/cloud/finnhub-go/BUCK`:
 
 ```python
 load("//defs/packages:go.bzl", "go_package")
@@ -150,7 +150,7 @@ go_package(
 
 ### Library with bundled vendor/
 
-See `/home/hodgesd/buckos-build/packages/linux/dev-libs/crypto/cloudflare-circl/BUCK`:
+See `packages/linux/dev-libs/crypto/cloudflare-circl/BUCK`:
 
 ```python
 go_package(
@@ -169,7 +169,7 @@ go_package(
 When you need full control (custom `go build` invocation, multi-step build
 scripts, environment plumbing), drop down to `binary_package` and call
 `go build` yourself — see
-`/home/hodgesd/buckos-build/packages/linux/dev-tools/lsp/gopls/BUCK` for
+`packages/linux/dev-tools/lsp/gopls/BUCK` for
 the gopls language server.
 
 ## USE Flag Integration

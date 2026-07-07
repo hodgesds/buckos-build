@@ -133,6 +133,17 @@ kernel_build(
     labels = ["buckos:compile", "buckos:build:kbuild"],
 )
 
+# dm-verity measured-boot test kernel (live config + dm-verity built-in)
+kernel_build(
+    name = "buckos-kernel-verity",
+    source = "//packages/linux/kernel/src:linux-src",
+    config = "//packages/linux/kernel/configs:buckos-verity",
+    arch = "x86_64",
+    version = "6.18",
+    patches = ["fix-libbpf-werror-address.patch"],
+    labels = ["buckos:compile", "buckos:build:kbuild"],
+)
+
 # Cloud Hypervisor Guest kernel
 kernel_build(
     name = "buckos-kernel-ch",

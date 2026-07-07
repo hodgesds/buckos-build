@@ -59,6 +59,7 @@ def _buckos_toolchain_impl(ctx: AnalysisContext) -> list[Provider]:
         sysroot = None,
         python = None,
         host_bin_dir = None,
+        host_tools_tree = None,
         allows_host_path = True,
         extra_cflags = ctx.attrs.extra_cflags,
         extra_ldflags = ctx.attrs.extra_ldflags,
@@ -118,6 +119,7 @@ def _buckos_cross_toolchain_impl(ctx: AnalysisContext) -> list[Provider]:
         sysroot = sysroot_dir,
         python = None,
         host_bin_dir = None,
+        host_tools_tree = None,
         allows_host_path = True,
         extra_cflags = ctx.attrs.extra_cflags,
         extra_ldflags = ctx.attrs.extra_ldflags,
@@ -220,13 +222,18 @@ def _buckos_bootstrap_toolchain_impl(ctx: AnalysisContext) -> list[Provider]:
 
     # Wire host tools when provided (stage 3 toolchain for hermetic rebuild)
     host_bin = None
+    ht_dir = None
     make_cmd = cmd_args(ctx.attrs.make)
     pkg_config_cmd = cmd_args(ctx.attrs.pkg_config)
     if ctx.attrs.host_tools:
         ht_dir = ctx.attrs.host_tools[DefaultInfo].default_outputs[0]
         host_bin = ht_dir.project("bin")
-        make_cmd = cmd_args(host_bin.project("make"))
-        pkg_config_cmd = cmd_args(host_bin.project("pkg-config"))
+        # Carry the WHOLE host-tools-exec tree as a hidden input on make and
+        # pkg-config so the full bundle (libpython, lib/, etc.) materializes on
+        # RE -- projecting just bin/<tool> would leave lib64/libpython3.12.so
+        # unmaterialized, so the relocated python3 fails to load on the worker.
+        make_cmd = cmd_args(host_bin.project("make"), hidden = ht_dir)
+        pkg_config_cmd = cmd_args(host_bin.project("pkg-config"), hidden = ht_dir)
         # Python comes from auto_tool_deps (python-host exec_dep)
         # when not in the base host tools.
 
@@ -269,6 +276,7 @@ def _buckos_bootstrap_toolchain_impl(ctx: AnalysisContext) -> list[Provider]:
         # cycle-breaker for base tool builds).  When host_tools is set
         # (seed toolchains), PATH is fully hermetic from host_bin_dir.
         allows_host_path = ctx.attrs.host_tools == None,
+        host_tools_tree = ht_dir,
         extra_cflags = ctx.attrs.extra_cflags,
         extra_ldflags = ldflags,
     )
@@ -334,6 +342,7 @@ def _buckos_prebuilt_toolchain_impl(ctx: AnalysisContext) -> list[Provider]:
         sysroot = sysroot,
         python = None,
         host_bin_dir = None,
+        host_tools_tree = None,
         allows_host_path = False,
         extra_cflags = ctx.attrs.extra_cflags,
         extra_ldflags = ldflags,

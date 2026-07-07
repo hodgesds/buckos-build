@@ -47,24 +47,48 @@ def main():
     parser.add_argument("--source-url", default="", help="Source URL")
     parser.add_argument("--source-sha256", default="", help="Source SHA256")
     parser.add_argument("--graph-hash", default="", help="Subgraph hash")
-    parser.add_argument("--use-flag", action="append", default=[],
-                        help="USE flag (repeatable)")
-    parser.add_argument("--slsa", action="store_true",
-                        help="Include SLSA volatile fields (buildTime, buildHost)")
-    parser.add_argument("--dep-dir", action="append", default=[],
-                        help="Dependency dir with .buckos-provenance.jsonl (repeatable)")
-    parser.add_argument("--objcopy", default="objcopy",
-                        help="Path to objcopy binary")
-    parser.add_argument("--hermetic-path", action="append", dest="hermetic_path", default=[],
-                        help="Set PATH to only these dirs (replaces host PATH, repeatable)")
-    parser.add_argument("--allow-host-path", action="store_true",
-                        help="Allow host PATH (bootstrap escape hatch)")
-    parser.add_argument("--hermetic-empty", action="store_true",
-                        help="Start with empty PATH (populated by --path-prepend)")
-    parser.add_argument("--ld-linux", default=None,
-                        help="Buckos ld-linux path (disables posix_spawn)")
-    parser.add_argument("--path-prepend", action="append", dest="path_prepend", default=[],
-                        help="Directory to prepend to PATH (repeatable, resolved to absolute)")
+    parser.add_argument(
+        "--use-flag", action="append", default=[], help="USE flag (repeatable)"
+    )
+    parser.add_argument(
+        "--slsa",
+        action="store_true",
+        help="Include SLSA volatile fields (buildTime, buildHost)",
+    )
+    parser.add_argument(
+        "--dep-dir",
+        action="append",
+        default=[],
+        help="Dependency dir with .buckos-provenance.jsonl (repeatable)",
+    )
+    parser.add_argument("--objcopy", default="objcopy", help="Path to objcopy binary")
+    parser.add_argument(
+        "--hermetic-path",
+        action="append",
+        dest="hermetic_path",
+        default=[],
+        help="Set PATH to only these dirs (replaces host PATH, repeatable)",
+    )
+    parser.add_argument(
+        "--allow-host-path",
+        action="store_true",
+        help="Allow host PATH (bootstrap escape hatch)",
+    )
+    parser.add_argument(
+        "--hermetic-empty",
+        action="store_true",
+        help="Start with empty PATH (populated by --path-prepend)",
+    )
+    parser.add_argument(
+        "--ld-linux", default=None, help="Buckos ld-linux path (disables posix_spawn)"
+    )
+    parser.add_argument(
+        "--path-prepend",
+        action="append",
+        dest="path_prepend",
+        default=[],
+        help="Directory to prepend to PATH (repeatable, resolved to absolute)",
+    )
     args = parser.parse_args()
 
     sanitize_global_env()
@@ -82,37 +106,50 @@ def main():
             _parent = os.path.dirname(os.path.abspath(_bp))
             for _ld in ("lib", "lib64"):
                 _d = os.path.join(_parent, _ld)
-                if os.path.isdir(_d) and not os.path.exists(os.path.join(_d, "libc.so.6")):
+                if os.path.isdir(_d) and not os.path.exists(
+                    os.path.join(_d, "libc.so.6")
+                ):
                     _lib_dirs.append(_d)
                     _glibc_d = os.path.join(_d, "glibc")
                     if os.path.isdir(_glibc_d):
                         _lib_dirs.append(_glibc_d)
         if _lib_dirs:
             _existing = os.environ.get("LD_LIBRARY_PATH", "")
-            os.environ["LD_LIBRARY_PATH"] = ":".join(_lib_dirs) + (":" + _existing if _existing else "")
+            os.environ["LD_LIBRARY_PATH"] = ":".join(_lib_dirs) + (
+                ":" + _existing if _existing else ""
+            )
         _py_paths = []
         for _bp in args.hermetic_path:
             _parent = os.path.dirname(os.path.abspath(_bp))
-            for _pattern in ("lib/python*/site-packages", "lib/python*/dist-packages",
-                             "lib64/python*/site-packages", "lib64/python*/dist-packages"):
+            for _pattern in (
+                "lib/python*/site-packages",
+                "lib/python*/dist-packages",
+                "lib64/python*/site-packages",
+                "lib64/python*/dist-packages",
+            ):
                 for _sp in __import__("glob").glob(os.path.join(_parent, _pattern)):
                     if os.path.isdir(_sp):
                         _py_paths.append(_sp)
         if _py_paths:
             _existing = os.environ.get("PYTHONPATH", "")
-            os.environ["PYTHONPATH"] = ":".join(_py_paths) + (":" + _existing if _existing else "")
+            os.environ["PYTHONPATH"] = ":".join(_py_paths) + (
+                ":" + _existing if _existing else ""
+            )
     elif args.hermetic_empty:
         os.environ["PATH"] = ""
     elif args.allow_host_path:
         os.environ["PATH"] = _host_path
     else:
-        print("error: build requires --hermetic-path, --hermetic-empty, or --allow-host-path",
-              file=sys.stderr)
+        print(
+            "error: build requires --hermetic-path, --hermetic-empty, or --allow-host-path",
+            file=sys.stderr,
+        )
         sys.exit(1)
     if args.path_prepend:
         _pp_dirs = [os.path.abspath(p) for p in args.path_prepend if os.path.isdir(p)]
         if args.ld_linux and _pp_dirs:
             from portabilize import portabilize_toolchain
+
             _pp_dirs = portabilize_toolchain(_pp_dirs, args.ld_linux)
         if _pp_dirs:
             os.environ["PATH"] = ":".join(_pp_dirs) + ":" + os.environ.get("PATH", "")
@@ -121,14 +158,18 @@ def main():
             _parent = os.path.dirname(os.path.abspath(_bp))
             for _ld in ("lib", "lib64"):
                 _d = os.path.join(_parent, _ld)
-                if os.path.isdir(_d) and not os.path.exists(os.path.join(_d, "libc.so.6")):
+                if os.path.isdir(_d) and not os.path.exists(
+                    os.path.join(_d, "libc.so.6")
+                ):
                     _dep_lib_dirs.append(_d)
                     _glibc_d = os.path.join(_d, "glibc")
                     if os.path.isdir(_glibc_d):
                         _dep_lib_dirs.append(_glibc_d)
         if _dep_lib_dirs:
             _existing = os.environ.get("LD_LIBRARY_PATH", "")
-            os.environ["LD_LIBRARY_PATH"] = ":".join(_dep_lib_dirs) + (":" + _existing if _existing else "")
+            os.environ["LD_LIBRARY_PATH"] = ":".join(_dep_lib_dirs) + (
+                ":" + _existing if _existing else ""
+            )
 
     if args.ld_linux:
         sysroot_lib_paths(args.ld_linux, os.environ)
@@ -248,6 +289,24 @@ def main():
     if objcopy is None:
         print("stamp: objcopy not found, skipping ELF stamping", file=sys.stderr)
     else:
+        # Invoke objcopy through the buckos ld-linux so a build-root-baked interp
+        # (dead on a remote-execution worker) doesn't make execve fail with
+        # ENOENT.  objcopy is run by us, not self-exec'd, so the explicit-loader
+        # wrapper works.  Add the toolchain lib dir for binutils' libs.
+        _oc_prefix = []
+        if args.ld_linux:
+            _ld = os.path.abspath(args.ld_linux)
+            if os.path.isfile(_ld):
+                _libpath = os.environ.get("LD_LIBRARY_PATH", "")
+                if "/sys-root/" in args.ld_linux:
+                    _tc_lib = os.path.join(
+                        os.path.abspath(args.ld_linux.split("/sys-root/", 1)[0]),
+                        "lib64",
+                    )
+                    if os.path.isdir(_tc_lib):
+                        _libpath = _tc_lib + (":" + _libpath if _libpath else "")
+                _oc_prefix = [_ld] + (["--library-path", _libpath] if _libpath else [])
+        objcopy = os.path.abspath(objcopy)
         stamp_fd, stamp_path = tempfile.mkstemp(suffix=".json")
         try:
             with os.fdopen(stamp_fd, "w") as f:
@@ -264,18 +323,27 @@ def main():
                     if not is_elf(filepath):
                         continue
                     result = subprocess.run(
-                        [objcopy,
-                         "--add-section", f".note.package={stamp_path}",
-                         "--set-section-flags", ".note.package=noload,readonly",
-                         filepath],
-                        capture_output=True, text=True,
+                        _oc_prefix
+                        + [
+                            objcopy,
+                            "--add-section",
+                            f".note.package={stamp_path}",
+                            "--set-section-flags",
+                            ".note.package=noload,readonly",
+                            filepath,
+                        ],
+                        capture_output=True,
+                        text=True,
                     )
                     if result.returncode == 0:
                         stamped += 1
                     else:
                         rel = os.path.relpath(filepath, args.output)
-                        print(f"stamp: warning: objcopy failed for {rel}: "
-                              f"{result.stderr.strip()}", file=sys.stderr)
+                        print(
+                            f"stamp: warning: objcopy failed for {rel}: "
+                            f"{result.stderr.strip()}",
+                            file=sys.stderr,
+                        )
         finally:
             os.unlink(stamp_path)
 

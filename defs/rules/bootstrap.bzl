@@ -455,7 +455,7 @@ def _bootstrap_gcc_impl(ctx):
     build_cmd.add("--allow-host-path")
 
     # Ensure makeinfo stub is on PATH for GMP/MPFR sub-configures
-    _mi = 'command -v makeinfo >/dev/null 2>&1 || { mkdir -p .stub-bin && printf "#!/bin/sh\\nexit 0\\n" > .stub-bin/makeinfo && chmod +x .stub-bin/makeinfo && export PATH="$PWD/.stub-bin:$PATH"; } && '
+    _mi = 'command -v makeinfo >/dev/null 2>&1 || { mkdir -p .stub-bin && { printf "%s\\n" "#!/bin/sh"; printf "%s\\n" "case \\"\\$1\\" in --version|-version) echo \\"makeinfo (GNU texinfo) 7.1\\";; esac"; printf "%s\\n" "exit 0"; } > .stub-bin/makeinfo && chmod +x .stub-bin/makeinfo && export PATH="$PWD/.stub-bin:$PATH"; } && '
     # Suppress autotools regeneration — build_helper resets timestamps
     # which makes make think aclocal.m4 etc. are stale in GMP/MPFR.
     _at = "ACLOCAL=true AUTOMAKE=true AUTOCONF=true AUTOHEADER=true MAKEINFO=true "

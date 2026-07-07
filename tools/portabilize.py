@@ -115,6 +115,26 @@ def portabilize_toolchain(
         if _is_gcc_toolchain(bin_abs):
             result.append(_copy_and_relocate_toolchain(bin_abs, ld_linux, scratch_dir))
             continue
+        # Host-tool bundles (host-tools-exec) whose binaries carry a
+        # build-tree-baked interp also need the copy-and-relocate path: ld-linux
+        # wrappers can't fix tools that re-exec their own binary by absolute
+        # path (e.g. make's recursive $(MAKE) -> the real make exe, dead interp
+        # on RE).  Copying + patchelf makes the real binaries runnable anywhere.
+        if _needs_copy_relocation(bin_abs):
+            # Wrap first: this materializes a runnable (ld-linux-invoked) patchelf
+            # wrapper in scratch, which _copy_and_relocate_toolchain needs to
+            # relocate the copy (patchelf is itself one of these host tools, so
+            # its own baked interp is dead on RE -- the wrapper is the bootstrap).
+            # The wrapper dir also supplies patchelf for the gcc toolchain's
+            # relocation.  Then copy+patchelf and return the relocated copy so
+            # tools that re-exec their own exe (make's recursive $(MAKE)) work.
+            pkg_libs = _package_lib_dirs(bin_abs)
+            lib_path = base_lib_path
+            if pkg_libs:
+                lib_path = ":".join(pkg_libs) + ":" + base_lib_path
+            _create_wrappers(bin_abs, ld_linux, lib_path, scratch_dir)
+            result.append(_copy_and_relocate_toolchain(bin_abs, ld_linux, scratch_dir))
+            continue
         # Non-toolchain host tools: a PATH of ld-linux wrappers is enough and
         # works read-only (the wrappers live in writable scratch, the wrapped
         # binaries are only exec'd).  Include package-local lib dirs so wrapped
@@ -131,13 +151,82 @@ def portabilize_toolchain(
 
 
 def _is_gcc_toolchain(bin_dir):
-    """True if bin_dir is a gcc toolchain's bin/ (has a sibling libexec/gcc).
+    """True if bin_dir is a *pure* gcc cross-toolchain's bin/.
 
-    gcc keeps its exec'd subprograms under libexec/gcc/<triple>/<ver>/, so its
-    presence cleanly distinguishes the compiler toolchain (which needs the
-    copy-and-relocate path) from ordinary host-tool bin/ directories.
+    A pure gcc toolchain keeps its exec'd subprograms under
+    libexec/gcc/<triple>/<ver>/, so a sibling libexec/gcc distinguishes the
+    compiler toolchain from ordinary host-tool bin/ directories.
+
+    A host-tool *bundle* (host-tools-exec) also contains gcc -- and therefore
+    a libexec/gcc -- but it additionally ships general host tools (bash, sh,
+    make, python3, ...) whose OWN interps must be relocated on a remote worker.
+    The gcc-only path deliberately skips wrapper creation (a compiler doesn't
+    need PATH wrappers), which means it never materializes the patchelf wrapper
+    and never repoints bash/sh's dead build-tree interp -- so `sh` fails with
+    "No such file or directory" (a dead ELF interpreter reads as ENOENT) on RE.
+    Exclude any bin/ that carries a shell: that marks a host-tool bundle, which
+    _needs_copy_relocation() handles instead (wrappers + patchelf interp fix).
     """
-    return os.path.isdir(os.path.join(os.path.dirname(bin_dir), "libexec", "gcc"))
+    parent = os.path.dirname(bin_dir)
+    if not os.path.isdir(os.path.join(parent, "libexec", "gcc")):
+        return False
+    # A host-tool bundle ships bash/sh in bin/; a pure cross toolchain does not.
+    for shell in ("bash", "sh"):
+        if os.path.exists(os.path.join(bin_dir, shell)):
+            return False
+    return True
+
+
+def _read_pt_interp(path):
+    """Return an ELF's PT_INTERP string, or None."""
+    try:
+        with open(path, "rb") as f:
+            data = f.read()
+        e_phoff = struct.unpack_from("<Q", data, 32)[0]
+        e_phentsize = struct.unpack_from("<H", data, 54)[0]
+        e_phnum = struct.unpack_from("<H", data, 56)[0]
+        for i in range(e_phnum):
+            off = e_phoff + i * e_phentsize
+            if struct.unpack_from("<I", data, off)[0] == 3:  # PT_INTERP
+                p_off = struct.unpack_from("<Q", data, off + 8)[0]
+                p_fsz = struct.unpack_from("<Q", data, off + 32)[0]
+                return (
+                    data[p_off : p_off + p_fsz].rstrip(b"\x00").decode(errors="replace")
+                )
+    except (struct.error, IndexError, OSError):
+        pass
+    return None
+
+
+def _needs_copy_relocation(bin_dir):
+    """True if a host-tool bin/ has binaries with a build-tree-baked interp.
+
+    Host tools built locally (local_only) bake the build root's ld-linux into
+    PT_INTERP (via the `output_artifacts` alias / `patched-compiler` sysroot).
+    ld-linux wrappers can't fix this for tools that re-exec their own binary by
+    absolute path -- notably `make`, whose recursive `$(MAKE)` resolves to the
+    real make exe, not the wrapper -- so those need the copy-and-relocate path
+    (patchelf) just like the gcc toolchain.  Probe the first real ELF binary.
+    """
+    try:
+        entries = sorted(os.listdir(bin_dir))
+    except OSError:
+        return False
+    for entry in entries:
+        p = os.path.join(bin_dir, entry)
+        if os.path.islink(p) or not os.path.isfile(p):
+            continue
+        if not _is_elf(p) or not _has_pt_interp(p):
+            continue
+        interp = _read_pt_interp(p) or ""
+        # A buck-built ld-linux lives under buck-out and is tied to the build
+        # root (e.g. /data/users/<u>/fbsource/buck-out/...).  On a
+        # remote-execution worker (or any other root) that path doesn't
+        # resolve, so the bundle needs copy+patchelf relocation rather than
+        # ld-linux wrappers.  Covers host-tools-exec whose interp points at the
+        # stage2 sysroot (no output_artifacts/patched-compiler marker).
+        return "/buck-out/" in interp
+    return False
 
 
 def _copy_and_relocate_toolchain(bin_dir, ld_linux, scratch_dir):
@@ -185,23 +274,195 @@ def _copy_and_relocate_toolchain(bin_dir, ld_linux, scratch_dir):
             shutil.rmtree(container_dir)
         os.makedirs(container_dir)
 
-        # --reflink=auto makes this a near-free copy-on-write clone on
-        # filesystems that support it (btrfs/xfs), falling back to a full copy
-        # elsewhere.  -a preserves the symlinks and layout gcc resolves its
+        # NOTE: do NOT use --reflink=auto here.  On a remote-execution worker
+        # the source tree is a CAS-backed input that may be materialized
+        # on-access; a reflink (copy-on-write) clone can silently skip entries
+        # whose bytes aren't materialized yet, producing an INCOMPLETE copy
+        # (e.g. missing libpython3.12.so.1.0) while cp still exits 0 -- the
+        # action then fails much later at python startup.  A plain `cp -a`
+        # reads every byte, forcing full materialization and a complete copy.
+        # -a preserves the symlinks and layout gcc resolves its
         # sysroot/libexec/fixed-includes through relative to the driver.
-        subprocess.run(["cp", "-a", "--reflink=auto", src_root, dst_root], check=True)
+        subprocess.run(["cp", "-a", src_root, dst_root], check=True)
         # cp -a preserves the read-only input permissions; make the copy
         # writable so the in-place rewrite below can create its temp files and
         # rename them into place.
         subprocess.run(["chmod", "-R", "u+w", dst_root], check=True)
 
-        _fix_subprogram_paths(dst_bin, ld_linux)
+        # The toolchain is built locally (local_only), so rewrite_interps bakes
+        # the *local* build root (e.g. /data/users/<u>/fbsource/...) into every
+        # PT_INTERP/DT_RPATH.  On a remote-execution worker the tree lives under
+        # a different root (/re_cwd/...), and that prefix differs in length from
+        # the local one, so the length-preserving byte substitution in
+        # _fix_subprogram_paths() can't fix it (it only swaps the equal-length
+        # `output_artifacts`->content-hash component) -> the interp stays dead
+        # and gcc fails with exit 127 "cannot execute: required file not found".
+        # patchelf rewrites the interp/RPATH to the copy's *own* self-contained
+        # ld-linux and lib dirs with no length constraint, which is valid on any
+        # worker.  Fall back to the byte-sub if patchelf isn't available.
+        if not _patchelf_relocate(dst_root, ld_linux, scratch_dir):
+            _fix_subprogram_paths(dst_bin, ld_linux)
 
         print(f"portabilize: copied toolchain to {dst_root}", file=sys.stderr)
         with open(done_marker, "w") as f:
             f.write("ok\n")
 
     return dst_bin
+
+
+def _patchelf_relocate(dst_root, ld_linux, scratch_dir):
+    """Relocate a copied gcc toolchain's interp + RPATH with patchelf.
+
+    Points every exec'd binary (bin/*, libexec/gcc/.../{cc1,cc1plus,collect2,
+    lto1,...}, and the cross binutils in <triple>/bin/*) at the copy's *own*
+    ld-linux and lib dirs, so the toolchain is fully self-contained at whatever
+    absolute path the copy lives -- no dependency on the build-time root.
+
+    patchelf is one of the hermetic host tools, which portabilize_toolchain
+    wraps into scratch (".ld-wrap-...") before the compiler toolchain is
+    copied, so a worker-runnable wrapped patchelf is already present.  Returns
+    True on success, False if patchelf or the copy's ld-linux can't be found
+    (caller falls back to the byte-substitution relocation).
+    """
+    import glob as _glob_mod
+
+    patchelf = None
+    for _cand in _glob_mod.glob(
+        os.path.join(scratch_dir, ".ld-wrap-*", "bin", "patchelf")
+    ):
+        if os.path.isfile(_cand):
+            patchelf = _cand
+            break
+    if not patchelf:
+        return False
+
+    abs_ld = os.path.abspath(ld_linux)
+    # Prefer the copy's own ld-linux: a gcc toolchain ships its sysroot inside
+    # the copied tree (<root>/tools/<triple>/sys-root/...).  Host-tool bundles
+    # (host-tools-exec) don't ship a sysroot, so fall back to the external
+    # materialized ld-linux, which is valid on the worker (it's a build input).
+    copy_ld = ""
+    if "/tools/" in ld_linux:
+        cand = os.path.join(dst_root, ld_linux.split("/tools/", 1)[1])
+        if os.path.isfile(cand):
+            copy_ld = cand
+    # A gcc toolchain ships its sysroot inside the copy (internal ld-linux) and
+    # its binaries carry an absolute, build-root-baked (dead-on-RE) RPATH that
+    # must be rewritten.  A host-tool bundle (external ld-linux) already uses an
+    # $ORIGIN-relative RPATH + LD_LIBRARY_PATH, so we must ONLY fix its interp --
+    # overwriting its RPATH drops the sysroot lib dirs and libpython/libperl then
+    # pick up the host's too-old libc (GLIBC_2.xx not found).
+    _internal = bool(copy_ld)
+    if not copy_ld:
+        copy_ld = abs_ld
+    if not os.path.isfile(copy_ld):
+        return False
+
+    triple = ""
+    if "/sys-root/" in ld_linux:
+        triple = ld_linux.split("/sys-root/", 1)[0].rsplit("/", 1)[-1]
+    ext_sysroot = os.path.dirname(os.path.dirname(abs_ld))  # <sysroot>
+
+    # DT_RPATH (transitive, matching the toolchain's --disable-new-dtags) over
+    # the copy's own lib dirs (libstdc++/libgcc_s/libisl for cc1; libreadline/
+    # libtinfo for bash; etc.) plus the external sysroot for libc, so every
+    # relocated binary resolves its shared libs wherever the copy lives.
+    _cand_dirs = [
+        os.path.join(dst_root, "lib64"),
+        os.path.join(dst_root, "lib"),
+    ]
+    if triple:
+        _cand_dirs += [
+            os.path.join(dst_root, triple, "lib64"),
+            os.path.join(dst_root, triple, "lib"),
+            os.path.join(dst_root, triple, "sys-root", "usr", "lib64"),
+            os.path.join(dst_root, triple, "sys-root", "lib64"),
+        ]
+    _cand_dirs += [
+        os.path.join(ext_sysroot, "usr", "lib64"),
+        os.path.join(ext_sysroot, "lib64"),
+        os.path.join(ext_sysroot, "usr", "lib"),
+        os.path.join(ext_sysroot, "lib"),
+    ]
+    # NOTE: do NOT os.path.isdir()-filter these.  On RE with deferred
+    # materialization the sysroot dir may not be stat-able as a directory when
+    # portabilize runs, which would silently drop the external sysroot (libc)
+    # from the rpath and make relocated binaries load the worker's too-old
+    # /lib64/libc.so.6.  Non-existent rpath entries are harmless (the loader
+    # just skips them), so keep them all.
+    rpath = ":".join(_cand_dirs)
+
+    # Executables (bin/libexec/<triple>/bin) get their interp repointed AND
+    # their rpath fixed.  Shared libraries (lib/lib64/...), which have no
+    # PT_INTERP, get ONLY their rpath fixed -- a .so like libpython3.12.so
+    # needs libc, and relying on the loading executable's *transitive* rpath is
+    # not reliable on RE, so give the .so the sysroot in its own rpath too.
+    exec_dirs = [os.path.join(dst_root, "bin"), os.path.join(dst_root, "libexec")]
+    exec_dirs += _glob_mod.glob(os.path.join(dst_root, "*", "bin"))
+    lib_dirs = [os.path.join(dst_root, "lib"), os.path.join(dst_root, "lib64")]
+    lib_dirs += _glob_mod.glob(os.path.join(dst_root, "*", "lib"))
+    lib_dirs += _glob_mod.glob(os.path.join(dst_root, "*", "lib64"))
+
+    def _rpath_args(binary):
+        """patchelf rpath flags for one binary (empty list if nothing to do)."""
+        if not rpath:
+            return []
+        if _internal:
+            # gcc toolchain: its build-baked RPATH is dead-absolute (points at
+            # the build root, gone on RE), so replace it with the copy's dirs.
+            return ["--force-rpath", "--set-rpath", rpath]
+        # Host-tool bundle: it uses the external ld-linux and an $ORIGIN-relative
+        # RPATH for its package libs (libreadline for bash, libpython for
+        # python3, ...).  We must NOT drop that RPATH, or the binary loses its
+        # own libs; but interp-only leaves libc unresolved on RE (the $ORIGIN
+        # dirs don't ship glibc, so the loader falls back to the worker's
+        # too-old /lib64/libc.so.6 -> "GLIBC_2.xx not found").  Preserve the
+        # existing RPATH and APPEND the sysroot lib dirs so buckos libc resolves
+        # while $ORIGIN still finds package libs.
+        _cur = subprocess.run(
+            [patchelf, "--print-rpath", binary], capture_output=True, text=True
+        )
+        _existing = _cur.stdout.strip() if _cur.returncode == 0 else ""
+        _merged = ":".join(x for x in (_existing, rpath) if x)
+        return ["--force-rpath", "--set-rpath", _merged] if _merged else []
+
+    count = 0
+    seen = set()
+    for d in exec_dirs + lib_dirs:
+        if not os.path.isdir(d) or d in seen:
+            continue
+        seen.add(d)
+        is_lib_dir = d not in exec_dirs
+        for root, _dirs, files in os.walk(d):
+            for name in files:
+                p = os.path.join(root, name)
+                if os.path.islink(p) or not _is_elf(p):
+                    continue
+                has_interp = _has_pt_interp(p)
+                # In exec dirs, only touch things with an interp (executables);
+                # in lib dirs, only touch shared libraries (ET_DYN=3).  Skipping
+                # non-DYN ELF in lib dirs avoids running patchelf on relocatable
+                # objects (.o / .syso, ET_REL=1) -- patchelf aborts on those with
+                # "wrong ELF type" (harmless but noisy and wasteful).
+                if is_lib_dir and (has_interp or _elf_type(p) != 3):
+                    continue
+                if not is_lib_dir and not has_interp:
+                    continue
+                cmd = [patchelf]
+                if has_interp:
+                    cmd += ["--set-interpreter", copy_ld]
+                cmd += _rpath_args(p)
+                if len(cmd) == 1:  # nothing to change
+                    continue
+                cmd.append(p)
+                if subprocess.run(cmd).returncode == 0:
+                    count += 1
+    print(
+        f"portabilize: patchelf-relocated {count} toolchain binaries "
+        f"(interp={copy_ld}, internal={_internal}, rpath={rpath})",
+        file=sys.stderr,
+    )
+    return count > 0
 
 
 def _fix_subprogram_paths(bin_dir, ld_linux):
@@ -527,6 +788,18 @@ def _is_elf(path):
         return hdr[:4] == b"\x7fELF" and hdr[4] == 2
     except (OSError, PermissionError):
         return False
+
+
+def _elf_type(path):
+    """Return the ELF e_type (1=REL/.o, 2=EXEC, 3=DYN/.so) or None."""
+    try:
+        with open(path, "rb") as f:
+            hdr = f.read(18)
+        if hdr[:4] != b"\x7fELF":
+            return None
+        return int.from_bytes(hdr[16:18], "little")
+    except (OSError, PermissionError):
+        return None
 
 
 def _has_pt_interp(path):

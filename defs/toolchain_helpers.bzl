@@ -64,6 +64,13 @@ def toolchain_path_args(ctx):
     """
     tc = ctx.attrs._toolchain[BuildToolchainInfo]
     if tc.host_bin_dir:
+        # Carry the FULL host-tools-exec tree as a hidden input, not just the
+        # bin/ projection, so the whole bundle (lib64/libpython3.12.so.1.0,
+        # lib/, share/, ...) materializes on the RE worker.  Without this only
+        # the referenced bin/<tool> files propagate, and the relocated python3
+        # fails on RE with "libpython3.12.so.1.0: cannot open shared object".
+        if tc.host_tools_tree:
+            return [cmd_args("--hermetic-path", tc.host_bin_dir, hidden = tc.host_tools_tree)]
         return [cmd_args("--hermetic-path", tc.host_bin_dir)]
     if tc.allows_host_path:
         return [cmd_args("--allow-host-path")]

@@ -2,7 +2,7 @@ load("//defs/packages:binary.bzl", "binary_package")
 load("//defs/rules:rootfs.bzl", "rootfs")
 load("//defs/rules:initramfs.bzl", "dracut_initramfs", "initramfs")
 load("//defs/rules:boot.bzl", "qemu_boot_script")
-load("//defs/rules:image.bzl", "iso_image", "stage3_tarball")
+load("//defs/rules:image.bzl", "iso_image", "stage3_tarball", "verity_image")
 load("//packages/linux/desktop/kde:meta.bzl", "KDE_PLASMA")
 
 # =============================================================================
@@ -1757,6 +1757,65 @@ rootfs(
         "//packages/linux/system/libs/crypto/openssl:openssl",
         "//packages/linux/network/iproute2:iproute2",
     ],
+    visibility = ["PUBLIC"],
+)
+
+# =============================================================================
+# dm-verity measured image (hatch-image style)
+# =============================================================================
+# A hatch-image-style measured image built from the buckos rootfs: a root
+# filesystem image bound to a dm-verity root hash, with the hash baked into a
+# kernel cmdline (`noresume roothash=<hex>`).  Demonstrates the TEE/verified-
+# boot artifact format from a hermetically-built, reproducible rootfs.
+#
+# Outputs (build with --show-output):
+#   :buckos-verity-image            -> <name>.root.img (default)
+#   :buckos-verity-image[hash]      -> <name>.hash.img
+#   :buckos-verity-image[roothash]  -> <name>.roothash
+#   :buckos-verity-image[cmdline]   -> <name>.cmdline
+verity_image(
+    name = "buckos-verity-image",
+    rootfs = ":buckos-rootfs",
+    filesystem = "btrfs",  # hatch-image parity
+    size = "4G",
+    base_cmdline = "noresume",
+    visibility = ["PUBLIC"],
+)
+
+# Measured-boot test harness for the verity image (tools/verity_boot_validate.sh):
+# a small dynamic-capable initramfs (glibc + busybox + cryptsetup) whose /init
+# (verity-initramfs-init) brings up dm-verity from the cmdline roothash and
+# verifies the measured rootfs.  top_packages pulls cryptsetup's runtime closure.
+rootfs(
+    name = "verity-initramfs-rootfs",
+    packages = [
+        "//packages/linux/system:baselayout-gen",
+        "//packages/linux/core/glibc:glibc",
+        "//packages/linux/core/busybox:busybox-static",
+        "//packages/linux/system/filesystem/management/cryptsetup:cryptsetup",
+    ],
+    top_packages = ["//packages/linux/system/filesystem/management/cryptsetup:cryptsetup"],
+    visibility = ["PUBLIC"],
+)
+
+initramfs(
+    name = "buckos-verity-initramfs",
+    rootfs = ":verity-initramfs-rootfs",
+    compression = "gz",
+    init = "/init",
+    init_script = "//defs/scripts:verity-initramfs-init",
+    visibility = ["PUBLIC"],
+)
+
+# Fast smoke target: same verity_image rule over the small initramfs rootfs
+# (glibc + busybox + cryptsetup) instead of the full buckos-rootfs.  Lets the
+# rule + veritysetup path be verified without a multi-hour rootfs build.
+verity_image(
+    name = "buckos-verity-image-mini",
+    rootfs = ":verity-initramfs-rootfs",
+    filesystem = "btrfs",
+    size = "512M",
+    base_cmdline = "noresume",
     visibility = ["PUBLIC"],
 )
 

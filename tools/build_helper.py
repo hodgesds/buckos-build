@@ -1062,28 +1062,21 @@ def main():
     #    (symlinked to host python) and pyvenv/bin/meson.  build.ninja
     #    references these absolute paths for custom commands.  Replace
     #    them with buckos python and buckos meson from deps.
-    _dep_python3 = None
-    _dep_meson = None
-    for _bp in list(args.hermetic_path) + list(all_path_prepend):
-        _abs_bp = os.path.abspath(_bp)
-        if not _dep_python3:
-            _candidate = os.path.join(_abs_bp, "python3")
-            if os.path.isfile(_candidate):
-                _dep_python3 = _candidate
-        if not _dep_meson:
-            _candidate = os.path.join(_abs_bp, "meson")
-            if os.path.isfile(_candidate):
-                _dep_meson = _candidate
+    # Resolve python3/meson/perl from the already-portabilized PATH (relocated
+    # copy), NOT the raw hermetic dirs: raw host-tool binaries carry
+    # build-root-baked interps that are dead on remote-execution workers, so a
+    # raw pinned path fails to exec there (e.g. $(MAKE) recipes, or configure
+    # seeing python3 as "too old" because `python3 --version` produced nothing).
+    _dep_python3 = shutil.which("python3", path=env.get("PATH", ""))
+    _dep_meson = shutil.which("meson", path=env.get("PATH", ""))
     if _dep_python3:
         env.setdefault("PYTHON", _dep_python3)
         env.setdefault("PYTHON3", _dep_python3)
-    # Pin PERL to the wrapped perl so build scripts (OpenSSL perlasm)
-    # use the wrapper instead of $^X (which bypasses the wrapper).
-    for _bp in list(args.hermetic_path) + list(all_path_prepend):
-        _candidate = os.path.join(os.path.abspath(_bp), "perl")
-        if os.path.isfile(_candidate):
-            env.setdefault("PERL", _candidate)
-            break
+    # Pin PERL to the buckos perl so build scripts (OpenSSL perlasm) use it
+    # instead of $^X.
+    _perl = shutil.which("perl", path=env.get("PATH", ""))
+    if _perl:
+        env.setdefault("PERL", _perl)
     _host_python = shutil.which("python3") if _dep_python3 else None
     if _dep_python3 and _host_python:
         _dep_python3_abs = os.path.abspath(_dep_python3)

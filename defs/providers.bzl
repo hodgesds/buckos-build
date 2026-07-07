@@ -48,6 +48,9 @@ BuildToolchainInfo = provider(fields = [
     "sysroot",          # artifact | None: buckos-built sysroot (musl/glibc headers + libs)
     "python",           # RunInfo | None: bootstrap Python interpreter
     "host_bin_dir",     # artifact | None: hermetic PATH directory (seed host tools)
+    "host_tools_tree",  # artifact | None: FULL host-tools-exec tree, carried as a
+                        # hidden input so the whole bundle (libpython, lib/, ...)
+                        # materializes on RE -- not just the bin/ projection
     "allows_host_path", # bool: True only for bootstrap/host-target toolchains
     "extra_cflags",     # list[str]: toolchain-injected CFLAGS (e.g. hardening flags)
     "extra_ldflags",    # list[str]: toolchain-injected LDFLAGS (e.g. -fuse-ld=mold)

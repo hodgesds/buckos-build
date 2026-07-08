@@ -34,7 +34,11 @@ def main():
     host_path = os.environ.get("PATH", "")
 
     env = clean_env()
-    setup_path(args, env, host_path=host_path)
+    # wrappers_only: the prepare phase only runs patch / pre-configure cmds
+    # (patch, bash, sed) -- never make's recursive $(MAKE) -- so ld-linux
+    # wrappers suffice.  This avoids the copy-and-relocate path, which on some
+    # RE workers relocates 0 binaries and leaves a dead-interpreter `patch`.
+    setup_path(args, env, host_path=host_path, wrappers_only=True)
     os.environ.clear()
     os.environ.update(env)
 

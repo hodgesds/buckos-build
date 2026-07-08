@@ -70,7 +70,7 @@ def _stable_scratch():
 
 
 def portabilize_toolchain(
-    bin_dirs, ld_linux_path, scratch_dir=None, patchelf_path=None
+    bin_dirs, ld_linux_path, scratch_dir=None, patchelf_path=None, wrappers_only=False
 ):
     """Create ld-linux wrapper scripts for ELF binaries in bin_dirs.
 
@@ -132,8 +132,19 @@ def portabilize_toolchain(
             lib_path = base_lib_path
             if pkg_libs:
                 lib_path = ":".join(pkg_libs) + ":" + base_lib_path
-            _create_wrappers(bin_abs, ld_linux, lib_path, scratch_dir)
-            result.append(_copy_and_relocate_toolchain(bin_abs, ld_linux, scratch_dir))
+            wrapper_dir = _create_wrappers(bin_abs, ld_linux, lib_path, scratch_dir)
+            if wrappers_only:
+                # The prepare phase only applies patches and runs pre-configure
+                # commands (patch, bash, sed, ...) -- it never runs make's
+                # recursive $(MAKE), so ld-linux wrappers are sufficient.  Skip
+                # the copy-and-relocate path, which on some RE workers
+                # patchelf-relocates 0 binaries and leaves a dead-interpreter
+                # `patch` (-> FileNotFoundError: 'patch').  The wrappers always
+                # run because they invoke the binary through a materialized
+                # ld-linux with an explicit --library-path.
+                result.append(wrapper_dir)
+            else:
+                result.append(_copy_and_relocate_toolchain(bin_abs, ld_linux, scratch_dir))
             continue
         # Non-toolchain host tools: a PATH of ld-linux wrappers is enough and
         # works read-only (the wrappers live in writable scratch, the wrapped

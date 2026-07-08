@@ -65,12 +65,17 @@ def main():
     # Reset timestamps to SOURCE_DATE_EPOCH to prevent autotools regeneration.
     # The copy changes mtime ordering, causing make to think configure.ac is
     # newer than generated files and attempt to re-run aclocal/autoconf.
-    epoch = os.environ.get("SOURCE_DATE_EPOCH", "315576000")
-    subprocess.run(
-        ["find", ".", "-exec", "touch", "-h", "-d", f"@{epoch}", "{}", "+"],
-        cwd=work_dir,
-        capture_output=True,
-    )
+    epoch = int(os.environ.get("SOURCE_DATE_EPOCH", "315576000"))
+    # Pure-Python mtime reset (os.walk) instead of shelling out to find/touch,
+    # absent on the sterile remote-execution worker (-> FileNotFoundError:
+    # 'find').  Sets dirs, files, symlinks (follow_symlinks=False, like touch -h).
+    for _dp, _dns, _fns in os.walk(work_dir):
+        for _n in _dns + _fns:
+            _pp = os.path.join(_dp, _n)
+            try:
+                os.utime(_pp, (epoch, epoch), follow_symlinks=False)
+            except (OSError, NotImplementedError):
+                pass
 
     # Apply each patch in order
     for patch_file in args.patches:

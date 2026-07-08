@@ -234,12 +234,17 @@ def main():
     shutil.copytree(source_dir, work_dir, symlinks=True)
 
     # Reset timestamps to prevent build system regeneration
-    epoch = os.environ.get("SOURCE_DATE_EPOCH", "315576000")
-    subprocess.run(
-        ["find", ".", "-exec", "touch", "-h", "-d", f"@{epoch}", "{}", "+"],
-        cwd=work_dir,
-        capture_output=True,
-    )
+    epoch = int(os.environ.get("SOURCE_DATE_EPOCH", "315576000"))
+    # Pure-Python mtime reset (os.walk) instead of shelling out to find/touch,
+    # absent on the sterile remote-execution worker (-> FileNotFoundError:
+    # 'find').  Sets dirs, files, symlinks (follow_symlinks=False, like touch -h).
+    for _dp, _dns, _fns in os.walk(work_dir):
+        for _n in _dns + _fns:
+            _pp = os.path.join(_dp, _n)
+            try:
+                os.utime(_pp, (epoch, epoch), follow_symlinks=False)
+            except (OSError, NotImplementedError):
+                pass
 
     # Apply patches
     for patch_file in args.patches:

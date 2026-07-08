@@ -61,6 +61,12 @@ def _src_prepare(ctx, source):
         cmd.add("--patch", p)
     for arg in toolchain_path_args(ctx):
         cmd.add(arg)
+    # Pass --ld-linux so patch_helper portabilizes the host-tools-exec binaries
+    # (patch, bash, ...) before running them.  Without it, on a remote-execution
+    # worker those binaries keep their build-tree interpreter and fail to exec
+    # (FileNotFoundError: 'patch'/'find'); configure/build/install already pass it.
+    for arg in toolchain_ld_linux_args(ctx):
+        cmd.add(arg)
 
     ctx.actions.run(cmd, category = "autotools_prepare", identifier = ctx.attrs.name, allow_cache_upload = True, local_only = toolchain_local_only(ctx))
     return output

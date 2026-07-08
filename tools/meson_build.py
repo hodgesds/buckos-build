@@ -603,6 +603,11 @@ def main():
             f"error: meson setup failed with exit code {result.returncode}",
             file=sys.stderr,
         )
+        _mlog = os.path.join(build_dir, "meson-logs", "meson-log.txt")
+        if os.path.isfile(_mlog):
+            print("=== meson-log.txt (tail) ===", file=sys.stderr)
+            with open(_mlog, errors="replace") as _f:
+                print("".join(_f.readlines()[-80:]), file=sys.stderr)
         sys.exit(1)
 
     # ── Phase 3: Build (ninja) ───────────────────────────────────

@@ -588,13 +588,17 @@ def _derive_gcc_runtime(ld_linux):
 
 
 def _sysroot_lib_dirs(sysroot):
-    """Return existing lib directories in the sysroot."""
-    dirs = []
-    for sub in ("usr/lib64", "usr/lib", "lib64", "lib"):
-        d = os.path.join(sysroot, sub)
-        if os.path.isdir(d):
-            dirs.append(d)
-    return dirs
+    """Return the sysroot lib directories for the ld-linux --library-path.
+
+    Do NOT os.path.isdir()-filter these.  On a remote-execution worker with
+    deferred materialization, the sysroot dir may not be stat-able as a
+    directory when portabilize builds the wrapper's --library-path, which would
+    silently drop the sysroot (glibc) and make the wrapped host tools load the
+    worker's too-old /lib64/libc.so.6 ("version `GLIBC_2.xx' not found").
+    Non-existent --library-path entries are harmless (the loader skips them),
+    and the files materialize on access at runtime, so keep them all.
+    """
+    return [os.path.join(sysroot, sub) for sub in ("usr/lib64", "usr/lib", "lib64", "lib")]
 
 
 def _find_perl5lib(bin_dir):

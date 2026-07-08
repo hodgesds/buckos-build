@@ -105,7 +105,19 @@ def toolchain_ld_linux_args(ctx):
     """
     tc = ctx.attrs._toolchain[BuildToolchainInfo]
     if tc.sysroot:
-        return [cmd_args("--ld-linux", tc.sysroot.project(_ld_linux_subpath(tc.target_triple)))]
+        # Carry the WHOLE sysroot as a hidden input, not just the ld-linux file.
+        # The prepare phase runs host-tools-exec binaries (patch, bash, ...)
+        # through ld-linux wrappers whose --library-path points at the sysroot
+        # lib dirs for glibc.  If only the ld-linux file materializes on the RE
+        # worker (as when a phase passes --ld-linux but not CC --sysroot=), the
+        # wrapper can't find the buckos libc.so.6 and falls back to the worker's
+        # older /lib64/libc.so.6 -> "version `GLIBC_2.38' not found".  Hiding the
+        # full sysroot materializes libc.so.6 and friends alongside ld-linux.
+        return [cmd_args(
+            "--ld-linux",
+            tc.sysroot.project(_ld_linux_subpath(tc.target_triple)),
+            hidden = tc.sysroot,
+        )]
     return []
 
 def toolchain_target_triple(ctx):

@@ -70,7 +70,7 @@ def _stable_scratch():
 
 
 def portabilize_toolchain(
-    bin_dirs, ld_linux_path, scratch_dir=None, patchelf_path=None
+    bin_dirs, ld_linux_path, scratch_dir=None, patchelf_path=None, wrappers_only=False
 ):
     """Create ld-linux wrapper scripts for ELF binaries in bin_dirs.
 
@@ -132,8 +132,19 @@ def portabilize_toolchain(
             lib_path = base_lib_path
             if pkg_libs:
                 lib_path = ":".join(pkg_libs) + ":" + base_lib_path
-            _create_wrappers(bin_abs, ld_linux, lib_path, scratch_dir)
-            result.append(_copy_and_relocate_toolchain(bin_abs, ld_linux, scratch_dir))
+            wrapper_dir = _create_wrappers(bin_abs, ld_linux, lib_path, scratch_dir)
+            if wrappers_only:
+                # The prepare phase only applies patches and runs pre-configure
+                # commands (patch, bash, sed, ...) -- it never runs make's
+                # recursive $(MAKE), so ld-linux wrappers are sufficient.  Skip
+                # the copy-and-relocate path, which on some RE workers
+                # patchelf-relocates 0 binaries and leaves a dead-interpreter
+                # `patch` (-> FileNotFoundError: 'patch').  The wrappers always
+                # run because they invoke the binary through a materialized
+                # ld-linux with an explicit --library-path.
+                result.append(wrapper_dir)
+            else:
+                result.append(_copy_and_relocate_toolchain(bin_abs, ld_linux, scratch_dir))
             continue
         # Non-toolchain host tools: a PATH of ld-linux wrappers is enough and
         # works read-only (the wrappers live in writable scratch, the wrapped
@@ -561,29 +572,36 @@ def _derive_sysroot(ld_linux):
 
 
 def _derive_gcc_runtime(ld_linux):
-    """Derive GCC runtime lib directory from ld-linux path.
+    """Derive GCC runtime lib directories (libstdc++/libgcc_s) from ld-linux.
 
     Seed layout:
         patched-compiler/tools/<triple>/sys-root/lib64/ld-linux
         patched-compiler/tools/<triple>/lib64/libstdc++.so.6
+
+    Returns a LIST of candidate dirs, NOT os.path.isdir()-filtered: on an RE
+    worker with deferred materialization the dir isn't stat-able when the
+    wrapper's --library-path is built, which would drop libstdc++ and make a
+    wrapped C++ host tool (e.g. cmake) load the worker's too-old
+    /lib64/libstdc++.so.6 ("version `GLIBCXX_3.4.xx' not found").  Non-existent
+    entries are harmless; the files materialize on access.
     """
     sysroot = _derive_sysroot(ld_linux)
     triple_dir = os.path.dirname(sysroot)
-    for sub in ("lib64", "lib"):
-        d = os.path.join(triple_dir, sub)
-        if os.path.isdir(d):
-            return d
-    return None
+    return [os.path.join(triple_dir, sub) for sub in ("lib64", "lib")]
 
 
 def _sysroot_lib_dirs(sysroot):
-    """Return existing lib directories in the sysroot."""
-    dirs = []
-    for sub in ("usr/lib64", "usr/lib", "lib64", "lib"):
-        d = os.path.join(sysroot, sub)
-        if os.path.isdir(d):
-            dirs.append(d)
-    return dirs
+    """Return the sysroot lib directories for the ld-linux --library-path.
+
+    Do NOT os.path.isdir()-filter these.  On a remote-execution worker with
+    deferred materialization, the sysroot dir may not be stat-able as a
+    directory when portabilize builds the wrapper's --library-path, which would
+    silently drop the sysroot (glibc) and make the wrapped host tools load the
+    worker's too-old /lib64/libc.so.6 ("version `GLIBC_2.xx' not found").
+    Non-existent --library-path entries are harmless (the loader skips them),
+    and the files materialize on access at runtime, so keep them all.
+    """
+    return [os.path.join(sysroot, sub) for sub in ("usr/lib64", "usr/lib", "lib64", "lib")]
 
 
 def _find_perl5lib(bin_dir):
@@ -603,21 +621,27 @@ def _find_perl5lib(bin_dir):
 
 
 def _package_lib_dirs(bin_dir):
-    """Find lib/lib64 directories sibling to a bin directory."""
+    """Return lib/lib64 dirs sibling to a bin directory (a package's own libs).
+
+    Not os.path.isdir()-filtered -- see _sysroot_lib_dirs: on RE with deferred
+    materialization these may not be stat-able when the wrapper is built, and
+    dropping them makes the wrapped tool miss its bundled libs.  Harmless if
+    absent.
+    """
     parent = os.path.dirname(bin_dir)
-    dirs = []
-    for sub in ("lib", "lib64"):
-        d = os.path.join(parent, sub)
-        if os.path.isdir(d):
-            dirs.append(d)
-    return dirs
+    return [os.path.join(parent, sub) for sub in ("lib", "lib64")]
 
 
 def _build_lib_path(sysroot, gcc_runtime):
-    """Build the library path string for ld-linux --library-path."""
+    """Build the library path string for ld-linux --library-path.
+
+    gcc_runtime is a list of GCC runtime lib dirs (libstdc++/libgcc_s).  None
+    of the entries are isdir-filtered so RE deferred materialization can't drop
+    the buckos glibc/libstdc++ (see _sysroot_lib_dirs / _derive_gcc_runtime).
+    """
     dirs = _sysroot_lib_dirs(sysroot)
-    if gcc_runtime and os.path.isdir(gcc_runtime):
-        dirs.append(gcc_runtime)
+    if gcc_runtime:
+        dirs.extend(gcc_runtime if isinstance(gcc_runtime, list) else [gcc_runtime])
     return ":".join(dirs)
 
 

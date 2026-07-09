@@ -267,13 +267,19 @@ def add_path_args(parser):
     )
 
 
-def setup_path(args, env, host_path=""):
+def setup_path(args, env, host_path="", wrappers_only=False):
     """Set env["PATH"] from the standard three-way PATH arguments.
 
     Requires args parsed by add_path_args().  host_path is the original
     host PATH captured before sanitization (used with --allow-host-path).
     If --ld-linux was provided, portabilizes hermetic-path and
     path-prepend ELF binaries so they use the sysroot ld-linux + glibc.
+
+    wrappers_only=True makes the portabilization use ld-linux wrapper scripts
+    only, skipping the copy-and-relocate path used for tools that re-exec
+    themselves by absolute path (make's recursive $(MAKE)).  The prepare phase
+    (patch/pre-configure only) doesn't need that and the copy-relocate can fail
+    on some RE workers, so it passes wrappers_only=True.
     """
     ld_linux = getattr(args, "ld_linux", None)
     scratch = os.environ.get("BUCK_SCRATCH_PATH", os.environ.get("TMPDIR", "/tmp"))
@@ -284,7 +290,9 @@ def setup_path(args, env, host_path=""):
             from portabilize import portabilize_toolchain
 
             patchelf = shutil.which("patchelf", path=":".join(dirs))
-            dirs = portabilize_toolchain(dirs, ld_linux, patchelf_path=patchelf)
+            dirs = portabilize_toolchain(
+                dirs, ld_linux, patchelf_path=patchelf, wrappers_only=wrappers_only
+            )
         env["PATH"] = ":".join(dirs)
         derive_lib_paths(dirs, env)
     elif args.hermetic_empty:

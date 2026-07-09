@@ -12,7 +12,7 @@ import shutil
 import subprocess
 import sys
 
-from _env import add_path_args, clean_env, setup_path
+from _env import add_path_args, clean_env, make_tree_writable, setup_path
 
 
 def main():
@@ -34,7 +34,11 @@ def main():
     host_path = os.environ.get("PATH", "")
 
     env = clean_env()
-    setup_path(args, env, host_path=host_path)
+    # wrappers_only: the prepare phase only runs patch / pre-configure cmds
+    # (patch, bash, sed) -- never make's recursive $(MAKE) -- so ld-linux
+    # wrappers suffice.  This avoids the copy-and-relocate path, which on some
+    # RE workers relocates 0 binaries and leaves a dead-interpreter `patch`.
+    setup_path(args, env, host_path=host_path, wrappers_only=True)
     os.environ.clear()
     os.environ.update(env)
 
@@ -61,6 +65,11 @@ def main():
     if os.path.exists(work_dir):
         shutil.rmtree(work_dir)
     shutil.copytree(args.source_dir, work_dir, symlinks=True)
+    # copytree preserves the source's permissions; on remote execution the
+    # source is a read-only materialized input, so the copy is read-only too.
+    # Make it writable so patches and pre_configure_cmds can create/modify
+    # files (e.g. systemd's `... > test/fuzz/meson.build` -> Permission denied).
+    make_tree_writable(work_dir)
 
     # Reset timestamps to SOURCE_DATE_EPOCH to prevent autotools regeneration.
     # The copy changes mtime ordering, causing make to think configure.ac is
